@@ -1,7 +1,7 @@
 fixnum
 ======
 
-A fixed-width size integer library for Dart.
+A fixed-width 32- and 64- bit integer library for Dart.
 - - -
 The fixnum package provides data types for signed 32- and 64-bit integers.
 The integer implementations in this library are designed to work identically
