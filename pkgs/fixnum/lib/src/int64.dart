@@ -83,7 +83,9 @@ class Int64 implements IntX {
       negative = true;
       i++;
     }
-    int d0 = 0, d1 = 0, d2 = 0;  //  low, middle, high components.
+    int d0 = 0,
+        d1 = 0,
+        d2 = 0; //  low, middle, high components.
     for (; i < s.length; i++) {
       int c = s.codeUnitAt(i);
       int digit = Int32._decodeDigit(c);
@@ -99,7 +101,7 @@ class Int64 implements IntX {
 
       d1 = d1 * radix + carry;
       carry = d1 >> _BITS;
-      d1 = _MASK & d1;;
+      d1 = _MASK & d1;
 
       d2 = d2 * radix + carry;
       d2 = _MASK2 & d2;
@@ -127,8 +129,10 @@ class Int64 implements IntX {
   /**
    * Constructs an [Int64] with a given [int] value; zero by default.
    */
-  factory Int64([int value=0]) {
-    int v0 = 0, v1 = 0, v2 = 0;
+  factory Int64([int value = 0]) {
+    int v0 = 0,
+        v1 = 0,
+        v2 = 0;
     bool negative = false;
     if (value < 0) {
       negative = true;
@@ -193,7 +197,7 @@ class Int64 implements IntX {
     bottom |= bytes[7] & 0xff;
 
     return new Int64.fromInts(top, bottom);
- }
+  }
 
   /**
    * Constructs an [Int64] from a pair of 32-bit integers having the value
@@ -519,7 +523,9 @@ class Int64 implements IntX {
 
   int get bitLength {
     if (isZero) return 0;
-    int a0 = _l, a1 = _m, a2 = _h;
+    int a0 = _l,
+        a1 = _m,
+        a2 = _h;
     if (isNegative) {
       a0 = _MASK & ~a0;
       a1 = _MASK & ~a1;
@@ -602,12 +608,12 @@ class Int64 implements IntX {
       int m = _m.toSigned(width - _BITS);
       return m.isNegative
           ? Int64._masked(_l, m, _MASK2)
-          : Int64._masked(_l, m, 0);  // Masking for type inferrer.
+          : Int64._masked(_l, m, 0); // Masking for type inferrer.
     } else {
       int l = _l.toSigned(width);
       return l.isNegative
           ? Int64._masked(l, _MASK, _MASK2)
-          : Int64._masked(l, 0, 0);  // Masking for type inferrer.
+          : Int64._masked(l, 0, 0); // Masking for type inferrer.
     }
   }
 
@@ -742,7 +748,6 @@ class Int64 implements IntX {
     //  -->
     //     [----------d4----------][---d3---][---d2---][---d1---][---d0---]
 
-
     int d4 = (d2 << 4) | (d1 >> 18);
     int d3 = (d1 >> 8) & 0x3ff;
     d2 = ((d1 << 2) | (d0 >> 20)) & 0x3ff;
@@ -759,7 +764,9 @@ class Int64 implements IntX {
     // need only two chunks, but radix values 17-19 and 33-36 generate only 15
     // or 16 bits per iteration, so sometimes the third chunk is needed.
 
-    String chunk1 = "", chunk2 = "", chunk3 = "";
+    String chunk1 = "",
+        chunk2 = "",
+        chunk3 = "";
 
     while (!(d4 == 0 && d3 == 0)) {
       int q = d4 ~/ fatRadix;
@@ -802,50 +809,49 @@ class Int64 implements IntX {
   // Table of 'fat' radix values.  Each entry for index `i` is the largest power
   // of `i` whose remainder fits in 20 bits.
   static const _fatRadixTable = const <int>[
-      0,
-      0,
-      2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
-        * 2,
-      3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3,
-      4 * 4 * 4 * 4 * 4 * 4 * 4 * 4 * 4 * 4,
-      5 * 5 * 5 * 5 * 5 * 5 * 5 * 5,
-      6 * 6 * 6 * 6 * 6 * 6 * 6,
-      7 * 7 * 7 * 7 * 7 * 7 * 7,
-      8 * 8 * 8 * 8 * 8 * 8,
-      9 * 9 * 9 * 9 * 9 * 9,
-      10 * 10 * 10 * 10 * 10 * 10,
-      11 * 11 * 11 * 11 * 11,
-      12 * 12 * 12 * 12 * 12,
-      13 * 13 * 13 * 13 * 13,
-      14 * 14 * 14 * 14 * 14,
-      15 * 15 * 15 * 15 * 15,
-      16 * 16 * 16 * 16 * 16,
-      17 * 17 * 17 * 17,
-      18 * 18 * 18 * 18,
-      19 * 19 * 19 * 19,
-      20 * 20 * 20 * 20,
-      21 * 21 * 21 * 21,
-      22 * 22 * 22 * 22,
-      23 * 23 * 23 * 23,
-      24 * 24 * 24 * 24,
-      25 * 25 * 25 * 25,
-      26 * 26 * 26 * 26,
-      27 * 27 * 27 * 27,
-      28 * 28 * 28 * 28,
-      29 * 29 * 29 * 29,
-      30 * 30 * 30 * 30,
-      31 * 31 * 31 * 31,
-      32 * 32 * 32 * 32,
-      33 * 33 * 33,
-      34 * 34 * 34,
-      35 * 35 * 35,
-      36 * 36 * 36
+    0,
+    0,
+    2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+      * 2,
+    3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3 * 3,
+    4 * 4 * 4 * 4 * 4 * 4 * 4 * 4 * 4 * 4,
+    5 * 5 * 5 * 5 * 5 * 5 * 5 * 5,
+    6 * 6 * 6 * 6 * 6 * 6 * 6,
+    7 * 7 * 7 * 7 * 7 * 7 * 7,
+    8 * 8 * 8 * 8 * 8 * 8,
+    9 * 9 * 9 * 9 * 9 * 9,
+    10 * 10 * 10 * 10 * 10 * 10,
+    11 * 11 * 11 * 11 * 11,
+    12 * 12 * 12 * 12 * 12,
+    13 * 13 * 13 * 13 * 13,
+    14 * 14 * 14 * 14 * 14,
+    15 * 15 * 15 * 15 * 15,
+    16 * 16 * 16 * 16 * 16,
+    17 * 17 * 17 * 17,
+    18 * 18 * 18 * 18,
+    19 * 19 * 19 * 19,
+    20 * 20 * 20 * 20,
+    21 * 21 * 21 * 21,
+    22 * 22 * 22 * 22,
+    23 * 23 * 23 * 23,
+    24 * 24 * 24 * 24,
+    25 * 25 * 25 * 25,
+    26 * 26 * 26 * 26,
+    27 * 27 * 27 * 27,
+    28 * 28 * 28 * 28,
+    29 * 29 * 29 * 29,
+    30 * 30 * 30 * 30,
+    31 * 31 * 31 * 31,
+    32 * 32 * 32 * 32,
+    33 * 33 * 33,
+    34 * 34 * 34,
+    35 * 35 * 35,
+    36 * 36 * 36
   ];
 
   String toDebugString() {
     return "Int64[_l=$_l, _m=$_m, _h=$_h]";
   }
-
 
   static Int64 _masked(int a0, int a1, int a2) =>
       new Int64._bits(_MASK & a0, _MASK & a1, _MASK2 & a2);
@@ -881,7 +887,6 @@ class Int64 implements IntX {
 
   String _hexDigit(int digit) => "0123456789ABCDEF"[digit];
 
-
   // Work around dart2js bugs with negative arguments to '>>' operator.
   static int _shiftRight(int x, int n) {
     if (x >= 0) {
@@ -894,7 +899,6 @@ class Int64 implements IntX {
       return shifted;
     }
   }
-
 
   // Implementation of '~/', '%' and 'remainder'.
 
@@ -926,11 +930,15 @@ class Int64 implements IntX {
 
   static _divideHelper(
       // up to 64 bits unsigned in a2/a1/a0 and b2/b1/b0
-      int a0, int a1, int a2, bool aNeg,  // input A.
-      int b0, int b1, int b2, bool bNeg,  // input B.
+      int a0, int a1, int a2, bool aNeg, // input A.
+      int b0, int b1, int b2, bool bNeg, // input B.
       int what) {
-    int q0 = 0, q1 = 0, q2 = 0;  // result Q.
-    int r0 = 0, r1 = 0, r2 = 0;  // result R.
+    int q0 = 0,
+        q1 = 0,
+        q2 = 0; // result Q.
+    int r0 = 0,
+        r1 = 0,
+        r2 = 0; // result R.
 
     if (b2 == 0 && b1 == 0 && b0 < (1 << (30 - _BITS))) {
       // Small divisor can be handled by single-digit division within Smi range.
@@ -978,7 +986,7 @@ class Int64 implements IntX {
       q0 = q0d.toInt();
 
       assert(q0 + K1 * q1 + K2 * q2 == (ad / bd).floorToDouble());
-      assert(q2 == 0 || b2 == 0);  // Q and B can't both be big since Q*B <= A.
+      assert(q2 == 0 || b2 == 0); // Q and B can't both be big since Q*B <= A.
 
       // P = Q * B, using doubles to hold intermediates.
       // We don't need all partial sums since Q*B <= A.
@@ -989,7 +997,7 @@ class Int64 implements IntX {
       double p1carry = (p1d / K1).floorToDouble();
       p1d = p1d - p1carry * K1;
       double p2d = q2d * b0 + q1d * b1 + q0d * b2 + p1carry;
-      assert(p2d <= _MASK2);  // No partial sum overflow.
+      assert(p2d <= _MASK2); // No partial sum overflow.
 
       // R = A - P
       int diff0 = a0 - p0d.toInt();
@@ -1001,8 +1009,7 @@ class Int64 implements IntX {
 
       // while (R < 0 || R >= B)
       //  adjust R towards [0, B)
-      while (
-          r2 >= _SIGN_BIT_MASK ||
+      while (r2 >= _SIGN_BIT_MASK ||
           r2 > b2 ||
           (r2 == b2 && (r1 > b1 || (r1 == b1 && r0 >= b0)))) {
         // Direction multiplier for adjustment.
@@ -1027,17 +1034,17 @@ class Int64 implements IntX {
 
     // 0 <= R < B
     assert(Int64.ZERO <= new Int64._bits(r0, r1, r2));
-    assert(r2 < b2 ||  // Handles case where B = -(MIN_VALUE)
+    assert(r2 < b2 || // Handles case where B = -(MIN_VALUE)
         new Int64._bits(r0, r1, r2) < new Int64._bits(b0, b1, b2));
 
     assert(what == _RETURN_DIV || what == _RETURN_MOD || what == _RETURN_REM);
     if (what == _RETURN_DIV) {
       if (aNeg != bNeg) return _negate(q0, q1, q2);
-      return Int64._masked(q0, q1, q2);  // Masking for type inferrer.
+      return Int64._masked(q0, q1, q2); // Masking for type inferrer.
     }
 
     if (!aNeg) {
-      return new Int64._bits(_MASK & r0, r1, r2);  // Masking for type inferrer.
+      return new Int64._bits(_MASK & r0, r1, r2); // Masking for type inferrer.
     }
 
     if (what == _RETURN_MOD) {

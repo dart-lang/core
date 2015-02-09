@@ -136,7 +136,7 @@ class Int32 implements IntX {
    * Constructs an [Int32] from an [int].  Only the low 32 bits of the input
    * are used.
    */
-  Int32([int i=0]) : _i = (i & 0x7fffffff) - (i & 0x80000000);
+  Int32([int i = 0]) : _i = (i & 0x7fffffff) - (i & 0x80000000);
 
   // Returns the [int] representation of the specified value. Throws
   // [ArgumentError] for non-integer arguments.

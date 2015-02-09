@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 library Int32test;
+
 import 'package:fixnum/fixnum.dart';
 import 'package:unittest/unittest.dart';
 
@@ -85,14 +86,13 @@ void main() {
       expect(n2 * n3, new Int32(-12186984));
       expect(n3 * n3, new Int32(1522756));
       expect(n3 * n2, new Int32(-12186984));
-      expect(new Int32(0x12345678) * new Int32(0x22222222),
-          new Int32(-899716112));
-      expect((new Int32(123456789) * new Int32(987654321)),
-          new Int32(-67153019));
+      expect(
+          new Int32(0x12345678) * new Int32(0x22222222), new Int32(-899716112));
+      expect(
+          (new Int32(123456789) * new Int32(987654321)), new Int32(-67153019));
       expect(new Int32(0x12345678) * new Int64(0x22222222),
           new Int64.fromInts(0x026D60DC, 0xCA5F6BF0));
-      expect((new Int32(123456789) * 987654321),
-          new Int32(-67153019));
+      expect((new Int32(123456789) * 987654321), new Int32(-67153019));
       expect(() => new Int32(17) * null, throws);
     });
 

@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 library int64test;
+
 import 'package:fixnum/fixnum.dart';
 import 'package:unittest/unittest.dart';
 
@@ -91,13 +92,13 @@ void main() {
       expect(new Int64(100) * Int64.ZERO, Int64.ZERO);
 
       expect(new Int64.fromInts(0x12345678, 0x12345678) *
-          new Int64.fromInts(0x1234, 0x12345678),
+              new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0x7ff63f7c, 0x1df4d840));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) *
-          new Int64.fromInts(0x1234, 0x12345678),
+              new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0x7ff63f7c, 0x1df4d840));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) *
-          new Int64.fromInts(0xffff1234, 0x12345678),
+              new Int64.fromInts(0xffff1234, 0x12345678),
           new Int64.fromInts(0x297e3f7c, 0x1df4d840));
 
       // RHS Int32
@@ -163,17 +164,17 @@ void main() {
       expect(new Int64(-1000) ~/ new Int64(3), new Int64(-333));
       expect(new Int64(-1000) ~/ new Int64(-3), new Int64(333));
       expect(new Int64(3) ~/ new Int64(1000), Int64.ZERO);
-      expect(new Int64.fromInts( 0x12345678, 0x12345678) ~/
-          new Int64.fromInts(0x0, 0x123),
+      expect(new Int64.fromInts(0x12345678, 0x12345678) ~/
+              new Int64.fromInts(0x0, 0x123),
           new Int64.fromInts(0x1003d0, 0xe84f5ae8));
       expect(new Int64.fromInts(0x12345678, 0x12345678) ~/
-          new Int64.fromInts(0x1234, 0x12345678),
+              new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0x0, 0x10003));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) ~/
-          new Int64.fromInts(0x1234, 0x12345678),
+              new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0xffffffff, 0xffff3dfe));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) ~/
-          new Int64.fromInts(0xffff1234, 0x12345678),
+              new Int64.fromInts(0xffff1234, 0x12345678),
           new Int64.fromInts(0x0, 0xeda));
       expect(new Int64(829893893) ~/ new Int32(1919), new Int32(432461));
       expect(new Int64(829893893) ~/ new Int64(1919), new Int32(432461));
@@ -407,8 +408,8 @@ void main() {
           new Int64.fromInts(0x48d04, 0x8d1159d1));
       expect(new Int64.fromInts(0x92341234, 0x45674567) >> 10,
           new Int64.fromInts(0xffe48d04, 0x8d1159d1));
-      expect(new Int64.fromInts(0xFFFFFFF, 0xFFFFFFFF) >> 34,
-          new Int64(67108863));
+      expect(
+          new Int64.fromInts(0xFFFFFFF, 0xFFFFFFFF) >> 34, new Int64(67108863));
       for (int n = 0; n <= 66; n++) {
         expect(new Int64(-1) >> n, new Int64(-1));
       }
@@ -493,8 +494,7 @@ void main() {
           new Int64.fromInts(0x00000000, 0x00092345));
       expect(new Int64.fromInts(0x00000000, 0x00009234),
           new Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(48));
-      expect(() => new Int64(17).shiftRightUnsigned(-1),
-          throwsArgumentError);
+      expect(() => new Int64(17).shiftRightUnsigned(-1), throwsArgumentError);
       expect(() => new Int64(17).shiftRightUnsigned(null), throws);
     });
 
@@ -550,12 +550,14 @@ void main() {
       expect(new Int64(-2147483648).toDouble(), same(-2147483648.0));
       expect(new Int64(4503599627370495).toDouble(), same(4503599627370495.0));
       expect(new Int64(4503599627370496).toDouble(), same(4503599627370496.0));
-      expect(new Int64(-4503599627370495).toDouble(),
-          same(-4503599627370495.0));
-      expect(new Int64(-4503599627370496).toDouble(),
-          same(-4503599627370496.0));
-      expect(Int64.parseInt("-10000000000000000").toDouble().toStringAsFixed(1),
-          "-10000000000000000.0");
+      expect(
+          new Int64(-4503599627370495).toDouble(), same(-4503599627370495.0));
+      expect(
+          new Int64(-4503599627370496).toDouble(), same(-4503599627370496.0));
+      expect(Int64
+          .parseInt("-10000000000000000")
+          .toDouble()
+          .toStringAsFixed(1), "-10000000000000000.0");
       expect(Int64.parseInt("-10000000000000001").toDouble().toStringAsFixed(1),
           "-10000000000000000.0");
       expect(Int64.parseInt("-10000000000000002").toDouble().toStringAsFixed(1),
@@ -586,8 +588,9 @@ void main() {
       expect(new Int64(4503599627370496).toInt(), 4503599627370496);
       expect(new Int64(-4503599627370495).toInt(), -4503599627370495);
       expect(new Int64(-4503599627370496).toInt(), -4503599627370496);
-      expect(Int64.parseInt("-10000000000000000").toInt(),
-          same(-10000000000000000));
+      expect(Int64
+          .parseInt("-10000000000000000")
+          .toInt(), same(-10000000000000000));
       expect(Int64.parseInt("-10000000000000001").toInt(),
           same(-10000000000000001));
       expect(Int64.parseInt("-10000000000000002").toInt(),
@@ -680,7 +683,7 @@ void main() {
       check(String s, int r) {
         expect(Int64.parseRadix(s, r).toRadixString(r), s);
       }
-      check("2ppp111222333", 33);  // This value & radix requires three chunks.
+      check("2ppp111222333", 33); // This value & radix requires three chunks.
     });
   });
 
@@ -695,8 +698,8 @@ void main() {
 
       int top = 922337201;
       int bottom = 967490662;
-      Int64 fullnum = (new Int64(1000000000) * new Int64(top)) +
-          new Int64(bottom);
+      Int64 fullnum =
+          (new Int64(1000000000) * new Int64(top)) + new Int64(bottom);
       expect(fullnum.toString(), "922337201967490662");
       expect((-fullnum).toString(), "-922337201967490662");
       expect(new Int64(123456789).toString(), "123456789");
@@ -735,8 +738,8 @@ void main() {
           "111111111111111111111111111111111111111111111111111111111111111");
       expect(Int64.MAX_VALUE.toRadixString(3),
           "2021110011022210012102010021220101220221");
-      expect(Int64.MAX_VALUE.toRadixString(4),
-          "13333333333333333333333333333333");
+      expect(
+          Int64.MAX_VALUE.toRadixString(4), "13333333333333333333333333333333");
       expect(Int64.MAX_VALUE.toRadixString(5), "1104332401304422434310311212");
       expect(Int64.MAX_VALUE.toRadixString(6), "1540241003031030222122211");
       expect(Int64.MAX_VALUE.toRadixString(7), "22341010611245052052300");
