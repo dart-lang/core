@@ -14,7 +14,7 @@ Use [pub](http://pub.dartlang.org) to install this package. Add the following
 to your `pubspec.yaml` file:
 
     dependencies:
-      fixnum: any
+      fixnum: '>=0.9.1 <1.0.0'
 
 Then run `pub install`.
 
