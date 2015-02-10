@@ -17,6 +17,7 @@ dart -c test/all_tests.dart
 
 # Gather and send coverage data.
 if [ "$REPO_TOKEN" ]; then
+  echo "Collecting coverage..."
   pub global activate dart_coveralls
   pub global run dart_coveralls report \
     --token $REPO_TOKEN \
