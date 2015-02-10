@@ -319,14 +319,25 @@ void main() {
     });
 
     test("==", () {
+      expect(new Int64(0) == new Int64(0), true);
+      expect(new Int64(0) == new Int64(1), false);
+      expect(new Int64(0) == new Int32(0), true);
+      expect(new Int64(0) == new Int32(1), false);
+      expect(new Int64(0) == 0, true);
+      expect(new Int64(0) == 1, false);
       expect(new Int64(10) == new Int64(11), false);
       expect(new Int64(10) == new Int64(10), true);
       expect(new Int64(10) == new Int64(9), false);
       expect(new Int64(10) == new Int32(11), false);
       expect(new Int64(10) == new Int32(10), true);
       expect(new Int64(10) == new Int32(9), false);
+      expect(new Int64(10) == 11, false);
+      expect(new Int64(10) == 10, true);
+      expect(new Int64(10) == 9, false);
       expect(new Int64(-10) == new Int64(-10), true);
       expect(new Int64(-10) != new Int64(-10), false);
+      expect(new Int64(-10) == -10, true);
+      expect(new Int64(-10) == -9, false);
       expect(largePos == largePos, true);
       expect(largePos == largePosPlusOne, false);
       expect(largePosPlusOne == largePos, false);
