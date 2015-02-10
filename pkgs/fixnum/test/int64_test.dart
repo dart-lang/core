@@ -8,6 +8,33 @@ import 'package:fixnum/fixnum.dart';
 import 'package:unittest/unittest.dart';
 
 void main() {
+  group("fromBytes", () {
+    test("fromBytes", () {
+      checkBytes(List<int> bytes, int h, int l) {
+        expect(new Int64.fromBytes(bytes), new Int64.fromInts(h, l));
+      }
+      checkBytes([ 0, 0, 0, 0, 0, 0, 0, 0 ], 0, 0);
+      checkBytes([ 1, 0, 0, 0, 0, 0, 0, 0 ], 0, 1);
+      checkBytes([ 1, 2, 3, 4, 5, 6, 7, 8 ], 0x08070605, 0x04030201);
+      checkBytes([ 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff ],
+          0xffffffff, 0xfffffffe);
+      checkBytes([ 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff ],
+          0xffffffff, 0xffffffff);
+    });
+    test("fromBytesBigEndian", () {
+      checkBytes(List<int> bytes, int h, int l) {
+        expect(new Int64.fromBytesBigEndian(bytes), new Int64.fromInts(h, l));
+      }
+      checkBytes([ 0, 0, 0, 0, 0, 0, 0, 0 ], 0, 0);
+      checkBytes([ 0, 0, 0, 0, 0, 0, 0, 1 ], 0, 1);
+      checkBytes([ 8, 7, 6, 5, 4, 3, 2, 1 ], 0x08070605, 0x04030201);
+      checkBytes([ 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe ],
+          0xffffffff, 0xfffffffe);
+      checkBytes([ 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff ],
+          0xffffffff, 0xffffffff);
+    });
+  });
+
   group("is-tests", () {
     test("isEven", () {
       expect((-Int64.ONE).isEven, false);
