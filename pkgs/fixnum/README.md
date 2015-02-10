@@ -17,7 +17,7 @@ Use [pub](http://pub.dartlang.org) to install this package. Add the following
 to your `pubspec.yaml` file:
 
     dependencies:
-      fixnum: '>=0.9.1 <1.0.0'
+      fixnum: '>=0.9.1 <0.10.0'
 
 For more information, see the
 [fixnum package](http://pub.dartlang.org/packages/fixnum) on
