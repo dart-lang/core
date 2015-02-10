@@ -752,6 +752,9 @@ void main() {
       expect(Int64.MAX_VALUE.toRadixString(14), "4340724c6c71dc7a7");
       expect(Int64.MAX_VALUE.toRadixString(15), "160e2ad3246366807");
       expect(Int64.MAX_VALUE.toRadixString(16), "7fffffffffffffff");
+      expect(() => new Int64(42).toRadixString(-1), throwsArgumentError);
+      expect(() => new Int64(42).toRadixString(0), throwsArgumentError);
+      expect(() => new Int64(42).toRadixString(37), throwsArgumentError);
     });
   });
 }
