@@ -4,6 +4,6 @@ author: Dart Team <misc@dartlang.org>
 description: Library for 32- and 64-bit signed fixed-width integers.
 homepage: https://github.com/dart-lang/fixnum
 dev_dependencies:
-  unittest: ">=0.9.0 <0.10.0"
+  unittest: ">=0.9.0 <0.12.0"
 environment:
   sdk: ">=0.8.10+6 <2.0.0"
