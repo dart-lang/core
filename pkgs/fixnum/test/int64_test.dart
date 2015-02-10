@@ -704,6 +704,25 @@ void main() {
           throwsA(new isInstanceOf<FormatException>()));
     });
 
+    test("parseHex", () {
+      checkHex(String hexStr, int h, int l) {
+        expect(Int64.parseHex(hexStr), new Int64.fromInts(h, l));
+      }
+      checkHex('0', 0, 0);
+      checkHex('-0', 0, 0);
+      checkHex('00', 0, 0);
+      checkHex('01', 0, 1);
+      checkHex('-01', 0xffffffff, 0xffffffff);
+      checkHex('0a', 0, 10);
+      checkHex('0A', 0, 10);
+      checkHex('10', 0, 16);
+      checkHex('3FFFFF', 0, 0x3fffff);
+      checkHex('400000', 0, 0x400000);
+      checkHex('FFFFFFFFFFF', 0xfff, 0xffffffff);
+      checkHex('FFFFFFFFFFFFFFFE', 0xffffffff, 0xfffffffe);
+      checkHex('FFFFFFFFFFFFFFFF', 0xffffffff, 0xffffffff);
+    });
+
     test("parseRadix", () {
       check(String s, int r, String x) {
         expect(Int64.parseRadix(s, r).toString(), x);
