@@ -4,7 +4,6 @@ Fixnum
 A fixed-width 32- and 64- bit integer library for Dart.
 
 [![Build Status](https://travis-ci.org/dart-lang/fixnum.svg?branch=master)](https://travis-ci.org/dart-lang/fixnum)
-
 [![Coverage Status](https://img.shields.io/coveralls/dart-lang/fixnum.svg)](https://coveralls.io/r/dart-lang/fixnum)
 
 ## Documentation
