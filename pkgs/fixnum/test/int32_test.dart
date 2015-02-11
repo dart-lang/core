@@ -172,6 +172,12 @@ void main() {
       expect(new Int32(0xffff).numberOfLeadingZeros(), 16);
       expect(new Int32(-1).numberOfLeadingZeros(), 0);
     });
+    test("numberOfTrailingZeros", () {
+      expect(new Int32(0).numberOfTrailingZeros(), 32);
+      expect(new Int32(0x80000000).numberOfTrailingZeros(), 31);
+      expect(new Int32(1).numberOfTrailingZeros(), 0);
+      expect(new Int32(0x10000).numberOfTrailingZeros(), 16);
+    });
   });
 
   group("comparison operators", () {
