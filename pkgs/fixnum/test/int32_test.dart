@@ -186,6 +186,9 @@ void main() {
       expect(new Int32(17) == new Int64(17), true);
       expect(new Int32(17) == new Int64(16), false);
       expect(Int32.MIN_VALUE == Int32.MAX_VALUE, false);
+      expect(new Int32(17) == 18, false);
+      expect(new Int32(17) == 17, true);
+      expect(new Int32(17) == 16, false);
       expect(new Int32(17) == new Object(), false);
       expect(new Int32(17) == null, false);
     });
