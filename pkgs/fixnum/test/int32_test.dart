@@ -132,6 +132,15 @@ void main() {
       expect(() => new Int32(17).remainder(null), throws);
     });
 
+    test("abs", () {
+      // NOTE: Int32.MIN_VALUE.abs() is undefined
+      expect((Int32.MIN_VALUE + 1).abs(), Int32.MAX_VALUE);
+      expect(new Int32(-1).abs(), new Int32(1));
+      expect(new Int32(0).abs(), new Int32(0));
+      expect(new Int32(1).abs(), new Int32(1));
+      expect(Int32.MAX_VALUE.abs(), Int32.MAX_VALUE);
+    });
+
     test("clamp", () {
       Int32 val = new Int32(17);
       expect(val.clamp(20, 30), new Int32(20));
