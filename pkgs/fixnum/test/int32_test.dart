@@ -346,6 +346,12 @@ void main() {
       expect(new Int32(17).toInt64(), new Int64(17));
       expect(new Int32(-17).toInt64(), new Int64(-17));
     });
+    test("toBytes", () {
+      expect(new Int32(0).toBytes(), [ 0, 0, 0, 0 ]);
+      expect(new Int32(0x01020304).toBytes(), [ 4, 3, 2, 1 ]);
+      expect(new Int32(0x04030201).toBytes(), [ 1, 2, 3, 4 ]);
+      expect(new Int32(-1).toBytes(), [ 0xff, 0xff, 0xff, 0xff ]);
+    });
   });
 
   group("parse", () {
