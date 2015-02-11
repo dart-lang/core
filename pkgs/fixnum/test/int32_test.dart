@@ -385,6 +385,12 @@ void main() {
       expect(Int32.parseInt('1000'), new Int32(1000));
       expect(Int32.parseInt('4294967296'), new Int32(4294967296));
     });
+
+    test("parseHex", () {
+      expect(Int32.parseHex('deadbeef'), new Int32(0xdeadbeef));
+      expect(Int32.parseHex('cafebabe'), new Int32(0xcafebabe));
+      expect(Int32.parseHex('8badf00d'), new Int32(0x8badf00d));
+    });
   });
 
   group("string representation", () {
