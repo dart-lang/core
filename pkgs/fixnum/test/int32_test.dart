@@ -157,8 +157,11 @@ void main() {
       expect(val.clamp(Int64.MIN_VALUE, new Int64(30)), new Int32(17));
       expect(val.clamp(new Int64(10), Int64.MAX_VALUE), new Int32(17));
 
-      expect(() => val.clamp(1, 'b'), throwsA(isArgumentError));
-      expect(() => val.clamp('a', 1), throwsA(isArgumentError));
+      expect(() => val.clamp(30.5, 40.5), throwsArgumentError);
+      expect(() => val.clamp(5.5, 10.5), throwsArgumentError);
+      expect(() => val.clamp('a', 1), throwsArgumentError);
+      expect(() => val.clamp(1, 'b'), throwsArgumentError);
+      expect(() => val.clamp('a', 1), throwsArgumentError);
     });
   });
 
