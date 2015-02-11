@@ -276,6 +276,19 @@ void main() {
     });
   });
 
+  group("leading/trailing zeros", () {
+    test("numberOfLeadingZeros", () {
+      expect(new Int64(0).numberOfLeadingZeros(), 64);
+      expect(new Int64(1).numberOfLeadingZeros(), 63);
+      expect(new Int64.fromInts(0x00000000, 0x003fffff).numberOfLeadingZeros(), 42);
+      expect(new Int64.fromInts(0x00000000, 0x00400000).numberOfLeadingZeros(), 41);
+      expect(new Int64.fromInts(0x00000fff, 0xffffffff).numberOfLeadingZeros(), 20);
+      expect(new Int64.fromInts(0x00001000, 0x00000000).numberOfLeadingZeros(), 19);
+      expect(new Int64.fromInts(0x7fffffff, 0xffffffff).numberOfLeadingZeros(), 1);
+      expect(new Int64(-1).numberOfLeadingZeros(), 0);
+    });
+  });
+
   group("comparison operators", () {
     Int64 largeNeg = new Int64.fromInts(0x82341234, 0x0);
     Int64 largePos = new Int64.fromInts(0x12341234, 0x0);
