@@ -165,6 +165,15 @@ void main() {
     });
   });
 
+  group("leading/trailing zeros", () {
+    test("numberOfLeadingZeros", () {
+      expect(new Int32(0).numberOfLeadingZeros(), 32);
+      expect(new Int32(1).numberOfLeadingZeros(), 31);
+      expect(new Int32(0xffff).numberOfLeadingZeros(), 16);
+      expect(new Int32(-1).numberOfLeadingZeros(), 0);
+    });
+  });
+
   group("comparison operators", () {
     test("compareTo", () {
       expect(new Int32(0).compareTo(-1), 1);
