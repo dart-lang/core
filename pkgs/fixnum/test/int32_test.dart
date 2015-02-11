@@ -379,6 +379,12 @@ void main() {
       check('deadbeef', 16, '-559038737');
       check('95', 12, '113');
     });
+
+    test("parseInt", () {
+      expect(Int32.parseInt('0'), new Int32(0));
+      expect(Int32.parseInt('1000'), new Int32(1000));
+      expect(Int32.parseInt('4294967296'), new Int32(4294967296));
+    });
   });
 
   group("string representation", () {
