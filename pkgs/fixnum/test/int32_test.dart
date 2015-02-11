@@ -154,6 +154,18 @@ void main() {
   });
 
   group("comparison operators", () {
+    test("compareTo", () {
+      expect(new Int32(0).compareTo(-1), 1);
+      expect(new Int32(0).compareTo(0), 0);
+      expect(new Int32(0).compareTo(1), -1);
+      expect(new Int32(0).compareTo(new Int32(-1)), 1);
+      expect(new Int32(0).compareTo(new Int32(0)), 0);
+      expect(new Int32(0).compareTo(new Int32(1)), -1);
+      expect(new Int32(0).compareTo(new Int64(-1)), 1);
+      expect(new Int32(0).compareTo(new Int64(0)), 0);
+      expect(new Int32(0).compareTo(new Int64(1)), -1);
+    });
+
     test("<", () {
       expect(new Int32(17) < new Int32(18), true);
       expect(new Int32(17) < new Int32(17), false);
