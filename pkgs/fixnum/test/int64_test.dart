@@ -290,6 +290,21 @@ void main() {
       checkZeros(new Int64.fromInts(0x7fffffff, 0xffffffff), 1);
       checkZeros(new Int64(-1), 0);
     });
+
+    test("numberOfTrailingZeros", () {
+      checkZeros(Int64 value, int zeros) {
+        expect(value.numberOfTrailingZeros(), zeros);
+      }
+      checkZeros(new Int64(-1), 0);
+      checkZeros(new Int64(1), 0);
+      checkZeros(new Int64(2), 1);
+      checkZeros(new Int64.fromInts(0x00000000, 0x00200000), 21);
+      checkZeros(new Int64.fromInts(0x00000000, 0x00400000), 22);
+      checkZeros(new Int64.fromInts(0x00000800, 0x00000000), 43);
+      checkZeros(new Int64.fromInts(0x00001000, 0x00000000), 44);
+      checkZeros(new Int64.fromInts(0x80000000, 0x00000000), 63);
+      checkZeros(new Int64(0), 64);
+    });
   });
 
   group("comparison operators", () {
