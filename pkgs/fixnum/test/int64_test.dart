@@ -278,14 +278,17 @@ void main() {
 
   group("leading/trailing zeros", () {
     test("numberOfLeadingZeros", () {
-      expect(new Int64(0).numberOfLeadingZeros(), 64);
-      expect(new Int64(1).numberOfLeadingZeros(), 63);
-      expect(new Int64.fromInts(0x00000000, 0x003fffff).numberOfLeadingZeros(), 42);
-      expect(new Int64.fromInts(0x00000000, 0x00400000).numberOfLeadingZeros(), 41);
-      expect(new Int64.fromInts(0x00000fff, 0xffffffff).numberOfLeadingZeros(), 20);
-      expect(new Int64.fromInts(0x00001000, 0x00000000).numberOfLeadingZeros(), 19);
-      expect(new Int64.fromInts(0x7fffffff, 0xffffffff).numberOfLeadingZeros(), 1);
-      expect(new Int64(-1).numberOfLeadingZeros(), 0);
+      checkZeros(Int64 value, int zeros) {
+        expect(value.numberOfLeadingZeros(), zeros);
+      }
+      checkZeros(new Int64(0), 64);
+      checkZeros(new Int64(1), 63);
+      checkZeros(new Int64.fromInts(0x00000000, 0x003fffff), 42);
+      checkZeros(new Int64.fromInts(0x00000000, 0x00400000), 41);
+      checkZeros(new Int64.fromInts(0x00000fff, 0xffffffff), 20);
+      checkZeros(new Int64.fromInts(0x00001000, 0x00000000), 19);
+      checkZeros(new Int64.fromInts(0x7fffffff, 0xffffffff), 1);
+      checkZeros(new Int64(-1), 0);
     });
   });
 
