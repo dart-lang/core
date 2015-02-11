@@ -64,6 +64,7 @@ void main() {
       expect(n1 + n2, new Int32(11110));
       expect(n3 + n2, new Int32(8642));
       expect(n3 + n4, new Int32(-11110));
+      expect(n3 + new Int64(1), new Int64(-1233));
       expect(Int32.MAX_VALUE + 1, Int32.MIN_VALUE);
       expect(() => new Int32(17) + null, throws);
     });
@@ -72,6 +73,7 @@ void main() {
       expect(n1 - n2, new Int32(-8642));
       expect(n3 - n2, new Int32(-11110));
       expect(n3 - n4, new Int32(8642));
+      expect(n3 - new Int64(1), new Int64(-1235));
       expect(Int32.MIN_VALUE - 1, Int32.MAX_VALUE);
       expect(() => new Int32(17) - null, throws);
     });
