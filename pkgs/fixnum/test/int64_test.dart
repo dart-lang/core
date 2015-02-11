@@ -691,6 +691,16 @@ void main() {
       expect(new Int64(-2147483650).toInt32(), new Int32(2147483646));
       expect(new Int64(-2147483651).toInt32(), new Int32(2147483645));
     });
+
+    test("toBytes", () {
+      expect(new Int64(0).toBytes(), [ 0, 0, 0, 0, 0, 0, 0, 0 ]);
+      expect(new Int64.fromInts(0x08070605, 0x04030201).toBytes(),
+          [ 1, 2, 3, 4, 5, 6, 7, 8 ]);
+      expect(new Int64.fromInts(0x01020304, 0x05060708).toBytes(),
+          [ 8, 7, 6, 5, 4, 3, 2, 1 ]);
+      expect(new Int64(-1).toBytes(),
+          [ 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff ]);
+    });
   });
 
   test("JavaScript 53-bit integer boundary", () {
