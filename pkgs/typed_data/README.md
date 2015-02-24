@@ -1,4 +1,4 @@
-Helper libraries for working with typed data lists.
+# Helper libraries for working with typed data lists.
 
 The `typed_data` package contains utility functions and classes that makes working with typed data lists easier.
 
@@ -13,3 +13,9 @@ The `typed_data` package can be imported as
 Typed buffers are contains growable lists backed by typed arrays.
 These are similar to the growable lists returned by `new List()`, 
 but stores typed data like a typed data list.
+
+## Features and bugs
+
+Please file feature requests and bugs at the [issue tracker][tracker].
+
+[tracker]: https://github.com/dart-lang/typed_data/issues
