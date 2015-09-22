@@ -1,9 +1,6 @@
-# sample
+# Conversion utilities package
 
-A library for Dart developers. It is awesome.
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: https://github.com/dart-lang/sample/issues
+This package contains encoders and decoders for converting between different
+data representations. It's the external counterpart of the `dart:convert` core
+library, and contains less-central APIs and APIs that need more flexible
+versioning.

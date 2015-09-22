@@ -1,14 +1,11 @@
-name: sample
+name: convert
 version: 0.0.1
-description: A sample library.
+description: Utilities for converting between data representations.
 author: Dart Team <misc@dartlang.org>
-homepage: https://github.com/dart-lang/sample
+homepage: https://github.com/dart-lang/convert
 
 environment:
-  sdk: '>=1.0.0 <2.0.0'
+  sdk: '>=1.8.0 <2.0.0'
 
-#dependencies:
-#  lib_name: any
 dev_dependencies:
-# change this to a specific version range when you create your project
-  test: any
+  test: '^1.12.0'
