@@ -5,3 +5,4 @@
 library convert;
 
 export 'src/hex.dart';
+export 'src/percent.dart';

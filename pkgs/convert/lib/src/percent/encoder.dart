@@ -2,35 +2,38 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library convert.hex.encoder;
+library convert.percent.encoder;
 
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:charcode/ascii.dart';
 
-/// The canonical instance of [HexEncoder].
-const hexEncoder = const HexEncoder._();
+/// The canonical instance of [PercentEncoder].
+const percentEncoder = const PercentEncoder._();
 
-/// A converter that encodes byte arrays into hexadecimal strings.
+/// A converter that encodes byte arrays into percent-encoded strings.
+///
+/// [encoder] encodes all bytes other than ASCII letters, decimal digits, or one
+/// of `-._~`. This matches the behavior of [Uri.encodeQueryComponent] except
+/// that it doesn't encode `0x20` bytes to the `+` character.
 ///
 /// This will throw a [RangeError] if the byte array has any digits that don't
 /// fit in the gamut of a byte.
-class HexEncoder extends Converter<List<int>, String> {
-  const HexEncoder._();
+class PercentEncoder extends Converter<List<int>, String> {
+  const PercentEncoder._();
 
   String convert(List<int> bytes) => _convert(bytes, 0, bytes.length);
 
   ByteConversionSink startChunkedConversion(Sink<String> sink) =>
-      new _HexEncoderSink(sink);
+      new _PercentEncoderSink(sink);
 }
 
-/// A conversion sink for chunked hexadecimal encoding.
-class _HexEncoderSink extends ByteConversionSinkBase {
+/// A conversion sink for chunked percentadecimal encoding.
+class _PercentEncoderSink extends ByteConversionSinkBase {
   /// The underlying sink to which decoded byte arrays will be passed.
   final Sink<String> _sink;
 
-  _HexEncoderSink(this._sink);
+  _PercentEncoderSink(this._sink);
 
   void add(List<int> chunk) {
     _sink.add(_convert(chunk, 0, chunk.length));
@@ -48,11 +51,7 @@ class _HexEncoderSink extends ByteConversionSinkBase {
 }
 
 String _convert(List<int> bytes, int start, int end) {
-  // A Uint8List is more efficient than a StringBuffer given that we know that
-  // we're only emitting ASCII-compatible characters, and that we know the
-  // length ahead of time.
-  var buffer = new Uint8List((end - start) * 2);
-  var bufferIndex = 0;
+  var buffer = new StringBuffer();
 
   // A bitwise OR of all bytes in [bytes]. This allows us to check for
   // out-of-range bytes without adding more branches than necessary to the
@@ -62,14 +61,31 @@ String _convert(List<int> bytes, int start, int end) {
     var byte = bytes[i];
     byteOr |= byte;
 
+    // If the byte is an uppercase letter, convert it to lowercase to check if
+    // it's unreserved. This works because uppercase letters in ASCII are
+    // exactly `0b100000 = 0x20` less than lowercase letters, so if we ensure
+    // that that bit is 1 we ensure that the letter is lowercase.
+    var letter = 0x20 | byte;
+    if ((letter >= $a && letter <= $z) ||
+        byte == $dash ||
+        byte == $dot ||
+        byte == $underscore ||
+        byte == $tilde) {
+      // Unreserved characters are safe to write as-is.
+      buffer.writeCharCode(byte);
+      continue;
+    }
+
+    buffer.writeCharCode($percent);
+
     // The bitwise arithmetic here is equivalent to `byte ~/ 16` and `byte % 16`
     // for valid byte values, but is easier for dart2js to optimize given that
     // it can't prove that [byte] will always be positive.
-    buffer[bufferIndex++] = _codeUnitForDigit((byte & 0xF0) >> 4);
-    buffer[bufferIndex++] = _codeUnitForDigit(byte & 0x0F);
+    buffer.writeCharCode(_codeUnitForDigit((byte & 0xF0) >> 4));
+    buffer.writeCharCode(_codeUnitForDigit(byte & 0x0F));
   }
 
-  if (byteOr >= 0 && byteOr <= 255) return new String.fromCharCodes(buffer);
+  if (byteOr >= 0 && byteOr <= 255) return buffer.toString();
 
   // If there was an invalid byte, find it and throw an exception.
   for (var i = start; i < end; i++) {
@@ -85,4 +101,4 @@ String _convert(List<int> bytes, int start, int end) {
 
 /// Returns the ASCII/Unicode code unit corresponding to the hexadecimal digit
 /// [digit].
-int _codeUnitForDigit(int digit) => digit < 10 ? digit + $0 : digit + $a - 10;
+int _codeUnitForDigit(int digit) => digit < 10 ? digit + $0 : digit + $A - 10;
