@@ -4,9 +4,10 @@
 
 // Tests typed-data buffer classes.
 
-import "package:typed_data/typed_buffers.dart";
-import "package:unittest/unittest.dart";
 import "dart:typed_data";
+
+import "package:test/test.dart";
+import "package:typed_data/typed_buffers.dart";
 
 main() {
   testUint(8, (l) => new Uint8Buffer(l));
@@ -18,8 +19,12 @@ main() {
   testInt(16, (l) => new Int16Buffer(l));
   testUint(32, (l) => new Uint32Buffer(l));  /// 01: ok
   testInt(32, (l) => new Int32Buffer(l));
-  testUint(64, (l) => new Uint64Buffer(l));  /// 01: continued
-  testInt(64, (l) => new Int64Buffer(l));    /// 01: continued
+  testUint(64, (l) => new Uint64Buffer(l),   /// 01: continued
+      // JS doesn't support 64-bit ints, so only test this on the VM.
+      testOn: "dart-vm");
+  testInt(64, (l) => new Int64Buffer(l),    /// 01: continued
+      // JS doesn't support 64-bit ints, so only test this on the VM.
+      testOn: "dart-vm");
 
   testInt32x4Buffer(intSamples);
 
@@ -52,21 +57,21 @@ Rounder roundInt(bits) {
 
 int clampUint8(x) => x < 0 ? 0 : x > 255 ? 255 : x;
 
-void testUint(int bits, var buffer) {
+void testUint(int bits, var buffer, {String testOn}) {
   int min = 0;
   Function round = roundUint(bits);
   int max = round(-1);
   test("Uint${bits}Buffer", () {
     testIntBuffer(bits, min, max, buffer, round);
-  });
+  }, testOn: testOn);
 }
 
-void testInt(int bits, var buffer) {
+void testInt(int bits, var buffer, {String testOn}) {
   int min = -(1 << (bits - 1));
   int max = -(min + 1);
   test("Int${bits}Buffer", () {
     testIntBuffer(bits, min, max, buffer, roundInt(bits));
-  });
+  }, testOn: testOn);
 }
 
 const List<int> intSamples = const [
