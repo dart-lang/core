@@ -65,13 +65,108 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     _buffer[_length++] = value;
   }
 
-  // We override the default implementation of `add` and `addAll` because
-  // they grow by setting the length in increments of one. We want to grow
-  // by doubling capacity in most cases.
+  // We override the default implementation of `add` because it grows the list
+  // by setting the length in increments of one. We want to grow by doubling
+  // capacity in most cases.
   void add(E value) { _add(value); }
 
-  void addAll(Iterable<E> values) {
-    for (E value in values) _add(value);
+  /// Appends all objects of [values] to the end of this buffer.
+  ///
+  /// This adds values from [start] (inclusive) to [end] (exclusive) in
+  /// [values]. If [end] is omitted, it defaults to adding all elements of
+  /// [values] after [start].
+  ///
+  /// The [start] value must be non-negative. The [values] iterable must have at
+  /// least [start] elements, and if [end] is specified, it must be greater than
+  /// or equal to [start] and [values] must have at least [end] elements.
+  void addAll(Iterable<E> values, [int start = 0, int end]) {
+    RangeError.checkNotNegative(start, "start");
+    if (end != null && start > end) {
+      throw new RangeError.range(end, start, null, "end");
+    }
+
+    _addAll(values, start, end);
+  }
+
+  /// Inserts all objects of [values] at position [index] in this list.
+  ///
+  /// This adds values from [start] (inclusive) to [end] (exclusive) in
+  /// [values]. If [end] is omitted, it defaults to adding all elements of
+  /// [values] after [start].
+  ///
+  /// The [start] value must be non-negative. The [values] iterable must have at
+  /// least [start] elements, and if [end] is specified, it must be greater than
+  /// or equal to [start] and [values] must have at least [end] elements.
+  void insertAll(int index, Iterable<E> values, [int start = 0, int end]) {
+    RangeError.checkValidIndex(index, this, "index", _length + 1);
+    RangeError.checkNotNegative(start, "start");
+    if (end != null && start > end) {
+      throw new RangeError.range(end, start, null, "end");
+    }
+
+    // If we're adding to the end of the list anyway, use [_addAll]. This lets
+    // us avoid converting [values] into a list even if [end] is null, since we
+    // can add values iteratively to the end of the list. We can't do so in the
+    // center because copying the trailing elements every time is non-linear.
+    if (index == _length) {
+      _addAll(values, start, end);
+      return;
+    }
+
+    // If we don't know how much room to make for [values], convert it to a list
+    // so we can tell.
+    if (end == null) {
+      if (values is! List) values = values.toList(growable: false);
+      end = values.length;
+    }
+
+    _insertKnownLength(index, values, start, end);
+  }
+
+  /// Does the same thing as [addAll].
+  ///
+  /// This allows [addAll] and [insertAll] to share implementation without a
+  /// subclass unexpectedly overriding both when it intended to only override
+  /// [addAll].
+  void _addAll(Iterable<E> values, [int start = 0, int end]) {
+    if (values is List) end ??= values.length;
+
+    // If we know the length of the segment to add, do so with [addRange]. This
+    // way we know how much to grow the buffer in advance, and it may be even
+    // more efficient for typed data input.
+    if (end != null) {
+      _insertKnownLength(_length, values, start, end);
+      return;
+    }
+
+    // Otherwise, just add values one at a time.
+    var i = 0;
+    for (var value in values) {
+      if (i >= start) add(value);
+      i++;
+    }
+    if (i < start) throw new StateError("Too few elements");
+  }
+
+  /// Like [insertAll], but with a guaranteed non-`null` [start] and [end].
+  void _insertKnownLength(int index, Iterable<E> values, int start, int end) {
+    if (values is List) {
+      end ??= values.length;
+      if (start > values.length || end > values.length) {
+        throw new StateError("Too few elements");
+      }
+    } else {
+      assert(end != null);
+    }
+
+    var valuesLength = end - start;
+    var newLength = _length + valuesLength;
+    _ensureCapacity(newLength);
+
+    _buffer.setRange(
+        index + valuesLength, _length + valuesLength, _buffer, index);
+    _buffer.setRange(index, index + valuesLength, values, start);
+    _length = newLength;
   }
 
   void insert(int index, E element) {
@@ -92,18 +187,28 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     _buffer = newBuffer;
   }
 
+  /// Ensures that [_buffer] is at least [requiredCapacity] long,
+  ///
+  /// Grows the buffer if necessary, preserving existing data.
+  void _ensureCapacity(int requiredCapacity) {
+    if (requiredCapacity <= _buffer.length) return;
+    var newBuffer = _createBiggerBuffer(requiredCapacity);
+    newBuffer.setRange(0, _length, _buffer);
+    _buffer = newBuffer;
+  }
+
   /**
    * Create a bigger buffer.
    *
    * This method determines how much bigger a bigger buffer should
-   * be. If [requiredLength] is not null, it will be at least that
+   * be. If [requiredCapacity] is not null, it will be at least that
    * size. It will always have at least have double the capacity of
    * the current buffer.
    */
-  List<E> _createBiggerBuffer(int requiredLength) {
+  List<E> _createBiggerBuffer(int requiredCapacity) {
     int newLength = _buffer.length * 2;
-    if (requiredLength != null && newLength < requiredLength) {
-      newLength = requiredLength;
+    if (requiredCapacity != null && newLength < requiredCapacity) {
+      newLength = requiredCapacity;
     } else if (newLength < INITIAL_LENGTH) {
       newLength = INITIAL_LENGTH;
     }
@@ -116,6 +221,11 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
 
   void setRange(int start, int end, Iterable<E> source, [int skipCount = 0]) {
     if (end > _length) throw new RangeError.range(end, 0, _length);
+    _setRange(start, end, source, skipCount);
+  }
+
+  /// Like [setRange], but with no bounds checking.
+  void _setRange(int start, int end, Iterable<E> source, int skipCount) {
     if (source is _TypedDataBuffer<E>) {
       _buffer.setRange(start, end, source._buffer, skipCount);
     } else {

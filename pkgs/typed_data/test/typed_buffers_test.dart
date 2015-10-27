@@ -35,6 +35,108 @@ main() {
   testFloatBuffer(64, doubleSamples, () => new Float64Buffer(), (x) => x);
 
   testFloat32x4Buffer(roundedFloatSamples);
+
+  group("addAll", () {
+    for (var type in ['a list', 'an iterable']) {
+      group("with $type", () {
+        var source;
+        var buffer;
+        setUp(() {
+          source = [1, 2, 3, 4, 5];
+          if (type == 'an iterable') source = source.reversed.toList().reversed;
+          buffer = new Uint8Buffer();
+        });
+
+        test("adds values to the buffer", () {
+          buffer.addAll(source, 1, 4);
+          expect(buffer, equals([2, 3, 4]));
+
+          buffer.addAll(source, 4);
+          expect(buffer, equals([2, 3, 4, 5]));
+
+          buffer.addAll(source, 0, 1);
+          expect(buffer, equals([2, 3, 4, 5, 1]));
+        });
+
+        test("does nothing for empty slices", () {
+          buffer.addAll([6, 7, 8, 9, 10]);
+
+          buffer.addAll(source, 0, 0);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+
+          buffer.addAll(source, 3, 3);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+
+          buffer.addAll(source, 5);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+
+          buffer.addAll(source, 5, 5);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+        });
+
+        test("throws errors for invalid start and end", () {
+          expect(() => buffer.addAll(source, -1), throwsRangeError);
+          expect(() => buffer.addAll(source, -1, 2), throwsRangeError);
+          expect(() => buffer.addAll(source, 10), throwsStateError);
+          expect(() => buffer.addAll(source, 10, 11), throwsStateError);
+          expect(() => buffer.addAll(source, 3, 2), throwsRangeError);
+          expect(() => buffer.addAll(source, 3, 10), throwsStateError);
+          expect(() => buffer.addAll(source, 3, -1), throwsRangeError);
+        });
+      });
+    }
+  });
+
+  group("insertAll", () {
+    for (var type in ['a list', 'an iterable']) {
+      group("with $type", () {
+        var source;
+        var buffer;
+        setUp(() {
+          source = [1, 2, 3, 4, 5];
+          if (type == 'an iterable') source = source.reversed.toList().reversed;
+          buffer = new Uint8Buffer()..addAll([6, 7, 8, 9, 10]);
+        });
+
+        test("inserts values into the buffer", () {
+          buffer.insertAll(0, source, 1, 4);
+          expect(buffer, equals([2, 3, 4, 6, 7, 8, 9, 10]));
+
+          buffer.insertAll(3, source, 4);
+          expect(buffer, equals([2, 3, 4, 5, 6, 7, 8, 9, 10]));
+
+          buffer.insertAll(5, source, 0, 1);
+          expect(buffer, equals([2, 3, 4, 5, 6, 1, 7, 8, 9, 10]));
+        });
+
+        test("does nothing for empty slices", () {
+          buffer.insertAll(1, source, 0, 0);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+
+          buffer.insertAll(2, source, 3, 3);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+
+          buffer.insertAll(3, source, 5);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+
+          buffer.insertAll(4, source, 5, 5);
+          expect(buffer, equals([6, 7, 8, 9, 10]));
+        });
+
+        test("throws errors for invalid start and end", () {
+          expect(() => buffer.insertAll(-1, source), throwsRangeError);
+          expect(() => buffer.insertAll(6, source), throwsRangeError);
+          expect(() => buffer.insertAll(1, source, -1), throwsRangeError);
+          expect(() => buffer.insertAll(2, source, -1, 2), throwsRangeError);
+          expect(() => buffer.insertAll(3, source, 10), throwsStateError);
+          expect(() => buffer.insertAll(4, source, 10, 11), throwsStateError);
+          expect(() => buffer.insertAll(5, source, 3, 2), throwsRangeError);
+          expect(() => buffer.insertAll(1, source, 3, 10), throwsStateError);
+          expect(() => buffer.insertAll(2, source, 3, -1), throwsRangeError);
+        });
+      });
+    }
+  });
 }
 
 double roundToFloat(double value) {
