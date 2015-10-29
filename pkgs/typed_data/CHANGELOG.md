@@ -1,3 +1,5 @@
+## 1.1.1
+* Optimize `insertAll` with an `Iterable` argument and no end-point.
 ## 1.1.0
 
 * Add `start` and `end` parameters to the `addAll()` and `insertAll()` methods

@@ -100,9 +100,13 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   void insertAll(int index, Iterable<E> values, [int start = 0, int end]) {
     RangeError.checkValidIndex(index, this, "index", _length + 1);
     RangeError.checkNotNegative(start, "start");
-    if (end != null && start > end) {
-      throw new RangeError.range(end, start, null, "end");
+    if (end != null) {
+      if (start > end) {
+        throw new RangeError.range(end, start, null, "end");
+      }
+      if (start == end) return;
     }
+
 
     // If we're adding to the end of the list anyway, use [_addAll]. This lets
     // us avoid converting [values] into a list even if [end] is null, since we
@@ -113,14 +117,54 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
       return;
     }
 
-    // If we don't know how much room to make for [values], convert it to a list
-    // so we can tell.
-    if (end == null) {
-      if (values is! List) values = values.toList(growable: false);
+    if (end == null && values is List) {
       end = values.length;
     }
+    if (end != null) {
+      _insertKnownLength(index, values, start, end);
+      return;
+    }
 
-    _insertKnownLength(index, values, start, end);
+    // Add elements at end, growing as appropriate, then put them back at
+    // position [index] using flip-by-double-reverse.
+    if (end != null) values = values.take(end);
+    int writeIndex = _length;
+    int skipCount = start;
+    for (var value in values) {
+      if (skipCount > 0) {
+        skipCount--;
+        continue;
+      }
+      if (writeIndex == _buffer.length) {
+        _grow();
+      }
+      _buffer[writeIndex++] = value;
+    }
+    if (skipCount > 0) {
+      throw new StateError("Too few elements");
+    }
+    if (end != null && writeIndex < end) {
+      throw new RangeError.range(end, start, writeIndex, "end");
+    }
+    // Swap [index.._length) and [_length..writeIndex) by double-reversing.
+    _reverse(_buffer, index, _length);
+    _reverse(_buffer, _length, writeIndex);
+    _reverse(_buffer, index, writeIndex);
+    _length = writeIndex;
+    return;
+  }
+
+  // Reverses the range [start..end) of buffer.
+  static void _reverse(List<int> buffer, int start, int end) {
+    end--;  // Point to last element, not after last element.
+    while (start < end) {
+      var first = buffer[start];
+      var last = buffer[end];
+      buffer[end] = first;
+      buffer[start] = last;
+      start++;
+      end--;
+    }
   }
 
   /// Does the same thing as [addAll].
