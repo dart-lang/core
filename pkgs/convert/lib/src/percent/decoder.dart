@@ -199,7 +199,7 @@ int _decode(List<int> codeUnits, int start, int end, Uint8Buffer buffer) {
     // than can be copied to the buffer as-is.
     if (i > sliceStart) {
       _checkForInvalidCodeUnit(codeUnitOr, codeUnits, sliceStart, i);
-      buffer.addAll(codeUnits.getRange(sliceStart, i));
+      buffer.addAll(codeUnits, sliceStart, i);
     }
 
     // Now decode the percent-encoded byte and add it as well.
@@ -222,7 +222,7 @@ int _decode(List<int> codeUnits, int start, int end, Uint8Buffer buffer) {
     if (start == sliceStart) {
       buffer.addAll(codeUnits);
     } else {
-      buffer.addAll(codeUnits.getRange(sliceStart, end));
+      buffer.addAll(codeUnits, sliceStart, end);
     }
   }
 
