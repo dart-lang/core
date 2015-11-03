@@ -2,17 +2,15 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/**
- * Growable typed-data lists.
- *
- * These lists works just as a typed-data list, except that they are growable.
- * They use an underlying buffer, and when that buffer becomes too small, it
- * is replaced by a new buffer.
- *
- * That means that using the [TypedDataView.buffer] getter is not guaranteed
- * to return the same result each time it is used, and that the buffer may
- * be larger than what the list is using.
- */
+/// Growable typed-data lists.
+///
+/// These lists works just as a typed-data list, except that they are growable.
+/// They use an underlying buffer, and when that buffer becomes too small, it
+/// is replaced by a new buffer.
+///
+/// That means that using the [TypedDataView.buffer] getter is not guaranteed
+/// to return the same result each time it is used, and that the buffer may
+/// be larger than what the list is using.
 library dart.pkg.typed_data.typed_buffers;
 
 import "dart:collection" show ListBase;
@@ -241,14 +239,12 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     _buffer = newBuffer;
   }
 
-  /**
-   * Create a bigger buffer.
-   *
-   * This method determines how much bigger a bigger buffer should
-   * be. If [requiredCapacity] is not null, it will be at least that
-   * size. It will always have at least have double the capacity of
-   * the current buffer.
-   */
+  /// Create a bigger buffer.
+  ///
+  /// This method determines how much bigger a bigger buffer should
+  /// be. If [requiredCapacity] is not null, it will be at least that
+  /// size. It will always have at least have double the capacity of
+  /// the current buffer.
   List<E> _createBiggerBuffer(int requiredCapacity) {
     int newLength = _buffer.length * 2;
     if (requiredCapacity != null && newLength < requiredCapacity) {
@@ -285,14 +281,12 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
 
   int get offsetInBytes => _buffer.offsetInBytes;
 
-  /**
-    * Returns the underlying [ByteBuffer].
-    *
-    * The returned buffer may be replaced by operations that change the [length]
-    * of this list.
-    *
-    * The buffer may be larger than [lengthInBytes] bytes, but never smaller.
-    */
+  /// Returns the underlying [ByteBuffer].
+  ///
+  /// The returned buffer may be replaced by operations that change the [length]
+  /// of this list.
+  ///
+  /// The buffer may be larger than [lengthInBytes] bytes, but never smaller.
   ByteBuffer get buffer => _buffer.buffer;
 
   // Specialization for the specific type.
