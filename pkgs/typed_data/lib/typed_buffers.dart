@@ -59,7 +59,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   }
 
   void _add(E value) {
-    if (_length == _buffer.length) _grow();
+    if (_length == _buffer.length) _grow(_length);
     _buffer[_length++] = value;
   }
 
@@ -125,25 +125,26 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
 
     // Add elements at end, growing as appropriate, then put them back at
     // position [index] using flip-by-double-reverse.
-    if (end != null) values = values.take(end);
-    int writeIndex = _length;
-    int skipCount = start;
+    var writeIndex = _length;
+    var skipCount = start;
     for (var value in values) {
       if (skipCount > 0) {
         skipCount--;
         continue;
       }
       if (writeIndex == _buffer.length) {
-        _grow();
+        _grow(writeIndex);
       }
       _buffer[writeIndex++] = value;
     }
+
     if (skipCount > 0) {
       throw new StateError("Too few elements");
     }
     if (end != null && writeIndex < end) {
       throw new RangeError.range(end, start, writeIndex, "end");
     }
+
     // Swap [index.._length) and [_length..writeIndex) by double-reversing.
     _reverse(_buffer, index, _length);
     _reverse(_buffer, _length, writeIndex);
@@ -255,8 +256,11 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     return _createBuffer(newLength);
   }
 
-  void _grow() {
-    _buffer = _createBiggerBuffer(null)..setRange(0, _length, _buffer);
+  /// Grows the buffer.
+  ///
+  /// This copies the first [length] elements into the new buffer.
+  void _grow(int length) {
+    _buffer = _createBiggerBuffer(null)..setRange(0, length, _buffer);
   }
 
   void setRange(int start, int end, Iterable<E> source, [int skipCount = 0]) {

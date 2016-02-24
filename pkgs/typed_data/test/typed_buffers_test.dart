@@ -109,6 +109,13 @@ main() {
           expect(buffer, equals([2, 3, 4, 5, 6, 1, 7, 8, 9, 10]));
         });
 
+        // Regression test for #1.
+        test("inserts values into the buffer after removeRange()", () {
+          buffer.removeRange(1, 4);
+          buffer.insertAll(1, source);
+          expect(buffer, equals([6, 1, 2, 3, 4, 5, 10]));
+        });
+
         test("does nothing for empty slices", () {
           buffer.insertAll(1, source, 0, 0);
           expect(buffer, equals([6, 7, 8, 9, 10]));
