@@ -57,8 +57,6 @@ void main() {
     Int32 n2 = new Int32(9876);
     Int32 n3 = new Int32(-1234);
     Int32 n4 = new Int32(-9876);
-    Int32 n5 = new Int32(0x12345678);
-    Int32 n6 = new Int32(0x22222222);
 
     test("+", () {
       expect(n1 + n2, new Int32(11110));
@@ -317,8 +315,8 @@ void main() {
       expect(Int32.MIN_VALUE.toSigned(32), Int32.MIN_VALUE);
       expect(Int32.MAX_VALUE.toSigned(31), -Int32.ONE);
       expect(Int32.MIN_VALUE.toSigned(31), Int32.ZERO);
-      expect(() => Int32.ONE.toSigned(0), throws);
-      expect(() => Int32.ONE.toSigned(33), throws);
+      expect(() => Int32.ONE.toSigned(0), throwsRangeError);
+      expect(() => Int32.ONE.toSigned(33), throwsRangeError);
     });
     test("toUnsigned", () {
       expect(Int32.ONE.toUnsigned(1), Int32.ONE);
@@ -327,8 +325,8 @@ void main() {
       expect(Int32.MIN_VALUE.toUnsigned(32), Int32.MIN_VALUE);
       expect(Int32.MAX_VALUE.toUnsigned(31), Int32.MAX_VALUE);
       expect(Int32.MIN_VALUE.toUnsigned(31), Int32.ZERO);
-      expect(() => Int32.ONE.toUnsigned(-1), throws);
-      expect(() => Int32.ONE.toUnsigned(33), throws);
+      expect(() => Int32.ONE.toUnsigned(-1), throwsRangeError);
+      expect(() => Int32.ONE.toUnsigned(33), throwsRangeError);
     });
     test("toDouble", () {
       expect(new Int32(17).toDouble(), same(17.0));

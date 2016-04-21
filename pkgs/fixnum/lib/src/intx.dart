@@ -130,7 +130,7 @@ abstract class IntX implements Comparable {
   IntX abs();
 
   /** Clamps this integer to be in the range [lowerLimit] - [upperLimit]. */
-  IntX clamp(IntX lowerLimit, IntX upperLimit);
+  IntX clamp(lowerLimit, upperLimit);
 
   /**
    * Returns the minimum number of bits required to store this integer.
