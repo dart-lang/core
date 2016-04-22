@@ -1,5 +1,5 @@
 name: convert
-version: 1.0.1
+version: 1.1.0
 description: Utilities for converting between data representations.
 author: Dart Team <misc@dartlang.org>
 homepage: https://github.com/dart-lang/convert
