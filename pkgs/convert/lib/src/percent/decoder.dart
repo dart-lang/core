@@ -25,7 +25,8 @@ const _lastPercent = -1;
 ///
 /// This will throw a [FormatException] if the input string has an incomplete
 /// percent-encoding, or if it contains non-ASCII code units.
-class PercentDecoder extends Converter<String, List<int>> {
+class PercentDecoder
+    extends ChunkedConverter<String, List<int>, String, List<int>> {
   const PercentDecoder._();
 
   List<int> convert(String string) {

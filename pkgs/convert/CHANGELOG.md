@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Fix all strong-mode warnings.
+
 ## 1.1.0
 
 * Add `AccumulatorSink`, `ByteAccumulatorSink`, and `StringAccumulatorSink`

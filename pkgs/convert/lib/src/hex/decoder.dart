@@ -17,7 +17,8 @@ const hexDecoder = const HexDecoder._();
 /// Because two hexadecimal digits correspond to a single byte, this will throw
 /// a [FormatException] if given an odd-length string. It will also throw a
 /// [FormatException] if given a string containing non-hexadecimal code units.
-class HexDecoder extends Converter<String, List<int>> {
+class HexDecoder
+    extends ChunkedConverter<String, List<int>, String, List<int>> {
   const HexDecoder._();
 
   List<int> convert(String string) {
@@ -58,8 +59,8 @@ class _HexDecoderSink extends StringConversionSinkBase {
     }
 
     var codeUnits = string.codeUnits;
-    var bytes;
-    var bytesStart;
+    Uint8List bytes;
+    int bytesStart;
     if (_lastDigit == null) {
       bytes = new Uint8List((end - start) ~/ 2);
       bytesStart = 0;
@@ -118,8 +119,8 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
       return;
     }
 
-    var bytes;
-    var bytesStart;
+    Uint8List bytes;
+    int bytesStart;
     if (_lastDigit == null) {
       bytes = new Uint8List((end - start) ~/ 2);
       bytesStart = 0;

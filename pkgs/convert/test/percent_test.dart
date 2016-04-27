@@ -37,8 +37,8 @@ void main() {
 
     group("with chunked conversion", () {
       test("percent-encodes byte arrays", () {
-        var results = [];
-        var controller = new StreamController(sync: true);
+        var results = <String>[];
+        var controller = new StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = percent.encoder.startChunkedConversion(controller.sink);
 
@@ -50,8 +50,8 @@ void main() {
       });
 
       test("handles empty and single-byte lists", () {
-        var results = [];
-        var controller = new StreamController(sync: true);
+        var results = <String>[];
+        var controller = new StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = percent.encoder.startChunkedConversion(controller.sink);
 
@@ -98,11 +98,11 @@ void main() {
     });
 
     group("with chunked conversion", () {
-      var results;
+      List<List<int>> results;
       var sink;
       setUp(() {
         results = [];
-        var controller = new StreamController(sync: true);
+        var controller = new StreamController<List<int>>(sync: true);
         controller.stream.listen(results.add);
         sink = percent.decoder.startChunkedConversion(controller.sink);
       });
