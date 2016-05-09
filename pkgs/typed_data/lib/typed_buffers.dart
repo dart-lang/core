@@ -19,14 +19,21 @@ import "dart:typed_data";
 abstract class _TypedDataBuffer<E> extends ListBase<E> {
   static const int INITIAL_LENGTH = 8;
 
-  /// This is a Uint8List for Uint8Buffer. It's both a List<E> and a TypedData,
-  /// which we don't have a type for here.
-  var _buffer;
+  /// The underlying data buffer.
+  ///
+  /// This is always both a List<E> and a TypedData, which we don't have a type
+  /// for here. For example, for a `Uint8Buffer`, this is a `Uint8List`.
+  List<E> _buffer;
+
+  /// Returns a view of [_buffer] as a [TypedData].
+  TypedData get _typedBuffer => _buffer as TypedData;
+
   /// The length of the list being built.
   int _length;
 
   _TypedDataBuffer(List<E> buffer)
-      : this._buffer = buffer, this._length = buffer.length;
+      : this._buffer = buffer,
+        this._length = buffer.length;
 
   int get length => _length;
   E operator[](int index) {
@@ -154,7 +161,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   }
 
   // Reverses the range [start..end) of buffer.
-  static void _reverse(List<int> buffer, int start, int end) {
+  static void _reverse(List buffer, int start, int end) {
     end--;  // Point to last element, not after last element.
     while (start < end) {
       var first = buffer[start];
@@ -279,11 +286,11 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
 
   // TypedData.
 
-  int get elementSizeInBytes => _buffer.elementSizeInBytes;
+  int get elementSizeInBytes => _typedBuffer.elementSizeInBytes;
 
-  int get lengthInBytes => _length * _buffer.elementSizeInBytes;
+  int get lengthInBytes => _length * _typedBuffer.elementSizeInBytes;
 
-  int get offsetInBytes => _buffer.offsetInBytes;
+  int get offsetInBytes => _typedBuffer.offsetInBytes;
 
   /// Returns the underlying [ByteBuffer].
   ///
@@ -291,7 +298,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   /// of this list.
   ///
   /// The buffer may be larger than [lengthInBytes] bytes, but never smaller.
-  ByteBuffer get buffer => _buffer.buffer;
+  ByteBuffer get buffer => _typedBuffer.buffer;
 
   // Specialization for the specific type.
 
@@ -304,12 +311,14 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
 }
 
 abstract class _IntBuffer extends _TypedDataBuffer<int> {
-  _IntBuffer(buffer): super(buffer);
+  _IntBuffer(List<int> buffer): super(buffer);
+
   int get _defaultValue => 0;
 }
 
 abstract class _FloatBuffer extends _TypedDataBuffer<double> {
-  _FloatBuffer(buffer): super(buffer);
+  _FloatBuffer(List<double> buffer): super(buffer);
+
   double get _defaultValue => 0.0;
 }
 

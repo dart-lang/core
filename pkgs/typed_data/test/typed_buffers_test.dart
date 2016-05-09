@@ -152,13 +152,13 @@ double roundToFloat(double value) {
 
 typedef int Rounder(int value);
 
-Rounder roundUint(bits) {
+Rounder uintRounder(bits) {
   int halfbits = (1 << (bits ~/ 2)) - 1;
   int mask = halfbits | (halfbits << (bits ~/ 2));
   return (int x) => x & mask;
 }
 
-Rounder roundInt(bits) {
+Rounder intRounder(bits) {
   int highBit = 1 << (bits - 1);
   int mask = highBit - 1;
   return (int x) => (x & mask) - (x & highBit);
@@ -166,20 +166,20 @@ Rounder roundInt(bits) {
 
 int clampUint8(x) => x < 0 ? 0 : x > 255 ? 255 : x;
 
-void testUint(int bits, var buffer, {String testOn}) {
+void testUint(int bits, buffer(int length), {String testOn}) {
   int min = 0;
-  Function round = roundUint(bits);
-  int max = round(-1);
+  var rounder = uintRounder(bits);
+  int max = rounder(-1);
   test("Uint${bits}Buffer", () {
-    testIntBuffer(bits, min, max, buffer, round);
+    testIntBuffer(bits, min, max, buffer, rounder);
   }, testOn: testOn);
 }
 
-void testInt(int bits, var buffer, {String testOn}) {
+void testInt(int bits, buffer(int length), {String testOn}) {
   int min = -(1 << (bits - 1));
   int max = -(min + 1);
   test("Int${bits}Buffer", () {
-    testIntBuffer(bits, min, max, buffer, roundInt(bits));
+    testIntBuffer(bits, min, max, buffer, intRounder(bits));
   }, testOn: testOn);
 }
 
@@ -231,7 +231,7 @@ void testIntBuffer(int bits, int min, int max,
   assert(round(max) == max);
   // All int buffers default to the value 0.
   var buffer = create(0);
-  List<int> list = buffer;  // Check the type.
+  expect(buffer, new isInstanceOf<List<int>>());
   expect(buffer.length, equals(0));
   var bytes = bits ~/ 8;
 
@@ -338,7 +338,7 @@ void doubleEqual(x, y) {
 testFloatBuffer(int bitSize, List samples, create(), double round(double v)) {
   test("Float${bitSize}Buffer", () {
     var buffer = create();
-    List<double> list = buffer;  // Test type.
+    expect(buffer, new isInstanceOf<List<double>>());
     int byteSize = bitSize ~/ 8;
 
     expect(buffer.length, equals(0));
@@ -393,7 +393,7 @@ testFloatBuffer(int bitSize, List samples, create(), double round(double v)) {
 }
 
 testFloat32x4Buffer(List floatSamples) {
-  List float4Samples = [];
+  var float4Samples = <Float32x4>[];
   for (int i = 0; i < floatSamples.length - 3; i++) {
     float4Samples.add(new Float32x4(floatSamples[i],
                                     floatSamples[i + 1],
@@ -418,7 +418,7 @@ testFloat32x4Buffer(List floatSamples) {
 
   test("Float32x4Buffer", () {
     var buffer = new Float32x4Buffer(5);
-    List<Float32x4> list = buffer;
+    expect(buffer, new isInstanceOf<List<Float32x4>>());
 
     expect(buffer.length, equals(5));
     expect(buffer.elementSizeInBytes, equals(128 ~/ 8));
@@ -458,15 +458,14 @@ testFloat32x4Buffer(List floatSamples) {
   });
 }
 
-void testInt32x4Buffer(intSamples) {
+void testInt32x4Buffer(List<int> intSamples) {
   test("Int32x4Buffer", () {
-    Function round = roundInt(32);
-    int bits = 128;
+    Function rounder = intRounder(32);
     int bytes = 128 ~/ 8;
     Matcher equals32x4(Int32x4 expected) => new MatchesInt32x4(expected);
 
     var buffer = new Int32x4Buffer(0);
-    List<Int32x4> list = buffer;     // It's a List.
+    expect(buffer, new isInstanceOf<List<Int32x4>>());
     expect(buffer.length, equals(0));
 
     expect(buffer.elementSizeInBytes, equals(bytes));
@@ -486,7 +485,7 @@ void testInt32x4Buffer(intSamples) {
     expect(buffer.length, equals(0));
 
     var samples = intSamples
-        .where((value) => value == round(value))   // Issue 15130
+        .where((value) => value == rounder(value))   // Issue 15130
         .map((value) => new Int32x4(value, -value, ~value, ~-value))
         .toList();
     for (Int32x4 value in samples) {

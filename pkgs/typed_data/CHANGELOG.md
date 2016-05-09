@@ -1,3 +1,7 @@
+## 1.1.3
+
+* Fix all strong-mode warnings.
+
 ## 1.1.2
 
 * Fix a bug where `TypedDataBuffer.insertAll` could fail to insert some elements
