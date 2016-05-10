@@ -287,7 +287,7 @@ class Int32 implements IntX {
     return false;
   }
 
-  int compareTo(Comparable other) {
+  int compareTo(other) {
     if (other is Int64) {
       return this.toInt64().compareTo(other);
     }

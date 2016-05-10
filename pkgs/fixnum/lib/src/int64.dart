@@ -458,7 +458,7 @@ class Int64 implements IntX {
     return false;
   }
 
-  int compareTo(Comparable other) =>_compareTo(other);
+  int compareTo(other) => _compareTo(other);
 
   int _compareTo(other) {
     Int64 o = _promote(other);
