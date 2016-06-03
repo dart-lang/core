@@ -17,8 +17,7 @@ const hexDecoder = const HexDecoder._();
 /// Because two hexadecimal digits correspond to a single byte, this will throw
 /// a [FormatException] if given an odd-length string. It will also throw a
 /// [FormatException] if given a string containing non-hexadecimal code units.
-class HexDecoder
-    extends ChunkedConverter<String, List<int>, String, List<int>> {
+class HexDecoder extends Converter<String, List<int>> {
   const HexDecoder._();
 
   List<int> convert(String string) {

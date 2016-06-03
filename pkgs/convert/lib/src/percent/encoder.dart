@@ -19,8 +19,7 @@ const percentEncoder = const PercentEncoder._();
 ///
 /// This will throw a [RangeError] if the byte array has any digits that don't
 /// fit in the gamut of a byte.
-class PercentEncoder
-    extends ChunkedConverter<List<int>, String, List<int>, String> {
+class PercentEncoder extends Converter<List<int>, String> {
   const PercentEncoder._();
 
   String convert(List<int> bytes) => _convert(bytes, 0, bytes.length);

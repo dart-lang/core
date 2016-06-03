@@ -16,8 +16,7 @@ const hexEncoder = const HexEncoder._();
 ///
 /// This will throw a [RangeError] if the byte array has any digits that don't
 /// fit in the gamut of a byte.
-class HexEncoder
-    extends ChunkedConverter<List<int>, String, List<int>, String> {
+class HexEncoder extends Converter<List<int>, String> {
   const HexEncoder._();
 
   String convert(List<int> bytes) => _convert(bytes, 0, bytes.length);
