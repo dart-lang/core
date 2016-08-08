@@ -1,3 +1,8 @@
+## 2.0.1
+
+* `PercentEncoder` no longer encodes digits. This follows the specified
+  behavior.
+
 ## 2.0.0
 
 **Note**: No new APIs have been added in 2.0.0. Packages that would use 2.0.0 as
