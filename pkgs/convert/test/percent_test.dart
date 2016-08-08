@@ -14,9 +14,9 @@ void main() {
       expect(percent.encode([
         $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p, $q, $r,
         $s, $t, $u, $v, $w, $x, $y, $z, $A, $B, $C, $D, $E, $F, $G, $H, $I, $J,
-        $K, $L, $M, $N, $O, $P, $Q, $R, $S, $T, $U, $V, $W, $X, $Y, $Z, $dash,
-        $dot, $underscore, $tilde
-      ]), equals("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-._~"));
+        $K, $L, $M, $N, $O, $P, $Q, $R, $S, $T, $U, $V, $W, $X, $Y, $Z, $0, $1,
+        $2, $3, $4, $5, $6, $7, $8, $9, $dash, $dot, $underscore, $tilde
+      ]), equals("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~"));
     });
 
     test("percent-encodes reserved ASCII characters", () {
@@ -77,8 +77,8 @@ void main() {
 
   group("decoder", () {
     test("converts percent-encoded strings to byte arrays", () {
-      expect(percent.decode("a%2Bb%3D%80"),
-          equals([$a, $plus, $b, $equal, 0x80]));
+      expect(percent.decode("a%2Bb%3D%801"),
+          equals([$a, $plus, $b, $equal, 0x80, $1]));
     });
 
     test("supports lowercase letters", () {
@@ -108,12 +108,12 @@ void main() {
       });
 
       test("converts percent to byte arrays", () {
-        sink.add("a%2Bb%3D%80");
-        expect(results, equals([[$a, $plus, $b, $equal, 0x80]]));
+        sink.add("a%2Bb%3D%801");
+        expect(results, equals([[$a, $plus, $b, $equal, 0x80, $1]]));
 
         sink.add("%00%01%FE%FF");
         expect(results,
-            equals([[$a, $plus, $b, $equal, 0x80], [0x00, 0x01, 0xfe, 0xff]]));
+            equals([[$a, $plus, $b, $equal, 0x80, $1], [0x00, 0x01, 0xfe, 0xff]]));
       });
 
       test("supports trailing percents and digits split across chunks", () {

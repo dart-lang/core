@@ -67,6 +67,7 @@ String _convert(List<int> bytes, int start, int end) {
     // that that bit is 1 we ensure that the letter is lowercase.
     var letter = 0x20 | byte;
     if ((letter >= $a && letter <= $z) ||
+        (byte >= $0 && byte <= $9) ||
         byte == $dash ||
         byte == $dot ||
         byte == $underscore ||
