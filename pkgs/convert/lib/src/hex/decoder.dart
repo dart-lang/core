@@ -22,8 +22,8 @@ class HexDecoder extends Converter<String, List<int>> {
 
   List<int> convert(String string) {
     if (!string.length.isEven) {
-      throw new FormatException("Invalid input length, must be even.",
-          string, string.length);
+      throw new FormatException(
+          "Invalid input length, must be even.", string, string.length);
     }
 
     var bytes = new Uint8List(string.length ~/ 2);

@@ -1,0 +1,18 @@
+language: dart
+sudo: false
+dart:
+  - dev
+  - stable
+cache:
+  directories:
+    - $HOME/.pub-cache
+dart_task:
+  - test: --platform vm
+  - test: --platform dartium
+    install_dartium: true
+  - dartanalyzer
+  - dartfmt
+matrix:
+  exclude:
+    - dart: dev
+      dart_task: dartfmt

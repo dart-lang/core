@@ -94,7 +94,8 @@ String _convert(List<int> bytes, int start, int end) {
     if (byte >= 0 && byte <= 0xff) continue;
     throw new FormatException(
         "Invalid byte ${byte < 0 ? "-" : ""}0x${byte.abs().toRadixString(16)}.",
-        bytes, i);
+        bytes,
+        i);
   }
 
   throw 'unreachable';

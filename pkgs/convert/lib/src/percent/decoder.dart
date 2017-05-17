@@ -34,8 +34,7 @@ class PercentDecoder extends Converter<String, List<int>> {
 
     if (lastDigit != null) {
       throw new FormatException(
-          "Input ended with incomplete encoded byte.",
-          string, string.length);
+          "Input ended with incomplete encoded byte.", string, string.length);
     }
 
     return buffer.buffer.asUint8List(0, buffer.length);
@@ -229,8 +228,8 @@ int _decode(List<int> codeUnits, int start, int end, Uint8Buffer buffer) {
   return null;
 }
 
-void _checkForInvalidCodeUnit(int codeUnitOr, List<int> codeUnits, int start,
-    int end) {
+void _checkForInvalidCodeUnit(
+    int codeUnitOr, List<int> codeUnits, int start, int end) {
   if (codeUnitOr >= 0 && codeUnitOr <= 0x7f) return;
 
   for (var i = start; i < end; i++) {
@@ -238,7 +237,8 @@ void _checkForInvalidCodeUnit(int codeUnitOr, List<int> codeUnits, int start,
     if (codeUnit >= 0 && codeUnit <= 0x7f) continue;
     throw new FormatException(
         "Non-ASCII code unit "
-            "U+${codeUnit.toRadixString(16).padLeft(4, '0')}",
-        codeUnits, i);
+        "U+${codeUnit.toRadixString(16).padLeft(4, '0')}",
+        codeUnits,
+        i);
   }
 }
