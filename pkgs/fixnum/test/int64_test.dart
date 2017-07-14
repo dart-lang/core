@@ -5,7 +5,7 @@
 library int64test;
 
 import 'package:fixnum/fixnum.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 void main() {
   group("fromBytes", () {
@@ -129,13 +129,13 @@ void main() {
       expect(new Int64(100) * Int64.ZERO, Int64.ZERO);
 
       expect(new Int64.fromInts(0x12345678, 0x12345678) *
-              new Int64.fromInts(0x1234, 0x12345678),
+          new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0x7ff63f7c, 0x1df4d840));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) *
-              new Int64.fromInts(0x1234, 0x12345678),
+          new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0x7ff63f7c, 0x1df4d840));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) *
-              new Int64.fromInts(0xffff1234, 0x12345678),
+          new Int64.fromInts(0xffff1234, 0x12345678),
           new Int64.fromInts(0x297e3f7c, 0x1df4d840));
 
       // RHS Int32
@@ -203,16 +203,16 @@ void main() {
       expect(new Int64(-1000) ~/ new Int64(-3), new Int64(333));
       expect(new Int64(3) ~/ new Int64(1000), Int64.ZERO);
       expect(new Int64.fromInts(0x12345678, 0x12345678) ~/
-              new Int64.fromInts(0x0, 0x123),
+          new Int64.fromInts(0x0, 0x123),
           new Int64.fromInts(0x1003d0, 0xe84f5ae8));
       expect(new Int64.fromInts(0x12345678, 0x12345678) ~/
-              new Int64.fromInts(0x1234, 0x12345678),
+          new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0x0, 0x10003));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) ~/
-              new Int64.fromInts(0x1234, 0x12345678),
+          new Int64.fromInts(0x1234, 0x12345678),
           new Int64.fromInts(0xffffffff, 0xffff3dfe));
       expect(new Int64.fromInts(0xf2345678, 0x12345678) ~/
-              new Int64.fromInts(0xffff1234, 0x12345678),
+          new Int64.fromInts(0xffff1234, 0x12345678),
           new Int64.fromInts(0x0, 0xeda));
       expect(new Int64(829893893) ~/ new Int32(1919), new Int32(432461));
       expect(new Int64(829893893) ~/ new Int64(1919), new Int32(432461));

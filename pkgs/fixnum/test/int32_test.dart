@@ -5,7 +5,7 @@
 library Int32test;
 
 import 'package:fixnum/fixnum.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 void main() {
   group("isX tests", () {
