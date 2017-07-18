@@ -62,7 +62,7 @@ class Int64 implements IntX {
    * Constructs an [Int64] with a given bitwise representation.  No validation
    * is performed.
    */
-  const Int64._bits(int this._l, int this._m, int this._h);
+  const Int64._bits(this._l, this._m, this._h);
 
   /**
    * Parses a [String] in a given [radix] between 2 and 36 and returns an
@@ -887,7 +887,7 @@ class Int64 implements IntX {
   static const _RETURN_REM = 2;
   static const _RETURN_MOD = 3;
 
-  static _divideHelper(
+  static Int64 _divideHelper(
       // up to 64 bits unsigned in a2/a1/a0 and b2/b1/b0
       int a0,
       int a1,
