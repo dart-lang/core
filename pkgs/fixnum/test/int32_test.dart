@@ -302,8 +302,9 @@ void main() {
     test("shiftRightUnsigned", () {
       expect(new Int32(0x12345678).shiftRightUnsigned(7),
           new Int32(0x12345678 >> 7));
-      expect(() => (new Int32(17).shiftRightUnsigned(-1)), throwsArgumentError);
       expect(() => (new Int32(17).shiftRightUnsigned(null)), throws);
+      expect(() => (new Int32(17).shiftRightUnsigned(null)),
+          throwsNoSuchMethodError);
     });
   });
 
@@ -345,10 +346,10 @@ void main() {
       expect(new Int32(-17).toInt64(), new Int64(-17));
     });
     test("toBytes", () {
-      expect(new Int32(0).toBytes(), [ 0, 0, 0, 0 ]);
-      expect(new Int32(0x01020304).toBytes(), [ 4, 3, 2, 1 ]);
-      expect(new Int32(0x04030201).toBytes(), [ 1, 2, 3, 4 ]);
-      expect(new Int32(-1).toBytes(), [ 0xff, 0xff, 0xff, 0xff ]);
+      expect(new Int32(0).toBytes(), [0, 0, 0, 0]);
+      expect(new Int32(0x01020304).toBytes(), [4, 3, 2, 1]);
+      expect(new Int32(0x04030201).toBytes(), [1, 2, 3, 4]);
+      expect(new Int32(-1).toBytes(), [0xff, 0xff, 0xff, 0xff]);
     });
   });
 
@@ -357,6 +358,7 @@ void main() {
       checkInt(int x) {
         expect(Int32.parseRadix('$x', 10), new Int32(x));
       }
+
       checkInt(0);
       checkInt(1);
       checkInt(1000);
@@ -374,6 +376,7 @@ void main() {
       check(String s, int r, String x) {
         expect(Int32.parseRadix(s, r).toString(), x);
       }
+
       check('deadbeef', 16, '-559038737');
       check('95', 12, '113');
     });
