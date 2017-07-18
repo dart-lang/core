@@ -38,7 +38,7 @@ void main() {
   });
 
   argumentErrorTest(name, op, [receiver = Int64.ONE]) {
-    throwsArgumentErrorMentioning(substring) =>
+    throwsArgumentErrorMentioning(String substring) =>
         throwsA((e) => e is ArgumentError && '$e'.contains(substring));
 
     expect(() => op(receiver, null), throwsArgumentErrorMentioning('null'));
@@ -232,7 +232,8 @@ void main() {
           new Int64.fromInts(0xc0000000, 0x00000000));
       expect(Int64.MIN_VALUE ~/ new Int64(1), Int64.MIN_VALUE);
       expect(Int64.MIN_VALUE ~/ new Int64(-1), Int64.MIN_VALUE);
-      expect(() => new Int64(17) ~/ Int64.ZERO, throws);
+      expect(() => new Int64(17) ~/ Int64.ZERO,
+          throwsA(new isInstanceOf<IntegerDivisionByZeroException>()));
       argumentErrorTest("~/", (a, b) => a ~/ b);
     });
 
@@ -494,7 +495,7 @@ void main() {
       expect(new Int64(-1) << 5, new Int64(-32));
       expect(new Int64(-1) << 0, new Int64(-1));
       expect(() => new Int64(17) << -1, throwsArgumentError);
-      expect(() => new Int64(17) << null, throws);
+      expect(() => new Int64(17) << null, throwsNoSuchMethodError);
     });
 
     test(">>", () {
@@ -545,7 +546,7 @@ void main() {
       expect(new Int64.fromInts(0x92345678, 0x9abcdef0) >> 48,
           new Int64.fromInts(0xffffffff, 0xffff9234));
       expect(() => new Int64(17) >> -1, throwsArgumentError);
-      expect(() => new Int64(17) >> null, throws);
+      expect(() => new Int64(17) >> null, throwsNoSuchMethodError);
     });
 
     test("shiftRightUnsigned", () {
@@ -590,7 +591,8 @@ void main() {
       expect(new Int64.fromInts(0x00000000, 0x00009234),
           new Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(48));
       expect(() => new Int64(17).shiftRightUnsigned(-1), throwsArgumentError);
-      expect(() => new Int64(17).shiftRightUnsigned(null), throws);
+      expect(() => new Int64(17).shiftRightUnsigned(null),
+          throwsNoSuchMethodError);
     });
 
     test("overflow", () {
