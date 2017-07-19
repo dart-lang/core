@@ -128,7 +128,7 @@ class Int64 implements IntX {
     bool negative = false;
     if (value < 0) {
       negative = true;
-      value = -value - 1;
+      value = -value;
     }
     // Avoid using bitwise operations that in JavaScript coerce their input to
     // 32 bits.
@@ -138,12 +138,9 @@ class Int64 implements IntX {
     value -= v1 * 4194304;
     v0 = value;
 
-    if (negative) {
-      v0 = ~v0;
-      v1 = ~v1;
-      v2 = ~v2;
-    }
-    return Int64._masked(v0, v1, v2);
+    return negative
+        ? Int64._negate(_MASK & v0, _MASK & v1, _MASK2 & v2)
+        : Int64._masked(v0, v1, v2);
   }
 
   factory Int64.fromBytes(List<int> bytes) {
