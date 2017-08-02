@@ -1,3 +1,7 @@
+## 1.1.4
+
+* Expand the SDK version constraint to include `<2.0.0-dev.infinity`.
+
 ## 1.1.3
 
 * Fix all strong-mode warnings.
