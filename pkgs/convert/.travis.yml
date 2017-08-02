@@ -8,6 +8,7 @@ cache:
     - $HOME/.pub-cache
 dart_task:
   - test: --platform vm
+  - test: --platform firefox
   - test: --platform dartium
     install_dartium: true
   - dartanalyzer
