@@ -329,7 +329,6 @@ void doubleEqual(x, y) {
   if (y.isNaN) {
     expect(x.isNaN, isTrue);
   } else {
-    if (x != y) {}
     expect(x, equals(y));
   }
 }
