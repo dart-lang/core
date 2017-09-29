@@ -226,7 +226,7 @@ const List<int> intSamples = const [
 // the rounding that is applied when storing values outside the valid range
 // into the buffer.
 void testIntBuffer(
-    int bits, int min, int max, create(int length), int round(int)) {
+    int bits, int min, int max, create(int length), int round(int val)) {
   assert(round(min) == min);
   assert(round(max) == max);
   // All int buffers default to the value 0.
@@ -307,7 +307,7 @@ const List doubleSamples = const [
   9007199254740991.0 //       to nearest with 0.5 rounding up).
 ];
 
-const List floatSamples = const [
+const floatSamples = const [
   0.0,
   1.4e-45, //        Minimal denormal value.
   1.1754942E-38, //  Maximal denormal value.
