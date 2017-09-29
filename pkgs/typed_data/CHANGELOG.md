@@ -1,3 +1,7 @@
+## 1.1.5
+
+* Undo unnessesary SDK version constraint tweak.
+
 ## 1.1.4
 
 * Expand the SDK version constraint to include `<2.0.0-dev.infinity`.
