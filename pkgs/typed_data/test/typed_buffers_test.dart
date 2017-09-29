@@ -17,21 +17,22 @@ main() {
   });
   testUint(16, (l) => new Uint16Buffer(l));
   testInt(16, (l) => new Int16Buffer(l));
-  testUint(32, (l) => new Uint32Buffer(l));  /// 01: ok
+  testUint(32, (l) => new Uint32Buffer(l));
+
   testInt(32, (l) => new Int32Buffer(l));
-  testUint(64, (l) => new Uint64Buffer(l),   /// 01: continued
+
+  testUint(64, (l) => new Uint64Buffer(l),
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: "dart-vm");
-  testInt(64, (l) => new Int64Buffer(l),    /// 01: continued
+  testInt(64, (l) => new Int64Buffer(l),
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: "dart-vm");
 
   testInt32x4Buffer(intSamples);
 
   List roundedFloatSamples = floatSamples.map(roundToFloat).toList();
-  testFloatBuffer(32, roundedFloatSamples,
-                  () => new Float32Buffer(),
-                  roundToFloat);
+  testFloatBuffer(
+      32, roundedFloatSamples, () => new Float32Buffer(), roundToFloat);
   testFloatBuffer(64, doubleSamples, () => new Float64Buffer(), (x) => x);
 
   testFloat32x4Buffer(roundedFloatSamples);
@@ -185,35 +186,35 @@ void testInt(int bits, buffer(int length), {String testOn}) {
 
 const List<int> intSamples = const [
   0x10000000000000001,
-  0x10000000000000000,  // 2^64
+  0x10000000000000000, // 2^64
   0x0ffffffffffffffff,
   0xaaaaaaaaaaaaaaaa,
   0x8000000000000001,
-  0x8000000000000000,   // 2^63
+  0x8000000000000000, // 2^63
   0x7fffffffffffffff,
   0x5555555555555555,
   0x100000001,
-  0x100000000,  // 2^32
+  0x100000000, // 2^32
   0x0ffffffff,
   0xaaaaaaaa,
   0x80000001,
-  0x80000000,   // 2^31
+  0x80000000, // 2^31
   0x7fffffff,
   0x55555555,
   0x10001,
-  0x10000,      // 2^16
+  0x10000, // 2^16
   0x0ffff,
   0xaaaa,
   0x8001,
-  0x8000,       // 2^15
+  0x8000, // 2^15
   0x7fff,
   0x5555,
   0x101,
-  0x100,        // 2^8
+  0x100, // 2^8
   0x0ff,
   0xaa,
   0x81,
-  0x80,         // 2^7
+  0x80, // 2^7
   0x7f,
   0x55,
   0x02,
@@ -224,9 +225,8 @@ const List<int> intSamples = const [
 // Takes bit-size, min value, max value, function to create a buffer, and
 // the rounding that is applied when storing values outside the valid range
 // into the buffer.
-void testIntBuffer(int bits, int min, int max,
-                   create(int length),
-                   int round(int)) {
+void testIntBuffer(
+    int bits, int min, int max, create(int length), int round(int)) {
   assert(round(min) == min);
   assert(round(max) == max);
   // All int buffers default to the value 0.
@@ -257,7 +257,7 @@ void testIntBuffer(int bits, int min, int max,
     expect(buffer.length, equals(length + 1));
     expect(buffer[length], equals(round(value)));
   }
-  buffer.addAll(samples);  // Add all the values at once.
+  buffer.addAll(samples); // Add all the values at once.
   for (int i = 0; i < samples.length; i++) {
     expect(buffer[samples.length + i], equals(buffer[i]));
   }
@@ -289,38 +289,38 @@ void testIntBuffer(int bits, int min, int max,
 
 const List doubleSamples = const [
   0.0,
-  5e-324,                    // Minimal denormal value.
-  2.225073858507201e-308,    // Maximal denormal value.
-  2.2250738585072014e-308,   // Minimal normal value.
-  0.9999999999999999,        // Maximum value < 1.
+  5e-324, //                  Minimal denormal value.
+  2.225073858507201e-308, //  Maximal denormal value.
+  2.2250738585072014e-308, // Minimal normal value.
+  0.9999999999999999, //      Maximum value < 1.
   1.0,
-  1.0000000000000002,        // Minimum value > 1.
-  4294967295.0,              // 2^32 -1.
-  4294967296.0,              // 2^32.
-  4503599627370495.5,        // Maximal fractional value.
-  9007199254740992.0,        // Maximal exact value (adding one gets lost).
-  1.7976931348623157e+308,   // Maximal value.
-  1.0/0.0,                   // Infinity.
-  0.0/0.0,                   // NaN.
-  0.49999999999999994,       // Round-traps 1-3 (adding 0.5 and rounding towards
-  4503599627370497.0,        // minus infinity will not be the same as rounding
-  9007199254740991.0         // to nearest with 0.5 rounding up).
+  1.0000000000000002, //      Minimum value > 1.
+  4294967295.0, //            2^32 -1.
+  4294967296.0, //            2^32.
+  4503599627370495.5, //      Maximal fractional value.
+  9007199254740992.0, //      Maximal exact value (adding one gets lost).
+  1.7976931348623157e+308, // Maximal value.
+  1.0 / 0.0, //               Infinity.
+  0.0 / 0.0, //               NaN.
+  0.49999999999999994, //     Round-traps 1-3 (adding 0.5 and rounding towards
+  4503599627370497.0, //      minus infinity will not be the same as rounding
+  9007199254740991.0 //       to nearest with 0.5 rounding up).
 ];
 
 const List floatSamples = const [
   0.0,
-  1.4e-45,          // Minimal denormal value.
-  1.1754942E-38,    // Maximal denormal value.
-  1.17549435E-38,   // Minimal normal value.
-  0.99999994,       // Maximal value < 1.
+  1.4e-45, //        Minimal denormal value.
+  1.1754942E-38, //  Maximal denormal value.
+  1.17549435E-38, // Minimal normal value.
+  0.99999994, //     Maximal value < 1.
   1.0,
-  1.0000001,        // Minimal value > 1.
-  8388607.5,        // Maximal fractional value.
-  16777216.0,       // Maximal exact value.
-  3.4028235e+38,    // Maximal value.
-  1.0/0.0,          // Infinity.
-  0.0/0.0,          // NaN.
-  0.99999994,       // Round traps 1-3.
+  1.0000001, //      Minimal value > 1.
+  8388607.5, //      Maximal fractional value.
+  16777216.0, //     Maximal exact value.
+  3.4028235e+38, //  Maximal value.
+  1.0 / 0.0, //      Infinity.
+  0.0 / 0.0, //      NaN.
+  0.99999994, //     Round traps 1-3.
   8388609.0,
   16777215.0
 ];
@@ -329,8 +329,7 @@ void doubleEqual(x, y) {
   if (y.isNaN) {
     expect(x.isNaN, isTrue);
   } else {
-    if (x != y) {
-    }
+    if (x != y) {}
     expect(x, equals(y));
   }
 }
@@ -395,10 +394,8 @@ testFloatBuffer(int bitSize, List samples, create(), double round(double v)) {
 testFloat32x4Buffer(List floatSamples) {
   var float4Samples = <Float32x4>[];
   for (int i = 0; i < floatSamples.length - 3; i++) {
-    float4Samples.add(new Float32x4(floatSamples[i],
-                                    floatSamples[i + 1],
-                                    floatSamples[i + 2],
-                                    floatSamples[i + 3]));
+    float4Samples.add(new Float32x4(floatSamples[i], floatSamples[i + 1],
+        floatSamples[i + 2], floatSamples[i + 3]));
   }
 
   void floatEquals(x, y) {
@@ -448,7 +445,7 @@ testFloat32x4Buffer(List floatSamples) {
 
     // Test underlying buffer.
     buffer.length = 1;
-    buffer[0] = float4Samples[0];  // Does not contain NaN.
+    buffer[0] = float4Samples[0]; // Does not contain NaN.
 
     Float32List floats = new Float32List.view(buffer.buffer);
     expect(floats[0], equals(buffer[0].x));
@@ -485,8 +482,8 @@ void testInt32x4Buffer(List<int> intSamples) {
     expect(buffer.length, equals(0));
 
     var samples = intSamples
-        .where((value) => value == rounder(value))   // Issue 15130
-        .map((value) => new Int32x4(value, -value, ~value, ~-value))
+        .where((value) => value == rounder(value)) // Issue 15130
+        .map((value) => new Int32x4(value, -value, ~value, ~ -value))
         .toList();
     for (Int32x4 value in samples) {
       int length = buffer.length;
@@ -495,7 +492,7 @@ void testInt32x4Buffer(List<int> intSamples) {
       expect(buffer[length], equals32x4(value));
     }
 
-    buffer.addAll(samples);  // Add all the values at once.
+    buffer.addAll(samples); // Add all the values at once.
     for (int i = 0; i < samples.length; i++) {
       expect(buffer[samples.length + i], equals32x4(buffer[i]));
     }
@@ -525,8 +522,10 @@ class MatchesInt32x4 extends Matcher {
   bool matches(item, Map matchState) {
     if (item is! Int32x4) return false;
     Int32x4 value = item;
-    return result.x == value.x && result.y == value.y &&
-           result.z == value.z && result.w == value.w;
+    return result.x == value.x &&
+        result.y == value.y &&
+        result.z == value.z &&
+        result.w == value.w;
   }
 
   Description describe(Description description) =>
