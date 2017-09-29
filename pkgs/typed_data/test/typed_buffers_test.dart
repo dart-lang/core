@@ -457,7 +457,6 @@ testFloat32x4Buffer(List floatSamples) {
 
 void testInt32x4Buffer(List<int> intSamples) {
   test("Int32x4Buffer", () {
-    Function rounder = intRounder(32);
     int bytes = 128 ~/ 8;
     Matcher equals32x4(Int32x4 expected) => new MatchesInt32x4(expected);
 
@@ -482,7 +481,6 @@ void testInt32x4Buffer(List<int> intSamples) {
     expect(buffer.length, equals(0));
 
     var samples = intSamples
-        .where((value) => value == rounder(value)) // Issue 15130
         .map((value) => new Int32x4(value, -value, ~value, ~ -value))
         .toList();
     for (Int32x4 value in samples) {
