@@ -294,12 +294,18 @@ void main() {
   group("bitshift operators", () {
     test("<<", () {
       expect(new Int32(0x12345678) << 7, new Int32(0x12345678 << 7));
+      expect(new Int32(0x12345678) << 32, Int32.ZERO);
+      expect(new Int32(0x12345678) << 33, Int32.ZERO);
       expect(() => new Int32(17) << -1, throwsArgumentError);
       expect(() => new Int32(17) << null, throwsNoSuchMethodError);
     });
 
     test(">>", () {
       expect(new Int32(0x12345678) >> 7, new Int32(0x12345678 >> 7));
+      expect(new Int32(0x12345678) >> 32, Int32.ZERO);
+      expect(new Int32(0x12345678) >> 33, Int32.ZERO);
+      expect(new Int32(-42) >> 32, new Int32(-1));
+      expect(new Int32(-42) >> 33, new Int32(-1));
       expect(() => new Int32(17) >> -1, throwsArgumentError);
       expect(() => new Int32(17) >> null, throwsNoSuchMethodError);
     });
@@ -307,6 +313,10 @@ void main() {
     test("shiftRightUnsigned", () {
       expect(new Int32(0x12345678).shiftRightUnsigned(7),
           new Int32(0x12345678 >> 7));
+      expect(new Int32(0x12345678).shiftRightUnsigned(32), Int32.ZERO);
+      expect(new Int32(0x12345678).shiftRightUnsigned(33), Int32.ZERO);
+      expect(new Int32(-42).shiftRightUnsigned(32), Int32.ZERO);
+      expect(new Int32(-42).shiftRightUnsigned(33), Int32.ZERO);
       expect(() => (new Int32(17).shiftRightUnsigned(-1)), throwsArgumentError);
       expect(() => (new Int32(17).shiftRightUnsigned(null)),
           throwsNoSuchMethodError);
