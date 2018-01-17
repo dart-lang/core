@@ -1,3 +1,7 @@
+## 1.1.6
+
+* Update tests to work with Dart 2.0 64 bit ints.
+
 ## 1.1.5
 
 * Undo unnessesary SDK version constraint tweak.

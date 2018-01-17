@@ -147,146 +147,6 @@ main() {
   });
 }
 
-double roundToFloat(double value) {
-  return (new Float32List(1)..[0] = value)[0];
-}
-
-typedef int Rounder(int value);
-
-Rounder uintRounder(bits) {
-  int halfbits = (1 << (bits ~/ 2)) - 1;
-  int mask = halfbits | (halfbits << (bits ~/ 2));
-  return (int x) => x & mask;
-}
-
-Rounder intRounder(bits) {
-  int highBit = 1 << (bits - 1);
-  int mask = highBit - 1;
-  return (int x) => (x & mask) - (x & highBit);
-}
-
-int clampUint8(x) => x < 0 ? 0 : x > 255 ? 255 : x;
-
-void testUint(int bits, buffer(int length), {String testOn}) {
-  int min = 0;
-  var rounder = uintRounder(bits);
-  int max = rounder(-1);
-  test("Uint${bits}Buffer", () {
-    testIntBuffer(bits, min, max, buffer, rounder);
-  }, testOn: testOn);
-}
-
-void testInt(int bits, buffer(int length), {String testOn}) {
-  int min = -(1 << (bits - 1));
-  int max = -(min + 1);
-  test("Int${bits}Buffer", () {
-    testIntBuffer(bits, min, max, buffer, intRounder(bits));
-  }, testOn: testOn);
-}
-
-const List<int> intSamples = const [
-  0x10000000000000001,
-  0x10000000000000000, // 2^64
-  0x0ffffffffffffffff,
-  0xaaaaaaaaaaaaaaaa,
-  0x8000000000000001,
-  0x8000000000000000, // 2^63
-  0x7fffffffffffffff,
-  0x5555555555555555,
-  0x100000001,
-  0x100000000, // 2^32
-  0x0ffffffff,
-  0xaaaaaaaa,
-  0x80000001,
-  0x80000000, // 2^31
-  0x7fffffff,
-  0x55555555,
-  0x10001,
-  0x10000, // 2^16
-  0x0ffff,
-  0xaaaa,
-  0x8001,
-  0x8000, // 2^15
-  0x7fff,
-  0x5555,
-  0x101,
-  0x100, // 2^8
-  0x0ff,
-  0xaa,
-  0x81,
-  0x80, // 2^7
-  0x7f,
-  0x55,
-  0x02,
-  0x01,
-  0x00
-];
-
-// Takes bit-size, min value, max value, function to create a buffer, and
-// the rounding that is applied when storing values outside the valid range
-// into the buffer.
-void testIntBuffer(
-    int bits, int min, int max, create(int length), int round(int val)) {
-  assert(round(min) == min);
-  assert(round(max) == max);
-  // All int buffers default to the value 0.
-  var buffer = create(0);
-  expect(buffer, new isInstanceOf<List<int>>());
-  expect(buffer.length, equals(0));
-  var bytes = bits ~/ 8;
-
-  expect(buffer.elementSizeInBytes, equals(bytes));
-  expect(buffer.lengthInBytes, equals(0));
-  expect(buffer.offsetInBytes, equals(0));
-
-  buffer.add(min);
-  expect(buffer.length, equals(1));
-  expect(buffer[0], equals(min));
-
-  expect(buffer.elementSizeInBytes, equals(bytes));
-  expect(buffer.lengthInBytes, equals(bytes));
-  expect(buffer.offsetInBytes, equals(0));
-
-  buffer.length = 0;
-  expect(buffer.length, equals(0));
-
-  List samples = intSamples.toList()..addAll(intSamples.map((x) => -x));
-  for (int value in samples) {
-    int length = buffer.length;
-    buffer.add(value);
-    expect(buffer.length, equals(length + 1));
-    expect(buffer[length], equals(round(value)));
-  }
-  buffer.addAll(samples); // Add all the values at once.
-  for (int i = 0; i < samples.length; i++) {
-    expect(buffer[samples.length + i], equals(buffer[i]));
-  }
-
-  // Remove range works and changes length.
-  buffer.removeRange(samples.length, buffer.length);
-  expect(buffer.length, equals(samples.length));
-
-  // Both values are in `samples`, but equality is performed without rounding.
-  expect(buffer.contains(min - 1), isFalse);
-  expect(buffer.contains(max + 1), isFalse);
-  expect(buffer.contains(round(min - 1)), isTrue);
-  expect(buffer.contains(round(max + 1)), isTrue);
-
-  // Accessing the underlying buffer works.
-  buffer.length = 2;
-  buffer[0] = min;
-  buffer[1] = max;
-  var byteBuffer = new Uint8List.view(buffer.buffer);
-  int byteSize = buffer.elementSizeInBytes;
-  for (int i = 0; i < byteSize; i++) {
-    int tmp = byteBuffer[i];
-    byteBuffer[i] = byteBuffer[byteSize + i];
-    byteBuffer[byteSize + i] = tmp;
-  }
-  expect(buffer[0], equals(max));
-  expect(buffer[1], equals(min));
-}
-
 const List doubleSamples = const [
   0.0,
   5e-324, //                  Minimal denormal value.
@@ -325,6 +185,44 @@ const floatSamples = const [
   16777215.0
 ];
 
+const List<int> intSamples = const [
+  0x0ffffffffffffffff,
+  0xaaaaaaaaaaaaaaaa,
+  0x8000000000000001,
+  0x8000000000000000, // 2^63
+  0x7fffffffffffffff,
+  0x5555555555555555,
+  0x100000001,
+  0x100000000, // 2^32
+  0x0ffffffff,
+  0xaaaaaaaa,
+  0x80000001,
+  0x80000000, // 2^31
+  0x7fffffff,
+  0x55555555,
+  0x10001,
+  0x10000, // 2^16
+  0x0ffff,
+  0xaaaa,
+  0x8001,
+  0x8000, // 2^15
+  0x7fff,
+  0x5555,
+  0x101,
+  0x100, // 2^8
+  0x0ff,
+  0xaa,
+  0x81,
+  0x80, // 2^7
+  0x7f,
+  0x55,
+  0x02,
+  0x01,
+  0x00
+];
+
+int clampUint8(x) => x < 0 ? 0 : x > 255 ? 255 : x;
+
 void doubleEqual(x, y) {
   if (y.isNaN) {
     expect(x.isNaN, isTrue);
@@ -333,61 +231,14 @@ void doubleEqual(x, y) {
   }
 }
 
-testFloatBuffer(int bitSize, List samples, create(), double round(double v)) {
-  test("Float${bitSize}Buffer", () {
-    var buffer = create();
-    expect(buffer, new isInstanceOf<List<double>>());
-    int byteSize = bitSize ~/ 8;
+Rounder intRounder(bits) {
+  int highBit = 1 << (bits - 1);
+  int mask = highBit - 1;
+  return (int x) => (x & mask) - (x & highBit);
+}
 
-    expect(buffer.length, equals(0));
-    buffer.add(0.0);
-    expect(buffer.length, equals(1));
-    expect(buffer.removeLast(), equals(0.0));
-    expect(buffer.length, equals(0));
-
-    for (double value in samples) {
-      buffer.add(value);
-      doubleEqual(buffer[buffer.length - 1], round(value));
-    }
-    expect(buffer.length, equals(samples.length));
-
-    buffer.addAll(samples);
-    expect(buffer.length, equals(samples.length * 2));
-    for (int i = 0; i < samples.length; i++) {
-      doubleEqual(buffer[i], buffer[samples.length + i]);
-    }
-
-    buffer.removeRange(samples.length, buffer.length);
-    expect(buffer.length, equals(samples.length));
-
-    buffer.insertAll(0, samples);
-    expect(buffer.length, equals(samples.length * 2));
-    for (int i = 0; i < samples.length; i++) {
-      doubleEqual(buffer[i], buffer[samples.length + i]);
-    }
-
-    buffer.length = samples.length;
-    expect(buffer.length, equals(samples.length));
-
-    // TypedData.
-    expect(buffer.elementSizeInBytes, equals(byteSize));
-    expect(buffer.lengthInBytes, equals(byteSize * buffer.length));
-    expect(buffer.offsetInBytes, equals(0));
-
-    // Accessing the buffer works.
-    // Accessing the underlying buffer works.
-    buffer.length = 2;
-    buffer[0] = samples[0];
-    buffer[1] = samples[1];
-    var bytes = new Uint8List.view(buffer.buffer);
-    for (int i = 0; i < byteSize; i++) {
-      int tmp = bytes[i];
-      bytes[i] = bytes[byteSize + i];
-      bytes[byteSize + i] = tmp;
-    }
-    doubleEqual(buffer[0], round(samples[1]));
-    doubleEqual(buffer[1], round(samples[0]));
-  });
+double roundToFloat(double value) {
+  return (new Float32List(1)..[0] = value)[0];
 }
 
 testFloat32x4Buffer(List floatSamples) {
@@ -454,6 +305,74 @@ testFloat32x4Buffer(List floatSamples) {
   });
 }
 
+// Takes bit-size, min value, max value, function to create a buffer, and
+// the rounding that is applied when storing values outside the valid range
+// into the buffer.
+testFloatBuffer(int bitSize, List samples, create(), double round(double v)) {
+  test("Float${bitSize}Buffer", () {
+    var buffer = create();
+    expect(buffer, new isInstanceOf<List<double>>());
+    int byteSize = bitSize ~/ 8;
+
+    expect(buffer.length, equals(0));
+    buffer.add(0.0);
+    expect(buffer.length, equals(1));
+    expect(buffer.removeLast(), equals(0.0));
+    expect(buffer.length, equals(0));
+
+    for (double value in samples) {
+      buffer.add(value);
+      doubleEqual(buffer[buffer.length - 1], round(value));
+    }
+    expect(buffer.length, equals(samples.length));
+
+    buffer.addAll(samples);
+    expect(buffer.length, equals(samples.length * 2));
+    for (int i = 0; i < samples.length; i++) {
+      doubleEqual(buffer[i], buffer[samples.length + i]);
+    }
+
+    buffer.removeRange(samples.length, buffer.length);
+    expect(buffer.length, equals(samples.length));
+
+    buffer.insertAll(0, samples);
+    expect(buffer.length, equals(samples.length * 2));
+    for (int i = 0; i < samples.length; i++) {
+      doubleEqual(buffer[i], buffer[samples.length + i]);
+    }
+
+    buffer.length = samples.length;
+    expect(buffer.length, equals(samples.length));
+
+    // TypedData.
+    expect(buffer.elementSizeInBytes, equals(byteSize));
+    expect(buffer.lengthInBytes, equals(byteSize * buffer.length));
+    expect(buffer.offsetInBytes, equals(0));
+
+    // Accessing the buffer works.
+    // Accessing the underlying buffer works.
+    buffer.length = 2;
+    buffer[0] = samples[0];
+    buffer[1] = samples[1];
+    var bytes = new Uint8List.view(buffer.buffer);
+    for (int i = 0; i < byteSize; i++) {
+      int tmp = bytes[i];
+      bytes[i] = bytes[byteSize + i];
+      bytes[byteSize + i] = tmp;
+    }
+    doubleEqual(buffer[0], round(samples[1]));
+    doubleEqual(buffer[1], round(samples[0]));
+  });
+}
+
+void testInt(int bits, buffer(int length), {String testOn}) {
+  int min = -(1 << (bits - 1));
+  int max = -(min + 1);
+  test("Int${bits}Buffer", () {
+    testIntBuffer(bits, min, max, buffer, intRounder(bits));
+  }, testOn: testOn);
+}
+
 void testInt32x4Buffer(List<int> intSamples) {
   test("Int32x4Buffer", () {
     int bytes = 128 ~/ 8;
@@ -513,9 +432,100 @@ void testInt32x4Buffer(List<int> intSamples) {
   });
 }
 
+void testIntBuffer(
+    int bits, int min, int max, create(int length), int round(int val)) {
+  assert(round(min) == min);
+  assert(round(max) == max);
+  // All int buffers default to the value 0.
+  var buffer = create(0);
+  expect(buffer, new isInstanceOf<List<int>>());
+  expect(buffer.length, equals(0));
+  var bytes = bits ~/ 8;
+
+  expect(buffer.elementSizeInBytes, equals(bytes));
+  expect(buffer.lengthInBytes, equals(0));
+  expect(buffer.offsetInBytes, equals(0));
+
+  buffer.add(min);
+  expect(buffer.length, equals(1));
+  expect(buffer[0], equals(min));
+
+  expect(buffer.elementSizeInBytes, equals(bytes));
+  expect(buffer.lengthInBytes, equals(bytes));
+  expect(buffer.offsetInBytes, equals(0));
+
+  buffer.length = 0;
+  expect(buffer.length, equals(0));
+
+  List samples = intSamples.toList()..addAll(intSamples.map((x) => -x));
+  for (int value in samples) {
+    int length = buffer.length;
+    buffer.add(value);
+    expect(buffer.length, equals(length + 1));
+    expect(buffer[length], equals(round(value)));
+  }
+  buffer.addAll(samples); // Add all the values at once.
+  for (int i = 0; i < samples.length; i++) {
+    expect(buffer[samples.length + i], equals(buffer[i]));
+  }
+
+  // Remove range works and changes length.
+  buffer.removeRange(samples.length, buffer.length);
+  expect(buffer.length, equals(samples.length));
+
+  // Both values are in `samples`, but equality is performed without rounding.
+  // For signed 64 bit ints, min and max wrap around, min-1=max and max+1=min
+  if (bits == 64) {
+    // TODO(keertip): fix tests for Uint64 / Int64 as now Uints are represented
+    // as signed ints.
+    expect(buffer.contains(min - 1), isTrue);
+    expect(buffer.contains(max + 1), isTrue);
+  } else {
+    // Both values are in `samples`, but equality is performed without rounding.
+    expect(buffer.contains(min - 1), isFalse);
+    expect(buffer.contains(max + 1), isFalse);
+  }
+  expect(buffer.contains(round(min - 1)), isTrue);
+  expect(buffer.contains(round(max + 1)), isTrue);
+
+  // Accessing the underlying buffer works.
+  buffer.length = 2;
+  buffer[0] = min;
+  buffer[1] = max;
+  var byteBuffer = new Uint8List.view(buffer.buffer);
+  int byteSize = buffer.elementSizeInBytes;
+  for (int i = 0; i < byteSize; i++) {
+    int tmp = byteBuffer[i];
+    byteBuffer[i] = byteBuffer[byteSize + i];
+    byteBuffer[byteSize + i] = tmp;
+  }
+  expect(buffer[0], equals(max));
+  expect(buffer[1], equals(min));
+}
+
+void testUint(int bits, buffer(int length), {String testOn}) {
+  int min = 0;
+  var rounder = uintRounder(bits);
+  int max = rounder(-1);
+  test("Uint${bits}Buffer", () {
+    testIntBuffer(bits, min, max, buffer, rounder);
+  }, testOn: testOn);
+}
+
+Rounder uintRounder(bits) {
+  int halfbits = (1 << (bits ~/ 2)) - 1;
+  int mask = halfbits | (halfbits << (bits ~/ 2));
+  return (int x) => x & mask;
+}
+
+typedef int Rounder(int value);
+
 class MatchesInt32x4 extends Matcher {
   Int32x4 result;
   MatchesInt32x4(this.result);
+  Description describe(Description description) =>
+      description.add('Int32x4.==');
+
   bool matches(item, Map matchState) {
     if (item is! Int32x4) return false;
     Int32x4 value = item;
@@ -524,7 +534,4 @@ class MatchesInt32x4 extends Matcher {
         result.z == value.z &&
         result.w == value.w;
   }
-
-  Description describe(Description description) =>
-      description.add('Int32x4.==');
 }
