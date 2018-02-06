@@ -494,6 +494,8 @@ void main() {
           new Int64.fromInts(0xd048d115, 0x9d159c00));
       expect(new Int64(-1) << 5, new Int64(-32));
       expect(new Int64(-1) << 0, new Int64(-1));
+      expect(new Int64(42) << 64, Int64.ZERO);
+      expect(new Int64(42) << 65, Int64.ZERO);
       expect(() => new Int64(17) << -1, throwsArgumentError);
       expect(() => new Int64(17) << null, throwsNoSuchMethodError);
     });
@@ -506,6 +508,8 @@ void main() {
           new Int64.fromInts(0xffe48d04, 0x8d1159d1));
       expect(
           new Int64.fromInts(0xFFFFFFF, 0xFFFFFFFF) >> 34, new Int64(67108863));
+      expect(new Int64(42) >> 64, Int64.ZERO);
+      expect(new Int64(42) >> 65, Int64.ZERO);
       for (int n = 0; n <= 66; n++) {
         expect(new Int64(-1) >> n, new Int64(-1));
       }
@@ -590,6 +594,8 @@ void main() {
           new Int64.fromInts(0x00000000, 0x00092345));
       expect(new Int64.fromInts(0x00000000, 0x00009234),
           new Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(48));
+      expect(new Int64(-1).shiftRightUnsigned(64), Int64.ZERO);
+      expect(new Int64(1).shiftRightUnsigned(64), Int64.ZERO);
       expect(() => new Int64(17).shiftRightUnsigned(-1), throwsArgumentError);
       expect(() => new Int64(17).shiftRightUnsigned(null),
           throwsNoSuchMethodError);
