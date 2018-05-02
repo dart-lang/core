@@ -30,7 +30,7 @@ main() {
 
   testInt32x4Buffer(intSamples);
 
-  List roundedFloatSamples = floatSamples.map(roundToFloat).toList();
+  var roundedFloatSamples = floatSamples.map(roundToFloat).toList();
   testFloatBuffer(
       32, roundedFloatSamples, () => new Float32Buffer(), roundToFloat);
   testFloatBuffer(64, doubleSamples, () => new Float64Buffer(), (x) => x);
@@ -147,7 +147,7 @@ main() {
   });
 }
 
-const List doubleSamples = const [
+const doubleSamples = const [
   0.0,
   5e-324, //                  Minimal denormal value.
   2.225073858507201e-308, //  Maximal denormal value.
@@ -308,7 +308,8 @@ testFloat32x4Buffer(List floatSamples) {
 // Takes bit-size, min value, max value, function to create a buffer, and
 // the rounding that is applied when storing values outside the valid range
 // into the buffer.
-testFloatBuffer(int bitSize, List samples, create(), double round(double v)) {
+void testFloatBuffer(
+    int bitSize, List<double> samples, create(), double round(double v)) {
   test("Float${bitSize}Buffer", () {
     var buffer = create();
     expect(buffer, new isInstanceOf<List<double>>());
