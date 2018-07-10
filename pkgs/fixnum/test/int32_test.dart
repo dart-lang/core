@@ -108,7 +108,7 @@ void main() {
           () => new Int32(17) ~/ Int32.ZERO,
           // with dart2js, `UnsupportedError` is thrown
           // on the VM: IntegerDivisionByZeroException
-          throwsA(anyOf(new isInstanceOf<IntegerDivisionByZeroException>(),
+          throwsA(anyOf(new TypeMatcher<IntegerDivisionByZeroException>(),
               isUnsupportedError)));
       expect(() => new Int32(17) ~/ null, throwsArgumentError);
     });
@@ -383,8 +383,7 @@ void main() {
       checkInt(4294967295);
       checkInt(4294967296);
       expect(() => Int32.parseRadix('xyzzy', -1), throwsArgumentError);
-      expect(() => Int32.parseRadix('plugh', 10),
-          throwsA(new isInstanceOf<FormatException>()));
+      expect(() => Int32.parseRadix('plugh', 10), throwsFormatException);
     });
 
     test("parseRadix", () {

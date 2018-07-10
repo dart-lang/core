@@ -1,3 +1,7 @@
+## 0.10.8
+
+* Require Dart `>=2.0.0-dev.65`.
+
 ## 0.10.7
 
 * Bug fix: Make bit shifts work at bitwidth boundaries. Previously,

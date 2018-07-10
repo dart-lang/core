@@ -227,13 +227,13 @@ void main() {
       expect(new Int64(829893893) ~/ new Int64(1919), new Int32(432461));
       expect(new Int64(829893893) ~/ 1919, new Int32(432461));
       expect(() => new Int64(1) ~/ Int64.ZERO,
-          throwsA(new isInstanceOf<IntegerDivisionByZeroException>()));
+          throwsA(new TypeMatcher<IntegerDivisionByZeroException>()));
       expect(Int64.MIN_VALUE ~/ new Int64(2),
           new Int64.fromInts(0xc0000000, 0x00000000));
       expect(Int64.MIN_VALUE ~/ new Int64(1), Int64.MIN_VALUE);
       expect(Int64.MIN_VALUE ~/ new Int64(-1), Int64.MIN_VALUE);
       expect(() => new Int64(17) ~/ Int64.ZERO,
-          throwsA(new isInstanceOf<IntegerDivisionByZeroException>()));
+          throwsA(new TypeMatcher<IntegerDivisionByZeroException>()));
       argumentErrorTest("~/", (a, b) => a ~/ b);
     });
 
@@ -788,8 +788,7 @@ void main() {
       checkInt(-4294967295);
       checkInt(-4294967296);
       expect(() => Int64.parseRadix('xyzzy', -1), throwsArgumentError);
-      expect(() => Int64.parseRadix('plugh', 10),
-          throwsA(new isInstanceOf<FormatException>()));
+      expect(() => Int64.parseRadix('plugh', 10), throwsFormatException);
     });
 
     test("parseHex", () {
