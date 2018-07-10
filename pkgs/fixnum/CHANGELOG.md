@@ -1,6 +1,6 @@
 ## 0.10.7
 
-* Bugfix: Make bitshifts work at bitwidth boundaries. Previously,
+* Bug fix: Make bit shifts work at bitwidth boundaries. Previously,
   `new Int64(3) << 64 == Int64(3)`. This ensures that the result is 0 in such
   cases.
 * Updated maximum SDK constraint from 2.0.0-dev.infinity to 2.0.0.
