@@ -689,24 +689,6 @@ void main() {
       expect(new Int64(4503599627370496).toInt(), 4503599627370496);
       expect(new Int64(-4503599627370495).toInt(), -4503599627370495);
       expect(new Int64(-4503599627370496).toInt(), -4503599627370496);
-      expect(Int64.parseInt("-10000000000000000").toInt(),
-          same(-10000000000000000));
-      expect(Int64.parseInt("-10000000000000001").toInt(),
-          same(-10000000000000001));
-      expect(Int64.parseInt("-10000000000000002").toInt(),
-          same(-10000000000000002));
-      expect(Int64.parseInt("-10000000000000003").toInt(),
-          same(-10000000000000003));
-      expect(Int64.parseInt("-10000000000000004").toInt(),
-          same(-10000000000000004));
-      expect(Int64.parseInt("-10000000000000005").toInt(),
-          same(-10000000000000005));
-      expect(Int64.parseInt("-10000000000000006").toInt(),
-          same(-10000000000000006));
-      expect(Int64.parseInt("-10000000000000007").toInt(),
-          same(-10000000000000007));
-      expect(Int64.parseInt("-10000000000000008").toInt(),
-          same(-10000000000000008));
     });
 
     test("toInt32", () {
@@ -763,8 +745,6 @@ void main() {
     check(10);
     check(1000000000000000000);
     check(9223372000000000000); // near Int64.MAX_VALUE, has exact double value
-    check(9223372036854775807); // Int64.MAX_VALUE, rounds up to -MIN_VALUE
-    check(-9223372036854775808); // Int64.MIN_VALUE
   });
 
   group("parse", () {
