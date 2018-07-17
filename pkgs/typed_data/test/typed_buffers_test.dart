@@ -265,7 +265,7 @@ testFloat32x4Buffer(List floatSamples) {
 
   test("Float32x4Buffer", () {
     var buffer = new Float32x4Buffer(5);
-    expect(buffer, new isInstanceOf<List<Float32x4>>());
+    expect(buffer, new TypeMatcher<List<Float32x4>>());
 
     expect(buffer.length, equals(5));
     expect(buffer.elementSizeInBytes, equals(128 ~/ 8));
@@ -312,7 +312,7 @@ void testFloatBuffer(
     int bitSize, List<double> samples, create(), double round(double v)) {
   test("Float${bitSize}Buffer", () {
     var buffer = create();
-    expect(buffer, new isInstanceOf<List<double>>());
+    expect(buffer, new TypeMatcher<List<double>>());
     int byteSize = bitSize ~/ 8;
 
     expect(buffer.length, equals(0));
@@ -380,7 +380,7 @@ void testInt32x4Buffer(List<int> intSamples) {
     Matcher equals32x4(Int32x4 expected) => new MatchesInt32x4(expected);
 
     var buffer = new Int32x4Buffer(0);
-    expect(buffer, new isInstanceOf<List<Int32x4>>());
+    expect(buffer, new TypeMatcher<List<Int32x4>>());
     expect(buffer.length, equals(0));
 
     expect(buffer.elementSizeInBytes, equals(bytes));
@@ -439,7 +439,7 @@ void testIntBuffer(
   assert(round(max) == max);
   // All int buffers default to the value 0.
   var buffer = create(0);
-  expect(buffer, new isInstanceOf<List<int>>());
+  expect(buffer, new TypeMatcher<List<int>>());
   expect(buffer.length, equals(0));
   var bytes = bits ~/ 8;
 
