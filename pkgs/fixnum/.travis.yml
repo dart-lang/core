@@ -7,7 +7,7 @@ dart_task:
  - test: --platform vm
    xvfb: false
  - test: --platform firefox -j 1
- - dartanalyzer --fatal-warnings
+ - dartanalyzer: --fatal-warnings .
  - dartfmt
 
 # Only building master means that we don't run two builds for each pull request.

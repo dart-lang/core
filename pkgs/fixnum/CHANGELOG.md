@@ -1,6 +1,6 @@
 ## 0.10.8
 
-* Require Dart `>=2.0.0-dev.65`.
+* Set SDK version constraint to `>=2.0.0-dev.65 <3.0.0`.
 
 ## 0.10.7
 
