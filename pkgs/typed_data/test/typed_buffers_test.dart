@@ -2,29 +2,65 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// Tests typed-data buffer classes.
+@TestOn('!vm')
 
 import "dart:typed_data";
 
 import "package:test/test.dart";
 import "package:typed_data/typed_buffers.dart";
 
-main() {
-  testUint(8, (l) => new Uint8Buffer(l));
-  testInt(8, (l) => new Int8Buffer(l));
+const List<int> browserSafeIntSamples = const [
+  0x8000000000000000, // 2^63
+  0x100000001,
+  0x100000000, // 2^32
+  0x0ffffffff,
+  0xaaaaaaaa,
+  0x80000001,
+  0x80000000, // 2^31
+  0x7fffffff,
+  0x55555555,
+  0x10001,
+  0x10000, // 2^16
+  0x0ffff,
+  0xaaaa,
+  0x8001,
+  0x8000, // 2^15
+  0x7fff,
+  0x5555,
+  0x101,
+  0x100, // 2^8
+  0x0ff,
+  0xaa,
+  0x81,
+  0x80, // 2^7
+  0x7f,
+  0x55,
+  0x02,
+  0x01,
+  0x00
+];
+
+void main() {
+  initTests(browserSafeIntSamples);
+}
+
+void initTests(List<int> intSamples) {
+  testUint(intSamples, 8, (l) => new Uint8Buffer(l));
+  testInt(intSamples, 8, (l) => new Int8Buffer(l));
   test("Uint8ClampedBuffer", () {
-    testIntBuffer(8, 0, 255, (l) => new Uint8ClampedBuffer(l), clampUint8);
+    testIntBuffer(
+        intSamples, 8, 0, 255, (l) => new Uint8ClampedBuffer(l), clampUint8);
   });
-  testUint(16, (l) => new Uint16Buffer(l));
-  testInt(16, (l) => new Int16Buffer(l));
-  testUint(32, (l) => new Uint32Buffer(l));
+  testUint(intSamples, 16, (l) => new Uint16Buffer(l));
+  testInt(intSamples, 16, (l) => new Int16Buffer(l));
+  testUint(intSamples, 32, (l) => new Uint32Buffer(l));
 
-  testInt(32, (l) => new Int32Buffer(l));
+  testInt(intSamples, 32, (l) => new Int32Buffer(l));
 
-  testUint(64, (l) => new Uint64Buffer(l),
+  testUint(intSamples, 64, (l) => new Uint64Buffer(l),
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: "dart-vm");
-  testInt(64, (l) => new Int64Buffer(l),
+  testInt(intSamples, 64, (l) => new Int64Buffer(l),
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: "dart-vm");
 
@@ -185,42 +221,6 @@ const floatSamples = const [
   16777215.0
 ];
 
-const List<int> intSamples = const [
-  0x0ffffffffffffffff,
-  0xaaaaaaaaaaaaaaaa,
-  0x8000000000000001,
-  0x8000000000000000, // 2^63
-  0x7fffffffffffffff,
-  0x5555555555555555,
-  0x100000001,
-  0x100000000, // 2^32
-  0x0ffffffff,
-  0xaaaaaaaa,
-  0x80000001,
-  0x80000000, // 2^31
-  0x7fffffff,
-  0x55555555,
-  0x10001,
-  0x10000, // 2^16
-  0x0ffff,
-  0xaaaa,
-  0x8001,
-  0x8000, // 2^15
-  0x7fff,
-  0x5555,
-  0x101,
-  0x100, // 2^8
-  0x0ff,
-  0xaa,
-  0x81,
-  0x80, // 2^7
-  0x7f,
-  0x55,
-  0x02,
-  0x01,
-  0x00
-];
-
 int clampUint8(x) => x < 0 ? 0 : x > 255 ? 255 : x;
 
 void doubleEqual(x, y) {
@@ -366,11 +366,12 @@ void testFloatBuffer(
   });
 }
 
-void testInt(int bits, buffer(int length), {String testOn}) {
+void testInt(List<int> intSamples, int bits, buffer(int length),
+    {String testOn}) {
   int min = -(1 << (bits - 1));
   int max = -(min + 1);
   test("Int${bits}Buffer", () {
-    testIntBuffer(bits, min, max, buffer, intRounder(bits));
+    testIntBuffer(intSamples, bits, min, max, buffer, intRounder(bits));
   }, testOn: testOn);
 }
 
@@ -433,8 +434,8 @@ void testInt32x4Buffer(List<int> intSamples) {
   });
 }
 
-void testIntBuffer(
-    int bits, int min, int max, create(int length), int round(int val)) {
+void testIntBuffer(List<int> intSamples, int bits, int min, int max,
+    create(int length), int round(int val)) {
   assert(round(min) == min);
   assert(round(max) == max);
   // All int buffers default to the value 0.
@@ -504,12 +505,13 @@ void testIntBuffer(
   expect(buffer[1], equals(min));
 }
 
-void testUint(int bits, buffer(int length), {String testOn}) {
+void testUint(List<int> intSamples, int bits, buffer(int length),
+    {String testOn}) {
   int min = 0;
   var rounder = uintRounder(bits);
   int max = rounder(-1);
   test("Uint${bits}Buffer", () {
-    testIntBuffer(bits, min, max, buffer, rounder);
+    testIntBuffer(intSamples, bits, min, max, buffer, rounder);
   }, testOn: testOn);
 }
 
