@@ -1,10 +1,6 @@
-## 1.1.7
-
-* Set max SDK version to `<3.0.0`, and adjust other dependencies.
-
 ## 1.1.6
 
-* Update tests to work with Dart 2.0 64 bit ints.
+* Set max SDK version to `<3.0.0`, and adjust other dependencies.
 
 ## 1.1.5
 
