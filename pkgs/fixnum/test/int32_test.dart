@@ -213,18 +213,18 @@ void main() {
     });
 
     test("==", () {
-      expect(Int32(17) == Int32(18), false);
-      expect(Int32(17) == Int32(17), true);
-      expect(Int32(17) == Int32(16), false);
-      expect(Int32(17) == Int64(18), false);
-      expect(Int32(17) == Int64(17), true);
-      expect(Int32(17) == Int64(16), false);
-      expect(Int32.MIN_VALUE == Int32.MAX_VALUE, false);
-      expect(Int32(17) == 18, false);
-      expect(Int32(17) == 17, true);
-      expect(Int32(17) == 16, false);
-      expect(Int32(17) == Object(), false);
-      expect(Int32(17) == null, false);
+      expect(Int32(17), isNot(equals(Int32(18))));
+      expect(Int32(17), equals(Int32(17)));
+      expect(Int32(17), isNot(equals(Int32(16))));
+      expect(Int32(17), isNot(equals(Int64(18))));
+      expect(Int32(17), equals(Int64(17)));
+      expect(Int32(17), isNot(equals(Int64(16))));
+      expect(Int32.MIN_VALUE, isNot(equals(Int32.MAX_VALUE)));
+      expect(Int32(17), isNot(equals(18)));
+      expect(Int32(17) == 17, isTrue);
+      expect(Int32(17), isNot(equals(16)));
+      expect(Int32(17), isNot(equals(Object())));
+      expect(Int32(17), isNot(equals(null)));
     });
 
     test(">=", () {

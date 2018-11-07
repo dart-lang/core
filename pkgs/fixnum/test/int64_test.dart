@@ -373,31 +373,31 @@ void main() {
     });
 
     test("==", () {
-      expect(Int64(0) == Int64(0), true);
-      expect(Int64(0) == Int64(1), false);
-      expect(Int64(0) == Int32(0), true);
-      expect(Int64(0) == Int32(1), false);
-      expect(Int64(0) == 0, true);
-      expect(Int64(0) == 1, false);
-      expect(Int64(10) == Int64(11), false);
-      expect(Int64(10) == Int64(10), true);
-      expect(Int64(10) == Int64(9), false);
-      expect(Int64(10) == Int32(11), false);
-      expect(Int64(10) == Int32(10), true);
-      expect(Int64(10) == Int32(9), false);
-      expect(Int64(10) == 11, false);
-      expect(Int64(10) == 10, true);
-      expect(Int64(10) == 9, false);
-      expect(Int64(-10) == Int64(-10), true);
+      expect(Int64(0), equals(Int64(0)));
+      expect(Int64(0), isNot(equals(Int64(1))));
+      expect(Int64(0), equals(Int32(0)));
+      expect(Int64(0), isNot(equals(Int32(1))));
+      expect(Int64(0) == 0, isTrue);
+      expect(Int64(0), isNot(equals(1)));
+      expect(Int64(10), isNot(equals(Int64(11))));
+      expect(Int64(10), equals(Int64(10)));
+      expect(Int64(10), isNot(equals(Int64(9))));
+      expect(Int64(10), isNot(equals(Int32(11))));
+      expect(Int64(10), equals(Int32(10)));
+      expect(Int64(10), isNot(equals(Int32(9))));
+      expect(Int64(10), isNot(equals(11)));
+      expect(Int64(10) == 10, isTrue);
+      expect(Int64(10), isNot(equals(9)));
+      expect(Int64(-10), equals(Int64(-10)));
       expect(Int64(-10) != Int64(-10), false);
-      expect(Int64(-10) == -10, true);
-      expect(Int64(-10) == -9, false);
-      expect(largePos == largePos, true);
-      expect(largePos == largePosPlusOne, false);
-      expect(largePosPlusOne == largePos, false);
-      expect(Int64.MIN_VALUE == Int64.MAX_VALUE, false);
-      expect(Int64(17) == Object(), false);
-      expect(Int64(17) == null, false);
+      expect(Int64(-10) == -10, isTrue);
+      expect(Int64(-10), isNot(equals(-9)));
+      expect(largePos, equals(largePos));
+      expect(largePos, isNot(equals(largePosPlusOne)));
+      expect(largePosPlusOne, isNot(equals(largePos)));
+      expect(Int64.MIN_VALUE, isNot(equals(Int64.MAX_VALUE)));
+      expect(Int64(17), isNot(equals(Object())));
+      expect(Int64(17), isNot(equals(null)));
     });
 
     test(">=", () {
