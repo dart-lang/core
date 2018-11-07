@@ -888,5 +888,29 @@ void main() {
       expect(() => new Int64(42).toRadixString(0), throwsArgumentError);
       expect(() => new Int64(42).toRadixString(37), throwsArgumentError);
     });
+
+    test("toStringUnsigned", () {
+      List<Int64> values = [];
+      for (int high = 0; high < 16; high++) {
+        for (int low = -2; low <= 2; low++) {
+          values.add((Int64(high) << (64 - 4)) + Int64(low));
+        }
+      }
+
+      for (Int64 value in values) {
+        for (int radix = 2; radix <= 36; radix++) {
+          String s1 = value.toRadixStringUnsigned(radix);
+          Int64 v2 = Int64.parseRadix(s1, radix);
+          expect(v2, value);
+          String s2 = v2.toRadixStringUnsigned(radix);
+          expect(s2, s1);
+        }
+        String s3 = value.toStringUnsigned();
+        Int64 v4 = Int64.parseInt(s3);
+        expect(v4, value);
+        String s4 = v4.toStringUnsigned();
+        expect(s4, s3);
+      }
+    });
   });
 }

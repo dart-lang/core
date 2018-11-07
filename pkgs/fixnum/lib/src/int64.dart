@@ -668,6 +668,19 @@ class Int64 implements IntX {
     return hexStr;
   }
 
+  /**
+   * Returns the digits of [this] when interpreted as an unsigned 64-bit value.
+   */
+  @pragma('dart2js:noInline')
+  String toStringUnsigned() {
+    return _toRadixStringUnsigned(10, _l, _m, _h, '');
+  }
+
+  @pragma('dart2js:noInline')
+  String toRadixStringUnsigned(int radix) {
+    return _toRadixStringUnsigned(Int32._validateRadix(radix), _l, _m, _h, '');
+  }
+
   String toRadixString(int radix) {
     return _toRadixString(Int32._validateRadix(radix));
   }
@@ -676,8 +689,6 @@ class Int64 implements IntX {
     int d0 = _l;
     int d1 = _m;
     int d2 = _h;
-
-    if (d0 == 0 && d1 == 0 && d2 == 0) return '0';
 
     String sign = '';
     if ((d2 & _SIGN_BIT_MASK) != 0) {
@@ -695,6 +706,12 @@ class Int64 implements IntX {
       // d2, d1, d0 now are an unsigned 64 bit integer for MIN_VALUE and an
       // unsigned 63 bit integer for other values.
     }
+    return _toRadixStringUnsigned(radix, d0, d1, d2, sign);
+  }
+
+  static String _toRadixStringUnsigned(
+      int radix, int d0, int d1, int d2, String sign) {
+    if (d0 == 0 && d1 == 0 && d2 == 0) return '0';
 
     // Rearrange components into five components where all but the most
     // significant are 10 bits wide.
