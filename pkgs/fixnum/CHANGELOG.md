@@ -1,6 +1,6 @@
 ## 0.10.9
 
-* Add `Int64.toStringUnsigned()` method.
+* Add `Int64.toStringUnsigned()` and `Int64.toRadixStringUnsigned()` functions.
 
 ## 0.10.8
 
