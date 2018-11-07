@@ -4,37 +4,25 @@
 
 part of fixnum;
 
-/**
- * An immutable 32-bit signed integer, in the range [-2^31, 2^31 - 1].
- * Arithmetic operations may overflow in order to maintain this range.
- */
+/// An immutable 32-bit signed integer, in the range [-2^31, 2^31 - 1].
+/// Arithmetic operations may overflow in order to maintain this range.
 class Int32 implements IntX {
-  /**
-   * The maximum positive value attainable by an [Int32], namely
-   * 2147483647.
-   */
-  static const Int32 MAX_VALUE = const Int32._internal(0x7FFFFFFF);
+  /// The maximum positive value attainable by an [Int32], namely
+  /// 2147483647.
+  static const Int32 MAX_VALUE = Int32._internal(0x7FFFFFFF);
 
-  /**
-   * The minimum positive value attainable by an [Int32], namely
-   * -2147483648.
-   */
-  static const Int32 MIN_VALUE = const Int32._internal(-0x80000000);
+  /// The minimum positive value attainable by an [Int32], namely
+  /// -2147483648.
+  static const Int32 MIN_VALUE = Int32._internal(-0x80000000);
 
-  /**
-   * An [Int32] constant equal to 0.
-   */
-  static const Int32 ZERO = const Int32._internal(0);
+  /// An [Int32] constant equal to 0.
+  static const Int32 ZERO = Int32._internal(0);
 
-  /**
-   * An [Int32] constant equal to 1.
-   */
-  static const Int32 ONE = const Int32._internal(1);
+  /// An [Int32] constant equal to 1.
+  static const Int32 ONE = Int32._internal(1);
 
-  /**
-   * An [Int32] constant equal to 2.
-   */
-  static const Int32 TWO = const Int32._internal(2);
+  /// An [Int32] constant equal to 2.
+  static const Int32 TWO = Int32._internal(2);
 
   // Hex digit char codes
   static const int _CC_0 = 48; // '0'.codeUnitAt(0)
@@ -58,13 +46,11 @@ class Int32 implements IntX {
 
   static int _validateRadix(int radix) {
     if (2 <= radix && radix <= 36) return radix;
-    throw new RangeError.range(radix, 2, 36, 'radix');
+    throw RangeError.range(radix, 2, 36, 'radix');
   }
 
-  /**
-   * Parses a [String] in a given [radix] between 2 and 16 and returns an
-   * [Int32].
-   */
+  /// Parses a [String] in a given [radix] between 2 and 16 and returns an
+  /// [Int32].
   // TODO(rice) - Make this faster by converting several digits at once.
   static Int32 parseRadix(String s, int radix) {
     _validateRadix(radix);
@@ -73,21 +59,17 @@ class Int32 implements IntX {
       int c = s.codeUnitAt(i);
       int digit = _decodeDigit(c);
       if (digit < 0 || digit >= radix) {
-        throw new FormatException("Non-radix code unit: $c");
+        throw FormatException("Non-radix code unit: $c");
       }
       x = (x * radix) + digit;
     }
     return x;
   }
 
-  /**
-   * Parses a decimal [String] and returns an [Int32].
-   */
-  static Int32 parseInt(String s) => new Int32(int.parse(s));
+  /// Parses a decimal [String] and returns an [Int32].
+  static Int32 parseInt(String s) => Int32(int.parse(s));
 
-  /**
-   * Parses a hexadecimal [String] and returns an [Int32].
-   */
+  /// Parses a hexadecimal [String] and returns an [Int32].
   static Int32 parseHex(String s) => parseRadix(s, 16);
 
   // Assumes i is <= 32-bit.
@@ -134,10 +116,8 @@ class Int32 implements IntX {
 
   const Int32._internal(int i) : _i = i;
 
-  /**
-   * Constructs an [Int32] from an [int].  Only the low 32 bits of the input
-   * are used.
-   */
+  /// Constructs an [Int32] from an [int].  Only the low 32 bits of the input
+  /// are used.
   Int32([int i = 0]) : _i = (i & 0x7fffffff) - (i & 0x80000000);
 
   // Returns the [int] representation of the specified value. Throws
@@ -148,7 +128,7 @@ class Int32 implements IntX {
     } else if (val is int) {
       return val;
     }
-    throw new ArgumentError(val);
+    throw ArgumentError(val);
   }
 
   // The +, -, * , &, |, and ^ operaters deal with types as follows:
@@ -169,17 +149,17 @@ class Int32 implements IntX {
     if (other is Int64) {
       return this.toInt64() + other;
     }
-    return new Int32(_i + _toInt(other));
+    return Int32(_i + _toInt(other));
   }
 
   IntX operator -(other) {
     if (other is Int64) {
       return this.toInt64() - other;
     }
-    return new Int32(_i - _toInt(other));
+    return Int32(_i - _toInt(other));
   }
 
-  Int32 operator -() => new Int32(-_i);
+  Int32 operator -() => Int32(-_i);
 
   IntX operator *(other) {
     if (other is Int64) {
@@ -194,14 +174,14 @@ class Int32 implements IntX {
       // Result will be Int32
       return (this.toInt64() % other).toInt32();
     }
-    return new Int32(_i % _toInt(other));
+    return Int32(_i % _toInt(other));
   }
 
   Int32 operator ~/(other) {
     if (other is Int64) {
       return (this.toInt64() ~/ other).toInt32();
     }
-    return new Int32(_i ~/ _toInt(other));
+    return Int32(_i ~/ _toInt(other));
   }
 
   Int32 remainder(other) {
@@ -216,38 +196,38 @@ class Int32 implements IntX {
     if (other is Int64) {
       return (this.toInt64() & other).toInt32();
     }
-    return new Int32(_i & _toInt(other));
+    return Int32(_i & _toInt(other));
   }
 
   Int32 operator |(other) {
     if (other is Int64) {
       return (this.toInt64() | other).toInt32();
     }
-    return new Int32(_i | _toInt(other));
+    return Int32(_i | _toInt(other));
   }
 
   Int32 operator ^(other) {
     if (other is Int64) {
       return (this.toInt64() ^ other).toInt32();
     }
-    return new Int32(_i ^ _toInt(other));
+    return Int32(_i ^ _toInt(other));
   }
 
-  Int32 operator ~() => new Int32(~_i);
+  Int32 operator ~() => Int32(~_i);
 
   Int32 operator <<(int n) {
     if (n < 0) {
-      throw new ArgumentError(n);
+      throw ArgumentError(n);
     }
     if (n >= 32) {
       return ZERO;
     }
-    return new Int32(_i << n);
+    return Int32(_i << n);
   }
 
   Int32 operator >>(int n) {
     if (n < 0) {
-      throw new ArgumentError(n);
+      throw ArgumentError(n);
     }
     if (n >= 32) {
       return isNegative ? const Int32._internal(-1) : ZERO;
@@ -258,12 +238,12 @@ class Int32 implements IntX {
     } else {
       value = (_i >> n) | (0xffffffff << (32 - n));
     }
-    return new Int32(value);
+    return Int32(value);
   }
 
   Int32 shiftRightUnsigned(int n) {
     if (n < 0) {
-      throw new ArgumentError(n);
+      throw ArgumentError(n);
     }
     if (n >= 32) {
       return ZERO;
@@ -274,13 +254,11 @@ class Int32 implements IntX {
     } else {
       value = (_i >> n) & ((1 << (32 - n)) - 1);
     }
-    return new Int32(value);
+    return Int32(value);
   }
 
-  /**
-   * Returns [:true:] if this [Int32] has the same numeric value as the
-   * given object.  The argument may be an [int] or an [IntX].
-   */
+  /// Returns [:true:] if this [Int32] has the same numeric value as the
+  /// given object.  The argument may be an [int] or an [IntX].
   bool operator ==(other) {
     if (other is Int32) {
       return _i == other._i;
@@ -337,17 +315,17 @@ class Int32 implements IntX {
 
   int get hashCode => _i;
 
-  Int32 abs() => _i < 0 ? new Int32(-_i) : this;
+  Int32 abs() => _i < 0 ? Int32(-_i) : this;
 
   Int32 clamp(lowerLimit, upperLimit) {
     if (this < lowerLimit) {
       if (lowerLimit is IntX) return lowerLimit.toInt32();
-      if (lowerLimit is int) return new Int32(lowerLimit);
-      throw new ArgumentError(lowerLimit);
+      if (lowerLimit is int) return Int32(lowerLimit);
+      throw ArgumentError(lowerLimit);
     } else if (this > upperLimit) {
       if (upperLimit is IntX) return upperLimit.toInt32();
-      if (upperLimit is int) return new Int32(upperLimit);
-      throw new ArgumentError(upperLimit);
+      if (upperLimit is int) return Int32(upperLimit);
+      throw ArgumentError(upperLimit);
     }
     return this;
   }
@@ -356,17 +334,17 @@ class Int32 implements IntX {
   int numberOfTrailingZeros() => _numberOfTrailingZeros(_i);
 
   Int32 toSigned(int width) {
-    if (width < 1 || width > 32) throw new RangeError.range(width, 1, 32);
-    return new Int32(_i.toSigned(width));
+    if (width < 1 || width > 32) throw RangeError.range(width, 1, 32);
+    return Int32(_i.toSigned(width));
   }
 
   Int32 toUnsigned(int width) {
-    if (width < 0 || width > 32) throw new RangeError.range(width, 0, 32);
-    return new Int32(_i.toUnsigned(width));
+    if (width < 0 || width > 32) throw RangeError.range(width, 0, 32);
+    return Int32(_i.toUnsigned(width));
   }
 
   List<int> toBytes() {
-    List<int> result = new List<int>(4);
+    List<int> result = List<int>(4);
     result[0] = _i & 0xff;
     result[1] = (_i >> 8) & 0xff;
     result[2] = (_i >> 16) & 0xff;
@@ -377,7 +355,7 @@ class Int32 implements IntX {
   double toDouble() => _i.toDouble();
   int toInt() => _i;
   Int32 toInt32() => this;
-  Int64 toInt64() => new Int64(_i);
+  Int64 toInt64() => Int64(_i);
 
   String toString() => _i.toString();
   String toHexString() => _i.toRadixString(16);

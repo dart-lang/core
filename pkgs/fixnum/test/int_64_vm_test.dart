@@ -34,8 +34,8 @@ void main() {
   test("", () {
     check(int n) {
       // Sign change should commute with conversion.
-      expect(-new Int64(-n), new Int64(n));
-      expect(new Int64(-n), -new Int64(n));
+      expect(-Int64(-n), Int64(n));
+      expect(Int64(-n), -Int64(n));
     }
 
     check(10);
