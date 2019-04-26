@@ -12,7 +12,7 @@ import 'package:typed_data/typed_data.dart';
 import '../utils.dart';
 
 /// The canonical instance of [PercentDecoder].
-const percentDecoder = const PercentDecoder._();
+const percentDecoder = PercentDecoder._();
 
 const _lastPercent = -1;
 
@@ -29,11 +29,11 @@ class PercentDecoder extends Converter<String, List<int>> {
   const PercentDecoder._();
 
   List<int> convert(String string) {
-    var buffer = new Uint8Buffer();
+    var buffer = Uint8Buffer();
     var lastDigit = _decode(string.codeUnits, 0, string.length, buffer);
 
     if (lastDigit != null) {
-      throw new FormatException(
+      throw FormatException(
           "Input ended with incomplete encoded byte.", string, string.length);
     }
 
@@ -41,7 +41,7 @@ class PercentDecoder extends Converter<String, List<int>> {
   }
 
   StringConversionSink startChunkedConversion(Sink<List<int>> sink) =>
-      new _PercentDecoderSink(sink);
+      _PercentDecoderSink(sink);
 }
 
 /// A conversion sink for chunked percent-encoded decoding.
@@ -68,7 +68,7 @@ class _PercentDecoderSink extends StringConversionSinkBase {
       return;
     }
 
-    var buffer = new Uint8Buffer();
+    var buffer = Uint8Buffer();
     var codeUnits = string.codeUnits;
     if (_lastDigit == _lastPercent) {
       _lastDigit = 16 * digitForCodeUnit(codeUnits, start);
@@ -92,7 +92,7 @@ class _PercentDecoderSink extends StringConversionSinkBase {
   }
 
   ByteConversionSink asUtf8Sink(bool allowMalformed) =>
-      new _PercentDecoderByteSink(_sink);
+      _PercentDecoderByteSink(_sink);
 
   void close() => _close();
 
@@ -100,7 +100,7 @@ class _PercentDecoderSink extends StringConversionSinkBase {
   /// if one is thrown.
   void _close([String string, int index]) {
     if (_lastDigit != null) {
-      throw new FormatException(
+      throw FormatException(
           "Input ended with incomplete encoded byte.", string, index);
     }
 
@@ -134,7 +134,7 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
       return;
     }
 
-    var buffer = new Uint8Buffer();
+    var buffer = Uint8Buffer();
     if (_lastDigit == _lastPercent) {
       _lastDigit = 16 * digitForCodeUnit(chunk, start);
       start++;
@@ -162,7 +162,7 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
   /// if one is thrown.
   void _close([List<int> chunk, int index]) {
     if (_lastDigit != null) {
-      throw new FormatException(
+      throw FormatException(
           "Input ended with incomplete encoded byte.", chunk, index);
     }
 
@@ -235,7 +235,7 @@ void _checkForInvalidCodeUnit(
   for (var i = start; i < end; i++) {
     var codeUnit = codeUnits[i];
     if (codeUnit >= 0 && codeUnit <= 0x7f) continue;
-    throw new FormatException(
+    throw FormatException(
         "Non-ASCII code unit "
         "U+${codeUnit.toRadixString(16).padLeft(4, '0')}",
         codeUnits,

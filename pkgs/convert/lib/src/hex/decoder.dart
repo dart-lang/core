@@ -10,7 +10,7 @@ import 'dart:typed_data';
 import '../utils.dart';
 
 /// The canonical instance of [HexDecoder].
-const hexDecoder = const HexDecoder._();
+const hexDecoder = HexDecoder._();
 
 /// A converter that decodes hexadecimal strings into byte arrays.
 ///
@@ -22,17 +22,17 @@ class HexDecoder extends Converter<String, List<int>> {
 
   List<int> convert(String string) {
     if (!string.length.isEven) {
-      throw new FormatException(
+      throw FormatException(
           "Invalid input length, must be even.", string, string.length);
     }
 
-    var bytes = new Uint8List(string.length ~/ 2);
+    var bytes = Uint8List(string.length ~/ 2);
     _decode(string.codeUnits, 0, string.length, bytes, 0);
     return bytes;
   }
 
   StringConversionSink startChunkedConversion(Sink<List<int>> sink) =>
-      new _HexDecoderSink(sink);
+      _HexDecoderSink(sink);
 }
 
 /// A conversion sink for chunked hexadecimal decoding.
@@ -61,11 +61,11 @@ class _HexDecoderSink extends StringConversionSinkBase {
     Uint8List bytes;
     int bytesStart;
     if (_lastDigit == null) {
-      bytes = new Uint8List((end - start) ~/ 2);
+      bytes = Uint8List((end - start) ~/ 2);
       bytesStart = 0;
     } else {
       var hexPairs = (end - start - 1) ~/ 2;
-      bytes = new Uint8List(1 + hexPairs);
+      bytes = Uint8List(1 + hexPairs);
       bytes[0] = _lastDigit + digitForCodeUnit(codeUnits, start);
       start++;
       bytesStart = 1;
@@ -78,7 +78,7 @@ class _HexDecoderSink extends StringConversionSinkBase {
   }
 
   ByteConversionSink asUtf8Sink(bool allowMalformed) =>
-      new _HexDecoderByteSink(_sink);
+      _HexDecoderByteSink(_sink);
 
   void close() => _close();
 
@@ -86,7 +86,7 @@ class _HexDecoderSink extends StringConversionSinkBase {
   /// if one is thrown.
   void _close([String string, int index]) {
     if (_lastDigit != null) {
-      throw new FormatException(
+      throw FormatException(
           "Input ended with incomplete encoded byte.", string, index);
     }
 
@@ -121,11 +121,11 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
     Uint8List bytes;
     int bytesStart;
     if (_lastDigit == null) {
-      bytes = new Uint8List((end - start) ~/ 2);
+      bytes = Uint8List((end - start) ~/ 2);
       bytesStart = 0;
     } else {
       var hexPairs = (end - start - 1) ~/ 2;
-      bytes = new Uint8List(1 + hexPairs);
+      bytes = Uint8List(1 + hexPairs);
       bytes[0] = _lastDigit + digitForCodeUnit(chunk, start);
       start++;
       bytesStart = 1;
@@ -143,7 +143,7 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
   /// if one is thrown.
   void _close([List<int> chunk, int index]) {
     if (_lastDigit != null) {
-      throw new FormatException(
+      throw FormatException(
           "Input ended with incomplete encoded byte.", chunk, index);
     }
 

@@ -10,7 +10,7 @@ import 'dart:typed_data';
 import 'package:charcode/ascii.dart';
 
 /// The canonical instance of [HexEncoder].
-const hexEncoder = const HexEncoder._();
+const hexEncoder = HexEncoder._();
 
 /// A converter that encodes byte arrays into hexadecimal strings.
 ///
@@ -22,7 +22,7 @@ class HexEncoder extends Converter<List<int>, String> {
   String convert(List<int> bytes) => _convert(bytes, 0, bytes.length);
 
   ByteConversionSink startChunkedConversion(Sink<String> sink) =>
-      new _HexEncoderSink(sink);
+      _HexEncoderSink(sink);
 }
 
 /// A conversion sink for chunked hexadecimal encoding.
@@ -51,7 +51,7 @@ String _convert(List<int> bytes, int start, int end) {
   // A Uint8List is more efficient than a StringBuffer given that we know that
   // we're only emitting ASCII-compatible characters, and that we know the
   // length ahead of time.
-  var buffer = new Uint8List((end - start) * 2);
+  var buffer = Uint8List((end - start) * 2);
   var bufferIndex = 0;
 
   // A bitwise OR of all bytes in [bytes]. This allows us to check for
@@ -69,13 +69,13 @@ String _convert(List<int> bytes, int start, int end) {
     buffer[bufferIndex++] = _codeUnitForDigit(byte & 0x0F);
   }
 
-  if (byteOr >= 0 && byteOr <= 255) return new String.fromCharCodes(buffer);
+  if (byteOr >= 0 && byteOr <= 255) return String.fromCharCodes(buffer);
 
   // If there was an invalid byte, find it and throw an exception.
   for (var i = start; i < end; i++) {
     var byte = bytes[i];
     if (byte >= 0 && byte <= 0xff) continue;
-    throw new FormatException(
+    throw FormatException(
         "Invalid byte ${byte < 0 ? "-" : ""}0x${byte.abs().toRadixString(16)}.",
         bytes,
         i);

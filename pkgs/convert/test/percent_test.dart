@@ -115,7 +115,7 @@ void main() {
     group("with chunked conversion", () {
       test("percent-encodes byte arrays", () {
         var results = <String>[];
-        var controller = new StreamController<String>(sync: true);
+        var controller = StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = percent.encoder.startChunkedConversion(controller.sink);
 
@@ -128,7 +128,7 @@ void main() {
 
       test("handles empty and single-byte lists", () {
         var results = <String>[];
-        var controller = new StreamController<String>(sync: true);
+        var controller = StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = percent.encoder.startChunkedConversion(controller.sink);
 
@@ -146,8 +146,8 @@ void main() {
     test("rejects non-bytes", () {
       expect(() => percent.encode([0x100]), throwsFormatException);
 
-      var sink = percent.encoder
-          .startChunkedConversion(new StreamController(sync: true));
+      var sink =
+          percent.encoder.startChunkedConversion(StreamController(sync: true));
       expect(() => sink.add([0x100]), throwsFormatException);
     });
   });
@@ -190,7 +190,7 @@ void main() {
       var sink;
       setUp(() {
         results = [];
-        var controller = new StreamController<List<int>>(sync: true);
+        var controller = StreamController<List<int>>(sync: true);
         controller.stream.listen(results.add);
         sink = percent.decoder.startChunkedConversion(controller.sink);
       });
@@ -320,7 +320,7 @@ void main() {
           expect(() => percent.decode("${char}a"), throwsFormatException);
 
           var sink = percent.decoder
-              .startChunkedConversion(new StreamController(sync: true));
+              .startChunkedConversion(StreamController(sync: true));
           expect(() => sink.add(char), throwsFormatException);
         });
       }

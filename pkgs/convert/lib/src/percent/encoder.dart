@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:charcode/ascii.dart';
 
 /// The canonical instance of [PercentEncoder].
-const percentEncoder = const PercentEncoder._();
+const percentEncoder = PercentEncoder._();
 
 /// A converter that encodes byte arrays into percent-encoded strings.
 ///
@@ -25,7 +25,7 @@ class PercentEncoder extends Converter<List<int>, String> {
   String convert(List<int> bytes) => _convert(bytes, 0, bytes.length);
 
   ByteConversionSink startChunkedConversion(Sink<String> sink) =>
-      new _PercentEncoderSink(sink);
+      _PercentEncoderSink(sink);
 }
 
 /// A conversion sink for chunked percentadecimal encoding.
@@ -51,7 +51,7 @@ class _PercentEncoderSink extends ByteConversionSinkBase {
 }
 
 String _convert(List<int> bytes, int start, int end) {
-  var buffer = new StringBuffer();
+  var buffer = StringBuffer();
 
   // A bitwise OR of all bytes in [bytes]. This allows us to check for
   // out-of-range bytes without adding more branches than necessary to the
@@ -92,7 +92,7 @@ String _convert(List<int> bytes, int start, int end) {
   for (var i = start; i < end; i++) {
     var byte = bytes[i];
     if (byte >= 0 && byte <= 0xff) continue;
-    throw new FormatException(
+    throw FormatException(
         "Invalid byte ${byte < 0 ? "-" : ""}0x${byte.abs().toRadixString(16)}.",
         bytes,
         i);

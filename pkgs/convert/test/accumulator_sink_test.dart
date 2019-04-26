@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 void main() {
   var sink;
   setUp(() {
-    sink = new AccumulatorSink<int>();
+    sink = AccumulatorSink<int>();
   });
 
   test("provides access to events as they're added", () {

@@ -10,7 +10,7 @@ import 'dart:convert';
 class StringAccumulatorSink extends StringConversionSinkBase {
   /// The string accumulated so far.
   String get string => _buffer.toString();
-  final _buffer = new StringBuffer();
+  final _buffer = StringBuffer();
 
   /// Whether [close] has been called.
   bool get isClosed => _isClosed;
@@ -25,7 +25,7 @@ class StringAccumulatorSink extends StringConversionSinkBase {
 
   void add(String chunk) {
     if (_isClosed) {
-      throw new StateError("Can't add to a closed sink.");
+      throw StateError("Can't add to a closed sink.");
     }
 
     _buffer.write(chunk);
@@ -33,7 +33,7 @@ class StringAccumulatorSink extends StringConversionSinkBase {
 
   void addSlice(String chunk, int start, int end, bool isLast) {
     if (_isClosed) {
-      throw new StateError("Can't add to a closed sink.");
+      throw StateError("Can't add to a closed sink.");
     }
 
     _buffer.write(chunk.substring(start, end));

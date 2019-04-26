@@ -31,7 +31,7 @@ int digitForCodeUnit(List<int> codeUnits, int index) {
     if ($a <= letter && letter <= $f) return letter - $a + 10;
   }
 
-  throw new FormatException(
+  throw FormatException(
       "Invalid hexadecimal code unit "
       "U+${codeUnit.toRadixString(16).padLeft(4, '0')}.",
       codeUnits,

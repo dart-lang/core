@@ -9,7 +9,7 @@ import 'dart:collection';
 /// See also [ChunkedConversionSink.withCallback].
 class AccumulatorSink<T> implements Sink<T> {
   /// An unmodifiable list of events passed to this sink so far.
-  List<T> get events => new UnmodifiableListView(_events);
+  List<T> get events => UnmodifiableListView(_events);
   final _events = <T>[];
 
   /// Whether [close] has been called.
@@ -25,7 +25,7 @@ class AccumulatorSink<T> implements Sink<T> {
 
   void add(T event) {
     if (_isClosed) {
-      throw new StateError("Can't add to a closed sink.");
+      throw StateError("Can't add to a closed sink.");
     }
 
     _events.add(event);

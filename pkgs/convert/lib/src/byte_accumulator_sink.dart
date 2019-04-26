@@ -15,9 +15,9 @@ class ByteAccumulatorSink extends ByteConversionSinkBase {
   ///
   /// The returned [Uint8List] is viewing a shared buffer, so it should not be
   /// changed and any bytes outside the view should not be accessed.
-  Uint8List get bytes => new Uint8List.view(_buffer.buffer, 0, _buffer.length);
+  Uint8List get bytes => Uint8List.view(_buffer.buffer, 0, _buffer.length);
 
-  final _buffer = new Uint8Buffer();
+  final _buffer = Uint8Buffer();
 
   /// Whether [close] has been called.
   bool get isClosed => _isClosed;
@@ -32,7 +32,7 @@ class ByteAccumulatorSink extends ByteConversionSinkBase {
 
   void add(List<int> bytes) {
     if (_isClosed) {
-      throw new StateError("Can't add to a closed sink.");
+      throw StateError("Can't add to a closed sink.");
     }
 
     _buffer.addAll(bytes);
@@ -40,7 +40,7 @@ class ByteAccumulatorSink extends ByteConversionSinkBase {
 
   void addSlice(List<int> chunk, int start, int end, bool isLast) {
     if (_isClosed) {
-      throw new StateError("Can't add to a closed sink.");
+      throw StateError("Can't add to a closed sink.");
     }
 
     _buffer.addAll(chunk, start, end);

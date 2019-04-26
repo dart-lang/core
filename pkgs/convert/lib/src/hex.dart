@@ -6,14 +6,14 @@ library convert.hex;
 
 import 'dart:convert';
 
-import 'hex/encoder.dart';
 import 'hex/decoder.dart';
+import 'hex/encoder.dart';
 
-export 'hex/encoder.dart' hide hexEncoder;
 export 'hex/decoder.dart' hide hexDecoder;
+export 'hex/encoder.dart' hide hexEncoder;
 
 /// The canonical instance of [HexCodec].
-const hex = const HexCodec._();
+const hex = HexCodec._();
 
 /// A codec that converts byte arrays to and from hexadecimal strings, following
 /// [the Base16 spec][rfc].

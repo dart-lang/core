@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 void main() {
   ByteAccumulatorSink sink;
   setUp(() {
-    sink = new ByteAccumulatorSink();
+    sink = ByteAccumulatorSink();
   });
 
   test("provides access to the concatenated bytes", () {

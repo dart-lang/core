@@ -17,8 +17,8 @@ class _IdentityConverter<T> extends Converter<T, T> {
 class IdentityCodec<T> extends Codec<T, T> {
   const IdentityCodec();
 
-  Converter<T, T> get decoder => new _IdentityConverter<T>();
-  Converter<T, T> get encoder => new _IdentityConverter<T>();
+  Converter<T, T> get decoder => _IdentityConverter<T>();
+  Converter<T, T> get encoder => _IdentityConverter<T>();
 
   /// Fuse with an other codec.
   ///

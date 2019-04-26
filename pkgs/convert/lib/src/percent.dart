@@ -6,14 +6,14 @@ library convert.percent;
 
 import 'dart:convert';
 
-import 'percent/encoder.dart';
 import 'percent/decoder.dart';
+import 'percent/encoder.dart';
 
-export 'percent/encoder.dart' hide percentEncoder;
 export 'percent/decoder.dart' hide percentDecoder;
+export 'percent/encoder.dart' hide percentEncoder;
 
 /// The canonical instance of [PercentCodec].
-const percent = const PercentCodec._();
+const percent = PercentCodec._();
 
 // TODO(nweiz): Add flags to support generating and interpreting "+" as a space
 // character. Also add an option for custom sets of unreserved characters.

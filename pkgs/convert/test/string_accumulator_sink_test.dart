@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 void main() {
   var sink;
   setUp(() {
-    sink = new StringAccumulatorSink();
+    sink = StringAccumulatorSink();
   });
 
   test("provides access to the concatenated string", () {

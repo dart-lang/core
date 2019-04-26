@@ -17,7 +17,7 @@ void main() {
     group("with chunked conversion", () {
       test("converts byte arrays to hex", () {
         var results = <String>[];
-        var controller = new StreamController<String>(sync: true);
+        var controller = StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = hex.encoder.startChunkedConversion(controller.sink);
 
@@ -30,7 +30,7 @@ void main() {
 
       test("handles empty and single-byte lists", () {
         var results = <String>[];
-        var controller = new StreamController<String>(sync: true);
+        var controller = StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = hex.encoder.startChunkedConversion(controller.sink);
 
@@ -49,7 +49,7 @@ void main() {
       expect(() => hex.encode([0x100]), throwsFormatException);
 
       var sink =
-          hex.encoder.startChunkedConversion(new StreamController(sync: true));
+          hex.encoder.startChunkedConversion(StreamController(sync: true));
       expect(() => sink.add([0x100]), throwsFormatException);
     });
   });
@@ -83,7 +83,7 @@ void main() {
       var sink;
       setUp(() {
         results = [];
-        var controller = new StreamController<List<int>>(sync: true);
+        var controller = StreamController<List<int>>(sync: true);
         controller.stream.listen(results.add);
         sink = hex.decoder.startChunkedConversion(controller.sink);
       });
@@ -207,8 +207,8 @@ void main() {
           expect(() => hex.decode("a$char"), throwsFormatException);
           expect(() => hex.decode("${char}a"), throwsFormatException);
 
-          var sink = hex.decoder
-              .startChunkedConversion(new StreamController(sync: true));
+          var sink =
+              hex.decoder.startChunkedConversion(StreamController(sync: true));
           expect(() => sink.add(char), throwsFormatException);
         });
       }
