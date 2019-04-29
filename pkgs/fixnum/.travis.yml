@@ -1,7 +1,7 @@
 language: dart
 
 dart:
- - stable
+ - 2.0.0
  - dev
 
 dart_task:
@@ -9,7 +9,12 @@ dart_task:
    xvfb: false
  - test: --platform chrome
  - dartanalyzer: --fatal-warnings --fatal-infos .
- - dartfmt
+
+matrix:
+  include:
+  # Only validate formatting using the dev release
+  - dart: dev
+    dart_task: dartfmt
 
 # Only building master means that we don't run two builds for each pull request.
 branches:
