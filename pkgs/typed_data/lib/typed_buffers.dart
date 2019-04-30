@@ -8,7 +8,7 @@
 /// They use an underlying buffer, and when that buffer becomes too small, it
 /// is replaced by a new buffer.
 ///
-/// That means that using the [TypedDataView.buffer] getter is not guaranteed
+/// That means that using the `buffer` getter is not guaranteed
 /// to return the same result each time it is used, and that the buffer may
 /// be larger than what the list is using.
 library typed_data.typed_buffers;
@@ -17,7 +17,7 @@ import "dart:collection" show ListBase;
 import "dart:typed_data";
 
 abstract class _TypedDataBuffer<E> extends ListBase<E> {
-  static const int INITIAL_LENGTH = 8;
+  static const int _initialLength = 8;
 
   /// The underlying data buffer.
   ///
@@ -32,21 +32,22 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   int _length;
 
   _TypedDataBuffer(List<E> buffer)
-      : this._buffer = buffer,
-        this._length = buffer.length;
+      : _buffer = buffer,
+        _length = buffer.length;
 
   int get length => _length;
+
   E operator [](int index) {
-    if (index >= length) throw new RangeError.index(index, this);
+    if (index >= length) throw RangeError.index(index, this);
     return _buffer[index];
   }
 
   void operator []=(int index, E value) {
-    if (index >= length) throw new RangeError.index(index, this);
+    if (index >= length) throw RangeError.index(index, this);
     _buffer[index] = value;
   }
 
-  void set length(int newLength) {
+  set length(int newLength) {
     if (newLength < _length) {
       E defaultValue = _defaultValue;
       for (int i = newLength; i < _length; i++) {
@@ -54,7 +55,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
       }
     } else if (newLength > _buffer.length) {
       List<E> newBuffer;
-      if (_buffer.length == 0) {
+      if (_buffer.isEmpty) {
         newBuffer = _createBuffer(newLength);
       } else {
         newBuffer = _createBiggerBuffer(newLength);
@@ -89,7 +90,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   void addAll(Iterable<E> values, [int start = 0, int end]) {
     RangeError.checkNotNegative(start, "start");
     if (end != null && start > end) {
-      throw new RangeError.range(end, start, null, "end");
+      throw RangeError.range(end, start, null, "end");
     }
 
     _addAll(values, start, end);
@@ -109,7 +110,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     RangeError.checkNotNegative(start, "start");
     if (end != null) {
       if (start > end) {
-        throw new RangeError.range(end, start, null, "end");
+        throw RangeError.range(end, start, null, "end");
       }
       if (start == end) return;
     }
@@ -147,10 +148,10 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     }
 
     if (skipCount > 0) {
-      throw new StateError("Too few elements");
+      throw StateError("Too few elements");
     }
     if (end != null && writeIndex < end) {
-      throw new RangeError.range(end, start, writeIndex, "end");
+      throw RangeError.range(end, start, writeIndex, "end");
     }
 
     // Swap [index.._length) and [_length..writeIndex) by double-reversing.
@@ -196,7 +197,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
       if (i >= start) add(value);
       i++;
     }
-    if (i < start) throw new StateError("Too few elements");
+    if (i < start) throw StateError("Too few elements");
   }
 
   /// Like [insertAll], but with a guaranteed non-`null` [start] and [end].
@@ -204,7 +205,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     if (values is List) {
       end ??= values.length;
       if (start > values.length || end > values.length) {
-        throw new StateError("Too few elements");
+        throw StateError("Too few elements");
       }
     } else {
       assert(end != null);
@@ -222,7 +223,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
 
   void insert(int index, E element) {
     if (index < 0 || index > _length) {
-      throw new RangeError.range(index, 0, _length);
+      throw RangeError.range(index, 0, _length);
     }
     if (_length < _buffer.length) {
       _buffer.setRange(index + 1, _length + 1, _buffer, index);
@@ -258,8 +259,8 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
     int newLength = _buffer.length * 2;
     if (requiredCapacity != null && newLength < requiredCapacity) {
       newLength = requiredCapacity;
-    } else if (newLength < INITIAL_LENGTH) {
-      newLength = INITIAL_LENGTH;
+    } else if (newLength < _initialLength) {
+      newLength = _initialLength;
     }
     return _createBuffer(newLength);
   }
@@ -272,7 +273,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   }
 
   void setRange(int start, int end, Iterable<E> source, [int skipCount = 0]) {
-    if (end > _length) throw new RangeError.range(end, 0, _length);
+    if (end > _length) throw RangeError.range(end, 0, _length);
     _setRange(start, end, source, skipCount);
   }
 
@@ -324,74 +325,87 @@ abstract class _FloatBuffer extends _TypedDataBuffer<double> {
 }
 
 class Uint8Buffer extends _IntBuffer {
-  Uint8Buffer([int initialLength = 0]) : super(new Uint8List(initialLength));
-  Uint8List _createBuffer(int size) => new Uint8List(size);
+  Uint8Buffer([int initialLength = 0]) : super(Uint8List(initialLength));
+
+  Uint8List _createBuffer(int size) => Uint8List(size);
 }
 
 class Int8Buffer extends _IntBuffer {
-  Int8Buffer([int initialLength = 0]) : super(new Int8List(initialLength));
-  Int8List _createBuffer(int size) => new Int8List(size);
+  Int8Buffer([int initialLength = 0]) : super(Int8List(initialLength));
+
+  Int8List _createBuffer(int size) => Int8List(size);
 }
 
 class Uint8ClampedBuffer extends _IntBuffer {
   Uint8ClampedBuffer([int initialLength = 0])
-      : super(new Uint8ClampedList(initialLength));
-  Uint8ClampedList _createBuffer(int size) => new Uint8ClampedList(size);
+      : super(Uint8ClampedList(initialLength));
+
+  Uint8ClampedList _createBuffer(int size) => Uint8ClampedList(size);
 }
 
 class Uint16Buffer extends _IntBuffer {
-  Uint16Buffer([int initialLength = 0]) : super(new Uint16List(initialLength));
-  Uint16List _createBuffer(int size) => new Uint16List(size);
+  Uint16Buffer([int initialLength = 0]) : super(Uint16List(initialLength));
+
+  Uint16List _createBuffer(int size) => Uint16List(size);
 }
 
 class Int16Buffer extends _IntBuffer {
-  Int16Buffer([int initialLength = 0]) : super(new Int16List(initialLength));
-  Int16List _createBuffer(int size) => new Int16List(size);
+  Int16Buffer([int initialLength = 0]) : super(Int16List(initialLength));
+
+  Int16List _createBuffer(int size) => Int16List(size);
 }
 
 class Uint32Buffer extends _IntBuffer {
-  Uint32Buffer([int initialLength = 0]) : super(new Uint32List(initialLength));
-  Uint32List _createBuffer(int size) => new Uint32List(size);
+  Uint32Buffer([int initialLength = 0]) : super(Uint32List(initialLength));
+
+  Uint32List _createBuffer(int size) => Uint32List(size);
 }
 
 class Int32Buffer extends _IntBuffer {
-  Int32Buffer([int initialLength = 0]) : super(new Int32List(initialLength));
-  Int32List _createBuffer(int size) => new Int32List(size);
+  Int32Buffer([int initialLength = 0]) : super(Int32List(initialLength));
+
+  Int32List _createBuffer(int size) => Int32List(size);
 }
 
 class Uint64Buffer extends _IntBuffer {
-  Uint64Buffer([int initialLength = 0]) : super(new Uint64List(initialLength));
-  Uint64List _createBuffer(int size) => new Uint64List(size);
+  Uint64Buffer([int initialLength = 0]) : super(Uint64List(initialLength));
+
+  Uint64List _createBuffer(int size) => Uint64List(size);
 }
 
 class Int64Buffer extends _IntBuffer {
-  Int64Buffer([int initialLength = 0]) : super(new Int64List(initialLength));
-  Int64List _createBuffer(int size) => new Int64List(size);
+  Int64Buffer([int initialLength = 0]) : super(Int64List(initialLength));
+
+  Int64List _createBuffer(int size) => Int64List(size);
 }
 
 class Float32Buffer extends _FloatBuffer {
-  Float32Buffer([int initialLength = 0])
-      : super(new Float32List(initialLength));
-  Float32List _createBuffer(int size) => new Float32List(size);
+  Float32Buffer([int initialLength = 0]) : super(Float32List(initialLength));
+
+  Float32List _createBuffer(int size) => Float32List(size);
 }
 
 class Float64Buffer extends _FloatBuffer {
-  Float64Buffer([int initialLength = 0])
-      : super(new Float64List(initialLength));
-  Float64List _createBuffer(int size) => new Float64List(size);
+  Float64Buffer([int initialLength = 0]) : super(Float64List(initialLength));
+
+  Float64List _createBuffer(int size) => Float64List(size);
 }
 
 class Int32x4Buffer extends _TypedDataBuffer<Int32x4> {
-  static Int32x4 _zero = new Int32x4(0, 0, 0, 0);
-  Int32x4Buffer([int initialLength = 0])
-      : super(new Int32x4List(initialLength));
+  static final Int32x4 _zero = Int32x4(0, 0, 0, 0);
+
+  Int32x4Buffer([int initialLength = 0]) : super(Int32x4List(initialLength));
+
   Int32x4 get _defaultValue => _zero;
-  Int32x4List _createBuffer(int size) => new Int32x4List(size);
+
+  Int32x4List _createBuffer(int size) => Int32x4List(size);
 }
 
 class Float32x4Buffer extends _TypedDataBuffer<Float32x4> {
   Float32x4Buffer([int initialLength = 0])
-      : super(new Float32x4List(initialLength));
-  Float32x4 get _defaultValue => new Float32x4.zero();
-  Float32x4List _createBuffer(int size) => new Float32x4List(size);
+      : super(Float32x4List(initialLength));
+
+  Float32x4 get _defaultValue => Float32x4.zero();
+
+  Float32x4List _createBuffer(int size) => Float32x4List(size);
 }

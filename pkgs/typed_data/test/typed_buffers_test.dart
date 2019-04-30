@@ -3,13 +3,12 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('!vm')
-
 import "dart:typed_data";
 
 import "package:test/test.dart";
 import "package:typed_data/typed_buffers.dart";
 
-const List<int> browserSafeIntSamples = const [
+const List<int> browserSafeIntSamples = [
   0x8000000000000000, // 2^63
   0x100000001,
   0x100000000, // 2^32
@@ -45,43 +44,43 @@ void main() {
 }
 
 void initTests(List<int> intSamples) {
-  testUint(intSamples, 8, (l) => new Uint8Buffer(l));
-  testInt(intSamples, 8, (l) => new Int8Buffer(l));
+  testUint(intSamples, 8, (l) => Uint8Buffer(l));
+  testInt(intSamples, 8, (l) => Int8Buffer(l));
   test("Uint8ClampedBuffer", () {
     testIntBuffer(
-        intSamples, 8, 0, 255, (l) => new Uint8ClampedBuffer(l), clampUint8);
+        intSamples, 8, 0, 255, (l) => Uint8ClampedBuffer(l), clampUint8);
   });
-  testUint(intSamples, 16, (l) => new Uint16Buffer(l));
-  testInt(intSamples, 16, (l) => new Int16Buffer(l));
-  testUint(intSamples, 32, (l) => new Uint32Buffer(l));
+  testUint(intSamples, 16, (l) => Uint16Buffer(l));
+  testInt(intSamples, 16, (l) => Int16Buffer(l));
+  testUint(intSamples, 32, (l) => Uint32Buffer(l));
 
-  testInt(intSamples, 32, (l) => new Int32Buffer(l));
+  testInt(intSamples, 32, (l) => Int32Buffer(l));
 
-  testUint(intSamples, 64, (l) => new Uint64Buffer(l),
+  testUint(intSamples, 64, (l) => Uint64Buffer(l),
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: "dart-vm");
-  testInt(intSamples, 64, (l) => new Int64Buffer(l),
+  testInt(intSamples, 64, (l) => Int64Buffer(l),
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: "dart-vm");
 
   testInt32x4Buffer(intSamples);
 
   var roundedFloatSamples = floatSamples.map(roundToFloat).toList();
-  testFloatBuffer(
-      32, roundedFloatSamples, () => new Float32Buffer(), roundToFloat);
-  testFloatBuffer(64, doubleSamples, () => new Float64Buffer(), (x) => x);
+  testFloatBuffer(32, roundedFloatSamples, () => Float32Buffer(), roundToFloat);
+  testFloatBuffer(64, doubleSamples, () => Float64Buffer(), (x) => x);
 
   testFloat32x4Buffer(roundedFloatSamples);
 
   group("addAll", () {
     for (var type in ['a list', 'an iterable']) {
       group("with $type", () {
-        var source;
-        var buffer;
+        Iterable<int> source;
+        Uint8Buffer buffer;
         setUp(() {
           source = [1, 2, 3, 4, 5];
-          if (type == 'an iterable') source = source.reversed.toList().reversed;
-          buffer = new Uint8Buffer();
+          if (type == 'an iterable')
+            source = (source as List<int>).reversed.toList().reversed;
+          buffer = Uint8Buffer();
         });
 
         test("adds values to the buffer", () {
@@ -127,12 +126,13 @@ void initTests(List<int> intSamples) {
   group("insertAll", () {
     for (var type in ['a list', 'an iterable']) {
       group("with $type", () {
-        var source;
-        var buffer;
+        Iterable<int> source;
+        Uint8Buffer buffer;
         setUp(() {
           source = [1, 2, 3, 4, 5];
-          if (type == 'an iterable') source = source.reversed.toList().reversed;
-          buffer = new Uint8Buffer()..addAll([6, 7, 8, 9, 10]);
+          if (type == 'an iterable')
+            source = (source as List<int>).reversed.toList().reversed;
+          buffer = Uint8Buffer()..addAll([6, 7, 8, 9, 10]);
         });
 
         test("inserts values into the buffer", () {
@@ -183,7 +183,7 @@ void initTests(List<int> intSamples) {
   });
 }
 
-const doubleSamples = const [
+const doubleSamples = [
   0.0,
   5e-324, //                  Minimal denormal value.
   2.225073858507201e-308, //  Maximal denormal value.
@@ -203,7 +203,7 @@ const doubleSamples = const [
   9007199254740991.0 //       to nearest with 0.5 rounding up).
 ];
 
-const floatSamples = const [
+const floatSamples = [
   0.0,
   1.4e-45, //        Minimal denormal value.
   1.1754942E-38, //  Maximal denormal value.
@@ -238,13 +238,13 @@ Rounder intRounder(bits) {
 }
 
 double roundToFloat(double value) {
-  return (new Float32List(1)..[0] = value)[0];
+  return (Float32List(1)..[0] = value)[0];
 }
 
 testFloat32x4Buffer(List floatSamples) {
   var float4Samples = <Float32x4>[];
   for (int i = 0; i < floatSamples.length - 3; i++) {
-    float4Samples.add(new Float32x4(floatSamples[i], floatSamples[i + 1],
+    float4Samples.add(Float32x4(floatSamples[i], floatSamples[i + 1],
         floatSamples[i + 2], floatSamples[i + 3]));
   }
 
@@ -264,15 +264,15 @@ testFloat32x4Buffer(List floatSamples) {
   }
 
   test("Float32x4Buffer", () {
-    var buffer = new Float32x4Buffer(5);
-    expect(buffer, new TypeMatcher<List<Float32x4>>());
+    var buffer = Float32x4Buffer(5);
+    expect(buffer, const TypeMatcher<List<Float32x4>>());
 
     expect(buffer.length, equals(5));
     expect(buffer.elementSizeInBytes, equals(128 ~/ 8));
     expect(buffer.lengthInBytes, equals(5 * 128 ~/ 8));
     expect(buffer.offsetInBytes, equals(0));
 
-    x4Equals(buffer[0], new Float32x4.zero());
+    x4Equals(buffer[0], Float32x4.zero());
     buffer.length = 0;
     expect(buffer.length, equals(0));
 
@@ -297,7 +297,7 @@ testFloat32x4Buffer(List floatSamples) {
     buffer.length = 1;
     buffer[0] = float4Samples[0]; // Does not contain NaN.
 
-    Float32List floats = new Float32List.view(buffer.buffer);
+    Float32List floats = Float32List.view(buffer.buffer);
     expect(floats[0], equals(buffer[0].x));
     expect(floats[1], equals(buffer[0].y));
     expect(floats[2], equals(buffer[0].z));
@@ -312,7 +312,7 @@ void testFloatBuffer(
     int bitSize, List<double> samples, create(), double round(double v)) {
   test("Float${bitSize}Buffer", () {
     var buffer = create();
-    expect(buffer, new TypeMatcher<List<double>>());
+    expect(buffer, const TypeMatcher<List<double>>());
     int byteSize = bitSize ~/ 8;
 
     expect(buffer.length, equals(0));
@@ -355,7 +355,7 @@ void testFloatBuffer(
     buffer.length = 2;
     buffer[0] = samples[0];
     buffer[1] = samples[1];
-    var bytes = new Uint8List.view(buffer.buffer);
+    var bytes = Uint8List.view(buffer.buffer);
     for (int i = 0; i < byteSize; i++) {
       int tmp = bytes[i];
       bytes[i] = bytes[byteSize + i];
@@ -378,17 +378,17 @@ void testInt(List<int> intSamples, int bits, buffer(int length),
 void testInt32x4Buffer(List<int> intSamples) {
   test("Int32x4Buffer", () {
     int bytes = 128 ~/ 8;
-    Matcher equals32x4(Int32x4 expected) => new MatchesInt32x4(expected);
+    Matcher equals32x4(Int32x4 expected) => MatchesInt32x4(expected);
 
-    var buffer = new Int32x4Buffer(0);
-    expect(buffer, new TypeMatcher<List<Int32x4>>());
+    var buffer = Int32x4Buffer(0);
+    expect(buffer, const TypeMatcher<List<Int32x4>>());
     expect(buffer.length, equals(0));
 
     expect(buffer.elementSizeInBytes, equals(bytes));
     expect(buffer.lengthInBytes, equals(0));
     expect(buffer.offsetInBytes, equals(0));
 
-    Int32x4 sample = new Int32x4(-0x80000000, -1, 0, 0x7fffffff);
+    Int32x4 sample = Int32x4(-0x80000000, -1, 0, 0x7fffffff);
     buffer.add(sample);
     expect(buffer.length, equals(1));
     expect(buffer[0], equals32x4(sample));
@@ -401,7 +401,7 @@ void testInt32x4Buffer(List<int> intSamples) {
     expect(buffer.length, equals(0));
 
     var samples = intSamples
-        .map((value) => new Int32x4(value, -value, ~value, ~ -value))
+        .map((value) => Int32x4(value, -value, ~value, ~ -value))
         .toList();
     for (Int32x4 value in samples) {
       int length = buffer.length;
@@ -421,15 +421,15 @@ void testInt32x4Buffer(List<int> intSamples) {
 
     // Accessing the underlying buffer works.
     buffer.length = 2;
-    buffer[0] = new Int32x4(-80000000, 0x7fffffff, 0, -1);
-    var byteBuffer = new Uint8List.view(buffer.buffer);
+    buffer[0] = Int32x4(-80000000, 0x7fffffff, 0, -1);
+    var byteBuffer = Uint8List.view(buffer.buffer);
     int halfBytes = bytes ~/ 2;
     for (int i = 0; i < halfBytes; i++) {
       int tmp = byteBuffer[i];
       byteBuffer[i] = byteBuffer[halfBytes + i];
       byteBuffer[halfBytes + i] = tmp;
     }
-    var result = new Int32x4(0, -1, -80000000, 0x7fffffff);
+    var result = Int32x4(0, -1, -80000000, 0x7fffffff);
     expect(buffer[0], equals32x4(result));
   });
 }
@@ -440,7 +440,7 @@ void testIntBuffer(List<int> intSamples, int bits, int min, int max,
   assert(round(max) == max);
   // All int buffers default to the value 0.
   var buffer = create(0);
-  expect(buffer, new TypeMatcher<List<int>>());
+  expect(buffer, const TypeMatcher<List<int>>());
   expect(buffer.length, equals(0));
   var bytes = bits ~/ 8;
 
@@ -494,7 +494,7 @@ void testIntBuffer(List<int> intSamples, int bits, int min, int max,
   buffer.length = 2;
   buffer[0] = min;
   buffer[1] = max;
-  var byteBuffer = new Uint8List.view(buffer.buffer);
+  var byteBuffer = Uint8List.view(buffer.buffer);
   int byteSize = buffer.elementSizeInBytes;
   for (int i = 0; i < byteSize; i++) {
     int tmp = byteBuffer[i];
@@ -521,11 +521,13 @@ Rounder uintRounder(bits) {
   return (int x) => x & mask;
 }
 
-typedef int Rounder(int value);
+typedef Rounder = int Function(int value);
 
 class MatchesInt32x4 extends Matcher {
   Int32x4 result;
+
   MatchesInt32x4(this.result);
+
   Description describe(Description description) =>
       description.add('Int32x4.==');
 
