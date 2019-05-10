@@ -78,8 +78,9 @@ void initTests(List<int> intSamples) {
         Uint8Buffer buffer;
         setUp(() {
           source = [1, 2, 3, 4, 5];
-          if (type == 'an iterable')
+          if (type == 'an iterable') {
             source = (source as List<int>).reversed.toList().reversed;
+          }
           buffer = Uint8Buffer();
         });
 
@@ -130,8 +131,9 @@ void initTests(List<int> intSamples) {
         Uint8Buffer buffer;
         setUp(() {
           source = [1, 2, 3, 4, 5];
-          if (type == 'an iterable')
+          if (type == 'an iterable') {
             source = (source as List<int>).reversed.toList().reversed;
+          }
           buffer = Uint8Buffer()..addAll([6, 7, 8, 9, 10]);
         });
 
