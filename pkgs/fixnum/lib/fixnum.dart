@@ -6,10 +6,6 @@
 ///
 /// The integer implementations in this library are designed to work
 /// identically whether executed on the Dart VM or compiled to JavaScript.
-///
-/// For information on installing and importing this library, see the
-/// [fixnum package on pub.dartlang.org]
-/// (http://pub.dartlang.org/packages/fixnum).
 library fixnum;
 
 part 'src/intx.dart';
