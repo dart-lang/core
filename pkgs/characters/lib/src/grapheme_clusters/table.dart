@@ -6,7 +6,8 @@
 // Generated from https://www.unicode.org/Public/12.0.0/ucd/auxiliary/GraphemeBreakProperty.txt
 // and https://unicode.org/Public/emoji/12.0/emoji-data.txt.
 // Licensed under the Unicode Inc. License Agreement
-// (../../UNICODE_LICENSE.txt, http://www.unicode.org/copyright.html#License)
+// (../../../third_party/Unicode_Consortium/UNICODE_LICENSE.txt,
+// http://www.unicode.org/copyright.html#License)
 
 const String _data = '""""""""""""""""DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
     'DDDDDDD""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""DDD'

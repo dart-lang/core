@@ -6,7 +6,7 @@
 // Generated from http://www.unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakTest.txt
 // and https://www.unicode.org/Public/emoji/11.0/emoji-test.txt.
 // Licensed under the Unicode Inc. License Agreement
-// (../../UNICODE_LICENSE.txt, http://www.unicode.org/copyright.html#License)
+// (../../third_party/Unicode_Consortium/UNICODE_LICENSE.txt, http://www.unicode.org/copyright.html#License)
 
 // Grapheme cluster tests.
 const List<List<String>> splitTests = [
