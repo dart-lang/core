@@ -1,5 +1,8 @@
 [![Build Status](https://travis-ci.org/dart-lang/characters.svg?branch=master)](https://travis-ci.org/dart-lang/characters)
 
+**NOTE**: This package is considered experimental, and breaking API changes are
+to be expected.
+
 `Characters` are strings viewed as sequences of *user-perceived character*s,
 also know as [Unicode (extended) grapheme clusters](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries).
 
