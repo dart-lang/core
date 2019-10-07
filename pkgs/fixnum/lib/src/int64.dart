@@ -59,10 +59,17 @@ class Int64 implements IntX {
   static Int64 _parseRadix(String s, int radix) {
     int i = 0;
     bool negative = false;
-    if (s[0] == '-') {
+    if (i < s.length && s[0] == '-') {
       negative = true;
       i++;
     }
+
+    // TODO(https://github.com/dart-lang/sdk/issues/38728). Replace with "if (i
+    // >= s.length)".
+    if (!(i < s.length)) {
+      throw FormatException("No digits in '$s'");
+    }
+
     int d0 = 0, d1 = 0, d2 = 0; //  low, middle, high components.
     for (; i < s.length; i++) {
       int c = s.codeUnitAt(i);

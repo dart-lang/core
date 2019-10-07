@@ -729,7 +729,7 @@ void main() {
     expect(-(Int64.MIN_VALUE + Int64(1)), Int64.MAX_VALUE);
   });
 
-  test("", () {
+  test("negation", () {
     check(int n) {
       // Sign change should commute with conversion.
       expect(-Int64(-n), Int64(n));
@@ -763,6 +763,8 @@ void main() {
       checkInt(-4294967296);
       expect(() => Int64.parseRadix('xyzzy', -1), throwsArgumentError);
       expect(() => Int64.parseRadix('plugh', 10), throwsFormatException);
+      expect(() => Int64.parseRadix('', 10), throwsFormatException);
+      expect(() => Int64.parseRadix('-', 10), throwsFormatException);
     });
 
     test("parseHex", () {
@@ -783,6 +785,8 @@ void main() {
       checkHex('FFFFFFFFFFF', 0xfff, 0xffffffff);
       checkHex('FFFFFFFFFFFFFFFE', 0xffffffff, 0xfffffffe);
       checkHex('FFFFFFFFFFFFFFFF', 0xffffffff, 0xffffffff);
+      expect(() => Int64.parseHex(''), throwsFormatException);
+      expect(() => Int64.parseHex('-'), throwsFormatException);
     });
 
     test("parseRadix", () {

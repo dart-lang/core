@@ -1,3 +1,9 @@
+## 0.10.10
+
+* Fix `Int64` parsing to throw `FormatException` on an empty string or single
+  minus sign. Previous incorrect behaviour was to throw a `RangeError` or
+  silently return zero.
+
 ## 0.10.9
 
 * Add `Int64.toStringUnsigned()` and `Int64.toRadixStringUnsigned()` functions.
