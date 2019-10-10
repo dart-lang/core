@@ -1,3 +1,7 @@
+## 0.10.11-dev
+
+* Update minimum SDK constraint to version 2.1.1.
+
 ## 0.10.10
 
 * Fix `Int64` parsing to throw `FormatException` on an empty string or single

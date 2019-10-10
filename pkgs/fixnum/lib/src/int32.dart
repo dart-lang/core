@@ -61,7 +61,7 @@ class Int32 implements IntX {
       if (digit < 0 || digit >= radix) {
         throw FormatException("Non-radix code unit: $c");
       }
-      x = (x * radix) + digit;
+      x = ((x * radix) + digit) as Int32;
     }
     return x;
   }
@@ -189,7 +189,7 @@ class Int32 implements IntX {
       Int64 t = this.toInt64();
       return (t - (t ~/ other) * other).toInt32();
     }
-    return this - (this ~/ other) * other;
+    return (this - (this ~/ other) * other) as Int32;
   }
 
   Int32 operator &(other) {

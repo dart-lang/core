@@ -115,15 +115,15 @@ void main() {
 
     test("remainder", () {
       expect(Int32(0x12345678).remainder(Int32(0x22)),
-          Int32(0x12345678.remainder(0x22)));
+          Int32(0x12345678.remainder(0x22) as int));
       expect(Int32(0x12345678).remainder(Int32(-0x22)),
-          Int32(0x12345678.remainder(-0x22)));
+          Int32(0x12345678.remainder(-0x22) as int));
       expect(Int32(-0x12345678).remainder(Int32(-0x22)),
-          Int32(-0x12345678.remainder(-0x22)));
+          Int32(-0x12345678.remainder(-0x22) as int));
       expect(Int32(-0x12345678).remainder(Int32(0x22)),
-          Int32(-0x12345678.remainder(0x22)));
+          Int32(-0x12345678.remainder(0x22) as int));
       expect(Int32(0x12345678).remainder(Int64(0x22)),
-          Int32(0x12345678.remainder(0x22)));
+          Int32(0x12345678.remainder(0x22) as int));
       expect(() => Int32(17).remainder(null), throwsArgumentError);
     });
 
