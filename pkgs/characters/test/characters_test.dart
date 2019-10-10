@@ -22,119 +22,50 @@ void main([List<String> args]) {
       : Random().nextInt(0x3FFFFFFF);
   random = Random(seed);
   group("[Random Seed: $seed]", tests);
-  group("index", () {
-    test("simple", () {
-      var flag = "\u{1F1E9}\u{1F1F0}";
-      var string = "Hi $flag!"; // Regional Indications "DK".
+  group("characters", () {
+    test("operations", () {
+      var flag = "\u{1F1E9}\u{1F1F0}"; // Regional Indicators "DK".
+      var string = "Hi $flag!";
       expect(string.length, 8);
-      expect(gc(string).toList(), ["H", "i", " ", flag, "!"]);
+      var cs = gc(string);
+      expect(cs.length, 5);
+      expect(cs.toList(), ["H", "i", " ", flag, "!"]);
+      expect(cs.skip(2).toString(), " $flag!");
+      expect(cs.skipLast(2).toString(), "Hi ");
+      expect(cs.take(2).toString(), "Hi");
+      expect(cs.takeLast(2).toString(), "$flag!");
 
-      expect(gc(string).indexOf(gc("")), 0);
-      expect(gc(string).indexOf(gc(""), 3), 3);
-      expect(gc(string).indexOf(gc(""), 4), 7);
-      expect(gc(string).indexOf(gc(flag)), 3);
-      expect(gc(string).indexOf(gc(flag), 3), 3);
-      expect(gc(string).indexOf(gc(flag), 4), lessThan(0));
+      expect(cs.contains("\u{1F1E9}"), false);
+      expect(cs.contains(flag), true);
+      expect(cs.contains("$flag!"), false);
+      expect(cs.containsAll(gc("$flag!")), true);
 
-      expect(gc(string).indexAfter(gc("")), 0);
-      expect(gc(string).indexAfter(gc(""), 3), 3);
-      expect(gc(string).indexAfter(gc(""), 4), 7);
-      expect(gc(string).indexAfter(gc(flag)), 7);
-      expect(gc(string).indexAfter(gc(flag), 7), 7);
-      expect(gc(string).indexAfter(gc(flag), 8), lessThan(0));
+      expect(cs.takeWhile((x) => x != " ").toString(), "Hi");
+      expect(cs.takeLastWhile((x) => x != " ").toString(), "$flag!");
+      expect(cs.skipWhile((x) => x != " ").toString(), " $flag!");
+      expect(cs.skipLastWhile((x) => x != " ").toString(), "Hi ");
 
-      expect(gc(string).lastIndexOf(gc("")), string.length);
-      expect(gc(string).lastIndexOf(gc(""), 7), 7);
-      expect(gc(string).lastIndexOf(gc(""), 6), 3);
-      expect(gc(string).lastIndexOf(gc(""), 0), 0);
-      expect(gc(string).lastIndexOf(gc(flag)), 3);
-      expect(gc(string).lastIndexOf(gc(flag), 6), 3);
-      expect(gc(string).lastIndexOf(gc(flag), 2), lessThan(0));
-
-      expect(gc(string).lastIndexAfter(gc("")), string.length);
-      expect(gc(string).lastIndexAfter(gc(""), 7), 7);
-      expect(gc(string).lastIndexAfter(gc(""), 6), 3);
-      expect(gc(string).lastIndexAfter(gc(""), 0), 0);
-      expect(gc(string).lastIndexAfter(gc(flag)), 7);
-      expect(gc(string).lastIndexAfter(gc(flag), 7), 7);
-      expect(gc(string).lastIndexAfter(gc(flag), 6), lessThan(0));
-    });
-    test("multiple", () {
-      var flag = "\u{1F1E9}\u{1F1F0}"; // DK.
-      var revFlag = "\u{1F1F0}\u{1F1E9}"; // KD.
-      var string = "-${flag}-$flag$flag-";
-      expect(gc(string).indexOf(gc(flag)), 1);
-      expect(gc(string).indexOf(gc(flag), 2), 6);
-      expect(gc(string).indexOf(gc(flag), 6), 6);
-      expect(gc(string).indexOf(gc(flag), 7), 10);
-      expect(gc(string).indexOf(gc(flag), 10), 10);
-      expect(gc(string).indexOf(gc(flag), 11), lessThan(0));
-
-      expect(gc(string).indexOf(gc(revFlag)), lessThan(0));
+      expect(cs.findFirst(gc("")).moveBack(), false);
+      expect(cs.findFirst(gc(flag)).current, flag);
+      expect(cs.findLast(gc(flag)).current, flag);
+      expect(cs.iterator.moveNext(), true);
+      expect(cs.iterator.moveBack(), false);
+      expect((cs.iterator..moveNext()).current, "H");
+      expect(cs.iteratorAtEnd.moveNext(), false);
+      expect(cs.iteratorAtEnd.moveBack(), true);
+      expect((cs.iteratorAtEnd..moveBack()).current, "!");
     });
 
-    test("nonBoundary", () {
-      // Composite pictogram example, from https://en.wikipedia.org/wiki/Zero-width_joiner.
-      var flag = "\u{1f3f3}"; // U+1F3F3, Flag, waving. Category Pictogram.
-      var white = "\ufe0f"; // U+FE0F, Variant selector 16. Category Extend.
-      var zwj = "\u200d"; // U+200D, ZWJ
-      var rainbow = "\u{1f308}"; // U+1F308, Rainbow. Category Pictogram
-      var flagRainbow = "$flag$white$zwj$rainbow";
-      expect(gc(flagRainbow).length, 1);
-      for (var part in [flag, white, zwj, rainbow]) {
-        expect(gc(flagRainbow).indexOf(gc(part)), lessThan(0));
-        expect(gc(flagRainbow).indexAfter(gc(part)), lessThan(0));
-        expect(gc(flagRainbow).lastIndexOf(gc(part)), lessThan(0));
-        expect(gc(flagRainbow).lastIndexAfter(gc(part)), lessThan(0));
-      }
-      expect(gc(flagRainbow + flagRainbow).indexOf(gc(flagRainbow)), 0);
-      expect(gc(flagRainbow + flagRainbow).indexAfter(gc(flagRainbow)), 6);
-      expect(gc(flagRainbow + flagRainbow).lastIndexOf(gc(flagRainbow)), 6);
-      expect(gc(flagRainbow + flagRainbow).lastIndexAfter(gc(flagRainbow)), 12);
-      //                                      1     11   11       11           2
-      // indices           0           67    90     12   34       67           3
-      var partsAndWhole =
-          "$flagRainbow $flag $white $zwj $rainbow $flagRainbow";
-      // Flag and rainbow are independent graphemes.
-      expect(gc(partsAndWhole).toList(), [
-        flagRainbow,
-        " ",
-        flag,
-        " $white", // Other + Extend
-        " $zwj", // Other + ZWJ
-        " ",
-        rainbow,
-        " ",
-        flagRainbow
-      ]);
-      expect(gc(partsAndWhole).indexOf(gc(flag)), 7);
-      expect(gc(partsAndWhole).indexAfter(gc(flag)), 9);
-      expect(gc(partsAndWhole).lastIndexOf(gc(flag)), 7);
-      expect(gc(partsAndWhole).lastIndexAfter(gc(flag)), 9);
+    testParts(gc("a"), gc("b"), gc("c"), gc("d"), gc("e"));
 
-      expect(gc(partsAndWhole).indexOf(gc(rainbow)), 14);
-      expect(gc(partsAndWhole).indexAfter(gc(rainbow)), 16);
-      expect(gc(partsAndWhole).lastIndexOf(gc(rainbow)), 14);
-      expect(gc(partsAndWhole).lastIndexAfter(gc(rainbow)), 16);
+    // Composite pictogram example, from https://en.wikipedia.org/wiki/Zero-width_joiner.
+    var flag = "\u{1f3f3}"; // U+1F3F3, Flag, waving. Category Pictogram.
+    var white = "\ufe0f"; // U+FE0F, Variant selector 16. Category Extend.
+    var zwj = "\u200d"; // U+200D, ZWJ
+    var rainbow = "\u{1f308}"; // U+1F308, Rainbow. Category Pictogram
 
-      expect(gc(partsAndWhole).indexOf(gc(white)), lessThan(0));
-      expect(gc(partsAndWhole).indexAfter(gc(white)), lessThan(0));
-      expect(gc(partsAndWhole).lastIndexOf(gc(white)), lessThan(0));
-      expect(gc(partsAndWhole).lastIndexAfter(gc(white)), lessThan(0));
-      expect(gc(partsAndWhole).indexOf(gc(" $white")), 9);
-      expect(gc(partsAndWhole).indexAfter(gc(" $white")), 11);
-      expect(gc(partsAndWhole).lastIndexOf(gc(" $white")), 9);
-      expect(gc(partsAndWhole).lastIndexAfter(gc(" $white")), 11);
-
-      expect(gc(partsAndWhole).indexOf(gc(zwj)), lessThan(0));
-      expect(gc(partsAndWhole).indexAfter(gc(zwj)), lessThan(0));
-      expect(gc(partsAndWhole).lastIndexOf(gc(zwj)), lessThan(0));
-      expect(gc(partsAndWhole).lastIndexAfter(gc(zwj)), lessThan(0));
-      expect(gc(partsAndWhole).indexOf(gc(" $zwj")), 11);
-      expect(gc(partsAndWhole).indexAfter(gc(" $zwj")), 13);
-      expect(gc(partsAndWhole).lastIndexOf(gc(" $zwj")), 11);
-      expect(gc(partsAndWhole).lastIndexAfter(gc(" $zwj")), 13);
-    });
+    testParts(gc("$flag$white$zwj$rainbow"), gc("$flag$white"), gc("$rainbow"),
+        gc("$flag$zwj$rainbow"), gc("!"));
   });
 }
 
@@ -277,22 +208,7 @@ void expectGC(Characters actual, List<String> expected) {
         expected.take(expected.length - 1).join());
     expect(actual.takeLast(1).toString(),
         expected.skip(expected.length - 1).join());
-
-    expect(actual.indexOf(gc(expected.first)), 0);
-    expect(actual.indexAfter(gc(expected.first)), expected.first.length);
-    expect(actual.lastIndexOf(gc(expected.last)),
-        text.length - expected.last.length);
-    expect(actual.lastIndexAfter(gc(expected.last)), text.length);
-    if (expected.length > 1) {
-      if (expected[0] != expected[1]) {
-        expect(actual.indexOf(gc(expected[1])), expected[0].length);
-      }
-    }
   }
-
-  expect(actual.getRange(1, 3).toString(), expected.take(3).skip(1).join());
-  expect(actual.getRange(1, 3).toString(), expected.take(3).skip(1).join());
-
   bool isEven(String s) => s.length.isEven;
 
   expect(
@@ -313,48 +229,27 @@ void expectGC(Characters actual, List<String> expected) {
 
   expect((actual + actual).toString(), actual.string + actual.string);
 
-  List<int> accumulatedLengths = [0];
-  for (int i = 0; i < expected.length; i++) {
-    accumulatedLengths.add(accumulatedLengths.last + expected[i].length);
-  }
-
   // Iteration.
   var it = actual.iterator;
-  expect(it.start, 0);
-  expect(it.end, 0);
+  expect(it.isEmpty, true);
   for (var i = 0; i < expected.length; i++) {
     expect(it.moveNext(), true);
-    expect(it.start, accumulatedLengths[i]);
-    expect(it.end, accumulatedLengths[i + 1]);
     expect(it.current, expected[i]);
 
     expect(actual.elementAt(i), expected[i]);
     expect(actual.skip(i).first, expected[i]);
   }
   expect(it.moveNext(), false);
-  expect(it.start, accumulatedLengths.last);
-  expect(it.end, accumulatedLengths.last);
   for (var i = expected.length - 1; i >= 0; i--) {
-    expect(it.movePrevious(), true);
-    expect(it.start, accumulatedLengths[i]);
-    expect(it.end, accumulatedLengths[i + 1]);
+    expect(it.moveBack(), true);
     expect(it.current, expected[i]);
   }
-  expect(it.movePrevious(), false);
-  expect(it.start, 0);
-  expect(it.end, 0);
+  expect(it.moveBack(), false);
+  expect(it.isEmpty, true);
 
   // GraphemeClusters operations.
-  expect(actual.toUpperCase().toString(), text.toUpperCase());
-  expect(actual.toLowerCase().toString(), text.toLowerCase());
-
-  if (text.isNotEmpty) {
-    expect(actual.insertAt(1, gc("abc")).toString(),
-        text.replaceRange(1, 1, "abc"));
-    expect(actual.replaceSubstring(0, 1, gc("abc")).toString(),
-        text.replaceRange(0, 1, "abc"));
-    expect(actual.substring(0, 1).string, actual.string.substring(0, 1));
-  }
+  expect(actual.toUpperCase().string, text.toUpperCase());
+  expect(actual.toLowerCase().string, text.toLowerCase());
 
   expect(actual.string, text);
 
@@ -368,36 +263,9 @@ void expectGC(Characters actual, List<String> expected) {
       expect(actual.endsWith(gc(expected.sublist(i).join())), true);
       for (int t = s + 1; t <= steps; t++) {
         int j = expected.length * t ~/ steps;
-        int start = accumulatedLengths[i];
-        int end = accumulatedLengths[j];
         var slice = expected.sublist(i, j).join();
         var gcs = gc(slice);
         expect(actual.containsAll(gcs), true);
-        expect(actual.startsWith(gcs, start), true);
-        expect(actual.endsWith(gcs, end), true);
-      }
-    }
-    if (accumulatedLengths.last > expected.length) {
-      int i = expected.indexWhere((s) => s.length != 1);
-      assert(accumulatedLengths[i + 1] > accumulatedLengths[i] + 1);
-      expect(
-          actual.startsWith(gc(text.substring(0, accumulatedLengths[i] + 1))),
-          false);
-      expect(actual.endsWith(gc(text.substring(accumulatedLengths[i] + 1))),
-          false);
-      if (i > 0) {
-        expect(
-            actual.startsWith(
-                gc(text.substring(1, accumulatedLengths[i] + 1)), 1),
-            false);
-      }
-      if (i < expected.length - 1) {
-        int secondToLast = accumulatedLengths[expected.length - 1];
-        expect(
-            actual.endsWith(
-                gc(text.substring(accumulatedLengths[i] + 1, secondToLast)),
-                secondToLast),
-            false);
       }
     }
   }
@@ -408,7 +276,7 @@ void expectGC(Characters actual, List<String> expected) {
     int pos = -1;
     if (random.nextBool()) {
       pos = expected.length;
-      it.reset(text.length);
+      it = actual.iteratorAtEnd;
     }
     int steps = 5 + random.nextInt(expected.length * 2 + 1);
     bool lastMove = false;
@@ -416,23 +284,19 @@ void expectGC(Characters actual, List<String> expected) {
       bool back = false;
       if (pos < 0) {
         expect(lastMove, false);
-        expect(it.start, 0);
-        expect(it.end, 0);
+        expect(it.isEmpty, true);
       } else if (pos >= expected.length) {
         expect(lastMove, false);
-        expect(it.start, text.length);
-        expect(it.end, text.length);
+        expect(it.isEmpty, true);
         back = true;
       } else {
         expect(lastMove, true);
         expect(it.current, expected[pos]);
-        expect(it.start, accumulatedLengths[pos]);
-        expect(it.end, accumulatedLengths[pos + 1]);
         back = random.nextBool();
       }
       if (--steps < 0) break;
       if (back) {
-        lastMove = it.movePrevious();
+        lastMove = it.moveBack();
         pos -= 1;
       } else {
         lastMove = it.moveNext();
@@ -443,3 +307,249 @@ void expectGC(Characters actual, List<String> expected) {
 }
 
 Characters gc(String string) => Characters(string);
+
+void testParts(
+    Characters a, Characters b, Characters c, Characters d, Characters e) {
+  var cs = gc("$a$b$c$d$e");
+  test("$cs", () {
+    var it = cs.iterator;
+    expect(it.isEmpty, true);
+    expect(it.isNotEmpty, false);
+    expect(it.current, "");
+
+    // moveNext().
+    expect(it.moveNext(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$a");
+    expect(it.moveNext(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$b");
+    expect(it.moveNext(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$c");
+    expect(it.moveNext(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$d");
+    expect(it.moveNext(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$e");
+    expect(it.moveNext(), false);
+    expect(it.isEmpty, true);
+    expect(it.current, "");
+
+    // moveBack().
+    expect(it.moveBack(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$e");
+    expect(it.moveBack(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$d");
+    expect(it.moveBack(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$c");
+    expect(it.moveBack(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$b");
+    expect(it.moveBack(), true);
+    expect(it.isEmpty, false);
+    expect(it.current, "$a");
+    expect(it.moveBack(), false);
+    expect(it.isEmpty, true);
+    expect(it.current, "");
+
+    // moveNext(int).
+    expect(it.moveTo(c), true);
+    expect(it.current, "$c");
+    expect(it.moveTo(b), false);
+    expect(it.moveTo(c), false);
+    expect(it.current, "$c");
+    expect(it.moveTo(d), true);
+    expect(it.current, "$d");
+
+    // moveBack(c).
+    expect(it.moveBackTo(c), true);
+    expect(it.current, "$c");
+    expect(it.moveBackTo(d), false);
+    expect(it.moveBackTo(c), false);
+    expect(it.moveBackTo(a), true);
+    expect(it.current, "$a");
+
+    // moveNext(n)
+    expect(it.moveBack(), false);
+
+    expect(it.moveNext(2), true);
+    expect(it.current, "$a$b");
+    expect(it.moveNext(4), false);
+    expect(it.current, "$c$d$e");
+    expect(it.moveNext(0), true);
+    expect(it.current, "");
+    expect(it.moveNext(1), false);
+    expect(it.current, "");
+
+    // moveBack(n).
+    expect(it.moveBack(2), true);
+    expect(it.current, "$d$e");
+    expect(it.moveBack(1), true);
+    expect(it.current, "$c");
+    expect(it.moveBack(3), false);
+    expect(it.current, "$a$b");
+    expect(it.moveBack(), false);
+
+    // moveFirst.
+    it.expandAll();
+    expect(it.current, "$a$b$c$d$e");
+    expect(it.collapseToFirst(b), true);
+    expect(it.current, "$b");
+    it.expandAll();
+    expect(it.current, "$b$c$d$e");
+    expect(it.collapseToFirst(a), false);
+    expect(it.current, "$b$c$d$e");
+
+    // moveBackTo
+    it.expandBackAll();
+    expect(it.current, "$a$b$c$d$e");
+    expect(it.collapseToLast(c), true);
+    expect(it.current, "$c");
+
+    // includeNext/includePrevious
+    expect(it.expandTo(e), true);
+    expect(it.current, "$c$d$e");
+    expect(it.expandTo(e), false);
+    expect(it.expandBackTo(b), true);
+    expect(it.current, "$b$c$d$e");
+    expect(it.expandBackTo(b), false);
+    expect(it.current, "$b$c$d$e");
+    expect(it.collapseToFirst(c), true);
+    expect(it.current, "$c");
+
+    // includeUntilNext/expandBackUntil
+    expect(it.expandBackUntil(a), true);
+    expect(it.current, "$b$c");
+    expect(it.expandBackUntil(a), true);
+    expect(it.current, "$b$c");
+    expect(it.expandUntil(e), true);
+    expect(it.current, "$b$c$d");
+    expect(it.expandUntil(e), true);
+    expect(it.current, "$b$c$d");
+
+    // dropFirst/dropLast
+    expect(it.dropFirst(), true);
+    expect(it.current, "$c$d");
+    expect(it.dropLast(), true);
+    expect(it.current, "$c");
+    it.expandBackAll();
+    it.expandAll();
+    expect(it.current, "$a$b$c$d$e");
+    expect(it.dropTo(b), true);
+    expect(it.current, "$c$d$e");
+    expect(it.dropBackTo(d), true);
+    expect(it.current, "$c");
+
+    it.expandBackAll();
+    it.expandAll();
+    expect(it.current, "$a$b$c$d$e");
+
+    expect(it.dropUntil(b), true);
+    expect(it.current, "$b$c$d$e");
+    expect(it.dropBackUntil(d), true);
+    expect(it.current, "$b$c$d");
+
+    it.dropWhile((x) => x == b.string);
+    expect(it.current, "$c$d");
+    it.expandBackAll();
+    expect(it.current, "$a$b$c$d");
+    it.dropBackWhile((x) => x != b.string);
+    expect(it.current, "$a$b");
+    it.dropBackWhile((x) => false);
+    expect(it.current, "$a$b");
+
+    // include..While
+    it.expandWhile((x) => false);
+    expect(it.current, "$a$b");
+    it.expandWhile((x) => x != e.string);
+    expect(it.current, "$a$b$c$d");
+    expect(it.collapseToFirst(c), true);
+    expect(it.current, "$c");
+    it.expandBackWhile((x) => false);
+    expect(it.current, "$c");
+    it.expandBackWhile((x) => x != a.string);
+    expect(it.current, "$b$c");
+
+    var cs2 = cs.replaceAll(c, gc(""));
+    var cs3 = cs.replaceFirst(c, gc(""));
+    var cs4 = cs.findFirst(c).replaceRange(gc(""));
+    var cse = gc("$a$b$d$e");
+    expect(cs2, cse);
+    expect(cs3, cse);
+    expect(cs4, cse);
+    var cs5 = cs4.replaceAll(a, c);
+    expect(cs5, gc("$c$b$d$e"));
+    var cs6 = cs5.replaceAll(gc(""), a);
+    expect(cs6, gc("$a$c$a$b$a$d$a$e$a"));
+    var cs7 = cs6.replaceFirst(b, a);
+    expect(cs7, gc("$a$c$a$a$a$d$a$e$a"));
+    var cs8 = cs7.replaceFirst(e, a);
+    expect(cs8, gc("$a$c$a$a$a$d$a$a$a"));
+    var cs9 = cs8.replaceAll(a + a, b);
+    expect(cs9, gc("$a$c$b$a$d$b$a"));
+    it = cs9.iterator;
+    it.moveTo(b + a);
+    expect("$b$a", it.current);
+    it.expandTo(b + a);
+    expect("$b$a$d$b$a", it.current);
+    var cs10 = it.replaceAll(b + a, e + e);
+    expect(cs10, gc("$a$c$e$e$d$e$e"));
+    var cs11 = it.replaceRange(e);
+    expect(cs11, gc("$a$c$e"));
+
+    expect(cs.startsWith(gc("")), true);
+    expect(cs.startsWith(a), true);
+    expect(cs.startsWith(a + b), true);
+    expect(cs.startsWith(gc("$a$b$c")), true);
+    expect(cs.startsWith(gc("$a$b$c$d")), true);
+    expect(cs.startsWith(gc("$a$b$c$d$e")), true);
+    expect(cs.startsWith(b), false);
+    expect(cs.startsWith(c), false);
+    expect(cs.startsWith(d), false);
+    expect(cs.startsWith(e), false);
+
+    expect(cs.endsWith(gc("")), true);
+    expect(cs.endsWith(e), true);
+    expect(cs.endsWith(d + e), true);
+    expect(cs.endsWith(gc("$c$d$e")), true);
+    expect(cs.endsWith(gc("$b$c$d$e")), true);
+    expect(cs.endsWith(gc("$a$b$c$d$e")), true);
+    expect(cs.endsWith(d), false);
+    expect(cs.endsWith(c), false);
+    expect(cs.endsWith(b), false);
+    expect(cs.endsWith(a), false);
+
+    it = cs.findFirst(b + c);
+    expect(it.startsWith(gc("")), true);
+    expect(it.startsWith(b), true);
+    expect(it.startsWith(b + c), true);
+    expect(it.startsWith(a + b + c), false);
+    expect(it.startsWith(b + c + d), false);
+    expect(it.startsWith(a), false);
+
+    expect(it.endsWith(gc("")), true);
+    expect(it.endsWith(c), true);
+    expect(it.endsWith(b + c), true);
+    expect(it.endsWith(a + b + c), false);
+    expect(it.endsWith(b + c + d), false);
+    expect(it.endsWith(d), false);
+
+    it.collapseToFirst(c);
+    expect(it.isPrecededBy(gc("")), true);
+    expect(it.isPrecededBy(b), true);
+    expect(it.isPrecededBy(a + b), true);
+    expect(it.isPrecededBy(a + b + c), false);
+    expect(it.isPrecededBy(a), false);
+
+    expect(it.isFollowedBy(gc("")), true);
+    expect(it.isFollowedBy(d), true);
+    expect(it.isFollowedBy(d + e), true);
+    expect(it.isFollowedBy(c + d + e), false);
+    expect(it.isFollowedBy(e), false);
+  });
+}

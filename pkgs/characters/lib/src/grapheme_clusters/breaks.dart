@@ -329,6 +329,8 @@ int previousBreak(String text, int start, int end, int index) {
 }
 
 /// The next break no earlier than [position] in `string.substring(start, end)`.
+///
+/// The index need not be at a grapheme cluster boundary.
 int nextBreak(String text, int start, int end, int index) {
   assert(0 <= start);
   assert(start <= index);

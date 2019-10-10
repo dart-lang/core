@@ -7,6 +7,4 @@ to be expected.
 also know as [Unicode (extended) grapheme clusters](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries).
 
 The `Characters` class allows access to the individual characters of a string,
-and a way to navigate back and forth between them.
-It also has a set of utility functions for inspecting and modifying strings
-without breaking up graphemes clusters.
+and a way to navigate back and forth between them using a `CharacterRange`.
