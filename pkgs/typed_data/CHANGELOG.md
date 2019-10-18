@@ -1,3 +1,9 @@
+## 1.2.0
+
+* Add typed queue classes such as `Uint8Queue`. These classes implement both
+  `Queue` and `List` with a highly-efficient typed-data-backed implementation.
+  Their `sublist()` methods also return typed data classes.
+
 ## 1.1.6
 
 * Set max SDK version to `<3.0.0`, and adjust other dependencies.
