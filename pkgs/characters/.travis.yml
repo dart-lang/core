@@ -1,7 +1,7 @@
 language: dart
 dart:
 - dev
-- 2.4.0
+- 2.5.0
 # Only building master means that we don't run two builds for each pull request.
 dart_task:
 - test: --platform vm,chrome

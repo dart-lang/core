@@ -295,7 +295,7 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
   return start != end;
 }
 
-/// The most recent break no later than [position] in
+/// The most recent break no later than [index] in
 /// `string.substring(start, end)`.
 int previousBreak(String text, int start, int end, int index) {
   assert(0 <= start);
@@ -328,7 +328,7 @@ int previousBreak(String text, int start, int end, int index) {
       .nextBreak();
 }
 
-/// The next break no earlier than [position] in `string.substring(start, end)`.
+/// The next break no earlier than [index] in `string.substring(start, end)`.
 ///
 /// The index need not be at a grapheme cluster boundary.
 int nextBreak(String text, int start, int end, int index) {

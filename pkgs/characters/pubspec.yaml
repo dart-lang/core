@@ -1,6 +1,6 @@
 name: characters
-version: 0.2.0
+version: 0.3.0
 environment:
-  sdk: "^2.4.0"
+  sdk: "^2.5.0"
 dev_dependencies:
   test: "^1.6.0"

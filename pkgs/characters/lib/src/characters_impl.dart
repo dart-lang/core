@@ -148,14 +148,11 @@ class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   Characters replaceAll(Characters pattern, Characters replacement) =>
-      _rangeAll.replaceAll(pattern, replacement);
+      _rangeAll.replaceAll(pattern, replacement)?.source ?? this;
 
   @override
-  Characters replaceFirst(Characters pattern, Characters replacement) {
-    var range = _rangeAll;
-    if (!range.collapseToFirst(pattern)) return this;
-    return range.replaceRange(replacement);
-  }
+  Characters replaceFirst(Characters pattern, Characters replacement) =>
+      _rangeAll.replaceFirst(pattern, replacement)?.source ?? this;
 
   @override
   bool containsAll(Characters other) =>
@@ -750,32 +747,37 @@ class StringCharacterRange implements CharacterRange {
   }
 
   @override
-  Characters replaceFirst(Characters pattern, Characters replacement) {
+  CharacterRange /*?*/ replaceFirst(
+      Characters pattern, Characters replacement) {
     String patternString = pattern.string;
     String replacementString = replacement.string;
+    String replaced;
     if (patternString.isEmpty) {
-      return StringCharacters(
-          _string.replaceRange(_start, _start, replacementString));
+      replaced = _string.replaceRange(_start, _start, replacementString);
+    } else {
+      int index = _indexOf(_string, patternString, _start, _end);
+      if (index >= 0) {
+        replaced = _string.replaceRange(
+            index, index + patternString.length, replacementString);
+      } else {
+        return null;
+      }
     }
-    int index = _indexOf(_string, patternString, _start, _end);
-    String result = _string;
-    if (index >= 0) {
-      result = _string.replaceRange(
-          index, index + patternString.length, replacementString);
-    }
-    return StringCharacters(result);
+    int newEnd = replaced.length - _string.length + _end;
+    return _expandRange(replaced, _start, newEnd);
   }
 
   @override
-  Characters replaceAll(Characters pattern, Characters replacement) {
+  CharacterRange /*?*/ replaceAll(Characters pattern, Characters replacement) {
     var patternString = pattern.string;
     var replacementString = replacement.string;
     if (patternString.isEmpty) {
       var replaced = _explodeReplace(
           _string, _start, _end, replacementString, replacementString);
-      return StringCharacters(replaced);
+      int newEnd = replaced.length - (_string.length - _end);
+      return _expandRange(replaced, _start, newEnd);
     }
-    if (_start == _end) return Characters(_string);
+    if (_start == _end) return null;
     int start = 0;
     int cursor = _start;
     StringBuffer buffer;
@@ -786,14 +788,26 @@ class StringCharacterRange implements CharacterRange {
       cursor += patternString.length;
       start = cursor;
     }
-    if (buffer == null) return Characters(_string);
+    if (buffer == null) return null;
     buffer.write(_string.substring(start));
-    return Characters(buffer.toString());
+    String replaced = buffer.toString();
+    int newEnd = replaced.length - (_string.length - _end);
+    return _expandRange(replaced, _start, newEnd);
   }
 
   @override
-  Characters replaceRange(Characters replacement) {
-    return Characters(_string.replaceRange(_start, _end, replacement.string));
+  CharacterRange replaceRange(Characters replacement) {
+    String replacementString = replacement.string;
+    String resultString = _string.replaceRange(_start, _end, replacementString);
+    return _expandRange(
+        resultString, _start, _start + replacementString.length);
+  }
+
+  // Expands a range if its start or end are not grapheme cluster boundaries.
+  StringCharacterRange _expandRange(String string, int start, int end) {
+    start = previousBreak(string, 0, string.length, start);
+    end = nextBreak(string, 0, string.length, end);
+    return StringCharacterRange._(string, start, end);
   }
 
   @override
@@ -856,6 +870,32 @@ class StringCharacterRange implements CharacterRange {
     }
     return false;
   }
+
+  @override
+  Characters get charactersAfter => StringCharacters(_string.substring(_end));
+
+  @override
+  Characters get charactersBefore =>
+      StringCharacters(_string.substring(0, _start));
+
+  @override
+  Characters get currentCharacters => StringCharacters(current);
+
+  @override
+  void moveBackAll() {
+    _move(0, _start);
+  }
+
+  @override
+  void moveNextAll() {
+    _move(_end, _string.length);
+  }
+
+  @override
+  String get stringAfter => _string.substring(_end);
+
+  @override
+  String get stringBefore => _string.substring(0, _start);
 }
 
 class _CodeUnits extends ListBase<int> {

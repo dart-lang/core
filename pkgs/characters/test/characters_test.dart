@@ -477,7 +477,7 @@ void testParts(
 
     var cs2 = cs.replaceAll(c, gc(""));
     var cs3 = cs.replaceFirst(c, gc(""));
-    var cs4 = cs.findFirst(c).replaceRange(gc(""));
+    var cs4 = cs.findFirst(c).replaceRange(gc("")).source;
     var cse = gc("$a$b$d$e");
     expect(cs2, cse);
     expect(cs3, cse);
@@ -498,9 +498,11 @@ void testParts(
     it.expandTo(b + a);
     expect("$b$a$d$b$a", it.current);
     var cs10 = it.replaceAll(b + a, e + e);
-    expect(cs10, gc("$a$c$e$e$d$e$e"));
+    expect(cs10.currentCharacters, e + e + d + e + e);
+    expect(cs10.source, gc("$a$c$e$e$d$e$e"));
     var cs11 = it.replaceRange(e);
-    expect(cs11, gc("$a$c$e"));
+    expect(cs11.currentCharacters, e);
+    expect(cs11.source, gc("$a$c$e"));
 
     expect(cs.startsWith(gc("")), true);
     expect(cs.startsWith(a), true);
@@ -552,4 +554,66 @@ void testParts(
     expect(it.isFollowedBy(c + d + e), false);
     expect(it.isFollowedBy(e), false);
   });
+  test("replace methods", () {
+    // Unicode grapheme breaking character classes,
+    // represented by their first value.
+
+    var pattern = gc("\t"); // A non-combining entry to be replaced.
+    var non = gc("");
+
+    var c = otr + cr + pattern + lf + pic + pattern + zwj + pic + otr;
+    var r = c.replaceAll(pattern, non);
+    expect(r, otr + cr + lf + pic + zwj + pic + otr);
+    var ci = c.iterator..moveNextAll();
+    var ri = ci.replaceAll(pattern, non);
+    expect(ri.currentCharacters, otr + cr + lf + pic + zwj + pic + otr);
+    ci.dropFirst();
+    ci.dropLast();
+    expect(ci.currentCharacters, cr + pattern + lf + pic + pattern + zwj + pic);
+    expect(ci.currentCharacters.length, 7);
+    ri = ci.replaceAll(pattern, non);
+    expect(ri.currentCharacters, cr + lf + pic + zwj + pic);
+    expect(ri.currentCharacters.length, 2);
+    ci.dropFirst();
+    ci.dropLast(5);
+    expect(ci.currentCharacters, pattern);
+    ri = ci.replaceAll(pattern, non);
+    expect(ri.currentCharacters, cr + lf);
+    ci.moveNext(2);
+    ci.moveNext(1);
+    expect(ci.currentCharacters, pattern);
+    ri = ci.replaceAll(pattern, non);
+    expect(ri.currentCharacters, pic + zwj + pic);
+
+    c = otr + pic + ext + pattern + pic + ext + otr;
+    expect(c.length, 5);
+    ci = c.iterator..moveTo(pattern);
+    expect(ci.currentCharacters, pattern);
+    ri = ci.replaceAll(pattern, zwj);
+    expect(ri.currentCharacters, pic + ext + zwj + pic + ext);
+
+    c = reg + pattern + reg + reg;
+    ci = c.iterator..moveTo(pattern);
+    ri = ci.replaceRange(non);
+    expect(ri.currentCharacters, reg + reg);
+    expect(ri.moveNext(), true);
+    expect(ri.currentCharacters, reg);
+  });
 }
+
+/// Sample characters from each breaking algorithm category.
+final Characters ctl = gc("\x00"); // Control, NUL.
+final Characters cr = gc("\r"); // Carriage Return, CR.
+final Characters lf = gc("\n"); // Newline, NL.
+final Characters otr = gc(" "); // Other, Space.
+final Characters ext = gc("\u0300"); // Extend, Combining Grave Accent.
+final Characters spc = gc("\u0903"); // Spacing Mark, Devanagari Sign Visarga.
+final Characters pre = gc("\u0600"); // Prepend, Arabic Number Sign.
+final Characters zwj = gc("\u200d"); // Zero-Width Joiner.
+final Characters pic = gc("\u00a9"); // Extended Pictographic, Copyright.
+final Characters reg = gc("\u{1f1e6}"); // Regional Identifier "a".
+final Characters hanl = gc("\u1100"); // Hangul L, Choseong Kiyeok.
+final Characters hanv = gc("\u1160"); // Hangul V, Jungseong Filler.
+final Characters hant = gc("\u11a8"); // Hangul T, Jongseong Kiyeok.
+final Characters hanlv = gc("\uac00"); // Hangul LV, Syllable Ga.
+final Characters hanlvt = gc("\uac01"); // Hangul LVT, Syllable Gag.
