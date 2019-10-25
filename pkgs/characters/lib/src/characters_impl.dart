@@ -15,7 +15,7 @@ import "grapheme_clusters/breaks.dart";
 /// Backed by a single string.
 class StringCharacters extends Iterable<String> implements Characters {
   // Try to avoid allocating more empty grapheme clusters.
-  static const StringCharacters _empty = const StringCharacters("");
+  static const StringCharacters _empty = StringCharacters("");
 
   final String string;
 
@@ -63,7 +63,9 @@ class StringCharacters extends Iterable<String> implements Characters {
     if (string.isEmpty) return 0;
     var brk = Breaks(string, 0, string.length, stateSoTNoBreak);
     int length = 0;
-    while (brk.nextBreak() >= 0) length++;
+    while (brk.nextBreak() >= 0) {
+      length++;
+    }
     return length;
   }
 
@@ -917,7 +919,7 @@ class _CodeUnits extends ListBase<int> {
   }
 
   @override
-  void set length(int newLength) {
+  set length(int newLength) {
     throw UnsupportedError("Cannot modify an unmodifiable list");
   }
 }

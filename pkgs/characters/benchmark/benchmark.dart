@@ -22,18 +22,26 @@ double bench(int Function() action, int ms) {
 int iterateIndicesOnly() {
   int graphemeClusters = 0;
   var char = Characters(hangul).iterator;
-  while (char.moveNext()) graphemeClusters++;
+  while (char.moveNext()) {
+    graphemeClusters++;
+  }
   char = Characters(genesis).iterator;
-  while (char.moveNext()) graphemeClusters++;
+  while (char.moveNext()) {
+    graphemeClusters++;
+  }
   return graphemeClusters;
 }
 
 int iterateStrings() {
   int codeUnits = 0;
   var char = Characters(hangul).iterator;
-  while (char.moveNext()) codeUnits += char.current.length;
+  while (char.moveNext()) {
+    codeUnits += char.current.length;
+  }
   char = Characters(genesis).iterator;
-  while (char.moveNext()) codeUnits += char.current.length;
+  while (char.moveNext()) {
+    codeUnits += char.current.length;
+  }
   return codeUnits;
 }
 
