@@ -1,5 +1,5 @@
 name: characters
-version: 0.3.0
+version: 0.3.1
 description: String replacement with operations that are Unicode/grapheme cluster aware.
 author: Dart Team <misc@dartlang.org>
 homepage: https://www.github.com/dart-lang/characters
