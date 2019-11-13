@@ -8,11 +8,15 @@ main() {
 
   // Length.
   print('String.length: ${hi.length}');
-  print('Characters.length: ${Characters(hi).length}\n');
+  print('Characters.length: ${hi.characters.length}\n');
+
+  // Last character.
+  print('The string ends with: ${hi.substring(hi.length - 1)}');
+  print('The last character: ${hi.characters.last}\n');
 
   // Skip last character.
-  print('String.substring: "${hi.substring(0, hi.length - 1)}"');
-  print('Characters.skipLast: "${Characters(hi).skipLast(1)}"\n');
+  print('Substring -1: "${hi.substring(0, hi.length - 1)}"');
+  print('Skipping last character: "${hi.characters.skipLast(1)}"\n');
 
   // Replace characters.
   Characters newHi =

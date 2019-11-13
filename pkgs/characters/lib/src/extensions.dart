@@ -2,8 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// String operations based on characters (Unicode grapheme clusters).
-library characters;
+import 'characters.dart';
 
-export "src/characters.dart";
-export "src/extensions.dart";
+extension StringCharacters on String {
+  /// The [Characters] of this string.
+  Characters get characters => Characters(this);
+}
