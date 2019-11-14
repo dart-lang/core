@@ -162,6 +162,14 @@ void main() {
       });
     });
 
+    group("zeroes out existing data", () {
+      forEachInternalRepresentation((queue) {
+        queue.length = 0;
+        queue.length = 15;
+        expect(queue, equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+      });
+    });
+
     test("throws a RangeError if length is less than 0", () {
       expect(() => Uint8Queue().length = -1, throwsRangeError);
     });

@@ -7,13 +7,14 @@ import "dart:typed_data";
 
 import "package:collection/collection.dart";
 
+import '../typed_buffers.dart';
+
 /// The shared superclass of all the typed queue subclasses.
-abstract class _TypedQueue<E, L extends List<E>> extends Object
-    with ListMixin<E> {
+abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
   /// The underlying data buffer.
   ///
   /// This is always both a List<E> and a TypedData, which we don't have a type
-  /// for that. For example, for a `Uint8Buffer`, this is a `Uint8List`.
+  /// for that. For example, for a `Uint8Queue`, this is a `Uint8List`.
   L _table;
 
   int _head;
@@ -29,7 +30,7 @@ abstract class _TypedQueue<E, L extends List<E>> extends Object
   int get length => (_tail - _head) & (_table.length - 1);
 
   List<E> toList({bool growable = true}) {
-    var list = growable ? (<E>[]..length = length) : _createList(length);
+    var list = growable ? _createBuffer(length) : _createList(length);
     _writeToList(list);
     return list;
   }
@@ -77,15 +78,21 @@ abstract class _TypedQueue<E, L extends List<E>> extends Object
 
     var delta = value - length;
     if (delta >= 0) {
-      if (_table.length <= value) _growTo(value);
+      var needsToGrow = _table.length <= value;
+      if (needsToGrow) _growTo(value);
       _tail = (_tail + delta) & (_table.length - 1);
+
+      // If we didn't copy into a new table, make sure that we overwrite the
+      // existing data so that users don't accidentally depend on it still
+      // existing.
+      if (!needsToGrow) fillRange(value - delta, value, _defaultValue);
     } else {
       removeRange(value, length);
     }
   }
 
   E operator [](int index) {
-    RangeError.checkValidIndex(index, this);
+    RangeError.checkValidIndex(index, this, null, this.length);
     return _table[(_head + index) & (_table.length - 1)];
   }
 
@@ -222,11 +229,21 @@ abstract class _TypedQueue<E, L extends List<E>> extends Object
     }
   }
 
+  void fillRange(int start, int end, [E value]) {
+    var startInTable = (_head + start) & (_table.length - 1);
+    var endInTable = (_head + end) & (_table.length - 1);
+    if (startInTable <= endInTable) {
+      _table.fillRange(startInTable, endInTable, value);
+    } else {
+      _table.fillRange(startInTable, _table.length, value);
+      _table.fillRange(0, endInTable, value);
+    }
+  }
+
   L sublist(int start, [int end]) {
     var length = this.length;
-    RangeError.checkValidRange(start, end, length);
+    end = RangeError.checkValidRange(start, end, length);
 
-    end ??= length;
     var list = _createList(end - start);
     _writeToList(list, start, end);
     return list;
@@ -245,6 +262,7 @@ abstract class _TypedQueue<E, L extends List<E>> extends Object
     start ??= 0;
     end ??= length;
     assert(target.length >= end - start);
+    assert(start <= end);
 
     var elementsToWrite = end - start;
     var startInTable = (_head + start) & (_table.length - 1);
@@ -296,15 +314,25 @@ abstract class _TypedQueue<E, L extends List<E>> extends Object
 
   // Create a new typed list.
   L _createList(int size);
+
+  // Create a new typed buffer of the given type.
+  List<E> _createBuffer(int size);
+
+  /// The default value used to fill the queue when changing length.
+  E get _defaultValue;
 }
 
 abstract class _IntQueue<L extends List<int>> extends _TypedQueue<int, L> {
   _IntQueue(List<int> queue) : super(queue);
+
+  int get _defaultValue => 0;
 }
 
 abstract class _FloatQueue<L extends List<double>>
     extends _TypedQueue<double, L> {
   _FloatQueue(List<double> queue) : super(queue);
+
+  double get _defaultValue => 0.0;
 }
 
 /// A [QueueList] that efficiently stores 8-bit unsigned integers.
@@ -325,6 +353,7 @@ class Uint8Queue extends _IntQueue<Uint8List> implements QueueList<int> {
       Uint8Queue(elements.length)..addAll(elements);
 
   Uint8List _createList(int size) => Uint8List(size);
+  Uint8Buffer _createBuffer(int size) => Uint8Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores 8-bit signed integers.
@@ -346,6 +375,7 @@ class Int8Queue extends _IntQueue<Int8List> implements QueueList<int> {
       Int8Queue(elements.length)..addAll(elements);
 
   Int8List _createList(int size) => Int8List(size);
+  Int8Buffer _createBuffer(int size) => Int8Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores 8-bit unsigned integers.
@@ -369,6 +399,7 @@ class Uint8ClampedQueue extends _IntQueue<Uint8ClampedList>
       Uint8ClampedQueue(elements.length)..addAll(elements);
 
   Uint8ClampedList _createList(int size) => Uint8ClampedList(size);
+  Uint8ClampedBuffer _createBuffer(int size) => Uint8ClampedBuffer(size);
 }
 
 /// A [QueueList] that efficiently stores 16-bit unsigned integers.
@@ -389,6 +420,7 @@ class Uint16Queue extends _IntQueue<Uint16List> implements QueueList<int> {
       Uint16Queue(elements.length)..addAll(elements);
 
   Uint16List _createList(int size) => Uint16List(size);
+  Uint16Buffer _createBuffer(int size) => Uint16Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores 16-bit signed integers.
@@ -410,6 +442,7 @@ class Int16Queue extends _IntQueue<Int16List> implements QueueList<int> {
       Int16Queue(elements.length)..addAll(elements);
 
   Int16List _createList(int size) => Int16List(size);
+  Int16Buffer _createBuffer(int size) => Int16Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores 32-bit unsigned integers.
@@ -430,6 +463,7 @@ class Uint32Queue extends _IntQueue<Uint32List> implements QueueList<int> {
       Uint32Queue(elements.length)..addAll(elements);
 
   Uint32List _createList(int size) => Uint32List(size);
+  Uint32Buffer _createBuffer(int size) => Uint32Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores 32-bit signed integers.
@@ -451,6 +485,7 @@ class Int32Queue extends _IntQueue<Int32List> implements QueueList<int> {
       Int32Queue(elements.length)..addAll(elements);
 
   Int32List _createList(int size) => Int32List(size);
+  Int32Buffer _createBuffer(int size) => Int32Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores 64-bit unsigned integers.
@@ -472,6 +507,7 @@ class Uint64Queue extends _IntQueue<Uint64List> implements QueueList<int> {
       Uint64Queue(elements.length)..addAll(elements);
 
   Uint64List _createList(int size) => Uint64List(size);
+  Uint64Buffer _createBuffer(int size) => Uint64Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores 64-bit signed integers.
@@ -493,6 +529,7 @@ class Int64Queue extends _IntQueue<Int64List> implements QueueList<int> {
       Int64Queue(elements.length)..addAll(elements);
 
   Int64List _createList(int size) => Int64List(size);
+  Int64Buffer _createBuffer(int size) => Int64Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores IEEE 754 single-precision binary
@@ -515,6 +552,7 @@ class Float32Queue extends _FloatQueue<Float32List>
       Float32Queue(elements.length)..addAll(elements);
 
   Float32List _createList(int size) => Float32List(size);
+  Float32Buffer _createBuffer(int size) => Float32Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores IEEE 754 double-precision binary
@@ -534,6 +572,7 @@ class Float64Queue extends _FloatQueue<Float64List>
       Float64Queue(elements.length)..addAll(elements);
 
   Float64List _createList(int size) => Float64List(size);
+  Float64Buffer _createBuffer(int size) => Float64Buffer(size);
 }
 
 /// A [QueueList] that efficiently stores [Int32x4] numbers.
@@ -542,6 +581,8 @@ class Float64Queue extends _FloatQueue<Float64List>
 /// time-efficient than a default [QueueList] implementation.
 class Int32x4Queue extends _TypedQueue<Int32x4, Int32x4List>
     implements QueueList<Int32x4> {
+  static final Int32x4 _zero = Int32x4(0, 0, 0, 0);
+
   /// Creates an empty [Int32x4Queue] with the given initial internal capacity
   /// (in elements).
   Int32x4Queue([int initialCapacity])
@@ -552,6 +593,8 @@ class Int32x4Queue extends _TypedQueue<Int32x4, Int32x4List>
       Int32x4Queue(elements.length)..addAll(elements);
 
   Int32x4List _createList(int size) => Int32x4List(size);
+  Int32x4Buffer _createBuffer(int size) => Int32x4Buffer(size);
+  Int32x4 get _defaultValue => _zero;
 }
 
 /// A [QueueList] that efficiently stores [Float32x4] numbers.
@@ -570,6 +613,8 @@ class Float32x4Queue extends _TypedQueue<Float32x4, Float32x4List>
       Float32x4Queue(elements.length)..addAll(elements);
 
   Float32x4List _createList(int size) => Float32x4List(size);
+  Float32x4Buffer _createBuffer(int size) => Float32x4Buffer(size);
+  Float32x4 get _defaultValue => Float32x4.zero();
 }
 
 /// The initial capacity of queues if the user doesn't specify one.
