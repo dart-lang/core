@@ -250,7 +250,7 @@ abstract class CharacterRange implements Iterator<String> {
   Characters get source;
 
   /// The code units of the current character range.
-  List<int> get codeUnits;
+  Iterable<int> get utf16CodeUnits;
 
   /// The code points of the current character range.
   Runes get runes;

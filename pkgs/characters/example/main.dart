@@ -20,6 +20,6 @@ main() {
 
   // Replace characters.
   Characters newHi =
-      Characters(hi).replaceAll(Characters('🇩🇰'), Characters('🇺🇸'));
+      hi.characters.replaceAll('🇩🇰'.characters, '🇺🇸'.characters);
   print('Change flag: "$newHi"');
 }

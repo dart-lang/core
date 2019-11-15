@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+* Change [codeUnits] getter to [utf16CodeUnits] which returns an iterable.
+  This avoids leaking that the underlying string has efficient UTF-16
+  code unit access in the API, and allows the same interface to be
+  just as efficiently implemented on top of UTF-8.
+
 ## 0.4.0
 
 * Added an extension method on `String` to allow easy access to the `Characters`

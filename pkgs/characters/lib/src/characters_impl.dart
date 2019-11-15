@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:collection" show ListBase;
-
 import 'package:characters/src/grapheme_clusters/table.dart';
 
 import "characters.dart";
@@ -488,7 +486,7 @@ class StringCharacterRange implements CharacterRange {
   }
 
   @override
-  List<int> get codeUnits => _CodeUnits(_string, _start, _end);
+  Iterable<int> get utf16CodeUnits => _string.codeUnits.getRange(_start, _end);
 
   @override
   Runes get runes => Runes(current);
@@ -898,30 +896,6 @@ class StringCharacterRange implements CharacterRange {
 
   @override
   String get stringBefore => _string.substring(0, _start);
-}
-
-class _CodeUnits extends ListBase<int> {
-  final String _string;
-  final int _start;
-  final int _end;
-
-  _CodeUnits(this._string, this._start, this._end);
-
-  int get length => _end - _start;
-
-  int operator [](int index) {
-    RangeError.checkValidIndex(index, this, "index", _end - _start);
-    return _string.codeUnitAt(_start + index);
-  }
-
-  void operator []=(int index, int value) {
-    throw UnsupportedError("Cannot modify an unmodifiable list");
-  }
-
-  @override
-  set length(int newLength) {
-    throw UnsupportedError("Cannot modify an unmodifiable list");
-  }
 }
 
 String _explodeReplace(String string, int start, int end,
