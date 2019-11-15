@@ -40,6 +40,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
     throw UnsupportedError("$this cannot be cast to the desired type.");
   }
 
+  @deprecated
   QueueList<T> retype<T>() => cast<T>();
 
   // Queue interface.
@@ -92,7 +93,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
   }
 
   E operator [](int index) {
-    RangeError.checkValidIndex(index, this, null, this.length);
+    RangeError.checkValidIndex(index, this, null, length);
     return _table[(_head + index) & (_table.length - 1)];
   }
 
