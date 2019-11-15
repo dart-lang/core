@@ -1,3 +1,4 @@
+[![pub package](https://img.shields.io/pub/v/characters.svg)](https://pub.dev/packages/characters)
 [![Build Status](https://travis-ci.org/dart-lang/characters.svg?branch=master)](https://travis-ci.org/dart-lang/characters)
 
 **NOTE**: This package is considered experimental, and breaking API changes are
