@@ -15,5 +15,8 @@ void main() {
     0x7fffffffffffffff,
     0x5555555555555555,
   ];
-  initTests(<int>[]..addAll(browserSafeIntSamples)..addAll(browserUnsafe));
+  initTests(<int>[
+    ...browserSafeIntSamples,
+    ...browserUnsafe,
+  ]);
 }

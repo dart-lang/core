@@ -5,4 +5,4 @@
 /// Utilities and functionality related to the "dart:typed_data" library.
 library typed_data;
 
-export "package:typed_data/typed_buffers.dart";
+export 'package:typed_data/typed_buffers.dart';
