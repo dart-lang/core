@@ -4,7 +4,6 @@ analyzer:
     implicit-casts: false
 linter:
   rules:
-    #- annotate_overrides
     - avoid_function_literals_in_foreach_calls
     - avoid_init_to_null
     - avoid_null_checks_in_equality_operators
@@ -30,7 +29,6 @@ linter:
     - list_remove_unrelated_type
     - no_adjacent_strings_in_list
     - non_constant_identifier_names
-    #- omit_local_variable_types
     - only_throw_errors
     - overridden_fields
     - package_api_docs
@@ -44,7 +42,6 @@ linter:
     - prefer_generic_function_type_aliases
     - prefer_initializing_formals
     - prefer_interpolation_to_compose_strings
-    #- prefer_single_quotes
     - prefer_typing_uninitialized_variables
     - slash_for_doc_comments
     - test_types_in_equals
@@ -57,4 +54,3 @@ linter:
     - unnecessary_new
     - unnecessary_null_aware_assignments
     - unnecessary_statements
-    #- unnecessary_this

@@ -6,40 +6,40 @@ import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group("isX tests", () {
-    test("isEven", () {
+  group('isX tests', () {
+    test('isEven', () {
       expect((-Int32.ONE).isEven, false);
       expect(Int32.ZERO.isEven, true);
       expect(Int32.ONE.isEven, false);
       expect(Int32.TWO.isEven, true);
     });
-    test("isMaxValue", () {
+    test('isMaxValue', () {
       expect(Int32.MIN_VALUE.isMaxValue, false);
       expect(Int32.ZERO.isMaxValue, false);
       expect(Int32.MAX_VALUE.isMaxValue, true);
     });
-    test("isMinValue", () {
+    test('isMinValue', () {
       expect(Int32.MIN_VALUE.isMinValue, true);
       expect(Int32.ZERO.isMinValue, false);
       expect(Int32.MAX_VALUE.isMinValue, false);
     });
-    test("isNegative", () {
+    test('isNegative', () {
       expect(Int32.MIN_VALUE.isNegative, true);
       expect(Int32.ZERO.isNegative, false);
       expect(Int32.ONE.isNegative, false);
     });
-    test("isOdd", () {
+    test('isOdd', () {
       expect((-Int32.ONE).isOdd, true);
       expect(Int32.ZERO.isOdd, false);
       expect(Int32.ONE.isOdd, true);
       expect(Int32.TWO.isOdd, false);
     });
-    test("isZero", () {
+    test('isZero', () {
       expect(Int32.MIN_VALUE.isZero, false);
       expect(Int32.ZERO.isZero, true);
       expect(Int32.MAX_VALUE.isZero, false);
     });
-    test("bitLength", () {
+    test('bitLength', () {
       expect(Int32(-2).bitLength, 1);
       expect((-Int32.ONE).bitLength, 0);
       expect(Int32.ZERO.bitLength, 0);
@@ -50,13 +50,13 @@ void main() {
     });
   });
 
-  group("arithmetic operators", () {
-    Int32 n1 = Int32(1234);
-    Int32 n2 = Int32(9876);
-    Int32 n3 = Int32(-1234);
-    Int32 n4 = Int32(-9876);
+  group('arithmetic operators', () {
+    var n1 = Int32(1234);
+    var n2 = Int32(9876);
+    var n3 = Int32(-1234);
+    var n4 = Int32(-9876);
 
-    test("+", () {
+    test('+', () {
       expect(n1 + n2, Int32(11110));
       expect(n3 + n2, Int32(8642));
       expect(n3 + n4, Int32(-11110));
@@ -65,7 +65,7 @@ void main() {
       expect(() => Int32(17) + null, throwsArgumentError);
     });
 
-    test("-", () {
+    test('-', () {
       expect(n1 - n2, Int32(-8642));
       expect(n3 - n2, Int32(-11110));
       expect(n3 - n4, Int32(8642));
@@ -74,12 +74,12 @@ void main() {
       expect(() => Int32(17) - null, throwsArgumentError);
     });
 
-    test("unary -", () {
+    test('unary -', () {
       expect(-n1, Int32(-1234));
       expect(-Int32.ZERO, Int32.ZERO);
     });
 
-    test("*", () {
+    test('*', () {
       expect(n1 * n2, Int32(12186984));
       expect(n2 * n3, Int32(-12186984));
       expect(n3 * n3, Int32(1522756));
@@ -92,7 +92,7 @@ void main() {
       expect(() => Int32(17) * null, throwsArgumentError);
     });
 
-    test("~/", () {
+    test('~/', () {
       expect(Int32(829893893) ~/ Int32(1919), Int32(432461));
       expect(Int32(0x12345678) ~/ Int32(0x22), Int32(0x12345678 ~/ 0x22));
       expect(Int32(829893893) ~/ Int64(1919), Int32(432461));
@@ -107,13 +107,13 @@ void main() {
       expect(() => Int32(17) ~/ null, throwsArgumentError);
     });
 
-    test("%", () {
+    test('%', () {
       expect(Int32(0x12345678) % Int32(0x22), Int32(0x12345678 % 0x22));
       expect(Int32(0x12345678) % Int64(0x22), Int32(0x12345678 % 0x22));
       expect(() => Int32(17) % null, throwsArgumentError);
     });
 
-    test("remainder", () {
+    test('remainder', () {
       expect(Int32(0x12345678).remainder(Int32(0x22)),
           Int32(0x12345678.remainder(0x22) as int));
       expect(Int32(0x12345678).remainder(Int32(-0x22)),
@@ -127,7 +127,7 @@ void main() {
       expect(() => Int32(17).remainder(null), throwsArgumentError);
     });
 
-    test("abs", () {
+    test('abs', () {
       // NOTE: Int32.MIN_VALUE.abs() is undefined
       expect((Int32.MIN_VALUE + 1).abs(), Int32.MAX_VALUE);
       expect(Int32(-1).abs(), Int32(1));
@@ -136,8 +136,8 @@ void main() {
       expect(Int32.MAX_VALUE.abs(), Int32.MAX_VALUE);
     });
 
-    test("clamp", () {
-      Int32 val = Int32(17);
+    test('clamp', () {
+      var val = Int32(17);
       expect(val.clamp(20, 30), Int32(20));
       expect(val.clamp(10, 20), Int32(17));
       expect(val.clamp(10, 15), Int32(15));
@@ -160,14 +160,14 @@ void main() {
     });
   });
 
-  group("leading/trailing zeros", () {
-    test("numberOfLeadingZeros", () {
+  group('leading/trailing zeros', () {
+    test('numberOfLeadingZeros', () {
       expect(Int32(0).numberOfLeadingZeros(), 32);
       expect(Int32(1).numberOfLeadingZeros(), 31);
       expect(Int32(0xffff).numberOfLeadingZeros(), 16);
       expect(Int32(-1).numberOfLeadingZeros(), 0);
     });
-    test("numberOfTrailingZeros", () {
+    test('numberOfTrailingZeros', () {
       expect(Int32(0).numberOfTrailingZeros(), 32);
       expect(Int32(0x80000000).numberOfTrailingZeros(), 31);
       expect(Int32(1).numberOfTrailingZeros(), 0);
@@ -175,8 +175,8 @@ void main() {
     });
   });
 
-  group("comparison operators", () {
-    test("compareTo", () {
+  group('comparison operators', () {
+    test('compareTo', () {
       expect(Int32(0).compareTo(-1), 1);
       expect(Int32(0).compareTo(0), 0);
       expect(Int32(0).compareTo(1), -1);
@@ -188,7 +188,7 @@ void main() {
       expect(Int32(0).compareTo(Int64(1)), -1);
     });
 
-    test("<", () {
+    test('<', () {
       expect(Int32(17) < Int32(18), true);
       expect(Int32(17) < Int32(17), false);
       expect(Int32(17) < Int32(16), false);
@@ -200,7 +200,7 @@ void main() {
       expect(() => Int32(17) < null, throwsArgumentError);
     });
 
-    test("<=", () {
+    test('<=', () {
       expect(Int32(17) <= Int32(18), true);
       expect(Int32(17) <= Int32(17), true);
       expect(Int32(17) <= Int32(16), false);
@@ -212,7 +212,7 @@ void main() {
       expect(() => Int32(17) <= null, throwsArgumentError);
     });
 
-    test("==", () {
+    test('==', () {
       expect(Int32(17), isNot(equals(Int32(18))));
       expect(Int32(17), equals(Int32(17)));
       expect(Int32(17), isNot(equals(Int32(16))));
@@ -227,7 +227,7 @@ void main() {
       expect(Int32(17), isNot(equals(null)));
     });
 
-    test(">=", () {
+    test('>=', () {
       expect(Int32(17) >= Int32(18), false);
       expect(Int32(17) >= Int32(17), true);
       expect(Int32(17) >= Int32(16), true);
@@ -239,7 +239,7 @@ void main() {
       expect(() => Int32(17) >= null, throwsArgumentError);
     });
 
-    test(">", () {
+    test('>', () {
       expect(Int32(17) > Int32(18), false);
       expect(Int32(17) > Int32(17), false);
       expect(Int32(17) > Int32(16), true);
@@ -252,8 +252,8 @@ void main() {
     });
   });
 
-  group("bitwise operators", () {
-    test("&", () {
+  group('bitwise operators', () {
+    test('&', () {
       expect(Int32(0x12345678) & Int32(0x22222222),
           Int32(0x12345678 & 0x22222222));
       expect(Int32(0x12345678) & Int64(0x22222222),
@@ -261,7 +261,7 @@ void main() {
       expect(() => Int32(17) & null, throwsArgumentError);
     });
 
-    test("|", () {
+    test('|', () {
       expect(Int32(0x12345678) | Int32(0x22222222),
           Int32(0x12345678 | 0x22222222));
       expect(Int32(0x12345678) | Int64(0x22222222),
@@ -269,7 +269,7 @@ void main() {
       expect(() => Int32(17) | null, throwsArgumentError);
     });
 
-    test("^", () {
+    test('^', () {
       expect(Int32(0x12345678) ^ Int32(0x22222222),
           Int32(0x12345678 ^ 0x22222222));
       expect(Int32(0x12345678) ^ Int64(0x22222222),
@@ -277,14 +277,14 @@ void main() {
       expect(() => Int32(17) ^ null, throwsArgumentError);
     });
 
-    test("~", () {
+    test('~', () {
       expect(~(Int32(0x12345678)), Int32(~0x12345678));
       expect(-(Int32(0x12345678)), Int64(-0x12345678));
     });
   });
 
-  group("bitshift operators", () {
-    test("<<", () {
+  group('bitshift operators', () {
+    test('<<', () {
       expect(Int32(0x12345678) << 7, Int32(0x12345678 << 7));
       expect(Int32(0x12345678) << 32, Int32.ZERO);
       expect(Int32(0x12345678) << 33, Int32.ZERO);
@@ -292,7 +292,7 @@ void main() {
       expect(() => Int32(17) << null, throwsNoSuchMethodError);
     });
 
-    test(">>", () {
+    test('>>', () {
       expect(Int32(0x12345678) >> 7, Int32(0x12345678 >> 7));
       expect(Int32(0x12345678) >> 32, Int32.ZERO);
       expect(Int32(0x12345678) >> 33, Int32.ZERO);
@@ -302,7 +302,7 @@ void main() {
       expect(() => Int32(17) >> null, throwsNoSuchMethodError);
     });
 
-    test("shiftRightUnsigned", () {
+    test('shiftRightUnsigned', () {
       expect(Int32(0x12345678).shiftRightUnsigned(7), Int32(0x12345678 >> 7));
       expect(Int32(0x12345678).shiftRightUnsigned(32), Int32.ZERO);
       expect(Int32(0x12345678).shiftRightUnsigned(33), Int32.ZERO);
@@ -314,8 +314,8 @@ void main() {
     });
   });
 
-  group("conversions", () {
-    test("toSigned", () {
+  group('conversions', () {
+    test('toSigned', () {
       expect(Int32.ONE.toSigned(2), Int32.ONE);
       expect(Int32.ONE.toSigned(1), -Int32.ONE);
       expect(Int32.MAX_VALUE.toSigned(32), Int32.MAX_VALUE);
@@ -325,7 +325,7 @@ void main() {
       expect(() => Int32.ONE.toSigned(0), throwsRangeError);
       expect(() => Int32.ONE.toSigned(33), throwsRangeError);
     });
-    test("toUnsigned", () {
+    test('toUnsigned', () {
       expect(Int32.ONE.toUnsigned(1), Int32.ONE);
       expect(Int32.ONE.toUnsigned(0), Int32.ZERO);
       expect(Int32.MAX_VALUE.toUnsigned(32), Int32.MAX_VALUE);
@@ -335,23 +335,23 @@ void main() {
       expect(() => Int32.ONE.toUnsigned(-1), throwsRangeError);
       expect(() => Int32.ONE.toUnsigned(33), throwsRangeError);
     });
-    test("toDouble", () {
+    test('toDouble', () {
       expect(Int32(17).toDouble(), same(17.0));
       expect(Int32(-17).toDouble(), same(-17.0));
     });
-    test("toInt", () {
+    test('toInt', () {
       expect(Int32(17).toInt(), 17);
       expect(Int32(-17).toInt(), -17);
     });
-    test("toInt32", () {
+    test('toInt32', () {
       expect(Int32(17).toInt32(), Int32(17));
       expect(Int32(-17).toInt32(), Int32(-17));
     });
-    test("toInt64", () {
+    test('toInt64', () {
       expect(Int32(17).toInt64(), Int64(17));
       expect(Int32(-17).toInt64(), Int64(-17));
     });
-    test("toBytes", () {
+    test('toBytes', () {
       expect(Int32(0).toBytes(), [0, 0, 0, 0]);
       expect(Int32(0x01020304).toBytes(), [4, 3, 2, 1]);
       expect(Int32(0x04030201).toBytes(), [1, 2, 3, 4]);
@@ -359,9 +359,9 @@ void main() {
     });
   });
 
-  group("parse", () {
-    test("base 10", () {
-      checkInt(int x) {
+  group('parse', () {
+    test('base 10', () {
+      void checkInt(int x) {
         expect(Int32.parseRadix('$x', 10), Int32(x));
       }
 
@@ -377,8 +377,8 @@ void main() {
       expect(() => Int32.parseRadix('plugh', 10), throwsFormatException);
     });
 
-    test("parseRadix", () {
-      check(String s, int r, String x) {
+    test('parseRadix', () {
+      void check(String s, int r, String x) {
         expect(Int32.parseRadix(s, r).toString(), x);
       }
 
@@ -386,50 +386,50 @@ void main() {
       check('95', 12, '113');
     });
 
-    test("parseInt", () {
+    test('parseInt', () {
       expect(Int32.parseInt('0'), Int32(0));
       expect(Int32.parseInt('1000'), Int32(1000));
       expect(Int32.parseInt('4294967296'), Int32(4294967296));
     });
 
-    test("parseHex", () {
+    test('parseHex', () {
       expect(Int32.parseHex('deadbeef'), Int32(0xdeadbeef));
       expect(Int32.parseHex('cafebabe'), Int32(0xcafebabe));
       expect(Int32.parseHex('8badf00d'), Int32(0x8badf00d));
     });
   });
 
-  group("string representation", () {
-    test("toString", () {
-      expect(Int32(0).toString(), "0");
-      expect(Int32(1).toString(), "1");
-      expect(Int32(-1).toString(), "-1");
-      expect(Int32(1000).toString(), "1000");
-      expect(Int32(-1000).toString(), "-1000");
-      expect(Int32(123456789).toString(), "123456789");
-      expect(Int32(2147483647).toString(), "2147483647");
-      expect(Int32(2147483648).toString(), "-2147483648");
-      expect(Int32(2147483649).toString(), "-2147483647");
-      expect(Int32(2147483650).toString(), "-2147483646");
-      expect(Int32(-2147483648).toString(), "-2147483648");
-      expect(Int32(-2147483649).toString(), "2147483647");
-      expect(Int32(-2147483650).toString(), "2147483646");
+  group('string representation', () {
+    test('toString', () {
+      expect(Int32(0).toString(), '0');
+      expect(Int32(1).toString(), '1');
+      expect(Int32(-1).toString(), '-1');
+      expect(Int32(1000).toString(), '1000');
+      expect(Int32(-1000).toString(), '-1000');
+      expect(Int32(123456789).toString(), '123456789');
+      expect(Int32(2147483647).toString(), '2147483647');
+      expect(Int32(2147483648).toString(), '-2147483648');
+      expect(Int32(2147483649).toString(), '-2147483647');
+      expect(Int32(2147483650).toString(), '-2147483646');
+      expect(Int32(-2147483648).toString(), '-2147483648');
+      expect(Int32(-2147483649).toString(), '2147483647');
+      expect(Int32(-2147483650).toString(), '2147483646');
     });
   });
 
-  group("toHexString", () {
-    test("returns hexadecimal string representation", () {
-      expect(Int32(-1).toHexString(), "-1");
-      expect((Int32(-1) >> 8).toHexString(), "-1");
-      expect((Int32(-1) << 8).toHexString(), "-100");
-      expect(Int32(123456789).toHexString(), "75bcd15");
-      expect(Int32(-1).shiftRightUnsigned(8).toHexString(), "ffffff");
+  group('toHexString', () {
+    test('returns hexadecimal string representation', () {
+      expect(Int32(-1).toHexString(), '-1');
+      expect((Int32(-1) >> 8).toHexString(), '-1');
+      expect((Int32(-1) << 8).toHexString(), '-100');
+      expect(Int32(123456789).toHexString(), '75bcd15');
+      expect(Int32(-1).shiftRightUnsigned(8).toHexString(), 'ffffff');
     });
   });
 
-  group("toRadixString", () {
-    test("returns base n string representation", () {
-      expect(Int32(123456789).toRadixString(5), "223101104124");
+  group('toRadixString', () {
+    test('returns base n string representation', () {
+      expect(Int32(123456789).toRadixString(5), '223101104124');
     });
   });
 }

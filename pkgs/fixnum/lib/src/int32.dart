@@ -54,12 +54,12 @@ class Int32 implements IntX {
   // TODO(rice) - Make this faster by converting several digits at once.
   static Int32 parseRadix(String s, int radix) {
     _validateRadix(radix);
-    Int32 x = ZERO;
-    for (int i = 0; i < s.length; i++) {
-      int c = s.codeUnitAt(i);
-      int digit = _decodeDigit(c);
+    var x = ZERO;
+    for (var i = 0; i < s.length; i++) {
+      var c = s.codeUnitAt(i);
+      var digit = _decodeDigit(c);
       if (digit < 0 || digit >= radix) {
-        throw FormatException("Non-radix code unit: $c");
+        throw FormatException('Non-radix code unit: $c');
       }
       x = ((x * radix) + digit) as Int32;
     }
@@ -145,76 +145,88 @@ class Int32 implements IntX {
   // Int32 % Int32 => Int32
   // Int32 % Int64 => Int32
 
+  @override
   IntX operator +(other) {
     if (other is Int64) {
-      return this.toInt64() + other;
+      return toInt64() + other;
     }
     return Int32(_i + _toInt(other));
   }
 
+  @override
   IntX operator -(other) {
     if (other is Int64) {
-      return this.toInt64() - other;
+      return toInt64() - other;
     }
     return Int32(_i - _toInt(other));
   }
 
+  @override
   Int32 operator -() => Int32(-_i);
 
+  @override
   IntX operator *(other) {
     if (other is Int64) {
-      return this.toInt64() * other;
+      return toInt64() * other;
     }
     // TODO(rice) - optimize
-    return (this.toInt64() * other).toInt32();
+    return (toInt64() * other).toInt32();
   }
 
+  @override
   Int32 operator %(other) {
     if (other is Int64) {
       // Result will be Int32
-      return (this.toInt64() % other).toInt32();
+      return (toInt64() % other).toInt32();
     }
     return Int32(_i % _toInt(other));
   }
 
+  @override
   Int32 operator ~/(other) {
     if (other is Int64) {
-      return (this.toInt64() ~/ other).toInt32();
+      return (toInt64() ~/ other).toInt32();
     }
     return Int32(_i ~/ _toInt(other));
   }
 
+  @override
   Int32 remainder(other) {
     if (other is Int64) {
-      Int64 t = this.toInt64();
+      var t = toInt64();
       return (t - (t ~/ other) * other).toInt32();
     }
     return (this - (this ~/ other) * other) as Int32;
   }
 
+  @override
   Int32 operator &(other) {
     if (other is Int64) {
-      return (this.toInt64() & other).toInt32();
+      return (toInt64() & other).toInt32();
     }
     return Int32(_i & _toInt(other));
   }
 
+  @override
   Int32 operator |(other) {
     if (other is Int64) {
-      return (this.toInt64() | other).toInt32();
+      return (toInt64() | other).toInt32();
     }
     return Int32(_i | _toInt(other));
   }
 
+  @override
   Int32 operator ^(other) {
     if (other is Int64) {
-      return (this.toInt64() ^ other).toInt32();
+      return (toInt64() ^ other).toInt32();
     }
     return Int32(_i ^ _toInt(other));
   }
 
+  @override
   Int32 operator ~() => Int32(~_i);
 
+  @override
   Int32 operator <<(int n) {
     if (n < 0) {
       throw ArgumentError(n);
@@ -225,6 +237,7 @@ class Int32 implements IntX {
     return Int32(_i << n);
   }
 
+  @override
   Int32 operator >>(int n) {
     if (n < 0) {
       throw ArgumentError(n);
@@ -241,6 +254,7 @@ class Int32 implements IntX {
     return Int32(value);
   }
 
+  @override
   Int32 shiftRightUnsigned(int n) {
     if (n < 0) {
       throw ArgumentError(n);
@@ -259,64 +273,86 @@ class Int32 implements IntX {
 
   /// Returns [:true:] if this [Int32] has the same numeric value as the
   /// given object.  The argument may be an [int] or an [IntX].
+  @override
   bool operator ==(other) {
     if (other is Int32) {
       return _i == other._i;
     } else if (other is Int64) {
-      return this.toInt64() == other;
+      return toInt64() == other;
     } else if (other is int) {
       return _i == other;
     }
     return false;
   }
 
+  @override
   int compareTo(other) {
     if (other is Int64) {
-      return this.toInt64().compareTo(other);
+      return toInt64().compareTo(other);
     }
     return _i.compareTo(_toInt(other));
   }
 
+  @override
   bool operator <(other) {
     if (other is Int64) {
-      return this.toInt64() < other;
+      return toInt64() < other;
     }
     return _i < _toInt(other);
   }
 
+  @override
   bool operator <=(other) {
     if (other is Int64) {
-      return this.toInt64() <= other;
+      return toInt64() <= other;
     }
     return _i <= _toInt(other);
   }
 
+  @override
   bool operator >(other) {
     if (other is Int64) {
-      return this.toInt64() > other;
+      return toInt64() > other;
     }
     return _i > _toInt(other);
   }
 
+  @override
   bool operator >=(other) {
     if (other is Int64) {
-      return this.toInt64() >= other;
+      return toInt64() >= other;
     }
     return _i >= _toInt(other);
   }
 
+  @override
   bool get isEven => (_i & 0x1) == 0;
+
+  @override
   bool get isMaxValue => _i == 2147483647;
+
+  @override
   bool get isMinValue => _i == -2147483648;
+
+  @override
   bool get isNegative => _i < 0;
+
+  @override
   bool get isOdd => (_i & 0x1) == 1;
+
+  @override
   bool get isZero => _i == 0;
+
+  @override
   int get bitLength => _i.bitLength;
 
+  @override
   int get hashCode => _i;
 
+  @override
   Int32 abs() => _i < 0 ? Int32(-_i) : this;
 
+  @override
   Int32 clamp(lowerLimit, upperLimit) {
     if (this < lowerLimit) {
       if (lowerLimit is IntX) return lowerLimit.toInt32();
@@ -330,21 +366,27 @@ class Int32 implements IntX {
     return this;
   }
 
+  @override
   int numberOfLeadingZeros() => _numberOfLeadingZeros(_i);
+
+  @override
   int numberOfTrailingZeros() => _numberOfTrailingZeros(_i);
 
+  @override
   Int32 toSigned(int width) {
     if (width < 1 || width > 32) throw RangeError.range(width, 1, 32);
     return Int32(_i.toSigned(width));
   }
 
+  @override
   Int32 toUnsigned(int width) {
     if (width < 0 || width > 32) throw RangeError.range(width, 0, 32);
     return Int32(_i.toUnsigned(width));
   }
 
+  @override
   List<int> toBytes() {
-    List<int> result = List<int>(4);
+    var result = List<int>(4);
     result[0] = _i & 0xff;
     result[1] = (_i >> 8) & 0xff;
     result[2] = (_i >> 16) & 0xff;
@@ -352,12 +394,24 @@ class Int32 implements IntX {
     return result;
   }
 
+  @override
   double toDouble() => _i.toDouble();
+
+  @override
   int toInt() => _i;
+
+  @override
   Int32 toInt32() => this;
+
+  @override
   Int64 toInt64() => Int64(_i);
 
+  @override
   String toString() => _i.toString();
+
+  @override
   String toHexString() => _i.toRadixString(16);
+
+  @override
   String toRadixString(int radix) => _i.toRadixString(radix);
 }

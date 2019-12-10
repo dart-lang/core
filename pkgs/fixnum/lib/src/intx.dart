@@ -65,10 +65,12 @@ abstract class IntX implements Comparable<dynamic> {
   /// bits to the right. High-order bits are filled with zeros.
   IntX shiftRightUnsigned(int shiftAmount);
 
+  @override
   int compareTo(other);
 
   /// Returns `true` if and only if [other] is an int or IntX equal in
   /// value to this integer.
+  @override
   bool operator ==(other);
 
   /// Relational less than operator.
@@ -103,6 +105,7 @@ abstract class IntX implements Comparable<dynamic> {
   /// Returns `true` if and only if this integer is zero.
   bool get isZero;
 
+  @override
   int get hashCode;
 
   /// Returns the absolute value of this integer.
@@ -179,6 +182,7 @@ abstract class IntX implements Comparable<dynamic> {
 
   /// Returns a string representing the value of this integer in decimal
   /// notation; example: `'13'`.
+  @override
   String toString();
 
   /// Returns a string representing the value of this integer in hexadecimal

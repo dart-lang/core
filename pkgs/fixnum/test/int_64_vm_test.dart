@@ -8,31 +8,31 @@ import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group("conversions", () {
-    test("toInt", () {
-      expect(Int64.parseInt("-10000000000000000").toInt(),
+  group('conversions', () {
+    test('toInt', () {
+      expect(Int64.parseInt('-10000000000000000').toInt(),
           same(-10000000000000000));
-      expect(Int64.parseInt("-10000000000000001").toInt(),
+      expect(Int64.parseInt('-10000000000000001').toInt(),
           same(-10000000000000001));
-      expect(Int64.parseInt("-10000000000000002").toInt(),
+      expect(Int64.parseInt('-10000000000000002').toInt(),
           same(-10000000000000002));
-      expect(Int64.parseInt("-10000000000000003").toInt(),
+      expect(Int64.parseInt('-10000000000000003').toInt(),
           same(-10000000000000003));
-      expect(Int64.parseInt("-10000000000000004").toInt(),
+      expect(Int64.parseInt('-10000000000000004').toInt(),
           same(-10000000000000004));
-      expect(Int64.parseInt("-10000000000000005").toInt(),
+      expect(Int64.parseInt('-10000000000000005').toInt(),
           same(-10000000000000005));
-      expect(Int64.parseInt("-10000000000000006").toInt(),
+      expect(Int64.parseInt('-10000000000000006').toInt(),
           same(-10000000000000006));
-      expect(Int64.parseInt("-10000000000000007").toInt(),
+      expect(Int64.parseInt('-10000000000000007').toInt(),
           same(-10000000000000007));
-      expect(Int64.parseInt("-10000000000000008").toInt(),
+      expect(Int64.parseInt('-10000000000000008').toInt(),
           same(-10000000000000008));
     });
   });
 
-  test("", () {
-    check(int n) {
+  test('', () {
+    void check(int n) {
       // Sign change should commute with conversion.
       expect(-Int64(-n), Int64(n));
       expect(Int64(-n), -Int64(n));

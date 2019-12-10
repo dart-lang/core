@@ -2,6 +2,11 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Many locals are declared as `int` or `double`. We keep local variable types
+// because the types are critical to the efficiency of many operations.
+//
+// ignore_for_file: omit_local_variable_types
+
 part of fixnum;
 
 /// An immutable 64-bit signed integer, in the range [-2^63, 2^63 - 1].
@@ -75,7 +80,7 @@ class Int64 implements IntX {
       int c = s.codeUnitAt(i);
       int digit = Int32._decodeDigit(c);
       if (digit < 0 || digit >= radix) {
-        throw FormatException("Non-radix char code: $c");
+        throw FormatException('Non-radix char code: $c');
       }
 
       // [radix] and [digit] are at most 6 bits, component is 22, so we can
@@ -192,6 +197,7 @@ class Int64 implements IntX {
     throw ArgumentError.value(value);
   }
 
+  @override
   Int64 operator +(other) {
     Int64 o = _promote(other);
     int sum0 = _l + o._l;
@@ -200,13 +206,16 @@ class Int64 implements IntX {
     return Int64._masked(sum0, sum1, sum2);
   }
 
+  @override
   Int64 operator -(other) {
     Int64 o = _promote(other);
     return _sub(_l, _m, _h, o._l, o._m, o._h);
   }
 
+  @override
   Int64 operator -() => _negate(_l, _m, _h);
 
+  @override
   Int64 operator *(other) {
     Int64 o = _promote(other);
 
@@ -288,12 +297,16 @@ class Int64 implements IntX {
     return Int64._masked(c0, c1, c2);
   }
 
+  @override
   Int64 operator %(other) => _divide(this, other, _RETURN_MOD);
 
+  @override
   Int64 operator ~/(other) => _divide(this, other, _RETURN_DIV);
 
+  @override
   Int64 remainder(other) => _divide(this, other, _RETURN_REM);
 
+  @override
   Int64 operator &(other) {
     Int64 o = _promote(other);
     int a0 = _l & o._l;
@@ -302,6 +315,7 @@ class Int64 implements IntX {
     return Int64._masked(a0, a1, a2);
   }
 
+  @override
   Int64 operator |(other) {
     Int64 o = _promote(other);
     int a0 = _l | o._l;
@@ -310,6 +324,7 @@ class Int64 implements IntX {
     return Int64._masked(a0, a1, a2);
   }
 
+  @override
   Int64 operator ^(other) {
     Int64 o = _promote(other);
     int a0 = _l ^ o._l;
@@ -318,10 +333,12 @@ class Int64 implements IntX {
     return Int64._masked(a0, a1, a2);
   }
 
+  @override
   Int64 operator ~() {
     return Int64._masked(~_l, ~_m, ~_h);
   }
 
+  @override
   Int64 operator <<(int n) {
     if (n < 0) {
       throw ArgumentError.value(n);
@@ -348,6 +365,7 @@ class Int64 implements IntX {
     return Int64._masked(res0, res1, res2);
   }
 
+  @override
   Int64 operator >>(int n) {
     if (n < 0) {
       throw ArgumentError.value(n);
@@ -393,6 +411,7 @@ class Int64 implements IntX {
     return Int64._masked(res0, res1, res2);
   }
 
+  @override
   Int64 shiftRightUnsigned(int n) {
     if (n < 0) {
       throw ArgumentError.value(n);
@@ -422,6 +441,7 @@ class Int64 implements IntX {
 
   /// Returns [:true:] if this [Int64] has the same numeric value as the
   /// given object.  The argument may be an [int] or an [IntX].
+  @override
   bool operator ==(other) {
     Int64 o;
     if (other is Int64) {
@@ -441,6 +461,7 @@ class Int64 implements IntX {
     return false;
   }
 
+  @override
   int compareTo(other) => _compareTo(other);
 
   int _compareTo(other) {
@@ -468,18 +489,37 @@ class Int64 implements IntX {
     return 0;
   }
 
+  @override
   bool operator <(other) => _compareTo(other) < 0;
+
+  @override
   bool operator <=(other) => _compareTo(other) <= 0;
-  bool operator >(other) => this._compareTo(other) > 0;
+
+  @override
+  bool operator >(other) => _compareTo(other) > 0;
+
+  @override
   bool operator >=(other) => _compareTo(other) >= 0;
 
+  @override
   bool get isEven => (_l & 0x1) == 0;
+
+  @override
   bool get isMaxValue => (_h == _MASK2 >> 1) && _m == _MASK && _l == _MASK;
+
+  @override
   bool get isMinValue => _h == _SIGN_BIT_MASK && _m == 0 && _l == 0;
+
+  @override
   bool get isNegative => (_h & _SIGN_BIT_MASK) != 0;
+
+  @override
   bool get isOdd => (_l & 0x1) == 1;
+
+  @override
   bool get isZero => _h == 0 && _m == 0 && _l == 0;
 
+  @override
   int get bitLength {
     if (isZero) return 0;
     int a0 = _l, a1 = _m, a2 = _h;
@@ -494,6 +534,7 @@ class Int64 implements IntX {
   }
 
   /// Returns a hash code based on all the bits of this [Int64].
+  @override
   int get hashCode {
     // TODO(sra): Should we ensure that hashCode values match corresponding int?
     // i.e. should `new Int64(x).hashCode == x.hashCode`?
@@ -502,10 +543,12 @@ class Int64 implements IntX {
     return bottom ^ top;
   }
 
+  @override
   Int64 abs() {
-    return this.isNegative ? -this : this;
+    return isNegative ? -this : this;
   }
 
+  @override
   Int64 clamp(lowerLimit, upperLimit) {
     Int64 lower = _promote(lowerLimit);
     Int64 upper = _promote(upperLimit);
@@ -516,6 +559,7 @@ class Int64 implements IntX {
 
   /// Returns the number of leading zeros in this [Int64] as an [int]
   /// between 0 and 64.
+  @override
   int numberOfLeadingZeros() {
     int b2 = Int32._numberOfLeadingZeros(_h);
     if (b2 == 32) {
@@ -532,6 +576,7 @@ class Int64 implements IntX {
 
   /// Returns the number of trailing zeros in this [Int64] as an [int]
   /// between 0 and 64.
+  @override
   int numberOfTrailingZeros() {
     int zeros = Int32._numberOfTrailingZeros(_l);
     if (zeros < 32) {
@@ -551,6 +596,7 @@ class Int64 implements IntX {
     return 64;
   }
 
+  @override
   Int64 toSigned(int width) {
     if (width < 1 || width > 64) throw RangeError.range(width, 1, 64);
     if (width > _BITS01) {
@@ -568,6 +614,7 @@ class Int64 implements IntX {
     }
   }
 
+  @override
   Int64 toUnsigned(int width) {
     if (width < 0 || width > 64) throw RangeError.range(width, 0, 64);
     if (width > _BITS01) {
@@ -582,6 +629,7 @@ class Int64 implements IntX {
     }
   }
 
+  @override
   List<int> toBytes() {
     List<int> result = List<int>(8);
     result[0] = _l & 0xff;
@@ -595,8 +643,10 @@ class Int64 implements IntX {
     return result;
   }
 
+  @override
   double toDouble() => toInt().toDouble();
 
+  @override
   int toInt() {
     int l = _l;
     int m = _m;
@@ -614,24 +664,28 @@ class Int64 implements IntX {
   }
 
   /// Returns an [Int32] containing the low 32 bits of this [Int64].
+  @override
   Int32 toInt32() {
     return Int32(((_m & 0x3ff) << _BITS) | _l);
   }
 
   /// Returns `this`.
+  @override
   Int64 toInt64() => this;
 
   /// Returns the value of this [Int64] as a decimal [String].
+  @override
   String toString() => _toRadixString(10);
 
   // TODO(rice) - Make this faster by avoiding arithmetic.
+  @override
   String toHexString() {
-    if (isZero) return "0";
+    if (isZero) return '0';
     Int64 x = this;
-    String hexStr = "";
+    String hexStr = '';
     while (!x.isZero) {
       int digit = x._l & 0xf;
-      hexStr = "${_hexDigit(digit)}$hexStr";
+      hexStr = '${_hexDigit(digit)}$hexStr';
       x = x.shiftRightUnsigned(4);
     }
     return hexStr;
@@ -648,6 +702,7 @@ class Int64 implements IntX {
     return _toRadixStringUnsigned(Int32._validateRadix(radix), _l, _m, _h, '');
   }
 
+  @override
   String toRadixString(int radix) {
     return _toRadixString(Int32._validateRadix(radix));
   }
@@ -712,7 +767,7 @@ class Int64 implements IntX {
     // need only two chunks, but radix values 17-19 and 33-36 generate only 15
     // or 16 bits per iteration, so sometimes the third chunk is needed.
 
-    String chunk1 = "", chunk2 = "", chunk3 = "";
+    String chunk1 = '', chunk2 = '', chunk3 = '';
 
     while (!(d4 == 0 && d3 == 0)) {
       int q = d4 ~/ fatRadix;
@@ -739,7 +794,7 @@ class Int64 implements IntX {
       r = d0 - q * fatRadix;
       d0 = q;
 
-      assert(chunk3 == "");
+      assert(chunk3 == '');
       chunk3 = chunk2;
       chunk2 = chunk1;
       // Adding [fatRadix] Forces an extra digit which we discard to get a fixed
@@ -814,7 +869,7 @@ class Int64 implements IntX {
   ];
 
   String toDebugString() {
-    return "Int64[_l=$_l, _m=$_m, _h=$_h]";
+    return 'Int64[_l=$_l, _m=$_m, _h=$_h]';
   }
 
   static Int64 _masked(int a0, int a1, int a2) =>
@@ -831,7 +886,7 @@ class Int64 implements IntX {
     return _sub(0, 0, 0, b0, b1, b2);
   }
 
-  String _hexDigit(int digit) => "0123456789ABCDEF"[digit];
+  String _hexDigit(int digit) => '0123456789ABCDEF'[digit];
 
   // Work around dart2js bugs with negative arguments to '>>' operator.
   static int _shiftRight(int x, int n) {
