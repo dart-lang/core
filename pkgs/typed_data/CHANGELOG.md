@@ -1,3 +1,7 @@
+## 1.1.7-dev
+
+* Update min Dart SDK to `2.4.0`.
+
 ## 1.1.6
 
 * Set max SDK version to `<3.0.0`, and adjust other dependencies.

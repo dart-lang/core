@@ -1,5 +1,5 @@
 name: typed_data
-version: 1.1.6
+version: 1.1.7-dev
 
 description: >-
   Utility functions and classes related to the dart:typed_data library.
@@ -7,7 +7,7 @@ author: Dart Team <misc@dartlang.org>
 homepage: https://github.com/dart-lang/typed_data
 
 environment:
-  sdk: '>=2.3.0 <3.0.0'
+  sdk: '>=2.4.0 <3.0.0'
 
 dev_dependencies:
   pedantic: ^1.0.0
