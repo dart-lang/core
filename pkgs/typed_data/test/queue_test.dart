@@ -264,7 +264,7 @@ void main() {
 
 /// Runs [callback] in multiple tests, all with queues containing numbers from
 /// one through 15 in various different internal states.
-void forEachInternalRepresentation(void callback(Uint8Queue queue)) {
+void forEachInternalRepresentation(void Function(Uint8Queue queue) callback) {
   // Test with a queue whose internal table has plenty of room.
   group("for a queue that's below capacity", () {
     // Test with a queue whose elements are in one contiguous block, so `_head <

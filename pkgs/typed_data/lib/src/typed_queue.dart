@@ -647,7 +647,7 @@ int _nextPowerOf2(int number) {
   assert(number > 0);
   number = (number << 1) - 1;
   for (;;) {
-    int nextNumber = number & (number - 1);
+    var nextNumber = number & (number - 1);
     if (nextNumber == 0) return number;
     number = nextNumber;
   }
