@@ -4,6 +4,8 @@
   `Queue` and `List` with a highly-efficient typed-data-backed implementation.
   Their `sublist()` methods also return typed data classes.
 
+* Update min Dart SDK to `2.4.0`.
+
 ## 1.1.6
 
 * Set max SDK version to `<3.0.0`, and adjust other dependencies.
