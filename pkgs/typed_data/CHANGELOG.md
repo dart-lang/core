@@ -1,4 +1,4 @@
-## 1.2.0
+## 1.2.0-dev
 
 * Add typed queue classes such as `Uint8Queue`. These classes implement both
   `Queue` and `List` with a highly-efficient typed-data-backed implementation.
