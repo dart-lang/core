@@ -1,7 +1,6 @@
 name: convert
 version: 2.1.2-dev
 description: Utilities for converting between data representations.
-author: Dart Team <misc@dartlang.org>
 homepage: https://github.com/dart-lang/convert
 
 environment:
