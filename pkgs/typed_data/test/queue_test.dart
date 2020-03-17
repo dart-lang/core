@@ -225,7 +225,7 @@ void main() {
   });
 
   group("throws a modification error for", () {
-    Uint8Queue queue;
+    late Uint8Queue queue;
     setUp(() {
       queue = Uint8Queue.fromList([1, 2, 3]);
     });

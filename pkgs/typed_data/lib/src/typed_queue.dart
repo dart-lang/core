@@ -21,8 +21,9 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
   int _tail;
 
   /// Create an empty queue.
-  _TypedQueue(this._table)
-      : _head = 0,
+  _TypedQueue(List<E> table)
+      : _table = table as L,
+        _head = 0,
         _tail = 0;
 
   // Iterable interface.
@@ -230,7 +231,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
     }
   }
 
-  void fillRange(int start, int end, [E value]) {
+  void fillRange(int start, int end, [E? value]) {
     var startInTable = (_head + start) & (_table.length - 1);
     var endInTable = (_head + end) & (_table.length - 1);
     if (startInTable <= endInTable) {
@@ -241,12 +242,12 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
     }
   }
 
-  L sublist(int start, [int end]) {
+  L sublist(int start, [int? end]) {
     var length = this.length;
-    end = RangeError.checkValidRange(start, end, length);
+    var nonNullEnd = RangeError.checkValidRange(start, end, length);
 
-    var list = _createList(end - start);
-    _writeToList(list, start, end);
+    var list = _createList(nonNullEnd - start);
+    _writeToList(list, start, nonNullEnd);
     return list;
   }
 
@@ -259,7 +260,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
   /// start)`, but it's more efficient when [target] is typed data.
   ///
   /// Returns the number of elements written to [target].
-  int _writeToList(List<E> target, [int start, int end]) {
+  int _writeToList(List<E> target, [int? start, int? end]) {
     start ??= 0;
     end ??= length;
     assert(target.length >= end - start);
@@ -346,7 +347,7 @@ abstract class _FloatQueue<L extends List<double>>
 class Uint8Queue extends _IntQueue<Uint8List> implements QueueList<int> {
   /// Creates an empty [Uint8Queue] with the given initial internal capacity (in
   /// elements).
-  Uint8Queue([int initialCapacity])
+  Uint8Queue([int? initialCapacity])
       : super(Uint8List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Uint8Queue] with the same length and contents as [elements].
@@ -368,7 +369,7 @@ class Uint8Queue extends _IntQueue<Uint8List> implements QueueList<int> {
 class Int8Queue extends _IntQueue<Int8List> implements QueueList<int> {
   /// Creates an empty [Int8Queue] with the given initial internal capacity (in
   /// elements).
-  Int8Queue([int initialCapacity])
+  Int8Queue([int? initialCapacity])
       : super(Int8List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Int8Queue] with the same length and contents as [elements].
@@ -391,7 +392,7 @@ class Uint8ClampedQueue extends _IntQueue<Uint8ClampedList>
     implements QueueList<int> {
   /// Creates an empty [Uint8ClampedQueue] with the given initial internal
   /// capacity (in elements).
-  Uint8ClampedQueue([int initialCapacity])
+  Uint8ClampedQueue([int? initialCapacity])
       : super(Uint8ClampedList(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Uint8ClampedQueue] with the same length and contents as
@@ -413,7 +414,7 @@ class Uint8ClampedQueue extends _IntQueue<Uint8ClampedList>
 class Uint16Queue extends _IntQueue<Uint16List> implements QueueList<int> {
   /// Creates an empty [Uint16Queue] with the given initial internal capacity
   /// (in elements).
-  Uint16Queue([int initialCapacity])
+  Uint16Queue([int? initialCapacity])
       : super(Uint16List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Uint16Queue] with the same length and contents as [elements].
@@ -435,7 +436,7 @@ class Uint16Queue extends _IntQueue<Uint16List> implements QueueList<int> {
 class Int16Queue extends _IntQueue<Int16List> implements QueueList<int> {
   /// Creates an empty [Int16Queue] with the given initial internal capacity (in
   /// elements).
-  Int16Queue([int initialCapacity])
+  Int16Queue([int? initialCapacity])
       : super(Int16List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Int16Queue] with the same length and contents as [elements].
@@ -456,7 +457,7 @@ class Int16Queue extends _IntQueue<Int16List> implements QueueList<int> {
 class Uint32Queue extends _IntQueue<Uint32List> implements QueueList<int> {
   /// Creates an empty [Uint32Queue] with the given initial internal capacity
   /// (in elements).
-  Uint32Queue([int initialCapacity])
+  Uint32Queue([int? initialCapacity])
       : super(Uint32List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Uint32Queue] with the same length and contents as [elements].
@@ -478,7 +479,7 @@ class Uint32Queue extends _IntQueue<Uint32List> implements QueueList<int> {
 class Int32Queue extends _IntQueue<Int32List> implements QueueList<int> {
   /// Creates an empty [Int32Queue] with the given initial internal capacity (in
   /// elements).
-  Int32Queue([int initialCapacity])
+  Int32Queue([int? initialCapacity])
       : super(Int32List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Int32Queue] with the same length and contents as [elements].
@@ -500,7 +501,7 @@ class Int32Queue extends _IntQueue<Int32List> implements QueueList<int> {
 class Uint64Queue extends _IntQueue<Uint64List> implements QueueList<int> {
   /// Creates an empty [Uint64Queue] with the given initial internal capacity
   /// (in elements).
-  Uint64Queue([int initialCapacity])
+  Uint64Queue([int? initialCapacity])
       : super(Uint64List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Uint64Queue] with the same length and contents as [elements].
@@ -522,7 +523,7 @@ class Uint64Queue extends _IntQueue<Uint64List> implements QueueList<int> {
 class Int64Queue extends _IntQueue<Int64List> implements QueueList<int> {
   /// Creates an empty [Int64Queue] with the given initial internal capacity (in
   /// elements).
-  Int64Queue([int initialCapacity])
+  Int64Queue([int? initialCapacity])
       : super(Int64List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Int64Queue] with the same length and contents as [elements].
@@ -545,7 +546,7 @@ class Float32Queue extends _FloatQueue<Float32List>
     implements QueueList<double> {
   /// Creates an empty [Float32Queue] with the given initial internal capacity
   /// (in elements).
-  Float32Queue([int initialCapacity])
+  Float32Queue([int? initialCapacity])
       : super(Float32List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Float32Queue] with the same length and contents as [elements].
@@ -565,7 +566,7 @@ class Float64Queue extends _FloatQueue<Float64List>
     implements QueueList<double> {
   /// Creates an empty [Float64Queue] with the given initial internal capacity
   /// (in elements).
-  Float64Queue([int initialCapacity])
+  Float64Queue([int? initialCapacity])
       : super(Float64List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Float64Queue] with the same length and contents as [elements].
@@ -586,7 +587,7 @@ class Int32x4Queue extends _TypedQueue<Int32x4, Int32x4List>
 
   /// Creates an empty [Int32x4Queue] with the given initial internal capacity
   /// (in elements).
-  Int32x4Queue([int initialCapacity])
+  Int32x4Queue([int? initialCapacity])
       : super(Int32x4List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Int32x4Queue] with the same length and contents as [elements].
@@ -606,7 +607,7 @@ class Float32x4Queue extends _TypedQueue<Float32x4, Float32x4List>
     implements QueueList<Float32x4> {
   /// Creates an empty [Float32x4Queue] with the given initial internal capacity (in
   /// elements).
-  Float32x4Queue([int initialCapacity])
+  Float32x4Queue([int? initialCapacity])
       : super(Float32x4List(_chooseRealInitialCapacity(initialCapacity)));
 
   /// Creates a [Float32x4Queue] with the same length and contents as [elements].
@@ -623,7 +624,7 @@ const _defaultInitialCapacity = 16;
 
 /// Choose the next-highest power of two given a user-specified
 /// [initialCapacity] for a queue.
-int _chooseRealInitialCapacity(int initialCapacity) {
+int _chooseRealInitialCapacity(int? initialCapacity) {
   if (initialCapacity == null || initialCapacity < _defaultInitialCapacity) {
     return _defaultInitialCapacity;
   } else if (!_isPowerOf2(initialCapacity)) {

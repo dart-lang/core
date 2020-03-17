@@ -74,8 +74,8 @@ void initTests(List<int> intSamples) {
   group('addAll', () {
     for (var type in ['a list', 'an iterable']) {
       group('with $type', () {
-        Iterable<int> source;
-        Uint8Buffer buffer;
+        late Iterable<int> source;
+        late Uint8Buffer buffer;
         setUp(() {
           source = [1, 2, 3, 4, 5];
           if (type == 'an iterable') {
@@ -127,8 +127,8 @@ void initTests(List<int> intSamples) {
   group('insertAll', () {
     for (var type in ['a list', 'an iterable']) {
       group('with $type', () {
-        Iterable<int> source;
-        Uint8Buffer buffer;
+        late Iterable<int> source;
+        late Uint8Buffer buffer;
         setUp(() {
           source = [1, 2, 3, 4, 5];
           if (type == 'an iterable') {
@@ -373,7 +373,7 @@ void testFloatBuffer(
 }
 
 void testInt(List<int> intSamples, int bits, void Function(int length) buffer,
-    {String testOn}) {
+    {String? testOn}) {
   var min = -(1 << (bits - 1));
   var max = -(min + 1);
   test('Int${bits}Buffer', () {
@@ -512,7 +512,7 @@ void testIntBuffer(List<int> intSamples, int bits, int min, int max,
 }
 
 void testUint(List<int> intSamples, int bits, void Function(int length) buffer,
-    {String testOn}) {
+    {String? testOn}) {
   var min = 0;
   var rounder = uintRounder(bits);
   var max = rounder(-1);

@@ -93,7 +93,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   /// least [start] elements, and if [end] is specified, it must be greater than
   /// or equal to [start] and [values] must have at least [end] elements.
   @override
-  void addAll(Iterable<E> values, [int start = 0, int end]) {
+  void addAll(Iterable<E> values, [int start = 0, int? end]) {
     RangeError.checkNotNegative(start, 'start');
     if (end != null && start > end) {
       throw RangeError.range(end, start, null, 'end');
@@ -112,7 +112,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   /// least [start] elements, and if [end] is specified, it must be greater than
   /// or equal to [start] and [values] must have at least [end] elements.
   @override
-  void insertAll(int index, Iterable<E> values, [int start = 0, int end]) {
+  void insertAll(int index, Iterable<E> values, [int start = 0, int? end]) {
     RangeError.checkValidIndex(index, this, 'index', _length + 1);
     RangeError.checkNotNegative(start, 'start');
     if (end != null) {
@@ -187,7 +187,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   /// This allows [addAll] and [insertAll] to share implementation without a
   /// subclass unexpectedly overriding both when it intended to only override
   /// [addAll].
-  void _addAll(Iterable<E> values, [int start = 0, int end]) {
+  void _addAll(Iterable<E> values, [int start = 0, int? end]) {
     if (values is List) end ??= values.length;
 
     // If we know the length of the segment to add, do so with [addRange]. This
@@ -210,7 +210,6 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   /// Like [insertAll], but with a guaranteed non-`null` [start] and [end].
   void _insertKnownLength(int index, Iterable<E> values, int start, int end) {
     if (values is List) {
-      end ??= values.length;
       if (start > values.length || end > values.length) {
         throw StateError('Too few elements');
       }
@@ -263,7 +262,7 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
   /// be. If [requiredCapacity] is not null, it will be at least that
   /// size. It will always have at least have double the capacity of
   /// the current buffer.
-  List<E> _createBiggerBuffer(int requiredCapacity) {
+  List<E> _createBiggerBuffer(int? requiredCapacity) {
     var newLength = _buffer.length * 2;
     if (requiredCapacity != null && newLength < requiredCapacity) {
       newLength = requiredCapacity;
