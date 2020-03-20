@@ -213,8 +213,6 @@ abstract class _TypedDataBuffer<E> extends ListBase<E> {
       if (start > values.length || end > values.length) {
         throw StateError('Too few elements');
       }
-    } else {
-      assert(end != null);
     }
 
     var valuesLength = end - start;

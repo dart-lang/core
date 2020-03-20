@@ -537,12 +537,10 @@ class MatchesInt32x4 extends Matcher {
   Description describe(Description description) =>
       description.add('Int32x4.==');
 
-  bool matches(item, Map matchState) {
-    if (item is! Int32x4) return false;
-    Int32x4 value = item;
-    return result.x == value.x &&
-        result.y == value.y &&
-        result.z == value.z &&
-        result.w == value.w;
-  }
+  bool matches(item, Map matchState) =>
+      item is Int32x4 &&
+      result.x == item.x &&
+      result.y == item.y &&
+      result.z == item.z &&
+      result.w == item.w;
 }
