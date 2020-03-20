@@ -6,7 +6,7 @@
 import 'dart:typed_data';
 
 import 'package:test/test.dart';
-import 'package:typed_data/typed_buffers.dart';
+import 'package:typed_data/src/typed_buffer.dart';
 
 const List<int> browserSafeIntSamples = [
   0x8000000000000000, // 2^63
@@ -313,7 +313,7 @@ void testFloat32x4Buffer(List floatSamples) {
 void testFloatBuffer(
   int bitSize,
   List<double> samples,
-  Function() create,
+  TypedDataBuffer<double> Function() create,
   double Function(double v) round,
 ) {
   test('Float${bitSize}Buffer', () {
@@ -372,8 +372,12 @@ void testFloatBuffer(
   });
 }
 
-void testInt(List<int> intSamples, int bits, void Function(int length) buffer,
-    {String testOn}) {
+void testInt(
+  List<int> intSamples,
+  int bits,
+  TypedDataBuffer<int> Function(int length) buffer, {
+  String testOn,
+}) {
   var min = -(1 << (bits - 1));
   var max = -(min + 1);
   test('Int${bits}Buffer', () {
@@ -440,8 +444,14 @@ void testInt32x4Buffer(List<int> intSamples) {
   });
 }
 
-void testIntBuffer(List<int> intSamples, int bits, int min, int max,
-    Function(int length) create, int Function(int val) round) {
+void testIntBuffer(
+  List<int> intSamples,
+  int bits,
+  int min,
+  int max,
+  TypedDataBuffer<int> Function(int length) create,
+  int Function(int val) round,
+) {
   assert(round(min) == min);
   assert(round(max) == max);
   // All int buffers default to the value 0.
@@ -465,9 +475,9 @@ void testIntBuffer(List<int> intSamples, int bits, int min, int max,
   buffer.length = 0;
   expect(buffer.length, equals(0));
 
-  List samples = intSamples.toList()..addAll(intSamples.map((x) => -x));
+  var samples = intSamples.toList()..addAll(intSamples.map((x) => -x));
   for (var value in samples) {
-    int length = buffer.length;
+    var length = buffer.length;
     buffer.add(value);
     expect(buffer.length, equals(length + 1));
     expect(buffer[length], equals(round(value)));
@@ -511,8 +521,12 @@ void testIntBuffer(List<int> intSamples, int bits, int min, int max,
   expect(buffer[1], equals(min));
 }
 
-void testUint(List<int> intSamples, int bits, void Function(int length) buffer,
-    {String testOn}) {
+void testUint(
+  List<int> intSamples,
+  int bits,
+  TypedDataBuffer<int> Function(int length) buffer, {
+  String testOn,
+}) {
   var min = 0;
   var rounder = uintRounder(bits);
   var max = rounder(-1);
