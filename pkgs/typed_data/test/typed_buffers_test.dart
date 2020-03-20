@@ -223,9 +223,9 @@ const floatSamples = [
   16777215.0
 ];
 
-int clampUint8(x) => x < 0 ? 0 : x > 255 ? 255 : x;
+int clampUint8(int x) => x < 0 ? 0 : x > 255 ? 255 : x;
 
-void doubleEqual(x, y) {
+void doubleEqual(x, num y) {
   if (y.isNaN) {
     expect(x.isNaN, isTrue);
   } else {
@@ -233,7 +233,7 @@ void doubleEqual(x, y) {
   }
 }
 
-Rounder intRounder(bits) {
+Rounder intRounder(int bits) {
   var highBit = 1 << (bits - 1);
   var mask = highBit - 1;
   return (int x) => (x & mask) - (x & highBit);
@@ -243,14 +243,14 @@ double roundToFloat(double value) {
   return (Float32List(1)..[0] = value)[0];
 }
 
-void testFloat32x4Buffer(List floatSamples) {
+void testFloat32x4Buffer(List<double> floatSamples) {
   var float4Samples = <Float32x4>[];
   for (var i = 0; i < floatSamples.length - 3; i++) {
     float4Samples.add(Float32x4(floatSamples[i], floatSamples[i + 1],
         floatSamples[i + 2], floatSamples[i + 3]));
   }
 
-  void floatEquals(x, y) {
+  void floatEquals(x, num y) {
     if (y.isNaN) {
       expect(x.isNaN, isTrue);
     } else {
@@ -535,7 +535,7 @@ void testUint(
   }, testOn: testOn);
 }
 
-Rounder uintRounder(bits) {
+Rounder uintRounder(int bits) {
   var halfbits = (1 << (bits ~/ 2)) - 1;
   var mask = halfbits | (halfbits << (bits ~/ 2));
   return (int x) => x & mask;
@@ -551,12 +551,10 @@ class MatchesInt32x4 extends Matcher {
   Description describe(Description description) =>
       description.add('Int32x4.==');
 
-  bool matches(item, Map matchState) {
-    if (item is! Int32x4) return false;
-    Int32x4 value = item;
-    return result.x == value.x &&
-        result.y == value.y &&
-        result.z == value.z &&
-        result.w == value.w;
-  }
+  bool matches(item, Map matchState) =>
+      item is Int32x4 &&
+      result.x == item.x &&
+      result.y == item.y &&
+      result.z == item.z &&
+      result.w == item.w;
 }
