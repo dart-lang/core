@@ -7,7 +7,7 @@ import "dart:typed_data";
 
 import "package:collection/collection.dart";
 
-import '../typed_buffers.dart';
+import 'typed_buffer.dart';
 
 /// The shared superclass of all the typed queue subclasses.
 abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
@@ -325,14 +325,14 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
 }
 
 abstract class _IntQueue<L extends List<int>> extends _TypedQueue<int, L> {
-  _IntQueue(List<int> queue) : super(queue);
+  _IntQueue(L queue) : super(queue);
 
   int get _defaultValue => 0;
 }
 
 abstract class _FloatQueue<L extends List<double>>
     extends _TypedQueue<double, L> {
-  _FloatQueue(List<double> queue) : super(queue);
+  _FloatQueue(L queue) : super(queue);
 
   double get _defaultValue => 0.0;
 }
