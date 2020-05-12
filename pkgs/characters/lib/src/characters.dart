@@ -186,6 +186,40 @@ abstract class Characters implements Iterable<String> {
   /// Returns the current characters if there is no occurrence of [pattern].
   Characters replaceAll(Characters pattern, Characters replacement);
 
+  /// Splits this sequence of characters at each occurrence of [pattern].
+  ///
+  /// Returns a lazy iterable of characters that were separated by [pattern].
+  /// The iterable has *at most* [maxParts] elements if a positive [maxParts]
+  /// is supplied.
+  ///
+  /// Finds each occurrence of [pattern], which does not overlap with
+  /// a previously found occurrence, then the non-matched characters
+  /// before, after, and between the matches are provided in first-to-last
+  /// position order.
+
+  /// If [pattern] is empty, the character sequence is split into separate
+  /// characters, and no leading or trailing empty ranges are provided
+  /// unless the range itself is empty,
+  /// in which case a single empty range is the only result range.
+  /// Otherwise a range starting or ending with [pattern] will cause
+  /// an empty character sequence to be emitted at the start or end.
+  ///
+  /// If [maxParts] is provided and greater than zero,
+  /// only the first `maxParts - 1` occurrences of [pattern] are found
+  /// and split at.
+  /// Any further occurrences will be included in the last part.
+  /// Example:
+  /// ```dart
+  /// var c = "abracadabra".characters;
+  /// var parts = c.split("a".characters, 4).toList();
+  /// print(parts); // Prints is ["", "br", "c", "dabra"]
+  /// ```
+  /// If there are fewer than `maxParts - 1` occurrences of [pattern],
+  /// then the characters are split at all occurrences.
+  /// If [maxParts] is zero or negative, it is ignored and the result
+  /// is split at all occurrences of [pattern].
+  Iterable<Characters> split(Characters pattern, [int maxParts = 0]);
+
   /// Replaces the first occurrence of [pattern] with [replacement].
   ///
   /// Returns a new [Characters] where the first occurence of the
@@ -646,6 +680,45 @@ abstract class CharacterRange implements Iterator<String> {
   /// Returns `null` if there are no occurrences of [pattern]
   /// in the current range.
   CharacterRange /*?*/ replaceAll(Characters pattern, Characters replacement);
+
+  /// Splits the current range of characters at each occurrence of [pattern].
+  ///
+  /// Returns a lazy iterable of character ranges that were separated by
+  /// [pattern].
+  /// Each provided character range object is new
+  /// and unrelated to this character range
+  /// The iterable has *at most* [maxParts] elements if a positive [maxParts]
+  /// is supplied.
+  ///
+  /// Finds each occurrence of [pattern] in the range, which does not overlap
+  /// with a previously found occurrence, then the non-matched characters
+  /// of the range before, after and between the matches are provided
+  /// in first-to-last position order.
+  ///
+  /// If [pattern] is empty, the range is split into separate characters,
+  /// and no leading or trailing empty ranges are provided unless the
+  /// range itself is empty, in which case a single empty range is the
+  /// only result range.
+  /// Otherwise a range starting or ending with [pattern] will cause
+  /// an empty range to be emitted at the start or end.
+  ///
+  /// If [maxParts] is provided and greater than zero,
+  /// only the first `maxParts - 1` occurrences of [pattern] are found
+  /// and split at.
+  /// Any further occurrences will be included in the last part.
+  ///
+  /// Example:
+  /// ```dart
+  /// var c = "abracadabra".characters.dropFirst().dropLast();
+  /// // c is "bracadabr".
+  /// var parts = c.split("a".characters, 3).toList();
+  /// print(parts); // [br, c, dabr]
+  /// ```
+  /// If there are fewer than `maxParts - 1` occurrences of [pattern],
+  /// then the characters are split at all occurrences.
+  /// If [maxParts] is zero or negative, it is ignored and the result
+  /// is split at all occurrences of [pattern].
+  Iterable<CharacterRange> split(Characters pattern, [int maxParts = 0]);
 
   /// Replaces the first occurrence of [pattern] with [replacement].
   ///

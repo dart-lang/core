@@ -155,6 +155,37 @@ class StringCharacters extends Iterable<String> implements Characters {
       _rangeAll.replaceFirst(pattern, replacement)?.source ?? this;
 
   @override
+  Iterable<Characters> split(Characters pattern, [int maxParts = 0]) sync* {
+    if (maxParts == 1 || string.isEmpty) {
+      yield this;
+      return;
+    }
+    var patternString = pattern.string;
+    var start = 0;
+    if (patternString.isNotEmpty) {
+      do {
+        var match = _indexOf(string, patternString, start, string.length);
+        if (match < 0) break;
+        yield StringCharacters(string.substring(start, match));
+        start = match + patternString.length;
+        maxParts--;
+      } while (maxParts != 1);
+    } else {
+      // Empty pattern. Split on internal boundaries only.
+      var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
+      do {
+        var match = breaks.nextBreak();
+        if (match < 0) return;
+        yield StringCharacters(string.substring(start, match));
+        start = match;
+        maxParts--;
+      } while (maxParts != 1);
+      if (start == string.length) return;
+    }
+    yield StringCharacters(string.substring(start));
+  }
+
+  @override
   bool containsAll(Characters other) =>
       _indexOf(string, other.string, 0, string.length) >= 0;
 
@@ -896,6 +927,39 @@ class StringCharacterRange implements CharacterRange {
 
   @override
   String get stringBefore => _string.substring(0, _start);
+
+  @override
+  Iterable<CharacterRange> split(Characters pattern, [int maxParts = 0]) sync* {
+    if (maxParts == 1 || _start == _end) {
+      yield this;
+      return;
+    }
+    var patternString = pattern.string;
+    var start = _start;
+    if (patternString.isNotEmpty) {
+      do {
+        var match = _indexOf(_string, patternString, start, _end);
+        if (match < 0) break;
+        yield StringCharacterRange._(_string, start, match);
+        start = match + patternString.length;
+        maxParts--;
+      } while (maxParts != 1);
+      yield StringCharacterRange._(_string, start, _end);
+    } else {
+      // Empty pattern. Split on internal boundaries only.
+      var breaks = Breaks(_string, _start, _end, stateSoTNoBreak);
+      do {
+        var match = breaks.nextBreak();
+        if (match < 0) return;
+        yield StringCharacterRange._(_string, start, match);
+        start = match;
+        maxParts--;
+      } while (maxParts != 1);
+      if (start < _end) {
+        yield StringCharacterRange._(_string, start, _end);
+      }
+    }
+  }
 }
 
 String _explodeReplace(String string, int start, int end,

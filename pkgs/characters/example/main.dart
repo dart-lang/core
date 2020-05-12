@@ -2,7 +2,7 @@ import 'package:characters/characters.dart';
 
 // Small API examples. For full API docs see:
 // https://pub.dev/documentation/characters/latest/characters/characters-library.html
-main() {
+void main() {
   String hi = 'Hi 🇩🇰';
   print('String is "$hi"\n');
 

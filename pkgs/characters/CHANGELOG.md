@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+* Added `split` methods on `Characters` and `CharacterRange`.
+
 ## 0.5.0
 
 * Change [codeUnits] getter to [utf16CodeUnits] which returns an iterable.

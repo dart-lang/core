@@ -504,6 +504,55 @@ void testParts(
     expect(cs11.currentCharacters, e);
     expect(cs11.source, gc("$a$c$e"));
 
+    var cs12 = gc("$a$b$a");
+    expect(cs12.split(b), [a, a]);
+    expect(cs12.split(a), [gc(""), b, gc("")]);
+    expect(cs12.split(a, 2), [gc(""), gc("$b$a")]);
+
+    expect(cs12.split(gc("")), [a, b, a]);
+    expect(cs12.split(gc(""), 2), [a, gc("$b$a")]);
+
+    expect(gc("").split(gc("")), [gc("")]);
+
+    var cs13 = gc("$b$a$b$a$b$a");
+    expect(cs13.split(b), [gc(""), a, a, a]);
+    expect(cs13.split(b, 1), [cs13]);
+    expect(cs13.split(b, 2), [gc(""), gc("$a$b$a$b$a")]);
+    expect(cs13.split(b, 3), [gc(""), a, gc("$a$b$a")]);
+    expect(cs13.split(b, 4), [gc(""), a, a, a]);
+    expect(cs13.split(b, 5), [gc(""), a, a, a]);
+    expect(cs13.split(b, 9999), [gc(""), a, a, a]);
+    expect(cs13.split(b, 0), [gc(""), a, a, a]);
+    expect(cs13.split(b, -1), [gc(""), a, a, a]);
+    expect(cs13.split(b, -9999), [gc(""), a, a, a]);
+
+    it = cs13.iterator..expandAll();
+    expect(it.current, "$b$a$b$a$b$a");
+    it.dropFirst();
+    it.dropLast();
+    expect(it.current, "$a$b$a$b");
+    expect(it.split(a).map((range) => range.current), ["", "$b", "$b"]);
+    expect(it.split(a, 2).map((range) => range.current), ["", "$b$a$b"]);
+    // Each split is after an *a*.
+    bool first = true;
+    for (var range in it.split(a)) {
+      if (range.isEmpty) {
+        // First range is empty.
+        expect(first, true);
+        first = false;
+        continue;
+      }
+      // Later ranges are "b" that come after "a".
+      expect(range.current, "$b");
+      range.moveBack();
+      expect(range.current, "$a");
+    }
+
+    expect(it.split(gc("")).map((range) => range.current),
+        ["$a", "$b", "$a", "$b"]);
+
+    expect(gc("").iterator.split(gc("")).map((range) => range.current), [""]);
+
     expect(cs.startsWith(gc("")), true);
     expect(cs.startsWith(a), true);
     expect(cs.startsWith(a + b), true);
