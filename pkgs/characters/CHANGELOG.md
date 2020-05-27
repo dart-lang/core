@@ -1,7 +1,8 @@
 # Changelog
 
-## 0.5.1
+## 1.0.0
 
+* Core APIs deemed stable; package version set to 1.0.0.
 * Added `split` methods on `Characters` and `CharacterRange`.
 
 ## 0.5.0
