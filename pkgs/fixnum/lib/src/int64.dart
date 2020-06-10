@@ -198,7 +198,7 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 operator +(other) {
+  Int64 operator +(Object other) {
     Int64 o = _promote(other);
     int sum0 = _l + o._l;
     int sum1 = _m + o._m + (sum0 >> _BITS);
@@ -207,7 +207,7 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 operator -(other) {
+  Int64 operator -(Object other) {
     Int64 o = _promote(other);
     return _sub(_l, _m, _h, o._l, o._m, o._h);
   }
@@ -216,7 +216,7 @@ class Int64 implements IntX {
   Int64 operator -() => _negate(_l, _m, _h);
 
   @override
-  Int64 operator *(other) {
+  Int64 operator *(Object other) {
     Int64 o = _promote(other);
 
     // Grab 13-bit chunks.
@@ -298,16 +298,16 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 operator %(other) => _divide(this, other, _RETURN_MOD);
+  Int64 operator %(Object other) => _divide(this, other, _RETURN_MOD);
 
   @override
-  Int64 operator ~/(other) => _divide(this, other, _RETURN_DIV);
+  Int64 operator ~/(Object other) => _divide(this, other, _RETURN_DIV);
 
   @override
-  Int64 remainder(other) => _divide(this, other, _RETURN_REM);
+  Int64 remainder(Object other) => _divide(this, other, _RETURN_REM);
 
   @override
-  Int64 operator &(other) {
+  Int64 operator &(Object other) {
     Int64 o = _promote(other);
     int a0 = _l & o._l;
     int a1 = _m & o._m;
@@ -316,7 +316,7 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 operator |(other) {
+  Int64 operator |(Object other) {
     Int64 o = _promote(other);
     int a0 = _l | o._l;
     int a1 = _m | o._m;
@@ -325,7 +325,7 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 operator ^(other) {
+  Int64 operator ^(Object other) {
     Int64 o = _promote(other);
     int a0 = _l ^ o._l;
     int a1 = _m ^ o._m;
@@ -442,8 +442,8 @@ class Int64 implements IntX {
   /// Returns [:true:] if this [Int64] has the same numeric value as the
   /// given object.  The argument may be an [int] or an [IntX].
   @override
-  bool operator ==(other) {
-    Int64 o;
+  bool operator ==(Object other) {
+    Int64? o;
     if (other is Int64) {
       o = other;
     } else if (other is int) {
@@ -462,9 +462,9 @@ class Int64 implements IntX {
   }
 
   @override
-  int compareTo(other) => _compareTo(other);
+  int compareTo(Object other) => _compareTo(other);
 
-  int _compareTo(other) {
+  int _compareTo(Object other) {
     Int64 o = _promote(other);
     int signa = _h >> (_BITS2 - 1);
     int signb = o._h >> (_BITS2 - 1);
@@ -490,16 +490,16 @@ class Int64 implements IntX {
   }
 
   @override
-  bool operator <(other) => _compareTo(other) < 0;
+  bool operator <(Object other) => _compareTo(other) < 0;
 
   @override
-  bool operator <=(other) => _compareTo(other) <= 0;
+  bool operator <=(Object other) => _compareTo(other) <= 0;
 
   @override
-  bool operator >(other) => _compareTo(other) > 0;
+  bool operator >(Object other) => _compareTo(other) > 0;
 
   @override
-  bool operator >=(other) => _compareTo(other) >= 0;
+  bool operator >=(Object other) => _compareTo(other) >= 0;
 
   @override
   bool get isEven => (_l & 0x1) == 0;
@@ -549,7 +549,7 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 clamp(lowerLimit, upperLimit) {
+  Int64 clamp(Object lowerLimit, Object upperLimit) {
     Int64 lower = _promote(lowerLimit);
     Int64 upper = _promote(upperLimit);
     if (this < lower) return lower;
@@ -631,7 +631,7 @@ class Int64 implements IntX {
 
   @override
   List<int> toBytes() {
-    List<int> result = List<int>(8);
+    var result = List<int>.filled(8, 0);
     result[0] = _l & 0xff;
     result[1] = (_l >> 8) & 0xff;
     result[2] = ((_m << 6) & 0xfc) | ((_l >> 16) & 0x3f);

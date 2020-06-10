@@ -62,7 +62,6 @@ void main() {
       expect(n3 + n4, Int32(-11110));
       expect(n3 + Int64(1), Int64(-1233));
       expect(Int32.MAX_VALUE + 1, Int32.MIN_VALUE);
-      expect(() => Int32(17) + null, throwsArgumentError);
     });
 
     test('-', () {
@@ -71,7 +70,6 @@ void main() {
       expect(n3 - n4, Int32(8642));
       expect(n3 - Int64(1), Int64(-1235));
       expect(Int32.MIN_VALUE - 1, Int32.MAX_VALUE);
-      expect(() => Int32(17) - null, throwsArgumentError);
     });
 
     test('unary -', () {
@@ -89,7 +87,6 @@ void main() {
       expect(Int32(0x12345678) * Int64(0x22222222),
           Int64.fromInts(0x026D60DC, 0xCA5F6BF0));
       expect((Int32(123456789) * 987654321), Int32(-67153019));
-      expect(() => Int32(17) * null, throwsArgumentError);
     });
 
     test('~/', () {
@@ -104,13 +101,11 @@ void main() {
           // on the VM: IntegerDivisionByZeroException
           throwsA(anyOf(const TypeMatcher<IntegerDivisionByZeroException>(),
               isUnsupportedError)));
-      expect(() => Int32(17) ~/ null, throwsArgumentError);
     });
 
     test('%', () {
       expect(Int32(0x12345678) % Int32(0x22), Int32(0x12345678 % 0x22));
       expect(Int32(0x12345678) % Int64(0x22), Int32(0x12345678 % 0x22));
-      expect(() => Int32(17) % null, throwsArgumentError);
     });
 
     test('remainder', () {
@@ -124,7 +119,6 @@ void main() {
           Int32(-0x12345678.remainder(0x22) as int));
       expect(Int32(0x12345678).remainder(Int64(0x22)),
           Int32(0x12345678.remainder(0x22) as int));
-      expect(() => Int32(17).remainder(null), throwsArgumentError);
     });
 
     test('abs', () {
@@ -197,7 +191,6 @@ void main() {
       expect(Int32(17) < Int64(16), false);
       expect(Int32.MIN_VALUE < Int32.MAX_VALUE, true);
       expect(Int32.MAX_VALUE < Int32.MIN_VALUE, false);
-      expect(() => Int32(17) < null, throwsArgumentError);
     });
 
     test('<=', () {
@@ -209,7 +202,6 @@ void main() {
       expect(Int32(17) <= Int64(16), false);
       expect(Int32.MIN_VALUE <= Int32.MAX_VALUE, true);
       expect(Int32.MAX_VALUE <= Int32.MIN_VALUE, false);
-      expect(() => Int32(17) <= null, throwsArgumentError);
     });
 
     test('==', () {
@@ -236,7 +228,6 @@ void main() {
       expect(Int32(17) >= Int64(16), true);
       expect(Int32.MIN_VALUE >= Int32.MAX_VALUE, false);
       expect(Int32.MAX_VALUE >= Int32.MIN_VALUE, true);
-      expect(() => Int32(17) >= null, throwsArgumentError);
     });
 
     test('>', () {
@@ -248,7 +239,6 @@ void main() {
       expect(Int32(17) > Int64(16), true);
       expect(Int32.MIN_VALUE > Int32.MAX_VALUE, false);
       expect(Int32.MAX_VALUE > Int32.MIN_VALUE, true);
-      expect(() => Int32(17) > null, throwsArgumentError);
     });
   });
 
@@ -258,7 +248,6 @@ void main() {
           Int32(0x12345678 & 0x22222222));
       expect(Int32(0x12345678) & Int64(0x22222222),
           Int64(0x12345678 & 0x22222222));
-      expect(() => Int32(17) & null, throwsArgumentError);
     });
 
     test('|', () {
@@ -266,7 +255,6 @@ void main() {
           Int32(0x12345678 | 0x22222222));
       expect(Int32(0x12345678) | Int64(0x22222222),
           Int64(0x12345678 | 0x22222222));
-      expect(() => Int32(17) | null, throwsArgumentError);
     });
 
     test('^', () {
@@ -274,7 +262,6 @@ void main() {
           Int32(0x12345678 ^ 0x22222222));
       expect(Int32(0x12345678) ^ Int64(0x22222222),
           Int64(0x12345678 ^ 0x22222222));
-      expect(() => Int32(17) ^ null, throwsArgumentError);
     });
 
     test('~', () {
@@ -289,7 +276,6 @@ void main() {
       expect(Int32(0x12345678) << 32, Int32.ZERO);
       expect(Int32(0x12345678) << 33, Int32.ZERO);
       expect(() => Int32(17) << -1, throwsArgumentError);
-      expect(() => Int32(17) << null, throwsNoSuchMethodError);
     });
 
     test('>>', () {
@@ -299,7 +285,6 @@ void main() {
       expect(Int32(-42) >> 32, Int32(-1));
       expect(Int32(-42) >> 33, Int32(-1));
       expect(() => Int32(17) >> -1, throwsArgumentError);
-      expect(() => Int32(17) >> null, throwsNoSuchMethodError);
     });
 
     test('shiftRightUnsigned', () {
@@ -309,8 +294,6 @@ void main() {
       expect(Int32(-42).shiftRightUnsigned(32), Int32.ZERO);
       expect(Int32(-42).shiftRightUnsigned(33), Int32.ZERO);
       expect(() => (Int32(17).shiftRightUnsigned(-1)), throwsArgumentError);
-      expect(
-          () => (Int32(17).shiftRightUnsigned(null)), throwsNoSuchMethodError);
     });
   });
 

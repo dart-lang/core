@@ -1,3 +1,10 @@
+## 1.0.0-dev
+
+* Migrate to null safety.
+  * This is meant to be mostly non-breaking, for opted in users runtime errors
+    will be promoted to static errors. For non-opted in users the runtime
+    errors are still present in their original form.
+
 ## 0.10.11
 
 * Update minimum SDK constraint to version 2.1.1.

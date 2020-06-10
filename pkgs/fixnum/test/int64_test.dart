@@ -46,7 +46,10 @@ void main() {
     Matcher throwsArgumentErrorMentioning(String substring) =>
         throwsA((e) => e is ArgumentError && '$e'.contains(substring));
 
-    expect(() => op(receiver, null), throwsArgumentErrorMentioning('null'));
+    expect(
+        () => op(receiver, null),
+        throwsA(isA<TypeError>().having(
+            (e) => e.toString(), 'should mention Null', contains('Null'))));
     expect(() => op(receiver, 'foo'), throwsArgumentErrorMentioning(r'"foo"'));
   }
 
@@ -457,7 +460,6 @@ void main() {
       expect(n1 & n2, Int64(1168));
       expect(n3 & n2, Int64(8708));
       expect(n4 & n5, Int64(0x1034) << 32);
-      expect(() => n1 & null, throwsArgumentError);
       argumentErrorTest('&', (a, b) => a & b);
     });
 
@@ -465,7 +467,6 @@ void main() {
       expect(n1 | n2, Int64(9942));
       expect(n3 | n2, Int64(-66));
       expect(n4 | n5, Int64(0x9a76) << 32);
-      expect(() => n1 | null, throwsArgumentError);
       argumentErrorTest('|', (a, b) => a | b);
     });
 
@@ -473,7 +474,6 @@ void main() {
       expect(n1 ^ n2, Int64(8774));
       expect(n3 ^ n2, Int64(-8774));
       expect(n4 ^ n5, Int64(0x8a42) << 32);
-      expect(() => n1 ^ null, throwsArgumentError);
       argumentErrorTest('^', (a, b) => a ^ b);
     });
 
@@ -501,7 +501,6 @@ void main() {
       expect(Int64(42) << 64, Int64.ZERO);
       expect(Int64(42) << 65, Int64.ZERO);
       expect(() => Int64(17) << -1, throwsArgumentError);
-      expect(() => Int64(17) << null, throwsNoSuchMethodError);
     });
 
     test('>>', () {
@@ -553,7 +552,6 @@ void main() {
       expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 48,
           Int64.fromInts(0xffffffff, 0xffff9234));
       expect(() => Int64(17) >> -1, throwsArgumentError);
-      expect(() => Int64(17) >> null, throwsNoSuchMethodError);
     });
 
     test('shiftRightUnsigned', () {
@@ -600,7 +598,6 @@ void main() {
       expect(Int64(-1).shiftRightUnsigned(64), Int64.ZERO);
       expect(Int64(1).shiftRightUnsigned(64), Int64.ZERO);
       expect(() => Int64(17).shiftRightUnsigned(-1), throwsArgumentError);
-      expect(() => Int64(17).shiftRightUnsigned(null), throwsNoSuchMethodError);
     });
 
     test('overflow', () {

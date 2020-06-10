@@ -5,12 +5,12 @@
 part of fixnum;
 
 /// A fixed-precision integer.
-abstract class IntX implements Comparable<dynamic> {
+abstract class IntX implements Comparable<Object> {
   /// Addition operator.
-  IntX operator +(other);
+  IntX operator +(Object other);
 
   /// Subtraction operator.
-  IntX operator -(other);
+  IntX operator -(Object other);
 
   /// Negate operator.
   ///
@@ -18,30 +18,30 @@ abstract class IntX implements Comparable<dynamic> {
   IntX operator -();
 
   /// Multiplication operator.
-  IntX operator *(other);
+  IntX operator *(Object other);
 
   /// Euclidean modulo operator.
   ///
   /// Returns the remainder of the euclidean division. The euclidean division
   /// of two integers `a` and `b` yields two integers `q` and `r` such that
   /// `a == b * q + r` and `0 <= r < a.abs()`.
-  IntX operator %(other);
+  IntX operator %(Object other);
 
   /// Truncating division operator.
-  IntX operator ~/(other);
+  IntX operator ~/(Object other);
 
   /// Returns the remainder of the truncating division of this integer by
   /// [other].
-  IntX remainder(other);
+  IntX remainder(Object other);
 
   /// Bitwise and operator.
-  IntX operator &(other);
+  IntX operator &(Object other);
 
   /// Bitwise or operator.
-  IntX operator |(other);
+  IntX operator |(Object other);
 
   /// Bitwise xor operator.
-  IntX operator ^(other);
+  IntX operator ^(Object other);
 
   /// Bitwise negate operator.
   IntX operator ~();
@@ -66,24 +66,24 @@ abstract class IntX implements Comparable<dynamic> {
   IntX shiftRightUnsigned(int shiftAmount);
 
   @override
-  int compareTo(other);
+  int compareTo(Object other);
 
   /// Returns `true` if and only if [other] is an int or IntX equal in
   /// value to this integer.
   @override
-  bool operator ==(other);
+  bool operator ==(Object other);
 
   /// Relational less than operator.
-  bool operator <(other);
+  bool operator <(Object other);
 
   /// Relational less than or equal to operator.
-  bool operator <=(other);
+  bool operator <=(Object other);
 
   /// Relational greater than operator.
-  bool operator >(other);
+  bool operator >(Object other);
 
   /// Relational greater than or equal to operator.
-  bool operator >=(other);
+  bool operator >=(Object other);
 
   /// Returns `true` if and only if this integer is even.
   bool get isEven;
@@ -112,7 +112,7 @@ abstract class IntX implements Comparable<dynamic> {
   IntX abs();
 
   /// Clamps this integer to be in the range [lowerLimit] - [upperLimit].
-  IntX clamp(lowerLimit, upperLimit);
+  IntX clamp(Object lowerLimit, Object upperLimit);
 
   /// Returns the minimum number of bits required to store this integer.
   ///

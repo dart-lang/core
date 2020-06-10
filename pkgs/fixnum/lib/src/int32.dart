@@ -122,7 +122,7 @@ class Int32 implements IntX {
 
   // Returns the [int] representation of the specified value. Throws
   // [ArgumentError] for non-integer arguments.
-  int _toInt(val) {
+  int _toInt(Object val) {
     if (val is Int32) {
       return val._i;
     } else if (val is int) {
@@ -146,7 +146,7 @@ class Int32 implements IntX {
   // Int32 % Int64 => Int32
 
   @override
-  IntX operator +(other) {
+  IntX operator +(Object other) {
     if (other is Int64) {
       return toInt64() + other;
     }
@@ -154,7 +154,7 @@ class Int32 implements IntX {
   }
 
   @override
-  IntX operator -(other) {
+  IntX operator -(Object other) {
     if (other is Int64) {
       return toInt64() - other;
     }
@@ -165,7 +165,7 @@ class Int32 implements IntX {
   Int32 operator -() => Int32(-_i);
 
   @override
-  IntX operator *(other) {
+  IntX operator *(Object other) {
     if (other is Int64) {
       return toInt64() * other;
     }
@@ -174,7 +174,7 @@ class Int32 implements IntX {
   }
 
   @override
-  Int32 operator %(other) {
+  Int32 operator %(Object other) {
     if (other is Int64) {
       // Result will be Int32
       return (toInt64() % other).toInt32();
@@ -183,7 +183,7 @@ class Int32 implements IntX {
   }
 
   @override
-  Int32 operator ~/(other) {
+  Int32 operator ~/(Object other) {
     if (other is Int64) {
       return (toInt64() ~/ other).toInt32();
     }
@@ -191,7 +191,7 @@ class Int32 implements IntX {
   }
 
   @override
-  Int32 remainder(other) {
+  Int32 remainder(Object other) {
     if (other is Int64) {
       var t = toInt64();
       return (t - (t ~/ other) * other).toInt32();
@@ -200,7 +200,7 @@ class Int32 implements IntX {
   }
 
   @override
-  Int32 operator &(other) {
+  Int32 operator &(Object other) {
     if (other is Int64) {
       return (toInt64() & other).toInt32();
     }
@@ -208,7 +208,7 @@ class Int32 implements IntX {
   }
 
   @override
-  Int32 operator |(other) {
+  Int32 operator |(Object other) {
     if (other is Int64) {
       return (toInt64() | other).toInt32();
     }
@@ -216,7 +216,7 @@ class Int32 implements IntX {
   }
 
   @override
-  Int32 operator ^(other) {
+  Int32 operator ^(Object other) {
     if (other is Int64) {
       return (toInt64() ^ other).toInt32();
     }
@@ -274,7 +274,7 @@ class Int32 implements IntX {
   /// Returns [:true:] if this [Int32] has the same numeric value as the
   /// given object.  The argument may be an [int] or an [IntX].
   @override
-  bool operator ==(other) {
+  bool operator ==(Object other) {
     if (other is Int32) {
       return _i == other._i;
     } else if (other is Int64) {
@@ -286,7 +286,7 @@ class Int32 implements IntX {
   }
 
   @override
-  int compareTo(other) {
+  int compareTo(Object other) {
     if (other is Int64) {
       return toInt64().compareTo(other);
     }
@@ -294,7 +294,7 @@ class Int32 implements IntX {
   }
 
   @override
-  bool operator <(other) {
+  bool operator <(Object other) {
     if (other is Int64) {
       return toInt64() < other;
     }
@@ -302,7 +302,7 @@ class Int32 implements IntX {
   }
 
   @override
-  bool operator <=(other) {
+  bool operator <=(Object other) {
     if (other is Int64) {
       return toInt64() <= other;
     }
@@ -310,7 +310,7 @@ class Int32 implements IntX {
   }
 
   @override
-  bool operator >(other) {
+  bool operator >(Object other) {
     if (other is Int64) {
       return toInt64() > other;
     }
@@ -318,7 +318,7 @@ class Int32 implements IntX {
   }
 
   @override
-  bool operator >=(other) {
+  bool operator >=(Object other) {
     if (other is Int64) {
       return toInt64() >= other;
     }
@@ -353,7 +353,7 @@ class Int32 implements IntX {
   Int32 abs() => _i < 0 ? Int32(-_i) : this;
 
   @override
-  Int32 clamp(lowerLimit, upperLimit) {
+  Int32 clamp(Object lowerLimit, Object upperLimit) {
     if (this < lowerLimit) {
       if (lowerLimit is IntX) return lowerLimit.toInt32();
       if (lowerLimit is int) return Int32(lowerLimit);
@@ -386,7 +386,7 @@ class Int32 implements IntX {
 
   @override
   List<int> toBytes() {
-    var result = List<int>(4);
+    var result = List<int>.filled(4, 0);
     result[0] = _i & 0xff;
     result[1] = (_i >> 8) & 0xff;
     result[2] = (_i >> 16) & 0xff;
