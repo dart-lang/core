@@ -1,5 +1,5 @@
 name: typed_data
-version: 1.2.0-dev
+version: 1.2.0
 
 description: >-
   Utility functions and classes related to the dart:typed_data library.
