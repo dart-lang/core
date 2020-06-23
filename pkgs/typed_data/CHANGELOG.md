@@ -1,9 +1,12 @@
-## 1.2.0-dev
+## 1.3.0-nnbd
+
+* Migrate to NNBD
+
+## 1.2.0
 
 * Add typed queue classes such as `Uint8Queue`. These classes implement both
   `Queue` and `List` with a highly-efficient typed-data-backed implementation.
   Their `sublist()` methods also return typed data classes.
-
 * Update min Dart SDK to `2.4.0`.
 
 ## 1.1.6
