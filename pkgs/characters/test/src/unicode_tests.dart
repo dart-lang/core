@@ -16,7 +16,7 @@ String testDescription(List<String> expected) {
       " ÷";
 }
 
-var categoryName = List<String>(16)
+var categoryName = List<String>.filled(16, "")
   ..[categoryOther] = "Other"
   ..[categoryCR] = "CR"
   ..[categoryLF] = "LF"

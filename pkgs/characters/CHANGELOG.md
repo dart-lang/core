@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0-nullsafety
+
+* Make package null safe.
+
 ## 1.0.0
 
 * Core APIs deemed stable; package version set to 1.0.0.

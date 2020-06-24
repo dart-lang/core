@@ -47,14 +47,14 @@ abstract class Characters implements Iterable<String> {
   /// as well as controlling the iteration in more detail.
   CharacterRange get iteratorAtEnd;
 
-  /// Whether [Character] is an element of this sequence of
-  /// characters.
+  /// Whether [other] is an element of this sequence of
+  /// others.
   ///
-  /// Returns false if [Character] is not a string containing
+  /// Returns false if [other] is not a string containing
   /// a single character,
   /// because then it is not a single element of this [Iterable]
   /// of characters.
-  bool contains(Object Character);
+  bool contains(Object? other);
 
   /// Whether this sequence of characters contains [other]
   /// as a subsequence.
@@ -79,13 +79,14 @@ abstract class Characters implements Iterable<String> {
   /// Returns a [CharacterRange] containing the first occurrence of
   /// [characters] in this string.
   /// Returns `null` if there is no such occurrence.
-  CharacterRange /*?*/ findFirst(Characters characters);
+  CharacterRange? findFirst(Characters characters);
 
   /// Finds the last occurrence of [characters].
   ///
   /// Returns a [CharacterRange] containing the last occurrence of
-  /// [characters]. Returns `null` if there is no such occurrence,
-  CharacterRange /*?*/ findLast(Characters characters);
+  /// [characters].
+  /// Returns `null` if there is no such occurrence,
+  CharacterRange? findLast(Characters characters);
 
   /// Eagerly selects a subset of the characters.
   ///
@@ -132,7 +133,7 @@ abstract class Characters implements Iterable<String> {
   /// of characters.
   Characters skipWhile(bool Function(String) test);
 
-  /// Eagerly selects a leading sequnce of characters.
+  /// Eagerly selects a leading sequence of characters.
   ///
   /// Checks each character, from first to last, against [test],
   /// until one is found whwere [test] returns `false`.
@@ -143,7 +144,7 @@ abstract class Characters implements Iterable<String> {
   /// is returned.
   Characters takeWhile(bool Function(String) test);
 
-  /// Eagerly selects a leading sequnce of characters.
+  /// Eagerly selects a leading sequence of characters.
   ///
   /// Checks each character, from last to first, against [test],
   /// until one is found whwere [test] returns `false`.
@@ -679,7 +680,7 @@ abstract class CharacterRange implements Iterator<String> {
   ///
   /// Returns `null` if there are no occurrences of [pattern]
   /// in the current range.
-  CharacterRange /*?*/ replaceAll(Characters pattern, Characters replacement);
+  CharacterRange? replaceAll(Characters pattern, Characters replacement);
 
   /// Splits the current range of characters at each occurrence of [pattern].
   ///
@@ -737,7 +738,7 @@ abstract class CharacterRange implements Iterator<String> {
   ///
   /// Returns `null` if there are no occurrences of [pattern]
   /// in the current range.
-  CharacterRange /*?*/ replaceFirst(Characters pattern, Characters replacement);
+  CharacterRange? replaceFirst(Characters pattern, Characters replacement);
 
   /// Whether the current range starts with [characters].
   ///
