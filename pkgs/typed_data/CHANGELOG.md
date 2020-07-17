@@ -1,4 +1,4 @@
-## 1.3.1-nullsafety.1
+## 1.3.0-nullsafety.1
 
 * Allow the <=2.9.10 stable sdks.
 
