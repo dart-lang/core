@@ -1,4 +1,4 @@
-## 1.0.0-dev
+## 1.0.0-nullsafety
 
 * Migrate to null safety.
   * This is meant to be mostly non-breaking, for opted in users runtime errors
