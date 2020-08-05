@@ -1,5 +1,5 @@
 name: convert
-version: 2.1.2-dev
+version: 2.2.0-nullsafety
 description: Utilities for converting between data representations.
 homepage: https://github.com/dart-lang/convert
 
