@@ -45,7 +45,7 @@ class _HexDecoderSink extends StringConversionSinkBase {
   /// This will be non-`null` if the most recent string had an odd number of
   /// hexadecimal digits. Since it's the most significant digit, it's always a
   /// multiple of 16.
-  int _lastDigit;
+  int? _lastDigit;
 
   _HexDecoderSink(this._sink);
 
@@ -66,7 +66,7 @@ class _HexDecoderSink extends StringConversionSinkBase {
     } else {
       var hexPairs = (end - start - 1) ~/ 2;
       bytes = Uint8List(1 + hexPairs);
-      bytes[0] = _lastDigit + digitForCodeUnit(codeUnits, start);
+      bytes[0] = _lastDigit! + digitForCodeUnit(codeUnits, start);
       start++;
       bytesStart = 1;
     }
@@ -84,7 +84,7 @@ class _HexDecoderSink extends StringConversionSinkBase {
 
   /// Like [close], but includes [string] and [index] in the [FormatException]
   /// if one is thrown.
-  void _close([String string, int index]) {
+  void _close([String? string, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
           "Input ended with incomplete encoded byte.", string, index);
@@ -104,7 +104,7 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
   /// This will be non-`null` if the most recent string had an odd number of
   /// hexadecimal digits. Since it's the most significant digit, it's always a
   /// multiple of 16.
-  int _lastDigit;
+  int? _lastDigit;
 
   _HexDecoderByteSink(this._sink);
 
@@ -126,7 +126,7 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
     } else {
       var hexPairs = (end - start - 1) ~/ 2;
       bytes = Uint8List(1 + hexPairs);
-      bytes[0] = _lastDigit + digitForCodeUnit(chunk, start);
+      bytes[0] = _lastDigit! + digitForCodeUnit(chunk, start);
       start++;
       bytesStart = 1;
     }
@@ -141,7 +141,7 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
 
   /// Like [close], but includes [chunk] and [index] in the [FormatException]
   /// if one is thrown.
-  void _close([List<int> chunk, int index]) {
+  void _close([List<int>? chunk, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
           "Input ended with incomplete encoded byte.", chunk, index);
@@ -158,7 +158,7 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
 ///
 /// If there's a leftover digit at the end of the decoding, this returns that
 /// digit. Otherwise it returns `null`.
-int _decode(List<int> codeUnits, int sourceStart, int sourceEnd,
+int? _decode(List<int> codeUnits, int sourceStart, int sourceEnd,
     List<int> destination, int destinationStart) {
   var destinationIndex = destinationStart;
   for (var i = sourceStart; i < sourceEnd - 1; i += 2) {

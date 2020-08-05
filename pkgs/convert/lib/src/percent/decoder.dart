@@ -56,7 +56,7 @@ class _PercentDecoderSink extends StringConversionSinkBase {
   /// most recent string ended with `%`. Otherwise, the most recent string ended
   /// with a `%` followed by a hexadecimal digit, and this is that digit. Since
   /// it's the most significant digit, it's always a multiple of 16.
-  int _lastDigit;
+  int? _lastDigit;
 
   _PercentDecoderSink(this._sink);
 
@@ -81,7 +81,7 @@ class _PercentDecoderSink extends StringConversionSinkBase {
     }
 
     if (_lastDigit != null) {
-      buffer.add(_lastDigit + digitForCodeUnit(codeUnits, start));
+      buffer.add(_lastDigit! + digitForCodeUnit(codeUnits, start));
       start++;
     }
 
@@ -98,7 +98,7 @@ class _PercentDecoderSink extends StringConversionSinkBase {
 
   /// Like [close], but includes [string] and [index] in the [FormatException]
   /// if one is thrown.
-  void _close([String string, int index]) {
+  void _close([String? string, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
           "Input ended with incomplete encoded byte.", string, index);
@@ -120,7 +120,7 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
   /// most recent string ended with `%`. Otherwise, the most recent string ended
   /// with a `%` followed by a hexadecimal digit, and this is that digit. Since
   /// it's the most significant digit, it's always a multiple of 16.
-  int _lastDigit;
+  int? _lastDigit;
 
   _PercentDecoderByteSink(this._sink);
 
@@ -146,7 +146,7 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
     }
 
     if (_lastDigit != null) {
-      buffer.add(_lastDigit + digitForCodeUnit(chunk, start));
+      buffer.add(_lastDigit! + digitForCodeUnit(chunk, start));
       start++;
     }
 
@@ -160,7 +160,7 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
 
   /// Like [close], but includes [chunk] and [index] in the [FormatException]
   /// if one is thrown.
-  void _close([List<int> chunk, int index]) {
+  void _close([List<int>? chunk, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
           "Input ended with incomplete encoded byte.", chunk, index);
@@ -177,7 +177,7 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
 ///
 /// If there's a leftover digit at the end of the decoding, this returns that
 /// digit. Otherwise it returns `null`.
-int _decode(List<int> codeUnits, int start, int end, Uint8Buffer buffer) {
+int? _decode(List<int> codeUnits, int start, int end, Uint8Buffer buffer) {
   // A bitwise OR of all code units in [codeUnits]. This allows us to check for
   // out-of-range code units without adding more branches than necessary to the
   // core loop.
