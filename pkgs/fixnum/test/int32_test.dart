@@ -110,15 +110,15 @@ void main() {
 
     test('remainder', () {
       expect(Int32(0x12345678).remainder(Int32(0x22)),
-          Int32(0x12345678.remainder(0x22) as int));
+          Int32(0x12345678.remainder(0x22)));
       expect(Int32(0x12345678).remainder(Int32(-0x22)),
-          Int32(0x12345678.remainder(-0x22) as int));
+          Int32(0x12345678.remainder(-0x22)));
       expect(Int32(-0x12345678).remainder(Int32(-0x22)),
-          Int32(-0x12345678.remainder(-0x22) as int));
+          Int32(-0x12345678.remainder(-0x22)));
       expect(Int32(-0x12345678).remainder(Int32(0x22)),
-          Int32(-0x12345678.remainder(0x22) as int));
+          Int32(-0x12345678.remainder(0x22)));
       expect(Int32(0x12345678).remainder(Int64(0x22)),
-          Int32(0x12345678.remainder(0x22) as int));
+          Int32(0x12345678.remainder(0x22)));
     });
 
     test('abs', () {

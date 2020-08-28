@@ -272,15 +272,15 @@ void main() {
       expect(Int64.MAX_VALUE % Int64.fromInts(0x04000000, 0x00000000),
           Int64.fromInts(0x3ffffff, 0xffffffff));
       expect(Int64(0x12345678).remainder(Int64(0x22)),
-          Int64(0x12345678.remainder(0x22) as int));
+          Int64(0x12345678.remainder(0x22)));
       expect(Int64(0x12345678).remainder(Int64(-0x22)),
-          Int64(0x12345678.remainder(-0x22) as int));
+          Int64(0x12345678.remainder(-0x22)));
       expect(Int64(-0x12345678).remainder(Int64(-0x22)),
-          Int64(-0x12345678.remainder(-0x22) as int));
+          Int64(-0x12345678.remainder(-0x22)));
       expect(Int64(-0x12345678).remainder(Int64(0x22)),
-          Int64(-0x12345678.remainder(0x22) as int));
+          Int64(-0x12345678.remainder(0x22)));
       expect(Int32(0x12345678).remainder(Int64(0x22)),
-          Int64(0x12345678.remainder(0x22) as int));
+          Int64(0x12345678.remainder(0x22)));
       argumentErrorTest('%', (a, b) => a % b);
     });
 
