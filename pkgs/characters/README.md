@@ -124,6 +124,7 @@ Characters firstTagCharacters(Characters source) =>
 [Characters]: https://pub.dev/documentation/characters/latest/characters/Characters-class.html "Characters class"
 [Code Points]: https://unicode.org/glossary/#code_point "Unicode Code Point"
 [Code Units]: https://unicode.org/glossary/#code_unit "Unicode Code Units"
+[Glyph]: http://unicode.org/glossary/#glyph "Unicode Glyph"
 [Grapheme Clusters]: https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries "Unicode (Extended) Grapheme Cluster"
 [Iterable]: https://api.dart.dev/stable/2.0.0/dart-core/Iterable-class.html	"Iterable class"
 [Runes]: https://api.dart.dev/stable/2.0.0/dart-core/Runes-class.html	"Runes class"
