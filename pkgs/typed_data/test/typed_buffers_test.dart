@@ -223,7 +223,11 @@ const floatSamples = [
   16777215.0
 ];
 
-int clampUint8(int x) => x < 0 ? 0 : x > 255 ? 255 : x;
+int clampUint8(int x) => x < 0
+    ? 0
+    : x > 255
+        ? 255
+        : x;
 
 void doubleEqual(x, num y) {
   if (y.isNaN) {
