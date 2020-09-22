@@ -9,6 +9,8 @@ This release will be pinned to only allow pre-release sdk versions starting from
 2.10.0-2.0.dev, which is the first version where this package will appear in the
 null safety allow list.
 
+ * Added `CodePage` class for single-byte `Encoding` implementations.
+
 ## 2.1.1
 
  * Fixed a DDC compilation regression for consumers using the Dart 1.x SDK that was introduced in `2.1.0`.
