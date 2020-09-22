@@ -5,10 +5,10 @@ homepage: https://www.github.com/dart-lang/characters
 
 environment:
   # This must remain a tight constraint until nnbd is stable
-  sdk: '>=2.10.0-110 <2.10.0'
+  sdk: '>=2.10.0-110 <2.11.0'
 
 dev_dependencies:
-  test: "^1.6.0"
+  test: ^1.6.0
   pedantic: ^1.9.0
 
 dependency_overrides:

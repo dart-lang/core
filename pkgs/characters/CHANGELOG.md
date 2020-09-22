@@ -5,6 +5,7 @@
 * Added `getRange(start, end)` and `characterAt(pos)` to `Characters`
   as alternative to `.take(end).skip(start)` and `getRange(pos, pos + 1)`.
 * Change some positional parameter names from `other` to `characters`.
+* Allow the 2.10 stable SDK.
 
 ## 1.1.0-nullsafety.2
 
