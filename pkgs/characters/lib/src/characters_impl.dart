@@ -15,6 +15,7 @@ class StringCharacters extends Iterable<String> implements Characters {
   // Try to avoid allocating more empty grapheme clusters.
   static const StringCharacters _empty = StringCharacters("");
 
+  @override
   final String string;
 
   const StringCharacters(this.string);
@@ -44,7 +45,7 @@ class StringCharacters extends Iterable<String> implements Characters {
   @override
   String get single {
     if (string.isEmpty) throw StateError("No element");
-    int firstEnd =
+    var firstEnd =
         Breaks(string, 0, string.length, stateSoTNoBreak).nextBreak();
     if (firstEnd == string.length) return string;
     throw StateError("Too many elements");
@@ -60,7 +61,7 @@ class StringCharacters extends Iterable<String> implements Characters {
   int get length {
     if (string.isEmpty) return 0;
     var brk = Breaks(string, 0, string.length, stateSoTNoBreak);
-    int length = 0;
+    var length = 0;
     while (brk.nextBreak() >= 0) {
       length++;
     }
@@ -83,27 +84,28 @@ class StringCharacters extends Iterable<String> implements Characters {
   }
 
   @override
-  String lastWhere(bool test(String element), {String orElse()?}) {
-    int cursor = string.length;
+  String lastWhere(bool Function(String element) test,
+      {String Function()? orElse}) {
+    var cursor = string.length;
     var brk = BackBreaks(string, cursor, 0, stateEoTNoBreak);
-    int next = 0;
+    var next = 0;
     while ((next = brk.nextBreak()) >= 0) {
-      String current = string.substring(next, cursor);
+      var current = string.substring(next, cursor);
       if (test(current)) return current;
       cursor = next;
     }
     if (orElse != null) return orElse();
-    throw StateError("no element");
+    throw StateError("No element");
   }
 
   @override
   String elementAt(int index) {
     RangeError.checkNotNegative(index, "index");
-    int count = 0;
+    var count = 0;
     if (string.isNotEmpty) {
       var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
-      int start = 0;
-      int end = 0;
+      var start = 0;
+      var end = 0;
       while ((end = breaks.nextBreak()) >= 0) {
         if (count == index) return string.substring(start, end);
         count++;
@@ -117,7 +119,7 @@ class StringCharacters extends Iterable<String> implements Characters {
   bool contains(Object? other) {
     if (other is String) {
       if (other.isEmpty) return false;
-      int next = Breaks(other, 0, other.length, stateSoTNoBreak).nextBreak();
+      var next = Breaks(other, 0, other.length, stateSoTNoBreak).nextBreak();
       if (next != other.length) return false;
       // [other] is single grapheme cluster.
       return _indexOf(string, other, 0, string.length) >= 0;
@@ -126,21 +128,21 @@ class StringCharacters extends Iterable<String> implements Characters {
   }
 
   @override
-  bool startsWith(Characters other) {
-    int length = string.length;
-    String otherString = other.string;
+  bool startsWith(Characters characters) {
+    var length = string.length;
+    var otherString = characters.string;
     if (otherString.isEmpty) return true;
     return string.startsWith(otherString) &&
         isGraphemeClusterBoundary(string, 0, length, otherString.length);
   }
 
   @override
-  bool endsWith(Characters other) {
-    int length = string.length;
-    String otherString = other.string;
+  bool endsWith(Characters characters) {
+    var length = string.length;
+    var otherString = characters.string;
     if (otherString.isEmpty) return true;
-    int otherLength = otherString.length;
-    int start = string.length - otherLength;
+    var otherLength = otherString.length;
+    var start = string.length - otherLength;
     return start >= 0 &&
         string.startsWith(otherString, start) &&
         isGraphemeClusterBoundary(string, 0, length, start);
@@ -186,60 +188,90 @@ class StringCharacters extends Iterable<String> implements Characters {
   }
 
   @override
-  bool containsAll(Characters other) =>
-      _indexOf(string, other.string, 0, string.length) >= 0;
+  bool containsAll(Characters characters) =>
+      _indexOf(string, characters.string, 0, string.length) >= 0;
+
+  /// Returns the break position of the [count]'th break.
+  ///
+  /// Starts from the index [cursor] in [string].
+  /// Use [breaks], which is assumed to be at [cursor],
+  /// if available.
+  ///
+  /// Returns `string.length` if there are less than [count]
+  /// characters left.
+  int _skipIndices(int count, int cursor, Breaks? breaks) {
+    if (count == 0 || cursor == string.length) return cursor;
+    breaks ??= Breaks(string, cursor, string.length, stateSoTNoBreak);
+    do {
+      var nextBreak = breaks.nextBreak();
+      if (nextBreak < 0) break;
+      cursor = nextBreak;
+    } while (--count > 0);
+    return cursor;
+  }
 
   @override
   Characters skip(int count) {
     RangeError.checkNotNegative(count, "count");
-    if (count == 0) return this;
-    if (string.isNotEmpty) {
-      int stringLength = string.length;
-      var breaks = Breaks(string, 0, stringLength, stateSoTNoBreak);
-      int startIndex = 0;
-      while (count > 0) {
-        int index = breaks.nextBreak();
-        if (index >= 0) {
-          count--;
-          startIndex = index;
-        } else {
-          return _empty;
-        }
-      }
-      if (startIndex == stringLength) return _empty;
-      return StringCharacters(string.substring(startIndex));
-    }
-    return this;
+    return _skip(count);
+  }
+
+  Characters _skip(int count) {
+    var start = _skipIndices(count, 0, null);
+    if (start == string.length) return _empty;
+    return StringCharacters(string.substring(start));
   }
 
   @override
   Characters take(int count) {
     RangeError.checkNotNegative(count, "count");
-    if (count == 0) return _empty;
-    if (string.isNotEmpty) {
-      var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
-      int endIndex = 0;
-      while (count > 0) {
-        int index = breaks.nextBreak();
-        if (index >= 0) {
-          endIndex = index;
-          count--;
-        } else {
-          return this;
-        }
-      }
-      return StringCharacters(string.substring(0, endIndex));
+    return _take(count);
+  }
+
+  Characters _take(int count) {
+    var end = _skipIndices(count, 0, null);
+    if (end == string.length) return this;
+    return StringCharacters(string.substring(0, end));
+  }
+
+  @override
+  Characters getRange(int start, [int? end]) {
+    RangeError.checkNotNegative(start, "start");
+    if (end == null) return _skip(start);
+    if (end < start) throw RangeError.range(end, start, null, "end");
+    if (end == start) return _empty;
+    if (start == 0) return _take(end);
+    if (string.isEmpty) return this;
+    var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
+    var startIndex = _skipIndices(start, 0, breaks);
+    if (startIndex == string.length) return _empty;
+    var endIndex = _skipIndices(end - start, start, breaks);
+    return StringCharacters(string.substring(startIndex, endIndex));
+  }
+
+  @override
+  Characters characterAt(int position) {
+    var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
+    var start = 0;
+
+    while (position > 0) {
+      position--;
+      start = breaks.nextBreak();
+      if (start < 0) throw StateError("No element");
     }
-    return this;
+    var end = breaks.nextBreak();
+    if (end < 0) throw StateError("No element");
+    if (start == 0 && end == string.length) return this;
+    return StringCharacters(string.substring(start, end));
   }
 
   @override
   Characters skipWhile(bool Function(String) test) {
     if (string.isNotEmpty) {
-      int stringLength = string.length;
+      var stringLength = string.length;
       var breaks = Breaks(string, 0, stringLength, stateSoTNoBreak);
-      int index = 0;
-      int startIndex = 0;
+      var index = 0;
+      var startIndex = 0;
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(startIndex, index))) {
           if (startIndex == 0) return this;
@@ -256,8 +288,8 @@ class StringCharacters extends Iterable<String> implements Characters {
   Characters takeWhile(bool Function(String) test) {
     if (string.isNotEmpty) {
       var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
-      int index = 0;
-      int endIndex = 0;
+      var index = 0;
+      var endIndex = 0;
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(endIndex, index))) {
           if (endIndex == 0) return _empty;
@@ -277,8 +309,8 @@ class StringCharacters extends Iterable<String> implements Characters {
   }
 
   @override
-  Characters operator +(Characters other) =>
-      StringCharacters(string + other.string);
+  Characters operator +(Characters characters) =>
+      StringCharacters(string + characters.string);
 
   @override
   Characters skipLast(int count) {
@@ -286,9 +318,9 @@ class StringCharacters extends Iterable<String> implements Characters {
     if (count == 0) return this;
     if (string.isNotEmpty) {
       var breaks = BackBreaks(string, string.length, 0, stateEoTNoBreak);
-      int endIndex = string.length;
+      var endIndex = string.length;
       while (count > 0) {
-        int index = breaks.nextBreak();
+        var index = breaks.nextBreak();
         if (index >= 0) {
           endIndex = index;
           count--;
@@ -305,8 +337,8 @@ class StringCharacters extends Iterable<String> implements Characters {
   Characters skipLastWhile(bool Function(String) test) {
     if (string.isNotEmpty) {
       var breaks = BackBreaks(string, string.length, 0, stateEoTNoBreak);
-      int index = 0;
-      int end = string.length;
+      var index = 0;
+      var end = string.length;
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(index, end))) {
           if (end == string.length) return this;
@@ -324,9 +356,9 @@ class StringCharacters extends Iterable<String> implements Characters {
     if (count == 0) return _empty;
     if (string.isNotEmpty) {
       var breaks = BackBreaks(string, string.length, 0, stateEoTNoBreak);
-      int startIndex = string.length;
+      var startIndex = string.length;
       while (count > 0) {
-        int index = breaks.nextBreak();
+        var index = breaks.nextBreak();
         if (index >= 0) {
           startIndex = index;
           count--;
@@ -345,8 +377,8 @@ class StringCharacters extends Iterable<String> implements Characters {
   Characters takeLastWhile(bool Function(String) test) {
     if (string.isNotEmpty) {
       var breaks = BackBreaks(string, string.length, 0, stateEoTNoBreak);
-      int index = 0;
-      int start = string.length;
+      var index = 0;
+      var start = string.length;
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(index, start))) {
           if (start == string.length) return _empty;
@@ -411,6 +443,14 @@ class StringCharacterRange implements CharacterRange {
   String? _currentCache;
 
   StringCharacterRange(String string) : this._(string, 0, 0);
+
+  factory StringCharacterRange.at(String string, int startIndex,
+      [int? endIndex]) {
+    RangeError.checkValidRange(
+        startIndex, endIndex, string.length, "startIndex", "endIndex");
+    return _expandRange(string, startIndex, endIndex ?? startIndex);
+  }
+
   StringCharacterRange._(this._string, this._start, this._end);
 
   /// Changes the current range.
@@ -447,15 +487,15 @@ class StringCharacterRange implements CharacterRange {
   bool _advanceEnd(int count, int newStart) {
     if (count > 0) {
       var state = stateSoTNoBreak;
-      int index = _end;
+      var index = _end;
       while (index < _string.length) {
-        int char = _string.codeUnitAt(index);
-        int category = categoryControl;
-        int nextIndex = index + 1;
+        var char = _string.codeUnitAt(index);
+        var category = categoryControl;
+        var nextIndex = index + 1;
         if (char & 0xFC00 != 0xD800) {
           category = low(char);
         } else if (nextIndex < _string.length) {
-          int nextChar = _string.codeUnitAt(nextIndex);
+          var nextChar = _string.codeUnitAt(nextIndex);
           if (nextChar & 0xFC00 == 0xDC00) {
             nextIndex += 1;
             category = high(char, nextChar);
@@ -479,7 +519,7 @@ class StringCharacterRange implements CharacterRange {
   }
 
   bool _moveNextPattern(String patternString, int start, int end) {
-    int offset = _indexOf(_string, patternString, start, end);
+    var offset = _indexOf(_string, patternString, start, end);
     if (offset >= 0) {
       _move(offset, offset + patternString.length);
       return true;
@@ -493,9 +533,9 @@ class StringCharacterRange implements CharacterRange {
   bool _retractStart(int count, int newEnd) {
     RangeError.checkNotNegative(count, "count");
     var breaks = _backBreaksFromStart();
-    int start = _start;
+    var start = _start;
     while (count > 0) {
-      int nextBreak = breaks.nextBreak();
+      var nextBreak = breaks.nextBreak();
       if (nextBreak >= 0) {
         start = nextBreak;
       } else {
@@ -508,7 +548,7 @@ class StringCharacterRange implements CharacterRange {
   }
 
   bool _movePreviousPattern(String patternString, int start, int end) {
-    int offset = _lastIndexOf(_string, patternString, start, end);
+    var offset = _lastIndexOf(_string, patternString, start, end);
     if (offset >= 0) {
       _move(offset, offset + patternString.length);
       return true;
@@ -543,7 +583,7 @@ class StringCharacterRange implements CharacterRange {
     if (_start == _end) return count == 0;
     var breaks = Breaks(_string, _start, _end, stateSoTNoBreak);
     while (count > 0) {
-      int nextBreak = breaks.nextBreak();
+      var nextBreak = breaks.nextBreak();
       if (nextBreak >= 0) {
         _start = nextBreak;
         _currentCache = null;
@@ -584,8 +624,8 @@ class StringCharacterRange implements CharacterRange {
   void dropWhile(bool Function(String) test) {
     if (_start == _end) return;
     var breaks = Breaks(_string, _start, _end, stateSoTNoBreak);
-    int cursor = _start;
-    int next = 0;
+    var cursor = _start;
+    var next = 0;
     while ((next = breaks.nextBreak()) >= 0) {
       if (!test(_string.substring(cursor, next))) {
         break;
@@ -600,7 +640,7 @@ class StringCharacterRange implements CharacterRange {
     RangeError.checkNotNegative(count, "count");
     var breaks = BackBreaks(_string, _end, _start, stateEoTNoBreak);
     while (count > 0) {
-      int nextBreak = breaks.nextBreak();
+      var nextBreak = breaks.nextBreak();
       if (nextBreak >= 0) {
         _end = nextBreak;
         _currentCache = null;
@@ -641,8 +681,8 @@ class StringCharacterRange implements CharacterRange {
   void dropBackWhile(bool Function(String) test) {
     if (_start == _end) return;
     var breaks = BackBreaks(_string, _end, _start, stateEoTNoBreak);
-    int cursor = _end;
-    int next = 0;
+    var cursor = _end;
+    var next = 0;
     while ((next = breaks.nextBreak()) >= 0) {
       if (!test(_string.substring(next, cursor))) {
         break;
@@ -657,8 +697,8 @@ class StringCharacterRange implements CharacterRange {
 
   @override
   bool expandTo(Characters target) {
-    String targetString = target.string;
-    int index = _indexOf(_string, targetString, _end, _string.length);
+    var targetString = target.string;
+    var index = _indexOf(_string, targetString, _end, _string.length);
     if (index >= 0) {
       _move(_start, index + targetString.length);
       return true;
@@ -669,8 +709,8 @@ class StringCharacterRange implements CharacterRange {
   @override
   void expandWhile(bool Function(String character) test) {
     var breaks = _breaksFromEnd();
-    int cursor = _end;
-    int next = 0;
+    var cursor = _end;
+    var next = 0;
     while ((next = breaks.nextBreak()) >= 0) {
       if (!test(_string.substring(cursor, next))) {
         break;
@@ -691,7 +731,7 @@ class StringCharacterRange implements CharacterRange {
   @override
   bool expandBackTo(Characters target) {
     var targetString = target.string;
-    int index = _lastIndexOf(_string, targetString, 0, _start);
+    var index = _lastIndexOf(_string, targetString, 0, _start);
     if (index >= 0) {
       _move(index, _end);
       return true;
@@ -702,8 +742,8 @@ class StringCharacterRange implements CharacterRange {
   @override
   void expandBackWhile(bool Function(String character) test) {
     var breaks = _backBreaksFromStart();
-    int cursor = _start;
-    int next = 0;
+    var cursor = _start;
+    var next = 0;
     while ((next = breaks.nextBreak()) >= 0) {
       if (!test(_string.substring(next, cursor))) {
         _move(cursor, _end);
@@ -768,7 +808,7 @@ class StringCharacterRange implements CharacterRange {
   }
 
   bool _advanceEndUntil(String targetString, int newStart) {
-    int index = _indexOf(_string, targetString, _end, _string.length);
+    var index = _indexOf(_string, targetString, _end, _string.length);
     if (index >= 0) {
       _move(newStart, index);
       return true;
@@ -779,13 +819,13 @@ class StringCharacterRange implements CharacterRange {
 
   @override
   CharacterRange? replaceFirst(Characters pattern, Characters replacement) {
-    String patternString = pattern.string;
-    String replacementString = replacement.string;
+    var patternString = pattern.string;
+    var replacementString = replacement.string;
     String replaced;
     if (patternString.isEmpty) {
       replaced = _string.replaceRange(_start, _start, replacementString);
     } else {
-      int index = _indexOf(_string, patternString, _start, _end);
+      var index = _indexOf(_string, patternString, _start, _end);
       if (index >= 0) {
         replaced = _string.replaceRange(
             index, index + patternString.length, replacementString);
@@ -793,7 +833,7 @@ class StringCharacterRange implements CharacterRange {
         return null;
       }
     }
-    int newEnd = replaced.length - _string.length + _end;
+    var newEnd = replaced.length - _string.length + _end;
     return _expandRange(replaced, _start, newEnd);
   }
 
@@ -804,12 +844,12 @@ class StringCharacterRange implements CharacterRange {
     if (patternString.isEmpty) {
       var replaced = _explodeReplace(
           _string, _start, _end, replacementString, replacementString);
-      int newEnd = replaced.length - (_string.length - _end);
+      var newEnd = replaced.length - (_string.length - _end);
       return _expandRange(replaced, _start, newEnd);
     }
     if (_start == _end) return null;
-    int start = 0;
-    int cursor = _start;
+    var start = 0;
+    var cursor = _start;
     StringBuffer? buffer;
     while ((cursor = _indexOf(_string, patternString, cursor, _end)) >= 0) {
       (buffer ??= StringBuffer())
@@ -820,23 +860,28 @@ class StringCharacterRange implements CharacterRange {
     }
     if (buffer == null) return null;
     buffer.write(_string.substring(start));
-    String replaced = buffer.toString();
-    int newEnd = replaced.length - (_string.length - _end);
+    var replaced = buffer.toString();
+    var newEnd = replaced.length - (_string.length - _end);
     return _expandRange(replaced, _start, newEnd);
   }
 
   @override
   CharacterRange replaceRange(Characters replacement) {
-    String replacementString = replacement.string;
-    String resultString = _string.replaceRange(_start, _end, replacementString);
+    var replacementString = replacement.string;
+    var resultString = _string.replaceRange(_start, _end, replacementString);
     return _expandRange(
         resultString, _start, _start + replacementString.length);
   }
 
-  // Expands a range if its start or end are not grapheme cluster boundaries.
-  StringCharacterRange _expandRange(String string, int start, int end) {
+  /// Expands a range if its start or end are not grapheme cluster boundaries.
+  ///
+  /// Low-level function which does not validate its input. Assume that
+  /// 0 <= [start] <= [end] <= `string.length`.
+  static StringCharacterRange _expandRange(String string, int start, int end) {
     start = previousBreak(string, 0, string.length, start);
-    end = nextBreak(string, 0, string.length, end);
+    if (end != start) {
+      end = nextBreak(string, 0, string.length, end);
+    }
     return StringCharacterRange._(string, start, end);
   }
 
@@ -864,16 +909,16 @@ class StringCharacterRange implements CharacterRange {
   }
 
   bool _endsWith(int start, int end, String string) {
-    int length = string.length;
-    int stringStart = end - length;
+    var length = string.length;
+    var stringStart = end - length;
     return stringStart >= start &&
         _string.startsWith(string, stringStart) &&
         isGraphemeClusterBoundary(_string, start, end, stringStart);
   }
 
   bool _startsWith(int start, int end, String string) {
-    int length = string.length;
-    int stringEnd = start + length;
+    var length = string.length;
+    var stringEnd = start + length;
     return stringEnd <= end &&
         _string.startsWith(string, start) &&
         isGraphemeClusterBoundary(_string, start, end, stringEnd);
@@ -882,7 +927,7 @@ class StringCharacterRange implements CharacterRange {
   @override
   bool moveBackTo(Characters target) {
     var targetString = target.string;
-    int index = _lastIndexOf(_string, targetString, 0, _start);
+    var index = _lastIndexOf(_string, targetString, 0, _start);
     if (index >= 0) {
       _move(index, index + targetString.length);
       return true;
@@ -893,7 +938,7 @@ class StringCharacterRange implements CharacterRange {
   @override
   bool moveTo(Characters target) {
     var targetString = target.string;
-    int index = _indexOf(_string, targetString, _end, _string.length);
+    var index = _indexOf(_string, targetString, _end, _string.length);
     if (index >= 0) {
       _move(index, index + targetString.length);
       return true;
@@ -925,7 +970,13 @@ class StringCharacterRange implements CharacterRange {
   String get stringAfter => _string.substring(_end);
 
   @override
+  int get stringAfterLength => _string.length - _end;
+
+  @override
   String get stringBefore => _string.substring(0, _start);
+
+  @override
+  int get stringBeforeLength => _start;
 
   @override
   Iterable<CharacterRange> split(Characters pattern, [int maxParts = 0]) sync* {
@@ -968,8 +1019,8 @@ String _explodeReplace(String string, int start, int end,
   }
   var buffer = StringBuffer(string.substring(0, start));
   var breaks = Breaks(string, start, end, stateSoTNoBreak);
-  int index = 0;
-  String replacement = outerReplacement;
+  var index = 0;
+  var replacement = outerReplacement;
   while ((index = breaks.nextBreak()) >= 0) {
     buffer..write(replacement)..write(string.substring(start, index));
     start = index;
@@ -984,16 +1035,16 @@ String _explodeReplace(String string, int start, int end,
 /// Both [start] and [end] are grapheme cluster boundaries in the
 /// [source] string.
 int _indexOf(String source, String pattern, int start, int end) {
-  int patternLength = pattern.length;
+  var patternLength = pattern.length;
   if (patternLength == 0) return start;
   // Any start position after realEnd won't fit the pattern before end.
-  int realEnd = end - patternLength;
+  var realEnd = end - patternLength;
   if (realEnd < start) return -1;
   // Use indexOf if what we can overshoot is
   // less than twice as much as what we have left to search.
-  int rest = source.length - realEnd;
+  var rest = source.length - realEnd;
   if (rest <= (realEnd - start) * 2) {
-    int index = 0;
+    var index = 0;
     while (start < realEnd && (index = source.indexOf(pattern, start)) >= 0) {
       if (index > realEnd) return -1;
       if (isGraphemeClusterBoundary(source, start, end, index) &&
@@ -1010,9 +1061,9 @@ int _indexOf(String source, String pattern, int start, int end) {
 
 int _gcIndexOf(String source, String pattern, int start, int end) {
   var breaks = Breaks(source, start, end, stateSoT);
-  int index = 0;
+  var index = 0;
   while ((index = breaks.nextBreak()) >= 0) {
-    int endIndex = index + pattern.length;
+    var endIndex = index + pattern.length;
     if (endIndex > end) break;
     if (source.startsWith(pattern, index) &&
         isGraphemeClusterBoundary(source, start, end, endIndex)) {
@@ -1026,15 +1077,15 @@ int _gcIndexOf(String source, String pattern, int start, int end) {
 /// Both [start] and [end] are grapheme cluster boundaries in the
 /// [source] string.
 int _lastIndexOf(String source, String pattern, int start, int end) {
-  int patternLength = pattern.length;
+  var patternLength = pattern.length;
   if (patternLength == 0) return end;
   // Start of pattern must be in range [start .. end - patternLength].
-  int realEnd = end - patternLength;
+  var realEnd = end - patternLength;
   if (realEnd < start) return -1;
   // If the range from 0 to start is no more than double the range from
   // start to end, use lastIndexOf.
   if (realEnd * 2 > start) {
-    int index = 0;
+    var index = 0;
     while (realEnd >= start &&
         (index = source.lastIndexOf(pattern, realEnd)) >= 0) {
       if (index < start) return -1;
@@ -1052,9 +1103,9 @@ int _lastIndexOf(String source, String pattern, int start, int end) {
 
 int _gcLastIndexOf(String source, String pattern, int start, int end) {
   var breaks = BackBreaks(source, end, start, stateEoT);
-  int index = 0;
+  var index = 0;
   while ((index = breaks.nextBreak()) >= 0) {
-    int startIndex = index - pattern.length;
+    var startIndex = index - pattern.length;
     if (startIndex < start) break;
     if (source.startsWith(pattern, startIndex) &&
         isGraphemeClusterBoundary(source, start, end, startIndex)) {

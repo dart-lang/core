@@ -9,8 +9,8 @@ import "package:characters/characters.dart";
 import "../test/src/text_samples.dart";
 
 double bench(int Function() action, int ms) {
-  int elapsed = 0;
-  int count = 0;
+  var elapsed = 0;
+  var count = 0;
   var stopwatch = Stopwatch()..start();
   do {
     count += action();
@@ -20,7 +20,7 @@ double bench(int Function() action, int ms) {
 }
 
 int iterateIndicesOnly() {
-  int graphemeClusters = 0;
+  var graphemeClusters = 0;
   var char = Characters(hangul).iterator;
   while (char.moveNext()) {
     graphemeClusters++;
@@ -33,7 +33,7 @@ int iterateIndicesOnly() {
 }
 
 int iterateStrings() {
-  int codeUnits = 0;
+  var codeUnits = 0;
   var char = Characters(hangul).iterator;
   while (char.moveNext()) {
     codeUnits += char.current.length;
@@ -58,7 +58,7 @@ int reverseStrings() {
 }
 
 int replaceStrings() {
-  int count = 0;
+  var count = 0;
   {
     const language = "한글";
     assert(language.length == 6);
@@ -85,7 +85,7 @@ String reverse(String input) {
 }
 
 void main(List<String> args) {
-  int count = 1;
+  var count = 1;
   if (args.isNotEmpty) count = int.tryParse(args[0]) ?? 1;
 
   // Warmup.
@@ -94,7 +94,7 @@ void main(List<String> args) {
   bench(reverseStrings, 250);
   bench(replaceStrings, 250);
 
-  for (int i = 0; i < count; i++) {
+  for (var i = 0; i < count; i++) {
     var performance = bench(iterateIndicesOnly, 2000);
     print("Index Iteration: $performance gc/ms");
     performance = bench(iterateStrings, 2000);

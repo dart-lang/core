@@ -35,6 +35,7 @@ abstract class Characters implements Iterable<String> {
   /// Allows iterating the characters of [string] as a plain iterator,
   /// using [CharacterRange.moveNext],
   /// as well as controlling the iteration in more detail.
+  @override
   CharacterRange get iterator;
 
   /// Iterator over the characters of this string.
@@ -54,6 +55,7 @@ abstract class Characters implements Iterable<String> {
   /// a single character,
   /// because then it is not a single element of this [Iterable]
   /// of characters.
+  @override
   bool contains(Object? other);
 
   /// Whether this sequence of characters contains [other]
@@ -92,6 +94,7 @@ abstract class Characters implements Iterable<String> {
   ///
   /// Tests each character against [test], and returns the
   /// characters of the concatenation of those character strings.
+  @override
   Characters where(bool Function(String) test);
 
   /// Eagerly selects all but the first [count] characters.
@@ -99,6 +102,7 @@ abstract class Characters implements Iterable<String> {
   /// If [count] is greater than [length], the count of character
   /// available, then the empty sequence of characters
   /// is returned.
+  @override
   Characters skip(int count);
 
   /// Eagerly selects the first [count] characters.
@@ -106,7 +110,40 @@ abstract class Characters implements Iterable<String> {
   /// If [count] is greater than [length], the count of character
   /// available, then the entire sequence of characters
   /// is returned.
+  @override
   Characters take(int count);
+
+  /// Eagerly selects the range of characters from [start] to [end].
+  ///
+  /// The [start] value must be non-negative,
+  /// and [end], if supplied, must be greater than or equal to [start].
+  ///
+  /// A `characters.getRange(start, end)` is equivalent to
+  /// ```dart
+  ///  (end != null ? characters.take(end) : characters).skip(start)
+  /// ```
+  /// if [end] is omitted, the call is equivalent to `characters.skip(start)`.
+  ///
+  /// If [start] is greater than or equal to [length]
+  /// the returned characters is empty.
+  /// Otherwise, if [end] is greater than [length], or omitted,
+  /// [end] is equivalent to [length].
+  Characters getRange(int start, [int? end]);
+
+  /// Returns the single-character sequence of the [position]th character.
+  ///
+  /// The [position] must be non-negative and less than [length].
+  ///
+  /// This operation must iterate characters up to [position] to find
+  /// the result, just like [elementAt].
+  /// It is not an efficient way to iterate over the individual characters
+  /// of a `Characters`.
+  ///
+  /// An call to `chars.characterAt(n)`
+  /// is equivalent to `chars.elementAt(n).characters`,
+  /// or to `chars.getRange(n, n + 1)`
+  /// (except that [getRange] allows `n` to be larger than [length]).
+  Characters characterAt(int position);
 
   /// Eagerly selects all but the last [count] characters.
   ///
@@ -131,6 +168,7 @@ abstract class Characters implements Iterable<String> {
   ///
   /// If no characters test `false`, the result is an empty sequence
   /// of characters.
+  @override
   Characters skipWhile(bool Function(String) test);
 
   /// Eagerly selects a leading sequence of characters.
@@ -142,6 +180,7 @@ abstract class Characters implements Iterable<String> {
   ///
   /// If no characters test `false`, the entire sequence of character
   /// is returned.
+  @override
   Characters takeWhile(bool Function(String) test);
 
   /// Eagerly selects a leading sequence of characters.
@@ -236,12 +275,15 @@ abstract class Characters implements Iterable<String> {
   Characters toUpperCase();
 
   /// The hash code of [string].
+  @override
   int get hashCode;
 
   /// Whether [other] to another [Characters] with the same [string].
+  @override
   bool operator ==(Object other);
 
   /// The [string] content of these characters.
+  @override
   String toString();
 }
 
@@ -281,6 +323,28 @@ abstract class CharacterRange implements Iterator<String> {
   /// of [string].
   factory CharacterRange(String string) = StringCharacterRange;
 
+  /// Creates a new character iterator on [string].
+  ///
+  /// The iterator starts with a current range containing the
+  /// substring from [startIndex] to [endIndex] of [string].
+  /// If [startIndex] is not a character boundary,
+  /// the range starts at the beginning of the character
+  /// that [startIndex] is pointing into.
+  /// If [endIndex] is not a character boundary,
+  /// the range end at then end of the character
+  /// that [endIndex] is pointing into.
+  /// If [endIndex] is not provided,
+  /// it defaults to the same index as [startIndex].
+  ///
+  /// So, if no [endIndex] is provided,
+  /// and [startIndex] is at a character boundary,
+  /// the resulting iterator's current range is empty.
+  /// Otherwise, the range will contain the characters
+  /// of the substring from [startIndex] to [endIndex],
+  /// extended so that it contains entire characters of the original [string].
+  factory CharacterRange.at(String string, int startIndex, [int? endIndex]) =
+      StringCharacterRange.at;
+
   /// The character sequence that this range is a sub-sequence of.
   Characters get source;
 
@@ -302,8 +366,14 @@ abstract class CharacterRange implements Iterator<String> {
   /// The string of the characters before the current range.
   String get stringBefore;
 
+  /// The length, in code units, of [stringBefore].
+  int get stringBeforeLength;
+
   /// The string of the characters after the current range.
   String get stringAfter;
+
+  /// The length, in code units, of [stringAfter].
+  int get stringAfterLength;
 
   /// Creates a copy of this [CharacterRange].
   ///
@@ -336,6 +406,7 @@ abstract class CharacterRange implements Iterator<String> {
   ///
   /// Returns `true` if there were [count] following characters
   /// and `false` if not.
+  @override
   bool moveNext([int count = 1]);
 
   /// Moves the range to be everything after the current range.

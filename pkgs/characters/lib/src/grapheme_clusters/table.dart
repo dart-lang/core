@@ -317,18 +317,18 @@ const String _start = '\u0e3b\u1cdb\u05d0\u102b\u102b\u102b\u102b\u102b\u102b'
     '\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b'
     '\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b\u102b';
 int low(int codeUnit) {
-  int chunkStart = _start.codeUnitAt(codeUnit >> 6);
-  int index = chunkStart + (codeUnit & 63);
-  int bit = index & 1;
-  int pair = _data.codeUnitAt(index >> 1);
+  var chunkStart = _start.codeUnitAt(codeUnit >> 6);
+  var index = chunkStart + (codeUnit & 63);
+  var bit = index & 1;
+  var pair = _data.codeUnitAt(index >> 1);
   return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
 }
 
 int high(int lead, int tail) {
-  int chunkStart = _start.codeUnitAt(1024 + (0x3ff & lead));
-  int index = chunkStart + (0x3ff & tail);
-  int bit = index & 1;
-  int pair = _data.codeUnitAt(index >> 1);
+  var chunkStart = _start.codeUnitAt(1024 + (0x3ff & lead));
+  var index = chunkStart + (0x3ff & tail);
+  var bit = index & 1;
+  var pair = _data.codeUnitAt(index >> 1);
   return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
 }
 

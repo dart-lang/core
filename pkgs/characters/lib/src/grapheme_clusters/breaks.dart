@@ -45,8 +45,8 @@ class Breaks {
   /// which means that [cursor] has reached [end].
   int nextBreak() {
     while (cursor < end) {
-      int breakAt = cursor;
-      int char = base.codeUnitAt(cursor++);
+      var breakAt = cursor;
+      var char = base.codeUnitAt(cursor++);
       if (char & 0xFC00 != 0xD800) {
         state = move(state, low(char));
         if (state & stateNoBreak == 0) {
@@ -55,9 +55,9 @@ class Breaks {
         continue;
       }
       // The category of an unpaired lead surrogate is Control.
-      int category = categoryControl;
+      var category = categoryControl;
       if (cursor < end) {
-        int nextChar = base.codeUnitAt(cursor);
+        var nextChar = base.codeUnitAt(cursor);
         if (nextChar & 0xFC00 == 0xDC00) {
           category = high(char, nextChar);
           cursor++;
@@ -112,8 +112,8 @@ class BackBreaks {
   /// which means that [cursor] has reached [start].
   int nextBreak() {
     while (cursor > start) {
-      int breakAt = cursor;
-      int char = base.codeUnitAt(--cursor);
+      var breakAt = cursor;
+      var char = base.codeUnitAt(--cursor);
       if (char & 0xFC00 != 0xDC00) {
         state = moveBack(state, low(char));
         if (state >= stateLookaheadMin) state = _lookAhead(state);
@@ -123,9 +123,9 @@ class BackBreaks {
         continue;
       }
       // The category of an unpaired tail surrogate is Control.
-      int category = categoryControl;
+      var category = categoryControl;
       if (cursor >= start) {
-        int prevChar = base.codeUnitAt(cursor - 1);
+        var prevChar = base.codeUnitAt(cursor - 1);
         if (prevChar & 0xFC00 == 0xD800) {
           category = high(prevChar, char);
           cursor -= 1;
@@ -158,7 +158,7 @@ int lookAhead(String base, int start, int cursor, int state) {
     return lookAheadRegional(base, start, cursor);
   }
   if (state == stateZWJPictographicLookahead) {
-    int prevPic = lookAheadPictorgraphicExtend(base, start, cursor);
+    var prevPic = lookAheadPictorgraphicExtend(base, start, cursor);
     if (prevPic >= 0) return stateZWJPictographic | stateNoBreak;
     return stateExtend; // State for break before seeing ZWJ.
   }
@@ -179,14 +179,14 @@ int lookAheadRegional(String base, int start, int cursor) {
   // Has just seen second regional indicator.
   // Figure out if there are an odd or even number of preceding RIs.
   // ALL REGIONAL INDICATORS ARE NON-BMP CHARACTERS.
-  int count = 0;
-  int index = cursor;
+  var count = 0;
+  var index = cursor;
   while (index - 2 >= start) {
-    int tail = base.codeUnitAt(index - 1);
+    var tail = base.codeUnitAt(index - 1);
     if (tail & 0xFC00 != 0xDC00) break;
-    int lead = base.codeUnitAt(index - 2);
+    var lead = base.codeUnitAt(index - 2);
     if (lead & 0xFC00 != 0xD800) break;
-    int category = high(lead, tail);
+    var category = high(lead, tail);
     if (category != categoryRegionalIndicator) break;
     index -= 2;
     count ^= 1;
@@ -208,11 +208,11 @@ int lookAheadRegional(String base, int start, int cursor) {
 int lookAheadPictorgraphicExtend(String base, int start, int cursor) {
   // Has just seen ZWJ+Pictographic. Check if preceeding is Pic Ext*.
   // (If so, just move cursor back to the Pic).
-  int index = cursor;
+  var index = cursor;
   while (index > start) {
-    int char = base.codeUnitAt(--index);
-    int prevChar = 0;
-    int category = categoryControl;
+    var char = base.codeUnitAt(--index);
+    var prevChar = 0;
+    var category = categoryControl;
     if (char & 0xFC00 != 0xDC00) {
       category = low(char);
     } else if (index > start &&
@@ -247,16 +247,16 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
   // surrogates.
   if (start < index && index < end) {
     // Something on both sides of index.
-    int char = text.codeUnitAt(index);
-    int prevChar = text.codeUnitAt(index - 1);
-    int catAfter = categoryControl;
+    var char = text.codeUnitAt(index);
+    var prevChar = text.codeUnitAt(index - 1);
+    var catAfter = categoryControl;
     if (char & 0xF800 != 0xD800) {
       catAfter = low(char);
     } else if (char & 0xFC00 == 0xD800) {
       // Lead surrogate. Combine with following tail surrogate,
       // otherwise it's a control and always a boundary.
       if (index + 1 >= end) return true;
-      int nextChar = text.codeUnitAt(index + 1);
+      var nextChar = text.codeUnitAt(index + 1);
       if (nextChar & 0xFC00 != 0xDC00) return true;
       catAfter = high(char, nextChar);
     } else {
@@ -264,7 +264,7 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
       // before or is always a bundary.
       return prevChar & 0xFC00 != 0xD800;
     }
-    int catBefore = categoryControl;
+    var catBefore = categoryControl;
     if (prevChar & 0xFC00 != 0xDC00) {
       catBefore = low(prevChar);
       index -= 1;
@@ -272,7 +272,7 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
       // If no prior lead surrogate, it's a control and always a boundary.
       index -= 2;
       if (start <= index) {
-        int prevPrevChar = text.codeUnitAt(index);
+        var prevPrevChar = text.codeUnitAt(index);
         if (prevPrevChar & 0xFC00 != 0xD800) {
           return true;
         }
@@ -303,21 +303,21 @@ int previousBreak(String text, int start, int end, int index) {
   assert(index <= end);
   assert(end <= text.length);
   if (index == start || index == end) return index;
-  int indexBefore = index;
-  int nextChar = text.codeUnitAt(index);
-  int category = categoryControl;
+  var indexBefore = index;
+  var nextChar = text.codeUnitAt(index);
+  var category = categoryControl;
   if (nextChar & 0xF800 != 0xD800) {
     category = low(nextChar);
   } else if (nextChar & 0xFC00 == 0xD800) {
-    int indexAfter = index + 1;
+    var indexAfter = index + 1;
     if (indexAfter < end) {
-      int secondChar = text.codeUnitAt(indexAfter);
+      var secondChar = text.codeUnitAt(indexAfter);
       if (secondChar & 0xFC00 == 0xDC00) {
         category = high(nextChar, secondChar);
       }
     }
   } else {
-    int prevChar = text.codeUnitAt(index - 1);
+    var prevChar = text.codeUnitAt(index - 1);
     if (prevChar & 0xFC00 == 0xD800) {
       category = high(prevChar, nextChar);
       indexBefore -= 1;
@@ -337,21 +337,21 @@ int nextBreak(String text, int start, int end, int index) {
   assert(index <= end);
   assert(end <= text.length);
   if (index == start || index == end) return index;
-  int indexBefore = index - 1;
-  int prevChar = text.codeUnitAt(indexBefore);
-  int prevCategory = categoryControl;
+  var indexBefore = index - 1;
+  var prevChar = text.codeUnitAt(indexBefore);
+  var prevCategory = categoryControl;
   if (prevChar & 0xF800 != 0xD800) {
     prevCategory = low(prevChar);
   } else if (prevChar & 0xFC00 == 0xD800) {
-    int nextChar = text.codeUnitAt(index);
+    var nextChar = text.codeUnitAt(index);
     if (nextChar & 0xFC00 == 0xDC00) {
       index += 1;
       if (index == end) return end;
       prevCategory = high(prevChar, nextChar);
     }
   } else if (indexBefore > start) {
-    int secondCharIndex = indexBefore - 1;
-    int secondChar = text.codeUnitAt(secondCharIndex);
+    var secondCharIndex = indexBefore - 1;
+    var secondChar = text.codeUnitAt(secondCharIndex);
     if (secondChar & 0xFC00 == 0xD800) {
       indexBefore = secondCharIndex;
       prevCategory = high(secondChar, prevChar);
@@ -361,14 +361,14 @@ int nextBreak(String text, int start, int end, int index) {
   // the previous character are the [^RI] (RI RI)* RI x RI and
   // Pic Ext* ZWJ x Pic breaks. In all other cases, all the necessary
   // information is in the last seen category.
-  int state = stateOther;
+  var state = stateOther;
   if (prevCategory == categoryRegionalIndicator) {
-    int prevState = lookAheadRegional(text, start, indexBefore);
+    var prevState = lookAheadRegional(text, start, indexBefore);
     if (prevState != stateRegionalOdd) {
       state = stateRegionalSingle;
     }
   } else if (prevCategory == categoryZWJ || prevCategory == categoryExtend) {
-    int prevPic = lookAheadPictorgraphicExtend(text, start, indexBefore);
+    var prevPic = lookAheadPictorgraphicExtend(text, start, indexBefore);
     if (prevPic >= 0) {
       state = prevCategory == categoryZWJ
           ? statePictographicZWJ

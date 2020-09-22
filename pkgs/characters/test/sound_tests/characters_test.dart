@@ -34,6 +34,9 @@ void main([List<String>? args]) {
       expect(cs.skipLast(2).toString(), "Hi ");
       expect(cs.take(2).toString(), "Hi");
       expect(cs.takeLast(2).toString(), "$flag!");
+      expect(cs.getRange(1, 4).toString(), "i $flag");
+      expect(cs.characterAt(1).toString(), "i");
+      expect(cs.characterAt(3).toString(), flag);
 
       expect(cs.contains("\u{1F1E9}"), false);
       expect(cs.contains(flag), true);
@@ -66,6 +69,73 @@ void main([List<String>? args]) {
 
     testParts(gc("$flag$white$zwj$rainbow"), gc("$flag$white"), gc("$rainbow"),
         gc("$flag$zwj$rainbow"), gc("!"));
+  });
+
+  group("CharacterRange", () {
+    test("new", () {
+      var range = CharacterRange("abc");
+      expect(range.isEmpty, true);
+      expect(range.moveNext(), true);
+      expect(range.current, "a");
+    });
+    group("new.at", () {
+      test("simple", () {
+        var range = CharacterRange.at("abc", 0);
+        expect(range.isEmpty, true);
+        expect(range.moveNext(), true);
+        expect(range.current, "a");
+
+        range = CharacterRange.at("abc", 1);
+        expect(range.isEmpty, true);
+        expect(range.moveNext(), true);
+        expect(range.current, "b");
+
+        range = CharacterRange.at("abc", 1, 2);
+        expect(range.isEmpty, false);
+        expect(range.current, "b");
+        expect(range.moveNext(), true);
+
+        range = CharacterRange.at("abc", 0, 3);
+        expect(range.isEmpty, false);
+        expect(range.current, "abc");
+        expect(range.moveNext(), false);
+      });
+      test("complicated", () {
+        // Composite pictogram example, from https://en.wikipedia.org/wiki/Zero-width_joiner.
+        var flag = "\u{1f3f3}"; // U+1F3F3, Flag, waving. Category Pictogram.
+        var white = "\ufe0f"; // U+FE0F, Variant selector 16. Category Extend.
+        var zwj = "\u200d"; // U+200D, ZWJ
+        var rainbow = "\u{1f308}"; // U+1F308, Rainbow. Category Pictogram
+
+        var rbflag = "$flag$white$zwj$rainbow";
+        var string = "-$rbflag-";
+        var range = CharacterRange.at(string, 1);
+        expect(range.isEmpty, true);
+        expect(range.moveNext(), true);
+        expect(range.current, rbflag);
+
+        range = range = CharacterRange.at(string, 2);
+        expect(range.isEmpty, false);
+        expect(range.current, rbflag);
+
+        range = range = CharacterRange.at(string, 0, 2);
+        expect(range.isEmpty, false);
+        expect(range.current, "-$rbflag");
+
+        range = range = CharacterRange.at(string, 0, 2);
+        expect(range.isEmpty, false);
+        expect(range.current, "-$rbflag");
+
+        range = range = CharacterRange.at(string, 2, "-$rbflag".length - 1);
+        expect(range.isEmpty, false);
+        expect(range.current, rbflag);
+        expect(range.stringBeforeLength, 1);
+
+        range = range = CharacterRange.at(string, 0, string.length);
+        expect(range.isEmpty, false);
+        expect(range.current, string);
+      });
+    });
   });
 }
 
@@ -191,13 +261,14 @@ void expectGC(Characters actual, List<String> expected) {
   for (var char in expected) {
     expect(actual.contains(char), true);
   }
-  for (int i = 1; i < expected.length; i++) {
+  for (var i = 1; i < expected.length; i++) {
     expect(actual.contains(expected[i - 1] + expected[i]), false);
   }
   expect(actual.skip(1).toList(), expected.skip(1).toList());
   expect(actual.take(1).toList(), expected.take(1).toList());
   expect(actual.skip(1).toString(), expected.skip(1).join());
   expect(actual.take(1).toString(), expected.take(1).join());
+  expect(actual.getRange(1, 2).toString(), expected.take(2).skip(1).join());
 
   if (expected.isNotEmpty) {
     expect(actual.skipLast(1).toList(),
@@ -238,6 +309,8 @@ void expectGC(Characters actual, List<String> expected) {
 
     expect(actual.elementAt(i), expected[i]);
     expect(actual.skip(i).first, expected[i]);
+    expect(actual.characterAt(i).toString(), expected[i]);
+    expect(actual.getRange(i, i + 1).toString(), expected[i]);
   }
   expect(it.moveNext(), false);
   for (var i = expected.length - 1; i >= 0; i--) {
@@ -256,13 +329,13 @@ void expectGC(Characters actual, List<String> expected) {
   expect(actual.containsAll(gc("")), true);
   expect(actual.containsAll(actual), true);
   if (expected.isNotEmpty) {
-    int steps = min(5, expected.length);
-    for (int s = 0; s <= steps; s++) {
-      int i = expected.length * s ~/ steps;
+    var steps = min(5, expected.length);
+    for (var s = 0; s <= steps; s++) {
+      var i = expected.length * s ~/ steps;
       expect(actual.startsWith(gc(expected.sublist(0, i).join())), true);
       expect(actual.endsWith(gc(expected.sublist(i).join())), true);
-      for (int t = s + 1; t <= steps; t++) {
-        int j = expected.length * t ~/ steps;
+      for (var t = s + 1; t <= steps; t++) {
+        var j = expected.length * t ~/ steps;
         var slice = expected.sublist(i, j).join();
         var gcs = gc(slice);
         expect(actual.containsAll(gcs), true);
@@ -273,15 +346,15 @@ void expectGC(Characters actual, List<String> expected) {
   {
     // Random walk back and forth.
     var it = actual.iterator;
-    int pos = -1;
+    var pos = -1;
     if (random.nextBool()) {
       pos = expected.length;
       it = actual.iteratorAtEnd;
     }
-    int steps = 5 + random.nextInt(expected.length * 2 + 1);
-    bool lastMove = false;
+    var steps = 5 + random.nextInt(expected.length * 2 + 1);
+    var lastMove = false;
     while (true) {
-      bool back = false;
+      var back = false;
       if (pos < 0) {
         expect(lastMove, false);
         expect(it.isEmpty, true);
@@ -534,7 +607,7 @@ void testParts(
     expect(it.split(a).map((range) => range.current), ["", "$b", "$b"]);
     expect(it.split(a, 2).map((range) => range.current), ["", "$b$a$b"]);
     // Each split is after an *a*.
-    bool first = true;
+    var first = true;
     for (var range in it.split(a)) {
       if (range.isEmpty) {
         // First range is empty.

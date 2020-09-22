@@ -3,7 +3,7 @@ import 'package:characters/characters.dart';
 // Small API examples. For full API docs see:
 // https://pub.dev/documentation/characters/latest/characters/characters-library.html
 void main() {
-  String hi = 'Hi 🇩🇰';
+  var hi = 'Hi 🇩🇰';
   print('String is "$hi"\n');
 
   // Length.
@@ -19,7 +19,6 @@ void main() {
   print('Skipping last character: "${hi.characters.skipLast(1)}"\n');
 
   // Replace characters.
-  Characters newHi =
-      hi.characters.replaceAll('🇩🇰'.characters, '🇺🇸'.characters);
+  var newHi = hi.characters.replaceAll('🇩🇰'.characters, '🇺🇸'.characters);
   print('Change flag: "$newHi"');
 }
