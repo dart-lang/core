@@ -27,7 +27,7 @@ void main() {
     const overrideName = "argle-bargle";
     const overrideVersion = "glop-glyf";
     const overrideID = OperatingSystemID(overrideName, overrideVersion);
-    Zone/*?*/ overrideZone;
+    Zone /*?*/ overrideZone;
 
     var originalName = operatingSystem;
     var originalVersion = operatingSystemVersion;
@@ -35,7 +35,6 @@ void main() {
     var originalZone = Zone.current;
     expect(originalName, isNot(overrideName));
     expect(originalVersion, isNot(overrideVersion));
-
 
     // Override OS ID.
     overrideOperatingSystem(overrideID, () {
@@ -66,7 +65,7 @@ void main() {
     expect(operatingSystemVersion, originalVersion);
 
     // A captured override zone retains the override.
-    overrideZone/*!*/.run(() {
+    overrideZone /*!*/ .run(() {
       expect(operatingSystem, overrideName);
       expect(operatingSystemVersion, overrideVersion);
       expect(OperatingSystemID.current, same(overrideID));
