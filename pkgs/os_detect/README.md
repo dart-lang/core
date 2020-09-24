@@ -14,7 +14,7 @@ based on the `operatingSystem` string.
 To use this package instead of `dart:io`, replace
 the import of `dart:io` with:
 ```dart
-import "package:platform_id/platform_id.dart" as Platform;
+import "package:os_id/os_id.dart" as Platform;
 ```
 That should keep the code working if the only functionality used from `dart:io`
 is operating system detection.
@@ -39,4 +39,4 @@ to whatever values are desired.
 The class `OperatingSystemID` can also be used directly to
 abstract over the operating system name and version.
 The `OperatingSystemID.current` defaults to the values provided by the platform
-when not overridden using `overrideOperatingSystem`,
+when not overridden using `overrideOperatingSystem`.
