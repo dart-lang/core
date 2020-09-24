@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/lrhn/os_id.svg?branch=master)](https://travis-ci.org/lrhn/os_id)
+[![Build Status](https://api.travis-ci.org/dart-lang/os_id.svg?branch=master)](https://travis-ci.org/github/dart-lang/os_id)
 
 Platform independent access to information about the current operating system.
 
