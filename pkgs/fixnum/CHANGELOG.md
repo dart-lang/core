@@ -1,5 +1,7 @@
 ## 1.0.0-nullsafety.1-dev
 
+* Expand sdk constraint to allow the 2.11 dev sdk.
+
 ## 1.0.0-nullsafety
 
 * Migrate to null safety.
