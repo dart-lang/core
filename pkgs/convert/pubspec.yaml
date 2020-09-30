@@ -1,10 +1,10 @@
 name: convert
-version: 2.2.0-nullsafety
+version: 2.2.0-nullsafety-dev
 description: Utilities for converting between data representations.
 homepage: https://github.com/dart-lang/convert
 
 environment:
-  sdk: '>=2.10.0-2.0.dev <2.10.0'
+  sdk: '>=2.10.0-2.0.dev <2.11.0'
 
 dependencies:
   charcode: ^1.1.0
