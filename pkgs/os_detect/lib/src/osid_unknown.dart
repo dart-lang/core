@@ -8,4 +8,4 @@ const String _os =
     String.fromEnvironment("dart.os.name", defaultValue: "unknown");
 const String _osVersion = String.fromEnvironment("dart.os.version");
 
-const OperatingSystemID platformOSID = OperatingSystemID(_os, _osVersion);
+const OperatingSystem platformOS = OperatingSystem(_os, _osVersion);

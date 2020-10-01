@@ -4,8 +4,8 @@
 
 import "dart:async";
 
-import "package:os_id/os_id.dart";
-import 'package:os_id/override.dart';
+import "package:os_detect/os_detect.dart";
+import 'package:os_detect/override.dart';
 
 import "package:test/test.dart";
 
@@ -26,31 +26,31 @@ void main() {
   test("Override", () {
     const overrideName = "argle-bargle";
     const overrideVersion = "glop-glyf";
-    const overrideID = OperatingSystemID(overrideName, overrideVersion);
+    const overrideOS = OperatingSystem(overrideName, overrideVersion);
     Zone /*?*/ overrideZone;
 
     var originalName = operatingSystem;
     var originalVersion = operatingSystemVersion;
-    var originalID = OperatingSystemID.current;
+    var originalID = OperatingSystem.current;
     var originalZone = Zone.current;
     expect(originalName, isNot(overrideName));
     expect(originalVersion, isNot(overrideVersion));
 
     // Override OS ID.
-    overrideOperatingSystem(overrideID, () {
+    overrideOperatingSystem(overrideOS, () {
       overrideZone = Zone.current;
       expect(operatingSystem, overrideName);
       expect(operatingSystemVersion, overrideVersion);
-      expect(OperatingSystemID.current, same(overrideID));
+      expect(OperatingSystem.current, same(overrideOS));
       // Nested override.
       overrideOperatingSystem(originalID, () {
         expect(operatingSystem, originalName);
         expect(operatingSystemVersion, originalVersion);
-        expect(OperatingSystemID.current, same(originalID));
+        expect(OperatingSystem.current, same(originalID));
       });
       expect(operatingSystem, overrideName);
       expect(operatingSystemVersion, overrideVersion);
-      expect(OperatingSystemID.current, same(overrideID));
+      expect(OperatingSystem.current, same(overrideOS));
       // Captured parent zone does not have override.
       originalZone.run(() {
         expect(operatingSystem, originalName);
@@ -58,7 +58,7 @@ void main() {
       });
       expect(operatingSystem, overrideName);
       expect(operatingSystemVersion, overrideVersion);
-      expect(OperatingSystemID.current, same(overrideID));
+      expect(OperatingSystem.current, same(overrideOS));
     });
 
     expect(operatingSystem, originalName);
@@ -68,7 +68,7 @@ void main() {
     overrideZone /*!*/ .run(() {
       expect(operatingSystem, overrideName);
       expect(operatingSystemVersion, overrideVersion);
-      expect(OperatingSystemID.current, same(overrideID));
+      expect(OperatingSystem.current, same(overrideOS));
     });
   });
 }

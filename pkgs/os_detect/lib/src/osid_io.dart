@@ -9,4 +9,4 @@ import '../override.dart';
 String get _os => Platform.operatingSystem;
 String get _osVersion => Platform.operatingSystemVersion;
 
-final OperatingSystemID platformOSID = OperatingSystemID(_os, _osVersion);
+final OperatingSystem platformOS = OperatingSystem(_os, _osVersion);

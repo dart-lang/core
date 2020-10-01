@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/dart-lang/os_id.svg?branch=master)](https://travis-ci.org/github/dart-lang/os_id)
+[![Build Status](https://api.travis-ci.org/dart-lang/os_detect.svg?branch=master)](https://travis-ci.org/github/dart-lang/os_detect)
 
 Platform independent access to information about the current operating system.
 
@@ -14,7 +14,7 @@ based on the `operatingSystem` string.
 To use this package instead of `dart:io`, replace
 the import of `dart:io` with:
 ```dart
-import "package:os_id/os_id.dart" as Platform;
+import "package:os_detect/os_detect.dart" as Platform;
 ```
 That should keep the code working if the only functionality used from `dart:io`
 is operating system detection.
@@ -30,8 +30,8 @@ so that `const String.fromEnvironment` can access them.
 
 It's possible to override the current operating system string,
 as exposed by `operatingSystem` and `operatingSystemVersion`
-in `package:os_id/os_id.dart`.
-To do so, import the `package:os_id/override.dart` library
+in `package:os_detect/os_detect.dart`.
+To do so, import the `package:os_detect/override.dart` library
 and use the `overrideOperatingSystem` function to run code in a zone
 where the operating system and version values are set
 to whatever values are desired.

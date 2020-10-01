@@ -9,4 +9,4 @@ import '../override.dart';
 const String _os = "browser";
 String get _osVersion => window.navigator.appVersion;
 
-final OperatingSystemID platformOSID = OperatingSystemID(_os, _osVersion);
+final OperatingSystem platformOS = OperatingSystem(_os, _osVersion);
