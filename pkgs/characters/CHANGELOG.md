@@ -1,3 +1,7 @@
+## 1.1.0-nullsafety.4
+
+* Allow the 2.12 dev SDKs.
+
 ## 1.1.0-nullsafety.3
 
 * Added `stringBeforeLength` and `stringAfterLength` to `CharacterRange`.
