@@ -6,9 +6,9 @@ library convert.percent.decoder;
 
 import 'dart:convert';
 
-import 'package:charcode/ascii.dart';
 import 'package:typed_data/typed_data.dart';
 
+import '../charcodes.dart';
 import '../utils.dart';
 
 /// The canonical instance of [PercentDecoder].

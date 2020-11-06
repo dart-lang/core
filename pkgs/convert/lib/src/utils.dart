@@ -4,7 +4,7 @@
 
 library convert.utils;
 
-import 'package:charcode/ascii.dart';
+import 'charcodes.dart';
 
 /// Returns the digit (0 through 15) corresponding to the hexadecimal code unit
 /// at index [i] in [codeUnits].
