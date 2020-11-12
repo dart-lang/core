@@ -6,8 +6,6 @@ analyzer:
   errors:
     annotate_overrides: ignore
     prefer_single_quotes: ignore
-  enable-experiment:
-    - non-nullable
 
 linter:
   rules:
