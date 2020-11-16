@@ -1,6 +1,8 @@
 name: convert
-version: 3.0.0-nullsafety
-description: Utilities for converting between data representations.
+version: 3.0.0-nullsafety.0
+description: >-
+  Utilities for converting between data representations.
+  Provides a number of Sink, Codec, Decoder, and Encoder types.
 repository: https://github.com/dart-lang/convert
 
 environment:
