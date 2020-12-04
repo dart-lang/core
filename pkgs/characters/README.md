@@ -39,7 +39,7 @@ when needing to manipulate the text that a user is viewing, or entering,
 because string operations are not working at the grapheme cluster level.
 
 For example, to abbreviate a text to, say, the 15 first characters or glyphs,
-an string like "A 🇬🇧 text in English"
+a string like "A 🇬🇧 text in English"
 should abbreviate to "A 🇬🇧 text in Eng&mldr; when counting characters,
 but will become "A 🇬🇧 text in &mldr;"
 if counting code units using [`String`][String] operations.
