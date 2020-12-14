@@ -6,7 +6,6 @@ import "dart:async";
 
 import "package:os_detect/os_detect.dart";
 import 'package:os_detect/override.dart';
-
 import "package:test/test.dart";
 
 void main() {
@@ -27,7 +26,7 @@ void main() {
     const overrideName = "argle-bargle";
     const overrideVersion = "glop-glyf";
     const overrideOS = OperatingSystem(overrideName, overrideVersion);
-    Zone /*?*/ overrideZone;
+    Zone? overrideZone;
 
     var originalName = operatingSystem;
     var originalVersion = operatingSystemVersion;
@@ -65,7 +64,7 @@ void main() {
     expect(operatingSystemVersion, originalVersion);
 
     // A captured override zone retains the override.
-    overrideZone /*!*/ .run(() {
+    overrideZone!.run(() {
       expect(operatingSystem, overrideName);
       expect(operatingSystemVersion, overrideVersion);
       expect(OperatingSystem.current, same(overrideOS));

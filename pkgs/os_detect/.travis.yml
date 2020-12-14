@@ -1,7 +1,9 @@
 language: dart
 dart:
 - dev
-- stable
+# Disabling the stable build until 2.12 stable with null safety is available.
+# TODO: Enable stable testing in CI once 2.12 stable is ready.
+# - stable
 # Only building master means that we don't run two builds for each pull request.
 dart_task:
 - test: --platform vm,chrome
