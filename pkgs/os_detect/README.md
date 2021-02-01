@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/dart-lang/os_detect.svg?branch=master)](https://travis-ci.org/github/dart-lang/os_detect)
+[![Build Status](https://github.com/dart-lang/os_detect/workflows/Dart%20CI/badge.svg)](https://github.com/dart-lang/os_detect/actions?query=workflow%3A"Dart+CI"+branch%3Amaster)
 
 Platform independent access to information about the current operating system.
 
