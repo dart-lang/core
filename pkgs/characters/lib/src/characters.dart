@@ -162,7 +162,7 @@ abstract class Characters implements Iterable<String> {
   /// Eagerly selects a trailing sequence of characters.
   ///
   /// Checks each character, from first to last, against [test],
-  /// until one is found whwere [test] returns `false`.
+  /// until one is found where [test] returns `false`.
   /// The characters starting with the first one
   /// where [test] returns `false`, are included in the result.
   ///
@@ -174,7 +174,7 @@ abstract class Characters implements Iterable<String> {
   /// Eagerly selects a leading sequence of characters.
   ///
   /// Checks each character, from first to last, against [test],
-  /// until one is found whwere [test] returns `false`.
+  /// until one is found where [test] returns `false`.
   /// The characters up to, but not including, the first one
   /// where [test] returns `false` are included in the result.
   ///
@@ -186,7 +186,7 @@ abstract class Characters implements Iterable<String> {
   /// Eagerly selects a leading sequence of characters.
   ///
   /// Checks each character, from last to first, against [test],
-  /// until one is found whwere [test] returns `false`.
+  /// until one is found where [test] returns `false`.
   /// The characters up to and including the one with the latest index
   /// where [test] returns `false` are included in the result.
   ///
@@ -197,7 +197,7 @@ abstract class Characters implements Iterable<String> {
   /// Eagerly selects a trailing sequence of characters.
   ///
   /// Checks each character, from last to first, against [test],
-  /// until one is found whwere [test] returns `false`.
+  /// until one is found where [test] returns `false`.
   /// The characters after the one with the latest index where
   /// [test] returns `false` are included in the result.
   ///
