@@ -1,36 +1,13 @@
+## 1.1.1-dev
+
 ## 1.1.0
 
 * Stable release for null safety.
-
-## 1.1.0-nullsafety.5
-
-* Update sdk constraints to `>=2.12.0-0 <3.0.0` based on beta release
-  guidelines.
-
-## 1.1.0-nullsafety.4
-
-* Allow the 2.12 dev SDKs.
-
-## 1.1.0-nullsafety.3
-
 * Added `stringBeforeLength` and `stringAfterLength` to `CharacterRange`.
 * Added `CharacterRange.at` constructor.
 * Added `getRange(start, end)` and `characterAt(pos)` to `Characters`
   as alternative to `.take(end).skip(start)` and `getRange(pos, pos + 1)`.
 * Change some positional parameter names from `other` to `characters`.
-* Allow the 2.10 stable SDK.
-
-## 1.1.0-nullsafety.2
-
-* Update for the 2.10 dev sdk.
-
-## 1.1.0-nullsafety.1
-
-* Allow the <=2.9.10 stable sdks.
-
-## 1.1.0-nullsafety
-
-* Make package null safe.
 
 ## 1.0.0
 
