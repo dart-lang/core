@@ -65,7 +65,7 @@ void main([List<String>? args]) {
     var zwj = "\u200d"; // U+200D, ZWJ
     var rainbow = "\u{1f308}"; // U+1F308, Rainbow. Category Pictogram
 
-    testParts(gc("$flag$white$zwj$rainbow"), gc("$flag$white"), gc("$rainbow"),
+    testParts(gc("$flag$white$zwj$rainbow"), gc("$flag$white"), gc(rainbow),
         gc("$flag$zwj$rainbow"), gc("!"));
   });
 

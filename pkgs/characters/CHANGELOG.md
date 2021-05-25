@@ -1,5 +1,7 @@
 ## 1.1.1-dev
 
+* Switched from using lints in package:pedantic to package:lints.
+
 ## 1.1.0
 
 * Stable release for null safety.
