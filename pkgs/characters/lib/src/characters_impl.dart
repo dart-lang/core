@@ -12,9 +12,6 @@ import "grapheme_clusters/breaks.dart";
 ///
 /// Backed by a single string.
 class StringCharacters extends Iterable<String> implements Characters {
-  // Try to avoid allocating more empty grapheme clusters.
-  static const StringCharacters _empty = StringCharacters("");
-
   @override
   final String string;
 
@@ -219,7 +216,7 @@ class StringCharacters extends Iterable<String> implements Characters {
 
   Characters _skip(int count) {
     var start = _skipIndices(count, 0, null);
-    if (start == string.length) return _empty;
+    if (start == string.length) return Characters.empty;
     return StringCharacters(string.substring(start));
   }
 
@@ -240,12 +237,12 @@ class StringCharacters extends Iterable<String> implements Characters {
     RangeError.checkNotNegative(start, "start");
     if (end == null) return _skip(start);
     if (end < start) throw RangeError.range(end, start, null, "end");
-    if (end == start) return _empty;
+    if (end == start) return Characters.empty;
     if (start == 0) return _take(end);
     if (string.isEmpty) return this;
     var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
     var startIndex = _skipIndices(start, 0, breaks);
-    if (startIndex == string.length) return _empty;
+    if (startIndex == string.length) return Characters.empty;
     var endIndex = _skipIndices(end - start, start, breaks);
     return StringCharacters(string.substring(startIndex, endIndex));
   }
@@ -276,13 +273,13 @@ class StringCharacters extends Iterable<String> implements Characters {
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(startIndex, index))) {
           if (startIndex == 0) return this;
-          if (startIndex == stringLength) return _empty;
+          if (startIndex == stringLength) return Characters.empty;
           return StringCharacters(string.substring(startIndex));
         }
         startIndex = index;
       }
     }
-    return _empty;
+    return Characters.empty;
   }
 
   @override
@@ -293,7 +290,7 @@ class StringCharacters extends Iterable<String> implements Characters {
       var endIndex = 0;
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(endIndex, index))) {
-          if (endIndex == 0) return _empty;
+          if (endIndex == 0) return Characters.empty;
           return StringCharacters(string.substring(0, endIndex));
         }
         endIndex = index;
@@ -305,7 +302,7 @@ class StringCharacters extends Iterable<String> implements Characters {
   @override
   Characters where(bool Function(String) test) {
     var string = super.where(test).join();
-    if (string.isEmpty) return _empty;
+    if (string.isEmpty) return Characters.empty;
     return StringCharacters(super.where(test).join());
   }
 
@@ -326,12 +323,12 @@ class StringCharacters extends Iterable<String> implements Characters {
           endIndex = index;
           count--;
         } else {
-          return _empty;
+          return Characters.empty;
         }
       }
       if (endIndex > 0) return StringCharacters(string.substring(0, endIndex));
     }
-    return _empty;
+    return Characters.empty;
   }
 
   @override
@@ -343,18 +340,20 @@ class StringCharacters extends Iterable<String> implements Characters {
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(index, end))) {
           if (end == string.length) return this;
-          return end == 0 ? _empty : StringCharacters(string.substring(0, end));
+          return end == 0
+              ? Characters.empty
+              : StringCharacters(string.substring(0, end));
         }
         end = index;
       }
     }
-    return _empty;
+    return Characters.empty;
   }
 
   @override
   Characters takeLast(int count) {
     RangeError.checkNotNegative(count, "count");
-    if (count == 0) return _empty;
+    if (count == 0) return Characters.empty;
     if (string.isNotEmpty) {
       var breaks = BackBreaks(string, string.length, 0, stateEoTNoBreak);
       var startIndex = string.length;
@@ -382,7 +381,7 @@ class StringCharacters extends Iterable<String> implements Characters {
       var start = string.length;
       while ((index = breaks.nextBreak()) >= 0) {
         if (!test(string.substring(index, start))) {
-          if (start == string.length) return _empty;
+          if (start == string.length) return Characters.empty;
           return StringCharacters(string.substring(start));
         }
         start = index;

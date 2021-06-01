@@ -1,6 +1,6 @@
-## 1.1.1-dev
+## 1.2.0
 
-* Switched from using lints in package:pedantic to package:lints.
+* Adds `Characters.empty` constant and makes `Characters("")` return it.
 
 ## 1.1.0
 

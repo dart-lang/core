@@ -20,9 +20,15 @@ import "characters_impl.dart";
 /// but which also provides ways to select other ranges of characters
 /// in different ways.
 abstract class Characters implements Iterable<String> {
+  /// An empty [Characters] containing no characters.
+  static const Characters empty = StringCharacters("");
+
   /// Creates a [Characters] allowing iteration of
   /// the characters of [string].
-  factory Characters(String string) = StringCharacters;
+  ///
+  /// Returns [empty] if [string] is empty.
+  factory Characters(String string) =>
+      string.isEmpty ? empty : StringCharacters(string);
 
   /// The string to iterate over.
   String get string;
