@@ -104,7 +104,7 @@ String firstTagString(String source) {
 }
 
 // Using CharacterRange operations.
-Characters firstTagCharacters(Characters source) =>
+Characters firstTagCharacters(Characters source) {
   var range = source.findFirst("<".characters);
   if (range != null && range.moveUntil(">".characters)) {
     return range.currentCharacters;
