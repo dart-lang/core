@@ -54,15 +54,19 @@ abstract class Characters implements Iterable<String> {
   /// as well as controlling the iteration in more detail.
   CharacterRange get iteratorAtEnd;
 
-  /// Whether [other] is an element of this sequence of
-  /// others.
+  /// Whether [singleCharacterString] occurs in this
+  /// sequence of characters.
   ///
-  /// Returns false if [other] is not a string containing
-  /// a single character,
-  /// because then it is not a single element of this [Iterable]
-  /// of characters.
+  /// Returns true only if [singleCharacterString] is
+  /// a string containing a *single* character
+  /// and that character is one of the characters
+  /// in this character sequence, and false otherwise.
+  /// This behavior is inherited from `Iterable<String>`,
+  /// which is why it is not [Character] based.
+  /// Use [containsAll] for a method which acts like
+  /// [String.contains] for characters.
   @override
-  bool contains(Object? other);
+  bool contains(covariant String singleCharacterString);
 
   /// Whether this sequence of characters contains [other]
   /// as a subsequence.

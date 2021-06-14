@@ -1,6 +1,10 @@
 ## 1.2.0
 
 * Adds `Characters.empty` constant and makes `Characters("")` return it.
+* Changes the argument type of `Characters.contains` to (covariant) `String`.
+  The implementation still accepts `Object?`, so it can be cast to
+  `Iterable<Object?>`, but you get warned if you try to call directly with a
+  non-`String`.
 
 ## 1.1.0
 
