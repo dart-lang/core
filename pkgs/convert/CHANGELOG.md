@@ -1,3 +1,7 @@
+## 3.0.1
+
+* Dependency clean-up.
+
 ## 3.0.0
 
 * Stable null safety release.
