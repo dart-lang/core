@@ -1022,11 +1022,15 @@ String _explodeReplace(String string, int start, int end,
   var index = 0;
   var replacement = outerReplacement;
   while ((index = breaks.nextBreak()) >= 0) {
-    buffer..write(replacement)..write(string.substring(start, index));
+    buffer
+      ..write(replacement)
+      ..write(string.substring(start, index));
     start = index;
     replacement = internalReplacement;
   }
-  buffer..write(outerReplacement)..write(string.substring(end));
+  buffer
+    ..write(outerReplacement)
+    ..write(string.substring(end));
   return buffer.toString();
 }
 
