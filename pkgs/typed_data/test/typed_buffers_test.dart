@@ -552,9 +552,11 @@ class MatchesInt32x4 extends Matcher {
 
   MatchesInt32x4(this.result);
 
+  @override
   Description describe(Description description) =>
       description.add('Int32x4.==');
 
+  @override
   bool matches(item, Map matchState) =>
       item is Int32x4 &&
       result.x == item.x &&

@@ -68,8 +68,8 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
   // by setting the length in increments of one. We want to grow by doubling
   // capacity in most cases.
   @override
-  void add(E value) {
-    _add(value);
+  void add(E element) {
+    _add(element);
   }
 
   /// Appends all objects of [values] to the end of this buffer.
@@ -267,9 +267,9 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
   }
 
   @override
-  void setRange(int start, int end, Iterable<E> source, [int skipCount = 0]) {
+  void setRange(int start, int end, Iterable<E> iterable, [int skipCount = 0]) {
     if (end > _length) throw RangeError.range(end, 0, _length);
-    _setRange(start, end, source, skipCount);
+    _setRange(start, end, iterable, skipCount);
   }
 
   /// Like [setRange], but with no bounds checking.
