@@ -30,14 +30,16 @@ class ByteAccumulatorSink extends ByteConversionSinkBase {
     _buffer.clear();
   }
 
-  void add(List<int> bytes) {
+  @override
+  void add(List<int> chunk) {
     if (_isClosed) {
       throw StateError("Can't add to a closed sink.");
     }
 
-    _buffer.addAll(bytes);
+    _buffer.addAll(chunk);
   }
 
+  @override
   void addSlice(List<int> chunk, int start, int end, bool isLast) {
     if (_isClosed) {
       throw StateError("Can't add to a closed sink.");
@@ -47,6 +49,7 @@ class ByteAccumulatorSink extends ByteConversionSinkBase {
     if (isLast) _isClosed = true;
   }
 
+  @override
   void close() {
     _isClosed = true;
   }

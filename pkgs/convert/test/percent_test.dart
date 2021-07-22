@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:test/test.dart';
@@ -90,7 +91,7 @@ void main() {
 
     group("with chunked conversion", () {
       late List<List<int>> results;
-      var sink;
+      late StringConversionSink sink;
       setUp(() {
         results = [];
         var controller = StreamController<List<int>>(sync: true);

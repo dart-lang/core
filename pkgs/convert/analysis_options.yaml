@@ -1,12 +1,7 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
 analyzer:
   strong-mode:
     implicit-casts: false
-
-  errors:
-    # Ignore still failing lints from latest pkg:pedantic
-    annotate_overrides: ignore
-    prefer_single_quotes: ignore
 
 linter:
   rules:

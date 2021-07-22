@@ -20,17 +20,19 @@ const hexDecoder = HexDecoder._();
 class HexDecoder extends Converter<String, List<int>> {
   const HexDecoder._();
 
-  List<int> convert(String string) {
-    if (!string.length.isEven) {
+  @override
+  List<int> convert(String input) {
+    if (!input.length.isEven) {
       throw FormatException(
-          "Invalid input length, must be even.", string, string.length);
+          "Invalid input length, must be even.", input, input.length);
     }
 
-    var bytes = Uint8List(string.length ~/ 2);
-    _decode(string.codeUnits, 0, string.length, bytes, 0);
+    var bytes = Uint8List(input.length ~/ 2);
+    _decode(input.codeUnits, 0, input.length, bytes, 0);
     return bytes;
   }
 
+  @override
   StringConversionSink startChunkedConversion(Sink<List<int>> sink) =>
       _HexDecoderSink(sink);
 }
@@ -49,6 +51,7 @@ class _HexDecoderSink extends StringConversionSinkBase {
 
   _HexDecoderSink(this._sink);
 
+  @override
   void addSlice(String string, int start, int end, bool isLast) {
     RangeError.checkValidRange(start, end, string.length);
 
@@ -77,9 +80,11 @@ class _HexDecoderSink extends StringConversionSinkBase {
     if (isLast) _close(string, end);
   }
 
+  @override
   ByteConversionSink asUtf8Sink(bool allowMalformed) =>
       _HexDecoderByteSink(_sink);
 
+  @override
   void close() => _close();
 
   /// Like [close], but includes [string] and [index] in the [FormatException]
@@ -108,8 +113,10 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
 
   _HexDecoderByteSink(this._sink);
 
+  @override
   void add(List<int> chunk) => addSlice(chunk, 0, chunk.length, false);
 
+  @override
   void addSlice(List<int> chunk, int start, int end, bool isLast) {
     RangeError.checkValidRange(start, end, chunk.length);
 
@@ -137,6 +144,7 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
     if (isLast) _close(chunk, end);
   }
 
+  @override
   void close() => _close();
 
   /// Like [close], but includes [chunk] and [index] in the [FormatException]

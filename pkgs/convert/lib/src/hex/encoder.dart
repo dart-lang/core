@@ -19,8 +19,10 @@ const hexEncoder = HexEncoder._();
 class HexEncoder extends Converter<List<int>, String> {
   const HexEncoder._();
 
-  String convert(List<int> bytes) => _convert(bytes, 0, bytes.length);
+  @override
+  String convert(List<int> input) => _convert(input, 0, input.length);
 
+  @override
   ByteConversionSink startChunkedConversion(Sink<String> sink) =>
       _HexEncoderSink(sink);
 }
@@ -32,16 +34,19 @@ class _HexEncoderSink extends ByteConversionSinkBase {
 
   _HexEncoderSink(this._sink);
 
+  @override
   void add(List<int> chunk) {
     _sink.add(_convert(chunk, 0, chunk.length));
   }
 
+  @override
   void addSlice(List<int> chunk, int start, int end, bool isLast) {
     RangeError.checkValidRange(start, end, chunk.length);
     _sink.add(_convert(chunk, start, end));
     if (isLast) _sink.close();
   }
 
+  @override
   void close() {
     _sink.close();
   }

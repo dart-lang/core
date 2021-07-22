@@ -162,7 +162,9 @@ const _ascii = "$_noControls"
 /// A code page is a way to map bytes to character.
 /// As such, it can only represent 256 different characters.
 class CodePage extends Encoding {
+  @override
   final CodePageDecoder decoder;
+  @override
   final String name;
   CodePageEncoder? _encoder;
 
@@ -213,13 +215,16 @@ class CodePage extends Encoding {
   int operator [](int byte) => decoder._char(byte);
 
   /// Encodes [input] using `encoder.convert`.
+  @override
   Uint8List encode(String input, {int? invalidCharacter}) =>
       encoder.convert(input, invalidCharacter: invalidCharacter);
 
   /// Decodes [bytes] using `encoder.convert`.
+  @override
   String decode(List<int> bytes, {bool allowInvalid = false}) =>
       decoder.convert(bytes, allowInvalid: allowInvalid);
 
+  @override
   CodePageEncoder get encoder => _encoder ??= decoder._createEncoder();
 }
 
@@ -237,6 +242,7 @@ abstract class CodePageDecoder implements Converter<List<int>, String> {
   /// or byte values not defined as a character in the code page,
   /// are emitted as U+FFFD (the Unicode invalid character).
   /// If not true, the bytes must be calid and defined characters.
+  @override
   String convert(List<int> input, {bool allowInvalid = false});
 
   CodePageEncoder _createEncoder();
@@ -277,6 +283,7 @@ class _NonBmpCodePageDecoder extends Converter<List<int>, String>
   _NonBmpCodePageDecoder(String characters) : this._(_buildMapping(characters));
   _NonBmpCodePageDecoder._(this._characters);
 
+  @override
   int _char(int byte) => _characters[byte];
 
   static Uint32List _buildMapping(String characters) {
@@ -296,6 +303,7 @@ class _NonBmpCodePageDecoder extends Converter<List<int>, String>
     return result;
   }
 
+  @override
   CodePageEncoder _createEncoder() {
     var result = <int, int>{};
     for (var i = 0; i < 256; i++) {
@@ -307,6 +315,7 @@ class _NonBmpCodePageDecoder extends Converter<List<int>, String>
     return CodePageEncoder._(result);
   }
 
+  @override
   String convert(List<int> input, {bool allowInvalid = false}) {
     var buffer = Uint32List(input.length);
     for (var i = 0; i < input.length; i++) {
@@ -328,8 +337,10 @@ class _BmpCodePageDecoder extends Converter<List<int>, String>
     }
   }
 
+  @override
   int _char(int byte) => _characters.codeUnitAt(byte);
 
+  @override
   String convert(List<int> bytes, {bool allowInvalid = false}) {
     if (allowInvalid) return _convertAllowInvalid(bytes);
     var count = bytes.length;
@@ -364,6 +375,7 @@ class _BmpCodePageDecoder extends Converter<List<int>, String>
     return String.fromCharCodes(codeUnits);
   }
 
+  @override
   CodePageEncoder _createEncoder() => CodePageEncoder._bmp(_characters);
 }
 
@@ -396,6 +408,7 @@ class CodePageEncoder extends Converter<String, List<int>> {
   /// If [input] contains characters that are not available
   /// in this code page, they are replaced by the [invalidCharacter] byte,
   /// and then [invalidCharacter] must have been supplied.
+  @override
   Uint8List convert(String input, {int? invalidCharacter}) {
     if (invalidCharacter != null) {
       RangeError.checkValueInInterval(

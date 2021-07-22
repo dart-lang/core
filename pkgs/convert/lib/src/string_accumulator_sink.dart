@@ -23,23 +23,26 @@ class StringAccumulatorSink extends StringConversionSinkBase {
     _buffer.clear();
   }
 
-  void add(String chunk) {
+  @override
+  void add(String str) {
     if (_isClosed) {
       throw StateError("Can't add to a closed sink.");
     }
 
-    _buffer.write(chunk);
+    _buffer.write(str);
   }
 
-  void addSlice(String chunk, int start, int end, bool isLast) {
+  @override
+  void addSlice(String str, int start, int end, bool isLast) {
     if (_isClosed) {
       throw StateError("Can't add to a closed sink.");
     }
 
-    _buffer.write(chunk.substring(start, end));
+    _buffer.write(str.substring(start, end));
     if (isLast) _isClosed = true;
   }
 
+  @override
   void close() {
     _isClosed = true;
   }

@@ -31,7 +31,9 @@ const percent = PercentCodec._();
 /// interprets `+` as `0x2B` rather than `0x20` as emitted by
 /// [Uri.encodeQueryComponent].
 class PercentCodec extends Codec<List<int>, String> {
+  @override
   PercentEncoder get encoder => percentEncoder;
+  @override
   PercentDecoder get decoder => percentDecoder;
 
   const PercentCodec._();

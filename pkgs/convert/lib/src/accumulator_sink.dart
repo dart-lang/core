@@ -23,6 +23,7 @@ class AccumulatorSink<T> implements Sink<T> {
     _events.clear();
   }
 
+  @override
   void add(T event) {
     if (_isClosed) {
       throw StateError("Can't add to a closed sink.");
@@ -31,6 +32,7 @@ class AccumulatorSink<T> implements Sink<T> {
     _events.add(event);
   }
 
+  @override
   void close() {
     _isClosed = true;
   }

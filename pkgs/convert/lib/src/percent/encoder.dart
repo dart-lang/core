@@ -22,8 +22,10 @@ const percentEncoder = PercentEncoder._();
 class PercentEncoder extends Converter<List<int>, String> {
   const PercentEncoder._();
 
-  String convert(List<int> bytes) => _convert(bytes, 0, bytes.length);
+  @override
+  String convert(List<int> input) => _convert(input, 0, input.length);
 
+  @override
   ByteConversionSink startChunkedConversion(Sink<String> sink) =>
       _PercentEncoderSink(sink);
 }
@@ -35,16 +37,19 @@ class _PercentEncoderSink extends ByteConversionSinkBase {
 
   _PercentEncoderSink(this._sink);
 
+  @override
   void add(List<int> chunk) {
     _sink.add(_convert(chunk, 0, chunk.length));
   }
 
+  @override
   void addSlice(List<int> chunk, int start, int end, bool isLast) {
     RangeError.checkValidRange(start, end, chunk.length);
     _sink.add(_convert(chunk, start, end));
     if (isLast) _sink.close();
   }
 
+  @override
   void close() {
     _sink.close();
   }

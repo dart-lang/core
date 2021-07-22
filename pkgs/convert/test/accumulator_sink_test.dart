@@ -6,7 +6,7 @@ import 'package:convert/convert.dart';
 import 'package:test/test.dart';
 
 void main() {
-  var sink;
+  late AccumulatorSink sink;
   setUp(() {
     sink = AccumulatorSink<int>();
   });
@@ -25,13 +25,19 @@ void main() {
   });
 
   test("clear() clears the events", () {
-    sink..add(1)..add(2)..add(3);
+    sink
+      ..add(1)
+      ..add(2)
+      ..add(3);
     expect(sink.events, equals([1, 2, 3]));
 
     sink.clear();
     expect(sink.events, isEmpty);
 
-    sink..add(4)..add(5)..add(6);
+    sink
+      ..add(4)
+      ..add(5)
+      ..add(6);
     expect(sink.events, equals([4, 5, 6]));
   });
 
