@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// ignore_for_file: constant_identifier_names
+
 // Many locals are declared as `int` or `double`. We keep local variable types
 // because the types are critical to the efficiency of many operations.
 //
