@@ -303,7 +303,7 @@ class StringCharacters extends Iterable<String> implements Characters {
   Characters where(bool Function(String) test) {
     var string = super.where(test).join();
     if (string.isEmpty) return Characters.empty;
-    return StringCharacters(super.where(test).join());
+    return StringCharacters(string);
   }
 
   @override

@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Fix `Characters.where` which unnecessarily did the iteration and test twice.
+
 ## 1.2.0
 
 * Adds `Characters.empty` constant and makes `Characters("")` return it.
