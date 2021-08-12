@@ -19,7 +19,8 @@ class OperatingSystem {
   /// from known platform specific libraries,
   /// but can be overridden using functionality from the
   /// `osid_override.dart` library.
-  static OperatingSystem get current => Zone.current[#_os] ?? platformOS;
+  static OperatingSystem get current =>
+      Zone.current[#_os] as OperatingSystem? ?? platformOS;
 
   /// A string representing the operating system or platform.
   final String id;
@@ -94,6 +95,7 @@ extension OperatingSystemGetters on OperatingSystem {
 ///
 /// This override affects the `operatingSystem` and `version`
 /// exported by `package:osid/osid.dart`.
-R overrideOperatingSystem<R>(OperatingSystem operatingSystem, R body()) {
+R overrideOperatingSystem<R>(
+    OperatingSystem operatingSystem, R Function() body) {
   return runZoned(body, zoneValues: {#_os: operatingSystem});
 }
