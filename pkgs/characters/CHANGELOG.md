@@ -1,9 +1,6 @@
-## 1.2.1
-
-* Fix `Characters.where` which unnecessarily did the iteration and test twice.
-
 ## 1.2.0
 
+* Fix `Characters.where` which unnecessarily did the iteration and test twice.
 * Adds `Characters.empty` constant and makes `Characters("")` return it.
 * Changes the argument type of `Characters.contains` to (covariant) `String`.
   The implementation still accepts `Object?`, so it can be cast to
