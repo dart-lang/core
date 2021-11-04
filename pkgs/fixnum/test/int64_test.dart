@@ -12,6 +12,8 @@ library int64test;
 import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 
+import 'test_shared.dart';
+
 void main() {
   group('fromBytes', () {
     test('fromBytes', () {
@@ -234,13 +236,13 @@ void main() {
       expect(Int64(829893893) ~/ Int64(1919), Int32(432461));
       expect(Int64(829893893) ~/ 1919, Int32(432461));
       expect(() => Int64(1) ~/ Int64.ZERO,
-          throwsA(const TypeMatcher<IntegerDivisionByZeroException>()));
+          throwsA(isIntegerDivisionByZeroException));
       expect(
           Int64.MIN_VALUE ~/ Int64(2), Int64.fromInts(0xc0000000, 0x00000000));
       expect(Int64.MIN_VALUE ~/ Int64(1), Int64.MIN_VALUE);
       expect(Int64.MIN_VALUE ~/ Int64(-1), Int64.MIN_VALUE);
       expect(() => Int64(17) ~/ Int64.ZERO,
-          throwsA(const TypeMatcher<IntegerDivisionByZeroException>()));
+          throwsA(isIntegerDivisionByZeroException));
       argumentErrorTest('~/', (a, b) => a ~/ b);
     });
 

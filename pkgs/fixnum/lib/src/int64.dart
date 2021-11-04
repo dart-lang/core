@@ -908,6 +908,7 @@ class Int64 implements IntX {
   static Int64 _divide(Int64 a, other, int what) {
     Int64 b = _promote(other);
     if (b.isZero) {
+      // ignore: deprecated_member_use
       throw const IntegerDivisionByZeroException();
     }
     if (a.isZero) return ZERO;

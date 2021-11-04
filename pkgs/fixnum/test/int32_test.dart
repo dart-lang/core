@@ -5,6 +5,8 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 
+import 'test_shared.dart';
+
 void main() {
   group('isX tests', () {
     test('isEven', () {
@@ -99,8 +101,7 @@ void main() {
           () => Int32(17) ~/ Int32.ZERO,
           // with dart2js, `UnsupportedError` is thrown
           // on the VM: IntegerDivisionByZeroException
-          throwsA(anyOf(const TypeMatcher<IntegerDivisionByZeroException>(),
-              isUnsupportedError)));
+          throwsA(anyOf(isIntegerDivisionByZeroException, isUnsupportedError)));
     });
 
     test('%', () {
