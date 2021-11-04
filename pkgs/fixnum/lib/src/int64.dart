@@ -59,9 +59,8 @@ class Int64 implements IntX {
 
   /// Parses a [String] in a given [radix] between 2 and 36 and returns an
   /// [Int64].
-  static Int64 parseRadix(String s, int radix) {
-    return _parseRadix(s, Int32._validateRadix(radix));
-  }
+  static Int64 parseRadix(String s, int radix) =>
+      _parseRadix(s, Int32._validateRadix(radix));
 
   static Int64 _parseRadix(String s, int radix) {
     int i = 0;
@@ -336,9 +335,7 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 operator ~() {
-    return Int64._masked(~_l, ~_m, ~_h);
-  }
+  Int64 operator ~() => Int64._masked(~_l, ~_m, ~_h);
 
   @override
   Int64 operator <<(int n) {
@@ -384,7 +381,7 @@ class Int64 implements IntX {
     if (negative && _MASK > _MASK2) {
       // Add extra one bits on the left so the sign gets shifted into the wider
       // lower words.
-      a2 += (_MASK - _MASK2);
+      a2 += _MASK - _MASK2;
     }
 
     if (n < _BITS) {
@@ -546,9 +543,7 @@ class Int64 implements IntX {
   }
 
   @override
-  Int64 abs() {
-    return isNegative ? -this : this;
-  }
+  Int64 abs() => isNegative ? -this : this;
 
   @override
   Int64 clamp(Object lowerLimit, Object upperLimit) {
@@ -667,9 +662,7 @@ class Int64 implements IntX {
 
   /// Returns an [Int32] containing the low 32 bits of this [Int64].
   @override
-  Int32 toInt32() {
-    return Int32(((_m & 0x3ff) << _BITS) | _l);
-  }
+  Int32 toInt32() => Int32(((_m & 0x3ff) << _BITS) | _l);
 
   /// Returns `this`.
   @override
@@ -695,19 +688,15 @@ class Int64 implements IntX {
 
   /// Returns the digits of `this` when interpreted as an unsigned 64-bit value.
   @pragma('dart2js:noInline')
-  String toStringUnsigned() {
-    return _toRadixStringUnsigned(10, _l, _m, _h, '');
-  }
+  String toStringUnsigned() => _toRadixStringUnsigned(10, _l, _m, _h, '');
 
   @pragma('dart2js:noInline')
-  String toRadixStringUnsigned(int radix) {
-    return _toRadixStringUnsigned(Int32._validateRadix(radix), _l, _m, _h, '');
-  }
+  String toRadixStringUnsigned(int radix) =>
+      _toRadixStringUnsigned(Int32._validateRadix(radix), _l, _m, _h, '');
 
   @override
-  String toRadixString(int radix) {
-    return _toRadixString(Int32._validateRadix(radix));
-  }
+  String toRadixString(int radix) =>
+      _toRadixString(Int32._validateRadix(radix));
 
   String _toRadixString(int radix) {
     int d0 = _l;
@@ -870,9 +859,7 @@ class Int64 implements IntX {
     36 * 36 * 36
   ];
 
-  String toDebugString() {
-    return 'Int64[_l=$_l, _m=$_m, _h=$_h]';
-  }
+  String toDebugString() => 'Int64[_l=$_l, _m=$_m, _h=$_h]';
 
   static Int64 _masked(int a0, int a1, int a2) =>
       Int64._bits(_MASK & a0, _MASK & a1, _MASK2 & a2);
@@ -884,9 +871,7 @@ class Int64 implements IntX {
     return _masked(diff0, diff1, diff2);
   }
 
-  static Int64 _negate(int b0, int b1, int b2) {
-    return _sub(0, 0, 0, b0, b1, b2);
-  }
+  static Int64 _negate(int b0, int b1, int b2) => _sub(0, 0, 0, b0, b1, b2);
 
   String _hexDigit(int digit) => '0123456789ABCDEF'[digit];
 

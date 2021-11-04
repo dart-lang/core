@@ -85,10 +85,10 @@ void main() {
       expect(n3 * n3, Int32(1522756));
       expect(n3 * n2, Int32(-12186984));
       expect(Int32(0x12345678) * Int32(0x22222222), Int32(-899716112));
-      expect((Int32(123456789) * Int32(987654321)), Int32(-67153019));
+      expect(Int32(123456789) * Int32(987654321), Int32(-67153019));
       expect(Int32(0x12345678) * Int64(0x22222222),
           Int64.fromInts(0x026D60DC, 0xCA5F6BF0));
-      expect((Int32(123456789) * 987654321), Int32(-67153019));
+      expect(Int32(123456789) * 987654321, Int32(-67153019));
     });
 
     test('~/', () {
@@ -266,8 +266,8 @@ void main() {
     });
 
     test('~', () {
-      expect(~(Int32(0x12345678)), Int32(~0x12345678));
-      expect(-(Int32(0x12345678)), Int64(-0x12345678));
+      expect(~Int32(0x12345678), Int32(~0x12345678));
+      expect(-Int32(0x12345678), Int64(-0x12345678));
     });
   });
 
@@ -294,7 +294,7 @@ void main() {
       expect(Int32(0x12345678).shiftRightUnsigned(33), Int32.ZERO);
       expect(Int32(-42).shiftRightUnsigned(32), Int32.ZERO);
       expect(Int32(-42).shiftRightUnsigned(33), Int32.ZERO);
-      expect(() => (Int32(17).shiftRightUnsigned(-1)), throwsArgumentError);
+      expect(() => Int32(17).shiftRightUnsigned(-1), throwsArgumentError);
     });
   });
 

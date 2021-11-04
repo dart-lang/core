@@ -44,15 +44,17 @@ void main() {
     });
   });
 
-  void argumentErrorTest(name, op, [receiver = Int64.ONE]) {
-    Matcher throwsArgumentErrorMentioning(String substring) =>
-        throwsA((e) => e is ArgumentError && '$e'.contains(substring));
-
+  void argumentErrorTest(
+    Object Function(Int64, Object) op, [
+    Int64 receiver = Int64.ONE,
+  ]) {
     expect(
-        () => op(receiver, null),
-        throwsA(isA<TypeError>().having(
-            (e) => e.toString(), 'should mention Null', contains('Null'))));
-    expect(() => op(receiver, 'foo'), throwsArgumentErrorMentioning(r'"foo"'));
+      () => op(receiver, 'foo'),
+      throwsA(
+        isA<ArgumentError>()
+            .having((p0) => p0.toString(), 'toString', contains('"foo"')),
+      ),
+    );
   }
 
   group('is-tests', () {
@@ -116,7 +118,7 @@ void main() {
       expect(n3 + n4, Int64(-11110));
       expect(n5 + n6, Int64.fromInts(0x89ab89ab, 0xcdeff011));
       expect(Int64.MAX_VALUE + 1, Int64.MIN_VALUE);
-      argumentErrorTest('+', (a, b) => a + b);
+      argumentErrorTest((a, b) => a + b);
     });
 
     test('-', () {
@@ -125,7 +127,7 @@ void main() {
       expect(n3 - n4, Int64(8642));
       expect(n5 - n6, Int64.fromInts(0x9abd2345, 0x89ab6789));
       expect(Int64.MIN_VALUE - 1, Int64.MAX_VALUE);
-      argumentErrorTest('-', (a, b) => a - b);
+      argumentErrorTest((a, b) => a - b);
     });
 
     test('unary -', () {
@@ -154,19 +156,19 @@ void main() {
           Int64.fromInts(0x297e3f7c, 0x1df4d840));
 
       // RHS Int32
-      expect((Int64(123456789) * Int32(987654321)),
+      expect(Int64(123456789) * Int32(987654321),
           Int64.fromInts(0x1b13114, 0xfbff5385));
-      expect((Int64(123456789) * Int32(987654321)),
+      expect(Int64(123456789) * Int32(987654321),
           Int64.fromInts(0x1b13114, 0xfbff5385));
 
       // Wraparound
-      expect((Int64(123456789) * Int64(987654321)),
+      expect(Int64(123456789) * Int64(987654321),
           Int64.fromInts(0x1b13114, 0xfbff5385));
 
       expect(Int64.MIN_VALUE * Int64(2), Int64.ZERO);
       expect(Int64.MIN_VALUE * Int64(1), Int64.MIN_VALUE);
       expect(Int64.MIN_VALUE * Int64(-1), Int64.MIN_VALUE);
-      argumentErrorTest('*', (a, b) => a * b);
+      argumentErrorTest((a, b) => a * b);
     });
 
     test('~/', () {
@@ -243,7 +245,7 @@ void main() {
       expect(Int64.MIN_VALUE ~/ Int64(-1), Int64.MIN_VALUE);
       expect(() => Int64(17) ~/ Int64.ZERO,
           throwsA(isIntegerDivisionByZeroException));
-      argumentErrorTest('~/', (a, b) => a ~/ b);
+      argumentErrorTest((a, b) => a ~/ b);
     });
 
     test('%', () {
@@ -283,7 +285,7 @@ void main() {
           Int64(-0x12345678.remainder(0x22)));
       expect(Int32(0x12345678).remainder(Int64(0x22)),
           Int64(0x12345678.remainder(0x22)));
-      argumentErrorTest('%', (a, b) => a % b);
+      argumentErrorTest((a, b) => a % b);
     });
 
     test('clamp', () {
@@ -360,7 +362,7 @@ void main() {
       expect(largePosPlusOne < largePos, false);
       expect(Int64.MIN_VALUE < Int64.MAX_VALUE, true);
       expect(Int64.MAX_VALUE < Int64.MIN_VALUE, false);
-      argumentErrorTest('<', (a, b) => a < b);
+      argumentErrorTest((a, b) => a < b);
     });
 
     test('<=', () {
@@ -379,7 +381,7 @@ void main() {
       expect(largePosPlusOne <= largePos, false);
       expect(Int64.MIN_VALUE <= Int64.MAX_VALUE, true);
       expect(Int64.MAX_VALUE <= Int64.MIN_VALUE, false);
-      argumentErrorTest('<=', (a, b) => a <= b);
+      argumentErrorTest((a, b) => a <= b);
     });
 
     test('==', () {
@@ -426,7 +428,7 @@ void main() {
       expect(largePosPlusOne >= largePos, true);
       expect(Int64.MIN_VALUE >= Int64.MAX_VALUE, false);
       expect(Int64.MAX_VALUE >= Int64.MIN_VALUE, true);
-      argumentErrorTest('>=', (a, b) => a >= b);
+      argumentErrorTest((a, b) => a >= b);
     });
 
     test('>', () {
@@ -447,7 +449,7 @@ void main() {
       expect(Int64.ZERO > Int64.MIN_VALUE, true);
       expect(Int64.MIN_VALUE > Int64.MAX_VALUE, false);
       expect(Int64.MAX_VALUE > Int64.MIN_VALUE, true);
-      argumentErrorTest('>', (a, b) => a > b);
+      argumentErrorTest((a, b) => a > b);
     });
   });
 
@@ -462,21 +464,21 @@ void main() {
       expect(n1 & n2, Int64(1168));
       expect(n3 & n2, Int64(8708));
       expect(n4 & n5, Int64(0x1034) << 32);
-      argumentErrorTest('&', (a, b) => a & b);
+      argumentErrorTest((a, b) => a & b);
     });
 
     test('|', () {
       expect(n1 | n2, Int64(9942));
       expect(n3 | n2, Int64(-66));
       expect(n4 | n5, Int64(0x9a76) << 32);
-      argumentErrorTest('|', (a, b) => a | b);
+      argumentErrorTest((a, b) => a | b);
     });
 
     test('^', () {
       expect(n1 ^ n2, Int64(8774));
       expect(n3 ^ n2, Int64(-8774));
       expect(n4 ^ n5, Int64(0x8a42) << 32);
-      argumentErrorTest('^', (a, b) => a ^ b);
+      argumentErrorTest((a, b) => a ^ b);
     });
 
     test('~', () {

@@ -63,7 +63,7 @@ class Int32 implements IntX {
       if (digit < 0 || digit >= radix) {
         throw FormatException('Non-radix code unit: $c');
       }
-      x = ((x * radix) + digit) as Int32;
+      x = (x * radix) + digit as Int32;
     }
     return x;
   }
@@ -93,12 +93,12 @@ class Int32 implements IntX {
     // The code below removes unnecessary &'s and uses a
     // trick to remove one instruction in the first line.
 
-    i -= ((i >> 1) & 0x55555555);
+    i -= (i >> 1) & 0x55555555;
     i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
-    i = ((i + (i >> 4)) & 0x0F0F0F0F);
-    i += (i >> 8);
-    i += (i >> 16);
-    return (i & 0x0000003F);
+    i = (i + (i >> 4)) & 0x0F0F0F0F;
+    i += i >> 8;
+    i += i >> 16;
+    return i & 0x0000003F;
   }
 
   // Assumes i is <= 32-bit
@@ -198,7 +198,7 @@ class Int32 implements IntX {
       var t = toInt64();
       return (t - (t ~/ other) * other).toInt32();
     }
-    return (this - (this ~/ other) * other) as Int32;
+    return this - (this ~/ other) * other as Int32;
   }
 
   @override

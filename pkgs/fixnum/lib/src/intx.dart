@@ -120,31 +120,33 @@ abstract class IntX implements Comparable<Object> {
   /// for non-negative (unsigned) values.  Negative values are complemented to
   /// return the bit position of the first bit that differs from the sign bit.
   ///
-  /// To find the the number of bits needed to store the value as a signed value,
-  /// add one, i.e. use `x.bitLength + 1`.
+  /// To find the the number of bits needed to store the value as a signed
+  /// value, add one, i.e. use `x.bitLength + 1`.
   int get bitLength;
 
   /// Returns the number of high-order zeros in this integer's bit
   /// representation.
   int numberOfLeadingZeros();
 
-  /// Returns the number of low-order zeros in this integer's bit representation.
+  /// Returns the number of low-order zeros in this integer's bit
+  /// representation.
   int numberOfTrailingZeros();
 
   /// Returns the least significant [width] bits of this integer, extending the
-  /// highest retained bit to the sign.  This is the same as truncating the value
-  /// to fit in [width] bits using an signed 2-s complement representation.  The
-  /// returned value has the same bit value in all positions higher than [width].
+  /// highest retained bit to the sign.  This is the same as truncating the
+  /// value to fit in [width] bits using an signed 2-s complement
+  /// representation. The returned value has the same bit value in all positions
+  /// higher than [width].
   ///
   /// If the input value fits in [width] bits without truncation, the result is
-  /// the same as the input.  The minimum width needed to avoid truncation of `x`
-  /// is `x.bitLength + 1`, i.e.
+  /// the same as the input.  The minimum width needed to avoid truncation of
+  /// `x` is `x.bitLength + 1`, i.e.
   ///
   ///     x == x.toSigned(x.bitLength + 1);
   IntX toSigned(int width);
 
   /// Returns the least significant [width] bits of this integer as a
-  /// non-negative number (i.e. unsigned representation).  The returned value has
+  /// non-negative number (i.e. unsigned representation). The returned value has
   /// zeros in all bit positions higher than [width].
   ///
   /// If the input fits in [width] bits without truncation, the result is the
@@ -189,7 +191,8 @@ abstract class IntX implements Comparable<Object> {
   /// notation; example: `'0xd'`.
   String toHexString();
 
-  /// Returns a string representing the value of this integer in the given radix.
+  /// Returns a string representing the value of this integer in the given
+  /// radix.
   ///
   /// [radix] must be an integer in the range 2 .. 16, inclusive.
   String toRadixString(int radix);
