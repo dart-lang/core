@@ -2,10 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:collection";
-import "dart:typed_data";
+import 'dart:collection';
+import 'dart:typed_data';
 
-import "package:collection/collection.dart";
+import 'package:collection/collection.dart';
 
 import 'typed_buffer.dart';
 
@@ -41,7 +41,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
   @override
   QueueList<T> cast<T>() {
     if (this is QueueList<T>) return this as QueueList<T>;
-    throw UnsupportedError("$this cannot be cast to the desired type.");
+    throw UnsupportedError('$this cannot be cast to the desired type.');
   }
 
   @Deprecated('Use `cast` instead')
@@ -62,7 +62,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
   }
 
   E removeFirst() {
-    if (_head == _tail) throw StateError("No element");
+    if (_head == _tail) throw StateError('No element');
     var result = _table[_head];
     _head = (_head + 1) & (_table.length - 1);
     return result;
@@ -70,7 +70,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
 
   @override
   E removeLast() {
-    if (_head == _tail) throw StateError("No element");
+    if (_head == _tail) throw StateError('No element');
     _tail = (_tail - 1) & (_table.length - 1);
     return _table[_tail];
   }
@@ -82,7 +82,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
 
   @override
   set length(int value) {
-    RangeError.checkNotNegative(value, "length");
+    RangeError.checkNotNegative(value, 'length');
 
     var delta = value - length;
     if (delta >= 0) {

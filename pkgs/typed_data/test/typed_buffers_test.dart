@@ -229,7 +229,7 @@ int clampUint8(int x) => x < 0
         ? 255
         : x;
 
-void doubleEqual(x, num y) {
+void doubleEqual(num x, num y) {
   if (y.isNaN) {
     expect(x.isNaN, isTrue);
   } else {
@@ -254,7 +254,7 @@ void testFloat32x4Buffer(List<double> floatSamples) {
         floatSamples[i + 2], floatSamples[i + 3]));
   }
 
-  void floatEquals(x, num y) {
+  void floatEquals(num x, num y) {
     if (y.isNaN) {
       expect(x.isNaN, isTrue);
     } else {
