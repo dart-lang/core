@@ -1,7 +1,8 @@
 name: os_detect
-version: 2.0.0
+version: 2.0.1-dev
 description: Platform independent OS detection.
-homepage: https://github.com/dart-lang/os_detect
+repository: https://github.com/dart-lang/os_detect
+
 environment:
   sdk: '>=2.12.0 <3.0.0'
 
