@@ -1,3 +1,7 @@
+## 1.2.1-dev
+
+* Update the value of the pubspec `repository` field.
+
 ## 1.2.0
 
 * Fix `Characters.where` which unnecessarily did the iteration and test twice.
