@@ -1,4 +1,4 @@
-## 1.2.1-dev
+## 1.2.1
 
 * Update the value of the pubspec `repository` field.
 
