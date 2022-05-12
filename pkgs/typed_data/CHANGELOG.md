@@ -1,4 +1,7 @@
-## 1.3.1-dev
+## 1.3.1
+
+* Switch to using `package:lints`.
+* Populate the pubspec `repository` field.
 
 ## 1.3.0
 
