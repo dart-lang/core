@@ -1,4 +1,6 @@
-## 2.0.1-dev
+## 2.0.1
+
+- Populate the pubspec `repository` field.
 
 ## 2.0.0
 
@@ -10,4 +12,4 @@
 
 ## 1.0.0
 
-* Initial release
+- Initial release
