@@ -1,5 +1,5 @@
 name: convert
-version: 3.0.2-dev
+version: 3.0.2
 description: >-
   Utilities for converting between data representations.
   Provides a number of Sink, Codec, Decoder, and Encoder types.

@@ -262,7 +262,7 @@ CodePageDecoder _createDecoder(String characters) {
       throw ArgumentError.value(
           characters, "characters", "Must contain 256 characters");
     }
-    result[i] = char;
+    result[i++] = char;
     allChars |= char;
   }
   if (i < 256) {

@@ -60,4 +60,15 @@ void main() {
     var decoded = latin3.decode(encoded, allowInvalid: true);
     expect(decoded, latin2text);
   });
+
+  test("Custom code page", () {
+    var cp = CodePage("custom", "ABCDEF" + "\uFFFD" * 250);
+    var result = cp.encode("BADCAFE");
+    expect(result, [1, 0, 3, 2, 0, 5, 4]);
+    expect(() => cp.encode("GAD"), throwsFormatException);
+    expect(cp.encode("GAD", invalidCharacter: 0x3F), [0x3F, 0, 3]);
+    expect(cp.decode([1, 0, 3, 2, 0, 5, 4]), "BADCAFE");
+    expect(() => cp.decode([6, 1, 255]), throwsFormatException);
+    expect(cp.decode([6, 1, 255], allowInvalid: true), "\u{FFFD}B\u{FFFD}");
+  });
 }
