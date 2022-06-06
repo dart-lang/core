@@ -1,3 +1,6 @@
+## 3.0.3-dev
+
+
 ## 3.0.2
 
 * Fix bug in `CodePage` class. See issue [#47](https://github.com/dart-lang/convert/issues/47).
