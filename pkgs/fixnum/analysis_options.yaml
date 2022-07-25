@@ -15,7 +15,6 @@ linter:
     - cascade_invocations
     - comment_references
     - directives_ordering
-    - invariant_booleans
     - join_return_with_assignment
     - lines_longer_than_80_chars
     - missing_whitespace_between_adjacent_strings
