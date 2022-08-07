@@ -13,7 +13,6 @@ linter:
     - cancel_subscriptions
     - comment_references
     - directives_ordering
-    - invariant_booleans
     - no_adjacent_strings_in_list
     - omit_local_variable_types
     - only_throw_errors
