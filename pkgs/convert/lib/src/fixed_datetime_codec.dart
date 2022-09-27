@@ -144,15 +144,15 @@ class FixedDateTimeFormatter {
     bool isUtc,
     int? Function(String) parser,
   ) {
-    var year = _extractDateTimeFromStr(formattedDateTime, 'Y', parser) ?? 0;
-    var century = _extractDateTimeFromStr(formattedDateTime, 'C', parser) ?? 0;
-    var decade = _extractDateTimeFromStr(formattedDateTime, 'E', parser) ?? 0;
+    var year = _extractNumFromString(formattedDateTime, 'Y', parser) ?? 0;
+    var century = _extractNumFromString(formattedDateTime, 'C', parser) ?? 0;
+    var decade = _extractNumFromString(formattedDateTime, 'E', parser) ?? 0;
     var totalYear = year + 100 * century + 10 * decade;
-    var month = _extractDateTimeFromStr(formattedDateTime, 'M', parser) ?? 1;
-    var day = _extractDateTimeFromStr(formattedDateTime, 'D', parser) ?? 1;
-    var hour = _extractDateTimeFromStr(formattedDateTime, 'h', parser) ?? 0;
-    var minute = _extractDateTimeFromStr(formattedDateTime, 'm', parser) ?? 0;
-    var second = _extractDateTimeFromStr(formattedDateTime, 's', parser) ?? 0;
+    var month = _extractNumFromString(formattedDateTime, 'M', parser) ?? 1;
+    var day = _extractNumFromString(formattedDateTime, 'D', parser) ?? 1;
+    var hour = _extractNumFromString(formattedDateTime, 'h', parser) ?? 0;
+    var minute = _extractNumFromString(formattedDateTime, 'm', parser) ?? 0;
+    var second = _extractNumFromString(formattedDateTime, 's', parser) ?? 0;
     if (isUtc) {
       return DateTime.utc(totalYear, month, day, hour, minute, second, 0, 0);
     } else {
@@ -160,7 +160,7 @@ class FixedDateTimeFormatter {
     }
   }
 
-  int? _extractDateTimeFromStr(
+  int? _extractNumFromString(
     String s,
     String id,
     int? Function(String) parser,
