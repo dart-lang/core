@@ -2,9 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// A class for parsing dates for a fixed format string. For example, calling
-/// `DateParser('YYYYMMDDhhmmss').parseToLocal('19960425050322')` has the same
-/// result as calling `DateTime(1996, 4, 25, 5, 3, 22)`.
+/// A class for parsing and formatting dates for a fixed format string. For
+/// example, calling
+/// `FixedDateTimeCodec('YYYYMMDDhhmmss').decodeToLocal('19960425050322')` has
+/// the same result as calling `DateTime(1996, 4, 25, 5, 3, 22)`.
 ///
 /// The allowed characters are
 /// * Y	a digit used in the time scale component “calendar year”
@@ -17,7 +18,7 @@
 /// * s	a digit used in the time scale component “clock second”
 /// as specified in the ISO 8601 standard.
 ///
-/// Non-allowed characters in the format _pattern are ignored, therefore
+/// Non-allowed characters in the format [_pattern] are ignored, therefore
 /// `YYYY kiwi MM` is the same format string as `YYYY------MM`.
 ///
 /// Note: this class differs from [DateFormat] in that here, the characters are
@@ -31,13 +32,13 @@
 ///
 /// Also, this parser does not know about locales and parses to the current
 /// locale only.
-class FixedDateTimeParser {
+class FixedDateTimeCodec {
   static const _validChars = ['Y', 'M', 'D', 'E', 'C', 'h', 'm', 's'];
 
   final String _pattern;
   final _occurences = <String, _Range>{};
 
-  FixedDateTimeParser(this._pattern) {
+  FixedDateTimeCodec(this._pattern) {
     String current = '';
     for (var i = 0; i < _pattern.length; i++) {
       var char = _pattern[i];
@@ -61,7 +62,7 @@ class FixedDateTimeParser {
   }
 
   /// Convert a datetime to a string exactly as specified by the [_pattern].
-  String format(DateTime dt) {
+  String encode(DateTime dt) {
     var startingPoints =
         _occurences.map((key, value) => MapEntry(value.from, key));
     var sb = StringBuffer();
@@ -109,7 +110,7 @@ class FixedDateTimeParser {
 
   /// Parse a string [dateTimeStr] to a local [DateTime] as specified in the
   /// [_pattern]. Throws an exception on failure.
-  DateTime parseToLocal(String dateTimeStr) {
+  DateTime decodeToLocal(String dateTimeStr) {
     int? year = _extractDateTimeFromStr(dateTimeStr, 'Y') ?? 1;
     int? century = _extractDateTimeFromStr(dateTimeStr, 'C') ?? 0;
     int? decade = _extractDateTimeFromStr(dateTimeStr, 'E') ?? 0;
@@ -122,11 +123,11 @@ class FixedDateTimeParser {
     return DateTime(totalYear, month, day, hour, minute, second, 0, 0);
   }
 
-  /// Same as [parseToLocal], but returns null if the string could not be
+  /// Same as [decodeToLocal], but returns null if the string could not be
   /// parsed.
-  DateTime? tryParseToLocal(String dateTimeStr) {
+  DateTime? tryDecodeToLocal(String dateTimeStr) {
     try {
-      return parseToLocal(dateTimeStr);
+      return decodeToLocal(dateTimeStr);
     } catch (_) {
       return null;
     }
