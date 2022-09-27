@@ -2,24 +2,28 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:collection';
+
 /// A class for parsing and formatting dates for a fixed format string. For
 /// example, calling
 /// `FixedDateTimeCodec('YYYYMMDDhhmmss').decodeToLocal('19960425050322')` has
 /// the same result as calling `DateTime(1996, 4, 25, 5, 3, 22)`.
 ///
 /// The allowed characters are
-/// * Y	a digit used in the time scale component “calendar year”
-/// * M	a digit used in the time scale component “calendar month”
-/// * D	a digit used in the time scale component “calendar day”
-/// * E	a digit used in the time scale component “decade”
-/// * C	a digit used in the time scale component “century”
-/// * h	a digit used in the time scale component “clock hour”
-/// * m	a digit used in the time scale component “clock minute”
-/// * s	a digit used in the time scale component “clock second”
+/// * `Y`	a digit used in the time scale component “calendar year”
+/// * `M`	a digit used in the time scale component “calendar month”
+/// * `D`	a digit used in the time scale component “calendar day”
+/// * `E`	a digit used in the time scale component “decade”
+/// * `C`	a digit used in the time scale component “century”
+/// * `h`	a digit used in the time scale component “clock hour”
+/// * `m`	a digit used in the time scale component “clock minute”
+/// * `s`	a digit used in the time scale component “clock second”
 /// as specified in the ISO 8601 standard.
 ///
-/// Non-allowed characters in the format [_pattern] are ignored, therefore
-/// `YYYY kiwi MM` is the same format string as `YYYY------MM`.
+/// Non-allowed characters in the format [pattern] are ignored when decoding a
+/// string, in this case `YYYY kiwi MM` is the same format string as
+/// `YYYY------MM`. When encoding a datetime, the non-format characters are in
+/// the output verbatim.
 ///
 /// Note: this class differs from [DateFormat] in that here, the characters are
 /// treated literally, i.e. the format string `YYY` matching `996` would result in
@@ -29,61 +33,75 @@
 /// `1996` would be a valid match. This limits is use to format strings
 /// containing delimiters, as the parser would not know how many digits to take
 /// otherwise.
-///
-/// Also, this parser does not know about locales and parses to the current
-/// locale only.
-class FixedDateTimeCodec {
-  static const _validChars = ['Y', 'M', 'D', 'E', 'C', 'h', 'm', 's'];
+class FixedDateTimeFormatter {
+  static const _validFormatCharacters = 'YMDEChms';
 
-  final String _pattern;
-  final _occurences = <String, _Range>{};
+  final String pattern;
+  // ignore: prefer_collection_literals
+  final _occurences = LinkedHashMap<String, _Range>();
 
-  FixedDateTimeCodec(this._pattern) {
-    String current = '';
-    for (var i = 0; i < _pattern.length; i++) {
-      var char = _pattern[i];
-      if (!_validChars.contains(char)) {
-        current = '';
-        continue;
-      }
-      var newChar = current != char;
-      if (newChar) {
-        var hasNotSeenBefore = !_occurences.containsKey(char);
-        if (hasNotSeenBefore) {
-          _occurences[char] = _Range(i, i);
+  /// Creates a new [FixedDateTimeFormatter] with the provided [pattern].
+  ///
+  /// The [pattern] interprets the characters mentioned in
+  /// [FixedDateTimeFormatter] to represent fields of a `DateTime` value. Other
+  /// characters are not special.
+  ///
+  /// There must at most be one sequence of each special character to ensure a
+  /// single source of truth when constructing the [DateTime], so a pattern of
+  /// `"CCCC-MM-DD, CC"` is invalid, because it has two separate `C` sequences.
+  FixedDateTimeFormatter(this.pattern) {
+    String? current;
+    var start = 0;
+    for (var i = 0; i < pattern.length; i++) {
+      var char = pattern[i];
+      if (current != char) {
+        _saveFormatBlock(current, start, i);
+        if (_validFormatCharacters.contains(char)) {
+          var hasSeenBefore = _occurences.containsKey(char);
+          if (hasSeenBefore) {
+            throw FormatException(
+                "Pattern contains more than one '$char' block.\n"
+                "Previous occurrence at position ${_occurences[char]!.from}",
+                pattern,
+                i);
+          } else {
+            start = i;
+            current = char;
+          }
         } else {
-          throw Exception(
-              'The _pattern string "$_pattern" contains multiple instances of the formatting char block $char, both at position ${_occurences[char]!.from} and $i');
+          current = null;
         }
       }
-      current = char;
-      _occurences.update(current, (value) => _Range(value.from, value.to + 1));
     }
+    _saveFormatBlock(current, start, pattern.length);
   }
 
-  /// Convert a datetime to a string exactly as specified by the [_pattern].
-  String encode(DateTime dt) {
-    var startingPoints =
-        _occurences.map((key, value) => MapEntry(value.from, key));
-    var sb = StringBuffer();
-    for (var i = 0; i < _pattern.length; i++) {
-      if (startingPoints.containsKey(i)) {
-        var key = startingPoints[i];
-        var length = _occurences[key]!.length;
-        var number = _extractNumFromDateTime(key, dt);
-        var numAsString = number.toString();
-        if (numAsString.length > length) {
-          throw Exception(
-              "The datetime $dt cannot be parsed as $number is longer than the _pattern $key allows");
-        } else {
-          sb.write(numAsString.padLeft(length, '0'));
-        }
-        i += length - 1;
-      } else {
-        sb.write(_pattern[i]);
+  void _saveFormatBlock(String? current, int start, int i) {
+    if (current != null) _occurences[current] = _Range(start, i);
+  }
+
+  /// Convert [DateTime] to a [String] exactly as specified by the [pattern].
+  String encode(DateTime datetime) {
+    var buffer = StringBuffer();
+    var previousEnd = 0;
+    _occurences.forEach((key, value) {
+      if (previousEnd < value.from) {
+        buffer.write(pattern.substring(previousEnd, value.from));
       }
+      var number = _extractNumFromDateTime(key, datetime).toString();
+      var length = value.length;
+      if (number.length > length) {
+        number = number.substring(number.length - length);
+      } else if (number.length < length) {
+        number = number.padLeft(length, '0');
+      }
+      buffer.write(number);
+      previousEnd = value.to;
+    });
+    if (previousEnd < pattern.length) {
+      buffer.write(pattern.substring(previousEnd, pattern.length));
     }
-    return sb.toString();
+    return buffer.toString();
   }
 
   int _extractNumFromDateTime(String? key, DateTime dt) {
@@ -105,38 +123,51 @@ class FixedDateTimeCodec {
       case 's':
         return dt.second;
     }
-    throw ArgumentError.value(key);
+    throw AssertionError("Unreachable, the key is checked in the constructor");
   }
 
-  /// Parse a string [dateTimeStr] to a local [DateTime] as specified in the
-  /// [_pattern]. Throws an exception on failure.
-  DateTime decodeToLocal(String dateTimeStr) {
-    int? year = _extractDateTimeFromStr(dateTimeStr, 'Y') ?? 1;
-    int? century = _extractDateTimeFromStr(dateTimeStr, 'C') ?? 0;
-    int? decade = _extractDateTimeFromStr(dateTimeStr, 'E') ?? 0;
+  /// Parse a string [formattedDateTime] to a local [DateTime] as specified in the
+  /// [pattern], substituting missing values with a default. Throws an exception
+  /// on failure to parse.
+  DateTime decode(String formattedDateTime, [bool isUtc = false]) {
+    return _decode(formattedDateTime, isUtc, int.parse);
+  }
+
+  /// Same as [decode], but will not throw on parsing erros, instead using
+  /// the default value as if the format char was not present in the [pattern].
+  DateTime tryDecode(String formattedDateTime, [bool isUtc = false]) {
+    return _decode(formattedDateTime, isUtc, int.tryParse);
+  }
+
+  DateTime _decode(
+    String formattedDateTime,
+    bool isUtc,
+    int? Function(String) parser,
+  ) {
+    var year = _extractDateTimeFromStr(formattedDateTime, 'Y', parser) ?? 0;
+    var century = _extractDateTimeFromStr(formattedDateTime, 'C', parser) ?? 0;
+    var decade = _extractDateTimeFromStr(formattedDateTime, 'E', parser) ?? 0;
     var totalYear = year + 100 * century + 10 * decade;
-    int? month = _extractDateTimeFromStr(dateTimeStr, 'M') ?? 1;
-    int? day = _extractDateTimeFromStr(dateTimeStr, 'D') ?? 1;
-    int? hour = _extractDateTimeFromStr(dateTimeStr, 'h') ?? 0;
-    int? minute = _extractDateTimeFromStr(dateTimeStr, 'm') ?? 0;
-    int? second = _extractDateTimeFromStr(dateTimeStr, 's') ?? 0;
-    return DateTime(totalYear, month, day, hour, minute, second, 0, 0);
-  }
-
-  /// Same as [decodeToLocal], but returns null if the string could not be
-  /// parsed.
-  DateTime? tryDecodeToLocal(String dateTimeStr) {
-    try {
-      return decodeToLocal(dateTimeStr);
-    } catch (_) {
-      return null;
+    var month = _extractDateTimeFromStr(formattedDateTime, 'M', parser) ?? 1;
+    var day = _extractDateTimeFromStr(formattedDateTime, 'D', parser) ?? 1;
+    var hour = _extractDateTimeFromStr(formattedDateTime, 'h', parser) ?? 0;
+    var minute = _extractDateTimeFromStr(formattedDateTime, 'm', parser) ?? 0;
+    var second = _extractDateTimeFromStr(formattedDateTime, 's', parser) ?? 0;
+    if (isUtc) {
+      return DateTime.utc(totalYear, month, day, hour, minute, second, 0, 0);
+    } else {
+      return DateTime(totalYear, month, day, hour, minute, second, 0, 0);
     }
   }
 
-  int? _extractDateTimeFromStr(String s, String id) {
+  int? _extractDateTimeFromStr(
+    String s,
+    String id,
+    int? Function(String) parser,
+  ) {
     var pos = _occurences[id];
     if (pos != null) {
-      return int.parse(s.substring(pos.from, pos.to));
+      return parser.call(s.substring(pos.from, pos.to));
     } else {
       return null;
     }

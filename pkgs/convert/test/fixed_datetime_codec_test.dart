@@ -7,49 +7,57 @@ import 'package:test/test.dart';
 
 void main() {
   test('Parse only year', () {
-    var time = FixedDateTimeCodec('YYYY').decodeToLocal('1996');
+    var time = FixedDateTimeFormatter('YYYY').decode('1996');
     expect(time, DateTime(1996));
   });
   test('Escaped chars are ignored', () {
-    var time = FixedDateTimeCodec('YYYY kiwi MM').decodeToLocal('1996 rnad 01');
+    var time = FixedDateTimeFormatter('YYYY kiwi MM').decode('1996 rnad 01');
     expect(time, DateTime(1996, 1));
   });
   test('Parse two years throws', () {
-    expect(() => FixedDateTimeCodec('YYYY YYYY'), throwsException);
+    expect(() => FixedDateTimeFormatter('YYYY YYYY'), throwsException);
   });
   test('Parse year and century', () {
-    var time = FixedDateTimeCodec('CCYY').decodeToLocal('1996');
+    var time = FixedDateTimeFormatter('CCYY').decode('1996');
     expect(time, DateTime(1996));
   });
   test('Parse year, decade and century', () {
-    var time = FixedDateTimeCodec('CCEY').decodeToLocal('1996');
+    var time = FixedDateTimeFormatter('CCEY').decode('1996');
     expect(time, DateTime(1996));
   });
   test('Parse year, century, month', () {
-    var time = FixedDateTimeCodec('CCYY MM').decodeToLocal('1996 04');
+    var time = FixedDateTimeFormatter('CCYY MM').decode('1996 04');
     expect(time, DateTime(1996, 4));
   });
   test('Parse year, century, month, day', () {
-    var time = FixedDateTimeCodec('CCYY MM-DD').decodeToLocal('1996 04-25');
+    var time = FixedDateTimeFormatter('CCYY MM-DD').decode('1996 04-25');
     expect(time, DateTime(1996, 4, 25));
   });
   test('Parse year, century, month, day, hour, minute, second', () {
-    var time = FixedDateTimeCodec('CCYY MM-DD hh:mm:ss')
-        .decodeToLocal('1996 04-25 05:03:22');
+    var time = FixedDateTimeFormatter('CCYY MM-DD hh:mm:ss')
+        .decode('1996 04-25 05:03:22');
     expect(time, DateTime(1996, 4, 25, 5, 3, 22));
   });
   test('Parse YYYYMMDDhhmmss', () {
     var time =
-        FixedDateTimeCodec('YYYYMMDDhhmmss').decodeToLocal('19960425050322');
+        FixedDateTimeFormatter('YYYYMMDDhhmmss').decode('19960425050322');
     expect(time, DateTime(1996, 4, 25, 5, 3, 22));
   });
   test('Format simple', () {
     var time = DateTime(1996, 1);
-    expect('1996 kiwi 01', FixedDateTimeCodec('YYYY kiwi MM').encode(time));
+    expect('1996 kiwi 01', FixedDateTimeFormatter('YYYY kiwi MM').encode(time));
   });
   test('Format YYYYMMDDhhmmss', () {
-    var str = FixedDateTimeCodec('YYYYMMDDhhmmss')
+    var str = FixedDateTimeFormatter('YYYYMMDDhhmmss')
         .encode(DateTime(1996, 4, 25, 5, 3, 22));
     expect('19960425050322', str);
+  });
+  test('Format CCEY-MM', () {
+    var str = FixedDateTimeFormatter('CCEY-MM').encode(DateTime(1996, 4));
+    expect('1996-04', str);
+  });
+  test('Format XCCEY-MMX', () {
+    var str = FixedDateTimeFormatter('XCCEY-MMX').encode(DateTime(1996, 4));
+    expect('X1996-04X', str);
   });
 }
