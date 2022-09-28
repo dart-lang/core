@@ -6,6 +6,7 @@ import 'package:convert/src/fixed_datetime_formatter.dart';
 import 'package:test/test.dart';
 
 void main() {
+  //decode
   test('Parse only year', () {
     var time = FixedDateTimeFormatter('YYYY').decode('1996');
     expect(time, DateTime(1996));
@@ -43,6 +44,26 @@ void main() {
         FixedDateTimeFormatter('YYYYMMDDhhmmss').decode('19960425050322');
     expect(time, DateTime(1996, 4, 25, 5, 3, 22));
   });
+  test('Parse hex year throws', () {
+    expect(
+      () => FixedDateTimeFormatter('YYYY').decode('0xAB'),
+      throwsFormatException,
+    );
+  });
+  //tryDecode
+  test('Try parse year', () {
+    var time = FixedDateTimeFormatter('YYYY').tryDecode('1996');
+    expect(time, DateTime(1996));
+  });
+  test('Try parse hex year return default', () {
+    var time = FixedDateTimeFormatter('YYYY').tryDecode('0xAB');
+    expect(time, DateTime(0));
+  });
+  test('Try parse invalid returns default', () {
+    var time = FixedDateTimeFormatter('YYYY').tryDecode('1x96');
+    expect(time, DateTime(0));
+  });
+  //encode
   test('Format simple', () {
     var time = DateTime(1996, 1);
     expect('1996 kiwi 01', FixedDateTimeFormatter('YYYY kiwi MM').encode(time));
