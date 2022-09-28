@@ -42,7 +42,6 @@ class FixedDateTimeFormatter {
   static final hourCode = 'h'.codeUnitAt(0);
   static final minuteCode = 'm'.codeUnitAt(0);
   static final secondCode = 's'.codeUnitAt(0);
-  static RegExp nonDigits = RegExp(r'\D');
 
   final String pattern;
   final _parsed = _ParsedPattern();
@@ -139,46 +138,34 @@ class FixedDateTimeFormatter {
   /// [pattern], substituting missing values with a default. Throws an exception
   /// on failure to parse.
   DateTime decode(String formattedDateTime, {bool isUtc = false}) {
-    return _decode(formattedDateTime, isUtc, int.parse, true);
+    return _decode(formattedDateTime, isUtc, true);
   }
 
   /// Same as [decode], but will not throw on parsing erros, instead using
   /// the default value as if the format char was not present in the [pattern].
   DateTime tryDecode(String formattedDateTime, {bool isUtc = false}) {
-    return _decode(formattedDateTime, isUtc, int.tryParse, false);
+    return _decode(formattedDateTime, isUtc, false);
   }
 
   DateTime _decode(
     String formattedDateTime,
     bool isUtc,
-    int? Function(String) parser,
     bool throwOnError,
   ) {
-    var year = _extractNumFromString(
-            formattedDateTime, yearCode, parser, throwOnError) ??
-        0;
-    var century = _extractNumFromString(
-            formattedDateTime, centuryCode, parser, throwOnError) ??
-        0;
-    var decade = _extractNumFromString(
-            formattedDateTime, decadeCode, parser, throwOnError) ??
-        0;
+    List<int> characters = formattedDateTime.codeUnits;
+    var year = _extractNumFromString(characters, yearCode, throwOnError) ?? 0;
+    var century =
+        _extractNumFromString(characters, centuryCode, throwOnError) ?? 0;
+    var decade =
+        _extractNumFromString(characters, decadeCode, throwOnError) ?? 0;
     var totalYear = year + 100 * century + 10 * decade;
-    var month = _extractNumFromString(
-            formattedDateTime, monthCode, parser, throwOnError) ??
-        1;
-    var day = _extractNumFromString(
-            formattedDateTime, dayCode, parser, throwOnError) ??
-        1;
-    var hour = _extractNumFromString(
-            formattedDateTime, hourCode, parser, throwOnError) ??
-        0;
-    var minute = _extractNumFromString(
-            formattedDateTime, minuteCode, parser, throwOnError) ??
-        0;
-    var second = _extractNumFromString(
-            formattedDateTime, secondCode, parser, throwOnError) ??
-        0;
+    var month = _extractNumFromString(characters, monthCode, throwOnError) ?? 1;
+    var day = _extractNumFromString(characters, dayCode, throwOnError) ?? 1;
+    var hour = _extractNumFromString(characters, hourCode, throwOnError) ?? 0;
+    var minute =
+        _extractNumFromString(characters, minuteCode, throwOnError) ?? 0;
+    var second =
+        _extractNumFromString(characters, secondCode, throwOnError) ?? 0;
     if (isUtc) {
       return DateTime.utc(totalYear, month, day, hour, minute, second, 0, 0);
     } else {
@@ -186,22 +173,32 @@ class FixedDateTimeFormatter {
     }
   }
 
-  int? _extractNumFromString(
-    String s,
-    int id,
-    int? Function(String) parser,
-    bool throwOnError,
-  ) {
+  int? _extractNumFromString(List<int> characters, int id, bool throwOnError) {
     var index = _parsed.chars.indexOf(id);
     if (index > -1) {
-      var block = s.substring(_parsed.starts[index], _parsed.ends[index]);
-      if (!nonDigits.hasMatch(block)) {
-        return parser(block);
-      } else if (throwOnError) {
-        throw FormatException('$block should only contain digits');
+      var parsed =
+          tryParse(characters, _parsed.starts[index], _parsed.ends[index]);
+      if (parsed == null && throwOnError) {
+        throw FormatException(
+            '${String.fromCharCodes(characters)} should only contain digits');
       }
+      return parsed;
     }
     return null;
+  }
+
+  static final zeroCode = '0'.codeUnitAt(0);
+  int? tryParse(List<int> characters, int start, int end) {
+    int result = 0;
+    for (var i = start; i < end; i++) {
+      var character = characters[i];
+      if (character >= zeroCode && character < zeroCode + 10) {
+        result = result * 10 + (character - zeroCode);
+      } else {
+        return null;
+      }
+    }
+    return result;
   }
 }
 
