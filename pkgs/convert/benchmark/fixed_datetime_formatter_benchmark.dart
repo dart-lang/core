@@ -8,10 +8,10 @@ import 'package:convert/convert.dart';
 /// This class tests the implementation speed of
 /// _DateFormatPatternField::nextInteger, which is assumed to be called often and
 /// thus being performance-critical.
-class NewMethod extends BenchmarkBase {
+class DecodeBenchmark extends BenchmarkBase {
   late String result;
   late FixedDateTimeFormatter fixedDateTimeFormatter;
-  NewMethod() : super('Parse a million strings to datetime');
+  DecodeBenchmark() : super('Parse a million strings to datetime');
 
   @override
   void setup() {
@@ -27,5 +27,5 @@ class NewMethod extends BenchmarkBase {
 }
 
 void main() {
-  NewMethod().report();
+  DecodeBenchmark().report();
 }
