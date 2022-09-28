@@ -152,20 +152,39 @@ class FixedDateTimeFormatter {
     bool isUtc,
     bool throwOnError,
   ) {
-    List<int> characters = formattedDateTime.codeUnits;
-    var year = _extractNumFromString(characters, yearCode, throwOnError) ?? 0;
-    var century =
-        _extractNumFromString(characters, centuryCode, throwOnError) ?? 0;
-    var decade =
-        _extractNumFromString(characters, decadeCode, throwOnError) ?? 0;
+    var characters = formattedDateTime.codeUnits;
+    var year = 0;
+    var century = 0;
+    var decade = 0;
+    var month = 1;
+    var day = 1;
+    var hour = 0;
+    var minute = 0;
+    var second = 0;
+    for (int i = 0; i < _parsed.chars.length; i++) {
+      var char = _parsed.chars[i];
+      var num = _extractNumFromString(characters, i, throwOnError);
+      if (num != null) {
+        if (char == yearCode) {
+          year = num;
+        } else if (char == centuryCode) {
+          century = num;
+        } else if (char == decadeCode) {
+          decade = num;
+        } else if (char == monthCode) {
+          month = num;
+        } else if (char == dayCode) {
+          day = num;
+        } else if (char == hourCode) {
+          hour = num;
+        } else if (char == minuteCode) {
+          minute = num;
+        } else if (char == secondCode) {
+          second = num;
+        }
+      }
+    }
     var totalYear = year + 100 * century + 10 * decade;
-    var month = _extractNumFromString(characters, monthCode, throwOnError) ?? 1;
-    var day = _extractNumFromString(characters, dayCode, throwOnError) ?? 1;
-    var hour = _extractNumFromString(characters, hourCode, throwOnError) ?? 0;
-    var minute =
-        _extractNumFromString(characters, minuteCode, throwOnError) ?? 0;
-    var second =
-        _extractNumFromString(characters, secondCode, throwOnError) ?? 0;
     if (isUtc) {
       return DateTime.utc(totalYear, month, day, hour, minute, second, 0, 0);
     } else {
@@ -173,18 +192,15 @@ class FixedDateTimeFormatter {
     }
   }
 
-  int? _extractNumFromString(List<int> characters, int id, bool throwOnError) {
-    var index = _parsed.chars.indexOf(id);
-    if (index > -1) {
-      var parsed =
-          tryParse(characters, _parsed.starts[index], _parsed.ends[index]);
-      if (parsed == null && throwOnError) {
-        throw FormatException(
-            '${String.fromCharCodes(characters)} should only contain digits');
-      }
-      return parsed;
+  int? _extractNumFromString(
+      List<int> characters, int index, bool throwOnError) {
+    var parsed =
+        tryParse(characters, _parsed.starts[index], _parsed.ends[index]);
+    if (parsed == null && throwOnError) {
+      throw FormatException(
+          '${String.fromCharCodes(characters)} should only contain digits');
     }
-    return null;
+    return parsed;
   }
 
   static final zeroCode = '0'.codeUnitAt(0);
