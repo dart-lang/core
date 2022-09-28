@@ -44,7 +44,7 @@ class FixedDateTimeFormatter {
   static final secondCode = 's'.codeUnitAt(0);
 
   final String pattern;
-  final _parsed = _ParsedPattern();
+  final _blocks = _ParsedFormatBlocks();
 
   /// Creates a new [FixedDateTimeFormatter] with the provided [pattern].
   ///
@@ -62,13 +62,13 @@ class FixedDateTimeFormatter {
     for (var i = 0; i < characters.length; i++) {
       var char = characters[i];
       if (current != char) {
-        _parsed.saveBlock(current, start, i);
+        _blocks.saveBlock(current, start, i);
         if (_validFormatCharacters.contains(char)) {
-          var hasSeenBefore = _parsed.chars.indexOf(char);
+          var hasSeenBefore = _blocks.formatCharacters.indexOf(char);
           if (hasSeenBefore > -1) {
             throw FormatException(
                 "Pattern contains more than one '$char' block.\n"
-                "Previous occurrence at index ${_parsed.starts[hasSeenBefore]}",
+                "Previous occurrence at index ${_blocks.starts[hasSeenBefore]}",
                 pattern,
                 i);
           } else {
@@ -80,23 +80,25 @@ class FixedDateTimeFormatter {
         }
       }
     }
-    _parsed.saveBlock(current, start, pattern.length);
+    _blocks.saveBlock(current, start, pattern.length);
   }
 
   /// Convert [DateTime] to a [String] exactly as specified by the [pattern].
   String encode(DateTime datetime) {
     var buffer = StringBuffer();
-    for (var i = 0; i < _parsed.length; i++) {
-      var start = _parsed.starts[i];
-      var end = _parsed.ends[i];
+    for (var i = 0; i < _blocks.length; i++) {
+      var start = _blocks.starts[i];
+      var end = _blocks.ends[i];
       var length = end - start;
 
-      var previousEnd = i > 0 ? _parsed.ends[i - 1] : 0;
+      var previousEnd = i > 0 ? _blocks.ends[i - 1] : 0;
       if (previousEnd < start) {
         buffer.write(pattern.substring(previousEnd, start));
       }
-      var number =
-          _extractNumFromDateTime(_parsed.chars[i], datetime).toString();
+      var number = _extractNumFromDateTime(
+        _blocks.formatCharacters[i],
+        datetime,
+      ).toString();
       if (number.length > length) {
         number = number.substring(number.length - length);
       } else if (number.length < length) {
@@ -104,8 +106,8 @@ class FixedDateTimeFormatter {
       }
       buffer.write(number);
     }
-    if (_parsed.length > 0) {
-      var lastEnd = _parsed.ends.last;
+    if (_blocks.length > 0) {
+      var lastEnd = _blocks.ends.last;
       if (lastEnd < pattern.length) {
         buffer.write(pattern.substring(lastEnd, pattern.length));
       }
@@ -113,22 +115,22 @@ class FixedDateTimeFormatter {
     return buffer.toString();
   }
 
-  int _extractNumFromDateTime(int? key, DateTime dt) {
-    if (key == yearCode) {
+  int _extractNumFromDateTime(int? formatChar, DateTime dt) {
+    if (formatChar == yearCode) {
       return dt.year;
-    } else if (key == centuryCode) {
+    } else if (formatChar == centuryCode) {
       return (dt.year / 100).floor();
-    } else if (key == decadeCode) {
+    } else if (formatChar == decadeCode) {
       return (dt.year / 10).floor();
-    } else if (key == monthCode) {
+    } else if (formatChar == monthCode) {
       return dt.month;
-    } else if (key == dayCode) {
+    } else if (formatChar == dayCode) {
       return dt.day;
-    } else if (key == hourCode) {
+    } else if (formatChar == hourCode) {
       return dt.hour;
-    } else if (key == minuteCode) {
+    } else if (formatChar == minuteCode) {
       return dt.minute;
-    } else if (key == secondCode) {
+    } else if (formatChar == secondCode) {
       return dt.second;
     }
     throw AssertionError("Unreachable, the key is checked in the constructor");
@@ -161,8 +163,8 @@ class FixedDateTimeFormatter {
     var hour = 0;
     var minute = 0;
     var second = 0;
-    for (int i = 0; i < _parsed.chars.length; i++) {
-      var char = _parsed.chars[i];
+    for (int i = 0; i < _blocks.length; i++) {
+      var char = _blocks.formatCharacters[i];
       var num = _extractNumFromString(characters, i, throwOnError);
       if (num != null) {
         if (char == yearCode) {
@@ -195,7 +197,7 @@ class FixedDateTimeFormatter {
   int? _extractNumFromString(
       List<int> characters, int index, bool throwOnError) {
     var parsed =
-        tryParse(characters, _parsed.starts[index], _parsed.ends[index]);
+        tryParse(characters, _blocks.starts[index], _blocks.ends[index]);
     if (parsed == null && throwOnError) {
       throw FormatException(
           '${String.fromCharCodes(characters)} should only contain digits');
@@ -218,18 +220,18 @@ class FixedDateTimeFormatter {
   }
 }
 
-class _ParsedPattern {
+class _ParsedFormatBlocks {
+  final formatCharacters = <int>[];
   final starts = <int>[];
   final ends = <int>[];
-  final chars = <int>[];
 
-  _ParsedPattern();
+  _ParsedFormatBlocks();
 
-  int get length => chars.length;
+  int get length => formatCharacters.length;
 
   void saveBlock(int? char, int start, int end) {
     if (char != null) {
-      chars.add(char);
+      formatCharacters.add(char);
       starts.add(start);
       ends.add(end);
     }
