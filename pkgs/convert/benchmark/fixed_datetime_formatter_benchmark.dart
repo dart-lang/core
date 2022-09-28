@@ -21,7 +21,7 @@ class NewMethod extends BenchmarkBase {
   @override
   void run() {
     for (var i = 0; i < 1000000; i++) {
-      var decode = fixedDateTimeFormatter.decode('19960425050322');
+      fixedDateTimeFormatter.decode('19960425050322');
     }
   }
 }
