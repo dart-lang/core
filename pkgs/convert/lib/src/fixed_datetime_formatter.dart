@@ -84,7 +84,7 @@ class FixedDateTimeFormatter {
           if (hasSeenBefore > -1) {
             throw FormatException(
                 "Pattern contains more than one '$formatCharacter' block.\n"
-                "Previous occurrence at index ${_blocks.starts[hasSeenBefore]}",
+                'Previous occurrence at index ${_blocks.starts[hasSeenBefore]}',
                 pattern,
                 i);
           } else {
@@ -104,7 +104,7 @@ class FixedDateTimeFormatter {
   /// Throws a [FormatException] if trying to encode a negative year.
   String encode(DateTime dateTime) {
     if (dateTime.year < 0) {
-      throw FormatException("Cannot handle negative years.");
+      throw FormatException('Cannot handle negative years.');
     }
     var buffer = StringBuffer();
     for (var i = 0; i < _blocks.length; i++) {
@@ -117,20 +117,12 @@ class FixedDateTimeFormatter {
         buffer.write(pattern.substring(previousEnd, start));
       }
       var formatCharacter = _blocks.formatCharacters[i];
-      var number =
-          _extractNumberFromDateTime(formatCharacter, dateTime).toString();
-      if (formatCharacter == _fractionSecondCode) {
-        // Special case, as we want fractional seconds to be the leading
-        // digits.
-        if (6 > number.length) {
-          number = number.padLeft(6, '0');
-        }
-        if (number.length > length) {
-          number = number.substring(0, length);
-        } else {
-          number = number.padRight(length, '0');
-        }
-      } else if (number.length > length) {
+      var number = _extractNumberFromDateTime(
+        formatCharacter,
+        dateTime,
+        length,
+      );
+      if (number.length > length) {
         number = number.substring(number.length - length);
       } else if (length > number.length) {
         number = number.padLeft(length, '0');
@@ -146,28 +138,67 @@ class FixedDateTimeFormatter {
     return buffer.toString();
   }
 
-  int _extractNumberFromDateTime(int? formatChar, DateTime dateTime) {
-    switch (formatChar) {
+  String _extractNumberFromDateTime(
+    int? formatCharacter,
+    DateTime dateTime,
+    int length,
+  ) {
+    int value;
+    switch (formatCharacter) {
       case _yearCode:
-        return dateTime.year;
+        value = dateTime.year;
+        break;
       case _centuryCode:
-        return dateTime.year ~/ 100;
+        value = dateTime.year ~/ 100;
+        break;
       case _decadeCode:
-        return dateTime.year ~/ 10;
+        value = dateTime.year ~/ 10;
+        break;
       case _monthCode:
-        return dateTime.month;
+        value = dateTime.month;
+        break;
       case _dayCode:
-        return dateTime.day;
+        value = dateTime.day;
+        break;
       case _hourCode:
-        return dateTime.hour;
+        value = dateTime.hour;
+        break;
       case _minuteCode:
-        return dateTime.minute;
+        value = dateTime.minute;
+        break;
       case _secondCode:
-        return dateTime.second;
+        value = dateTime.second;
+        break;
       case _fractionSecondCode:
-        return dateTime.microsecond + dateTime.millisecond * 1000;
+        value = dateTime.millisecond;
+        switch (length) {
+          case 1:
+            value ~/= 100;
+            break;
+          case 2:
+            value ~/= 10;
+            break;
+          case 3:
+            break;
+          case 4:
+            value = value * 10 + dateTime.microsecond ~/ 100;
+            break;
+          case 5:
+            value = value * 100 + dateTime.microsecond ~/ 10;
+            break;
+          case 6:
+            value = value * 1000 + dateTime.microsecond;
+            break;
+          default:
+            throw AssertionError(
+                'Unreachable, length is restricted to 6 in the constructor');
+        }
+        break;
+      default:
+        throw AssertionError(
+            'Unreachable, the key is checked in the constructor');
     }
-    throw AssertionError("Unreachable, the key is checked in the constructor");
+    return value.toString().padLeft(length, '0');
   }
 
   /// Parses [formattedDateTime] to a [DateTime] as specified by the [pattern].
@@ -211,19 +242,7 @@ class FixedDateTimeFormatter {
         if (formatCharacter == _fractionSecondCode) {
           // Special case, as we want fractional seconds to be the leading
           // digits.
-          var numberLength = _blocks.ends[i] - _blocks.starts[i];
-          if (numberLength > 6) {
-            if (throwOnError) {
-              throw FormatException(
-                'Fractional seconds can only be specified up to microseconds',
-                pattern,
-                _blocks.starts[i],
-              );
-            } else {
-              return null;
-            }
-          }
-          number *= _powersOfTen[6 - numberLength];
+          number *= _powersOfTen[6 - (_blocks.ends[i] - _blocks.starts[i])];
         }
         switch (formatCharacter) {
           case _yearCode:
@@ -295,10 +314,10 @@ class FixedDateTimeFormatter {
     );
     if (parsed == null && throwOnError) {
       throw FormatException(
-        "Expected digits at ${formattedDateTime.substring(
+        'Expected digits at ${formattedDateTime.substring(
           _blocks.starts[index],
           _blocks.ends[index],
-        )}",
+        )}',
         formattedDateTime,
         _blocks.starts[index],
       );
@@ -331,6 +350,20 @@ class _ParsedFormatBlocks {
 
   void saveBlock(int? char, int start, int end) {
     if (char != null) {
+      if (char == FixedDateTimeFormatter._fractionSecondCode &&
+          end - start > 6) {
+        throw FormatException(
+          'Fractional seconds can only be specified up to microseconds',
+          char,
+          start,
+        );
+      } else if (end - start > 9) {
+        throw FormatException(
+          'Length of a format char block cannot be larger than 9',
+          char,
+          start,
+        );
+      }
       formatCharacters.add(char);
       starts.add(start);
       ends.add(end);

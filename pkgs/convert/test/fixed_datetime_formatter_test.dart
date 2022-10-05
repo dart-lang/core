@@ -87,9 +87,15 @@ void main() {
           microseconds: 1,
         )));
   }, onPlatform: skipWeb);
-  test('Parse 7 S throws', () {
+  test('7 S throws', () {
     expect(
-      () => FixedDateTimeFormatter('SSSSSSS').decode('0000010'),
+      () => FixedDateTimeFormatter('S' * 7),
+      throwsFormatException,
+    );
+  });
+  test('10 Y throws', () {
+    expect(
+      () => FixedDateTimeFormatter('Y' * 10),
       throwsFormatException,
     );
   });
@@ -132,6 +138,21 @@ void main() {
     var str = FixedDateTimeFormatter('XCCEY-MMX').encode(DateTime.utc(1996, 4));
     expect(str, 'X1996-04X');
   });
+  test('Format S 1/10 of a second', () {
+    var str = FixedDateTimeFormatter('S')
+        .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
+    expect(str, '1');
+  });
+  test('Format SS 1/100 of a second', () {
+    var str = FixedDateTimeFormatter('SS')
+        .encode(noFractionalSeconds.add(Duration(milliseconds: 10)));
+    expect(str, '01');
+  });
+  test('Format SSS 1/100 of a second', () {
+    var str = FixedDateTimeFormatter('SSS')
+        .encode(noFractionalSeconds.add(Duration(milliseconds: 10)));
+    expect(str, '010');
+  });
   test('Format SSSS no fractions', () {
     var str = FixedDateTimeFormatter('SSSS').encode(noFractionalSeconds);
     expect(str, '0000');
@@ -168,13 +189,13 @@ void main() {
     var str = FixedDateTimeFormatter('SSSSSS').encode(dateTime);
     expect(str, '001001');
   }, onPlatform: skipWeb);
-  test('Format SSSSSSS a microsecond', () {
-    var str = FixedDateTimeFormatter('SSSSSSS')
+  test('Format SSSSSS0 a microsecond', () {
+    var str = FixedDateTimeFormatter('SSSSSS0')
         .encode(noFractionalSeconds.add(Duration(microseconds: 1)));
     expect(str, '0000010');
   }, onPlatform: skipWeb);
-  test('Format SSSSSSS 1/10 of a second', () {
-    var str = FixedDateTimeFormatter('SSSSSSS')
+  test('Format SSSSSS0 1/10 of a second', () {
+    var str = FixedDateTimeFormatter('SSSSSS0')
         .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
     expect(str, '1000000');
   });
@@ -186,12 +207,12 @@ void main() {
     var str = FixedDateTimeFormatter('ssSSSSSS').encode(dateTime);
     expect(str, '01000001');
   }, onPlatform: skipWeb);
-  test('Parse ssSSSSSSS a second and a microsecond', () {
+  test('Parse ssSSSSSS0 a second and a microsecond', () {
     var dateTime = noFractionalSeconds.add(Duration(
       seconds: 1,
       microseconds: 1,
     ));
-    var str = FixedDateTimeFormatter('ssSSSSSSS').encode(dateTime);
+    var str = FixedDateTimeFormatter('ssSSSSSS0').encode(dateTime);
     expect(str, '010000010');
   }, onPlatform: skipWeb);
   test('Parse negative year throws', () {
