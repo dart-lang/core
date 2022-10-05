@@ -19,6 +19,8 @@
 /// * `s`	for “clock second”
 /// * `S`	for “fractional clock second”
 ///
+/// Note: Negative years are not supported.
+///
 /// Non-allowed characters in the format [pattern] are included when decoding a
 /// string, in this case `YYYY kiwi MM` is the same format string as
 /// `YYYY------MM`. When encoding a datetime, the non-format characters are in
