@@ -215,10 +215,10 @@ void main() {
     var str = FixedDateTimeFormatter('ssSSSSSS0').encode(dateTime);
     expect(str, '010000010');
   }, onPlatform: skipWeb);
-  test('Parse negative year throws', () {
+  test('Parse negative year throws Error', () {
     expect(
       () => FixedDateTimeFormatter('YYYY').encode(DateTime(-1)),
-      throwsFormatException,
+      throwsArgumentError,
     );
   });
 }
