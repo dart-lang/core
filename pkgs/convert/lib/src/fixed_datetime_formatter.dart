@@ -23,7 +23,7 @@
 ///
 /// Non-allowed characters in the format [pattern] are included when decoding a
 /// string, in this case `YYYY kiwi MM` is the same format string as
-/// `YYYY------MM`. When encoding a datetime, the non-format characters are in
+/// `YYYY------MM`. When encoding a [DateTime], the non-format characters are in
 /// the output verbatim.
 ///
 /// Note: this class differs from [DateFormat] in that here, the characters are
@@ -52,8 +52,7 @@ class FixedDateTimeFormatter {
   static const _secondCode = 0x73; /*s*/
   static const _fractionSecondCode = 0x53; /*S*/
 
-  /// The format pattern string of this formatter, stored publicly in case the
-  /// user wants to retrieve it.
+  /// The format pattern string of this formatter
   final String pattern;
 
   /// Whether to create UTC [DateTime] objects when parsing.
@@ -76,9 +75,8 @@ class FixedDateTimeFormatter {
   FixedDateTimeFormatter(this.pattern, {this.isUtc = true}) {
     int? currentCharacter;
     var start = 0;
-    var characters = pattern.codeUnits;
-    for (var i = 0; i < characters.length; i++) {
-      var formatCharacter = characters[i];
+    for (var i = 0; i < pattern.length; i++) {
+      var formatCharacter = pattern.codeUnitAt(i);
       if (currentCharacter != formatCharacter) {
         _blocks.saveBlock(currentCharacter, start, i);
         if (_validFormatCharacters.contains(formatCharacter)) {
@@ -104,8 +102,8 @@ class FixedDateTimeFormatter {
   /// Converts a [DateTime] to a [String] as specified by the [pattern].
   ///
   /// Throws a [FormatException] if trying to encode a negative year.
-  String encode(DateTime datetime) {
-    if (datetime.year < 0) {
+  String encode(DateTime dateTime) {
+    if (dateTime.year < 0) {
       throw FormatException("Cannot handle negative years.");
     }
     var buffer = StringBuffer();
@@ -120,7 +118,7 @@ class FixedDateTimeFormatter {
       }
       var formatCharacter = _blocks.formatCharacters[i];
       var number =
-          _extractNumFromDateTime(formatCharacter, datetime).toString();
+          _extractNumberFromDateTime(formatCharacter, dateTime).toString();
       if (formatCharacter == _fractionSecondCode) {
         // Special case, as we want fractional seconds to be the leading
         // digits.
@@ -148,7 +146,7 @@ class FixedDateTimeFormatter {
     return buffer.toString();
   }
 
-  int _extractNumFromDateTime(int? formatChar, DateTime dateTime) {
+  int _extractNumberFromDateTime(int? formatChar, DateTime dateTime) {
     switch (formatChar) {
       case _yearCode:
         return dateTime.year;
@@ -199,10 +197,7 @@ class FixedDateTimeFormatter {
     bool isUtc,
     bool throwOnError,
   ) {
-    var characters = formattedDateTime.codeUnits;
     var year = 0;
-    var century = 0;
-    var decade = 0;
     var month = 1;
     var day = 1;
     var hour = 0;
@@ -211,7 +206,7 @@ class FixedDateTimeFormatter {
     var microsecond = 0;
     for (var i = 0; i < _blocks.length; i++) {
       var formatCharacter = _blocks.formatCharacters[i];
-      var number = _extractNumFromString(characters, i, throwOnError);
+      var number = _extractNumberFromString(formattedDateTime, i, throwOnError);
       if (number != null) {
         if (formatCharacter == _fractionSecondCode) {
           // Special case, as we want fractional seconds to be the leading
@@ -220,7 +215,10 @@ class FixedDateTimeFormatter {
           if (numberLength > 6) {
             if (throwOnError) {
               throw FormatException(
-                  'Fractional seconds can only be specified up to microseconds');
+                'Fractional seconds can only be specified up to microseconds',
+                pattern,
+                _blocks.starts[i],
+              );
             } else {
               return null;
             }
@@ -229,13 +227,13 @@ class FixedDateTimeFormatter {
         }
         switch (formatCharacter) {
           case _yearCode:
-            year = number;
+            year += number;
             break;
           case _centuryCode:
-            century = number;
+            year += number * 100;
             break;
           case _decadeCode:
-            decade = number;
+            year += number * 10;
             break;
           case _monthCode:
             month = number;
@@ -260,10 +258,9 @@ class FixedDateTimeFormatter {
         return null;
       }
     }
-    var totalYear = year + 100 * century + 10 * decade;
     if (isUtc) {
       return DateTime.utc(
-        totalYear,
+        year,
         month,
         day,
         hour,
@@ -274,7 +271,7 @@ class FixedDateTimeFormatter {
       );
     } else {
       return DateTime(
-        totalYear,
+        year,
         month,
         day,
         hour,
@@ -286,27 +283,33 @@ class FixedDateTimeFormatter {
     }
   }
 
-  int? _extractNumFromString(
-    List<int> characters,
+  int? _extractNumberFromString(
+    String formattedDateTime,
     int index,
     bool throwOnError,
   ) {
     var parsed = tryParse(
-      characters,
+      formattedDateTime,
       _blocks.starts[index],
       _blocks.ends[index],
     );
     if (parsed == null && throwOnError) {
       throw FormatException(
-          '${String.fromCharCodes(characters)} should only contain digits');
+        "Expected digits at ${formattedDateTime.substring(
+          _blocks.starts[index],
+          _blocks.ends[index],
+        )}",
+        formattedDateTime,
+        _blocks.starts[index],
+      );
     }
     return parsed;
   }
 
-  int? tryParse(List<int> characters, int start, int end) {
-    int result = 0;
+  int? tryParse(String formattedDateTime, int start, int end) {
+    var result = 0;
     for (var i = start; i < end; i++) {
-      var digit = characters[i] ^ 0x30;
+      var digit = formattedDateTime.codeUnitAt(i) ^ 0x30;
       if (digit <= 9) {
         result = result * 10 + digit;
       } else {

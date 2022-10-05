@@ -5,22 +5,14 @@
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:convert/convert.dart';
 
-/// This class tests the implementation speed of
-/// _DateFormatPatternField::nextInteger, which is assumed to be called often and
-/// thus being performance-critical.
+/// test the performance of [FixedDateTimeFormatter.decode]
 class DecodeBenchmark extends BenchmarkBase {
-  late String result;
-  late FixedDateTimeFormatter fixedDateTimeFormatter;
-  DecodeBenchmark() : super('Parse a million strings to datetime');
-
-  @override
-  void setup() {
-    fixedDateTimeFormatter = FixedDateTimeFormatter("YYYYMMDDhhmmss");
-  }
+  final fixedDateTimeFormatter = FixedDateTimeFormatter("YYYYMMDDhhmmss");
+  DecodeBenchmark() : super('Parse a million strings to DateTime');
 
   @override
   void run() {
-    for (var i = 0; i < 1000000; i++) {
+    for (var i = 0; i < 100000; i++) {
       fixedDateTimeFormatter.decode('19960425050322');
     }
   }
