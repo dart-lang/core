@@ -5,14 +5,14 @@
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:convert/convert.dart';
 
-/// test the performance of [FixedDateTimeFormatter.decode]
+/// Test the performance of [FixedDateTimeFormatter.decode].
 class DecodeBenchmark extends BenchmarkBase {
   final fixedDateTimeFormatter = FixedDateTimeFormatter("YYYYMMDDhhmmss");
-  DecodeBenchmark() : super('Parse a million strings to DateTime');
+  DecodeBenchmark() : super('Parse 10k strings to DateTime');
 
   @override
   void run() {
-    for (var i = 0; i < 100000; i++) {
+    for (var i = 0; i < 10000; i++) {
       fixedDateTimeFormatter.decode('19960425050322');
     }
   }
