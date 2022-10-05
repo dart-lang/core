@@ -6,7 +6,8 @@ import 'package:convert/src/fixed_datetime_formatter.dart';
 import 'package:test/test.dart';
 
 void main() {
-  //decode
+  DateTime noFractionalSeconds = DateTime.utc(0, 1, 1, 0, 0, 0);
+  // Testing `decode`.
   test('Parse only year', () {
     var time = FixedDateTimeFormatter('YYYY').decode('1996');
     expect(time, DateTime.utc(1996));
@@ -44,25 +45,49 @@ void main() {
         FixedDateTimeFormatter('YYYYMMDDhhmmssSSS').decode('19960425050322533');
     expect(time, DateTime.utc(1996, 4, 25, 5, 3, 22, 533));
   });
-  test('Parse S', () {
+  test('Parse S 1/10 of a second', () {
     var time = FixedDateTimeFormatter('S').decode('1');
-    expect(time, DateTime.utc(0, 1, 1, 0, 0, 0, 100, 0));
+    expect(time, noFractionalSeconds.add(Duration(milliseconds: 100)));
   });
-  test('Parse SS', () {
+  test('Parse SS 1/100 of a second', () {
     var time = FixedDateTimeFormatter('SS').decode('01');
-    expect(time, DateTime.utc(0, 1, 1, 0, 0, 0, 10, 0));
+    expect(time, noFractionalSeconds.add(Duration(milliseconds: 10)));
   });
-  test('Parse SSS', () {
+  test('Parse SSS a millisecond', () {
     var time = FixedDateTimeFormatter('SSS').decode('001');
-    expect(time, DateTime.utc(0, 1, 1, 0, 0, 0, 1, 0));
+    expect(time, noFractionalSeconds.add(Duration(milliseconds: 1)));
   });
-  test('Parse SSSSSS', () {
+  test('Parse SSSSSS a microsecond', () {
     var time = FixedDateTimeFormatter('SSSSSS').decode('000001');
-    expect(time, DateTime.utc(0, 1, 1, 0, 0, 0, 0, 1));
+    expect(time, noFractionalSeconds.add(Duration(microseconds: 1)));
   });
-  test('Parse SSSSSS 2', () {
+  test('Parse SSSSSS a millisecond', () {
     var time = FixedDateTimeFormatter('SSSSSS').decode('001000');
-    expect(time, DateTime.utc(0, 1, 1, 0, 0, 0, 1, 0));
+    expect(time, noFractionalSeconds.add(Duration(milliseconds: 1)));
+  });
+  test('Parse SSSSSS a millisecond and a microsecond', () {
+    var time = FixedDateTimeFormatter('SSSSSS').decode('001001');
+    expect(
+        time,
+        noFractionalSeconds.add(Duration(
+          milliseconds: 1,
+          microseconds: 1,
+        )));
+  });
+  test('Parse ssSSSSSS a second and a microsecond', () {
+    var time = FixedDateTimeFormatter('ssSSSSSS').decode('01000001');
+    expect(
+        time,
+        noFractionalSeconds.add(Duration(
+          seconds: 1,
+          microseconds: 1,
+        )));
+  });
+  test('Parse 7 S throws', () {
+    expect(
+      () => FixedDateTimeFormatter('SSSSSSS').decode('0000010'),
+      throwsFormatException,
+    );
   });
   test('Parse hex year throws', () {
     expect(
@@ -70,35 +95,105 @@ void main() {
       throwsFormatException,
     );
   });
-  //tryDecode
+  // Testing `tryDecode`.
   test('Try parse year', () {
     var time = FixedDateTimeFormatter('YYYY').tryDecode('1996');
     expect(time, DateTime.utc(1996));
   });
-  test('Try parse hex year return default', () {
+  test('Try parse hex year returns null', () {
     var time = FixedDateTimeFormatter('YYYY').tryDecode('0xAB');
-    expect(time, DateTime.utc(0));
+    expect(time, null);
   });
-  test('Try parse invalid returns default', () {
+  test('Try parse invalid returns null', () {
     var time = FixedDateTimeFormatter('YYYY').tryDecode('1x96');
-    expect(time, DateTime.utc(0));
+    expect(time, null);
   });
-  //encode
+  // Testing `encode`.
   test('Format simple', () {
     var time = DateTime.utc(1996, 1);
-    expect('1996 kiwi 01', FixedDateTimeFormatter('YYYY kiwi MM').encode(time));
+    expect(FixedDateTimeFormatter('YYYY kiwi MM').encode(time), '1996 kiwi 01');
   });
   test('Format YYYYMMDDhhmmss', () {
-    var str = FixedDateTimeFormatter('YYYYMMDDhhmmss')
-        .encode(DateTime.utc(1996, 4, 25, 5, 3, 22));
-    expect('19960425050322', str);
+    var time = DateTime.utc(1996, 4, 25, 5, 3, 22);
+    expect(
+      FixedDateTimeFormatter('YYYYMMDDhhmmss').encode(time),
+      '19960425050322',
+    );
   });
   test('Format CCEY-MM', () {
     var str = FixedDateTimeFormatter('CCEY-MM').encode(DateTime.utc(1996, 4));
-    expect('1996-04', str);
+    expect(str, '1996-04');
   });
   test('Format XCCEY-MMX', () {
     var str = FixedDateTimeFormatter('XCCEY-MMX').encode(DateTime.utc(1996, 4));
-    expect('X1996-04X', str);
+    expect(str, 'X1996-04X');
+  });
+  test('Format SSSS no fractions', () {
+    var str = FixedDateTimeFormatter('SSSS').encode(noFractionalSeconds);
+    expect(str, '0000');
+  });
+  test('Format SSSSSS no fractions', () {
+    var str = FixedDateTimeFormatter('SSSSSS').encode(noFractionalSeconds);
+    expect(str, '000000');
+  });
+  test('Format SSSS 1/10 of a second', () {
+    var str = FixedDateTimeFormatter('SSSS')
+        .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
+    expect(str, '1000');
+  });
+  test('Format SSSS 1/100 of a second', () {
+    var str = FixedDateTimeFormatter('SSSS')
+        .encode(noFractionalSeconds.add(Duration(milliseconds: 10)));
+    expect(str, '0100');
+  });
+  test('Format SSSS a millisecond', () {
+    var str = FixedDateTimeFormatter('SSSS')
+        .encode(noFractionalSeconds.add(Duration(milliseconds: 1)));
+    expect(str, '0010');
+  });
+  test('Format SSSSSS a microsecond', () {
+    var str = FixedDateTimeFormatter('SSSSSS')
+        .encode(noFractionalSeconds.add(Duration(microseconds: 1)));
+    expect(str, '000001');
+  });
+  test('Format SSSSSS a millisecond and a microsecond', () {
+    var dateTime = noFractionalSeconds.add(Duration(
+      milliseconds: 1,
+      microseconds: 1,
+    ));
+    var str = FixedDateTimeFormatter('SSSSSS').encode(dateTime);
+    expect(str, '001001');
+  });
+  test('Format SSSSSSS a microsecond', () {
+    var str = FixedDateTimeFormatter('SSSSSSS')
+        .encode(noFractionalSeconds.add(Duration(microseconds: 1)));
+    expect(str, '0000010');
+  });
+  test('Format SSSSSSS 1/10 of a second', () {
+    var str = FixedDateTimeFormatter('SSSSSSS')
+        .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
+    expect(str, '1000000');
+  });
+  test('Parse ssSSSSSS a second and a microsecond', () {
+    var dateTime = noFractionalSeconds.add(Duration(
+      seconds: 1,
+      microseconds: 1,
+    ));
+    var str = FixedDateTimeFormatter('ssSSSSSS').encode(dateTime);
+    expect(str, '01000001');
+  });
+  test('Parse ssSSSSSSS a second and a microsecond', () {
+    var dateTime = noFractionalSeconds.add(Duration(
+      seconds: 1,
+      microseconds: 1,
+    ));
+    var str = FixedDateTimeFormatter('ssSSSSSSS').encode(dateTime);
+    expect(str, '010000010');
+  });
+  test('Parse negative year throws', () {
+    expect(
+      () => FixedDateTimeFormatter('YYYY').encode(DateTime(-1)),
+      throwsFormatException,
+    );
   });
 }
