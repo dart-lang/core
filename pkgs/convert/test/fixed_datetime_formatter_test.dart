@@ -153,7 +153,7 @@ void main() {
   });
   test('Format SSSSSS a microsecond', () {
     var str = FixedDateTimeFormatter('SSSSSS')
-        .encode(noFractionalSeconds.add(Duration(microseconds: 1)));
+        .encode(DateTime.utc(0, 1, 1, 0, 0, 0, 0, 1));
     expect(str, '000001');
   });
   test('Format SSSSSS a millisecond and a microsecond', () {
