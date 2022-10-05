@@ -7,6 +7,10 @@ import 'package:test/test.dart';
 
 void main() {
   DateTime noFractionalSeconds = DateTime.utc(0, 1, 1, 0, 0, 0);
+  Map<String, Skip> skipWeb = {
+    'js': Skip(
+        'Web does not support microseconds (see https://github.com/dart-lang/sdk/issues/44876)')
+  };
   // Testing `decode`.
   test('Parse only year', () {
     var time = FixedDateTimeFormatter('YYYY').decode('1996');
@@ -60,7 +64,7 @@ void main() {
   test('Parse SSSSSS a microsecond', () {
     var time = FixedDateTimeFormatter('SSSSSS').decode('000001');
     expect(time, noFractionalSeconds.add(Duration(microseconds: 1)));
-  });
+  }, onPlatform: skipWeb);
   test('Parse SSSSSS a millisecond', () {
     var time = FixedDateTimeFormatter('SSSSSS').decode('001000');
     expect(time, noFractionalSeconds.add(Duration(milliseconds: 1)));
@@ -73,7 +77,7 @@ void main() {
           milliseconds: 1,
           microseconds: 1,
         )));
-  });
+  }, onPlatform: skipWeb);
   test('Parse ssSSSSSS a second and a microsecond', () {
     var time = FixedDateTimeFormatter('ssSSSSSS').decode('01000001');
     expect(
@@ -82,7 +86,7 @@ void main() {
           seconds: 1,
           microseconds: 1,
         )));
-  });
+  }, onPlatform: skipWeb);
   test('Parse 7 S throws', () {
     expect(
       () => FixedDateTimeFormatter('SSSSSSS').decode('0000010'),
@@ -155,10 +159,7 @@ void main() {
     var str = FixedDateTimeFormatter('SSSSSS')
         .encode(DateTime.utc(0, 1, 1, 0, 0, 0, 0, 1));
     expect(str, '000001');
-  });
-  test('Browsers know microseconds', () {
-    expect(DateTime.utc(0, 1, 1, 0, 0, 0, 0, 1).microsecond, 1);
-  });
+  }, onPlatform: skipWeb);
   test('Format SSSSSS a millisecond and a microsecond', () {
     var dateTime = noFractionalSeconds.add(Duration(
       milliseconds: 1,
@@ -166,12 +167,12 @@ void main() {
     ));
     var str = FixedDateTimeFormatter('SSSSSS').encode(dateTime);
     expect(str, '001001');
-  });
+  }, onPlatform: skipWeb);
   test('Format SSSSSSS a microsecond', () {
     var str = FixedDateTimeFormatter('SSSSSSS')
         .encode(noFractionalSeconds.add(Duration(microseconds: 1)));
     expect(str, '0000010');
-  });
+  }, onPlatform: skipWeb);
   test('Format SSSSSSS 1/10 of a second', () {
     var str = FixedDateTimeFormatter('SSSSSSS')
         .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
@@ -184,7 +185,7 @@ void main() {
     ));
     var str = FixedDateTimeFormatter('ssSSSSSS').encode(dateTime);
     expect(str, '01000001');
-  });
+  }, onPlatform: skipWeb);
   test('Parse ssSSSSSSS a second and a microsecond', () {
     var dateTime = noFractionalSeconds.add(Duration(
       seconds: 1,
@@ -192,7 +193,7 @@ void main() {
     ));
     var str = FixedDateTimeFormatter('ssSSSSSSS').encode(dateTime);
     expect(str, '010000010');
-  });
+  }, onPlatform: skipWeb);
   test('Parse negative year throws', () {
     expect(
       () => FixedDateTimeFormatter('YYYY').encode(DateTime(-1)),
