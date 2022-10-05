@@ -26,9 +26,11 @@
 /// `YYYY------MM`. When encoding a [DateTime], the non-format characters are in
 /// the output verbatim.
 ///
-/// Note: this class differs from [DateFormat] in that here, the characters are
-/// treated literally, i.e., the format string `YYY` matching `996` would result
-/// in the same as calling `DateTime(996)`.
+/// Note: this class differs from [DateFormat] in that here, the format
+/// character count is interpreted literally. For example, using the format
+/// string `YYY` to decode the string `996` would result in the same [DateTime]
+/// as calling `DateTime(996)`, and the same format string used to encode the
+/// `DateTime(1996)` would output only the three digits 996.
 class FixedDateTimeFormatter {
   static const _powersOfTen = [1, 10, 100, 1000, 10000, 100000];
   static const _validFormatCharacters = [
@@ -52,7 +54,7 @@ class FixedDateTimeFormatter {
   static const _secondCode = 0x73; /*s*/
   static const _fractionSecondCode = 0x53; /*S*/
 
-  /// The format pattern string of this formatter
+  /// The format pattern string of this formatter.
   final String pattern;
 
   /// Whether to create UTC [DateTime] objects when parsing.
@@ -101,10 +103,14 @@ class FixedDateTimeFormatter {
 
   /// Converts a [DateTime] to a [String] as specified by the [pattern].
   ///
-  /// Throws a [FormatException] if trying to encode a negative year.
+  /// The [dateTime.year] must not be negative.
   String encode(DateTime dateTime) {
     if (dateTime.year < 0) {
-      throw FormatException('Cannot handle negative years.');
+      throw ArgumentError.value(
+        dateTime,
+        'dateTime',
+        'Year must not be negative',
+      );
     }
     var buffer = StringBuffer();
     for (var i = 0; i < _blocks.length; i++) {
