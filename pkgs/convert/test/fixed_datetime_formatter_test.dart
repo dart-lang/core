@@ -156,6 +156,9 @@ void main() {
         .encode(DateTime.utc(0, 1, 1, 0, 0, 0, 0, 1));
     expect(str, '000001');
   });
+  test('Browsers know microseconds', () {
+    expect(DateTime.utc(0, 1, 1, 0, 0, 0, 0, 1).microsecond, 1);
+  });
   test('Format SSSSSS a millisecond and a microsecond', () {
     var dateTime = noFractionalSeconds.add(Duration(
       milliseconds: 1,
