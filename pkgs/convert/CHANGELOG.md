@@ -1,5 +1,6 @@
-## 3.0.3-dev
+## 3.1.0-dev
 
+* Add a fixed-pattern DateTime formatter. See [#210](https://github.com/dart-lang/intl/issues/210) in package:intl.
 
 ## 3.0.2
 
