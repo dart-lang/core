@@ -2,160 +2,161 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:convert";
-import "dart:typed_data";
+import 'dart:convert';
+import 'dart:typed_data';
 
 /// The ISO-8859-2/Latin-2 (Eastern European) code page.
 final CodePage latin2 =
-    CodePage._bmp("latin-2", "$_ascii$_noControls$_top8859_2");
+    CodePage._bmp('latin-2', '$_ascii$_noControls$_top8859_2');
 
 /// The ISO-8859-3/Latin-3 (South European) code page.
 final CodePage latin3 =
-    CodePage._bmp("latin-3", "$_ascii$_noControls$_top8859_3");
+    CodePage._bmp('latin-3', '$_ascii$_noControls$_top8859_3');
 
 /// The ISO-8859-4/Latin-4 (North European) code page.
 final CodePage latin4 =
-    CodePage._bmp("latin-4", "$_ascii$_noControls$_top8859_4");
+    CodePage._bmp('latin-4', '$_ascii$_noControls$_top8859_4');
 
 /// The ISO-8859-5/Latin-Cyrillic code page.
 final CodePage latinCyrillic =
-    CodePage._bmp("cyrillic", "$_ascii$_noControls$_top8859_5");
+    CodePage._bmp('cyrillic', '$_ascii$_noControls$_top8859_5');
 
 /// The ISO-8859-6/Latin-Arabic code page.
 final CodePage latinArabic =
-    CodePage._bmp("arabic", "$_ascii$_noControls$_top8859_6");
+    CodePage._bmp('arabic', '$_ascii$_noControls$_top8859_6');
 
 /// The ISO-8859-7/Latin-Greek code page.
 final CodePage latinGreek =
-    CodePage._bmp("greek", "$_ascii$_noControls$_top8859_7");
+    CodePage._bmp('greek', '$_ascii$_noControls$_top8859_7');
 
 /// The ISO-8859-7/Latin-Hebrew code page.
 final CodePage latinHebrew =
-    CodePage._bmp("hebrew", "$_ascii$_noControls$_top8859_8");
+    CodePage._bmp('hebrew', '$_ascii$_noControls$_top8859_8');
 
 /// The ISO-8859-9/Latin-5 (Turkish) code page.
 final CodePage latin5 =
-    CodePage._bmp("latin-5", "$_ascii$_noControls$_top8859_9");
+    CodePage._bmp('latin-5', '$_ascii$_noControls$_top8859_9');
 
 /// The ISO-8859-10/Latin-6 (Nordic) code page.
 final CodePage latin6 =
-    CodePage._bmp("latin-6", "$_ascii$_noControls$_top8859_10");
+    CodePage._bmp('latin-6', '$_ascii$_noControls$_top8859_10');
 
 /// The ISO-8859-11/Latin-Thai code page.
 final CodePage latinThai =
-    CodePage._bmp("tis620", "$_ascii$_noControls$_top8859_11");
+    CodePage._bmp('tis620', '$_ascii$_noControls$_top8859_11');
 
 /// The ISO-8859-13/Latin-6 (Baltic Rim) code page.
 final CodePage latin7 =
-    CodePage._bmp("latin-7", "$_ascii$_noControls$_top8859_13");
+    CodePage._bmp('latin-7', '$_ascii$_noControls$_top8859_13');
 
 /// The ISO-8859-14/Latin-8 (Celtic) code page.
 final CodePage latin8 =
-    CodePage._bmp("latin-8", "$_ascii$_noControls$_top8859_14");
+    CodePage._bmp('latin-8', '$_ascii$_noControls$_top8859_14');
 
 /// The ISO-8859-15/Latin-9 (Western European revised) code page.
 final CodePage latin9 =
-    CodePage._bmp("latin-9", "$_ascii$_noControls$_top8859_15");
+    CodePage._bmp('latin-9', '$_ascii$_noControls$_top8859_15');
 
 /// The ISO-8859-16/Latin-10 (South Eastern European) code page.
 final CodePage latin10 =
-    CodePage._bmp("latin-10", "$_ascii$_noControls$_top8859_16");
+    CodePage._bmp('latin-10', '$_ascii$_noControls$_top8859_16');
 
 /// Characters in ISO-8859-2 above the ASCII and top control characters.
-const _top8859_2 = "\xa0Ą˘Ł¤ĽŚ§¨ŠŞŤŹ\xadŽŻ°ą˛ł´ľśˇ¸šşťź˝žż"
-    "ŔÁÂĂÄĹĆÇČÉĘËĚÍÎĎĐŃŇÓÔŐÖ×ŘŮÚŰÜÝŢß"
-    "ŕáâăäĺćçčéęëěíîďđńňóôőö÷řůúűüýţ˙";
+const _top8859_2 = '\xa0Ą˘Ł¤ĽŚ§¨ŠŞŤŹ\xadŽŻ°ą˛ł´ľśˇ¸šşťź˝žż'
+    'ŔÁÂĂÄĹĆÇČÉĘËĚÍÎĎĐŃŇÓÔŐÖ×ŘŮÚŰÜÝŢß'
+    'ŕáâăäĺćçčéęëěíîďđńňóôőö÷řůúűüýţ˙';
 
 /// Characters in ISO-8859-3 above the ASCII and top control characters.
-const _top8859_3 = "\xa0Ħ˘£\uFFFD¤Ĥ§¨İŞĞĴ\xad\uFFFDŻ°ħ²³´µĥ·¸ışğĵ½\uFFFDż"
-    "ÀÁÂ\uFFFDÄĊĈÇÈÉÊËÌÍÎÏ\uFFFDÑÒÓÔĠÖ×ĜÙÚÛÜŬŜß"
-    "àáâ\uFFFDäċĉçèéêëìíîï\uFFFDñòóôġö÷ĝùúûüŭŝ˙";
+const _top8859_3 = '\xa0Ħ˘£\uFFFD¤Ĥ§¨İŞĞĴ\xad\uFFFDŻ°ħ²³´µĥ·¸ışğĵ½\uFFFDż'
+    'ÀÁÂ\uFFFDÄĊĈÇÈÉÊËÌÍÎÏ\uFFFDÑÒÓÔĠÖ×ĜÙÚÛÜŬŜß'
+    'àáâ\uFFFDäċĉçèéêëìíîï\uFFFDñòóôġö÷ĝùúûüŭŝ˙';
 
 /// Characters in ISO-8859-4 above the ASCII and top control characters.
-const _top8859_4 = "\xa0ĄĸŖ¤ĨĻ§¨ŠĒĢŦ\xadŽ¯°ą˛ŗ´ĩļˇ¸šēģŧŊžŋ"
-    "ĀÁÂÃÄÅÆĮČÉĘËĖÍÎĪĐŅŌĶÔÕÖ×ØŲÚÛÜŨŪß"
-    "āáâãäåæįčéęëėíîīđņōķôõö÷øųúûüũū˙";
+const _top8859_4 = '\xa0ĄĸŖ¤ĨĻ§¨ŠĒĢŦ\xadŽ¯°ą˛ŗ´ĩļˇ¸šēģŧŊžŋ'
+    'ĀÁÂÃÄÅÆĮČÉĘËĖÍÎĪĐŅŌĶÔÕÖ×ØŲÚÛÜŨŪß'
+    'āáâãäåæįčéęëėíîīđņōķôõö÷øųúûüũū˙';
 
 /// Characters in ISO-8859-5 above the ASCII and top control characters.
-const _top8859_5 = "\xa0ЁЂЃЄЅІЇЈЉЊЋЌ\xadЎЏАБВГДЕЖЗИЙКЛМНОП"
-    "РСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмноп"
-    "рстуфхцчшщъыьэюя№ёђѓєѕіїјљњћќ§ўџ";
+const _top8859_5 = '\xa0ЁЂЃЄЅІЇЈЉЊЋЌ\xadЎЏАБВГДЕЖЗИЙКЛМНОП'
+    'РСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмноп'
+    'рстуфхцчшщъыьэюя№ёђѓєѕіїјљњћќ§ўџ';
 
 /// Characters in ISO-8859-6 above the ASCII and top control characters.
-const _top8859_6 = "\xa0\uFFFD\uFFFD\uFFFD¤\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\u060c\xad\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\u061b\uFFFD\uFFFD\uFFFD\u061f"
-    "\uFFFD\u0621\u0622\u0623\u0624\u0625\u0626\u0627"
-    "\u0628\u0629\u062a\u062b\u062c\u062d\u062e\u062f"
-    "\u0630\u0631\u0632\u0633\u0634\u0635\u0636\u0637"
-    "\u0638\u0639\u063a\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\u0640\u0641\u0642\u0643\u0644\u0645\u0646\u0647"
-    "\u0648\u0649\u064a\u064b\u064c\u064d\u064e\u064f"
-    "\u0650\u0651\u0652\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD";
+const _top8859_6 = '\xa0\uFFFD\uFFFD\uFFFD¤\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\u060c\xad\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\u061b\uFFFD\uFFFD\uFFFD\u061f'
+    '\uFFFD\u0621\u0622\u0623\u0624\u0625\u0626\u0627'
+    '\u0628\u0629\u062a\u062b\u062c\u062d\u062e\u062f'
+    '\u0630\u0631\u0632\u0633\u0634\u0635\u0636\u0637'
+    '\u0638\u0639\u063a\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\u0640\u0641\u0642\u0643\u0644\u0645\u0646\u0647'
+    '\u0648\u0649\u064a\u064b\u064c\u064d\u064e\u064f'
+    '\u0650\u0651\u0652\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD';
 
 /// Characters in ISO-8859-7 above the ASCII and top control characters.
-const _top8859_7 = "\xa0‘’£€₯¦§¨©ͺ«¬\xad\uFFFD―°±²³΄΅Ά·ΈΉΊ»Ό½ΎΏ"
-    "ΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡ\uFFFDΣΤΥΦΧΨΩΪΫάέήί"
-    "ΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώ\uFFFD";
+const _top8859_7 = '\xa0‘’£€₯¦§¨©ͺ«¬\xad\uFFFD―°±²³΄΅Ά·ΈΉΊ»Ό½ΎΏ'
+    'ΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡ\uFFFDΣΤΥΦΧΨΩΪΫάέήί'
+    'ΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώ\uFFFD';
 
 /// Characters in ISO-8859-8 above the ASCII and top control characters.
-const _top8859_8 = "\xa0\uFFFD¢£¤¥¦§¨©×«¬\xad®¯°±²³´µ¶·¸¹÷»¼½¾\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD‗"
-    "\u05d0\u05d1\u05d2\u05d3\u05d4\u05d5\u05d6\u05d7"
-    "\u05d8\u05d9\u05da\u05db\u05dc\u05dd\u05de\u05df"
-    "\u05e0\u05e1\u05e2\u05e3\u05e4\u05e5\u05e6\u05e7"
-    "\u05e8\u05e9\u05ea\uFFFD\uFFFD\u200e\u200f\uFFFD";
+const _top8859_8 = '\xa0\uFFFD¢£¤¥¦§¨©×«¬\xad®¯°±²³´µ¶·¸¹÷»¼½¾\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD‗'
+    '\u05d0\u05d1\u05d2\u05d3\u05d4\u05d5\u05d6\u05d7'
+    '\u05d8\u05d9\u05da\u05db\u05dc\u05dd\u05de\u05df'
+    '\u05e0\u05e1\u05e2\u05e3\u05e4\u05e5\u05e6\u05e7'
+    '\u05e8\u05e9\u05ea\uFFFD\uFFFD\u200e\u200f\uFFFD';
 
 /// Characters in ISO-8859-9 above the ASCII and top control characters.
-const _top8859_9 = "\xa0¡¢£¤¥¦§¨©ª«¬\xad®¯°±²³´µ¶·¸¹º»¼½¾¿"
-    "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß"
-    "àáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ";
+const _top8859_9 = '\xa0¡¢£¤¥¦§¨©ª«¬\xad®¯°±²³´µ¶·¸¹º»¼½¾¿'
+    'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß'
+    'àáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ';
 
 /// Characters in ISO-8859-10 above the ASCII and top control characters.
-const _top8859_10 = "\xa0ĄĒĢĪĨĶ§ĻĐŠŦŽ\xadŪŊ°ąēģīĩķ·ļđšŧž―ūŋ"
-    "ĀÁÂÃÄÅÆĮČÉĘËĖÍÎÏÐŅŌÓÔÕÖŨØŲÚÛÜÝÞß"
-    "āáâãäåæįčéęëėíîïðņōóôõöũøųúûüýþĸ";
+const _top8859_10 = '\xa0ĄĒĢĪĨĶ§ĻĐŠŦŽ\xadŪŊ°ąēģīĩķ·ļđšŧž―ūŋ'
+    'ĀÁÂÃÄÅÆĮČÉĘËĖÍÎÏÐŅŌÓÔÕÖŨØŲÚÛÜÝÞß'
+    'āáâãäåæįčéęëėíîïðņōóôõöũøųúûüýþĸ';
 
 /// Characters in ISO-8859-11 above the ASCII and top control characters.
-const _top8859_11 = "\xa0กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟ"
-    "ภมยรฤลฦวศษสหฬอฮฯะัาำิีึืฺุู\uFFFD\uFFFD\uFFFD\uFFFD฿"
-    "เแโใไๅๆ็่้๊๋์ํ๎๏๐๑๒๓๔๕๖๗๘๙๚๛\uFFFD\uFFFD\uFFFD\uFFFD";
+const _top8859_11 = '\xa0กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟ'
+    'ภมยรฤลฦวศษสหฬอฮฯะัาำิีึืฺุู\uFFFD\uFFFD\uFFFD\uFFFD฿'
+    'เแโใไๅๆ็่้๊๋์ํ๎๏๐๑๒๓๔๕๖๗๘๙๚๛\uFFFD\uFFFD\uFFFD\uFFFD';
 
 /// Characters in ISO-8859-13 above the ASCII and top control characters.
-const _top8859_13 = "\xa0”¢£¤„¦§Ø©Ŗ«¬\xad®Æ°±²³“µ¶·ø¹ŗ»¼½¾æ"
-    "ĄĮĀĆÄÅĘĒČÉŹĖĢĶĪĻŠŃŅÓŌÕÖ×ŲŁŚŪÜŻŽß"
-    "ąįāćäåęēčéźėģķīļšńņóōõö÷ųłśūüżž’";
+const _top8859_13 = '\xa0”¢£¤„¦§Ø©Ŗ«¬\xad®Æ°±²³“µ¶·ø¹ŗ»¼½¾æ'
+    'ĄĮĀĆÄÅĘĒČÉŹĖĢĶĪĻŠŃŅÓŌÕÖ×ŲŁŚŪÜŻŽß'
+    'ąįāćäåęēčéźėģķīļšńņóōõö÷ųłśūüżž’';
 
 /// Characters in ISO-8859-14 above the ASCII and top control characters.
-const _top8859_14 = "\xa0Ḃḃ£ĊċḊ§Ẁ©ẂḋỲ\xad®ŸḞḟĠġṀṁ¶ṖẁṗẃṠỳẄẅṡ"
-    "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏŴÑÒÓÔÕÖṪØÙÚÛÜÝŶß"
-    "àáâãäåæçèéêëìíîïŵñòóôõöṫøùúûüýŷÿ";
+const _top8859_14 = '\xa0Ḃḃ£ĊċḊ§Ẁ©ẂḋỲ\xad®ŸḞḟĠġṀṁ¶ṖẁṗẃṠỳẄẅṡ'
+    'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏŴÑÒÓÔÕÖṪØÙÚÛÜÝŶß'
+    'àáâãäåæçèéêëìíîïŵñòóôõöṫøùúûüýŷÿ';
 
 /// Characters in ISO-8859-15 above the ASCII and top control characters.
-const _top8859_15 = "\xa0¡¢£€¥Š§š©ª«¬\xad®¯°±²³Žµ¶·ž¹º»ŒœŸ¿"
-    "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß"
-    "àáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
+const _top8859_15 = '\xa0¡¢£€¥Š§š©ª«¬\xad®¯°±²³Žµ¶·ž¹º»ŒœŸ¿'
+    'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß'
+    'àáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ';
 
 /// Characters in ISO-8859-16 above the ASCII and top control characters.
-const _top8859_16 = "\xa0ĄąŁ€„Š§š©Ș«Ź\xadźŻ°±ČłŽ”¶·žčș»ŒœŸż"
-    "ÀÁÂĂÄĆÆÇÈÉÊËÌÍÎÏĐŃÒÓÔŐÖŚŰÙÚÛÜĘȚß"
-    "àáâăäćæçèéêëìíîïđńòóôőöśűùúûüęțÿ";
+const _top8859_16 = '\xa0ĄąŁ€„Š§š©Ș«Ź\xadźŻ°±ČłŽ”¶·žčș»ŒœŸż'
+    'ÀÁÂĂÄĆÆÇÈÉÊËÌÍÎÏĐŃÒÓÔŐÖŚŰÙÚÛÜĘȚß'
+    'àáâăäćæçèéêëìíîïđńòóôőöśűùúûüęțÿ';
 
-const _noControls = "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD"
-    "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD";
+const _noControls = '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD'
+    '\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD';
 
 /// ASCII characters without control characters. Shared by many code pages.
-const _ascii = "$_noControls"
+const _ascii = '$_noControls'
+    // ignore: missing_whitespace_between_adjacent_strings
     r""" !"#$%&'()*+,-./0123456789:;<=>?"""
-    r"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_"
-    "`abcdefghijklmnopqrstuvwxyz{|}~\uFFFD";
+    r'@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'
+    '`abcdefghijklmnopqrstuvwxyz{|}~\uFFFD';
 
 /// A mapping between bytes and characters.
 ///
@@ -184,7 +185,7 @@ class CodePage extends Encoding {
   ///
   /// The [characters] must contain precisely 256 characters (code points).
   ///
-  /// A U+FFFD (invalid character) entry in [character] means that the
+  /// A U+FFFD (invalid character) entry in [characters] means that the
   /// corresponding byte does not have a definition in this code page.
   CodePage._general(this.name, String characters)
       : decoder = _createDecoder(characters);
@@ -198,7 +199,7 @@ class CodePage extends Encoding {
   /// The [characters] must contain precisely 256 code points from the BMP
   /// which means that it should have length 256 and not contain any surrogates.
   ///
-  /// A U+FFFD (invalid character) entry in [character] means that the
+  /// A U+FFFD (invalid character) entry in [characters] means that the
   /// corresponding byte does not have a definition in this code page.
   CodePage._bmp(this.name, String characters)
       : decoder = _BmpCodePageDecoder(characters);
@@ -252,7 +253,7 @@ abstract class CodePageDecoder implements Converter<List<int>, String> {
 /// Creates a decoder from [characters].
 ///
 /// Recognizes if [characters] contains only characters in the BMP,
-/// and creates a [BmpCodePageDecoder] in that case.
+/// and creates a [_BmpCodePageDecoder] in that case.
 CodePageDecoder _createDecoder(String characters) {
   var result = Uint32List(256);
   var i = 0;
@@ -260,14 +261,14 @@ CodePageDecoder _createDecoder(String characters) {
   for (var char in characters.runes) {
     if (i >= 256) {
       throw ArgumentError.value(
-          characters, "characters", "Must contain 256 characters");
+          characters, 'characters', 'Must contain 256 characters');
     }
     result[i++] = char;
     allChars |= char;
   }
   if (i < 256) {
     throw ArgumentError.value(
-        characters, "characters", "Must contain 256 characters");
+        characters, 'characters', 'Must contain 256 characters');
   }
   if (allChars <= 0xFFFF) {
     // It's in the BMP.
@@ -292,13 +293,13 @@ class _NonBmpCodePageDecoder extends Converter<List<int>, String>
     for (var char in characters.runes) {
       if (i >= 256) {
         throw ArgumentError.value(
-            characters, "characters", "Must contain 256 characters");
+            characters, 'characters', 'Must contain 256 characters');
       }
       result[i++] = char;
     }
     if (i < 256) {
       throw ArgumentError.value(
-          characters, "characters", "Must contain 256 characters");
+          characters, 'characters', 'Must contain 256 characters');
     }
     return result;
   }
@@ -320,7 +321,7 @@ class _NonBmpCodePageDecoder extends Converter<List<int>, String>
     var buffer = Uint32List(input.length);
     for (var i = 0; i < input.length; i++) {
       var byte = input[i];
-      if (byte & 0xff != byte) throw FormatException("Not a byte", input, i);
+      if (byte & 0xff != byte) throw FormatException('Not a byte', input, i);
       buffer[i] = _characters[byte];
     }
     return String.fromCharCodes(buffer);
@@ -332,8 +333,8 @@ class _BmpCodePageDecoder extends Converter<List<int>, String>
   final String _characters;
   _BmpCodePageDecoder(String characters) : _characters = characters {
     if (characters.length != 256) {
-      throw ArgumentError.value(characters, "characters",
-          "Must contain 256 characters. Was ${characters.length}");
+      throw ArgumentError.value(characters, 'characters',
+          'Must contain 256 characters. Was ${characters.length}');
     }
   }
 
@@ -348,11 +349,11 @@ class _BmpCodePageDecoder extends Converter<List<int>, String>
     for (var i = 0; i < count; i++) {
       var byte = bytes[i];
       if (byte != byte & 0xff) {
-        throw FormatException("Not a byte value", bytes, i);
+        throw FormatException('Not a byte value', bytes, i);
       }
       var character = _characters.codeUnitAt(byte);
       if (character == 0xFFFD) {
-        throw FormatException("Not defined in this code page", bytes, i);
+        throw FormatException('Not defined in this code page', bytes, i);
       }
       codeUnits[i] = character;
     }
@@ -412,7 +413,7 @@ class CodePageEncoder extends Converter<String, List<int>> {
   Uint8List convert(String input, {int? invalidCharacter}) {
     if (invalidCharacter != null) {
       RangeError.checkValueInInterval(
-          invalidCharacter, 0, 255, "invalidCharacter");
+          invalidCharacter, 0, 255, 'invalidCharacter');
     }
     var count = input.length;
     var result = Uint8List(count);
@@ -435,7 +436,7 @@ class CodePageEncoder extends Converter<String, List<int>> {
         }
         byte = invalidCharacter ??
             (throw FormatException(
-                "Not a character in this code page", input, offset));
+                'Not a character in this code page', input, offset));
       }
       result[j++] = byte;
     }

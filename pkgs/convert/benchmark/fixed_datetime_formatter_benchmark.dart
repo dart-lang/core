@@ -7,7 +7,7 @@ import 'package:convert/convert.dart';
 
 /// Test the performance of [FixedDateTimeFormatter.decode].
 class DecodeBenchmark extends BenchmarkBase {
-  final fixedDateTimeFormatter = FixedDateTimeFormatter("YYYYMMDDhhmmss");
+  final fixedDateTimeFormatter = FixedDateTimeFormatter('YYYYMMDDhhmmss');
   DecodeBenchmark() : super('Parse 10k strings to DateTime');
 
   @override

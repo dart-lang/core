@@ -35,7 +35,7 @@ class PercentDecoder extends Converter<String, List<int>> {
 
     if (lastDigit != null) {
       throw FormatException(
-          "Input ended with incomplete encoded byte.", input, input.length);
+          'Input ended with incomplete encoded byte.', input, input.length);
     }
 
     return buffer.buffer.asUint8List(0, buffer.length);
@@ -106,7 +106,7 @@ class _PercentDecoderSink extends StringConversionSinkBase {
   void _close([String? string, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          "Input ended with incomplete encoded byte.", string, index);
+          'Input ended with incomplete encoded byte.', string, index);
     }
 
     _sink.close();
@@ -171,17 +171,17 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
   void _close([List<int>? chunk, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          "Input ended with incomplete encoded byte.", chunk, index);
+          'Input ended with incomplete encoded byte.', chunk, index);
     }
 
     _sink.close();
   }
 }
 
-/// Decodes [codeUnits] and writes the result into [destination].
+/// Decodes [codeUnits] and writes the result into [buffer].
 ///
-/// This reads from [codeUnits] between [sourceStart] and [sourceEnd]. It writes
-/// the result into [destination] starting at [destinationStart].
+/// This reads from [codeUnits] between [start] and [end]. It writes
+/// the result into [buffer] starting at [end].
 ///
 /// If there's a leftover digit at the end of the decoding, this returns that
 /// digit. Otherwise it returns `null`.
@@ -244,7 +244,7 @@ void _checkForInvalidCodeUnit(
     var codeUnit = codeUnits[i];
     if (codeUnit >= 0 && codeUnit <= 0x7f) continue;
     throw FormatException(
-        "Non-ASCII code unit "
+        'Non-ASCII code unit '
         "U+${codeUnit.toRadixString(16).padLeft(4, '0')}",
         codeUnits,
         i);

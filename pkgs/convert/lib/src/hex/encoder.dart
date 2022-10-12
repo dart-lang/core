@@ -86,7 +86,7 @@ String _convert(List<int> bytes, int start, int end) {
         i);
   }
 
-  throw 'unreachable';
+  throw StateError('unreachable');
 }
 
 /// Returns the ASCII/Unicode code unit corresponding to the hexadecimal digit

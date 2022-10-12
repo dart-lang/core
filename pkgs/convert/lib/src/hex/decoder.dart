@@ -24,7 +24,7 @@ class HexDecoder extends Converter<String, List<int>> {
   List<int> convert(String input) {
     if (!input.length.isEven) {
       throw FormatException(
-          "Invalid input length, must be even.", input, input.length);
+          'Invalid input length, must be even.', input, input.length);
     }
 
     var bytes = Uint8List(input.length ~/ 2);
@@ -92,7 +92,7 @@ class _HexDecoderSink extends StringConversionSinkBase {
   void _close([String? string, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          "Input ended with incomplete encoded byte.", string, index);
+          'Input ended with incomplete encoded byte.', string, index);
     }
 
     _sink.close();
@@ -152,7 +152,7 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
   void _close([List<int>? chunk, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          "Input ended with incomplete encoded byte.", chunk, index);
+          'Input ended with incomplete encoded byte.', chunk, index);
     }
 
     _sink.close();

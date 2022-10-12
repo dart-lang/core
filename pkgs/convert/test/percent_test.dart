@@ -9,59 +9,59 @@ import 'package:convert/convert.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group("encoder", () {
+  group('encoder', () {
     test("doesn't percent-encode unreserved characters", () {
-      var safeChars = "abcdefghijklmnopqrstuvwxyz"
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-          "0123456789-._~";
+      var safeChars = 'abcdefghijklmnopqrstuvwxyz'
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+          '0123456789-._~';
       expect(percent.encode([...safeChars.codeUnits]), equals(safeChars));
     });
 
-    test("percent-encodes reserved ASCII characters", () {
-      expect(percent.encode([..." `{@[,/^}\x7f\x00%".codeUnits]),
-          equals("%20%60%7B%40%5B%2C%2F%5E%7D%7F%00%25"));
+    test('percent-encodes reserved ASCII characters', () {
+      expect(percent.encode([...' `{@[,/^}\x7f\x00%'.codeUnits]),
+          equals('%20%60%7B%40%5B%2C%2F%5E%7D%7F%00%25'));
     });
 
-    test("percent-encodes non-ASCII characters", () {
-      expect(percent.encode([0x80, 0xFF]), equals("%80%FF"));
+    test('percent-encodes non-ASCII characters', () {
+      expect(percent.encode([0x80, 0xFF]), equals('%80%FF'));
     });
 
-    test("mixes encoded and unencoded characters", () {
-      expect(percent.encode([..."a+b=\x80".codeUnits]), equals("a%2Bb%3D%80"));
+    test('mixes encoded and unencoded characters', () {
+      expect(percent.encode([...'a+b=\x80'.codeUnits]), equals('a%2Bb%3D%80'));
     });
 
-    group("with chunked conversion", () {
-      test("percent-encodes byte arrays", () {
+    group('with chunked conversion', () {
+      test('percent-encodes byte arrays', () {
         var results = <String>[];
         var controller = StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = percent.encoder.startChunkedConversion(controller.sink);
 
-        sink.add([..."a+b=\x80".codeUnits]);
-        expect(results, equals(["a%2Bb%3D%80"]));
+        sink.add([...'a+b=\x80'.codeUnits]);
+        expect(results, equals(['a%2Bb%3D%80']));
 
         sink.add([0x00, 0x01, 0xfe, 0xff]);
-        expect(results, equals(["a%2Bb%3D%80", "%00%01%FE%FF"]));
+        expect(results, equals(['a%2Bb%3D%80', '%00%01%FE%FF']));
       });
 
-      test("handles empty and single-byte lists", () {
+      test('handles empty and single-byte lists', () {
         var results = <String>[];
         var controller = StreamController<String>(sync: true);
         controller.stream.listen(results.add);
         var sink = percent.encoder.startChunkedConversion(controller.sink);
 
         sink.add([]);
-        expect(results, equals([""]));
+        expect(results, equals(['']));
 
         sink.add([0x00]);
-        expect(results, equals(["", "%00"]));
+        expect(results, equals(['', '%00']));
 
         sink.add([]);
-        expect(results, equals(["", "%00", ""]));
+        expect(results, equals(['', '%00', '']));
       });
     });
 
-    test("rejects non-bytes", () {
+    test('rejects non-bytes', () {
       expect(() => percent.encode([0x100]), throwsFormatException);
 
       var sink =
@@ -70,26 +70,26 @@ void main() {
     });
   });
 
-  group("decoder", () {
-    test("converts percent-encoded strings to byte arrays", () {
+  group('decoder', () {
+    test('converts percent-encoded strings to byte arrays', () {
       expect(
-          percent.decode("a%2Bb%3D%801"), equals([..."a+b=\x801".codeUnits]));
+          percent.decode('a%2Bb%3D%801'), equals([...'a+b=\x801'.codeUnits]));
     });
 
-    test("supports lowercase letters", () {
-      expect(percent.decode("a%2bb%3d%80"), equals([..."a+b=\x80".codeUnits]));
+    test('supports lowercase letters', () {
+      expect(percent.decode('a%2bb%3d%80'), equals([...'a+b=\x80'.codeUnits]));
     });
 
-    test("supports more aggressive encoding", () {
-      expect(percent.decode("%61%2E%5A"), equals([..."a.Z".codeUnits]));
+    test('supports more aggressive encoding', () {
+      expect(percent.decode('%61%2E%5A'), equals([...'a.Z'.codeUnits]));
     });
 
-    test("supports less aggressive encoding", () {
-      var chars = " `{@[,/^}\x7F\x00";
+    test('supports less aggressive encoding', () {
+      var chars = ' `{@[,/^}\x7F\x00';
       expect(percent.decode(chars), equals([...chars.codeUnits]));
     });
 
-    group("with chunked conversion", () {
+    group('with chunked conversion', () {
       late List<List<int>> results;
       late StringConversionSink sink;
       setUp(() {
@@ -99,73 +99,73 @@ void main() {
         sink = percent.decoder.startChunkedConversion(controller.sink);
       });
 
-      test("converts percent to byte arrays", () {
-        sink.add("a%2Bb%3D%801");
+      test('converts percent to byte arrays', () {
+        sink.add('a%2Bb%3D%801');
         expect(
             results,
             equals([
-              [..."a+b=\x801".codeUnits]
+              [...'a+b=\x801'.codeUnits]
             ]));
 
-        sink.add("%00%01%FE%FF");
+        sink.add('%00%01%FE%FF');
         expect(
             results,
             equals([
-              [..."a+b=\x801".codeUnits],
+              [...'a+b=\x801'.codeUnits],
               [0x00, 0x01, 0xfe, 0xff]
             ]));
       });
 
-      test("supports trailing percents and digits split across chunks", () {
-        sink.add("ab%");
+      test('supports trailing percents and digits split across chunks', () {
+        sink.add('ab%');
         expect(
             results,
             equals([
-              [..."ab".codeUnits]
+              [...'ab'.codeUnits]
             ]));
 
-        sink.add("2");
+        sink.add('2');
         expect(
             results,
             equals([
-              [..."ab".codeUnits]
+              [...'ab'.codeUnits]
             ]));
 
-        sink.add("0cd%2");
+        sink.add('0cd%2');
         expect(
             results,
             equals([
-              [..."ab".codeUnits],
-              [..." cd".codeUnits]
+              [...'ab'.codeUnits],
+              [...' cd'.codeUnits]
             ]));
 
-        sink.add("0");
+        sink.add('0');
         expect(
             results,
-            equals(([
-              [..."ab".codeUnits],
-              [..." cd".codeUnits],
-              [..." ".codeUnits]
-            ])));
+            equals([
+              [...'ab'.codeUnits],
+              [...' cd'.codeUnits],
+              [...' '.codeUnits]
+            ]));
       });
 
-      test("supports empty strings", () {
-        sink.add("");
+      test('supports empty strings', () {
+        sink.add('');
         expect(results, isEmpty);
 
-        sink.add("%");
+        sink.add('%');
         expect(results, equals([[]]));
 
-        sink.add("");
+        sink.add('');
         expect(results, equals([[]]));
 
-        sink.add("2");
+        sink.add('2');
         expect(results, equals([[]]));
 
-        sink.add("");
+        sink.add('');
         expect(results, equals([[]]));
 
-        sink.add("0");
+        sink.add('0');
         expect(
             results,
             equals([
@@ -174,54 +174,54 @@ void main() {
             ]));
       });
 
-      test("rejects dangling % detected in close()", () {
-        sink.add("ab%");
+      test('rejects dangling % detected in close()', () {
+        sink.add('ab%');
         expect(
             results,
             equals([
-              [..."ab".codeUnits]
+              [...'ab'.codeUnits]
             ]));
         expect(() => sink.close(), throwsFormatException);
       });
 
-      test("rejects dangling digit detected in close()", () {
-        sink.add("ab%2");
+      test('rejects dangling digit detected in close()', () {
+        sink.add('ab%2');
         expect(
             results,
             equals([
-              [..."ab".codeUnits]
+              [...'ab'.codeUnits]
             ]));
         expect(() => sink.close(), throwsFormatException);
       });
 
-      test("rejects danging % detected in addSlice()", () {
-        sink.addSlice("ab%", 0, 3, false);
+      test('rejects danging % detected in addSlice()', () {
+        sink.addSlice('ab%', 0, 3, false);
         expect(
             results,
             equals([
-              [..."ab".codeUnits]
+              [...'ab'.codeUnits]
             ]));
 
-        expect(() => sink.addSlice("ab%", 0, 3, true), throwsFormatException);
+        expect(() => sink.addSlice('ab%', 0, 3, true), throwsFormatException);
       });
 
-      test("rejects danging digit detected in addSlice()", () {
-        sink.addSlice("ab%2", 0, 3, false);
+      test('rejects danging digit detected in addSlice()', () {
+        sink.addSlice('ab%2', 0, 3, false);
         expect(
             results,
             equals([
-              [..."ab".codeUnits]
+              [...'ab'.codeUnits]
             ]));
 
-        expect(() => sink.addSlice("ab%2", 0, 3, true), throwsFormatException);
+        expect(() => sink.addSlice('ab%2', 0, 3, true), throwsFormatException);
       });
     });
 
-    group("rejects non-ASCII character", () {
-      for (var char in ["\u0141", "\u{10041}"]) {
+    group('rejects non-ASCII character', () {
+      for (var char in ['\u0141', '\u{10041}']) {
         test('"$char"', () {
-          expect(() => percent.decode("a$char"), throwsFormatException);
-          expect(() => percent.decode("${char}a"), throwsFormatException);
+          expect(() => percent.decode('a$char'), throwsFormatException);
+          expect(() => percent.decode('${char}a'), throwsFormatException);
 
           var sink = percent.decoder
               .startChunkedConversion(StreamController(sync: true));
@@ -230,17 +230,17 @@ void main() {
       }
     });
 
-    test("rejects % followed by non-hex", () {
-      expect(() => percent.decode("%z2"), throwsFormatException);
-      expect(() => percent.decode("%2z"), throwsFormatException);
+    test('rejects % followed by non-hex', () {
+      expect(() => percent.decode('%z2'), throwsFormatException);
+      expect(() => percent.decode('%2z'), throwsFormatException);
     });
 
-    test("rejects dangling % detected in convert()", () {
-      expect(() => percent.decode("ab%"), throwsFormatException);
+    test('rejects dangling % detected in convert()', () {
+      expect(() => percent.decode('ab%'), throwsFormatException);
     });
 
-    test("rejects dangling digit detected in convert()", () {
-      expect(() => percent.decode("ab%2"), throwsFormatException);
+    test('rejects dangling digit detected in convert()', () {
+      expect(() => percent.decode('ab%2'), throwsFormatException);
     });
   });
 }

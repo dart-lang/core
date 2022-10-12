@@ -16,9 +16,7 @@ export 'hex/encoder.dart' hide hexEncoder;
 const hex = HexCodec._();
 
 /// A codec that converts byte arrays to and from hexadecimal strings, following
-/// [the Base16 spec][rfc].
-///
-/// [rfc]: https://tools.ietf.org/html/rfc4648#section-8
+/// [the Base16 spec](https://tools.ietf.org/html/rfc4648#section-8).
 ///
 /// This should be used via the [hex] field.
 class HexCodec extends Codec<List<int>, String> {

@@ -6,9 +6,9 @@ import 'package:convert/src/fixed_datetime_formatter.dart';
 import 'package:test/test.dart';
 
 void main() {
-  DateTime noFractionalSeconds = DateTime.utc(0, 1, 1, 0, 0, 0);
-  Map<String, Skip> skipWeb = {
-    'js': Skip(
+  var noFractionalSeconds = DateTime.utc(0);
+  var skipWeb = <String, Skip>{
+    'js': const Skip(
         'Web does not support microseconds (see https://github.com/dart-lang/sdk/issues/44876)')
   };
   // Testing `decode`.
@@ -18,7 +18,7 @@ void main() {
   });
   test('Escaped chars are ignored', () {
     var time = FixedDateTimeFormatter('YYYY kiwi MM').decode('1996 rnad 01');
-    expect(time, DateTime.utc(1996, 1));
+    expect(time, DateTime.utc(1996));
   });
   test('Parse two years throws', () {
     expect(() => FixedDateTimeFormatter('YYYY YYYY'), throwsException);
@@ -51,29 +51,29 @@ void main() {
   });
   test('Parse S 1/10 of a second', () {
     var time = FixedDateTimeFormatter('S').decode('1');
-    expect(time, noFractionalSeconds.add(Duration(milliseconds: 100)));
+    expect(time, noFractionalSeconds.add(const Duration(milliseconds: 100)));
   });
   test('Parse SS 1/100 of a second', () {
     var time = FixedDateTimeFormatter('SS').decode('01');
-    expect(time, noFractionalSeconds.add(Duration(milliseconds: 10)));
+    expect(time, noFractionalSeconds.add(const Duration(milliseconds: 10)));
   });
   test('Parse SSS a millisecond', () {
     var time = FixedDateTimeFormatter('SSS').decode('001');
-    expect(time, noFractionalSeconds.add(Duration(milliseconds: 1)));
+    expect(time, noFractionalSeconds.add(const Duration(milliseconds: 1)));
   });
   test('Parse SSSSSS a microsecond', () {
     var time = FixedDateTimeFormatter('SSSSSS').decode('000001');
-    expect(time, noFractionalSeconds.add(Duration(microseconds: 1)));
+    expect(time, noFractionalSeconds.add(const Duration(microseconds: 1)));
   }, onPlatform: skipWeb);
   test('Parse SSSSSS a millisecond', () {
     var time = FixedDateTimeFormatter('SSSSSS').decode('001000');
-    expect(time, noFractionalSeconds.add(Duration(milliseconds: 1)));
+    expect(time, noFractionalSeconds.add(const Duration(milliseconds: 1)));
   });
   test('Parse SSSSSS a millisecond and a microsecond', () {
     var time = FixedDateTimeFormatter('SSSSSS').decode('001001');
     expect(
         time,
-        noFractionalSeconds.add(Duration(
+        noFractionalSeconds.add(const Duration(
           milliseconds: 1,
           microseconds: 1,
         )));
@@ -82,7 +82,7 @@ void main() {
     var time = FixedDateTimeFormatter('ssSSSSSS').decode('01000001');
     expect(
         time,
-        noFractionalSeconds.add(Duration(
+        noFractionalSeconds.add(const Duration(
           seconds: 1,
           microseconds: 1,
         )));
@@ -120,7 +120,7 @@ void main() {
   });
   // Testing `encode`.
   test('Format simple', () {
-    var time = DateTime.utc(1996, 1);
+    var time = DateTime.utc(1996);
     expect(FixedDateTimeFormatter('YYYY kiwi MM').encode(time), '1996 kiwi 01');
   });
   test('Format YYYYMMDDhhmmss', () {
@@ -140,17 +140,17 @@ void main() {
   });
   test('Format S 1/10 of a second', () {
     var str = FixedDateTimeFormatter('S')
-        .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
+        .encode(noFractionalSeconds.add(const Duration(milliseconds: 100)));
     expect(str, '1');
   });
   test('Format SS 1/100 of a second', () {
     var str = FixedDateTimeFormatter('SS')
-        .encode(noFractionalSeconds.add(Duration(milliseconds: 10)));
+        .encode(noFractionalSeconds.add(const Duration(milliseconds: 10)));
     expect(str, '01');
   });
   test('Format SSS 1/100 of a second', () {
     var str = FixedDateTimeFormatter('SSS')
-        .encode(noFractionalSeconds.add(Duration(milliseconds: 10)));
+        .encode(noFractionalSeconds.add(const Duration(milliseconds: 10)));
     expect(str, '010');
   });
   test('Format SSSS no fractions', () {
@@ -163,17 +163,17 @@ void main() {
   });
   test('Format SSSS 1/10 of a second', () {
     var str = FixedDateTimeFormatter('SSSS')
-        .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
+        .encode(noFractionalSeconds.add(const Duration(milliseconds: 100)));
     expect(str, '1000');
   });
   test('Format SSSS 1/100 of a second', () {
     var str = FixedDateTimeFormatter('SSSS')
-        .encode(noFractionalSeconds.add(Duration(milliseconds: 10)));
+        .encode(noFractionalSeconds.add(const Duration(milliseconds: 10)));
     expect(str, '0100');
   });
   test('Format SSSS a millisecond', () {
     var str = FixedDateTimeFormatter('SSSS')
-        .encode(noFractionalSeconds.add(Duration(milliseconds: 1)));
+        .encode(noFractionalSeconds.add(const Duration(milliseconds: 1)));
     expect(str, '0010');
   });
   test('Format SSSSSS a microsecond', () {
@@ -182,7 +182,7 @@ void main() {
     expect(str, '000001');
   }, onPlatform: skipWeb);
   test('Format SSSSSS a millisecond and a microsecond', () {
-    var dateTime = noFractionalSeconds.add(Duration(
+    var dateTime = noFractionalSeconds.add(const Duration(
       milliseconds: 1,
       microseconds: 1,
     ));
@@ -191,16 +191,16 @@ void main() {
   }, onPlatform: skipWeb);
   test('Format SSSSSS0 a microsecond', () {
     var str = FixedDateTimeFormatter('SSSSSS0')
-        .encode(noFractionalSeconds.add(Duration(microseconds: 1)));
+        .encode(noFractionalSeconds.add(const Duration(microseconds: 1)));
     expect(str, '0000010');
   }, onPlatform: skipWeb);
   test('Format SSSSSS0 1/10 of a second', () {
     var str = FixedDateTimeFormatter('SSSSSS0')
-        .encode(noFractionalSeconds.add(Duration(milliseconds: 100)));
+        .encode(noFractionalSeconds.add(const Duration(milliseconds: 100)));
     expect(str, '1000000');
   });
   test('Parse ssSSSSSS a second and a microsecond', () {
-    var dateTime = noFractionalSeconds.add(Duration(
+    var dateTime = noFractionalSeconds.add(const Duration(
       seconds: 1,
       microseconds: 1,
     ));
@@ -208,7 +208,7 @@ void main() {
     expect(str, '01000001');
   }, onPlatform: skipWeb);
   test('Parse ssSSSSSS0 a second and a microsecond', () {
-    var dateTime = noFractionalSeconds.add(Duration(
+    var dateTime = noFractionalSeconds.add(const Duration(
       seconds: 1,
       microseconds: 1,
     ));

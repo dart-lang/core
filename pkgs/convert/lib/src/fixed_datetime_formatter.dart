@@ -26,7 +26,9 @@
 /// `YYYY------MM`. When encoding a [DateTime], the non-format characters are in
 /// the output verbatim.
 ///
-/// Note: this class differs from [DateFormat] in that here, the format
+/// Note: this class differs from
+/// [DateFormat](https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html)
+/// from [package:intl](https://pub.dev/packages/intl) in that here, the format
 /// character count is interpreted literally. For example, using the format
 /// string `YYY` to decode the string `996` would result in the same [DateTime]
 /// as calling `DateTime(996)`, and the same format string used to encode the
@@ -103,7 +105,7 @@ class FixedDateTimeFormatter {
 
   /// Converts a [DateTime] to a [String] as specified by the [pattern].
   ///
-  /// The [dateTime.year] must not be negative.
+  /// The [DateTime.year] must not be negative.
   String encode(DateTime dateTime) {
     if (dateTime.year < 0) {
       throw ArgumentError.value(
@@ -214,9 +216,8 @@ class FixedDateTimeFormatter {
   ///
   /// Throws a [FormatException] if the [formattedDateTime] does not match the
   /// [pattern].
-  DateTime decode(String formattedDateTime) {
-    return _decode(formattedDateTime, isUtc, true)!;
-  }
+  DateTime decode(String formattedDateTime) =>
+      _decode(formattedDateTime, isUtc, true)!;
 
   /// Parses [formattedDateTime] to a [DateTime] as specified by the [pattern].
   ///
@@ -225,9 +226,8 @@ class FixedDateTimeFormatter {
   ///
   /// Returns the parsed value, or `null` if the [formattedDateTime] does not
   /// match the [pattern].
-  DateTime? tryDecode(String formattedDateTime) {
-    return _decode(formattedDateTime, isUtc, false);
-  }
+  DateTime? tryDecode(String formattedDateTime) =>
+      _decode(formattedDateTime, isUtc, false);
 
   DateTime? _decode(
     String formattedDateTime,

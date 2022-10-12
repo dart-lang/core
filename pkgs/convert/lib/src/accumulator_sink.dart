@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:collection';
+import 'dart:convert';
 
 /// A sink that provides access to all the [events] that have been passed to it.
 ///

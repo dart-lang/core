@@ -7,7 +7,7 @@ library convert.utils;
 import 'charcodes.dart';
 
 /// Returns the digit (0 through 15) corresponding to the hexadecimal code unit
-/// at index [i] in [codeUnits].
+/// at index [index] in [codeUnits].
 ///
 /// If the given code unit isn't valid hexadecimal, throws a [FormatException].
 int digitForCodeUnit(List<int> codeUnits, int index) {
@@ -32,7 +32,7 @@ int digitForCodeUnit(List<int> codeUnits, int index) {
   }
 
   throw FormatException(
-      "Invalid hexadecimal code unit "
+      'Invalid hexadecimal code unit '
       "U+${codeUnit.toRadixString(16).padLeft(4, '0')}.",
       codeUnits,
       index);

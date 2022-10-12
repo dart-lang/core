@@ -18,9 +18,8 @@ const percent = PercentCodec._();
 // TODO(nweiz): Add flags to support generating and interpreting "+" as a space
 // character. Also add an option for custom sets of unreserved characters.
 /// A codec that converts byte arrays to and from percent-encoded (also known as
-/// URL-encoded) strings according to [RFC 3986][rfc].
-///
-/// [rfc]: https://tools.ietf.org/html/rfc3986#section-2.1
+/// URL-encoded) strings according to
+/// [RFC 3986](https://tools.ietf.org/html/rfc3986#section-2.1).
 ///
 /// [encoder] encodes all bytes other than ASCII letters, decimal digits, or one
 /// of `-._~`. This matches the behavior of [Uri.encodeQueryComponent] except

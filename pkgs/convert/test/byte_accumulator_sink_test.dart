@@ -11,7 +11,7 @@ void main() {
     sink = ByteAccumulatorSink();
   });
 
-  test("provides access to the concatenated bytes", () {
+  test('provides access to the concatenated bytes', () {
     expect(sink.bytes, isEmpty);
 
     sink.add([1, 2, 3]);
@@ -21,7 +21,7 @@ void main() {
     expect(sink.bytes, equals([1, 2, 3, 5, 6, 7]));
   });
 
-  test("clear() clears the bytes", () {
+  test('clear() clears the bytes', () {
     sink.add([1, 2, 3]);
     expect(sink.bytes, equals([1, 2, 3]));
 
@@ -32,13 +32,13 @@ void main() {
     expect(sink.bytes, equals([4, 5, 6]));
   });
 
-  test("indicates whether the sink is closed", () {
+  test('indicates whether the sink is closed', () {
     expect(sink.isClosed, isFalse);
     sink.close();
     expect(sink.isClosed, isTrue);
   });
 
-  test("indicates whether the sink is closed via addSlice", () {
+  test('indicates whether the sink is closed via addSlice', () {
     expect(sink.isClosed, isFalse);
     sink.addSlice([], 0, 0, true);
     expect(sink.isClosed, isTrue);

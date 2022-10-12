@@ -6,7 +6,7 @@ import 'package:convert/convert.dart';
 import 'package:test/test.dart';
 
 void main() {
-  late AccumulatorSink sink;
+  late AccumulatorSink<int> sink;
   setUp(() {
     sink = AccumulatorSink<int>();
   });
@@ -24,7 +24,7 @@ void main() {
     expect(sink.events, equals([1, 2, 3]));
   });
 
-  test("clear() clears the events", () {
+  test('clear() clears the events', () {
     sink
       ..add(1)
       ..add(2)
@@ -41,7 +41,7 @@ void main() {
     expect(sink.events, equals([4, 5, 6]));
   });
 
-  test("indicates whether the sink is closed", () {
+  test('indicates whether the sink is closed', () {
     expect(sink.isClosed, isFalse);
     sink.close();
     expect(sink.isClosed, isTrue);

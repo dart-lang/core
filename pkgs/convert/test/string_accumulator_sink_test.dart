@@ -11,46 +11,46 @@ void main() {
     sink = StringAccumulatorSink();
   });
 
-  test("provides access to the concatenated string", () {
+  test('provides access to the concatenated string', () {
     expect(sink.string, isEmpty);
 
-    sink.add("foo");
-    expect(sink.string, equals("foo"));
+    sink.add('foo');
+    expect(sink.string, equals('foo'));
 
-    sink.addSlice(" bar baz", 1, 4, false);
-    expect(sink.string, equals("foobar"));
+    sink.addSlice(' bar baz', 1, 4, false);
+    expect(sink.string, equals('foobar'));
   });
 
-  test("clear() clears the string", () {
-    sink.add("foo");
-    expect(sink.string, equals("foo"));
+  test('clear() clears the string', () {
+    sink.add('foo');
+    expect(sink.string, equals('foo'));
 
     sink.clear();
     expect(sink.string, isEmpty);
 
-    sink.add("bar");
-    expect(sink.string, equals("bar"));
+    sink.add('bar');
+    expect(sink.string, equals('bar'));
   });
 
-  test("indicates whether the sink is closed", () {
+  test('indicates whether the sink is closed', () {
     expect(sink.isClosed, isFalse);
     sink.close();
     expect(sink.isClosed, isTrue);
   });
 
-  test("indicates whether the sink is closed via addSlice", () {
+  test('indicates whether the sink is closed via addSlice', () {
     expect(sink.isClosed, isFalse);
-    sink.addSlice("", 0, 0, true);
+    sink.addSlice('', 0, 0, true);
     expect(sink.isClosed, isTrue);
   });
 
   test("doesn't allow add() to be called after close()", () {
     sink.close();
-    expect(() => sink.add("x"), throwsStateError);
+    expect(() => sink.add('x'), throwsStateError);
   });
 
   test("doesn't allow addSlice() to be called after close()", () {
     sink.close();
-    expect(() => sink.addSlice("", 0, 0, false), throwsStateError);
+    expect(() => sink.addSlice('', 0, 0, false), throwsStateError);
   });
 }

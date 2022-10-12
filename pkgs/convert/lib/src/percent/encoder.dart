@@ -13,7 +13,7 @@ const percentEncoder = PercentEncoder._();
 
 /// A converter that encodes byte arrays into percent-encoded strings.
 ///
-/// [encoder] encodes all bytes other than ASCII letters, decimal digits, or one
+/// Encodes all bytes other than ASCII letters, decimal digits, or one
 /// of `-._~`. This matches the behavior of [Uri.encodeQueryComponent] except
 /// that it doesn't encode `0x20` bytes to the `+` character.
 ///
@@ -103,7 +103,7 @@ String _convert(List<int> bytes, int start, int end) {
         i);
   }
 
-  throw 'unreachable';
+  throw StateError('unreachable');
 }
 
 /// Returns the ASCII/Unicode code unit corresponding to the hexadecimal digit
