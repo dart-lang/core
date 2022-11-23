@@ -188,7 +188,14 @@ abstract class IntX implements Comparable<Object> {
   String toString();
 
   /// Returns a string representing the value of this integer in hexadecimal
-  /// notation; example: `'0xd'`.
+  /// notation.
+  ///
+  /// Example: `Int64(0xf01d).toHexString()` returns `'F01D'`.
+  ///
+  /// The string may interprets the number as *unsigned*, and has no leading
+  /// minus, even if the value [isNegative].
+  ///
+  /// Example: `Int64(-1).toHexString()` returns `'FFFFFFFFFFFFFFFF'`.
   String toHexString();
 
   /// Returns a string representing the value of this integer in the given

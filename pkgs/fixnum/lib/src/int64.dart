@@ -57,45 +57,76 @@ class Int64 implements IntX {
   /// is performed.
   const Int64._bits(this._l, this._m, this._h);
 
-  /// Parses a [String] in a given [radix] between 2 and 36 and returns an
-  /// [Int64].
-  static Int64 parseRadix(String s, int radix) =>
-      _parseRadix(s, Int32._validateRadix(radix));
+  /// Parses [source] in a given [radix] between 2 and 36.
+  ///
+  /// Returns an [Int64] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 64 bit integer,
+  /// the numerical value is truncated to the lowest 64 bits
+  /// of the value's binary representation,
+  /// interpreted as a 64-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of base-[radix]
+  /// digits (using letters from `a` to `z` as digits with values 10 through
+  /// 25 for radixes above 10), possibly prefixed by a `-` sign.
+  ///
+  /// Throws a [FormatException] if the input is not recognized as a valid
+  /// integer numeral.
+  static Int64 parseRadix(String source, int radix) =>
+      _parseRadix(source, Int32._validateRadix(radix), true)!;
 
-  static Int64 _parseRadix(String s, int radix) {
+  /// Parses [source] in a given [radix] between 2 and 36.
+  ///
+  /// Returns an [Int64] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 64 bit integer,
+  /// the numerical value is truncated to the lowest 64 bits
+  /// of the value's binary representation,
+  /// interpreted as a 64-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of base-[radix]
+  /// digits (using letters from `a` to `z` as digits with values 10 through
+  /// 25 for radixes above 10), possibly prefixed by a `-` sign.
+  ///
+  /// Returns `null` if the input is not recognized as a valid
+  /// integer numeral.
+  static Int64? tryParseRadix(String source, int radix) =>
+      _parseRadix(source, Int32._validateRadix(radix), false);
+
+  static Int64? _parseRadix(String s, int radix, bool throwOnError) {
     int i = 0;
     bool negative = false;
-    if (i < s.length && s[0] == '-') {
+    if (s.startsWith('-')) {
       negative = true;
       i++;
     }
 
-    // TODO(https://github.com/dart-lang/sdk/issues/38728). Replace with "if (i
-    // >= s.length)".
-    if (!(i < s.length)) {
-      throw FormatException("No digits in '$s'");
+    if (i >= s.length) {
+      if (!throwOnError) return null;
+      throw FormatException('No digits', s, i);
     }
 
     int d0 = 0, d1 = 0, d2 = 0; //  low, middle, high components.
     for (; i < s.length; i++) {
       int c = s.codeUnitAt(i);
       int digit = Int32._decodeDigit(c);
-      if (digit < 0 || digit >= radix) {
-        throw FormatException('Non-radix char code: $c');
+      if (digit < radix) {
+        // [radix] and [digit] are at most 6 bits, component is 22, so we can
+        // multiply and add within 30 bit temporary values.
+        d0 = d0 * radix + digit;
+        int carry = d0 >> _BITS;
+        d0 = _MASK & d0;
+
+        d1 = d1 * radix + carry;
+        carry = d1 >> _BITS;
+        d1 = _MASK & d1;
+
+        d2 = d2 * radix + carry;
+        d2 = _MASK2 & d2;
+      } else {
+        if (!throwOnError) return null;
+        throw FormatException('Not radix digit', s, i);
       }
-
-      // [radix] and [digit] are at most 6 bits, component is 22, so we can
-      // multiply and add within 30 bit temporary values.
-      d0 = d0 * radix + digit;
-      int carry = d0 >> _BITS;
-      d0 = _MASK & d0;
-
-      d1 = d1 * radix + carry;
-      carry = d1 >> _BITS;
-      d1 = _MASK & d1;
-
-      d2 = d2 * radix + carry;
-      d2 = _MASK2 & d2;
     }
 
     if (negative) return _negate(d0, d1, d2);
@@ -103,11 +134,69 @@ class Int64 implements IntX {
     return Int64._masked(d0, d1, d2);
   }
 
-  /// Parses a decimal [String] and returns an [Int64].
-  static Int64 parseInt(String s) => _parseRadix(s, 10);
+  /// Parses [source] as a decimal numeral.
+  ///
+  /// Returns an [Int64] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 64 bit integer,
+  /// the numerical value is truncated to the lowest 64 bits
+  /// of the value's binary representation,
+  /// interpreted as a 64-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of digits (`0`-`9`),
+  /// possibly prefixed by a `-` sign.
+  ///
+  /// Throws a [FormatException] if the input is not a valid
+  /// decimal integer numeral.
+  static Int64 parseInt(String source) => _parseRadix(source, 10, true)!;
 
-  /// Parses a hexadecimal [String] and returns an [Int64].
-  static Int64 parseHex(String s) => _parseRadix(s, 16);
+  /// Parses [source] as a decimal numeral.
+  ///
+  /// Returns an [Int64] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 64 bit integer,
+  /// the numerical value is truncated to the lowest 64 bits
+  /// of the value's binary representation,
+  /// interpreted as a 64-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of digits (`0`-`9`),
+  /// possibly prefixed by a `-` sign.
+  ///
+  /// Returns `null` if the input is not a valid
+  /// decimal integer numeral.
+  static Int64? tryParseInt(String source) => _parseRadix(source, 10, false);
+
+  /// Parses [source] as a hexadecimal numeral.
+  ///
+  /// Returns an [Int64] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 64 bit integer,
+  /// the numerical value is truncated to the lowest 64 bits
+  /// of the value's binary representation,
+  /// interpreted as a 64-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of hexadecimal
+  /// digits (`0`-`9`, `a`-`f` or `A`-`F`), possibly prefixed by a `-` sign.
+  ///
+  /// Throws a [FormatException] if the input is not a valid
+  /// hexadecimal integer numeral.
+  static Int64 parseHex(String source) => _parseRadix(source, 16, true)!;
+
+  /// Parses [source] as a hexadecimal numeral.
+  ///
+  /// Returns an [Int64] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 64 bit integer,
+  /// the numerical value is truncated to the lowest 64 bits
+  /// of the value's binary representation,
+  /// interpreted as a 64-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of hexadecimal
+  /// digits (`0`-`9`, `a`-`f` or `A`-`F`), possibly prefixed by a `-` sign.
+  ///
+  /// Returns `null` if the input is not a valid
+  /// hexadecimal integer numeral.
+  static Int64? tryParseHex(String source) => _parseRadix(source, 16, false);
 
   //
   // Public constructors
@@ -135,43 +224,32 @@ class Int64 implements IntX {
   }
 
   factory Int64.fromBytes(List<int> bytes) {
-    int top = bytes[7] & 0xff;
-    top <<= 8;
-    top |= bytes[6] & 0xff;
-    top <<= 8;
-    top |= bytes[5] & 0xff;
-    top <<= 8;
-    top |= bytes[4] & 0xff;
-
-    int bottom = bytes[3] & 0xff;
-    bottom <<= 8;
-    bottom |= bytes[2] & 0xff;
-    bottom <<= 8;
-    bottom |= bytes[1] & 0xff;
-    bottom <<= 8;
-    bottom |= bytes[0] & 0xff;
-
-    return Int64.fromInts(top, bottom);
+    // 20 bits into top, 22 into middle and bottom.
+    var split1 = bytes[5] & 0xFF;
+    var high =
+        ((bytes[7] & 0xFF) << 12) | ((bytes[6] & 0xFF) << 4) | (split1 >> 4);
+    var split2 = bytes[2] & 0xFF;
+    var middle = (split1 << 18) |
+        ((bytes[4] & 0xFF) << 10) |
+        ((bytes[3] & 0xFF) << 2) |
+        (split2 >> 6);
+    var low = (split2 << 16) | ((bytes[1] & 0xFF) << 8) | (bytes[0] & 0xFF);
+    // Top bits from above will be masked off here.
+    return Int64._masked(low, middle, high);
   }
 
   factory Int64.fromBytesBigEndian(List<int> bytes) {
-    int top = bytes[0] & 0xff;
-    top <<= 8;
-    top |= bytes[1] & 0xff;
-    top <<= 8;
-    top |= bytes[2] & 0xff;
-    top <<= 8;
-    top |= bytes[3] & 0xff;
-
-    int bottom = bytes[4] & 0xff;
-    bottom <<= 8;
-    bottom |= bytes[5] & 0xff;
-    bottom <<= 8;
-    bottom |= bytes[6] & 0xff;
-    bottom <<= 8;
-    bottom |= bytes[7] & 0xff;
-
-    return Int64.fromInts(top, bottom);
+    var split1 = bytes[2] & 0xFF;
+    var high =
+        ((bytes[0] & 0xFF) << 12) | ((bytes[1] & 0xFF) << 4) | (split1 >> 4);
+    var split2 = bytes[5] & 0xFF;
+    var middle = (split1 << 18) |
+        ((bytes[3] & 0xFF) << 10) |
+        ((bytes[4] & 0xFF) << 2) |
+        (split2 >> 6);
+    var low = (split2 << 16) | ((bytes[6] & 0xFF) << 8) | (bytes[7] & 0xFF);
+    // Top bits from above will be masked off here.
+    return Int64._masked(low, middle, high);
   }
 
   /// Constructs an [Int64] from a pair of 32-bit integers having the value
@@ -195,7 +273,7 @@ class Int64 implements IntX {
     } else if (value is Int32) {
       return value.toInt64();
     }
-    throw ArgumentError.value(value);
+    throw ArgumentError.value(value, 'other', 'not an int, Int32 or Int64');
   }
 
   @override
@@ -672,7 +750,6 @@ class Int64 implements IntX {
   @override
   String toString() => _toRadixString(10);
 
-  // TODO(rice) - Make this faster by avoiding arithmetic.
   @override
   String toHexString() {
     if (isZero) return '0';
@@ -861,8 +938,8 @@ class Int64 implements IntX {
 
   String toDebugString() => 'Int64[_l=$_l, _m=$_m, _h=$_h]';
 
-  static Int64 _masked(int a0, int a1, int a2) =>
-      Int64._bits(_MASK & a0, _MASK & a1, _MASK2 & a2);
+  static Int64 _masked(int low, int medium, int high) =>
+      Int64._bits(_MASK & low, _MASK & medium, _MASK2 & high);
 
   static Int64 _sub(int a0, int a1, int a2, int b0, int b1, int b2) {
     int diff0 = a0 - b0;

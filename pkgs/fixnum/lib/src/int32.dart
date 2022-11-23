@@ -28,51 +28,164 @@ class Int32 implements IntX {
 
   // Hex digit char codes
   static const int _CC_0 = 48; // '0'.codeUnitAt(0)
-  static const int _CC_9 = 57; // '9'.codeUnitAt(0)
   static const int _CC_a = 97; // 'a'.codeUnitAt(0)
-  static const int _CC_z = 122; // 'z'.codeUnitAt(0)
-  static const int _CC_A = 65; // 'A'.codeUnitAt(0)
-  static const int _CC_Z = 90; // 'Z'.codeUnitAt(0)
 
+  // Mask to 32-bits.
+  static const int _MASK_U32 = 0xFFFFFFFF;
+
+  /// Converts radix digits into their numeric values.
+  ///
+  /// Converts the characters `0`-`9` into the values 0 through 9,
+  /// and the letters `a`-`z` or `A`-`Z` into values 10 through 35,
+  /// and return that value.
+  /// Any other character returns a value above 35, which means it's
+  /// not a valid digit in any radix in the range 2 through 36.
   static int _decodeDigit(int c) {
-    if (c >= _CC_0 && c <= _CC_9) {
-      return c - _CC_0;
-    } else if (c >= _CC_a && c <= _CC_z) {
-      return c - _CC_a + 10;
-    } else if (c >= _CC_A && c <= _CC_Z) {
-      return c - _CC_A + 10;
+    int digit = c ^ _CC_0;
+    if (digit < 10) return digit;
+    int letter = (c | 0x20) - _CC_a;
+    if (letter >= 0) {
+      // Returns values above 36 for invalid digits.
+      // The value is checked against the actual radix where the return
+      // value is used, so this is safe.
+      return letter + 10;
     } else {
-      return -1; // bad char code
+      return 255; // Never a valid radix.
     }
   }
 
-  static int _validateRadix(int radix) {
-    if (2 <= radix && radix <= 36) return radix;
-    throw RangeError.range(radix, 2, 36, 'radix');
-  }
+  static int _validateRadix(int radix) =>
+      RangeError.checkValueInInterval(radix, 2, 36, 'radix');
 
-  /// Parses a [String] in a given [radix] between 2 and 16 and returns an
-  /// [Int32].
+  /// Parses [source] in a given [radix] between 2 and 36.
+  ///
+  /// Returns an [Int32] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 32 bit integer,
+  /// the numerical value is truncated to the lowest 32 bits
+  /// of the value's binary representation,
+  /// interpreted as a 32-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of base-[radix]
+  /// digits (using letters from `a` to `z` as digits with values 10 through
+  /// 25 for radixes above 10), possibly prefixed by a `-` sign.
+  ///
+  /// Throws a [FormatException] if the input is not a valid
+  /// integer numeral in base [radix].
+  static Int32 parseRadix(String source, int radix) =>
+      _parseRadix(source, _validateRadix(radix), true)!;
+
+  /// Parses [source] in a given [radix] between 2 and 36.
+  ///
+  /// Returns an [Int32] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 32 bit integer,
+  /// the numerical value is truncated to the lowest 32 bits
+  /// of the value's binary representation,
+  /// interpreted as a 32-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of base-[radix]
+  /// digits (using letters from `a` to `z` as digits with values 10 through
+  /// 25 for radixes above 10), possibly prefixed by a `-` sign.
+  ///
+  /// Throws a [FormatException] if the input is not a valid
+  /// integer numeral in base [radix].
+  static Int32? tryParseRadix(String source, int radix) =>
+      _parseRadix(source, _validateRadix(radix), false);
+
   // TODO(rice) - Make this faster by converting several digits at once.
-  static Int32 parseRadix(String s, int radix) {
-    _validateRadix(radix);
-    var x = ZERO;
-    for (var i = 0; i < s.length; i++) {
-      var c = s.codeUnitAt(i);
-      var digit = _decodeDigit(c);
-      if (digit < 0 || digit >= radix) {
-        throw FormatException('Non-radix code unit: $c');
-      }
-      x = (x * radix) + digit as Int32;
+  static Int32? _parseRadix(String s, int radix, bool throwOnError) {
+    var index = 0;
+    var negative = false;
+    if (s.startsWith('-')) {
+      negative = true;
+      index = 1;
     }
-    return x;
+    if (index == s.length) {
+      if (!throwOnError) return null;
+      throw FormatException('No digits', s, index);
+    }
+    var result = 0;
+    for (; index < s.length; index++) {
+      var c = s.codeUnitAt(index);
+      var digit = _decodeDigit(c);
+      if (digit < radix) {
+        /// Doesn't matter whether the result is unsigned
+        /// or signed (as on the web), only the bits matter
+        /// to the [Int32.new] constructor.
+        result = (result * radix + digit) & _MASK_U32;
+      } else {
+        if (!throwOnError) return null;
+        throw FormatException('Non radix code unit', s, index);
+      }
+    }
+    if (negative) result = -result;
+    return Int32(result);
   }
 
-  /// Parses a decimal [String] and returns an [Int32].
-  static Int32 parseInt(String s) => Int32(int.parse(s));
+  /// Parses [source] as a decimal numeral.
+  ///
+  /// Returns an [Int32] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 32 bit integer,
+  /// the numerical value is truncated to the lowest 32 bits
+  /// of the value's binary representation,
+  /// interpreted as a 32-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of digits (`0`-`9`),
+  /// possibly prefixed by a `-` sign.
+  ///
+  /// Throws a [FormatException] if the input is not a valid
+  /// decimal integer numeral.
+  static Int32 parseInt(String source) => _parseRadix(source, 10, true)!;
 
-  /// Parses a hexadecimal [String] and returns an [Int32].
-  static Int32 parseHex(String s) => parseRadix(s, 16);
+  /// Parses [source] as a decimal numeral.
+  ///
+  /// Returns an [Int32] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 32 bit integer,
+  /// the numerical value is truncated to the lowest 32 bits
+  /// of the value's binary representation,
+  /// interpreted as a 32-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of digits (`0`-`9`),
+  /// possibly prefixed by a `-` sign.
+  ///
+  /// Throws a [FormatException] if the input is not a valid
+  /// decimal integer numeral.
+  static Int32? tryParseInt(String source) => _parseRadix(source, 10, false);
+
+  /// Parses [source] as a hexadecimal numeral.
+  ///
+  /// Returns an [Int32] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 32 bit integer,
+  /// the numerical value is truncated to the lowest 32 bits
+  /// of the value's binary representation,
+  /// interpreted as a 32-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of hexadecimal
+  /// digits (`0`-`9`, `a`-`f` or `A`-`F`), possibly prefixed by a `-` sign.
+  ///
+  /// Returns `null` if the input is not a valid
+  /// hexadecimal integer numeral.
+  static Int32 parseHex(String source) => _parseRadix(source, 16, true)!;
+
+  /// Parses [source] as a hexadecimal numeral.
+  ///
+  /// Returns an [Int32] with the numerical value of [source].
+  /// If the numerical value of [source] does not fit
+  /// in a signed 32 bit integer,
+  /// the numerical value is truncated to the lowest 32 bits
+  /// of the value's binary representation,
+  /// interpreted as a 32-bit two's complement integer.
+  ///
+  /// The [source] string must contain a sequence of hexadecimal
+  /// digits (`0`-`9`, `a`-`f` or `A`-`F`), possibly prefixed by a `-` sign.
+  ///
+  /// Returns `null` if the input is not a valid
+  /// hexadecimal integer numeral.
+  static Int32? tryParseHex(String source) => _parseRadix(source, 16, false);
 
   // Assumes i is <= 32-bit.
   static int _bitCount(int i) {
@@ -130,7 +243,7 @@ class Int32 implements IntX {
     } else if (val is int) {
       return val;
     }
-    throw ArgumentError(val);
+    throw ArgumentError.value(val, 'other', 'Not an int, Int32 or Int64');
   }
 
   // The +, -, * , &, |, and ^ operaters deal with types as follows:

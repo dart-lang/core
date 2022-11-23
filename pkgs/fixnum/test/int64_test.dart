@@ -744,13 +744,15 @@ void main() {
 
     check(10);
     check(1000000000000000000);
-    check(9223372000000000000); // near Int64.MAX_VALUE, has exact double value
+    check(9223372036854774784); // Near Int64.MAX_VALUE with exact double value.
+    check(-9223372036854775808); // Int64.MIN_VALUE. Is exact double.
   });
 
   group('parse', () {
     test('parseRadix10', () {
       void checkInt(int x) {
         expect(Int64.parseRadix('$x', 10), Int64(x));
+        expect(Int64.tryParseRadix('$x', 10), Int64(x));
       }
 
       checkInt(0);
@@ -767,15 +769,22 @@ void main() {
       checkInt(4294967296);
       checkInt(-4294967295);
       checkInt(-4294967296);
+
       expect(() => Int64.parseRadix('xyzzy', -1), throwsArgumentError);
       expect(() => Int64.parseRadix('plugh', 10), throwsFormatException);
       expect(() => Int64.parseRadix('', 10), throwsFormatException);
       expect(() => Int64.parseRadix('-', 10), throwsFormatException);
+
+      expect(() => Int64.tryParseRadix('xyzzy', -1), throwsArgumentError);
+      expect(Int64.tryParseRadix('plugh', 10), null);
+      expect(Int64.tryParseRadix('', 10), null);
+      expect(Int64.tryParseRadix('-', 10), null);
     });
 
     test('parseHex', () {
       void checkHex(String hexStr, int h, int l) {
         expect(Int64.parseHex(hexStr), Int64.fromInts(h, l));
+        expect(Int64.tryParseHex(hexStr), Int64.fromInts(h, l));
       }
 
       checkHex('0', 0, 0);
@@ -791,13 +800,18 @@ void main() {
       checkHex('FFFFFFFFFFF', 0xfff, 0xffffffff);
       checkHex('FFFFFFFFFFFFFFFE', 0xffffffff, 0xfffffffe);
       checkHex('FFFFFFFFFFFFFFFF', 0xffffffff, 0xffffffff);
+
       expect(() => Int64.parseHex(''), throwsFormatException);
       expect(() => Int64.parseHex('-'), throwsFormatException);
+
+      expect(Int64.tryParseHex(''), null);
+      expect(Int64.tryParseHex('-'), null);
     });
 
     test('parseRadix', () {
       void check(String s, int r, String x) {
         expect(Int64.parseRadix(s, r).toString(), x);
+        expect(Int64.tryParseRadix(s, r).toString(), x);
       }
 
       check('ghoul', 36, '27699213');
@@ -812,11 +826,17 @@ void main() {
       expect(() => Int64.parseRadix('0', 37), throwsRangeError);
       expect(() => Int64.parseRadix('xyzzy', -1), throwsRangeError);
       expect(() => Int64.parseRadix('xyzzy', 10), throwsFormatException);
+
+      expect(() => Int64.tryParseRadix('0', 1), throwsRangeError);
+      expect(() => Int64.tryParseRadix('0', 37), throwsRangeError);
+      expect(() => Int64.tryParseRadix('xyzzy', -1), throwsRangeError);
+      expect(Int64.tryParseRadix('xyzzy', 10), null);
     });
 
     test('parseRadixN', () {
       void check(String s, int r) {
         expect(Int64.parseRadix(s, r).toRadixString(r), s);
+        expect(Int64.tryParseRadix(s, r)!.toRadixString(r), s);
       }
 
       check('2ppp111222333', 33); // This value & radix requires three chunks.
