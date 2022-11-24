@@ -4,7 +4,9 @@
 
 // ignore_for_file: constant_identifier_names
 
-part of fixnum;
+import 'int64.dart';
+import 'intx.dart';
+import 'utilities.dart' as u;
 
 /// An immutable 32-bit signed integer, in the range [-2^31, 2^31 - 1].
 /// Arithmetic operations may overflow in order to maintain this range.
@@ -26,36 +28,8 @@ class Int32 implements IntX {
   /// An [Int32] constant equal to 2.
   static const Int32 TWO = Int32._internal(2);
 
-  // Hex digit char codes
-  static const int _CC_0 = 48; // '0'.codeUnitAt(0)
-  static const int _CC_a = 97; // 'a'.codeUnitAt(0)
-
   // Mask to 32-bits.
   static const int _MASK_U32 = 0xFFFFFFFF;
-
-  /// Converts radix digits into their numeric values.
-  ///
-  /// Converts the characters `0`-`9` into the values 0 through 9,
-  /// and the letters `a`-`z` or `A`-`Z` into values 10 through 35,
-  /// and return that value.
-  /// Any other character returns a value above 35, which means it's
-  /// not a valid digit in any radix in the range 2 through 36.
-  static int _decodeDigit(int c) {
-    int digit = c ^ _CC_0;
-    if (digit < 10) return digit;
-    int letter = (c | 0x20) - _CC_a;
-    if (letter >= 0) {
-      // Returns values above 36 for invalid digits.
-      // The value is checked against the actual radix where the return
-      // value is used, so this is safe.
-      return letter + 10;
-    } else {
-      return 255; // Never a valid radix.
-    }
-  }
-
-  static int _validateRadix(int radix) =>
-      RangeError.checkValueInInterval(radix, 2, 36, 'radix');
 
   /// Parses [source] in a given [radix] between 2 and 36.
   ///
@@ -73,7 +47,7 @@ class Int32 implements IntX {
   /// Throws a [FormatException] if the input is not a valid
   /// integer numeral in base [radix].
   static Int32 parseRadix(String source, int radix) =>
-      _parseRadix(source, _validateRadix(radix), true)!;
+      _parseRadix(source, u.validateRadix(radix), true)!;
 
   /// Parses [source] in a given [radix] between 2 and 36.
   ///
@@ -91,7 +65,7 @@ class Int32 implements IntX {
   /// Throws a [FormatException] if the input is not a valid
   /// integer numeral in base [radix].
   static Int32? tryParseRadix(String source, int radix) =>
-      _parseRadix(source, _validateRadix(radix), false);
+      _parseRadix(source, u.validateRadix(radix), false);
 
   // TODO(rice) - Make this faster by converting several digits at once.
   static Int32? _parseRadix(String s, int radix, bool throwOnError) {
@@ -108,7 +82,7 @@ class Int32 implements IntX {
     var result = 0;
     for (; index < s.length; index++) {
       var c = s.codeUnitAt(index);
-      var digit = _decodeDigit(c);
+      var digit = u.decodeDigit(c);
       if (digit < radix) {
         /// Doesn't matter whether the result is unsigned
         /// or signed (as on the web), only the bits matter
@@ -186,45 +160,6 @@ class Int32 implements IntX {
   /// Returns `null` if the input is not a valid
   /// hexadecimal integer numeral.
   static Int32? tryParseHex(String source) => _parseRadix(source, 16, false);
-
-  // Assumes i is <= 32-bit.
-  static int _bitCount(int i) {
-    // See "Hacker's Delight", section 5-1, "Counting 1-Bits".
-
-    // The basic strategy is to use "divide and conquer" to
-    // add pairs (then quads, etc.) of bits together to obtain
-    // sub-counts.
-    //
-    // A straightforward approach would look like:
-    //
-    // i = (i & 0x55555555) + ((i >>  1) & 0x55555555);
-    // i = (i & 0x33333333) + ((i >>  2) & 0x33333333);
-    // i = (i & 0x0F0F0F0F) + ((i >>  4) & 0x0F0F0F0F);
-    // i = (i & 0x00FF00FF) + ((i >>  8) & 0x00FF00FF);
-    // i = (i & 0x0000FFFF) + ((i >> 16) & 0x0000FFFF);
-    //
-    // The code below removes unnecessary &'s and uses a
-    // trick to remove one instruction in the first line.
-
-    i -= (i >> 1) & 0x55555555;
-    i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
-    i = (i + (i >> 4)) & 0x0F0F0F0F;
-    i += i >> 8;
-    i += i >> 16;
-    return i & 0x0000003F;
-  }
-
-  // Assumes i is <= 32-bit
-  static int _numberOfLeadingZeros(int i) {
-    i |= i >> 1;
-    i |= i >> 2;
-    i |= i >> 4;
-    i |= i >> 8;
-    i |= i >> 16;
-    return _bitCount(~i);
-  }
-
-  static int _numberOfTrailingZeros(int i) => _bitCount((i & -i) - 1);
 
   // The internal value, kept in the range [MIN_VALUE, MAX_VALUE].
   final int _i;
@@ -482,10 +417,10 @@ class Int32 implements IntX {
   }
 
   @override
-  int numberOfLeadingZeros() => _numberOfLeadingZeros(_i);
+  int numberOfLeadingZeros() => u.numberOfLeadingZeros(_i);
 
   @override
-  int numberOfTrailingZeros() => _numberOfTrailingZeros(_i);
+  int numberOfTrailingZeros() => u.numberOfTrailingZeros(_i);
 
   @override
   Int32 toSigned(int width) {

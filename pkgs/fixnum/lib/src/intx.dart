@@ -2,7 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of fixnum;
+import 'int32.dart';
+import 'int64.dart';
 
 /// A fixed-precision integer.
 abstract class IntX implements Comparable<Object> {

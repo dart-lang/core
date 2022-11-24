@@ -8,6 +8,6 @@
 /// identically whether executed on the Dart VM or compiled to JavaScript.
 library fixnum;
 
-part 'src/intx.dart';
-part 'src/int32.dart';
-part 'src/int64.dart';
+export 'src/int32.dart';
+export 'src/int64.dart';
+export 'src/intx.dart';

@@ -9,7 +9,9 @@
 //
 // ignore_for_file: omit_local_variable_types
 
-part of fixnum;
+import 'int32.dart';
+import 'intx.dart';
+import 'utilities.dart' as u;
 
 /// An immutable 64-bit signed integer, in the range [-2^63, 2^63 - 1].
 /// Arithmetic operations may overflow in order to maintain this range.
@@ -73,7 +75,7 @@ class Int64 implements IntX {
   /// Throws a [FormatException] if the input is not recognized as a valid
   /// integer numeral.
   static Int64 parseRadix(String source, int radix) =>
-      _parseRadix(source, Int32._validateRadix(radix), true)!;
+      _parseRadix(source, u.validateRadix(radix), true)!;
 
   /// Parses [source] in a given [radix] between 2 and 36.
   ///
@@ -91,7 +93,7 @@ class Int64 implements IntX {
   /// Returns `null` if the input is not recognized as a valid
   /// integer numeral.
   static Int64? tryParseRadix(String source, int radix) =>
-      _parseRadix(source, Int32._validateRadix(radix), false);
+      _parseRadix(source, u.validateRadix(radix), false);
 
   static Int64? _parseRadix(String s, int radix, bool throwOnError) {
     int i = 0;
@@ -109,7 +111,7 @@ class Int64 implements IntX {
     int d0 = 0, d1 = 0, d2 = 0; //  low, middle, high components.
     for (; i < s.length; i++) {
       int c = s.codeUnitAt(i);
-      int digit = Int32._decodeDigit(c);
+      int digit = u.decodeDigit(c);
       if (digit < radix) {
         // [radix] and [digit] are at most 6 bits, component is 22, so we can
         // multiply and add within 30 bit temporary values.
@@ -636,11 +638,11 @@ class Int64 implements IntX {
   /// between 0 and 64.
   @override
   int numberOfLeadingZeros() {
-    int b2 = Int32._numberOfLeadingZeros(_h);
+    int b2 = u.numberOfLeadingZeros(_h);
     if (b2 == 32) {
-      int b1 = Int32._numberOfLeadingZeros(_m);
+      int b1 = u.numberOfLeadingZeros(_m);
       if (b1 == 32) {
-        return Int32._numberOfLeadingZeros(_l) + 32;
+        return u.numberOfLeadingZeros(_l) + 32;
       } else {
         return b1 + _BITS2 - (32 - _BITS);
       }
@@ -653,17 +655,17 @@ class Int64 implements IntX {
   /// between 0 and 64.
   @override
   int numberOfTrailingZeros() {
-    int zeros = Int32._numberOfTrailingZeros(_l);
+    int zeros = u.numberOfTrailingZeros(_l);
     if (zeros < 32) {
       return zeros;
     }
 
-    zeros = Int32._numberOfTrailingZeros(_m);
+    zeros = u.numberOfTrailingZeros(_m);
     if (zeros < 32) {
       return _BITS + zeros;
     }
 
-    zeros = Int32._numberOfTrailingZeros(_h);
+    zeros = u.numberOfTrailingZeros(_h);
     if (zeros < 32) {
       return _BITS01 + zeros;
     }
@@ -769,11 +771,10 @@ class Int64 implements IntX {
 
   @pragma('dart2js:noInline')
   String toRadixStringUnsigned(int radix) =>
-      _toRadixStringUnsigned(Int32._validateRadix(radix), _l, _m, _h, '');
+      _toRadixStringUnsigned(u.validateRadix(radix), _l, _m, _h, '');
 
   @override
-  String toRadixString(int radix) =>
-      _toRadixString(Int32._validateRadix(radix));
+  String toRadixString(int radix) => _toRadixString(u.validateRadix(radix));
 
   String _toRadixString(int radix) {
     int d0 = _l;
