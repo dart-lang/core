@@ -12,8 +12,6 @@ library int64test;
 import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
 
-import 'test_shared.dart';
-
 void main() {
   group('fromBytes', () {
     test('fromBytes', () {
@@ -237,14 +235,12 @@ void main() {
       expect(Int64(829893893) ~/ Int32(1919), Int32(432461));
       expect(Int64(829893893) ~/ Int64(1919), Int32(432461));
       expect(Int64(829893893) ~/ 1919, Int32(432461));
-      expect(() => Int64(1) ~/ Int64.ZERO,
-          throwsA(isIntegerDivisionByZeroException));
+      expect(() => Int64(1) ~/ Int64.ZERO, throwsA(isUnsupportedError));
       expect(
           Int64.MIN_VALUE ~/ Int64(2), Int64.fromInts(0xc0000000, 0x00000000));
       expect(Int64.MIN_VALUE ~/ Int64(1), Int64.MIN_VALUE);
       expect(Int64.MIN_VALUE ~/ Int64(-1), Int64.MIN_VALUE);
-      expect(() => Int64(17) ~/ Int64.ZERO,
-          throwsA(isIntegerDivisionByZeroException));
+      expect(() => Int64(17) ~/ Int64.ZERO, throwsA(isUnsupportedError));
       argumentErrorTest((a, b) => a ~/ b);
     });
 
@@ -389,7 +385,7 @@ void main() {
       expect(Int64(0), isNot(equals(Int64(1))));
       expect(Int64(0), equals(Int32(0)));
       expect(Int64(0), isNot(equals(Int32(1))));
-      expect(Int64(0) == 0, isTrue);
+      expect(Int64(0) == 0, isTrue); // ignore: unrelated_type_equality_checks
       expect(Int64(0), isNot(equals(1)));
       expect(Int64(10), isNot(equals(Int64(11))));
       expect(Int64(10), equals(Int64(10)));
@@ -398,11 +394,12 @@ void main() {
       expect(Int64(10), equals(Int32(10)));
       expect(Int64(10), isNot(equals(Int32(9))));
       expect(Int64(10), isNot(equals(11)));
-      expect(Int64(10) == 10, isTrue);
+      expect(Int64(10) == 10, isTrue); // ignore: unrelated_type_equality_checks
       expect(Int64(10), isNot(equals(9)));
       expect(Int64(-10), equals(Int64(-10)));
       expect(Int64(-10) != Int64(-10), false);
-      expect(Int64(-10) == -10, isTrue);
+      expect(
+          Int64(-10) == -10, isTrue); // ignore: unrelated_type_equality_checks
       expect(Int64(-10), isNot(equals(-9)));
       expect(largePos, equals(largePos));
       expect(largePos, isNot(equals(largePosPlusOne)));
