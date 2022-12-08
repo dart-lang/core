@@ -214,7 +214,7 @@ void main() {
       expect(Int32(17), isNot(equals(Int64(16))));
       expect(Int32.MIN_VALUE, isNot(equals(Int32.MAX_VALUE)));
       expect(Int32(17), isNot(equals(18)));
-      expect(Int32(17) == 17, isTrue); // ignore: unrelated_type_equality_checks
+      expect(Int32(17) == 17, isTrue);
       expect(Int32(17), isNot(equals(16)));
       expect(Int32(17), isNot(equals(Object())));
       expect(Int32(17), isNot(equals(null)));
