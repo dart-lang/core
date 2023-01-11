@@ -2,36 +2,36 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:async";
+import 'dart:async';
 
-import "package:os_detect/os_detect.dart";
+import 'package:os_detect/os_detect.dart';
 import 'package:os_detect/override.dart';
-import "package:test/test.dart";
+import 'package:test/test.dart';
 
 void main() {
-  test("Exists and is consistent", () {
+  test('Exists and is consistent', () {
     expect(operatingSystem, isNotNull);
     expect(operatingSystemVersion, isNotNull);
 
-    expect(isLinux, operatingSystem == "linux");
-    expect(isAndroid, operatingSystem == "android");
-    expect(isMacOS, operatingSystem == "macos");
-    expect(isWindows, operatingSystem == "windows");
-    expect(isIOS, operatingSystem == "ios");
-    expect(isFuchsia, operatingSystem == "fuchsia");
-    expect(isBrowser, operatingSystem == "browser");
+    expect(isLinux, operatingSystem == 'linux');
+    expect(isAndroid, operatingSystem == 'android');
+    expect(isMacOS, operatingSystem == 'macos');
+    expect(isWindows, operatingSystem == 'windows');
+    expect(isIOS, operatingSystem == 'ios');
+    expect(isFuchsia, operatingSystem == 'fuchsia');
+    expect(isBrowser, operatingSystem == 'browser');
   });
 
-  test("Override", () {
-    const overrideName = "argle-bargle";
-    const overrideVersion = "glop-glyf";
+  test('Override', () {
+    const overrideName = 'argle-bargle';
+    const overrideVersion = 'glop-glyf';
     const overrideOS = OperatingSystem(overrideName, overrideVersion);
     Zone? overrideZone;
 
-    var originalName = operatingSystem;
-    var originalVersion = operatingSystemVersion;
-    var originalID = OperatingSystem.current;
-    var originalZone = Zone.current;
+    final originalName = operatingSystem;
+    final originalVersion = operatingSystemVersion;
+    final originalID = OperatingSystem.current;
+    final originalZone = Zone.current;
     expect(originalName, isNot(overrideName));
     expect(originalVersion, isNot(overrideVersion));
 

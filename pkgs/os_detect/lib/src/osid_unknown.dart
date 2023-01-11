@@ -5,7 +5,7 @@
 import '../override.dart';
 
 const String _os =
-    String.fromEnvironment("dart.os.name", defaultValue: "unknown");
-const String _osVersion = String.fromEnvironment("dart.os.version");
+    String.fromEnvironment('dart.os.name', defaultValue: 'unknown');
+const String _osVersion = String.fromEnvironment('dart.os.version');
 
 const OperatingSystem platformOS = OperatingSystem(_os, _osVersion);
