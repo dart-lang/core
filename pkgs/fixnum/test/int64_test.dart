@@ -714,16 +714,16 @@ void main() {
   });
 
   test('JavaScript 53-bit integer boundary', () {
-    Int64 _factorial(Int64 n) {
+    Int64 factorial(Int64 n) {
       if (n.isZero) {
         return Int64(1);
       } else {
-        return n * _factorial(n - Int64(1));
+        return n * factorial(n - Int64(1));
       }
     }
 
-    Int64 fact18 = _factorial(Int64(18));
-    Int64 fact17 = _factorial(Int64(17));
+    Int64 fact18 = factorial(Int64(18));
+    Int64 fact17 = factorial(Int64(17));
     expect(fact18 ~/ fact17, Int64(18));
   });
 

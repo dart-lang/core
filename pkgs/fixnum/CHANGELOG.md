@@ -1,4 +1,4 @@
-## 1.1.0-dev
+## 1.1.0
 
 * Add `tryParseRadix`, `tryParseInt` and `tryParseHex` static methods
   to both `Int32` and `Int64`.
@@ -7,6 +7,7 @@
 * Make `Int32` parse functions consistent with documentation (accept
   leading minus sign, do not accept empty inputs).
 * Update the minimum SDK constraint to 2.19.
+* Update to package:lints 2.0.0.
 
 ## 1.0.1
 

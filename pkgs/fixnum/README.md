@@ -7,3 +7,8 @@ A fixed-width 32- and 64- bit integer library for Dart.
 Provides data types for signed 32- and 64-bit integers.
 The integer implementations in this library are designed to work identically
 whether executed on the Dart VM or compiled to JavaScript.
+
+## Publishing automation
+
+For information about our publishing automation and release process, see
+https://github.com/dart-lang/ecosystem/wiki/Publishing-automation.

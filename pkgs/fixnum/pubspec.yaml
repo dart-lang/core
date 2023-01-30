@@ -1,13 +1,13 @@
 name: fixnum
-version: 1.1.0-dev
+version: 1.1.0
 description: >-
   Library for 32- and 64-bit signed fixed-width integers with consistent
   behavior between native and JS runtimes.
 repository: https://github.com/dart-lang/fixnum
 
 environment:
-  sdk: '>=2.19.0-0 <3.0.0'
+  sdk: '>=2.19.0 <3.0.0'
 
 dev_dependencies:
-  lints: ^1.0.0
+  lints: ^2.0.0
   test: ^1.16.0
