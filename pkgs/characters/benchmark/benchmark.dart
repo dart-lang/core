@@ -94,14 +94,41 @@ void main(List<String> args) {
   bench(reverseStrings, 250);
   bench(replaceStrings, 250);
 
+  double bestIterateIndices = 0;
+  double bestIterateStrings = 0;
+  double bestReverseStrings = 0;
+  double bestReplaceStrings = 0;
+
+  String toDigits(double d) {
+    const n = 5;
+    var s = d.round().toString();
+    if (s.length >= n) return s;
+    return d.toStringAsFixed(n - s.length);
+  }
+
   for (var i = 0; i < count; i++) {
     var performance = bench(iterateIndicesOnly, 2000);
-    print("Index Iteration: $performance gc/ms");
+    print("Index Iteration: ${toDigits(performance)} gc/ms");
+    if (performance > bestIterateIndices) bestIterateIndices = performance;
+
     performance = bench(iterateStrings, 2000);
-    print("String Iteration: $performance cu/ms");
+    print("String Iteration: ${toDigits(performance)} cu/ms");
+    if (performance > bestIterateStrings) bestIterateStrings = performance;
+
     performance = bench(reverseStrings, 2000);
-    print("String Reversing: $performance cu/ms");
+    print("String Reversing: ${toDigits(performance)} cu/ms");
+    if (performance > bestReverseStrings) bestReverseStrings = performance;
+
     performance = bench(replaceStrings, 2000);
-    print("String Replacing: $performance changes/ms");
+    print("String Replacing: ${toDigits(performance)} changes/ms");
+    if (performance > bestReplaceStrings) bestReplaceStrings = performance;
+  }
+
+  if (count > 1) {
+    print("Best: ");
+    print("Index Iteration: ${toDigits(bestIterateIndices)} gc/ms");
+    print("String Iteration: ${toDigits(bestIterateStrings)} cu/ms");
+    print("String Reversing: ${toDigits(bestReverseStrings)} cu/ms");
+    print("String Replacing: ${toDigits(bestReplaceStrings)} changes/ms");
   }
 }
