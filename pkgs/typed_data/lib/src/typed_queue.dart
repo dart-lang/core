@@ -223,8 +223,8 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
         }
       }
     } else if (targetIsContiguous) {
-      // If the range is contiguous within the table, we can set it with a single
-      // underlying [setRange] call.
+      // If the range is contiguous within the table, we can set it with a
+      // single underlying [setRange] call.
       _table.setRange(targetStart, targetEnd, iterable, skipCount);
     } else if (iterable is List<E>) {
       // If the range isn't contiguous and [iterable] is actually a [List] (but
@@ -337,7 +337,7 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
 }
 
 abstract class _IntQueue<L extends List<int>> extends _TypedQueue<int, L> {
-  _IntQueue(L queue) : super(queue);
+  _IntQueue(super.queue);
 
   @override
   int get _defaultValue => 0;
@@ -345,7 +345,7 @@ abstract class _IntQueue<L extends List<int>> extends _TypedQueue<int, L> {
 
 abstract class _FloatQueue<L extends List<double>>
     extends _TypedQueue<double, L> {
-  _FloatQueue(L queue) : super(queue);
+  _FloatQueue(super.queue);
 
   @override
   double get _defaultValue => 0.0;
@@ -644,12 +644,13 @@ class Int32x4Queue extends _TypedQueue<Int32x4, Int32x4List>
 /// time-efficient than a default [QueueList] implementation.
 class Float32x4Queue extends _TypedQueue<Float32x4, Float32x4List>
     implements QueueList<Float32x4> {
-  /// Creates an empty [Float32x4Queue] with the given initial internal capacity (in
-  /// elements).
+  /// Creates an empty [Float32x4Queue] with the given initial internal capacity
+  /// (in elements).
   Float32x4Queue([int? initialCapacity])
       : super(Float32x4List(_chooseRealInitialCapacity(initialCapacity)));
 
-  /// Creates a [Float32x4Queue] with the same length and contents as [elements].
+  /// Creates a [Float32x4Queue] with the same length and contents as
+  /// [elements].
   factory Float32x4Queue.fromList(List<Float32x4> elements) =>
       Float32x4Queue(elements.length)..addAll(elements);
 

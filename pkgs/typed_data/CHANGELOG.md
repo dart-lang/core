@@ -1,3 +1,7 @@
+## 1.3.2-dev
+
+* Require Dart 2.17
+
 ## 1.3.1
 
 * Switch to using `package:lints`.
@@ -6,31 +10,8 @@
 ## 1.3.0
 
 * Stable release for null safety.
-
-## 1.3.0-nullsafety.5
-
 * Update SDK constraints to `>=2.12.0-0 <3.0.0` based on beta release
   guidelines.
-
-## 1.3.0-nullsafety.4
-
-* Allow prerelease versions of the `2.12` sdk.
-
-## 1.3.0-nullsafety.3
-
-* Allow 2.10 stable and 2.11.0 dev SDK versions.
-
-## 1.3.0-nullsafety.2
-
-* Update for the 2.10 dev sdk.
-
-## 1.3.0-nullsafety.1
-
-* Allow the <=2.9.10 stable sdks.
-
-## 1.3.0-nullsafety
-
-* Migrate to NNBD
 
 ## 1.2.0
 
@@ -45,7 +26,7 @@
 
 ## 1.1.5
 
-* Undo unnessesary SDK version constraint tweak.
+* Undo unnecessary SDK version constraint tweak.
 
 ## 1.1.4
 

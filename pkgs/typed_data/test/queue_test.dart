@@ -5,7 +5,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:test/test.dart';
-
 import 'package:typed_data/typed_data.dart';
 
 /// The initial capacity of queues if the user doesn't specify one.
@@ -110,8 +109,8 @@ void main() {
     });
 
     group(
-        'sets a range to a section of the same queue overlapping at the beginning',
-        () {
+        'sets a range to a section of the same queue overlapping at the '
+        'beginning', () {
       forEachInternalRepresentation((queue) {
         queue.setRange(5, 10, queue, 2);
         expect(queue, [1, 2, 3, 4, 5, 3, 4, 5, 6, 7, 11, 12, 13, 14, 15]);

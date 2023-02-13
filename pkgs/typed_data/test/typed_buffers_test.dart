@@ -44,30 +44,29 @@ void main() {
 }
 
 void initTests(List<int> intSamples) {
-  testUint(intSamples, 8, (l) => Uint8Buffer(l));
-  testInt(intSamples, 8, (l) => Int8Buffer(l));
+  testUint(intSamples, 8, Uint8Buffer.new);
+  testInt(intSamples, 8, Int8Buffer.new);
   test('Uint8ClampedBuffer', () {
-    testIntBuffer(
-        intSamples, 8, 0, 255, (l) => Uint8ClampedBuffer(l), clampUint8);
+    testIntBuffer(intSamples, 8, 0, 255, Uint8ClampedBuffer.new, clampUint8);
   });
-  testUint(intSamples, 16, (l) => Uint16Buffer(l));
-  testInt(intSamples, 16, (l) => Int16Buffer(l));
-  testUint(intSamples, 32, (l) => Uint32Buffer(l));
+  testUint(intSamples, 16, Uint16Buffer.new);
+  testInt(intSamples, 16, Int16Buffer.new);
+  testUint(intSamples, 32, Uint32Buffer.new);
 
-  testInt(intSamples, 32, (l) => Int32Buffer(l));
+  testInt(intSamples, 32, Int32Buffer.new);
 
-  testUint(intSamples, 64, (l) => Uint64Buffer(l),
+  testUint(intSamples, 64, Uint64Buffer.new,
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: 'dart-vm');
-  testInt(intSamples, 64, (l) => Int64Buffer(l),
+  testInt(intSamples, 64, Int64Buffer.new,
       // JS doesn't support 64-bit ints, so only test this on the VM.
       testOn: 'dart-vm');
 
   testInt32x4Buffer(intSamples);
 
   var roundedFloatSamples = floatSamples.map(roundToFloat).toList();
-  testFloatBuffer(32, roundedFloatSamples, () => Float32Buffer(), roundToFloat);
-  testFloatBuffer(64, doubleSamples, () => Float64Buffer(), (x) => x);
+  testFloatBuffer(32, roundedFloatSamples, Float32Buffer.new, roundToFloat);
+  testFloatBuffer(64, doubleSamples, Float64Buffer.new, (x) => x);
 
   testFloat32x4Buffer(roundedFloatSamples);
 
@@ -557,7 +556,7 @@ class MatchesInt32x4 extends Matcher {
       description.add('Int32x4.==');
 
   @override
-  bool matches(item, Map matchState) =>
+  bool matches(Object? item, Map matchState) =>
       item is Int32x4 &&
       result.x == item.x &&
       result.y == item.y &&

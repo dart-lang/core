@@ -308,14 +308,14 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
 }
 
 abstract class _IntBuffer extends TypedDataBuffer<int> {
-  _IntBuffer(List<int> buffer) : super(buffer);
+  _IntBuffer(super.buffer);
 
   @override
   int get _defaultValue => 0;
 }
 
 abstract class _FloatBuffer extends TypedDataBuffer<double> {
-  _FloatBuffer(List<double> buffer) : super(buffer);
+  _FloatBuffer(super.buffer);
 
   @override
   double get _defaultValue => 0.0;
