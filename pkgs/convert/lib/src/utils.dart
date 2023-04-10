@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library convert.utils;
-
 import 'charcodes.dart';
 
 /// Returns the digit (0 through 15) corresponding to the hexadecimal code unit
