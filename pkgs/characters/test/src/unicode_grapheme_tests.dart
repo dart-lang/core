@@ -7,6 +7,7 @@
 // and [https://www.unicode.org/Public/emoji/15.0/emoji-test.txt](../../third_party/Unicode_Consortium/emoji_test.txt).
 // Licensed under the Unicode Inc. License Agreement
 // (https://www.unicode.org/license.txt, ../../third_party/third_party/Unicode_Consortium/UNICODE_LICENSE.txt)
+// ignore_for_file: lines_longer_than_80_chars
 
 // Grapheme cluster tests.
 const List<List<String>> splitTests = [

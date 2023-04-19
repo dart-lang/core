@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Unicode Grapheme Breaking Algorithm Character Categories.
-/// (Order is irrelevent to correctness, so it is chosen
+/// (Order is irrelevant to correctness, so it is chosen
 /// to minimize the size of the generated table strings
 /// by avoiding many bytes that need escapes).
 const int categoryCR = 0;
@@ -49,7 +49,7 @@ const int categorySoT = 15; // Start of Text (synthetic input)
 const int stateEoT = 0; // Start of text (or grapheme).
 const int stateLF = 0x20; // Break unless prev is CR.
 const int stateExtend = 0x40; // Only break if prev is Control/CR/LF/sot.
-const int stateZWJPictographic = 0x90; // Preceeded by Pic Ext*.
+const int stateZWJPictographic = 0x90; // Preceded by Pic Ext*.
 const int stateEoTNoBreak = 0xB0; // As EoT but never cause break before.
 const int stateRegionalEven = 0xC0; // There is an even number of RIs before.
 const int stateRegionalOdd =

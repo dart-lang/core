@@ -5,7 +5,7 @@
 /// From: https://ko.wikipedia.org/wiki/%ED%95%9C%EA%B8%80
 /// text converted to Unicode NFD format.
 /// Text is available under the [Creative Commons Attribution-ShareAlike License](https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License).
-var hangul = """
+const hangul = """
 한글
 위키백과, 우리 모두의 백과사전.
 둘러보기로 가기검색하러 가기

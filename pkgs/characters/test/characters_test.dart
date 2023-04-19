@@ -2,6 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Not all categories are currently used in tests.
+// They're retained in case we add more tests.
+// ignore_for_file: unreachable_from_main
+
 import "dart:math";
 
 import "package:characters/characters.dart";
@@ -231,7 +235,7 @@ void tests() {
 // Converts text with no multi-code-point grapheme clusters into
 // list of grapheme clusters.
 List<String> charsOf(String text) =>
-    text.runes.map((r) => String.fromCharCode(r)).toList();
+    text.runes.map(String.fromCharCode).toList();
 
 void expectGC(Characters actual, List<String> expected) {
   var text = expected.join();

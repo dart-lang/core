@@ -48,11 +48,14 @@ int iterateStrings() {
 int reverseStrings() {
   var revHangul = reverse(hangul);
   var rev2Hangul = reverse(revHangul);
-  if (hangul != rev2Hangul || hangul == revHangul) throw "Bad reverse";
-
+  if (hangul != rev2Hangul || hangul == revHangul) {
+    throw AssertionError("Bad reverse");
+  }
   var revGenesis = reverse(genesis);
   var rev2Genesis = reverse(revGenesis);
-  if (genesis != rev2Genesis || genesis == revGenesis) throw "Bad reverse";
+  if (genesis != rev2Genesis || genesis == revGenesis) {
+    throw AssertionError("Bad reverse");
+  }
 
   return (hangul.length + genesis.length) * 2;
 }
@@ -94,10 +97,10 @@ void main(List<String> args) {
   bench(reverseStrings, 250);
   bench(replaceStrings, 250);
 
-  double bestIterateIndices = 0;
-  double bestIterateStrings = 0;
-  double bestReverseStrings = 0;
-  double bestReplaceStrings = 0;
+  var bestIterateIndices = 0.0;
+  var bestIterateStrings = 0.0;
+  var bestReverseStrings = 0.0;
+  var bestReplaceStrings = 0.0;
 
   String toDigits(double d) {
     const n = 5;

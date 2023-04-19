@@ -5,8 +5,8 @@
 import 'package:characters/src/grapheme_clusters/table.dart';
 
 import "characters.dart";
-import "grapheme_clusters/constants.dart";
 import "grapheme_clusters/breaks.dart";
+import "grapheme_clusters/constants.dart";
 
 /// The grapheme clusters of a string.
 ///
