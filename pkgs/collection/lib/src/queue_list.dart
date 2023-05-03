@@ -5,6 +5,10 @@
 import 'dart:collection';
 
 /// A class that efficiently implements both [Queue] and [List].
+// TODO(nweiz): Currently this code is copied almost verbatim from
+// dart:collection. The only changes are to implement List and to remove methods
+// that are redundant with ListMixin. Remove or simplify it when issue 21330 is
+// fixed.
 interface class QueueList<E> with ListMixin<E> implements Queue<E> {
   /// Adapts [source] to be a `QueueList<T>`.
   ///
@@ -267,7 +271,7 @@ interface class QueueList<E> with ListMixin<E> implements Queue<E> {
   }
 }
 
-class _CastQueueList<S, T> extends QueueList<T> {
+final class _CastQueueList<S, T> extends QueueList<T> {
   final QueueList<S> _delegate;
 
   // Assigns invalid values for head/tail because it uses the delegate to hold
