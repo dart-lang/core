@@ -1,6 +1,7 @@
-## 1.3.2-dev
+## 1.3.2
 
-* Require Dart 2.17
+* Added package topics to the pubspec file.
+* Require Dart 2.17.
 
 ## 1.3.1
 
