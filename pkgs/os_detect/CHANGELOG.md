@@ -1,6 +1,7 @@
 ## 2.0.2-dev
 
-- Require Dart 2.18
+- Require Dart 3.0
+- Make work with VM's platform-constants.
 
 ## 2.0.1
 

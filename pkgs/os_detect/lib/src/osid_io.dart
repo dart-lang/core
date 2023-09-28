@@ -4,9 +4,30 @@
 
 import 'dart:io';
 
-import '../override.dart';
+import 'os_kind.dart';
+import 'os_override.dart';
 
-String get _os => Platform.operatingSystem;
-String get _osVersion => Platform.operatingSystemVersion;
+// Uses VM platform-constant functionality to constant fold this expression
+// when `Platform.operatingSystem` is known at compile-time.
+// Uses a valid "potentially constant" expression for this, instead of, e.g.,
+// a `switch` expression.
+@pragma('vm:platform-const')
+final RecognizedOS? _osType = Platform.operatingSystem == RecognizedOS.linuxId
+    ? const LinuxOS()
+    : Platform.operatingSystem == RecognizedOS.macOSId
+        ? const MacOS()
+        : Platform.operatingSystem == RecognizedOS.windowsId
+            ? const WindowsOS()
+            : Platform.operatingSystem == RecognizedOS.androidId
+                ? const AndroidOS()
+                : Platform.operatingSystem == RecognizedOS.iOSId
+                    ? const IOS()
+                    : Platform.operatingSystem == RecognizedOS.fuchsiaId
+                        ? const FuchsiaOS()
+                        : Platform.operatingSystem == RecognizedOS.browserId
+                            ? const BrowserOS()
+                            : null;
 
-final OperatingSystem platformOS = OperatingSystem(_os, _osVersion);
+final OperatingSystem platformOS = OperatingSystemInternal(
+    _osType ?? UnknownOS(Platform.operatingSystem),
+    Platform.operatingSystemVersion);
