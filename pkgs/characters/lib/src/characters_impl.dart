@@ -464,15 +464,15 @@ class StringCharacterRange implements CharacterRange {
 
   /// Creates a [Breaks] from [_end] to `_string.length`.
   ///
-  /// Uses information stored in [_state] for cases where the next
-  /// character has already been seen.
+  /// Uses information stored in the state for cases where the next character
+  /// has already been seen.
   Breaks _breaksFromEnd() {
     return Breaks(_string, _end, _string.length, stateSoTNoBreak);
   }
 
   /// Creates a [Breaks] from string start to [_start].
   ///
-  /// Uses information stored in [_state] for cases where the previous
+  /// Uses information stored in the state for cases where the previous
   /// character has already been seen.
   BackBreaks _backBreaksFromStart() {
     return BackBreaks(_string, _start, 0, stateEoTNoBreak);

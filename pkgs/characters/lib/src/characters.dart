@@ -49,8 +49,8 @@ abstract class Characters implements Iterable<String> {
   /// Returns [CharacterRange] positioned after the last character
   /// of this [Characters].
   ///
-  /// Allows iterating the characters of [string] backwards
-  /// using [CharacterRange.movePrevious],
+  /// Allows iterating the characters of [string] backwards using
+  /// [CharacterRange.moveBack],
   /// as well as controlling the iteration in more detail.
   CharacterRange get iteratorAtEnd;
 
@@ -62,7 +62,7 @@ abstract class Characters implements Iterable<String> {
   /// and that character is one of the characters
   /// in this character sequence, and false otherwise.
   /// This behavior is inherited from `Iterable<String>`,
-  /// which is why it is not [Character] based.
+  /// which is why it is not [Characters]-based.
   /// Use [containsAll] for a method which acts like
   /// [String.contains] for characters.
   @override
@@ -390,8 +390,7 @@ abstract class CharacterRange implements Iterator<String> {
   /// The copy is in the exact same state as this iterator.
   /// Can be used to iterate the following characters more than once
   /// at the same time. To simply rewind an iterator, remember the
-  /// [start] or [end] position and use [reset] to reset the iterator
-  /// to that position.
+  /// start or end position and use reset the iterator to that position.
   CharacterRange copy();
 
   /// Whether the current range is empty.

@@ -12,7 +12,7 @@
 
 /// An asymmetric weighted complete graph.
 ///
-/// The vertices are identified by numbers 0 through [vertices] - 1.
+/// The vertices are identified by numbers 0 through [vertexCount] - 1.
 /// Edges are pairs of vertices.
 class Graph {
   /// Number of vertices.
