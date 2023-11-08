@@ -1,3 +1,7 @@
+## 1.1.1-wip
+
+* Require Dart `^3.1.0`
+
 ## 1.1.0
 
 * Add `tryParseRadix`, `tryParseInt` and `tryParseHex` static methods

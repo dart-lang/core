@@ -267,7 +267,7 @@ class Int64 implements IntX {
 
   // Returns the [Int64] representation of the specified value. Throws
   // [ArgumentError] for non-integer arguments.
-  static Int64 _promote(value) {
+  static Int64 _promote(Object value) {
     if (value is Int64) {
       return value;
     } else if (value is int) {
@@ -968,7 +968,7 @@ class Int64 implements IntX {
 
   // Implementation of '~/', '%' and 'remainder'.
 
-  static Int64 _divide(Int64 a, other, int what) {
+  static Int64 _divide(Int64 a, Object other, int what) {
     Int64 b = _promote(other);
     if (b.isZero) {
       throw UnsupportedError('Division by zero');
