@@ -1,4 +1,4 @@
-## 2.0.2-dev
+## 2.0.2-wip
 
 - Require Dart 3.0
 - Make work with VM's platform-constants.

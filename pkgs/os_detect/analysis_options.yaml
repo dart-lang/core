@@ -1,5 +1,5 @@
-# https://dart.dev/guides/language/analysis-options
-include: package:lints/recommended.yaml
+# https://dart.dev/tools/analysis#the-analysis-options-file
+include: package:dart_flutter_team_lints/analysis_options.yaml
 
 analyzer:
   language:
@@ -9,60 +9,19 @@ analyzer:
 
 linter:
   rules:
-  - always_declare_return_types
   - avoid_bool_literals_in_conditional_expressions
-  - avoid_catching_errors
   - avoid_classes_with_only_static_members
-  - avoid_dynamic_calls
-  - avoid_empty_else
   - avoid_private_typedef_functions
   - avoid_redundant_argument_values
-  - avoid_relative_lib_imports
   - avoid_returning_this
-  - avoid_shadowing_type_parameters
-  - avoid_types_as_parameter_names
   - avoid_unused_constructor_parameters
   - avoid_void_async
-  - await_only_futures
-  - camel_case_extensions
-  - collection_methods_unrelated_type
-  - comment_references
-  - curly_braces_in_flow_control_structures
-  - directives_ordering
-  - empty_catches
-  - file_names
-  - hash_and_equals
-  - lines_longer_than_80_chars
   - literal_only_boolean_expressions
   - missing_whitespace_between_adjacent_strings
   - no_adjacent_strings_in_list
-  - no_duplicate_case_values
   - no_runtimeType_toString
-  - omit_local_variable_types
-  - only_throw_errors
   - package_api_docs
-  - prefer_asserts_in_initializer_lists
   - prefer_const_declarations
-  - prefer_generic_function_type_aliases
-  - prefer_is_empty
-  - prefer_is_not_empty
-  - prefer_iterable_whereType
-  - prefer_relative_imports
-  - prefer_single_quotes
-  - prefer_typing_uninitialized_variables
-  - provide_deprecation_message
-  - sort_pub_dependencies
-  - test_types_in_equals
-  - throw_in_finally
-  - type_annotate_public_apis
-  - unawaited_futures
-  - unnecessary_lambdas
-  - unnecessary_overrides
-  - unnecessary_parenthesis
-  - unnecessary_statements
-  - unrelated_type_equality_checks
-  - use_is_even_rather_than_modulo
-  - void_checks
   - use_raw_strings
 
 
