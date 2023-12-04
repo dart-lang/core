@@ -7,7 +7,6 @@ analyzer:
 linter:
   rules:
     - avoid_private_typedef_functions
-    - avoid_returning_null
     - avoid_unused_constructor_parameters
     - cancel_subscriptions
     - cascade_invocations
