@@ -147,16 +147,16 @@ void main() {
         expect(results, isEmpty);
 
         sink.add('0');
-        expect(results, equals([[]]));
+        expect(results, equals([<Never>[]]));
 
         sink.add('');
-        expect(results, equals([[]]));
+        expect(results, equals([<Never>[]]));
 
         sink.add('0');
         expect(
             results,
             equals([
-              [],
+              <Never>[],
               [0x00]
             ]));
 
@@ -164,7 +164,7 @@ void main() {
         expect(
             results,
             equals([
-              [],
+              <Never>[],
               [0x00]
             ]));
       });

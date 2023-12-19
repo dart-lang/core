@@ -154,22 +154,22 @@ void main() {
         expect(results, isEmpty);
 
         sink.add('%');
-        expect(results, equals([[]]));
+        expect(results, equals([<Never>[]]));
 
         sink.add('');
-        expect(results, equals([[]]));
+        expect(results, equals([<Never>[]]));
 
         sink.add('2');
-        expect(results, equals([[]]));
+        expect(results, equals([<Never>[]]));
 
         sink.add('');
-        expect(results, equals([[]]));
+        expect(results, equals([<Never>[]]));
 
         sink.add('0');
         expect(
             results,
             equals([
-              [],
+              <Never>[],
               [0x20]
             ]));
       });

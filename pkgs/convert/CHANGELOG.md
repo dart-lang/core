@@ -1,4 +1,4 @@
-## 3.1.2-dev
+## 3.1.2-wip
 
 - Require Dart 3.0
 - Add chunked decoding support (`startChunkedConversion`) for `CodePage`
