@@ -77,7 +77,7 @@ so they cannot be used safely on a sequence of characters.
 
 Grapheme clusters have varying length in the underlying representation,
 so operations on a [`Characters`][Characters] sequence cannot be index based.
-Instead the [`CharacterRange`][CharacterRange] *iterator*
+Instead, the [`CharacterRange`][CharacterRange] *iterator*
 provided by [`Characters.iterator`][Characters.iterator]
 has been greatly enhanced.
 It can move both forwards and backwards,
@@ -93,30 +93,30 @@ Example:
 
 ```dart
 // Using String indices.
-String firstTagString(String source) {
-  var start = string.indexOf("<") + 1;
+String? firstTagString(String source) {
+  var start = source.indexOf('<') + 1;
   if (start > 0) {
-    var end = string.indexOf(">", start);
+    var end = source.indexOf('>', start);
     if (end >= 0) {
-	    return string.substring(start, end);
+      return source.substring(start, end);
     }
   }
   return null;
 }
 
 // Using CharacterRange operations.
-Characters firstTagCharacters(Characters source) {
-  var range = source.findFirst("<".characters);
-  if (range != null && range.moveUntil(">".characters)) {
+Characters? firstTagCharacters(Characters source) {
+  var range = source.findFirst('<'.characters);
+  if (range != null && range.moveUntil('>'.characters)) {
     return range.currentCharacters;
   }
   return null;
 }
 ```
 
-[ByteBuffer]: https://api.dart.dev/stable/2.0.0/dart-typed_data/ByteBuffer-class.html	"ByteBuffer class"
-[CharacterRange.moveNext]:  https://pub.dev/documentation/characters/latest/characters/CharacterRange/moveNext.html "CharacterRange.moveNext"
-[CharacterRange]:  https://pub.dev/documentation/characters/latest/characters/CharacterRange-class.html "CharacterRange class"
+[ByteBuffer]: https://api.dart.dev/dart-typed_data/ByteBuffer-class.html "ByteBuffer class"
+[CharacterRange.moveNext]: https://pub.dev/documentation/characters/latest/characters/CharacterRange/moveNext.html "CharacterRange.moveNext"
+[CharacterRange]: https://pub.dev/documentation/characters/latest/characters/CharacterRange-class.html "CharacterRange class"
 [Characters constructor]: https://pub.dev/documentation/characters/latest/characters/Characters/Characters.html "Characters constructor"
 [Characters.iterator]: https://pub.dev/documentation/characters/latest/characters/Characters/iterator.html "CharactersRange get iterator"
 [Characters.replaceAll]: https://pub.dev/documentation/characters/latest/characters/Characters/replaceAll.html "Characters.replaceAlle"
@@ -126,8 +126,8 @@ Characters firstTagCharacters(Characters source) {
 [Code Units]: https://unicode.org/glossary/#code_unit "Unicode Code Units"
 [Glyphs]: https://unicode.org/glossary/#glyph "Unicode Glyphs"
 [Grapheme Clusters]: https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries "Unicode (Extended) Grapheme Cluster"
-[Iterable]: https://api.dart.dev/stable/2.0.0/dart-core/Iterable-class.html	"Iterable class"
-[Runes]: https://api.dart.dev/stable/2.0.0/dart-core/Runes-class.html	"Runes class"
-[String]: https://api.dart.dev/stable/2.0.0/dart-core/String-class.html	"String class"
-[Uint16List]: https://api.dart.dev/stable/2.0.0/dart-typed_data/Uint16List-class.html	"Uint16List class"
-[Uint8List]: https://api.dart.dev/stable/2.0.0/dart-typed_data/Uint8List-class.html	"Uint8List class"
+[Iterable]: https://api.dart.dev/dart-core/Iterable-class.html "Iterable class"
+[Runes]: https://api.dart.dev/dart-core/Runes-class.html "Runes class"
+[String]: https://api.dart.dev/dart-core/String-class.html "String class"
+[Uint16List]: https://api.dart.dev/dart-typed_data/Uint16List-class.html "Uint16List class"
+[Uint8List]: https://api.dart.dev/dart-typed_data/Uint8List-class.html "Uint8List class"

@@ -1,6 +1,7 @@
 name: characters
-version: 1.3.0
-description: String replacement with operations that are Unicode/grapheme cluster aware.
+version: 1.3.1-wip
+description: >-
+  String replacement with operations that are Unicode/grapheme cluster aware.
 repository: https://github.com/dart-lang/characters
 
 environment:

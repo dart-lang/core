@@ -1,3 +1,7 @@
+## 1.3.1-wip
+
+* Fixed README rendering on pub.dev and API docs.
+
 ## 1.3.0
 
 * Updated to use Unicode 15.0.0.
