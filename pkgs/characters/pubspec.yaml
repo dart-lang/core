@@ -4,6 +4,10 @@ description: >-
   String replacement with operations that are Unicode/grapheme cluster aware.
 repository: https://github.com/dart-lang/characters
 
+topics:
+ - strings
+ - unicode
+
 environment:
   sdk: ">=2.19.0 <4.0.0"
 
