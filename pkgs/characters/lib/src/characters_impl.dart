@@ -2,11 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:characters/src/grapheme_clusters/table.dart';
-
 import "characters.dart";
 import "grapheme_clusters/breaks.dart";
 import "grapheme_clusters/constants.dart";
+import 'grapheme_clusters/table.dart';
 
 /// The grapheme clusters of a string.
 ///
