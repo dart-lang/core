@@ -19,10 +19,13 @@ class HexDecoder extends Converter<String, List<int>> {
   const HexDecoder._();
 
   @override
-  List<int> convert(String input) {
+  Uint8List convert(String input) {
     if (!input.length.isEven) {
       throw FormatException(
-          'Invalid input length, must be even.', input, input.length);
+        'Invalid input length, must be even.',
+        input,
+        input.length,
+      );
     }
 
     var bytes = Uint8List(input.length ~/ 2);

@@ -3,6 +3,7 @@
 - Require Dart 3.0
 - Add chunked decoding support (`startChunkedConversion`) for `CodePage`
   encodings.
+- Upper-cast the return type of the decoder from `List<int>` to `Uint8List`.
 
 ## 3.1.1
 
