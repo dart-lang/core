@@ -7,7 +7,7 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 ## Packages
 
 | Package | Description | Version |
-|---|---|---|
+|[`record_use`](pkgs/record_use/)| The serialization logic and API for the usage recording SDK feature.|[![pub package](https://img.shields.io/pub/v/record_use.svg)](https://pub.dev/packages/record_use)|
 
 ## Publishing automation
 
