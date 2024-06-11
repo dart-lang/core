@@ -1,0 +1,17 @@
+name: Health
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - .github/workflows/record_use.yaml
+      - pkgs/record_use/**
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+jobs:
+  health:
+    uses: dart-lang/ecosystem/.github/workflows/health.yaml@main
+    with:
+      coverage_web: false
+      checks: "version,changelog,license,do-not-submit,breaking,coverage"
+      sdk: master
+    permissions:
+      pull-requests: write
