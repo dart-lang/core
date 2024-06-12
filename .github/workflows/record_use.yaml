@@ -26,7 +26,7 @@ jobs:
         sdk: [stable, dev]
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
-      - uses: dart-lang/setup-dart@fedb1266e91cf51be2fdb382869461a434b920a3
+      - uses: dart-lang/setup-dart@2986c8e337a31eb7b455ce93dc984e9bf5797756
         with:
           sdk: ${{matrix.sdk}}
 
