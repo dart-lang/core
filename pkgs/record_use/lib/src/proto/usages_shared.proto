@@ -1,0 +1,56 @@
+syntax = "proto3";
+package usages_shared;
+
+message Metadata {
+  optional string comment = 1;
+  string version = 2;
+}
+
+message Definition {
+  Identifier identifier = 1;
+  uint32 line = 2;
+  uint32 column = 3;
+  optional string loading_unit = 4; // Optional, as some loading units are null
+}
+
+message Identifier {
+  string uri = 1; 
+  optional string parent = 2;
+  string name = 3;
+}
+
+message Fields {
+  repeated Field fields = 1;
+}
+
+message Arguments {
+  oneof kind {
+    ConstArguments const_arguments = 1;
+    NonConstArguments non_const_arguments = 2;
+  }
+}
+
+message ConstArguments {
+  map<uint32, FieldValue> positional = 1; 
+  map<string, FieldValue> named = 2;
+}
+
+message NonConstArguments {
+  repeated uint32 positional = 1; 
+  repeated string named = 2;
+}
+
+message Field {
+  string class_name = 1; 
+  string name = 2;
+  FieldValue value = 3;
+}
+
+message FieldValue {
+  oneof value {
+    int32 int_value = 1;
+    double double_value = 2;
+    bool bool_value = 3;
+    string string_value = 4;
+  }
+}

@@ -5,23 +5,29 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:pub_semver/pub_semver.dart';
 
-import 'data_classes/arguments.dart';
-import 'data_classes/field.dart';
-import 'data_classes/identifier.dart';
-import 'data_classes/metadata.dart';
-import 'data_classes/reference.dart';
-import 'data_classes/usage.dart';
-import 'data_classes/usage_record.dart';
+import 'data_classes/extensions.dart';
+import 'proto/usages_read.pb.dart' as pb;
+import 'proto/usages_shared.pb.dart' as pb_shared;
+import 'proto/usages_storage.pb.dart' as pb_storage;
 
-extension type RecordUse._(UsageRecord _recordUses) {
+class Identifier {
+  final String uri;
+  final String? parent;
+  final String name;
+
+  Identifier({required this.uri, this.parent, required this.name});
+}
+
+extension type RecordUse._(pb.Usages _recordUses) {
   RecordUse.fromFile(Uint8List contents)
-      : this._(UsageRecord.fromFile(contents));
+      : this._(pb_storage.Usages.fromBuffer(contents).toApi());
 
   /// Show the metadata for this recording of usages.
-  Metadata get metadata => _recordUses.metadata;
+  Version get version => Version.parse(_recordUses.metadata.version);
 
-  /// Finds all arguments for calls to the [definition].
+  /// Finds all arguments for calls to the [method].
   ///
   /// The definition must be annotated with `@RecordUse()`. If there are no
   /// calls to the definition, either because it was treeshaken, because it was
@@ -55,13 +61,18 @@ extension type RecordUse._(UsageRecord _recordUses) {
   ///         constArguments: ConstArguments(positional: {1: 42}),
   ///       );
   /// ```
-  Iterable<Arguments>? callReferencesTo(Identifier definition) =>
-      _callTo(definition)
-          ?.references
-          .map((reference) => reference.arguments)
-          .whereType();
+  Iterable<({Map<String, Object> named, Map<int, Object> positional})>?
+      constArgumentsTo(Identifier method) =>
+          _callTo(method)?.references.map((reference) => (
+                named: reference.arguments.constArguments.named.map(
+                  (key, value) => MapEntry(key, value.toObject()),
+                ),
+                positional: reference.arguments.constArguments.positional.map(
+                  (key, value) => MapEntry(key, value.toObject()),
+                ),
+              ));
 
-  /// Finds all fields of a const instance of the class at [definition].
+  /// Finds all fields of a const instance of the class at [classIdentifier].
   ///
   /// The definition must be annotated with `@RecordUse()`. If there are
   /// no instances of the definition, either because it was treeshaken, because
@@ -103,30 +114,36 @@ extension type RecordUse._(UsageRecord _recordUses) {
   ///
   /// What kinds of fields can be recorded depends on the implementation of
   /// https://dart-review.googlesource.com/c/sdk/+/369620/13/pkg/vm/lib/transformations/record_use/record_instance.dart
-  Iterable<Iterable<Field>>? instanceReferencesTo(Identifier definition) =>
-      _recordUses.instances
-          .firstWhereOrNull(
-              (instance) => instance.definition.identifier == definition)
-          ?.references
-          .map((reference) => reference.fields);
+  Iterable<Iterable<Object>>? instanceReferencesTo(Identifier classIdentifier) {
+    final instances = _recordUses.instances;
+    final firstWhereOrNull = instances.firstWhereOrNull((instance) =>
+        _compareIdentifiers(instance.definition.identifier, classIdentifier));
+    return firstWhereOrNull?.references.map((reference) =>
+        reference.fields.fields.map((field) => field.value.toObject()));
+  }
 
-  /// Checks if any call to [definition] has non-const arguments.
+  /// Checks if any call to [method] has non-const arguments.
   ///
   /// The definition must be annotated with `@RecordUse()`. If there are no
   /// calls to the definition, either because it was treeshaken, because it was
   /// not annotated, or because it does not exist, returns `false`.
-  bool hasNonConstArguments(Identifier definition) =>
-      _callTo(definition)?.references.any(
+  bool hasNonConstArguments(Identifier method) =>
+      _callTo(method)?.references.any(
         (reference) {
-          final nonConstArguments = reference.arguments?.nonConstArguments;
-          final hasNamed = nonConstArguments?.named.isNotEmpty ?? false;
-          final hasPositional =
-              nonConstArguments?.positional.isNotEmpty ?? false;
+          final nonConstArguments = reference.arguments.nonConstArguments;
+          final hasNamed = nonConstArguments.named.isNotEmpty;
+          final hasPositional = nonConstArguments.positional.isNotEmpty;
           return hasNamed || hasPositional;
         },
       ) ??
       false;
 
-  Usage<CallReference>? _callTo(Identifier definition) => _recordUses.calls
-      .firstWhereOrNull((call) => call.definition.identifier == definition);
+  pb.Usage? _callTo(Identifier identifier) =>
+      _recordUses.calls.firstWhereOrNull((call) =>
+          _compareIdentifiers(call.definition.identifier, identifier));
+
+  bool _compareIdentifiers(pb_shared.Identifier id1, Identifier id2) =>
+      id1.uri == id2.uri &&
+      (id1.hasParent() ? id1.parent : null) == id2.parent &&
+      id1.name == id2.name;
 }

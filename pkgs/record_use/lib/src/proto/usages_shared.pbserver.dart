@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: usages.proto
+//  source: usages_shared.proto
 //
 // @dart = 2.12
 
@@ -10,5 +10,4 @@
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
-export 'usages.pb.dart';
-
+export 'usages_shared.pb.dart';
