@@ -2,56 +2,41 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:collection/collection.dart';
-
+import '../proto/usages.pb.dart' as pb;
 import 'definition.dart';
-import 'identifier.dart';
 import 'reference.dart';
 
 class Usage<T extends Reference> {
-  final Definition definition;
-  final List<T> references;
+  final pb.Usage _usage;
+  final List<pb.Identifier> _ids;
+  final List<String> _uris;
+  late final Definition definition = Definition(_usage.definition, _ids, _uris);
+  late final List<T> references = _usage.references
+      .map(
+        (e) => switch (e.whichReference()) {
+          pb.Reference_Reference.arguments => CallReference(e, _uris),
+          pb.Reference_Reference.fields => InstanceReference(e, _uris),
+          pb.Reference_Reference.notSet => throw UnimplementedError(),
+        },
+      )
+      .whereType<T>()
+      .toList();
 
   Usage({
-    required this.definition,
-    required this.references,
-  });
-
-  factory Usage.fromJson(
-    Map<String, dynamic> json,
-    List<Identifier> identifiers,
-    List<String> uris,
-    T Function(Map<String, dynamic>, List<String>) constr,
-  ) =>
-      Usage(
-        definition: Definition.fromJson(
-          json['definition'] as Map<String, dynamic>,
-          identifiers,
-        ),
-        references: (json['references'] as List)
-            .map((x) => constr(x as Map<String, dynamic>, uris))
-            .toList(),
-      );
-
-  Map<String, dynamic> toJson(
-    List<Identifier> identifiers,
-    List<String> uris,
-  ) =>
-      {
-        'definition': definition.toJson(identifiers, uris),
-        'references': references.map((x) => x.toJson(uris)).toList(),
-      };
+    required pb.Usage usage,
+    required List<pb.Identifier> ids,
+    required List<String> uris,
+  })  : _usage = usage,
+        _ids = ids,
+        _uris = uris;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
-    return other is Usage &&
-        other.definition == definition &&
-        listEquals(other.references, references);
+    return other is Usage && other._usage == _usage;
   }
 
   @override
-  int get hashCode => definition.hashCode ^ references.hashCode;
+  int get hashCode => _usage.hashCode;
 }

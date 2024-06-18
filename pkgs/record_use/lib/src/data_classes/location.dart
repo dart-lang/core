@@ -2,43 +2,24 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import '../proto/usages.pb.dart' as pb;
+
 class Location {
-  String uri;
-  int line;
-  int column;
-  Location({
-    required this.uri,
-    required this.line,
-    required this.column,
-  });
+  late String uri;
+  late int line;
+  late int column;
 
-  factory Location.fromJson(
-      Map<String, dynamic> map, String? uri, List<String>? uris) {
-    return Location(
-      uri: uri ?? uris![map['uri'] as int],
-      line: map['line'] as int,
-      column: map['column'] as int,
-    );
-  }
-
-  Map<String, dynamic> toJson({List<String>? uris}) {
-    return {
-      if (uris != null) 'uri': uris.indexOf(uri),
-      'line': line,
-      'column': column,
-    };
-  }
+  final pb.Location _protoLocation;
+  Location(this._protoLocation, String? uri, List<String>? uris)
+      : uri = uri ?? uris![_protoLocation.uri];
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Location &&
-        other.uri == uri &&
-        other.line == line &&
-        other.column == column;
+    return other is Location && other._protoLocation == _protoLocation;
   }
 
   @override
-  int get hashCode => uri.hashCode ^ line.hashCode ^ column.hashCode;
+  int get hashCode => _protoLocation.hashCode;
 }

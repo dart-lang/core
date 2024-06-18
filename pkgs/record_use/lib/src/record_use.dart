@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:typed_data';
+
 import 'package:collection/collection.dart';
 
 import 'data_classes/arguments.dart';
@@ -13,8 +15,8 @@ import 'data_classes/usage.dart';
 import 'data_classes/usage_record.dart';
 
 extension type RecordUse._(UsageRecord _recordUses) {
-  RecordUse.fromJson(Map<String, dynamic> json)
-      : this._(UsageRecord.fromJson(json));
+  RecordUse.fromFile(Uint8List contents)
+      : this._(UsageRecord.fromFile(contents));
 
   /// Show the metadata for this recording of usages.
   Metadata get metadata => _recordUses.metadata;
@@ -101,7 +103,7 @@ extension type RecordUse._(UsageRecord _recordUses) {
   ///
   /// What kinds of fields can be recorded depends on the implementation of
   /// https://dart-review.googlesource.com/c/sdk/+/369620/13/pkg/vm/lib/transformations/record_use/record_instance.dart
-  Iterable<List<Field>>? instanceReferencesTo(Identifier definition) =>
+  Iterable<Iterable<Field>>? instanceReferencesTo(Identifier definition) =>
       _recordUses.instances
           .firstWhereOrNull(
               (instance) => instance.definition.identifier == definition)

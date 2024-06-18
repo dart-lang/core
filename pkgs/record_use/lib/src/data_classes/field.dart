@@ -2,43 +2,30 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-class Field {
-  final String className;
-  final String name;
-  final Object? value;
+import '../proto/usages.pb.dart' as pb;
 
-  Field({
-    required this.className,
-    required this.name,
-    required this.value,
-  });
+class Field {
+  final pb.Field _field;
+
+  late final String className = _field.className;
+  late final String name = _field.name;
+  late final Object? value = switch (_field.value.whichValue()) {
+    pb.FieldValue_Value.intValue => _field.value.intValue,
+    pb.FieldValue_Value.doubleValue => _field.value.doubleValue,
+    pb.FieldValue_Value.boolValue => _field.value.boolValue,
+    pb.FieldValue_Value.stringValue => _field.value.stringValue,
+    pb.FieldValue_Value.notSet => throw UnimplementedError(),
+  };
+
+  Field(this._field);
+
+  @override
+  int get hashCode => _field.hashCode;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Field &&
-        other.className == className &&
-        other.name == name &&
-        other.value == value;
-  }
-
-  @override
-  int get hashCode => className.hashCode ^ name.hashCode ^ value.hashCode;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'className': className,
-      'name': name,
-      'value': value,
-    };
-  }
-
-  factory Field.fromJson(Map<String, dynamic> map) {
-    return Field(
-      className: map['className'] as String,
-      name: map['name'] as String,
-      value: map['value'],
-    );
+    return other is Field && other._field == _field;
   }
 }

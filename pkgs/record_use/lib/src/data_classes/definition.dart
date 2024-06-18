@@ -2,55 +2,34 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import '../proto/usages.pb.dart' as pb;
 import 'identifier.dart';
 import 'location.dart';
 
 class Definition {
-  final Identifier identifier;
-  final Location location; // Represents the '@' field in the JSON
-  final String? loadingUnit;
+  final pb.Definition _definition;
+  final List<pb.Identifier> _identifiers;
+  final List<String> _uris;
 
-  Definition({
-    required this.identifier,
-    required this.location,
-    this.loadingUnit,
-  });
+  late final Identifier identifier =
+      Identifier.fromPb(_identifiers[_definition.identifier], _uris);
 
-  factory Definition.fromJson(
-    Map<String, dynamic> json,
-    List<Identifier> identifiers,
-  ) {
-    final identifier = identifiers[json['id'] as int];
-    return Definition(
-      identifier: identifier,
-      location: Location.fromJson(
-        json['@'] as Map<String, dynamic>,
-        identifier.uri,
-        null,
-      ),
-      loadingUnit: json['loadingUnit'] as String?,
-    );
-  }
+  /// Represents the '@' field in the JSON
+  late final Location location =
+      Location(_definition.location, identifier.uri, null);
 
-  Map<String, dynamic> toJson(
-    List<Identifier> identifiers,
-    List<String> uris,
-  ) =>
-      {
-        'id': identifiers.indexOf(identifier),
-        '@': location.toJson(),
-        'loadingUnit': loadingUnit,
-      };
+  late final String? loadingUnit =
+      _definition.hasLoadingUnit() ? _definition.loadingUnit : null;
+
+  Definition(this._definition, this._identifiers, this._uris);
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Definition &&
-        other.identifier == identifier &&
-        other.loadingUnit == loadingUnit;
+    return other is Definition && other._definition == _definition;
   }
 
   @override
-  int get hashCode => identifier.hashCode ^ loadingUnit.hashCode;
+  int get hashCode => _definition.hashCode;
 }

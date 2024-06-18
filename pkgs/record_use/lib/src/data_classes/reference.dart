@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import '../proto/usages.pb.dart' as pb;
 import 'arguments.dart';
 import 'field.dart';
 import 'location.dart';
@@ -13,11 +14,6 @@ sealed class Reference {
   final Location location;
 
   const Reference({this.loadingUnit, required this.location});
-
-  Map<String, dynamic> toJson(List<String> uris) => {
-        'loadingUnit': loadingUnit,
-        '@': location.toJson(uris: uris),
-      };
 
   @override
   bool operator ==(Object other) {
@@ -33,70 +29,49 @@ sealed class Reference {
 }
 
 final class CallReference extends Reference {
-  final Arguments? arguments;
+  final pb.Reference _reference;
 
-  const CallReference({
-    required this.arguments,
-    super.loadingUnit,
-    required super.location,
-  });
+  late final Arguments? arguments =
+      _reference.hasArguments() ? Arguments(_reference.arguments) : null;
 
-  factory CallReference.fromJson(Map<String, dynamic> json, List<String> uris) {
-    return CallReference(
-      arguments: json['arguments'] != null
-          ? Arguments.fromJson(json['arguments'] as Map<String, dynamic>)
-          : null,
-      loadingUnit: json['loadingUnit'] as String?,
-      location:
-          Location.fromJson(json['@'] as Map<String, dynamic>, null, uris),
-    );
-  }
-
-  @override
-  Map<String, dynamic> toJson(List<String> uris) {
-    final argumentJson = arguments?.toJson() ?? {};
-    return {
-      if (argumentJson.isNotEmpty) 'arguments': argumentJson,
-      ...super.toJson(uris),
-    };
-  }
+  CallReference(this._reference, List<String> uris)
+      : super(
+          location: Location(_reference.location, null, uris),
+          loadingUnit:
+              _reference.hasLoadingUnit() ? _reference.loadingUnit : null,
+        );
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CallReference && other.arguments == arguments;
+    return other is CallReference && other._reference == _reference;
   }
 
   @override
-  int get hashCode => arguments.hashCode;
+  int get hashCode => _reference.hashCode;
 }
 
 final class InstanceReference extends Reference {
-  final List<Field> fields;
+  final pb.Reference _reference;
 
-  InstanceReference({
-    super.loadingUnit,
-    required super.location,
-    required this.fields,
-  });
+  late final Iterable<Field> fields =
+      _reference.hasFields() ? _reference.fields.fields.map(Field.new) : [];
 
-  factory InstanceReference.fromJson(
-      Map<String, dynamic> json, List<String> uris) {
-    return InstanceReference(
-      loadingUnit: json['loadingUnit'] as String?,
-      location:
-          Location.fromJson(json['@'] as Map<String, dynamic>, null, uris),
-      fields: (json['fields'] as List)
-          .map((fieldStr) => Field.fromJson(fieldStr as Map<String, dynamic>))
-          .toList(),
-    );
+  InstanceReference(this._reference, List<String> uris)
+      : super(
+          location: Location(_reference.location, null, uris),
+          loadingUnit:
+              _reference.hasLoadingUnit() ? _reference.loadingUnit : null,
+        );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is CallReference && other._reference == _reference;
   }
 
   @override
-  Map<String, dynamic> toJson(List<String> uris) => {
-        if (fields.isNotEmpty)
-          'fields': fields.map((field) => field.toJson()).toList(),
-        ...super.toJson(uris),
-      };
+  int get hashCode => _reference.hashCode;
 }

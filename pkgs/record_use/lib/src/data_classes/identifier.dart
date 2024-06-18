@@ -2,40 +2,35 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import '../proto/usages.pb.dart' as pb;
+
 class Identifier {
-  String uri;
-  String? parent; // Optional since not all elements have parents
-  String name;
+  final pb.Identifier _identifier;
 
-  Identifier({
-    required this.uri,
-    this.parent,
-    required this.name,
-  });
+  final String uri;
 
-  factory Identifier.fromJson(Map<String, dynamic> json, List<String> uris) =>
-      Identifier(
-        uri: uris[json['uri'] as int],
-        parent: json['parent'] as String?,
-        name: json['name'] as String,
-      );
+  /// Optional since not all elements have parents
+  late final String? parent =
+      _identifier.hasParent() ? _identifier.parent : null;
+  late final String name = _identifier.name;
 
-  Map<String, dynamic> toJson(List<String> uris) => {
-        'uri': uris.indexOf(uri),
-        if (parent != null) 'parent': parent,
-        'name': name,
-      };
+  Identifier.fromPb(this._identifier, List<String> uris)
+      : uri = uris[_identifier.uri];
+
+  Identifier(this.uri, String? parent, String name)
+      : _identifier = pb.Identifier(
+          name: name,
+          parent: parent,
+          uri: uri,
+        );
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Identifier &&
-        other.uri == uri &&
-        other.parent == parent &&
-        other.name == name;
+    return other is Identifier && other._identifier == _identifier;
   }
 
   @override
-  int get hashCode => uri.hashCode ^ parent.hashCode ^ name.hashCode;
+  int get hashCode => _identifier.hashCode;
 }

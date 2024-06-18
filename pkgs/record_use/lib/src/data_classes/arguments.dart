@@ -2,122 +2,66 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:collection/collection.dart';
+import '../proto/usages.pb.dart' as pb;
 
 class Arguments {
-  ConstArguments constArguments;
-  NonConstArguments nonConstArguments;
+  final pb.Arguments _arguments;
 
-  Arguments({
-    ConstArguments? constArguments,
-    NonConstArguments? nonConstArguments,
-  })  : constArguments = constArguments ?? ConstArguments(),
-        nonConstArguments = nonConstArguments ?? NonConstArguments();
+  late final ConstArguments constArguments = _arguments.hasConst_1()
+      ? ConstArguments(_arguments.const_1)
+      : ConstArguments();
+  late final NonConstArguments nonConstArguments = _arguments.hasNonConst()
+      ? NonConstArguments(_arguments.nonConst)
+      : NonConstArguments();
 
-  factory Arguments.fromJson(Map<String, dynamic> json) {
-    final constJson = json['const'] as Map<String, dynamic>?;
-    final nonConstJson = json['nonConst'] as Map<String, dynamic>?;
-    return Arguments(
-      constArguments:
-          constJson != null ? ConstArguments.fromJson(constJson) : null,
-      nonConstArguments: nonConstJson != null
-          ? NonConstArguments.fromJson(nonConstJson)
-          : null,
-    );
-  }
+  Arguments(this._arguments);
 
-  Map<String, dynamic> toJson() {
-    final hasConst =
-        constArguments.named.isNotEmpty || constArguments.positional.isNotEmpty;
-    final hasNonConst = nonConstArguments.named.isNotEmpty ||
-        nonConstArguments.positional.isNotEmpty;
-    return {
-      if (hasConst) 'const': constArguments.toJson(),
-      if (hasNonConst) 'nonConst': nonConstArguments.toJson(),
-    };
-  }
+  @override
+  int get hashCode => _arguments.hashCode;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Arguments &&
-        other.constArguments == constArguments &&
-        other.nonConstArguments == nonConstArguments;
+    return other is Arguments && other._arguments == _arguments;
   }
-
-  @override
-  int get hashCode => constArguments.hashCode ^ nonConstArguments.hashCode;
 }
 
 class ConstArguments {
-  Map<int, dynamic> positional;
-  Map<String, dynamic> named;
+  final pb.ConstArguments? _arguments;
 
-  ConstArguments({Map<int, dynamic>? positional, Map<String, dynamic>? named})
-      : named = named ?? {},
-        positional = positional ?? {};
+  late final Map<int, dynamic> positional = _arguments?.positional ?? {};
+  late final Map<String, dynamic> named = _arguments?.named ?? {};
 
-  factory ConstArguments.fromJson(Map<String, dynamic> json) => ConstArguments(
-        positional: json['positional'] != null
-            ? (json['positional'] as Map<String, dynamic>)
-                .map((key, value) => MapEntry(int.parse(key), value))
-            : {},
-        named:
-            json['named'] != null ? json['named'] as Map<String, dynamic> : {},
-      );
+  ConstArguments([this._arguments]);
 
-  Map<String, dynamic> toJson() => {
-        if (positional.isNotEmpty)
-          'positional':
-              positional.map((key, value) => MapEntry(key.toString(), value)),
-        if (named.isNotEmpty) 'named': named,
-      };
+  @override
+  int get hashCode => positional.hashCode ^ named.hashCode;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final mapEquals = const DeepCollectionEquality().equals;
 
-    return other is ConstArguments &&
-        mapEquals(other.positional, positional) &&
-        mapEquals(other.named, named);
+    return other is ConstArguments && other._arguments == _arguments;
   }
-
-  @override
-  int get hashCode => positional.hashCode ^ named.hashCode;
 }
 
 class NonConstArguments {
-  List<int> positional;
-  List<String> named; // Assuming named arguments are strings (keys)
+  final pb.NonConstArguments? _arguments;
+  late final List<int> positional = _arguments?.positional ?? [];
 
-  NonConstArguments({List<int>? positional, List<String>? named})
-      : named = named ?? [],
-        positional = positional ?? [];
+  /// Assuming named arguments are strings (keys)
+  late final List<String> named = _arguments?.named ?? [];
 
-  factory NonConstArguments.fromJson(Map<String, dynamic> json) =>
-      NonConstArguments(
-        positional:
-            json['positional'] != null ? json['positional'] as List<int> : [],
-        named: json['named'] != null ? json['named'] as List<String> : [],
-      );
+  NonConstArguments([this._arguments]);
 
-  Map<String, dynamic> toJson() => {
-        if (positional.isNotEmpty) 'positional': positional,
-        if (named.isNotEmpty) 'named': named,
-      };
+  @override
+  int get hashCode => _arguments.hashCode;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
-    return other is NonConstArguments &&
-        listEquals(other.positional, positional) &&
-        listEquals(other.named, named);
+    return other is NonConstArguments && other._arguments == _arguments;
   }
-
-  @override
-  int get hashCode => positional.hashCode ^ named.hashCode;
 }
