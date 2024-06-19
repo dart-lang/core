@@ -17,7 +17,7 @@ class Identifier {
   final String? parent;
   final String name;
 
-  Identifier({required this.uri, this.parent, required this.name});
+  const Identifier({required this.uri, this.parent, required this.name});
 }
 
 extension type RecordedUsages._(pb.Usages _usages) {
