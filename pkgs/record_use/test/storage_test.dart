@@ -5,7 +5,6 @@
 import 'dart:io';
 
 import 'package:record_use/record_use_internal.dart';
-import 'package:record_use/src/data_classes/extensions.dart';
 import 'package:record_use/src/record_use.dart';
 import 'package:test/test.dart';
 
@@ -21,6 +20,12 @@ void main() {
     expect(
       RecordedUsages.fromFile(recordedUses.toBuffer()),
       recordedUses,
+    );
+  });
+  test('empty Object->Buffer->Object', () {
+    expect(
+      RecordedUsages.fromFile(emptyUsages.toBuffer()),
+      emptyUsages,
     );
   });
 }

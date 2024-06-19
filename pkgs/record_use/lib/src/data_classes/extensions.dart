@@ -15,22 +15,23 @@ extension UsagesExt on pb.Usages {
       const JsonEncoder.withIndent('  ').convert(_toStorage().writeToJsonMap());
 
   pb_storage.Usages _toStorage() {
+    final usageList = [...calls, ...instances];
     final definitions =
-        [...calls, ...instances].map((e) => e.definition).toList();
-    final uris = [...calls, ...instances]
-        .expand((e) => [
-              e.definition.identifier.uri,
-              ...e.references.map(
-                (e) => e.location.uri,
-              )
+        usageList.map((usage) => usage.definition).toSet().toList();
+    final uris = usageList
+        .expand((usage) => [
+              usage.definition.identifier.uri,
+              ...usage.references.map((reference) => reference.location.uri)
             ])
+        .toSet()
         .toList();
     return pb_storage.Usages(
       metadata: metadata,
       definitions: definitions,
       uris: uris,
-      instances: instances.map((e) => e.toStorage(definitions, uris)),
-      calls: calls.map((e) => e.toStorage(definitions, uris)),
+      instances:
+          instances.map((instance) => instance.toStorage(definitions, uris)),
+      calls: calls.map((call) => call.toStorage(definitions, uris)),
     );
   }
 }

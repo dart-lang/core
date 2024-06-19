@@ -3,19 +3,26 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:pub_semver/pub_semver.dart';
-import 'package:record_use/record_use_internal.dart' as pb;
 
-final pb.Usages recordedUses = pb.Usages(
-  metadata: pb.Metadata(
+import 'package:record_use/record_use_internal.dart';
+
+final Usages emptyUsages = Usages(
+  metadata: Metadata(version: Version(1, 2, 3).toString()),
+  calls: [],
+  instances: [],
+);
+
+final Usages recordedUses = Usages(
+  metadata: Metadata(
     version: Version(1, 6, 2, pre: 'wip', build: '5.-.2.z').toString(),
     comment:
         'Recorded references at compile time and their argument values, as far'
         ' as known, to definitions annotated with @RecordReference',
   ),
   instances: [
-    pb.Usage(
-      definition: pb.Definition(
-        identifier: pb.Identifier(
+    Usage(
+      definition: Definition(
+        identifier: Identifier(
           uri: Uri.parse('file://lib/_internal/js_runtime/lib/js_helper.dart')
               .toString(),
           name: 'MyAnnotation',
@@ -24,18 +31,18 @@ final pb.Usages recordedUses = pb.Usages(
         column: 30,
       ),
       references: [
-        pb.Reference(
-          location: pb.Location(
+        Reference(
+          location: Location(
             uri: Uri.parse('file://lib/_internal/js_runtime/lib/js_helper.dart')
                 .toString(),
             line: 40,
             column: 30,
           ),
-          fields: pb.Fields(fields: [
-            pb.Field(
+          fields: Fields(fields: [
+            Field(
               className: 'className',
               name: 'a',
-              value: pb.FieldValue(intValue: 42),
+              value: FieldValue(intValue: 42),
             ),
           ]),
           loadingUnit: '3',
@@ -44,9 +51,9 @@ final pb.Usages recordedUses = pb.Usages(
     ),
   ],
   calls: [
-    pb.Usage(
-      definition: pb.Definition(
-        identifier: pb.Identifier(
+    Usage(
+      definition: Definition(
+        identifier: Identifier(
           uri: Uri.parse('file://lib/_internal/js_runtime/lib/js_helper.dart')
               .toString(),
           parent: 'MyClass',
@@ -57,21 +64,21 @@ final pb.Usages recordedUses = pb.Usages(
         loadingUnit: 'part_15.js',
       ),
       references: [
-        pb.Reference(
-          arguments: pb.Arguments(
-            constArguments: pb.ConstArguments(
+        Reference(
+          arguments: Arguments(
+            constArguments: ConstArguments(
               positional: {
-                0: pb.FieldValue(stringValue: 'lib_SHA1'),
-                1: pb.FieldValue(boolValue: false),
-                2: pb.FieldValue(intValue: 1),
+                0: FieldValue(stringValue: 'lib_SHA1'),
+                1: FieldValue(boolValue: false),
+                2: FieldValue(intValue: 1),
               },
               named: {
-                'leroy': pb.FieldValue(stringValue: 'jenkins'),
-                'freddy': pb.FieldValue(stringValue: 'mercury'),
+                'leroy': FieldValue(stringValue: 'jenkins'),
+                'freddy': FieldValue(stringValue: 'mercury'),
               },
             ),
           ),
-          location: pb.Location(
+          location: Location(
             uri: Uri.parse(
                     'file://benchmarks/OmnibusDeferred/dart/OmnibusDeferred.dart')
                 .toString(),
@@ -80,23 +87,23 @@ final pb.Usages recordedUses = pb.Usages(
           ),
           loadingUnit: 'o.js',
         ),
-        pb.Reference(
-          arguments: pb.Arguments(
-            constArguments: pb.ConstArguments(
+        Reference(
+          arguments: Arguments(
+            constArguments: ConstArguments(
               positional: {
-                0: pb.FieldValue(stringValue: 'lib_SHA1'),
-                2: pb.FieldValue(intValue: 0),
+                0: FieldValue(stringValue: 'lib_SHA1'),
+                2: FieldValue(intValue: 0),
               },
               named: {
-                'leroy': pb.FieldValue(stringValue: 'jenkins'),
+                'leroy': FieldValue(stringValue: 'jenkins'),
               },
             ),
-            nonConstArguments: pb.NonConstArguments(
+            nonConstArguments: NonConstArguments(
               positional: [1],
               named: ['freddy'],
             ),
           ),
-          location: pb.Location(
+          location: Location(
             uri: Uri.parse(
                     'file://benchmarks/OmnibusDeferred/dart/OmnibusDeferred.dart')
                 .toString(),
