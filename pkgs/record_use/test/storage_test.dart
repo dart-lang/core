@@ -14,12 +14,12 @@ import 'testdata/data.dart';
 void main() {
   test('Buffer->Object->Buffer', () {
     final recordedUsesPb = File('test/testdata/data.binpb').readAsBytesSync();
-    expect((RecordUse.fromFile(recordedUsesPb) as Usages).toBuffer(),
+    expect((RecordedUsages.fromFile(recordedUsesPb) as Usages).toBuffer(),
         recordedUsesPb);
   });
   test('Object->Buffer->Object', () {
     expect(
-      RecordUse.fromFile(recordedUses.toBuffer()),
+      RecordedUsages.fromFile(recordedUses.toBuffer()),
       recordedUses,
     );
   });

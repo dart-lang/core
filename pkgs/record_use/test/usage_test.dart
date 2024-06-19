@@ -18,7 +18,7 @@ void main() {
       parent: 'MyClass',
       name: 'get:loadDeferredLibrary',
     );
-    final arguments = RecordUse.fromFile(recordedUses.toBuffer())
+    final arguments = RecordedUsages.fromFile(recordedUses.toBuffer())
         .constArgumentsTo(callId)!
         .toList();
     expect(
@@ -40,7 +40,7 @@ void main() {
       name: 'MyAnnotation',
     );
     expect(
-      RecordUse.fromFile(recordedUsesPb).instanceReferencesTo(instanceId),
+      RecordedUsages.fromFile(recordedUsesPb).instanceReferencesTo(instanceId),
       [
         [42]
       ],

@@ -20,12 +20,12 @@ class Identifier {
   Identifier({required this.uri, this.parent, required this.name});
 }
 
-extension type RecordUse._(pb.Usages _recordUses) {
-  RecordUse.fromFile(Uint8List contents)
+extension type RecordedUsages._(pb.Usages _usages) {
+  RecordedUsages.fromFile(Uint8List contents)
       : this._(pb_storage.Usages.fromBuffer(contents).toApi());
 
   /// Show the metadata for this recording of usages.
-  Version get version => Version.parse(_recordUses.metadata.version);
+  Version get version => Version.parse(_usages.metadata.version);
 
   /// Finds all arguments for calls to the [method].
   ///
@@ -115,7 +115,7 @@ extension type RecordUse._(pb.Usages _recordUses) {
   /// What kinds of fields can be recorded depends on the implementation of
   /// https://dart-review.googlesource.com/c/sdk/+/369620/13/pkg/vm/lib/transformations/record_use/record_instance.dart
   Iterable<Iterable<Object>>? instanceReferencesTo(Identifier classIdentifier) {
-    final instances = _recordUses.instances;
+    final instances = _usages.instances;
     final firstWhereOrNull = instances.firstWhereOrNull((instance) =>
         _compareIdentifiers(instance.definition.identifier, classIdentifier));
     return firstWhereOrNull?.references.map((reference) =>
@@ -138,9 +138,8 @@ extension type RecordUse._(pb.Usages _recordUses) {
       ) ??
       false;
 
-  pb.Usage? _callTo(Identifier identifier) =>
-      _recordUses.calls.firstWhereOrNull((call) =>
-          _compareIdentifiers(call.definition.identifier, identifier));
+  pb.Usage? _callTo(Identifier identifier) => _usages.calls.firstWhereOrNull(
+      (call) => _compareIdentifiers(call.definition.identifier, identifier));
 
   bool _compareIdentifiers(pb_shared.Identifier id1, Identifier id2) =>
       id1.uri == id2.uri &&
