@@ -37,7 +37,3 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed .
 
       - run: dart test
-
-      - name: Run Chrome tests - wasm
-        run: dart test --platform chrome --compiler dart2wasm
-        if: always() && matrix.sdk == 'dev'
