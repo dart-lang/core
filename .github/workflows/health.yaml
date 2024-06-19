@@ -12,6 +12,5 @@ jobs:
     with:
       coverage_web: false
       checks: "version,changelog,license,do-not-submit,breaking,coverage"
-      sdk: master
     permissions:
       pull-requests: write
