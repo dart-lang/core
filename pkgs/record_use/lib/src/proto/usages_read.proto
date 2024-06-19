@@ -10,7 +10,7 @@ message Usages {
 }
 
 message Usage {
-  usages_shared.Definition definition = 1;
+  Definition definition = 1;
   repeated Reference references = 2;
 }
 
@@ -28,4 +28,17 @@ message Reference {
     usages_shared.Arguments arguments = 3;
     usages_shared.Fields fields = 4;
   }
+}
+
+message Definition {
+  Identifier identifier = 1;
+  uint32 line = 2;
+  uint32 column = 3;
+  optional string loading_unit = 4; // Optional, as some loading units are null
+}
+
+message Identifier {
+  string uri = 1; 
+  optional string parent = 2;
+  string name = 3;
 }

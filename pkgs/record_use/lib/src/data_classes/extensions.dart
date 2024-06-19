@@ -16,13 +16,15 @@ extension UsagesExt on pb.Usages {
 
   pb_storage.Usages _toStorage() {
     final usageList = [...calls, ...instances];
-    final definitions =
-        usageList.map((usage) => usage.definition).toSet().toList();
     final uris = usageList
         .expand((usage) => [
               usage.definition.identifier.uri,
               ...usage.references.map((reference) => reference.location.uri)
             ])
+        .toSet()
+        .toList();
+    final definitions = usageList
+        .map((usage) => usage.definition.toStorage(uris))
         .toSet()
         .toList();
     return pb_storage.Usages(
@@ -38,9 +40,9 @@ extension UsagesExt on pb.Usages {
 
 extension UsageExt on pb.Usage {
   pb_storage.Usage toStorage(
-          List<pb_shared.Definition> definitions, List<String> uris) =>
+          List<pb_storage.Definition> definitions, List<String> uris) =>
       pb_storage.Usage(
-        definition: definitions.indexOf(definition),
+        definition: definitions.indexOf(definition.toStorage(uris)),
         references: references.map((e) => e.toStorage(uris)),
       );
 }
@@ -62,6 +64,23 @@ extension LocationExt on pb.Location {
       );
 }
 
+extension DefinitionExt on pb.Definition {
+  pb_storage.Definition toStorage(List<String> uris) => pb_storage.Definition(
+        identifier: identifier.toStorage(uris),
+        column: column,
+        line: line,
+        loadingUnit: hasLoadingUnit() ? loadingUnit : null,
+      );
+}
+
+extension IdentifierExt on pb.Identifier {
+  pb_storage.Identifier toStorage(List<String> uris) => pb_storage.Identifier(
+        name: name,
+        parent: hasParent() ? parent : null,
+        uri: uris.indexOf(uri),
+      );
+}
+
 extension UsagesStorageExt on pb_storage.Usages {
   pb.Usages toApi() => pb.Usages(
         metadata: metadata,
@@ -71,9 +90,9 @@ extension UsagesStorageExt on pb_storage.Usages {
 }
 
 extension UsageStorageExt on pb_storage.Usage {
-  pb.Usage toApi(List<pb_shared.Definition> definitions, List<String> uris) =>
+  pb.Usage toApi(List<pb_storage.Definition> definitions, List<String> uris) =>
       pb.Usage(
-        definition: definitions[definition],
+        definition: definitions[definition].toApi(uris),
         references: references.map((e) => e.toApi(uris)),
       );
 }
@@ -91,6 +110,23 @@ extension LocationStorageExt on pb_storage.Location {
   pb.Location toApi(List<String> uris) => pb.Location(
         column: column,
         line: line,
+        uri: uris[uri],
+      );
+}
+
+extension DefinitionStorageExt on pb_storage.Definition {
+  pb.Definition toApi(List<String> uris) => pb.Definition(
+        identifier: identifier.toApi(uris),
+        column: column,
+        line: line,
+        loadingUnit: hasLoadingUnit() ? loadingUnit : null,
+      );
+}
+
+extension IdentifierStorageExt on pb_storage.Identifier {
+  pb.Identifier toApi(List<String> uris) => pb.Identifier(
+        name: name,
+        parent: hasParent() ? parent : null,
         uri: uris[uri],
       );
 }

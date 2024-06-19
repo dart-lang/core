@@ -9,7 +9,6 @@ import 'package:pub_semver/pub_semver.dart';
 
 import 'data_classes/extensions.dart';
 import 'proto/usages_read.pb.dart' as pb;
-import 'proto/usages_shared.pb.dart' as pb_shared;
 import 'proto/usages_storage.pb.dart' as pb_storage;
 
 class Identifier {
@@ -141,7 +140,7 @@ extension type RecordedUsages._(pb.Usages _usages) {
   pb.Usage? _callTo(Identifier identifier) => _usages.calls.firstWhereOrNull(
       (call) => _compareIdentifiers(call.definition.identifier, identifier));
 
-  bool _compareIdentifiers(pb_shared.Identifier id1, Identifier id2) =>
+  bool _compareIdentifiers(pb.Identifier id1, Identifier id2) =>
       id1.uri == id2.uri &&
       (id1.hasParent() ? id1.parent : null) == id2.parent &&
       id1.name == id2.name;

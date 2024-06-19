@@ -97,7 +97,7 @@ class Usages extends $pb.GeneratedMessage {
 
 class Usage extends $pb.GeneratedMessage {
   factory Usage({
-    $0.Definition? definition,
+    Definition? definition,
     $core.Iterable<Reference>? references,
   }) {
     final $result = create();
@@ -121,8 +121,8 @@ class Usage extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'Usage',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'usages'),
       createEmptyInstance: create)
-    ..aOM<$0.Definition>(1, _omitFieldNames ? '' : 'definition',
-        subBuilder: $0.Definition.create)
+    ..aOM<Definition>(1, _omitFieldNames ? '' : 'definition',
+        subBuilder: Definition.create)
     ..pc<Reference>(2, _omitFieldNames ? '' : 'references', $pb.PbFieldType.PM,
         subBuilder: Reference.create)
     ..hasRequiredFields = false;
@@ -149,9 +149,9 @@ class Usage extends $pb.GeneratedMessage {
   static Usage? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $0.Definition get definition => $_getN(0);
+  Definition get definition => $_getN(0);
   @$pb.TagNumber(1)
-  set definition($0.Definition v) {
+  set definition(Definition v) {
     setField(1, v);
   }
 
@@ -160,7 +160,7 @@ class Usage extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearDefinition() => clearField(1);
   @$pb.TagNumber(1)
-  $0.Definition ensureDefinition() => $_ensure(0);
+  Definition ensureDefinition() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.List<Reference> get references => $_getList(1);
@@ -389,6 +389,212 @@ class Reference extends $pb.GeneratedMessage {
   void clearFields() => clearField(4);
   @$pb.TagNumber(4)
   $0.Fields ensureFields() => $_ensure(3);
+}
+
+class Definition extends $pb.GeneratedMessage {
+  factory Definition({
+    Identifier? identifier,
+    $core.int? line,
+    $core.int? column,
+    $core.String? loadingUnit,
+  }) {
+    final $result = create();
+    if (identifier != null) {
+      $result.identifier = identifier;
+    }
+    if (line != null) {
+      $result.line = line;
+    }
+    if (column != null) {
+      $result.column = column;
+    }
+    if (loadingUnit != null) {
+      $result.loadingUnit = loadingUnit;
+    }
+    return $result;
+  }
+  Definition._() : super();
+  factory Definition.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Definition.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Definition',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'usages'),
+      createEmptyInstance: create)
+    ..aOM<Identifier>(1, _omitFieldNames ? '' : 'identifier',
+        subBuilder: Identifier.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'line', $pb.PbFieldType.OU3)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'column', $pb.PbFieldType.OU3)
+    ..aOS(4, _omitFieldNames ? '' : 'loadingUnit')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Definition clone() => Definition()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Definition copyWith(void Function(Definition) updates) =>
+      super.copyWith((message) => updates(message as Definition)) as Definition;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static Definition create() => Definition._();
+  Definition createEmptyInstance() => create();
+  static $pb.PbList<Definition> createRepeated() => $pb.PbList<Definition>();
+  @$core.pragma('dart2js:noInline')
+  static Definition getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Definition>(create);
+  static Definition? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  Identifier get identifier => $_getN(0);
+  @$pb.TagNumber(1)
+  set identifier(Identifier v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasIdentifier() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIdentifier() => clearField(1);
+  @$pb.TagNumber(1)
+  Identifier ensureIdentifier() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get line => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set line($core.int v) {
+    $_setUnsignedInt32(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasLine() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLine() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get column => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set column($core.int v) {
+    $_setUnsignedInt32(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasColumn() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearColumn() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get loadingUnit => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set loadingUnit($core.String v) {
+    $_setString(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasLoadingUnit() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLoadingUnit() => clearField(4);
+}
+
+class Identifier extends $pb.GeneratedMessage {
+  factory Identifier({
+    $core.String? uri,
+    $core.String? parent,
+    $core.String? name,
+  }) {
+    final $result = create();
+    if (uri != null) {
+      $result.uri = uri;
+    }
+    if (parent != null) {
+      $result.parent = parent;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    return $result;
+  }
+  Identifier._() : super();
+  factory Identifier.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory Identifier.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Identifier',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'usages'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'uri')
+    ..aOS(2, _omitFieldNames ? '' : 'parent')
+    ..aOS(3, _omitFieldNames ? '' : 'name')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  Identifier clone() => Identifier()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  Identifier copyWith(void Function(Identifier) updates) =>
+      super.copyWith((message) => updates(message as Identifier)) as Identifier;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static Identifier create() => Identifier._();
+  Identifier createEmptyInstance() => create();
+  static $pb.PbList<Identifier> createRepeated() => $pb.PbList<Identifier>();
+  @$core.pragma('dart2js:noInline')
+  static Identifier getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Identifier>(create);
+  static Identifier? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get uri => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set uri($core.String v) {
+    $_setString(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasUri() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUri() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get parent => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set parent($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasParent() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearParent() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get name => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set name($core.String v) {
+    $_setString(2, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasName() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearName() => clearField(3);
 }
 
 const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');

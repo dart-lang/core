@@ -5,15 +5,12 @@
   },
   "2": [
     "file://lib/_internal/js_runtime/lib/js_helper.dart",
-    "file://benchmarks/OmnibusDeferred/dart/OmnibusDeferred.dart",
-    "file://benchmarks/OmnibusDeferred/dart/OmnibusDeferred.dart",
-    "file://lib/_internal/js_runtime/lib/js_helper.dart",
-    "file://lib/_internal/js_runtime/lib/js_helper.dart"
+    "file://benchmarks/OmnibusDeferred/dart/OmnibusDeferred.dart"
   ],
   "3": [
     {
       "1": {
-        "1": "file://lib/_internal/js_runtime/lib/js_helper.dart",
+        "1": 0,
         "2": "MyClass",
         "3": "get:loadDeferredLibrary"
       },
@@ -23,7 +20,7 @@
     },
     {
       "1": {
-        "1": "file://lib/_internal/js_runtime/lib/js_helper.dart",
+        "1": 0,
         "3": "MyAnnotation"
       },
       "2": 15,

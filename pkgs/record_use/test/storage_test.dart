@@ -12,6 +12,9 @@ import 'testdata/data.dart';
 
 void main() {
   test('Buffer->Object->Buffer', () {
+    // File('test/testdata/data.txtpb')
+    //     .writeAsStringSync(recordedUses.toDebugJson());
+    // File('test/testdata/data.binpb').writeAsBytesSync(recordedUses.toBuffer());
     final recordedUsesPb = File('test/testdata/data.binpb').readAsBytesSync();
     expect((RecordedUsages.fromFile(recordedUsesPb) as Usages).toBuffer(),
         recordedUsesPb);
