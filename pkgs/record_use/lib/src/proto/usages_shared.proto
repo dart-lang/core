@@ -37,12 +37,13 @@ message Field {
 
 message FieldValue {
   oneof value {
-    StringMapValue map = 1;
-    ListValue list = 2;
+    StringMapValue map_value = 1;
+    ListValue list_value = 2;
     int32 int_value = 3;
     double double_value = 4;
     bool bool_value = 5;
     string string_value = 6;
+    bool null_value = 7;
   }
 }
 

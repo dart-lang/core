@@ -94,7 +94,7 @@ final Usages recordedUses = Usages(
                 0: FieldValue(stringValue: 'lib_SHA1'),
                 2: FieldValue(intValue: 0),
                 4: FieldValue(
-                  map: StringMapValue(
+                  mapValue: StringMapValue(
                     value: {
                       'key': FieldValue(intValue: 99),
                     },
@@ -104,7 +104,7 @@ final Usages recordedUses = Usages(
               named: {
                 'leroy': FieldValue(stringValue: 'jenkins'),
                 'albert': FieldValue(
-                  list: ListValue(
+                  listValue: ListValue(
                     value: [
                       FieldValue(stringValue: 'camus'),
                       FieldValue(stringValue: 'einstein'),

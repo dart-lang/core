@@ -133,13 +133,15 @@ extension IdentifierStorageExt on pb_storage.Identifier {
 
 extension FieldValueExt on pb_shared.FieldValue {
   Object toObject() => switch (whichValue()) {
-        pb_shared.FieldValue_Value.map =>
-          map.value.map((key, value) => MapEntry(key, value.toObject())),
-        pb_shared.FieldValue_Value.list => list.value.map((e) => e.toObject()),
+        pb_shared.FieldValue_Value.mapValue =>
+          mapValue.value.map((key, value) => MapEntry(key, value.toObject())),
+        pb_shared.FieldValue_Value.listValue =>
+          listValue.value.map((e) => e.toObject()),
         pb_shared.FieldValue_Value.intValue => intValue,
         pb_shared.FieldValue_Value.doubleValue => doubleValue,
         pb_shared.FieldValue_Value.boolValue => boolValue,
         pb_shared.FieldValue_Value.stringValue => stringValue,
+        pb_shared.FieldValue_Value.nullValue => nullValue,
         pb_shared.FieldValue_Value.notSet => throw UnimplementedError(),
       };
 }

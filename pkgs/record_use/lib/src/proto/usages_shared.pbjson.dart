@@ -195,27 +195,28 @@ const FieldValue$json = {
   '1': 'FieldValue',
   '2': [
     {
-      '1': 'map',
+      '1': 'map_value',
       '3': 1,
       '4': 1,
       '5': 11,
       '6': '.usages_shared.StringMapValue',
       '9': 0,
-      '10': 'map'
+      '10': 'mapValue'
     },
     {
-      '1': 'list',
+      '1': 'list_value',
       '3': 2,
       '4': 1,
       '5': 11,
       '6': '.usages_shared.ListValue',
       '9': 0,
-      '10': 'list'
+      '10': 'listValue'
     },
     {'1': 'int_value', '3': 3, '4': 1, '5': 5, '9': 0, '10': 'intValue'},
     {'1': 'double_value', '3': 4, '4': 1, '5': 1, '9': 0, '10': 'doubleValue'},
     {'1': 'bool_value', '3': 5, '4': 1, '5': 8, '9': 0, '10': 'boolValue'},
     {'1': 'string_value', '3': 6, '4': 1, '5': 9, '9': 0, '10': 'stringValue'},
+    {'1': 'null_value', '3': 7, '4': 1, '5': 8, '9': 0, '10': 'nullValue'},
   ],
   '8': [
     {'1': 'value'},
@@ -224,11 +225,12 @@ const FieldValue$json = {
 
 /// Descriptor for `FieldValue`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List fieldValueDescriptor = $convert.base64Decode(
-    'CgpGaWVsZFZhbHVlEjEKA21hcBgBIAEoCzIdLnVzYWdlc19zaGFyZWQuU3RyaW5nTWFwVmFsdW'
-    'VIAFIDbWFwEi4KBGxpc3QYAiABKAsyGC51c2FnZXNfc2hhcmVkLkxpc3RWYWx1ZUgAUgRsaXN0'
-    'Eh0KCWludF92YWx1ZRgDIAEoBUgAUghpbnRWYWx1ZRIjCgxkb3VibGVfdmFsdWUYBCABKAFIAF'
-    'ILZG91YmxlVmFsdWUSHwoKYm9vbF92YWx1ZRgFIAEoCEgAUglib29sVmFsdWUSIwoMc3RyaW5n'
-    'X3ZhbHVlGAYgASgJSABSC3N0cmluZ1ZhbHVlQgcKBXZhbHVl');
+    'CgpGaWVsZFZhbHVlEjwKCW1hcF92YWx1ZRgBIAEoCzIdLnVzYWdlc19zaGFyZWQuU3RyaW5nTW'
+    'FwVmFsdWVIAFIIbWFwVmFsdWUSOQoKbGlzdF92YWx1ZRgCIAEoCzIYLnVzYWdlc19zaGFyZWQu'
+    'TGlzdFZhbHVlSABSCWxpc3RWYWx1ZRIdCglpbnRfdmFsdWUYAyABKAVIAFIIaW50VmFsdWUSIw'
+    'oMZG91YmxlX3ZhbHVlGAQgASgBSABSC2RvdWJsZVZhbHVlEh8KCmJvb2xfdmFsdWUYBSABKAhI'
+    'AFIJYm9vbFZhbHVlEiMKDHN0cmluZ192YWx1ZRgGIAEoCUgAUgtzdHJpbmdWYWx1ZRIfCgpudW'
+    'xsX3ZhbHVlGAcgASgISABSCW51bGxWYWx1ZUIHCgV2YWx1ZQ==');
 
 @$core.Deprecated('Use listValueDescriptor instead')
 const ListValue$json = {

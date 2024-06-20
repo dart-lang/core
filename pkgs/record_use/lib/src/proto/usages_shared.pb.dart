@@ -451,30 +451,32 @@ class Field extends $pb.GeneratedMessage {
 }
 
 enum FieldValue_Value {
-  map,
-  list,
+  mapValue,
+  listValue,
   intValue,
   doubleValue,
   boolValue,
   stringValue,
+  nullValue,
   notSet
 }
 
 class FieldValue extends $pb.GeneratedMessage {
   factory FieldValue({
-    StringMapValue? map,
-    ListValue? list,
+    StringMapValue? mapValue,
+    ListValue? listValue,
     $core.int? intValue,
     $core.double? doubleValue,
     $core.bool? boolValue,
     $core.String? stringValue,
+    $core.bool? nullValue,
   }) {
     final $result = create();
-    if (map != null) {
-      $result.map = map;
+    if (mapValue != null) {
+      $result.mapValue = mapValue;
     }
-    if (list != null) {
-      $result.list = list;
+    if (listValue != null) {
+      $result.listValue = listValue;
     }
     if (intValue != null) {
       $result.intValue = intValue;
@@ -488,6 +490,9 @@ class FieldValue extends $pb.GeneratedMessage {
     if (stringValue != null) {
       $result.stringValue = stringValue;
     }
+    if (nullValue != null) {
+      $result.nullValue = nullValue;
+    }
     return $result;
   }
   FieldValue._() : super();
@@ -499,28 +504,30 @@ class FieldValue extends $pb.GeneratedMessage {
       create()..mergeFromJson(i, r);
 
   static const $core.Map<$core.int, FieldValue_Value> _FieldValue_ValueByTag = {
-    1: FieldValue_Value.map,
-    2: FieldValue_Value.list,
+    1: FieldValue_Value.mapValue,
+    2: FieldValue_Value.listValue,
     3: FieldValue_Value.intValue,
     4: FieldValue_Value.doubleValue,
     5: FieldValue_Value.boolValue,
     6: FieldValue_Value.stringValue,
+    7: FieldValue_Value.nullValue,
     0: FieldValue_Value.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FieldValue',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'usages_shared'),
       createEmptyInstance: create)
-    ..oo(0, [1, 2, 3, 4, 5, 6])
-    ..aOM<StringMapValue>(1, _omitFieldNames ? '' : 'map',
+    ..oo(0, [1, 2, 3, 4, 5, 6, 7])
+    ..aOM<StringMapValue>(1, _omitFieldNames ? '' : 'mapValue',
         subBuilder: StringMapValue.create)
-    ..aOM<ListValue>(2, _omitFieldNames ? '' : 'list',
+    ..aOM<ListValue>(2, _omitFieldNames ? '' : 'listValue',
         subBuilder: ListValue.create)
     ..a<$core.int>(3, _omitFieldNames ? '' : 'intValue', $pb.PbFieldType.O3)
     ..a<$core.double>(
         4, _omitFieldNames ? '' : 'doubleValue', $pb.PbFieldType.OD)
     ..aOB(5, _omitFieldNames ? '' : 'boolValue')
     ..aOS(6, _omitFieldNames ? '' : 'stringValue')
+    ..aOB(7, _omitFieldNames ? '' : 'nullValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
@@ -548,32 +555,32 @@ class FieldValue extends $pb.GeneratedMessage {
   void clearValue() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
-  StringMapValue get map => $_getN(0);
+  StringMapValue get mapValue => $_getN(0);
   @$pb.TagNumber(1)
-  set map(StringMapValue v) {
+  set mapValue(StringMapValue v) {
     setField(1, v);
   }
 
   @$pb.TagNumber(1)
-  $core.bool hasMap() => $_has(0);
+  $core.bool hasMapValue() => $_has(0);
   @$pb.TagNumber(1)
-  void clearMap() => clearField(1);
+  void clearMapValue() => clearField(1);
   @$pb.TagNumber(1)
-  StringMapValue ensureMap() => $_ensure(0);
+  StringMapValue ensureMapValue() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  ListValue get list => $_getN(1);
+  ListValue get listValue => $_getN(1);
   @$pb.TagNumber(2)
-  set list(ListValue v) {
+  set listValue(ListValue v) {
     setField(2, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasList() => $_has(1);
+  $core.bool hasListValue() => $_has(1);
   @$pb.TagNumber(2)
-  void clearList() => clearField(2);
+  void clearListValue() => clearField(2);
   @$pb.TagNumber(2)
-  ListValue ensureList() => $_ensure(1);
+  ListValue ensureListValue() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $core.int get intValue => $_getIZ(2);
@@ -622,6 +629,18 @@ class FieldValue extends $pb.GeneratedMessage {
   $core.bool hasStringValue() => $_has(5);
   @$pb.TagNumber(6)
   void clearStringValue() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.bool get nullValue => $_getBF(6);
+  @$pb.TagNumber(7)
+  set nullValue($core.bool v) {
+    $_setBool(6, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasNullValue() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearNullValue() => clearField(7);
 }
 
 class ListValue extends $pb.GeneratedMessage {
