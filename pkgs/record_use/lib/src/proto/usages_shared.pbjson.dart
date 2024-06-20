@@ -4,7 +4,7 @@
 //
 // @dart = 2.12
 
-// ignore_for_file: annotate_overrides, camel_case_types, comment_references, lines_longer_than_80_chars
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
@@ -67,7 +67,6 @@ const Arguments$json = {
       '4': 1,
       '5': 11,
       '6': '.usages_shared.ConstArguments',
-      '9': 0,
       '10': 'constArguments'
     },
     {
@@ -76,21 +75,16 @@ const Arguments$json = {
       '4': 1,
       '5': 11,
       '6': '.usages_shared.NonConstArguments',
-      '9': 0,
       '10': 'nonConstArguments'
     },
-  ],
-  '8': [
-    {'1': 'kind'},
   ],
 };
 
 /// Descriptor for `Arguments`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List argumentsDescriptor = $convert.base64Decode(
-    'CglBcmd1bWVudHMSSAoPY29uc3RfYXJndW1lbnRzGAEgASgLMh0udXNhZ2VzX3NoYXJlZC5Db2'
-    '5zdEFyZ3VtZW50c0gAUg5jb25zdEFyZ3VtZW50cxJSChNub25fY29uc3RfYXJndW1lbnRzGAIg'
-    'ASgLMiAudXNhZ2VzX3NoYXJlZC5Ob25Db25zdEFyZ3VtZW50c0gAUhFub25Db25zdEFyZ3VtZW'
-    '50c0IGCgRraW5k');
+    'CglBcmd1bWVudHMSRgoPY29uc3RfYXJndW1lbnRzGAEgASgLMh0udXNhZ2VzX3NoYXJlZC5Db2'
+    '5zdEFyZ3VtZW50c1IOY29uc3RBcmd1bWVudHMSUAoTbm9uX2NvbnN0X2FyZ3VtZW50cxgCIAEo'
+    'CzIgLnVzYWdlc19zaGFyZWQuTm9uQ29uc3RBcmd1bWVudHNSEW5vbkNvbnN0QXJndW1lbnRz');
 
 @$core.Deprecated('Use constArgumentsDescriptor instead')
 const ConstArguments$json = {
@@ -200,10 +194,28 @@ final $typed_data.Uint8List fieldDescriptor = $convert.base64Decode(
 const FieldValue$json = {
   '1': 'FieldValue',
   '2': [
-    {'1': 'int_value', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'intValue'},
-    {'1': 'double_value', '3': 2, '4': 1, '5': 1, '9': 0, '10': 'doubleValue'},
-    {'1': 'bool_value', '3': 3, '4': 1, '5': 8, '9': 0, '10': 'boolValue'},
-    {'1': 'string_value', '3': 4, '4': 1, '5': 9, '9': 0, '10': 'stringValue'},
+    {
+      '1': 'map',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.usages_shared.StringMapValue',
+      '9': 0,
+      '10': 'map'
+    },
+    {
+      '1': 'list',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.usages_shared.ListValue',
+      '9': 0,
+      '10': 'list'
+    },
+    {'1': 'int_value', '3': 3, '4': 1, '5': 5, '9': 0, '10': 'intValue'},
+    {'1': 'double_value', '3': 4, '4': 1, '5': 1, '9': 0, '10': 'doubleValue'},
+    {'1': 'bool_value', '3': 5, '4': 1, '5': 8, '9': 0, '10': 'boolValue'},
+    {'1': 'string_value', '3': 6, '4': 1, '5': 9, '9': 0, '10': 'stringValue'},
   ],
   '8': [
     {'1': 'value'},
@@ -212,6 +224,67 @@ const FieldValue$json = {
 
 /// Descriptor for `FieldValue`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List fieldValueDescriptor = $convert.base64Decode(
-    'CgpGaWVsZFZhbHVlEh0KCWludF92YWx1ZRgBIAEoBUgAUghpbnRWYWx1ZRIjCgxkb3VibGVfdm'
-    'FsdWUYAiABKAFIAFILZG91YmxlVmFsdWUSHwoKYm9vbF92YWx1ZRgDIAEoCEgAUglib29sVmFs'
-    'dWUSIwoMc3RyaW5nX3ZhbHVlGAQgASgJSABSC3N0cmluZ1ZhbHVlQgcKBXZhbHVl');
+    'CgpGaWVsZFZhbHVlEjEKA21hcBgBIAEoCzIdLnVzYWdlc19zaGFyZWQuU3RyaW5nTWFwVmFsdW'
+    'VIAFIDbWFwEi4KBGxpc3QYAiABKAsyGC51c2FnZXNfc2hhcmVkLkxpc3RWYWx1ZUgAUgRsaXN0'
+    'Eh0KCWludF92YWx1ZRgDIAEoBUgAUghpbnRWYWx1ZRIjCgxkb3VibGVfdmFsdWUYBCABKAFIAF'
+    'ILZG91YmxlVmFsdWUSHwoKYm9vbF92YWx1ZRgFIAEoCEgAUglib29sVmFsdWUSIwoMc3RyaW5n'
+    'X3ZhbHVlGAYgASgJSABSC3N0cmluZ1ZhbHVlQgcKBXZhbHVl');
+
+@$core.Deprecated('Use listValueDescriptor instead')
+const ListValue$json = {
+  '1': 'ListValue',
+  '2': [
+    {
+      '1': 'value',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.usages_shared.FieldValue',
+      '10': 'value'
+    },
+  ],
+};
+
+/// Descriptor for `ListValue`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listValueDescriptor = $convert.base64Decode(
+    'CglMaXN0VmFsdWUSLwoFdmFsdWUYASADKAsyGS51c2FnZXNfc2hhcmVkLkZpZWxkVmFsdWVSBX'
+    'ZhbHVl');
+
+@$core.Deprecated('Use stringMapValueDescriptor instead')
+const StringMapValue$json = {
+  '1': 'StringMapValue',
+  '2': [
+    {
+      '1': 'value',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.usages_shared.StringMapValue.ValueEntry',
+      '10': 'value'
+    },
+  ],
+  '3': [StringMapValue_ValueEntry$json],
+};
+
+@$core.Deprecated('Use stringMapValueDescriptor instead')
+const StringMapValue_ValueEntry$json = {
+  '1': 'ValueEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {
+      '1': 'value',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.usages_shared.FieldValue',
+      '10': 'value'
+    },
+  ],
+  '7': {'7': true},
+};
+
+/// Descriptor for `StringMapValue`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stringMapValueDescriptor = $convert.base64Decode(
+    'Cg5TdHJpbmdNYXBWYWx1ZRI+CgV2YWx1ZRgBIAMoCzIoLnVzYWdlc19zaGFyZWQuU3RyaW5nTW'
+    'FwVmFsdWUuVmFsdWVFbnRyeVIFdmFsdWUaUwoKVmFsdWVFbnRyeRIQCgNrZXkYASABKAlSA2tl'
+    'eRIvCgV2YWx1ZRgCIAEoCzIZLnVzYWdlc19zaGFyZWQuRmllbGRWYWx1ZVIFdmFsdWU6AjgB');

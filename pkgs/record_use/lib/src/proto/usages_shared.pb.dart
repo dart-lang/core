@@ -140,8 +140,6 @@ class Fields extends $pb.GeneratedMessage {
   $core.List<Field> get fields => $_getList(0);
 }
 
-enum Arguments_Kind { constArguments, nonConstArguments, notSet }
-
 class Arguments extends $pb.GeneratedMessage {
   factory Arguments({
     ConstArguments? constArguments,
@@ -164,16 +162,10 @@ class Arguments extends $pb.GeneratedMessage {
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
 
-  static const $core.Map<$core.int, Arguments_Kind> _Arguments_KindByTag = {
-    1: Arguments_Kind.constArguments,
-    2: Arguments_Kind.nonConstArguments,
-    0: Arguments_Kind.notSet
-  };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Arguments',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'usages_shared'),
       createEmptyInstance: create)
-    ..oo(0, [1, 2])
     ..aOM<ConstArguments>(1, _omitFieldNames ? '' : 'constArguments',
         subBuilder: ConstArguments.create)
     ..aOM<NonConstArguments>(2, _omitFieldNames ? '' : 'nonConstArguments',
@@ -200,9 +192,6 @@ class Arguments extends $pb.GeneratedMessage {
   static Arguments getDefault() =>
       _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Arguments>(create);
   static Arguments? _defaultInstance;
-
-  Arguments_Kind whichKind() => _Arguments_KindByTag[$_whichOneof(0)]!;
-  void clearKind() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   ConstArguments get constArguments => $_getN(0);
@@ -461,16 +450,32 @@ class Field extends $pb.GeneratedMessage {
   FieldValue ensureValue() => $_ensure(2);
 }
 
-enum FieldValue_Value { intValue, doubleValue, boolValue, stringValue, notSet }
+enum FieldValue_Value {
+  map,
+  list,
+  intValue,
+  doubleValue,
+  boolValue,
+  stringValue,
+  notSet
+}
 
 class FieldValue extends $pb.GeneratedMessage {
   factory FieldValue({
+    StringMapValue? map,
+    ListValue? list,
     $core.int? intValue,
     $core.double? doubleValue,
     $core.bool? boolValue,
     $core.String? stringValue,
   }) {
     final $result = create();
+    if (map != null) {
+      $result.map = map;
+    }
+    if (list != null) {
+      $result.list = list;
+    }
     if (intValue != null) {
       $result.intValue = intValue;
     }
@@ -494,22 +499,28 @@ class FieldValue extends $pb.GeneratedMessage {
       create()..mergeFromJson(i, r);
 
   static const $core.Map<$core.int, FieldValue_Value> _FieldValue_ValueByTag = {
-    1: FieldValue_Value.intValue,
-    2: FieldValue_Value.doubleValue,
-    3: FieldValue_Value.boolValue,
-    4: FieldValue_Value.stringValue,
+    1: FieldValue_Value.map,
+    2: FieldValue_Value.list,
+    3: FieldValue_Value.intValue,
+    4: FieldValue_Value.doubleValue,
+    5: FieldValue_Value.boolValue,
+    6: FieldValue_Value.stringValue,
     0: FieldValue_Value.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FieldValue',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'usages_shared'),
       createEmptyInstance: create)
-    ..oo(0, [1, 2, 3, 4])
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'intValue', $pb.PbFieldType.O3)
+    ..oo(0, [1, 2, 3, 4, 5, 6])
+    ..aOM<StringMapValue>(1, _omitFieldNames ? '' : 'map',
+        subBuilder: StringMapValue.create)
+    ..aOM<ListValue>(2, _omitFieldNames ? '' : 'list',
+        subBuilder: ListValue.create)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'intValue', $pb.PbFieldType.O3)
     ..a<$core.double>(
-        2, _omitFieldNames ? '' : 'doubleValue', $pb.PbFieldType.OD)
-    ..aOB(3, _omitFieldNames ? '' : 'boolValue')
-    ..aOS(4, _omitFieldNames ? '' : 'stringValue')
+        4, _omitFieldNames ? '' : 'doubleValue', $pb.PbFieldType.OD)
+    ..aOB(5, _omitFieldNames ? '' : 'boolValue')
+    ..aOS(6, _omitFieldNames ? '' : 'stringValue')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('Using this can add significant overhead to your binary. '
@@ -537,52 +548,189 @@ class FieldValue extends $pb.GeneratedMessage {
   void clearValue() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
-  $core.int get intValue => $_getIZ(0);
+  StringMapValue get map => $_getN(0);
   @$pb.TagNumber(1)
+  set map(StringMapValue v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasMap() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMap() => clearField(1);
+  @$pb.TagNumber(1)
+  StringMapValue ensureMap() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  ListValue get list => $_getN(1);
+  @$pb.TagNumber(2)
+  set list(ListValue v) {
+    setField(2, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasList() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearList() => clearField(2);
+  @$pb.TagNumber(2)
+  ListValue ensureList() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.int get intValue => $_getIZ(2);
+  @$pb.TagNumber(3)
   set intValue($core.int v) {
-    $_setSignedInt32(0, v);
+    $_setSignedInt32(2, v);
   }
 
-  @$pb.TagNumber(1)
-  $core.bool hasIntValue() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearIntValue() => clearField(1);
+  @$pb.TagNumber(3)
+  $core.bool hasIntValue() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIntValue() => clearField(3);
 
-  @$pb.TagNumber(2)
-  $core.double get doubleValue => $_getN(1);
-  @$pb.TagNumber(2)
+  @$pb.TagNumber(4)
+  $core.double get doubleValue => $_getN(3);
+  @$pb.TagNumber(4)
   set doubleValue($core.double v) {
-    $_setDouble(1, v);
+    $_setDouble(3, v);
   }
 
-  @$pb.TagNumber(2)
-  $core.bool hasDoubleValue() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearDoubleValue() => clearField(2);
+  @$pb.TagNumber(4)
+  $core.bool hasDoubleValue() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearDoubleValue() => clearField(4);
 
-  @$pb.TagNumber(3)
-  $core.bool get boolValue => $_getBF(2);
-  @$pb.TagNumber(3)
+  @$pb.TagNumber(5)
+  $core.bool get boolValue => $_getBF(4);
+  @$pb.TagNumber(5)
   set boolValue($core.bool v) {
-    $_setBool(2, v);
+    $_setBool(4, v);
   }
 
-  @$pb.TagNumber(3)
-  $core.bool hasBoolValue() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearBoolValue() => clearField(3);
+  @$pb.TagNumber(5)
+  $core.bool hasBoolValue() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBoolValue() => clearField(5);
 
-  @$pb.TagNumber(4)
-  $core.String get stringValue => $_getSZ(3);
-  @$pb.TagNumber(4)
+  @$pb.TagNumber(6)
+  $core.String get stringValue => $_getSZ(5);
+  @$pb.TagNumber(6)
   set stringValue($core.String v) {
-    $_setString(3, v);
+    $_setString(5, v);
   }
 
-  @$pb.TagNumber(4)
-  $core.bool hasStringValue() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearStringValue() => clearField(4);
+  @$pb.TagNumber(6)
+  $core.bool hasStringValue() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearStringValue() => clearField(6);
+}
+
+class ListValue extends $pb.GeneratedMessage {
+  factory ListValue({
+    $core.Iterable<FieldValue>? value,
+  }) {
+    final $result = create();
+    if (value != null) {
+      $result.value.addAll(value);
+    }
+    return $result;
+  }
+  ListValue._() : super();
+  factory ListValue.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory ListValue.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ListValue',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'usages_shared'),
+      createEmptyInstance: create)
+    ..pc<FieldValue>(1, _omitFieldNames ? '' : 'value', $pb.PbFieldType.PM,
+        subBuilder: FieldValue.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  ListValue clone() => ListValue()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  ListValue copyWith(void Function(ListValue) updates) =>
+      super.copyWith((message) => updates(message as ListValue)) as ListValue;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListValue create() => ListValue._();
+  ListValue createEmptyInstance() => create();
+  static $pb.PbList<ListValue> createRepeated() => $pb.PbList<ListValue>();
+  @$core.pragma('dart2js:noInline')
+  static ListValue getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListValue>(create);
+  static ListValue? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<FieldValue> get value => $_getList(0);
+}
+
+class StringMapValue extends $pb.GeneratedMessage {
+  factory StringMapValue({
+    $core.Map<$core.String, FieldValue>? value,
+  }) {
+    final $result = create();
+    if (value != null) {
+      $result.value.addAll(value);
+    }
+    return $result;
+  }
+  StringMapValue._() : super();
+  factory StringMapValue.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory StringMapValue.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StringMapValue',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'usages_shared'),
+      createEmptyInstance: create)
+    ..m<$core.String, FieldValue>(1, _omitFieldNames ? '' : 'value',
+        entryClassName: 'StringMapValue.ValueEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OM,
+        valueCreator: FieldValue.create,
+        valueDefaultOrMaker: FieldValue.getDefault,
+        packageName: const $pb.PackageName('usages_shared'))
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  StringMapValue clone() => StringMapValue()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  StringMapValue copyWith(void Function(StringMapValue) updates) =>
+      super.copyWith((message) => updates(message as StringMapValue))
+          as StringMapValue;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StringMapValue create() => StringMapValue._();
+  StringMapValue createEmptyInstance() => create();
+  static $pb.PbList<StringMapValue> createRepeated() =>
+      $pb.PbList<StringMapValue>();
+  @$core.pragma('dart2js:noInline')
+  static StringMapValue getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StringMapValue>(create);
+  static StringMapValue? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.Map<$core.String, FieldValue> get value => $_getMap(0);
 }
 
 const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');

@@ -11,10 +11,8 @@ message Fields {
 }
 
 message Arguments {
-  oneof kind {
-    ConstArguments const_arguments = 1;
-    NonConstArguments non_const_arguments = 2;
-  }
+  ConstArguments const_arguments = 1;
+  NonConstArguments non_const_arguments = 2;
 }
 
 message ConstArguments {
@@ -35,9 +33,19 @@ message Field {
 
 message FieldValue {
   oneof value {
-    int32 int_value = 1;
-    double double_value = 2;
-    bool bool_value = 3;
-    string string_value = 4;
+    StringMapValue map = 1;
+    ListValue list = 2;
+    int32 int_value = 3;
+    double double_value = 4;
+    bool bool_value = 5;
+    string string_value = 6;
   }
+}
+
+message ListValue {
+  repeated FieldValue value = 1;
+}
+
+message StringMapValue {
+  map<string, FieldValue> value = 1;
 }

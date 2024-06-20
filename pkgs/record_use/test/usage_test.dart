@@ -29,8 +29,15 @@ void main() {
       arguments[0].positional,
       <int, Object>{0: 'lib_SHA1', 1: false, 2: 1},
     );
-    expect(arguments[1].named, isEmpty);
-    expect(arguments[1].positional, isEmpty);
+    expect(arguments[1].named, {
+      'leroy': 'jenkins',
+      'albert': ['camus', 'einstein']
+    });
+    expect(arguments[1].positional, {
+      0: 'lib_SHA1',
+      2: 0,
+      4: {'key': 99}
+    });
   });
   test('API instances', () {
     final recordedUsesPb = File('test/testdata/data.binpb').readAsBytesSync();
