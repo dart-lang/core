@@ -1,4 +1,4 @@
-name: record_use
+name: 'package:record_use'
 permissions: read-all
 
 on:
