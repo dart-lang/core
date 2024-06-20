@@ -19,6 +19,7 @@ any constant instance of the class will be recorded. This is particularly useful
 when using the class as an annotation.
 
 ## Example
+
 ```dart
 import 'package:meta/meta.dart' show RecordUse;
 
