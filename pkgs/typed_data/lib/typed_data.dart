@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Utilities and functionality related to the "dart:typed_data" library.
-library typed_data;
+library;
 
 export 'src/typed_queue.dart';
 export 'typed_buffers.dart';

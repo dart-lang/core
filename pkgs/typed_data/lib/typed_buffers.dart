@@ -11,6 +11,6 @@
 /// That means that using the `buffer` getter is not guaranteed
 /// to return the same result each time it is used, and that the buffer may
 /// be larger than what the list is using.
-library typed_data.typed_buffers;
+library;
 
 export 'src/typed_buffer.dart' hide TypedDataBuffer;
