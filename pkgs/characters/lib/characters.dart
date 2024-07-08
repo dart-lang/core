@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// String operations based on characters (Unicode grapheme clusters).
-library characters;
+library;
 
 export "src/characters.dart";
 export "src/extensions.dart";
