@@ -10,20 +10,16 @@ import 'package:collection/collection.dart';
 import 'typed_buffer.dart';
 
 /// The shared superclass of all the typed queue subclasses.
-abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
+abstract class _TypedQueue<E, L extends TypedDataList<E>> with ListMixin<E> {
   /// The underlying data buffer.
-  ///
-  /// This is always both a List<E> and a TypedData, which we don't have a type
-  /// for that. For example, for a `Uint8Queue`, this is a `Uint8List`.
-  L _table;
+  TypedDataList<E> _table;
 
   int _head;
   int _tail;
 
   /// Create an empty queue.
-  _TypedQueue(List<E> table)
-      : _table = table as L,
-        _head = 0,
+  _TypedQueue(this._table)
+      : _head = 0,
         _tail = 0;
 
   // Iterable interface.
@@ -330,20 +326,21 @@ abstract class _TypedQueue<E, L extends List<E>> with ListMixin<E> {
   L _createList(int size);
 
   // Create a new typed buffer of the given type.
-  List<E> _createBuffer(int size);
+  TypedDataBuffer<E> _createBuffer(int size);
 
   /// The default value used to fill the queue when changing length.
   E get _defaultValue;
 }
 
-abstract class _IntQueue<L extends List<int>> extends _TypedQueue<int, L> {
+abstract class _IntQueue<L extends TypedDataList<int>>
+    extends _TypedQueue<int, L> {
   _IntQueue(super.queue);
 
   @override
   int get _defaultValue => 0;
 }
 
-abstract class _FloatQueue<L extends List<double>>
+abstract class _FloatQueue<L extends TypedDataList<double>>
     extends _TypedQueue<double, L> {
   _FloatQueue(super.queue);
 

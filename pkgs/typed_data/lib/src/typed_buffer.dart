@@ -9,18 +9,12 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
   static const int _initialLength = 8;
 
   /// The underlying data buffer.
-  ///
-  /// This is always both a List<E> and a TypedData, which we don't have a type
-  /// for here. For example, for a `Uint8Buffer`, this is a `Uint8List`.
-  List<E> _buffer;
-
-  /// Returns a view of [_buffer] as a [TypedData].
-  TypedData get _typedBuffer => _buffer as TypedData;
+  TypedDataList<E> _buffer;
 
   /// The length of the list being built.
   int _length;
 
-  TypedDataBuffer(List<E> buffer)
+  TypedDataBuffer(TypedDataList<E> buffer)
       : _buffer = buffer,
         _length = buffer.length;
 
@@ -47,7 +41,7 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
         _buffer[i] = defaultValue;
       }
     } else if (newLength > _buffer.length) {
-      List<E> newBuffer;
+      TypedDataList<E> newBuffer;
       if (_buffer.isEmpty) {
         newBuffer = _createBuffer(newLength);
       } else {
@@ -249,7 +243,7 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
   /// be. If [requiredCapacity] is not null, it will be at least that
   /// size. It will always have at least have double the capacity of
   /// the current buffer.
-  List<E> _createBiggerBuffer(int? requiredCapacity) {
+  TypedDataList<E> _createBiggerBuffer(int? requiredCapacity) {
     var newLength = _buffer.length * 2;
     if (requiredCapacity != null && newLength < requiredCapacity) {
       newLength = requiredCapacity;
@@ -283,11 +277,11 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
 
   // TypedData.
 
-  int get elementSizeInBytes => _typedBuffer.elementSizeInBytes;
+  int get elementSizeInBytes => _buffer.elementSizeInBytes;
 
-  int get lengthInBytes => _length * _typedBuffer.elementSizeInBytes;
+  int get lengthInBytes => _length * _buffer.elementSizeInBytes;
 
-  int get offsetInBytes => _typedBuffer.offsetInBytes;
+  int get offsetInBytes => _buffer.offsetInBytes;
 
   /// Returns the underlying [ByteBuffer].
   ///
@@ -295,7 +289,7 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
   /// of this list.
   ///
   /// The buffer may be larger than [lengthInBytes] bytes, but never smaller.
-  ByteBuffer get buffer => _typedBuffer.buffer;
+  ByteBuffer get buffer => _buffer.buffer;
 
   // Specialization for the specific type.
 
@@ -304,7 +298,7 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
   E get _defaultValue;
 
   // Create a new typed list to use as buffer.
-  List<E> _createBuffer(int size);
+  TypedDataList<E> _createBuffer(int size);
 }
 
 abstract class _IntBuffer extends TypedDataBuffer<int> {
