@@ -1,8 +1,9 @@
-## 2.6.0-wip
+## 2.6.0
 
 * Added source argument when throwing a `ArgParserException`.
 * Fix inconsistent `FormatException` messages
 * Require Dart 3.3
+* Move to `dart-lang/core` monorepo.
 
 ## 2.5.0
 
