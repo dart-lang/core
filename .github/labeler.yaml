@@ -1,0 +1,5 @@
+# Configuration for .github/workflows/pull_request_label.yml.
+
+"package-args":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/args/**'
