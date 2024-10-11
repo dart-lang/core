@@ -4,12 +4,22 @@ on:
   # Run CI on pushes to the main branch, and on PRs against main.
   push:
     branches: [ main ]
+    paths:
+      - '.github/workflows/args.yaml'
+      - 'pkgs/args/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - '.github/workflows/args.yaml'
+      - 'pkgs/args/**'
   schedule:
     - cron: "0 0 * * 0"
 env:
   PUB_ENVIRONMENT: bot.github
+
+defaults:
+  run:
+    working-directory: pkgs/args/
 
 jobs:
   # Check code formatting and static analysis on a single OS (linux)
