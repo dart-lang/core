@@ -2225,7 +2225,7 @@ Iterable<T> iterable<T>(Iterable<T> values) sync* {
   yield* values;
 }
 
-Never unreachable([dynamic _, dynamic __, dynamic ___]) => fail('Unreachable');
+Never unreachable([Object? _, Object? _, Object? _]) => fail('Unreachable');
 
 String toString(Object? o) => '$o';
 
