@@ -1,16 +1,25 @@
 name: Dart CI
 
 on:
-  # Run on PRs and pushes to the default branch.
+  # Run CI on pushes to the main branch, and on PRs against main.
   push:
-    branches: [ master ]
+    branches: [ main ]
+    paths:
+      - '.github/workflows/characters.yaml'
+      - 'pkgs/characters/**'
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
+    paths:
+      - '.github/workflows/characters.yaml'
+      - 'pkgs/characters/**'
   schedule:
     - cron: "0 0 * * 0"
-
 env:
   PUB_ENVIRONMENT: bot.github
+
+defaults:
+  run:
+    working-directory: pkgs/characters/
 
 jobs:
   # Check code formatting and static analysis on a single OS (linux)

@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/dart-lang/characters/workflows/Dart%20CI/badge.svg)](https://github.com/dart-lang/characters/actions?query=workflow%3A"Dart+CI"+branch%3Amaster)
+[![Build Status](https://github.com/dart-lang/core/actions/workflows/characters.yaml/badge.svg)](https://github.com/dart-lang/core/actions/workflows/characters.yaml)
 [![pub package](https://img.shields.io/pub/v/characters.svg)](https://pub.dev/packages/characters)
 [![package publisher](https://img.shields.io/pub/publisher/characters.svg)](https://pub.dev/packages/characters/publisher)
 

@@ -3,3 +3,7 @@
 "package-args":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/args/**'
+
+"package-characters":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/characters/**'

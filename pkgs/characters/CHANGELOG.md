@@ -1,7 +1,8 @@
-## 1.3.1-wip
+## 1.3.1
 
 * Fixed README rendering on pub.dev and API docs.
-* Require Dart `^3.4.0`
+* Require Dart `^3.4.0`.
+* Move to `dart-lang/core` monorepo.
 
 ## 1.3.0
 
