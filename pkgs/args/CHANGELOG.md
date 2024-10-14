@@ -1,3 +1,8 @@
+## 2.6.1-wip
+
+* Added option `hideNegatedUsage` to `ArgParser.flag()` allowing a flag to be
+  `negatable` without showing it in the usage text.
+
 ## 2.6.0
 
 * Added source argument when throwing a `ArgParserException`.
