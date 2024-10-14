@@ -1,4 +1,4 @@
-[![Dart CI](https://github.com/dart-lang/async/actions/workflows/test-package.yml/badge.svg)](https://github.com/dart-lang/async/actions/workflows/test-package.yml)
+[![Dart CI](https://github.com/dart-lang/core/actions/workflows/async.yaml/badge.svg)](https://github.com/dart-lang/core/actions/workflows/async.yaml)
 [![pub package](https://img.shields.io/pub/v/async.svg)](https://pub.dev/packages/async)
 [![package publisher](https://img.shields.io/pub/publisher/async.svg)](https://pub.dev/packages/async/publisher)
 

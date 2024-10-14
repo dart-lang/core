@@ -1,6 +1,7 @@
-## 2.12.0-wip
+## 2.12.0
 
-- Require Dart 3.4
+- Require Dart 3.4.
+- Move to `dart-lang/core` monorepo.
 
 ## 2.11.0
 
@@ -13,7 +14,7 @@
 * Add `CancelableOperation.thenOperation` which gives more flexibility to
   complete the resulting operation.
 * Add `CancelableCompleter.completeOperation`.
-* Require Dart 2.18
+* Require Dart 2.18.
 
 ## 2.9.0
 
