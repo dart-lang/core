@@ -5,11 +5,7 @@
 import 'dart:collection';
 
 /// A class that efficiently implements both [Queue] and [List].
-// TODO(nweiz): Currently this code is copied almost verbatim from
-// dart:collection. The only changes are to implement List and to remove methods
-// that are redundant with ListMixin. Remove or simplify it when issue 21330 is
-// fixed.
-class QueueList<E> extends Object with ListMixin<E> implements Queue<E> {
+interface class QueueList<E> with ListMixin<E> implements Queue<E> {
   /// Adapts [source] to be a `QueueList<T>`.
   ///
   /// Any time the class would produce an element that is not a [T], the element
@@ -114,9 +110,6 @@ class QueueList<E> extends Object with ListMixin<E> implements Queue<E> {
   }
 
   QueueList<T> cast<T>() => QueueList._castFrom<E, T>(this);
-
-  @Deprecated('Use cast instead')
-  QueueList<T> retype<T>() => cast<T>();
 
   @override
   String toString() => IterableBase.iterableToFullString(this, '{', '}');
