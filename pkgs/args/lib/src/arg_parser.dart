@@ -119,9 +119,10 @@ class ArgParser {
   ///
   /// If [hide] is `true`, this option won't be included in [usage].
   ///
-  /// If [hideNegatedUsage] is `true`, the fact that this flag can be negated will
-  /// not be documented in [usage].
-  /// It is an error for [hideNegatedUsage] to be `true` if [negatable] is `false`.
+  /// If [hideNegatedUsage] is `true`, the fact that this flag can be negated
+  /// will not be documented in [usage].
+  /// It is an error for [hideNegatedUsage] to be `true` if [negatable] is
+  /// `false`.
   ///
   /// If [aliases] is provided, these are used as aliases for [name]. These
   /// aliases will not appear as keys in the [options] map.
@@ -315,7 +316,8 @@ class ArgParser {
 
     if (!negatable && hideNegatedUsage) {
       throw ArgumentError(
-        'The option $name cannot have `hideNegatedUsage` without being negatable.',
+        'The option $name cannot have `hideNegatedUsage` '
+        'without being negatable.',
       );
     }
 
