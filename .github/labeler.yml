@@ -1,4 +1,4 @@
-# Configuration for .github/workflows/pull_request_label.yml.
+# Configuration for .github/workflows/pull_request_label.yaml.
 
 "package-args":
   - changed-files:

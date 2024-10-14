@@ -8,8 +8,7 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 
 | Package | Description | Version |
 |---|---|---|
-| [args](pkgs/args/) | Library for defining parsers for parsing raw command-line arguments into a set
-  of options and values. | [![pub package](https://img.shields.io/pub/v/args.svg)](https://pub.dev/packages/args) |
+| [args](pkgs/args/) | Library for defining parsers for parsing raw command-line arguments into a set of options and values. | [![pub package](https://img.shields.io/pub/v/args.svg)](https://pub.dev/packages/args) |
 
 ## Publishing automation
 
