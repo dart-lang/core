@@ -1,0 +1,16 @@
+name: args
+version: 2.6.0
+description: >-
+  Library for defining parsers for parsing raw command-line arguments into a set
+  of options and values using GNU and POSIX style options.
+repository: https://github.com/dart-lang/core/main/pkgs/args
+
+topics:
+  - cli
+
+environment:
+  sdk: ^3.3.0
+
+dev_dependencies:
+  dart_flutter_team_lints: ^3.0.0
+  test: ^1.16.0
