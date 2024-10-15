@@ -1,4 +1,4 @@
-[![Dart CI](https://github.com/dart-lang/crypto/actions/workflows/test-package.yml/badge.svg)](https://github.com/dart-lang/crypto/actions/workflows/test-package.yml)
+[![Dart CI](https://github.com/dart-lang/core/actions/workflows/crypto.yaml/badge.svg)](https://github.com/dart-lang/core/actions/workflows/crypto.yaml)
 [![pub package](https://img.shields.io/pub/v/crypto.svg)](https://pub.dev/packages/crypto)
 [![package publisher](https://img.shields.io/pub/publisher/crypto.svg)](https://pub.dev/packages/crypto/publisher)
 

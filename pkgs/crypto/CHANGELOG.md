@@ -1,3 +1,7 @@
+## 3.0.6
+
+* Move to `dart-lang/core` monorepo.
+
 ## 3.0.5
 
 * Revert switch to enable fast "sinks" on Wasm because it breaks `dart2js` with

@@ -3,3 +3,8 @@
 "package-args":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/args/**'
+
+"package-crypto":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/crypto/**'
+

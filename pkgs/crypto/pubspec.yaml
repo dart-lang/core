@@ -1,7 +1,7 @@
 name: crypto
-version: 3.0.5
+version: 3.0.6
 description: Implementations of SHA, MD5, and HMAC cryptographic functions.
-repository: https://github.com/dart-lang/crypto
+repository: https://github.com/dart-lang/core/main/pkgs/crypto
 topics:
  - crypto
  - cryptography
