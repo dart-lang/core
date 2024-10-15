@@ -3,3 +3,7 @@
 "package-args":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/args/**'
+
+"package-fake_async":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/fake_async/**'

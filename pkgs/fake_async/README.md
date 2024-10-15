@@ -1,4 +1,4 @@
-[![Dart CI](https://github.com/dart-lang/fake_async/actions/workflows/test-package.yml/badge.svg)](https://github.com/dart-lang/fake_async/actions/workflows/test-package.yml)
+[![Dart CI](https://github.com/dart-lang/core/actions/workflows/fake_async.yaml/badge.svg)](https://github.com/dart-lang/core/actions/workflows/fake_async.yaml)
 [![pub package](https://img.shields.io/pub/v/fake_async.svg)](https://pub.dev/packages/fake_async)
 [![package publisher](https://img.shields.io/pub/publisher/fake_async.svg)](https://pub.dev/packages/fake_async/publisher)
 
