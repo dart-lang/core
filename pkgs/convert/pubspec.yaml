@@ -1,9 +1,9 @@
 name: convert
-version: 3.1.2-wip
+version: 3.1.2
 description: >-
   Utilities for converting between data representations.
   Provides a number of Sink, Codec, Decoder, and Encoder types.
-repository: https://github.com/dart-lang/convert
+repository: https://github.com/dart-lang/core/main/pkgs/convert
 
 environment:
   sdk: ^3.4.0
