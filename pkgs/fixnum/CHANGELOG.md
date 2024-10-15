@@ -1,6 +1,7 @@
-## 1.1.1-wip
+## 1.1.1
 
 * Require Dart `^3.1.0`
+* Move to `dart-lang/core` monorepo.
 
 ## 1.1.0
 
