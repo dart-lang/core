@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/dart-lang/os_detect/workflows/Dart%20CI/badge.svg)](https://github.com/dart-lang/os_detect/actions?query=workflow%3A"Dart+CI"+branch%3Amaster)
+[![Dart CI](https://github.com/dart-lang/core/actions/workflows/os_detect.yaml/badge.svg)](https://github.com/dart-lang/core/actions/workflows/os_detect.yaml)
 [![pub package](https://img.shields.io/pub/v/os_detect.svg)](https://pub.dev/packages/os_detect)
 [![package publisher](https://img.shields.io/pub/publisher/os_detect.svg)](https://pub.dev/packages/os_detect/publisher)
 

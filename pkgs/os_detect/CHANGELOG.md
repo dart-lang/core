@@ -1,7 +1,8 @@
-## 2.0.2-wip
+## 2.0.2
 
 - Require Dart 3.0
 - Make work with VM's platform-constants.
+- Move to `dart-lang/core` monorepo.
 
 ## 2.0.1
 

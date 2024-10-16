@@ -1,5 +1,5 @@
 name: os_detect
-version: 2.0.2-wip
+version: 2.0.2
 description: Platform independent OS detection.
 repository: https://github.com/dart-lang/core/tree/main/pkgs/os_detect
 

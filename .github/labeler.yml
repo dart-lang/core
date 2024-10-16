@@ -23,3 +23,7 @@
 "package:fixnum":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/fixnum/**'
+
+"package:os_detect":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/os_detect/**'
