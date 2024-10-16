@@ -1,3 +1,7 @@
+## 3.1.6
+
+* Move to `dart-lang/core` monorepo.
+
 ## 3.1.5
 
 * Updates minimum supported SDK version to Flutter 3.16/Dart 3.2.
