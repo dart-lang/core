@@ -1,7 +1,3 @@
-## 2.6.1
-
-* Fix pubspec `repository` value.
-
 ## 2.6.0
 
 * Added source argument when throwing a `ArgParserException`.
