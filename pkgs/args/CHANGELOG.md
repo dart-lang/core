@@ -1,6 +1,7 @@
 ## 2.6.1-wip
 
 * Fix the reporitory URL in `pubspec.yaml`.
+* Add function to retrieve actual input values for command options by name.
 
 ## 2.6.0
 
