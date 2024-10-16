@@ -2,7 +2,7 @@ name: typed_data
 version: 1.4.0-wip
 description: >-
   Utility functions and classes related to the dart:typed_data library.
-repository: https://github.com/dart-lang/typed_data
+repository: https://github.com/dart-lang/core/tree/main/pkgs/typed_data
 
 topics:
   - data-structures
