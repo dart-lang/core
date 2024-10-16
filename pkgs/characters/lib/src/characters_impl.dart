@@ -10,7 +10,7 @@ import 'grapheme_clusters/table.dart';
 /// The grapheme clusters of a string.
 ///
 /// Backed by a single string.
-class StringCharacters extends Iterable<String> implements Characters {
+final class StringCharacters extends Iterable<String> implements Characters {
   @override
   final String string;
 

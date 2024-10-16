@@ -70,7 +70,7 @@ const int defaultLowChunkSize = 64;
 const int defaultHighChunkSize = 512;
 
 void main(List<String> args) {
-  var flags = parseArgs(args, "gentable", allowOptimize: true);
+  var flags = parseArgs(args, "generate_tables", allowOptimize: true);
   var output = flags.dryrun
       ? null
       : flags.targetFile ?? File(path(packageRoot, tableFile));
@@ -91,18 +91,17 @@ void main(List<String> args) {
       optimize: flags.optimize);
 }
 
-Future<void> generateTables(File? output,
-    {bool update = false,
-    bool dryrun = false,
-    bool optimize = false,
-    bool verbose = defaultVerbose}) async {
+Future<void> generateTables(
+  File? output, {
+  bool update = false,
+  bool dryrun = false,
+  bool optimize = false,
+  bool verbose = defaultVerbose,
+  bool acceptLicenseChange = false,
+}) async {
   // Generate the category mapping for all Unicode code points.
   // This is the table we want to create an compressed version of.
   var table = await loadGraphemeCategories(update: update, verbose: verbose);
-  if (update) {
-    // Force license file update.
-    await licenseFile.load(checkForUpdate: true);
-  }
 
   var lowChunkSize = defaultLowChunkSize;
   var highChunkSize = defaultHighChunkSize;
@@ -201,6 +200,44 @@ Future<void> generateTables(File? output,
   } else {
     output.writeAsStringSync(buffer.toString());
   }
+  if (update && !dryrun) {
+    var version = guessVersion(await graphemeBreakPropertyData.contents);
+    updateReadmeVersion(version);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Unicode version number.
+
+String? guessVersion(String dataFile) {
+  // If first line has format:
+  //
+  // # GraphemeBreakProperty-16.0.0.txt
+  //
+  // Then use 16.0.0 as version number.
+  var match = RegExp(r"# \w+-(\d+\.\d+\.\d+)\.txt").matchAsPrefix(dataFile);
+  return match?[1];
+}
+
+void updateReadmeVersion(String? version) {
+  var readmeFile = File(packagePath("README.md"));
+  var contents = readmeFile.readAsStringSync();
+  String replacementText;
+  if (version != null) {
+    replacementText = "version $version";
+  } else {
+    var now = DateTime.timestamp();
+    replacementText = "of ${now.year}-${lz(now.month)}-${lz(now.day)}";
+  }
+  const startTag = "<!-- unicode-version -->";
+  const endTag = "<!-- /unicode-version -->";
+  var versionRE = RegExp('(?<=$startTag).*?(?=$endTag)');
+  var newContents = contents.replaceFirst(versionRE, replacementText);
+  if (contents != newContents) {
+    readmeFile.writeAsStringSync(newContents);
+  } else if (versionRE.firstMatch(contents) == null) {
+    stderr.writeln("MISSING VERSION TAGS IN README.md");
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -272,6 +309,10 @@ void _writeSurrogateLookupFunction(StringSink out, String dataName,
 String _lookupMethod(
         String name, String dataName, String startName, int chunkSize) =>
     """
+
+@pragma('dart2js:prefer-inline')
+@pragma('vm:prefer-inline')
+@pragma('wasm:prefer-inline')
 int $name(int codeUnit) {
   var chunkStart = $startName.codeUnitAt(codeUnit >> ${chunkSize.bitLength - 1});
   var index = chunkStart + (codeUnit & ${chunkSize - 1});

@@ -6,18 +6,14 @@
 
 import "dart:io";
 
-class Flags {
-  final bool verbose;
-  final bool update;
-  final bool dryrun;
-  final bool optimize;
-  final File? targetFile;
-  Flags(this.targetFile,
-      {required this.update,
-      required this.dryrun,
-      required this.verbose,
-      required this.optimize});
-}
+typedef Flags = ({
+  bool verbose,
+  bool update,
+  bool dryrun,
+  bool optimize,
+  bool acceptLicenseChange,
+  File? targetFile,
+});
 
 Flags parseArgs(List<String> args, String toolName,
     {bool allowOptimize = false, bool allowFile = true}) {
@@ -25,6 +21,7 @@ Flags parseArgs(List<String> args, String toolName,
   var dryrun = false;
   var verbose = false;
   var optimize = false;
+  var acceptLicenseChange = false;
   File? output;
   for (var arg in args) {
     if (arg == "-h" || arg == "--help") {
@@ -34,6 +31,7 @@ Flags parseArgs(List<String> args, String toolName,
             "${allowFile ? " <targetFile>" : ""}")
         ..writeln("-h | --help          : Print this help and exit")
         ..writeln("-u | --update        : Fetch new data files")
+        ..writeln("--accept-license     : Accept a changed license")
         ..writeln(
             "-n | --dryrun        : Write to stdout instead of target file");
       if (allowOptimize) {
@@ -51,6 +49,8 @@ Flags parseArgs(List<String> args, String toolName,
       dryrun = true;
     } else if (arg == "-v" || arg == "--verbose") {
       verbose = true;
+    } else if (arg == "--accept-license") {
+      acceptLicenseChange = true;
     } else if (allowOptimize && arg == "-o" ||
         arg == "-i" ||
         arg.startsWith("--opt")) {
@@ -65,6 +65,12 @@ Flags parseArgs(List<String> args, String toolName,
       output = File(arg);
     }
   }
-  return Flags(output,
-      update: update, dryrun: dryrun, verbose: verbose, optimize: optimize);
+  return (
+    acceptLicenseChange: acceptLicenseChange,
+    dryrun: dryrun,
+    optimize: optimize,
+    targetFile: output,
+    update: update,
+    verbose: verbose,
+  );
 }
