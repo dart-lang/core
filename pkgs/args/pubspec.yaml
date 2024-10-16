@@ -1,9 +1,9 @@
 name: args
-version: 2.6.0
+version: 2.6.1
 description: >-
   Library for defining parsers for parsing raw command-line arguments into a set
   of options and values using GNU and POSIX style options.
-repository: https://github.com/dart-lang/core/main/pkgs/args
+repository: https://github.com/dart-lang/core/tree/main/pkgs/args
 
 topics:
   - cli
