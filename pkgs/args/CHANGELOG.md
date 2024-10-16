@@ -1,3 +1,7 @@
+## 2.6.1-wip
+
+* Fix the reporitory URL in `pubspec.yaml`.
+
 ## 2.6.0
 
 * Added source argument when throwing a `ArgParserException`.
