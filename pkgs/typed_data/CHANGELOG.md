@@ -1,10 +1,11 @@
-## 1.4.0-wip
+## 1.4.0
 
 * The type of the `buffer` constructor argument to `TypedDataBuffer` is now
   `TypeDataList<E>` (instead of `List<E>`). While this is breaking change
   statically there was a runtime cast that makes this change a no-op in
   practice. 
 * Require Dart 3.5
+* Move to `dart-lang/core` monorepo.
 
 ## 1.3.2
 

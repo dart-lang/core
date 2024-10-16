@@ -1,4 +1,4 @@
-[![Dart CI](https://github.com/dart-lang/typed_data/actions/workflows/test-package.yml/badge.svg)](https://github.com/dart-lang/typed_data/actions/workflows/test-package.yml)
+[![Dart CI](https://github.com/dart-lang/core/actions/workflows/typed_data.yaml/badge.svg)](https://github.com/dart-lang/core/actions/workflows/typed_data.yaml)
 [![pub package](https://img.shields.io/pub/v/typed_data.svg)](https://pub.dev/packages/typed_data)
 [![package publisher](https://img.shields.io/pub/publisher/typed_data.svg)](https://pub.dev/packages/typed_data/publisher)
 
