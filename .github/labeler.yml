@@ -4,6 +4,10 @@
   - changed-files:
       - any-glob-to-any-file: 'pkgs/args/**'
 
+"package:crypto":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/crypto/**'
+
 "package:fixnum":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/fixnum/**'
