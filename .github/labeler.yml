@@ -4,6 +4,10 @@
   - changed-files:
       - any-glob-to-any-file: 'pkgs/args/**'
 
+"package:async":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/async/**'
+
 "package:convert":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/convert/**'
