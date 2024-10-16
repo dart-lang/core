@@ -4,6 +4,6 @@
   - changed-files:
       - any-glob-to-any-file: 'pkgs/args/**'
 
-"package-characters":
+"package:characters":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/characters/**'
