@@ -1,6 +1,7 @@
 ## 2.6.1-wip
 
 * Fix the reporitory URL in `pubspec.yaml`.
+* Added offset argument when throwing a `ArgParserException`.
 
 ## 2.6.0
 
