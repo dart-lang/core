@@ -1,6 +1,7 @@
-## 1.9.1-wip
+## 1.9.1
 
 - Require Dart 3.4
+- Move to `dart-lang/core` monorepo.
 
 ## 1.9.0
 
