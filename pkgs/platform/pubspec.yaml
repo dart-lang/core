@@ -1,6 +1,6 @@
 name: platform
 description: A pluggable, mockable platform information abstraction for Dart.
-repository: https://github.com/dart-lang/platform
+repository: https://github.com/dart-lang/core/tree/main/pkgs/platform
 issue_tracker: https://github.com/dart-lang/platform/issues
 version: 3.1.5
 
