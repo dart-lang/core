@@ -3,7 +3,7 @@ version: 3.1.2
 description: >-
   Utilities for converting between data representations.
   Provides a number of Sink, Codec, Decoder, and Encoder types.
-repository: https://github.com/dart-lang/core/main/pkgs/convert
+repository: https://github.com/dart-lang/core/tree/main/pkgs/convert
 
 environment:
   sdk: ^3.4.0

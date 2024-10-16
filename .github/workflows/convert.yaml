@@ -1,4 +1,4 @@
-name: Dart CI
+name: package:convert
 
 on:
   # Run CI on pushes to the main branch, and on PRs against main.
