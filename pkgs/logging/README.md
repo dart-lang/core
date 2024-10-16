@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/dart-lang/logging/workflows/Dart%20CI/badge.svg)](https://github.com/dart-lang/logging/actions?query=workflow%3A"Dart+CI"+branch%3Amaster)
+[![Dart CI](https://github.com/dart-lang/core/actions/workflows/logging.yaml/badge.svg)](https://github.com/dart-lang/core/actions/workflows/logging.yaml)
 [![Pub](https://img.shields.io/pub/v/logging.svg)](https://pub.dev/packages/logging)
 [![package publisher](https://img.shields.io/pub/publisher/logging.svg)](https://pub.dev/packages/logging/publisher)
 
@@ -139,8 +139,3 @@ Results in:
 [LOG2][WARNING+] LOG_02 WARNING (√√)
 [ROOT][WARNING+] LOG_02 WARNING (√√)
 ```
-
-## Publishing automation
-
-For information about our publishing automation and release process, see
-https://github.com/dart-lang/ecosystem/wiki/Publishing-automation.

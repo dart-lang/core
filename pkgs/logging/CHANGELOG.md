@@ -1,7 +1,8 @@
-## 1.3.0-wip
+## 1.3.0
 
 * Override empty stack traces for trace level events.
 * Require Dart 3.4
+* Move to `dart-lang/core` monorepo.
 
 ## 1.2.0
 
