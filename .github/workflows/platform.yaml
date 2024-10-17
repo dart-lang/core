@@ -1,4 +1,4 @@
-name: Platform Package
+name: package:platform
 
 on:
   # Run CI on pushes to the main branch, and on PRs against main.
