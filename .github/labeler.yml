@@ -39,3 +39,7 @@
 "package:platform":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/platform/**'
+
+"package:typed_data":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/typed_data/**'

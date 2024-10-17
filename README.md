@@ -18,6 +18,7 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 | [os_detect](pkgs/os_detect/) | Platform independent OS detection. | [![pub package](https://img.shields.io/pub/v/os_detect.svg)](https://pub.dev/packages/os_detect) |
 | [path](pkgs/path/) | A string-based path manipulation library for all of the path operations you know and love. | [![pub package](https://img.shields.io/pub/v/path.svg)](https://pub.dev/packages/path) |
 | [platform](pkgs/platform/) | A pluggable, mockable platform information abstraction for Dart. | [![pub package](https://img.shields.io/pub/v/platform.svg)](https://pub.dev/packages/platform) |
+| [typed_data](pkgs/typed_data/) | Utility functions and classes related to the dart:typed_data library. | [![pub package](https://img.shields.io/pub/v/typed_data.svg)](https://pub.dev/packages/typed_data) |
 
 ## Publishing automation
 
