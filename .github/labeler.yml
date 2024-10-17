@@ -35,3 +35,7 @@
 "package:path":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/path/**'
+
+"package:platform":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/platform/**'
