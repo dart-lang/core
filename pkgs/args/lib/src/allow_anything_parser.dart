@@ -36,6 +36,7 @@ class AllowAnythingParser implements ArgParser {
       bool negatable = true,
       void Function(bool)? callback,
       bool hide = false,
+      bool hideNegatedUsage = false,
       List<String> aliases = const []}) {
     throw UnsupportedError(
         "ArgParser.allowAnything().addFlag() isn't supported.");
