@@ -1,5 +1,6 @@
 ## 2.6.1-wip
 
+* Fix the reporitory URL in `pubspec.yaml`.
 * Added option `hideNegatedUsage` to `ArgParser.flag()` allowing a flag to be
   `negatable` without showing it in the usage text.
 
