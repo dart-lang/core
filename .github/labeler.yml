@@ -31,3 +31,7 @@
 "package:os_detect":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/os_detect/**'
+      
+"package:path":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/path/**'
