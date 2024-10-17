@@ -24,6 +24,22 @@
   - changed-files:
       - any-glob-to-any-file: 'pkgs/fixnum/**'
 
+"package:logging":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/logging/**'
+
+"package:os_detect":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/os_detect/**'
+      
+"package:path":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/path/**'
+
+"package:platform":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/platform/**'
+
 "package:typed_data":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/typed_data/**'
