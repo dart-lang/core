@@ -14,6 +14,7 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 | [convert](pkgs/convert/) | Utilities for converting between data representations. | [![pub package](https://img.shields.io/pub/v/convert.svg)](https://pub.dev/packages/convert) |
 | [crypto](pkgs/crypto/) | Implementations of SHA, MD5, and HMAC cryptographic functions. | [![pub package](https://img.shields.io/pub/v/crypto.svg)](https://pub.dev/packages/crypto) |
 | [fixnum](pkgs/fixnum/) | Library for 32- and 64-bit signed fixed-width integers. | [![pub package](https://img.shields.io/pub/v/fixnum.svg)](https://pub.dev/packages/fixnum) |
+| [logging](pkgs/logging/) | Provides APIs for debugging and error logging. | [![pub package](https://img.shields.io/pub/v/logging.svg)](https://pub.dev/packages/logging) |
 | [os_detect](pkgs/os_detect/) | Platform independent OS detection. | [![pub package](https://img.shields.io/pub/v/os_detect.svg)](https://pub.dev/packages/os_detect) |
 
 ## Publishing automation

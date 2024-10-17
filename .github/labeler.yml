@@ -24,6 +24,10 @@
   - changed-files:
       - any-glob-to-any-file: 'pkgs/fixnum/**'
 
+"package:logging":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/logging/**'
+
 "package:os_detect":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/os_detect/**'
