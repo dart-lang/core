@@ -9,3 +9,7 @@ The `-u` means read new files from `https://unicode.org/Public`,
 and `-o` means try to optimize table chunk sizes,
 which is most important when using new data files.
 
+When using `-u`, the update stops if the license file has changed.
+Check the differences, and decide whether to proceed, and if so
+run again adding the `--accept-license` command line argument.
+
