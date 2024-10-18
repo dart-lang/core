@@ -14,4 +14,5 @@ jobs:
     uses: dart-lang/ecosystem/.github/workflows/publish.yaml@main
     with:
       write-comments: false
+      sdk: dev
 

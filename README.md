@@ -14,6 +14,7 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 | [convert](pkgs/convert/) | Utilities for converting between data representations. | [![pub package](https://img.shields.io/pub/v/convert.svg)](https://pub.dev/packages/convert) |
 | [crypto](pkgs/crypto/) | Implementations of SHA, MD5, and HMAC cryptographic functions. | [![pub package](https://img.shields.io/pub/v/crypto.svg)](https://pub.dev/packages/crypto) |
 | [fixnum](pkgs/fixnum/) | Library for 32- and 64-bit signed fixed-width integers. | [![pub package](https://img.shields.io/pub/v/fixnum.svg)](https://pub.dev/packages/fixnum) |
+| [lints](pkgs/lints/) | Official Dart lint rules. Defines the 'core' and 'recommended' set of lints suggested by the Dart team. | [![pub package](https://img.shields.io/pub/v/lints.svg)](https://pub.dev/packages/lints) |
 | [logging](pkgs/logging/) | Provides APIs for debugging and error logging. | [![pub package](https://img.shields.io/pub/v/logging.svg)](https://pub.dev/packages/logging) |
 | [os_detect](pkgs/os_detect/) | Platform independent OS detection. | [![pub package](https://img.shields.io/pub/v/os_detect.svg)](https://pub.dev/packages/os_detect) |
 | [path](pkgs/path/) | A string-based path manipulation library for all of the path operations you know and love. | [![pub package](https://img.shields.io/pub/v/path.svg)](https://pub.dev/packages/path) |
