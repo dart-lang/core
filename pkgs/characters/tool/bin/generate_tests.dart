@@ -19,7 +19,7 @@ const defaultVerbose = false;
 const testFile = "test/src/unicode_grapheme_tests.dart";
 
 void main(List<String> args) async {
-  var flags = parseArgs(args, "gentest");
+  var flags = parseArgs(args, "generate_tests");
 
   var output = flags.dryrun
       ? null
@@ -53,6 +53,7 @@ Future<void> generateTests(File? output,
     ..writeln("// (${licenseFile.sourceLocation}, "
         "../../third_party/${licenseFile.targetLocation})")
     ..writeln("// ignore_for_file: lines_longer_than_80_chars")
+    ..writeln("// dart format off")
     ..writeln();
 
   var texts = await Future.wait([
@@ -64,15 +65,15 @@ Future<void> generateTests(File? output,
     await licenseFile.load(checkForUpdate: true);
   }
   {
-    buffer
-      ..writeln("// Grapheme cluster tests.")
-      ..writeln("const List<List<String>> splitTests = [");
+    buffer.writeln("// Grapheme cluster tests.");
+    writeTestHeader(buffer, 'splitTests');
     var test = texts[0];
-    var lineRE = RegExp(r"^(÷.*?)#", multiLine: true);
+    var lineRE = RegExp(r"^(÷.*?)#[ \t]*(.*)", multiLine: true);
     var tokensRE = RegExp(r"[÷×]|[\dA-F]+");
     var writer = StringLiteralWriter(buffer, lineLength: 9999, escape: _escape);
     for (var line in lineRE.allMatches(test)) {
-      var tokens = tokensRE.allMatches(line[0]!).map((x) => x[0]!).toList();
+      var description = line[2]!;
+      var tokens = tokensRE.allMatches(line[1]!).map((x) => x[0]!).toList();
       assert(tokens.first == "÷");
       assert(tokens.last == "÷");
 
@@ -86,38 +87,46 @@ Future<void> generateTests(File? output,
           chars = [];
         }
       }
-      buffer.write("  [");
+      buffer.write("  ([");
       for (var i = 0; i < parts.length; i++) {
         if (i > 0) buffer.write(", ");
         writer.start(0);
         parts[i].forEach(writer.add);
         writer.end();
       }
-      buffer.writeln("],");
+      buffer
+        ..write("], '")
+        ..write(description)
+        ..writeln("'),");
     }
     buffer.writeln("];");
   }
   {
-    buffer
-      ..writeln("// Emoji tests.")
-      ..writeln("const List<List<String>> emojis = [");
+    buffer.writeln("// Emoji tests.");
+    writeTestHeader(buffer, 'emojis');
     // Emojis
     var emojis = texts[1];
-    var lineRE = RegExp(r"^([ \dA-F]*?);", multiLine: true);
+    var lineRE = RegExp(r"^([ \dA-F]*?);[^#]*#[ \t]*(.*)", multiLine: true);
     var tokensRE = RegExp(r"[\dA-F]+");
     var writer = StringLiteralWriter(buffer, lineLength: 9999, escape: _escape);
     for (var line in lineRE.allMatches(emojis)) {
-      buffer.write("  [");
+      var description = line[2]!;
+      buffer.write("  ([");
       writer.start();
       for (var token in tokensRE.allMatches(line[1]!)) {
         var value = int.parse(token[0]!, radix: 16);
         writer.add(value);
       }
       writer.end();
-      buffer.writeln("],");
+      buffer
+        ..write("], '")
+        ..write(description) // No current description contains `'`.
+        ..writeln("'),");
     }
     buffer.writeln("];");
   }
+  buffer.writeln("// dart format on");
+
   if (dryrun || output == null) {
     stdout.write(buffer);
   } else {
@@ -129,3 +138,10 @@ Future<void> generateTests(File? output,
 }
 
 bool _escape(int cp) => cp > 0xff || cp & 0x60 == 0 || cp == 0x7f;
+
+void writeTestHeader(StringSink buffer, String testName) {
+  buffer
+    ..write("const List<(List<String> graphemeClusters, String description)> ")
+    ..write(testName)
+    ..writeln(" = [");
+}

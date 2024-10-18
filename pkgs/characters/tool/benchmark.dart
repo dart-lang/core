@@ -23,7 +23,9 @@ void main(List<String> args) {
       hangul +
       genesis +
       diacretics +
-      recJoin(splitTests + emojis + zalgo);
+      recJoin(splitTests.map(_fst)) +
+      recJoin(emojis.map(_fst)) +
+      recJoin(zalgo);
   var codeUnits = text.length;
   var codePoints = text.runes.length;
   for (var i = 0; i < count; i++) {
@@ -41,7 +43,7 @@ void main(List<String> args) {
   }
 }
 
-String recJoin(List<List<String>> texts) =>
+String recJoin(Iterable<List<String>> texts) =>
     texts.map((x) => x.join("")).join("\n");
 
 int benchForward(String text, int i, int cp, int cu) {
@@ -83,3 +85,5 @@ int benchBackward(String text, int i, int cp, int cu) {
       "$n rounds");
   return gc ~/ n;
 }
+
+List<String> _fst((List<String> gcs, String description) pair) => pair.$1;
