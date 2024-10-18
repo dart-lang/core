@@ -5,8 +5,8 @@ description: >-
 repository: https://github.com/dart-lang/core/tree/main/pkgs/collection
 
 topics:
- - data-structures
  - collections
+ - data-structures
 
 environment:
   sdk: ^3.4.0
