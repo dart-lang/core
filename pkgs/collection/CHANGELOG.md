@@ -1,3 +1,7 @@
+## 1.19.1
+
+- Move to `dart-lang/core` monorepo.
+
 ## 1.19.0
 
 - Adds `shuffled` to `IterableExtension`.

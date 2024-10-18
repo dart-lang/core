@@ -1,15 +1,26 @@
-name: Dart CI
+name: package:collection
 
 on:
+  # Run CI on pushes to the main branch, and on PRs against main.
   push:
-    branches: [ master ]
+    branches: [ main ]
+    paths:
+      - '.github/workflows/collection.yaml'
+      - 'pkgs/collection/**'
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
+    paths:
+      - '.github/workflows/collection.yaml'
+      - 'pkgs/collection/**'
   schedule:
     - cron: "0 0 * * 0"
 
 env:
   PUB_ENVIRONMENT: bot.github
+
+defaults:
+  run:
+    working-directory: pkgs/collection/
 
 jobs:
   # Check code formatting and static analysis on a single OS (linux)
