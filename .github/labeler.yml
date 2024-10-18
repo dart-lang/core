@@ -12,6 +12,10 @@
   - changed-files:
       - any-glob-to-any-file: 'pkgs/characters/**'
 
+"package:collection":
+  - changed-files:
+      - any-glob-to-any-file: 'pkgs/collection/**'
+
 "package:convert":
   - changed-files:
       - any-glob-to-any-file: 'pkgs/convert/**'
