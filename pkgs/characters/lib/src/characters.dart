@@ -19,7 +19,7 @@ import "characters_impl.dart";
 /// which allows iterating the independent characters in both directions,
 /// but which also provides ways to select other ranges of characters
 /// in different ways.
-abstract interface class Characters implements Iterable<String> {
+abstract class Characters implements Iterable<String> {
   /// An empty [Characters] containing no characters.
   static const Characters empty = StringCharacters("");
 
