@@ -9,7 +9,7 @@ import "dart:typed_data";
 /// Contains a number, one or more, of chunks,
 /// and a list of entries which point to entire chunks or parts of chunks.
 ///
-/// The entries represent sequnences of values.
+/// The entries represent sequences of values.
 /// Each such sequence is stored in one of the chunks.
 ///
 /// The main goal of these tools are to go from an initial complete
