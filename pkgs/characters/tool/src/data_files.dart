@@ -27,6 +27,10 @@ final emojiTestData = DataFile(
 final licenseFile = DataFile("https://www.unicode.org/license.txt",
     "third_party/Unicode_Consortium/UNICODE_LICENSE.txt");
 
+final derivedData = DataFile(
+    "https://unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt",
+    "third_party/Unicode_Consortium/DerivedCoreProperties.txt");
+
 class DataFile {
   /// Source URI.
   final String sourceLocation;

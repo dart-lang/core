@@ -8,4366 +8,1103 @@
 // Licensed under the Unicode Inc. License Agreement
 // (https://www.unicode.org/license.txt, ../../third_party/third_party/Unicode_Consortium/UNICODE_LICENSE.txt)
 // ignore_for_file: lines_longer_than_80_chars
+// dart format off
 
 // Grapheme cluster tests.
 const List<(List<String> graphemeClusters, String description)> splitTests = [
   ([' ', ' '], '÷ [0.2] SPACE (Other) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
-  (
-    [' \u0308', ' '],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    [' ', '\r'],
-    '÷ [0.2] SPACE (Other) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\r'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
+  ([' \u0308', ' '], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  ([' ', '\r'], '÷ [0.2] SPACE (Other) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  ([' \u0308', '\r'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
   ([' ', '\n'], '÷ [0.2] SPACE (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
-  (
-    [' \u0308', '\n'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    [' ', '\x01'],
-    '÷ [0.2] SPACE (Other) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\x01'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    [' \u200c'],
-    '÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    [' \u0308\u200c'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u{1f1e6}'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u{1f1e6}'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u0600'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u0600'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    [' \u0a03'],
-    '÷ [0.2] SPACE (Other) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    [' \u0308\u0a03'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u1100'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u1100'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u1160'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u1160'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u11a8'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u11a8'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    [' ', '\uac00'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\uac00'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    [' ', '\uac01'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\uac01'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    [' \u0903'],
-    '÷ [0.2] SPACE (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    [' \u0308\u0903'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u0904'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u0904'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u0d4e'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u0d4e'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u0915'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u0915'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
+  ([' \u0308', '\n'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  ([' ', '\x01'], '÷ [0.2] SPACE (Other) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  ([' \u0308', '\x01'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  ([' \u200c'], '÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  ([' \u0308\u200c'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  ([' ', '\u{1f1e6}'], '÷ [0.2] SPACE (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  ([' \u0308', '\u{1f1e6}'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  ([' ', '\u0600'], '÷ [0.2] SPACE (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  ([' \u0308', '\u0600'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  ([' \u0a03'], '÷ [0.2] SPACE (Other) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  ([' \u0308\u0a03'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  ([' ', '\u1100'], '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  ([' \u0308', '\u1100'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  ([' ', '\u1160'], '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  ([' \u0308', '\u1160'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  ([' ', '\u11a8'], '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  ([' \u0308', '\u11a8'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  ([' ', '\uac00'], '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  ([' \u0308', '\uac00'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  ([' ', '\uac01'], '÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  ([' \u0308', '\uac01'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  ([' \u0903'], '÷ [0.2] SPACE (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  ([' \u0308\u0903'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  ([' ', '\u0904'], '÷ [0.2] SPACE (Other) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  ([' \u0308', '\u0904'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  ([' ', '\u0d4e'], '÷ [0.2] SPACE (Other) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  ([' \u0308', '\u0d4e'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  ([' ', '\u0915'], '÷ [0.2] SPACE (Other) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  ([' \u0308', '\u0915'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
   ([' ', '\u231a'], '÷ [0.2] SPACE (Other) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
-  (
-    [' \u0308', '\u231a'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    [' \u0300'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u0308\u0300'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u0900'],
-    '÷ [0.2] SPACE (Other) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u0308\u0900'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u094d'],
-    '÷ [0.2] SPACE (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u0308\u094d'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u200d'],
-    '÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u0308\u200d'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' ', '\u0378'],
-    '÷ [0.2] SPACE (Other) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    [' \u0308', '\u0378'],
-    '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\r', ' '],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', ' '],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\r'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\r'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\r\n'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) × [3.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\n'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\x01'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\x01'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u200c'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308\u200c'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u{1f1e6}'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u{1f1e6}'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0600'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u0600'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0a03'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308\u0a03'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u1100'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u1100'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u1160'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u1160'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u11a8'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u11a8'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\uac00'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\uac00'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\uac01'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\uac01'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0903'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308\u0903'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0904'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u0904'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0d4e'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u0d4e'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0915'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u0915'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u231a'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u231a'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0300'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308\u0300'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0900'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308\u0900'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u094d'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308\u094d'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u200d'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308\u200d'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0378'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\r', '\u0308', '\u0378'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
+  ([' \u0308', '\u231a'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  ([' \u0300'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  ([' \u0308\u0300'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  ([' \u0900'], '÷ [0.2] SPACE (Other) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  ([' \u0308\u0900'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  ([' \u094d'], '÷ [0.2] SPACE (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  ([' \u0308\u094d'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  ([' \u200d'], '÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  ([' \u0308\u200d'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  ([' ', '\u0378'], '÷ [0.2] SPACE (Other) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  ([' \u0308', '\u0378'], '÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\r', ' '], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] SPACE (Other) ÷ [0.3]'),
+  (['\r', '\u0308', ' '], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\r', '\r'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\r', '\u0308', '\r'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\r\n'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) × [3.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\r', '\u0308', '\n'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\r', '\x01'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\r', '\u0308', '\x01'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\r', '\u200c'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\r', '\u0308\u200c'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\r', '\u{1f1e6}'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\r', '\u0308', '\u{1f1e6}'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\r', '\u0600'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\r', '\u0308', '\u0600'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\r', '\u0a03'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\r', '\u0308\u0a03'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\r', '\u1100'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\r', '\u0308', '\u1100'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\r', '\u1160'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\r', '\u0308', '\u1160'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\r', '\u11a8'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\r', '\u0308', '\u11a8'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\r', '\uac00'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\r', '\u0308', '\uac00'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\r', '\uac01'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\r', '\u0308', '\uac01'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\r', '\u0903'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\r', '\u0308\u0903'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\r', '\u0904'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\r', '\u0308', '\u0904'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\r', '\u0d4e'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\r', '\u0308', '\u0d4e'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\r', '\u0915'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\r', '\u0308', '\u0915'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\r', '\u231a'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\r', '\u0308', '\u231a'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\r', '\u0300'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u0308\u0300'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u0900'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u0308\u0900'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u094d'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u0308\u094d'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u200d'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u0308\u200d'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\r', '\u0378'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\r', '\u0308', '\u0378'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
   (['\n', ' '], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] SPACE (Other) ÷ [0.3]'),
-  (
-    ['\n', '\u0308', ' '],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\r'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\r'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\n'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\n'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\x01'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\x01'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u200c'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308\u200c'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u{1f1e6}'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u{1f1e6}'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0600'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u0600'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0a03'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308\u0a03'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u1100'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u1100'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u1160'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u1160'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u11a8'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u11a8'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\uac00'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\uac00'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\uac01'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\uac01'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0903'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308\u0903'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0904'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u0904'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0d4e'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u0d4e'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0915'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u0915'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u231a'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u231a'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0300'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308\u0300'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0900'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308\u0900'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u094d'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308\u094d'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u200d'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308\u200d'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0378'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\n', '\u0308', '\u0378'],
-    '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\x01', ' '],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', ' '],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\r'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\r'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\n'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\n'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\x01'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\x01'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u200c'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308\u200c'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u{1f1e6}'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u{1f1e6}'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0600'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u0600'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0a03'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308\u0a03'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u1100'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u1100'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u1160'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u1160'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u11a8'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u11a8'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\uac00'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\uac00'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\uac01'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\uac01'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0903'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308\u0903'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0904'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u0904'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0d4e'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u0d4e'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0915'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u0915'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u231a'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u231a'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0300'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308\u0300'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0900'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308\u0900'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u094d'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308\u094d'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u200d'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308\u200d'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0378'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\x01', '\u0308', '\u0378'],
-    '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', ' '],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', ' '],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\r'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\r'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\n'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\n'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\x01'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\x01'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u200c'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308\u200c'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u{1f1e6}'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u{1f1e6}'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u0600'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u0600'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0a03'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308\u0a03'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u1100'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u1100'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u1160'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u1160'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u11a8'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u11a8'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\uac00'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\uac00'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\uac01'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\uac01'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0903'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308\u0903'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u0904'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u0904'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u0d4e'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u0d4e'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u0915'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u0915'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u231a'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u231a'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0300'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308\u0300'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0900'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308\u0900'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u094d'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308\u094d'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u200d'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308\u200d'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200c', '\u0378'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200c\u0308', '\u0378'],
-    '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', ' '],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', ' '],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\r'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\r'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\n'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\n'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\x01'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\x01'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u200c'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308\u200c'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u{1f1e6}'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [12.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u{1f1e6}'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u0600'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u0600'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0a03'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308\u0a03'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u1100'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u1100'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u1160'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u1160'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u11a8'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u11a8'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\uac00'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\uac00'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\uac01'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\uac01'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0903'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308\u0903'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u0904'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u0904'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u0d4e'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u0d4e'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u0915'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u0915'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u231a'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u231a'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0300'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308\u0300'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0900'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308\u0900'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u094d'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308\u094d'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u200d'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308\u200d'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}', '\u0378'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u0308', '\u0378'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0600 '],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', ' '],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0600', '\r'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\r'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0600', '\n'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\n'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0600', '\x01'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\x01'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u200c'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308\u200c'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u{1f1e6}'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u{1f1e6}'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0600'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u0600'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0a03'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308\u0a03'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u1100'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u1100'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u1160'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u1160'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u11a8'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u11a8'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\uac00'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\uac00'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\uac01'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\uac01'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0903'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308\u0903'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0904'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u0904'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0d4e'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u0d4e'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0915'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u0915'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u231a'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u231a'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0300'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308\u0300'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0900'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308\u0900'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u094d'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308\u094d'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u200d'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308\u200d'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0378'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0600\u0308', '\u0378'],
-    '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', ' '],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', ' '],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\r'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\r'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\n'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\n'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\x01'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\x01'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u200c'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308\u200c'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u{1f1e6}'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u{1f1e6}'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u0600'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u0600'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0a03'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308\u0a03'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u1100'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u1100'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u1160'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u1160'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u11a8'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u11a8'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\uac00'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\uac00'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\uac01'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\uac01'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0903'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308\u0903'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u0904'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u0904'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u0d4e'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u0d4e'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u0915'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u0915'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u231a'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u231a'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0300'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308\u0300'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0900'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308\u0900'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u094d'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308\u094d'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u200d'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308\u200d'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03', '\u0378'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0a03\u0308', '\u0378'],
-    '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', ' '],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', ' '],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\r'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\r'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\n'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\n'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\x01'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\x01'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u200c'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308\u200c'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u0600'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u0600'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0a03'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308\u0a03'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u1100'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u1100'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u1160'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u1160'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u11a8'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u11a8'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\uac00'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\uac00'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\uac01'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\uac01'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0903'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308\u0903'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u0904'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u0904'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u0d4e'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u0d4e'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u0915'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u0915'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u231a'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u231a'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0300'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308\u0300'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0900'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308\u0900'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u094d'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308\u094d'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u200d'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308\u200d'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1100', '\u0378'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u0308', '\u0378'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', ' '],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', ' '],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\r'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\r'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\n'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\n'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\x01'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\x01'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u200c'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308\u200c'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u0600'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u0600'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0a03'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308\u0a03'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u1100'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u1100'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u1160'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [7.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u1160'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u11a8'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u11a8'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\uac00'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\uac00'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\uac01'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\uac01'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0903'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308\u0903'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u0904'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u0904'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u0d4e'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u0d4e'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u0915'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u0915'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u231a'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u231a'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0300'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308\u0300'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0900'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308\u0900'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u094d'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308\u094d'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u200d'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308\u200d'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u1160', '\u0378'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1160\u0308', '\u0378'],
-    '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', ' '],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', ' '],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\r'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\r'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\n'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\n'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\x01'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\x01'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u200c'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308\u200c'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u0600'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u0600'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0a03'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308\u0a03'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u1100'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u1100'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u1160'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u1160'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u11a8'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u11a8'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\uac00'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\uac00'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\uac01'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\uac01'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0903'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308\u0903'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u0904'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u0904'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u0d4e'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u0d4e'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u0915'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u0915'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u231a'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u231a'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0300'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308\u0300'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0900'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308\u0900'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u094d'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308\u094d'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u200d'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308\u200d'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8', '\u0378'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u11a8\u0308', '\u0378'],
-    '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', ' '],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', ' '],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\r'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\r'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\n'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\n'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\x01'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\x01'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u200c'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308\u200c'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u0600'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u0600'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0a03'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308\u0a03'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u1100'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u1100'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u1160'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u1160'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u11a8'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u11a8'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\uac00'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\uac00'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\uac01'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\uac01'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0903'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308\u0903'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u0904'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u0904'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u0d4e'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u0d4e'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u0915'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u0915'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u231a'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u231a'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0300'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308\u0300'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0900'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308\u0900'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u094d'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308\u094d'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u200d'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308\u200d'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac00', '\u0378'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u0308', '\u0378'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', ' '],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', ' '],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\r'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\r'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\n'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\n'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\x01'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\x01'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u200c'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308\u200c'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u{1f1e6}'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u0600'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u0600'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0a03'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308\u0a03'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u1100'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u1100'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u1160'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u1160'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u11a8'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u11a8'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\uac00'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\uac00'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\uac01'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\uac01'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0903'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308\u0903'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u0904'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u0904'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u0d4e'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u0d4e'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u0915'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u0915'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u231a'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u231a'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0300'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308\u0300'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0900'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308\u0900'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u094d'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308\u094d'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u200d'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308\u200d'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\uac01', '\u0378'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u0308', '\u0378'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', ' '],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', ' '],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\r'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\r'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\n'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\n'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\x01'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\x01'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u200c'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308\u200c'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u0600'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u0600'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0a03'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308\u0a03'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u1100'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u1100'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u1160'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u1160'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u11a8'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u11a8'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\uac00'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\uac00'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\uac01'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\uac01'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0903'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308\u0903'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u0904'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u0904'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u0915'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u0915'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u231a'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u231a'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0300'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308\u0300'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0900'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308\u0900'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u094d'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308\u094d'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u200d'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308\u200d'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0903', '\u0378'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0903\u0308', '\u0378'],
-    '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', ' '],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', ' '],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\r'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\r'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\n'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\n'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\x01'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\x01'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u200c'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308\u200c'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u0600'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u0600'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0a03'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308\u0a03'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u1100'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u1100'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u1160'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u1160'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u11a8'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u11a8'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\uac00'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\uac00'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\uac01'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\uac01'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0903'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308\u0903'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u0904'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u0904'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u0915'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u0915'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u231a'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u231a'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0300'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308\u0300'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0900'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308\u0900'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u094d'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308\u094d'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u200d'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308\u200d'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0904', '\u0378'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0904\u0308', '\u0378'],
-    '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e '],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', ' '],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e', '\r'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\r'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e', '\n'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\n'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e', '\x01'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\x01'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u200c'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308\u200c'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u{1f1e6}'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u{1f1e6}'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0600'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u0600'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0a03'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308\u0a03'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u1100'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u1100'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u1160'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u1160'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u11a8'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u11a8'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\uac00'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\uac00'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\uac01'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\uac01'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0903'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308\u0903'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0904'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u0904'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0d4e'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u0d4e'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0915'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u0915'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u231a'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u231a'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0300'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308\u0300'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0900'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308\u0900'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u094d'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308\u094d'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u200d'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308\u200d'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0378'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0d4e\u0308', '\u0378'],
-    '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', ' '],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', ' '],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\r'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\r'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\n'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\n'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\x01'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\x01'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u200c'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308\u200c'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u0600'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u0600'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0a03'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308\u0a03'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u1100'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u1100'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u1160'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u1160'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u11a8'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u11a8'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\uac00'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\uac00'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\uac01'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\uac01'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0903'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308\u0903'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u0904'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u0904'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u0915'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u0915'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u231a'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u231a'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0300'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308\u0300'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0900'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308\u0900'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u094d'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308\u094d'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u200d'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308\u200d'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u0378'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u0308', '\u0378'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
+  (['\n', '\u0308', ' '], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\n', '\r'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\n', '\u0308', '\r'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\n', '\n'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\n', '\u0308', '\n'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\n', '\x01'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\n', '\u0308', '\x01'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\n', '\u200c'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\n', '\u0308\u200c'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\n', '\u{1f1e6}'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\n', '\u0308', '\u{1f1e6}'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\n', '\u0600'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\n', '\u0308', '\u0600'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\n', '\u0a03'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\n', '\u0308\u0a03'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\n', '\u1100'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\n', '\u0308', '\u1100'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\n', '\u1160'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\n', '\u0308', '\u1160'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\n', '\u11a8'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\n', '\u0308', '\u11a8'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\n', '\uac00'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\n', '\u0308', '\uac00'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\n', '\uac01'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\n', '\u0308', '\uac01'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\n', '\u0903'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\n', '\u0308\u0903'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\n', '\u0904'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\n', '\u0308', '\u0904'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\n', '\u0d4e'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\n', '\u0308', '\u0d4e'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\n', '\u0915'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\n', '\u0308', '\u0915'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\n', '\u231a'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\n', '\u0308', '\u231a'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\n', '\u0300'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u0308\u0300'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u0900'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u0308\u0900'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u094d'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u0308\u094d'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u200d'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u0308\u200d'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\n', '\u0378'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\n', '\u0308', '\u0378'], '÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\x01', ' '], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] SPACE (Other) ÷ [0.3]'),
+  (['\x01', '\u0308', ' '], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\x01', '\r'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\x01', '\u0308', '\r'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\x01', '\n'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\x01', '\u0308', '\n'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\x01', '\x01'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\x01', '\u0308', '\x01'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\x01', '\u200c'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\x01', '\u0308\u200c'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\x01', '\u{1f1e6}'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u{1f1e6}'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\x01', '\u0600'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u0600'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\x01', '\u0a03'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\x01', '\u0308\u0a03'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\x01', '\u1100'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u1100'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\x01', '\u1160'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u1160'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\x01', '\u11a8'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u11a8'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\x01', '\uac00'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\x01', '\u0308', '\uac00'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\x01', '\uac01'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\x01', '\u0308', '\uac01'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\x01', '\u0903'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\x01', '\u0308\u0903'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\x01', '\u0904'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u0904'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\x01', '\u0d4e'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u0d4e'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\x01', '\u0915'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u0915'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\x01', '\u231a'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u231a'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\x01', '\u0300'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u0308\u0300'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u0900'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u0308\u0900'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u094d'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u0308\u094d'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u200d'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u0308\u200d'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\x01', '\u0378'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\x01', '\u0308', '\u0378'], '÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u200c', ' '], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u200c\u0308', ' '], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u200c', '\r'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u200c\u0308', '\r'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u200c', '\n'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u200c\u0308', '\n'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u200c', '\x01'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u200c\u0308', '\x01'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u200c\u200c'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u200c\u0308\u200c'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u200c', '\u{1f1e6}'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u200c\u0308', '\u{1f1e6}'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u200c', '\u0600'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u200c\u0308', '\u0600'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u200c\u0a03'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u200c\u0308\u0a03'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u200c', '\u1100'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u200c\u0308', '\u1100'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u200c', '\u1160'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u200c\u0308', '\u1160'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u200c', '\u11a8'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u200c\u0308', '\u11a8'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u200c', '\uac00'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u200c\u0308', '\uac00'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u200c', '\uac01'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u200c\u0308', '\uac01'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u200c\u0903'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200c\u0308\u0903'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200c', '\u0904'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200c\u0308', '\u0904'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200c', '\u0d4e'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200c\u0308', '\u0d4e'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200c', '\u0915'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u200c\u0308', '\u0915'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u200c', '\u231a'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u200c\u0308', '\u231a'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u200c\u0300'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c\u0308\u0300'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c\u0900'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c\u0308\u0900'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c\u094d'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c\u0308\u094d'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c\u200d'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c\u0308\u200d'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u200c', '\u0378'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u200c\u0308', '\u0378'], '÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u{1f1e6}', ' '], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', ' '], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u{1f1e6}', '\r'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\r'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u{1f1e6}', '\n'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\n'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u{1f1e6}', '\x01'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\x01'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u{1f1e6}\u200c'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308\u200c'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u{1f1e6}\u{1f1e6}'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [12.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u{1f1e6}'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u0600'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u0600'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u{1f1e6}\u0a03'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308\u0a03'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u1100'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u1100'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u1160'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u1160'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u11a8'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u11a8'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u{1f1e6}', '\uac00'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\uac00'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u{1f1e6}', '\uac01'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\uac01'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u{1f1e6}\u0903'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308\u0903'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u0904'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u0904'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u0d4e'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u0d4e'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u0915'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u0915'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u231a'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u231a'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u{1f1e6}\u0300'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308\u0300'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}\u0900'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308\u0900'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}\u094d'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308\u094d'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}\u200d'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308\u200d'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f1e6}', '\u0378'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u{1f1e6}\u0308', '\u0378'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0600 '], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] SPACE (Other) ÷ [0.3]'),
+  (['\u0600\u0308', ' '], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0600', '\r'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0600\u0308', '\r'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0600', '\n'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0600\u0308', '\n'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0600', '\x01'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0600\u0308', '\x01'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0600\u200c'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0600\u0308\u200c'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0600\u{1f1e6}'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0600\u0308', '\u{1f1e6}'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0600\u0600'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0600\u0308', '\u0600'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0600\u0a03'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0600\u0308\u0a03'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0600\u1100'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0600\u0308', '\u1100'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0600\u1160'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0600\u0308', '\u1160'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0600\u11a8'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0600\u0308', '\u11a8'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0600\uac00'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0600\u0308', '\uac00'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0600\uac01'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0600\u0308', '\uac01'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0600\u0903'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0600\u0308\u0903'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0600\u0904'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0600\u0308', '\u0904'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0600\u0d4e'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0600\u0308', '\u0d4e'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0600\u0915'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0600\u0308', '\u0915'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0600\u231a'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0600\u0308', '\u231a'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0600\u0300'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u0308\u0300'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u0900'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u0308\u0900'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u094d'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u0308\u094d'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u200d'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u0308\u200d'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0600\u0378'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0600\u0308', '\u0378'], '÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0a03', ' '], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0a03\u0308', ' '], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0a03', '\r'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0a03\u0308', '\r'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0a03', '\n'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0a03\u0308', '\n'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0a03', '\x01'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0a03\u0308', '\x01'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0a03\u200c'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0a03\u0308\u200c'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0a03', '\u{1f1e6}'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u{1f1e6}'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0a03', '\u0600'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u0600'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0a03\u0a03'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0a03\u0308\u0a03'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0a03', '\u1100'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u1100'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0a03', '\u1160'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u1160'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0a03', '\u11a8'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u11a8'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0a03', '\uac00'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0a03\u0308', '\uac00'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0a03', '\uac01'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0a03\u0308', '\uac01'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0a03\u0903'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0a03\u0308\u0903'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0a03', '\u0904'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u0904'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0a03', '\u0d4e'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u0d4e'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0a03', '\u0915'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u0915'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0a03', '\u231a'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u231a'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0a03\u0300'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03\u0308\u0300'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03\u0900'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03\u0308\u0900'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03\u094d'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03\u0308\u094d'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03\u200d'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03\u0308\u200d'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0a03', '\u0378'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0a03\u0308', '\u0378'], '÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u1100', ' '], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u1100\u0308', ' '], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u1100', '\r'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u1100\u0308', '\r'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u1100', '\n'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u1100\u0308', '\n'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u1100', '\x01'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u1100\u0308', '\x01'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u1100\u200c'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u1100\u0308\u200c'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u1100', '\u{1f1e6}'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u1100\u0308', '\u{1f1e6}'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u1100', '\u0600'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u1100\u0308', '\u0600'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u1100\u0a03'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u1100\u0308\u0a03'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u1100\u1100'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u1100\u0308', '\u1100'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u1100\u1160'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u1100\u0308', '\u1160'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u1100', '\u11a8'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u1100\u0308', '\u11a8'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u1100\uac00'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u1100\u0308', '\uac00'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u1100\uac01'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u1100\u0308', '\uac01'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u1100\u0903'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1100\u0308\u0903'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1100', '\u0904'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1100\u0308', '\u0904'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1100', '\u0d4e'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1100\u0308', '\u0d4e'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1100', '\u0915'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u1100\u0308', '\u0915'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u1100', '\u231a'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u1100\u0308', '\u231a'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u1100\u0300'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100\u0308\u0300'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100\u0900'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100\u0308\u0900'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100\u094d'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100\u0308\u094d'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100\u200d'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100\u0308\u200d'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u1100', '\u0378'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u1100\u0308', '\u0378'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u1160', ' '], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u1160\u0308', ' '], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u1160', '\r'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u1160\u0308', '\r'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u1160', '\n'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u1160\u0308', '\n'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u1160', '\x01'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u1160\u0308', '\x01'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u1160\u200c'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u1160\u0308\u200c'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u1160', '\u{1f1e6}'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u1160\u0308', '\u{1f1e6}'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u1160', '\u0600'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u1160\u0308', '\u0600'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u1160\u0a03'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u1160\u0308\u0a03'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u1160', '\u1100'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u1160\u0308', '\u1100'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u1160\u1160'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [7.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u1160\u0308', '\u1160'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u1160\u11a8'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u1160\u0308', '\u11a8'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u1160', '\uac00'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u1160\u0308', '\uac00'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u1160', '\uac01'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u1160\u0308', '\uac01'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u1160\u0903'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1160\u0308\u0903'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1160', '\u0904'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1160\u0308', '\u0904'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1160', '\u0d4e'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1160\u0308', '\u0d4e'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u1160', '\u0915'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u1160\u0308', '\u0915'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u1160', '\u231a'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u1160\u0308', '\u231a'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u1160\u0300'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160\u0308\u0300'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160\u0900'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160\u0308\u0900'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160\u094d'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160\u0308\u094d'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160\u200d'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160\u0308\u200d'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u1160', '\u0378'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u1160\u0308', '\u0378'], '÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u11a8', ' '], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u11a8\u0308', ' '], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u11a8', '\r'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u11a8\u0308', '\r'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u11a8', '\n'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u11a8\u0308', '\n'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u11a8', '\x01'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u11a8\u0308', '\x01'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u11a8\u200c'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u11a8\u0308\u200c'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u11a8', '\u{1f1e6}'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u{1f1e6}'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u11a8', '\u0600'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u0600'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u11a8\u0a03'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u11a8\u0308\u0a03'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u11a8', '\u1100'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u1100'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u11a8', '\u1160'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u1160'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u11a8\u11a8'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u11a8'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u11a8', '\uac00'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u11a8\u0308', '\uac00'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u11a8', '\uac01'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u11a8\u0308', '\uac01'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u11a8\u0903'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u11a8\u0308\u0903'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u11a8', '\u0904'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u0904'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u11a8', '\u0d4e'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u0d4e'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u11a8', '\u0915'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u0915'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u11a8', '\u231a'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u231a'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u11a8\u0300'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8\u0308\u0300'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8\u0900'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8\u0308\u0900'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8\u094d'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8\u0308\u094d'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8\u200d'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8\u0308\u200d'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u11a8', '\u0378'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u11a8\u0308', '\u0378'], '÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\uac00', ' '], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\uac00\u0308', ' '], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\uac00', '\r'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\uac00\u0308', '\r'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\uac00', '\n'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\uac00\u0308', '\n'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\uac00', '\x01'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\uac00\u0308', '\x01'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\uac00\u200c'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\uac00\u0308\u200c'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\uac00', '\u{1f1e6}'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\uac00\u0308', '\u{1f1e6}'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\uac00', '\u0600'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\uac00\u0308', '\u0600'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\uac00\u0a03'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\uac00\u0308\u0a03'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\uac00', '\u1100'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\uac00\u0308', '\u1100'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\uac00\u1160'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\uac00\u0308', '\u1160'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\uac00\u11a8'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\uac00\u0308', '\u11a8'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\uac00', '\uac00'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\uac00\u0308', '\uac00'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\uac00', '\uac01'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\uac00\u0308', '\uac01'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\uac00\u0903'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac00\u0308\u0903'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac00', '\u0904'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac00\u0308', '\u0904'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac00', '\u0d4e'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac00\u0308', '\u0d4e'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac00', '\u0915'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\uac00\u0308', '\u0915'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\uac00', '\u231a'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\uac00\u0308', '\u231a'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\uac00\u0300'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00\u0308\u0300'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00\u0900'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00\u0308\u0900'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00\u094d'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00\u0308\u094d'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00\u200d'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00\u0308\u200d'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\uac00', '\u0378'], '÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\uac00\u0308', '\u0378'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\uac01', ' '], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\uac01\u0308', ' '], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\uac01', '\r'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\uac01\u0308', '\r'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\uac01', '\n'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\uac01\u0308', '\n'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\uac01', '\x01'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\uac01\u0308', '\x01'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\uac01\u200c'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\uac01\u0308\u200c'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\uac01', '\u{1f1e6}'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\uac01\u0308', '\u{1f1e6}'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\uac01', '\u0600'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\uac01\u0308', '\u0600'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\uac01\u0a03'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\uac01\u0308\u0a03'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\uac01', '\u1100'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\uac01\u0308', '\u1100'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\uac01', '\u1160'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\uac01\u0308', '\u1160'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\uac01\u11a8'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\uac01\u0308', '\u11a8'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\uac01', '\uac00'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\uac01\u0308', '\uac00'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\uac01', '\uac01'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\uac01\u0308', '\uac01'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\uac01\u0903'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac01\u0308\u0903'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac01', '\u0904'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac01\u0308', '\u0904'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac01', '\u0d4e'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac01\u0308', '\u0d4e'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\uac01', '\u0915'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\uac01\u0308', '\u0915'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\uac01', '\u231a'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\uac01\u0308', '\u231a'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\uac01\u0300'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01\u0308\u0300'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01\u0900'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01\u0308\u0900'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01\u094d'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01\u0308\u094d'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01\u200d'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01\u0308\u200d'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\uac01', '\u0378'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\uac01\u0308', '\u0378'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0903', ' '], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0903\u0308', ' '], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0903', '\r'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0903\u0308', '\r'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0903', '\n'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0903\u0308', '\n'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0903', '\x01'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0903\u0308', '\x01'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0903\u200c'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0903\u0308\u200c'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0903', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0903\u0308', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0903', '\u0600'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0903\u0308', '\u0600'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0903\u0a03'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0903\u0308\u0a03'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0903', '\u1100'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0903\u0308', '\u1100'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0903', '\u1160'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0903\u0308', '\u1160'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0903', '\u11a8'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0903\u0308', '\u11a8'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0903', '\uac00'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0903\u0308', '\uac00'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0903', '\uac01'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0903\u0308', '\uac01'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0903\u0903'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0903\u0308\u0903'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0903', '\u0904'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0903\u0308', '\u0904'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0903', '\u0d4e'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0903\u0308', '\u0d4e'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0903', '\u0915'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0903\u0308', '\u0915'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0903', '\u231a'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0903\u0308', '\u231a'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0903\u0300'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903\u0308\u0300'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903\u0900'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903\u0308\u0900'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903\u094d'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903\u0308\u094d'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903\u200d'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903\u0308\u200d'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0903', '\u0378'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0903\u0308', '\u0378'], '÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0904', ' '], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0904\u0308', ' '], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0904', '\r'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0904\u0308', '\r'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0904', '\n'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0904\u0308', '\n'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0904', '\x01'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0904\u0308', '\x01'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0904\u200c'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0904\u0308\u200c'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0904', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0904\u0308', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0904', '\u0600'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0904\u0308', '\u0600'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0904\u0a03'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0904\u0308\u0a03'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0904', '\u1100'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0904\u0308', '\u1100'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0904', '\u1160'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0904\u0308', '\u1160'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0904', '\u11a8'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0904\u0308', '\u11a8'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0904', '\uac00'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0904\u0308', '\uac00'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0904', '\uac01'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0904\u0308', '\uac01'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0904\u0903'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0904\u0308\u0903'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0904', '\u0904'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0904\u0308', '\u0904'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0904', '\u0d4e'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0904\u0308', '\u0d4e'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0904', '\u0915'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0904\u0308', '\u0915'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0904', '\u231a'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0904\u0308', '\u231a'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0904\u0300'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904\u0308\u0300'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904\u0900'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904\u0308\u0900'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904\u094d'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904\u0308\u094d'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904\u200d'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904\u0308\u200d'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0904', '\u0378'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0904\u0308', '\u0378'], '÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0d4e '], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] SPACE (Other) ÷ [0.3]'),
+  (['\u0d4e\u0308', ' '], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0d4e', '\r'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\r'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0d4e', '\n'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\n'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0d4e', '\x01'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\x01'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0d4e\u200c'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0d4e\u0308\u200c'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0d4e\u{1f1e6}'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u{1f1e6}'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0d4e\u0600'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u0600'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0d4e\u0a03'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0d4e\u0308\u0a03'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0d4e\u1100'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u1100'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0d4e\u1160'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u1160'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0d4e\u11a8'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u11a8'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0d4e\uac00'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\uac00'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0d4e\uac01'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\uac01'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0d4e\u0903'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0d4e\u0308\u0903'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0d4e\u0904'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u0904'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0d4e\u0d4e'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u0d4e'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0d4e\u0915'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u0915'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0d4e\u231a'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u231a'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0d4e\u0300'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u0308\u0300'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u0900'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u0308\u0900'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u094d'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u0308\u094d'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u200d'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u0308\u200d'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0d4e\u0378'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0d4e\u0308', '\u0378'], '÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0915', ' '], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0915\u0308', ' '], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0915', '\r'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0915\u0308', '\r'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0915', '\n'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0915\u0308', '\n'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0915', '\x01'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0915\u0308', '\x01'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0915\u200c'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0915\u0308\u200c'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0915', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0915\u0308', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0915', '\u0600'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0915\u0308', '\u0600'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0915\u0a03'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0915\u0308\u0a03'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0915', '\u1100'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0915\u0308', '\u1100'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0915', '\u1160'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0915\u0308', '\u1160'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0915', '\u11a8'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0915\u0308', '\u11a8'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0915', '\uac00'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0915\u0308', '\uac00'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0915', '\uac01'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0915\u0308', '\uac01'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0915\u0903'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0915\u0308\u0903'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0915', '\u0904'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0915\u0308', '\u0904'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0915', '\u0d4e'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0915\u0308', '\u0d4e'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0915', '\u0915'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u0308', '\u0915'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915', '\u231a'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0915\u0308', '\u231a'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0915\u0300'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915\u0308\u0300'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915\u0900'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915\u0308\u0900'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915\u094d'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915\u0308\u094d'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915\u200d'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915\u0308\u200d'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0915', '\u0378'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0915\u0308', '\u0378'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
   (['\u231a', ' '], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
-  (
-    ['\u231a\u0308', ' '],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\r'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\r'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\n'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\n'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\x01'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\x01'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u200c'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308\u200c'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u{1f1e6}'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u{1f1e6}'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u0600'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u0600'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0a03'],
-    '÷ [0.2] WATCH (ExtPict) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308\u0a03'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u1100'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u1100'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u1160'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u1160'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u11a8'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u11a8'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\uac00'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\uac00'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\uac01'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\uac01'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0903'],
-    '÷ [0.2] WATCH (ExtPict) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308\u0903'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u0904'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u0904'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u0d4e'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u0d4e'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u0915'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u0915'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u231a'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u231a'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0300'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308\u0300'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0900'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308\u0900'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u094d'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308\u094d'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u200d'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308\u200d'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u231a', '\u0378'],
-    '÷ [0.2] WATCH (ExtPict) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u231a\u0308', '\u0378'],
-    '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', ' '],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', ' '],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\r'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\r'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\n'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\n'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\x01'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\x01'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u200c'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308\u200c'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u{1f1e6}'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u{1f1e6}'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u0600'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u0600'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0a03'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308\u0a03'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u1100'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u1100'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u1160'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u1160'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u11a8'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u11a8'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\uac00'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\uac00'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\uac01'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\uac01'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0903'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308\u0903'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u0904'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u0904'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u0d4e'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u0d4e'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u0915'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u0915'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u231a'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u231a'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0300'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308\u0300'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0900'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308\u0900'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u094d'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308\u094d'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u200d'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308\u200d'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0300', '\u0378'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0300\u0308', '\u0378'],
-    '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', ' '],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', ' '],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\r'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\r'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\n'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\n'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\x01'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\x01'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u200c'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308\u200c'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u0600'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u0600'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0a03'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308\u0a03'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u1100'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u1100'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u1160'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u1160'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u11a8'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u11a8'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\uac00'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\uac00'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\uac01'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\uac01'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0903'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308\u0903'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u0904'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u0904'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u0915'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u0915'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u231a'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u231a'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0300'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308\u0300'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0900'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308\u0900'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u094d'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308\u094d'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u200d'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308\u200d'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0900', '\u0378'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0900\u0308', '\u0378'],
-    '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', ' '],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', ' '],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\r'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\r'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\n'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\n'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\x01'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\x01'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u200c'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308\u200c'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u{1f1e6}'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u0600'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u0600'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0a03'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308\u0a03'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u1100'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u1100'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u1160'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u1160'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u11a8'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u11a8'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\uac00'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\uac00'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\uac01'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\uac01'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0903'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308\u0903'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u0904'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u0904'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u0d4e'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u0915'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u0915'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u231a'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u231a'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0300'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308\u0300'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0900'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308\u0900'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u094d'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308\u094d'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u200d'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308\u200d'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u094d', '\u0378'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u094d\u0308', '\u0378'],
-    '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', ' '],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', ' '],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\r'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\r'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\n'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\n'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\x01'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\x01'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u200c'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308\u200c'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u{1f1e6}'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u{1f1e6}'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u0600'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u0600'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0a03'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308\u0a03'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u1100'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u1100'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u1160'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u1160'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u11a8'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u11a8'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\uac00'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\uac00'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\uac01'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\uac01'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0903'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308\u0903'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u0904'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u0904'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u0d4e'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u0d4e'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u0915'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u0915'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u231a'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u231a'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0300'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308\u0300'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0900'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308\u0900'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u094d'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308\u094d'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u200d'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308\u200d'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u200d', '\u0378'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u200d\u0308', '\u0378'],
-    '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', ' '],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', ' '],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\r'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\r'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\n'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\n'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\x01'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\x01'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u200c'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308\u200c'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u{1f1e6}'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u{1f1e6}'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u0600'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u0600'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0a03'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308\u0a03'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u1100'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u1100'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u1160'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u1160'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u11a8'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u11a8'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\uac00'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\uac00'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\uac01'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\uac01'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0903'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308\u0903'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u0904'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u0904'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u0d4e'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u0d4e'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u0915'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u0915'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u231a'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u231a'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0300'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308\u0300'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0900'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308\u0900'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u094d'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308\u094d'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u200d'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308\u200d'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u0378', '\u0378'],
-    '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0378\u0308', '\u0378'],
-    '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'
-  ),
-  (
-    ['\r\n', 'a', '\n', '\u0308'],
-    '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) × [3.0] <LINE FEED (LF)> (LF) ÷ [4.0] LATIN SMALL LETTER A (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['a\u0308'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    [' \u200d', '\u0646'],
-    '÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] ARABIC LETTER NOON (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0646\u200d', ' '],
-    '÷ [0.2] ARABIC LETTER NOON (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u1100\u1100'],
-    '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\uac00\u11a8', '\u1100'],
-    '÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\uac01\u11a8', '\u1100'],
-    '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f1e6}\u{1f1e7}', '\u{1f1e8}', 'b'],
-    '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [12.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['a', '\u{1f1e6}\u{1f1e7}', '\u{1f1e8}', 'b'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['a', '\u{1f1e6}\u{1f1e7}\u200d', '\u{1f1e8}', 'b'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['a', '\u{1f1e6}\u200d', '\u{1f1e7}\u{1f1e8}', 'b'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['a', '\u{1f1e6}\u{1f1e7}', '\u{1f1e8}\u{1f1e9}', 'b'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER D (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['a\u200d'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['a\u0308', 'b'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['a\u0903', 'b'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['a', '\u0600b'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) × [9.2] LATIN SMALL LETTER B (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f476}\u{1f3ff}', '\u{1f476}'],
-    '÷ [0.2] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['a\u{1f3ff}', '\u{1f476}'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['a\u{1f3ff}', '\u{1f476}\u200d\u{1f6d1}'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f476}\u{1f3ff}\u0308\u200d\u{1f476}\u{1f3ff}'],
-    '÷ [0.2] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [0.3]'
-  ),
-  (
-    ['\u{1f6d1}\u200d\u{1f6d1}'],
-    '÷ [0.2] OCTAGONAL SIGN (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['a\u200d', '\u{1f6d1}'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]'
-  ),
-  (
-    ['\u2701\u200d\u2701'],
-    '÷ [0.2] UPPER BLADE SCISSORS (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] UPPER BLADE SCISSORS (Other) ÷ [0.3]'
-  ),
-  (
-    ['a\u200d', '\u2701'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] UPPER BLADE SCISSORS (Other) ÷ [0.3]'
-  ),
-  (
-    ['\u0915', '\u0924'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u094d\u0924'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u094d\u094d\u0924'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u094d\u200d\u0924'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u093c\u200d\u094d\u0924'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN NUKTA (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u093c\u094d\u200d\u0924'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN NUKTA (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u094d\u0924\u094d\u092f'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER YA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u094d', 'a'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] LATIN SMALL LETTER A (Other) ÷ [0.3]'
-  ),
-  (
-    ['a\u094d', '\u0924'],
-    '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['?\u094d', '\u0924'],
-    '÷ [0.2] QUESTION MARK (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
-  (
-    ['\u0915\u094d\u094d\u0924'],
-    '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'
-  ),
+  (['\u231a\u0308', ' '], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u231a', '\r'], '÷ [0.2] WATCH (ExtPict) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u231a\u0308', '\r'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u231a', '\n'], '÷ [0.2] WATCH (ExtPict) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u231a\u0308', '\n'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u231a', '\x01'], '÷ [0.2] WATCH (ExtPict) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u231a\u0308', '\x01'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u231a\u200c'], '÷ [0.2] WATCH (ExtPict) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u231a\u0308\u200c'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u231a', '\u{1f1e6}'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u231a\u0308', '\u{1f1e6}'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u231a', '\u0600'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u231a\u0308', '\u0600'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u231a\u0a03'], '÷ [0.2] WATCH (ExtPict) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u231a\u0308\u0a03'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u231a', '\u1100'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u231a\u0308', '\u1100'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u231a', '\u1160'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u231a\u0308', '\u1160'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u231a', '\u11a8'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u231a\u0308', '\u11a8'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u231a', '\uac00'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u231a\u0308', '\uac00'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u231a', '\uac01'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u231a\u0308', '\uac01'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u231a\u0903'], '÷ [0.2] WATCH (ExtPict) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u231a\u0308\u0903'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u231a', '\u0904'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u231a\u0308', '\u0904'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u231a', '\u0d4e'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u231a\u0308', '\u0d4e'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u231a', '\u0915'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u231a\u0308', '\u0915'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u231a', '\u231a'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u231a\u0308', '\u231a'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u231a\u0300'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a\u0308\u0300'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a\u0900'], '÷ [0.2] WATCH (ExtPict) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a\u0308\u0900'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a\u094d'], '÷ [0.2] WATCH (ExtPict) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a\u0308\u094d'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a\u200d'], '÷ [0.2] WATCH (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a\u0308\u200d'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u231a', '\u0378'], '÷ [0.2] WATCH (ExtPict) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u231a\u0308', '\u0378'], '÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0300', ' '], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0300\u0308', ' '], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0300', '\r'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0300\u0308', '\r'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0300', '\n'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0300\u0308', '\n'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0300', '\x01'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0300\u0308', '\x01'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0300\u200c'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0300\u0308\u200c'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0300', '\u{1f1e6}'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0300\u0308', '\u{1f1e6}'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0300', '\u0600'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0300\u0308', '\u0600'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0300\u0a03'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0300\u0308\u0a03'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0300', '\u1100'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0300\u0308', '\u1100'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0300', '\u1160'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0300\u0308', '\u1160'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0300', '\u11a8'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0300\u0308', '\u11a8'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0300', '\uac00'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0300\u0308', '\uac00'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0300', '\uac01'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0300\u0308', '\uac01'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0300\u0903'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0300\u0308\u0903'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0300', '\u0904'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0300\u0308', '\u0904'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0300', '\u0d4e'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0300\u0308', '\u0d4e'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0300', '\u0915'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0300\u0308', '\u0915'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0300', '\u231a'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0300\u0308', '\u231a'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0300\u0300'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300\u0308\u0300'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300\u0900'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300\u0308\u0900'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300\u094d'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300\u0308\u094d'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300\u200d'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300\u0308\u200d'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0300', '\u0378'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0300\u0308', '\u0378'], '÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0900', ' '], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0900\u0308', ' '], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0900', '\r'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0900\u0308', '\r'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0900', '\n'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0900\u0308', '\n'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0900', '\x01'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0900\u0308', '\x01'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0900\u200c'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0900\u0308\u200c'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0900', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0900\u0308', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0900', '\u0600'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0900\u0308', '\u0600'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0900\u0a03'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0900\u0308\u0a03'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0900', '\u1100'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0900\u0308', '\u1100'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0900', '\u1160'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0900\u0308', '\u1160'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0900', '\u11a8'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0900\u0308', '\u11a8'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0900', '\uac00'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0900\u0308', '\uac00'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0900', '\uac01'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0900\u0308', '\uac01'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0900\u0903'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0900\u0308\u0903'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0900', '\u0904'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0900\u0308', '\u0904'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0900', '\u0d4e'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0900\u0308', '\u0d4e'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0900', '\u0915'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0900\u0308', '\u0915'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0900', '\u231a'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0900\u0308', '\u231a'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0900\u0300'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900\u0308\u0300'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900\u0900'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900\u0308\u0900'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900\u094d'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900\u0308\u094d'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900\u200d'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900\u0308\u200d'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0900', '\u0378'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0900\u0308', '\u0378'], '÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u094d', ' '], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u094d\u0308', ' '], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u094d', '\r'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u094d\u0308', '\r'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u094d', '\n'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u094d\u0308', '\n'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u094d', '\x01'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u094d\u0308', '\x01'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u094d\u200c'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u094d\u0308\u200c'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u094d', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u094d\u0308', '\u{1f1e6}'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u094d', '\u0600'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u094d\u0308', '\u0600'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u094d\u0a03'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u094d\u0308\u0a03'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u094d', '\u1100'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u094d\u0308', '\u1100'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u094d', '\u1160'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u094d\u0308', '\u1160'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u094d', '\u11a8'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u094d\u0308', '\u11a8'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u094d', '\uac00'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u094d\u0308', '\uac00'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u094d', '\uac01'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u094d\u0308', '\uac01'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u094d\u0903'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u094d\u0308\u0903'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u094d', '\u0904'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u094d\u0308', '\u0904'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u094d', '\u0d4e'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u094d\u0308', '\u0d4e'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u094d', '\u0915'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u094d\u0308', '\u0915'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u094d', '\u231a'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u094d\u0308', '\u231a'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u094d\u0300'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d\u0308\u0300'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d\u0900'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d\u0308\u0900'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d\u094d'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d\u0308\u094d'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d\u200d'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d\u0308\u200d'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u094d', '\u0378'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u094d\u0308', '\u0378'], '÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u200d', ' '], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u200d\u0308', ' '], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u200d', '\r'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u200d\u0308', '\r'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u200d', '\n'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u200d\u0308', '\n'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u200d', '\x01'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u200d\u0308', '\x01'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u200d\u200c'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u200d\u0308\u200c'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u200d', '\u{1f1e6}'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u200d\u0308', '\u{1f1e6}'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u200d', '\u0600'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u200d\u0308', '\u0600'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u200d\u0a03'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u200d\u0308\u0a03'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u200d', '\u1100'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u200d\u0308', '\u1100'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u200d', '\u1160'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u200d\u0308', '\u1160'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u200d', '\u11a8'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u200d\u0308', '\u11a8'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u200d', '\uac00'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u200d\u0308', '\uac00'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u200d', '\uac01'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u200d\u0308', '\uac01'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u200d\u0903'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200d\u0308\u0903'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200d', '\u0904'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200d\u0308', '\u0904'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200d', '\u0d4e'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200d\u0308', '\u0d4e'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u200d', '\u0915'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u200d\u0308', '\u0915'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u200d', '\u231a'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u200d\u0308', '\u231a'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u200d\u0300'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d\u0308\u0300'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d\u0900'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d\u0308\u0900'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d\u094d'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d\u0308\u094d'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d\u200d'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d\u0308\u200d'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u200d', '\u0378'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u200d\u0308', '\u0378'], '÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0378', ' '], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0378\u0308', ' '], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u0378', '\r'], '÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0378\u0308', '\r'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]'),
+  (['\u0378', '\n'], '÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0378\u0308', '\n'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]'),
+  (['\u0378', '\x01'], '÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0378\u0308', '\x01'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]'),
+  (['\u0378\u200c'], '÷ [0.2] <reserved-0378> (Other) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0378\u0308\u200c'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]'),
+  (['\u0378', '\u{1f1e6}'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0378\u0308', '\u{1f1e6}'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]'),
+  (['\u0378', '\u0600'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0378\u0308', '\u0600'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]'),
+  (['\u0378\u0a03'], '÷ [0.2] <reserved-0378> (Other) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0378\u0308\u0a03'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]'),
+  (['\u0378', '\u1100'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0378\u0308', '\u1100'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u0378', '\u1160'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0378\u0308', '\u1160'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]'),
+  (['\u0378', '\u11a8'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0378\u0308', '\u11a8'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]'),
+  (['\u0378', '\uac00'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0378\u0308', '\uac00'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]'),
+  (['\u0378', '\uac01'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0378\u0308', '\uac01'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]'),
+  (['\u0378\u0903'], '÷ [0.2] <reserved-0378> (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0378\u0308\u0903'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0378', '\u0904'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0378\u0308', '\u0904'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0378', '\u0d4e'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0378\u0308', '\u0d4e'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]'),
+  (['\u0378', '\u0915'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0378\u0308', '\u0915'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0378', '\u231a'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0378\u0308', '\u231a'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]'),
+  (['\u0378\u0300'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378\u0308\u0300'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378\u0900'], '÷ [0.2] <reserved-0378> (Other) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378\u0308\u0900'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378\u094d'], '÷ [0.2] <reserved-0378> (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378\u0308\u094d'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378\u200d'], '÷ [0.2] <reserved-0378> (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378\u0308\u200d'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['\u0378', '\u0378'], '÷ [0.2] <reserved-0378> (Other) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\u0378\u0308', '\u0378'], '÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]'),
+  (['\r\n', 'a', '\n', '\u0308'], '÷ [0.2] <CARRIAGE RETURN (CR)> (CR) × [3.0] <LINE FEED (LF)> (LF) ÷ [4.0] LATIN SMALL LETTER A (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['a\u0308'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [0.3]'),
+  ([' \u200d', '\u0646'], '÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] ARABIC LETTER NOON (Other) ÷ [0.3]'),
+  (['\u0646\u200d', ' '], '÷ [0.2] ARABIC LETTER NOON (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]'),
+  (['\u1100\u1100'], '÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\uac00\u11a8', '\u1100'], '÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\uac01\u11a8', '\u1100'], '÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]'),
+  (['\u{1f1e6}\u{1f1e7}', '\u{1f1e8}', 'b'], '÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [12.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['a', '\u{1f1e6}\u{1f1e7}', '\u{1f1e8}', 'b'], '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['a', '\u{1f1e6}\u{1f1e7}\u200d', '\u{1f1e8}', 'b'], '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['a', '\u{1f1e6}\u200d', '\u{1f1e7}\u{1f1e8}', 'b'], '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['a', '\u{1f1e6}\u{1f1e7}', '\u{1f1e8}\u{1f1e9}', 'b'], '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER D (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['a\u200d'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]'),
+  (['a\u0308', 'b'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['a\u0903', 'b'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['a', '\u0600b'], '÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) × [9.2] LATIN SMALL LETTER B (Other) ÷ [0.3]'),
+  (['\u{1f476}\u{1f3ff}', '\u{1f476}'], '÷ [0.2] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) ÷ [0.3]'),
+  (['a\u{1f3ff}', '\u{1f476}'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) ÷ [0.3]'),
+  (['a\u{1f3ff}', '\u{1f476}\u200d\u{1f6d1}'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]'),
+  (['\u{1f476}\u{1f3ff}\u0308\u200d\u{1f476}\u{1f3ff}'], '÷ [0.2] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [0.3]'),
+  (['\u{1f6d1}\u200d\u{1f6d1}'], '÷ [0.2] OCTAGONAL SIGN (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]'),
+  (['a\u200d', '\u{1f6d1}'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]'),
+  (['\u2701\u200d\u2701'], '÷ [0.2] UPPER BLADE SCISSORS (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] UPPER BLADE SCISSORS (Other) ÷ [0.3]'),
+  (['a\u200d', '\u2701'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] UPPER BLADE SCISSORS (Other) ÷ [0.3]'),
+  (['\u0915', '\u0924'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u094d\u0924'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u094d\u094d\u0924'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u094d\u200d\u0924'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u093c\u200d\u094d\u0924'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN NUKTA (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u093c\u094d\u200d\u0924'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN NUKTA (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u094d\u0924\u094d\u092f'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER YA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u094d', 'a'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] LATIN SMALL LETTER A (Other) ÷ [0.3]'),
+  (['a\u094d', '\u0924'], '÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['?\u094d', '\u0924'], '÷ [0.2] QUESTION MARK (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
+  (['\u0915\u094d\u094d\u0924'], '÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]'),
 ];
 // Emoji tests.
 const List<(List<String> graphemeClusters, String description)> emojis = [
@@ -4546,10 +1283,7 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f573}\ufe0f'], '🕳️ E0.7 hole'),
   (['\u{1f573}'], '🕳 E0.7 hole'),
   (['\u{1f4ac}'], '💬 E0.6 speech balloon'),
-  (
-    ['\u{1f441}\ufe0f\u200d\u{1f5e8}\ufe0f'],
-    '👁️‍🗨️ E2.0 eye in speech bubble'
-  ),
+  (['\u{1f441}\ufe0f\u200d\u{1f5e8}\ufe0f'], '👁️‍🗨️ E2.0 eye in speech bubble'),
   (['\u{1f441}\u200d\u{1f5e8}\ufe0f'], '👁‍🗨️ E2.0 eye in speech bubble'),
   (['\u{1f441}\ufe0f\u200d\u{1f5e8}'], '👁️‍🗨 E2.0 eye in speech bubble'),
   (['\u{1f441}\u200d\u{1f5e8}'], '👁‍🗨 E2.0 eye in speech bubble'),
@@ -4567,38 +1301,17 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f44b}\u{1f3ff}'], '👋🏿 E1.0 waving hand: dark skin tone'),
   (['\u{1f91a}'], '🤚 E3.0 raised back of hand'),
   (['\u{1f91a}\u{1f3fb}'], '🤚🏻 E3.0 raised back of hand: light skin tone'),
-  (
-    ['\u{1f91a}\u{1f3fc}'],
-    '🤚🏼 E3.0 raised back of hand: medium-light skin tone'
-  ),
+  (['\u{1f91a}\u{1f3fc}'], '🤚🏼 E3.0 raised back of hand: medium-light skin tone'),
   (['\u{1f91a}\u{1f3fd}'], '🤚🏽 E3.0 raised back of hand: medium skin tone'),
-  (
-    ['\u{1f91a}\u{1f3fe}'],
-    '🤚🏾 E3.0 raised back of hand: medium-dark skin tone'
-  ),
+  (['\u{1f91a}\u{1f3fe}'], '🤚🏾 E3.0 raised back of hand: medium-dark skin tone'),
   (['\u{1f91a}\u{1f3ff}'], '🤚🏿 E3.0 raised back of hand: dark skin tone'),
   (['\u{1f590}\ufe0f'], '🖐️ E0.7 hand with fingers splayed'),
   (['\u{1f590}'], '🖐 E0.7 hand with fingers splayed'),
-  (
-    ['\u{1f590}\u{1f3fb}'],
-    '🖐🏻 E1.0 hand with fingers splayed: light skin tone'
-  ),
-  (
-    ['\u{1f590}\u{1f3fc}'],
-    '🖐🏼 E1.0 hand with fingers splayed: medium-light skin tone'
-  ),
-  (
-    ['\u{1f590}\u{1f3fd}'],
-    '🖐🏽 E1.0 hand with fingers splayed: medium skin tone'
-  ),
-  (
-    ['\u{1f590}\u{1f3fe}'],
-    '🖐🏾 E1.0 hand with fingers splayed: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f590}\u{1f3ff}'],
-    '🖐🏿 E1.0 hand with fingers splayed: dark skin tone'
-  ),
+  (['\u{1f590}\u{1f3fb}'], '🖐🏻 E1.0 hand with fingers splayed: light skin tone'),
+  (['\u{1f590}\u{1f3fc}'], '🖐🏼 E1.0 hand with fingers splayed: medium-light skin tone'),
+  (['\u{1f590}\u{1f3fd}'], '🖐🏽 E1.0 hand with fingers splayed: medium skin tone'),
+  (['\u{1f590}\u{1f3fe}'], '🖐🏾 E1.0 hand with fingers splayed: medium-dark skin tone'),
+  (['\u{1f590}\u{1f3ff}'], '🖐🏿 E1.0 hand with fingers splayed: dark skin tone'),
   (['\u270b'], '✋ E0.6 raised hand'),
   (['\u270b\u{1f3fb}'], '✋🏻 E1.0 raised hand: light skin tone'),
   (['\u270b\u{1f3fc}'], '✋🏼 E1.0 raised hand: medium-light skin tone'),
@@ -4613,10 +1326,7 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f596}\u{1f3ff}'], '🖖🏿 E1.0 vulcan salute: dark skin tone'),
   (['\u{1faf1}'], '🫱 E14.0 rightwards hand'),
   (['\u{1faf1}\u{1f3fb}'], '🫱🏻 E14.0 rightwards hand: light skin tone'),
-  (
-    ['\u{1faf1}\u{1f3fc}'],
-    '🫱🏼 E14.0 rightwards hand: medium-light skin tone'
-  ),
+  (['\u{1faf1}\u{1f3fc}'], '🫱🏼 E14.0 rightwards hand: medium-light skin tone'),
   (['\u{1faf1}\u{1f3fd}'], '🫱🏽 E14.0 rightwards hand: medium skin tone'),
   (['\u{1faf1}\u{1f3fe}'], '🫱🏾 E14.0 rightwards hand: medium-dark skin tone'),
   (['\u{1faf1}\u{1f3ff}'], '🫱🏿 E14.0 rightwards hand: dark skin tone'),
@@ -4639,44 +1349,17 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1faf4}\u{1f3fe}'], '🫴🏾 E14.0 palm up hand: medium-dark skin tone'),
   (['\u{1faf4}\u{1f3ff}'], '🫴🏿 E14.0 palm up hand: dark skin tone'),
   (['\u{1faf7}'], '🫷 E15.0 leftwards pushing hand'),
-  (
-    ['\u{1faf7}\u{1f3fb}'],
-    '🫷🏻 E15.0 leftwards pushing hand: light skin tone'
-  ),
-  (
-    ['\u{1faf7}\u{1f3fc}'],
-    '🫷🏼 E15.0 leftwards pushing hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1faf7}\u{1f3fd}'],
-    '🫷🏽 E15.0 leftwards pushing hand: medium skin tone'
-  ),
-  (
-    ['\u{1faf7}\u{1f3fe}'],
-    '🫷🏾 E15.0 leftwards pushing hand: medium-dark skin tone'
-  ),
+  (['\u{1faf7}\u{1f3fb}'], '🫷🏻 E15.0 leftwards pushing hand: light skin tone'),
+  (['\u{1faf7}\u{1f3fc}'], '🫷🏼 E15.0 leftwards pushing hand: medium-light skin tone'),
+  (['\u{1faf7}\u{1f3fd}'], '🫷🏽 E15.0 leftwards pushing hand: medium skin tone'),
+  (['\u{1faf7}\u{1f3fe}'], '🫷🏾 E15.0 leftwards pushing hand: medium-dark skin tone'),
   (['\u{1faf7}\u{1f3ff}'], '🫷🏿 E15.0 leftwards pushing hand: dark skin tone'),
   (['\u{1faf8}'], '🫸 E15.0 rightwards pushing hand'),
-  (
-    ['\u{1faf8}\u{1f3fb}'],
-    '🫸🏻 E15.0 rightwards pushing hand: light skin tone'
-  ),
-  (
-    ['\u{1faf8}\u{1f3fc}'],
-    '🫸🏼 E15.0 rightwards pushing hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1faf8}\u{1f3fd}'],
-    '🫸🏽 E15.0 rightwards pushing hand: medium skin tone'
-  ),
-  (
-    ['\u{1faf8}\u{1f3fe}'],
-    '🫸🏾 E15.0 rightwards pushing hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1faf8}\u{1f3ff}'],
-    '🫸🏿 E15.0 rightwards pushing hand: dark skin tone'
-  ),
+  (['\u{1faf8}\u{1f3fb}'], '🫸🏻 E15.0 rightwards pushing hand: light skin tone'),
+  (['\u{1faf8}\u{1f3fc}'], '🫸🏼 E15.0 rightwards pushing hand: medium-light skin tone'),
+  (['\u{1faf8}\u{1f3fd}'], '🫸🏽 E15.0 rightwards pushing hand: medium skin tone'),
+  (['\u{1faf8}\u{1f3fe}'], '🫸🏾 E15.0 rightwards pushing hand: medium-dark skin tone'),
+  (['\u{1faf8}\u{1f3ff}'], '🫸🏿 E15.0 rightwards pushing hand: dark skin tone'),
   (['\u{1f44c}'], '👌 E0.6 OK hand'),
   (['\u{1f44c}\u{1f3fb}'], '👌🏻 E1.0 OK hand: light skin tone'),
   (['\u{1f44c}\u{1f3fc}'], '👌🏼 E1.0 OK hand: medium-light skin tone'),
@@ -4685,10 +1368,7 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f44c}\u{1f3ff}'], '👌🏿 E1.0 OK hand: dark skin tone'),
   (['\u{1f90c}'], '🤌 E13.0 pinched fingers'),
   (['\u{1f90c}\u{1f3fb}'], '🤌🏻 E13.0 pinched fingers: light skin tone'),
-  (
-    ['\u{1f90c}\u{1f3fc}'],
-    '🤌🏼 E13.0 pinched fingers: medium-light skin tone'
-  ),
+  (['\u{1f90c}\u{1f3fc}'], '🤌🏼 E13.0 pinched fingers: medium-light skin tone'),
   (['\u{1f90c}\u{1f3fd}'], '🤌🏽 E13.0 pinched fingers: medium skin tone'),
   (['\u{1f90c}\u{1f3fe}'], '🤌🏾 E13.0 pinched fingers: medium-dark skin tone'),
   (['\u{1f90c}\u{1f3ff}'], '🤌🏿 E13.0 pinched fingers: dark skin tone'),
@@ -4712,46 +1392,22 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f91e}\u{1f3fe}'], '🤞🏾 E3.0 crossed fingers: medium-dark skin tone'),
   (['\u{1f91e}\u{1f3ff}'], '🤞🏿 E3.0 crossed fingers: dark skin tone'),
   (['\u{1faf0}'], '🫰 E14.0 hand with index finger and thumb crossed'),
-  (
-    ['\u{1faf0}\u{1f3fb}'],
-    '🫰🏻 E14.0 hand with index finger and thumb crossed: light skin tone'
-  ),
-  (
-    ['\u{1faf0}\u{1f3fc}'],
-    '🫰🏼 E14.0 hand with index finger and thumb crossed: medium-light skin tone'
-  ),
-  (
-    ['\u{1faf0}\u{1f3fd}'],
-    '🫰🏽 E14.0 hand with index finger and thumb crossed: medium skin tone'
-  ),
-  (
-    ['\u{1faf0}\u{1f3fe}'],
-    '🫰🏾 E14.0 hand with index finger and thumb crossed: medium-dark skin tone'
-  ),
-  (
-    ['\u{1faf0}\u{1f3ff}'],
-    '🫰🏿 E14.0 hand with index finger and thumb crossed: dark skin tone'
-  ),
+  (['\u{1faf0}\u{1f3fb}'], '🫰🏻 E14.0 hand with index finger and thumb crossed: light skin tone'),
+  (['\u{1faf0}\u{1f3fc}'], '🫰🏼 E14.0 hand with index finger and thumb crossed: medium-light skin tone'),
+  (['\u{1faf0}\u{1f3fd}'], '🫰🏽 E14.0 hand with index finger and thumb crossed: medium skin tone'),
+  (['\u{1faf0}\u{1f3fe}'], '🫰🏾 E14.0 hand with index finger and thumb crossed: medium-dark skin tone'),
+  (['\u{1faf0}\u{1f3ff}'], '🫰🏿 E14.0 hand with index finger and thumb crossed: dark skin tone'),
   (['\u{1f91f}'], '🤟 E5.0 love-you gesture'),
   (['\u{1f91f}\u{1f3fb}'], '🤟🏻 E5.0 love-you gesture: light skin tone'),
-  (
-    ['\u{1f91f}\u{1f3fc}'],
-    '🤟🏼 E5.0 love-you gesture: medium-light skin tone'
-  ),
+  (['\u{1f91f}\u{1f3fc}'], '🤟🏼 E5.0 love-you gesture: medium-light skin tone'),
   (['\u{1f91f}\u{1f3fd}'], '🤟🏽 E5.0 love-you gesture: medium skin tone'),
   (['\u{1f91f}\u{1f3fe}'], '🤟🏾 E5.0 love-you gesture: medium-dark skin tone'),
   (['\u{1f91f}\u{1f3ff}'], '🤟🏿 E5.0 love-you gesture: dark skin tone'),
   (['\u{1f918}'], '🤘 E1.0 sign of the horns'),
   (['\u{1f918}\u{1f3fb}'], '🤘🏻 E1.0 sign of the horns: light skin tone'),
-  (
-    ['\u{1f918}\u{1f3fc}'],
-    '🤘🏼 E1.0 sign of the horns: medium-light skin tone'
-  ),
+  (['\u{1f918}\u{1f3fc}'], '🤘🏼 E1.0 sign of the horns: medium-light skin tone'),
   (['\u{1f918}\u{1f3fd}'], '🤘🏽 E1.0 sign of the horns: medium skin tone'),
-  (
-    ['\u{1f918}\u{1f3fe}'],
-    '🤘🏾 E1.0 sign of the horns: medium-dark skin tone'
-  ),
+  (['\u{1f918}\u{1f3fe}'], '🤘🏾 E1.0 sign of the horns: medium-dark skin tone'),
   (['\u{1f918}\u{1f3ff}'], '🤘🏿 E1.0 sign of the horns: dark skin tone'),
   (['\u{1f919}'], '🤙 E3.0 call me hand'),
   (['\u{1f919}\u{1f3fb}'], '🤙🏻 E3.0 call me hand: light skin tone'),
@@ -4760,68 +1416,23 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f919}\u{1f3fe}'], '🤙🏾 E3.0 call me hand: medium-dark skin tone'),
   (['\u{1f919}\u{1f3ff}'], '🤙🏿 E3.0 call me hand: dark skin tone'),
   (['\u{1f448}'], '👈 E0.6 backhand index pointing left'),
-  (
-    ['\u{1f448}\u{1f3fb}'],
-    '👈🏻 E1.0 backhand index pointing left: light skin tone'
-  ),
-  (
-    ['\u{1f448}\u{1f3fc}'],
-    '👈🏼 E1.0 backhand index pointing left: medium-light skin tone'
-  ),
-  (
-    ['\u{1f448}\u{1f3fd}'],
-    '👈🏽 E1.0 backhand index pointing left: medium skin tone'
-  ),
-  (
-    ['\u{1f448}\u{1f3fe}'],
-    '👈🏾 E1.0 backhand index pointing left: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f448}\u{1f3ff}'],
-    '👈🏿 E1.0 backhand index pointing left: dark skin tone'
-  ),
+  (['\u{1f448}\u{1f3fb}'], '👈🏻 E1.0 backhand index pointing left: light skin tone'),
+  (['\u{1f448}\u{1f3fc}'], '👈🏼 E1.0 backhand index pointing left: medium-light skin tone'),
+  (['\u{1f448}\u{1f3fd}'], '👈🏽 E1.0 backhand index pointing left: medium skin tone'),
+  (['\u{1f448}\u{1f3fe}'], '👈🏾 E1.0 backhand index pointing left: medium-dark skin tone'),
+  (['\u{1f448}\u{1f3ff}'], '👈🏿 E1.0 backhand index pointing left: dark skin tone'),
   (['\u{1f449}'], '👉 E0.6 backhand index pointing right'),
-  (
-    ['\u{1f449}\u{1f3fb}'],
-    '👉🏻 E1.0 backhand index pointing right: light skin tone'
-  ),
-  (
-    ['\u{1f449}\u{1f3fc}'],
-    '👉🏼 E1.0 backhand index pointing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f449}\u{1f3fd}'],
-    '👉🏽 E1.0 backhand index pointing right: medium skin tone'
-  ),
-  (
-    ['\u{1f449}\u{1f3fe}'],
-    '👉🏾 E1.0 backhand index pointing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f449}\u{1f3ff}'],
-    '👉🏿 E1.0 backhand index pointing right: dark skin tone'
-  ),
+  (['\u{1f449}\u{1f3fb}'], '👉🏻 E1.0 backhand index pointing right: light skin tone'),
+  (['\u{1f449}\u{1f3fc}'], '👉🏼 E1.0 backhand index pointing right: medium-light skin tone'),
+  (['\u{1f449}\u{1f3fd}'], '👉🏽 E1.0 backhand index pointing right: medium skin tone'),
+  (['\u{1f449}\u{1f3fe}'], '👉🏾 E1.0 backhand index pointing right: medium-dark skin tone'),
+  (['\u{1f449}\u{1f3ff}'], '👉🏿 E1.0 backhand index pointing right: dark skin tone'),
   (['\u{1f446}'], '👆 E0.6 backhand index pointing up'),
-  (
-    ['\u{1f446}\u{1f3fb}'],
-    '👆🏻 E1.0 backhand index pointing up: light skin tone'
-  ),
-  (
-    ['\u{1f446}\u{1f3fc}'],
-    '👆🏼 E1.0 backhand index pointing up: medium-light skin tone'
-  ),
-  (
-    ['\u{1f446}\u{1f3fd}'],
-    '👆🏽 E1.0 backhand index pointing up: medium skin tone'
-  ),
-  (
-    ['\u{1f446}\u{1f3fe}'],
-    '👆🏾 E1.0 backhand index pointing up: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f446}\u{1f3ff}'],
-    '👆🏿 E1.0 backhand index pointing up: dark skin tone'
-  ),
+  (['\u{1f446}\u{1f3fb}'], '👆🏻 E1.0 backhand index pointing up: light skin tone'),
+  (['\u{1f446}\u{1f3fc}'], '👆🏼 E1.0 backhand index pointing up: medium-light skin tone'),
+  (['\u{1f446}\u{1f3fd}'], '👆🏽 E1.0 backhand index pointing up: medium skin tone'),
+  (['\u{1f446}\u{1f3fe}'], '👆🏾 E1.0 backhand index pointing up: medium-dark skin tone'),
+  (['\u{1f446}\u{1f3ff}'], '👆🏿 E1.0 backhand index pointing up: dark skin tone'),
   (['\u{1f595}'], '🖕 E1.0 middle finger'),
   (['\u{1f595}\u{1f3fb}'], '🖕🏻 E1.0 middle finger: light skin tone'),
   (['\u{1f595}\u{1f3fc}'], '🖕🏼 E1.0 middle finger: medium-light skin tone'),
@@ -4829,26 +1440,11 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f595}\u{1f3fe}'], '🖕🏾 E1.0 middle finger: medium-dark skin tone'),
   (['\u{1f595}\u{1f3ff}'], '🖕🏿 E1.0 middle finger: dark skin tone'),
   (['\u{1f447}'], '👇 E0.6 backhand index pointing down'),
-  (
-    ['\u{1f447}\u{1f3fb}'],
-    '👇🏻 E1.0 backhand index pointing down: light skin tone'
-  ),
-  (
-    ['\u{1f447}\u{1f3fc}'],
-    '👇🏼 E1.0 backhand index pointing down: medium-light skin tone'
-  ),
-  (
-    ['\u{1f447}\u{1f3fd}'],
-    '👇🏽 E1.0 backhand index pointing down: medium skin tone'
-  ),
-  (
-    ['\u{1f447}\u{1f3fe}'],
-    '👇🏾 E1.0 backhand index pointing down: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f447}\u{1f3ff}'],
-    '👇🏿 E1.0 backhand index pointing down: dark skin tone'
-  ),
+  (['\u{1f447}\u{1f3fb}'], '👇🏻 E1.0 backhand index pointing down: light skin tone'),
+  (['\u{1f447}\u{1f3fc}'], '👇🏼 E1.0 backhand index pointing down: medium-light skin tone'),
+  (['\u{1f447}\u{1f3fd}'], '👇🏽 E1.0 backhand index pointing down: medium skin tone'),
+  (['\u{1f447}\u{1f3fe}'], '👇🏾 E1.0 backhand index pointing down: medium-dark skin tone'),
+  (['\u{1f447}\u{1f3ff}'], '👇🏿 E1.0 backhand index pointing down: dark skin tone'),
   (['\u261d\ufe0f'], '☝️ E0.6 index pointing up'),
   (['\u261d'], '☝ E0.6 index pointing up'),
   (['\u261d\u{1f3fb}'], '☝🏻 E1.0 index pointing up: light skin tone'),
@@ -4857,26 +1453,11 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u261d\u{1f3fe}'], '☝🏾 E1.0 index pointing up: medium-dark skin tone'),
   (['\u261d\u{1f3ff}'], '☝🏿 E1.0 index pointing up: dark skin tone'),
   (['\u{1faf5}'], '🫵 E14.0 index pointing at the viewer'),
-  (
-    ['\u{1faf5}\u{1f3fb}'],
-    '🫵🏻 E14.0 index pointing at the viewer: light skin tone'
-  ),
-  (
-    ['\u{1faf5}\u{1f3fc}'],
-    '🫵🏼 E14.0 index pointing at the viewer: medium-light skin tone'
-  ),
-  (
-    ['\u{1faf5}\u{1f3fd}'],
-    '🫵🏽 E14.0 index pointing at the viewer: medium skin tone'
-  ),
-  (
-    ['\u{1faf5}\u{1f3fe}'],
-    '🫵🏾 E14.0 index pointing at the viewer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1faf5}\u{1f3ff}'],
-    '🫵🏿 E14.0 index pointing at the viewer: dark skin tone'
-  ),
+  (['\u{1faf5}\u{1f3fb}'], '🫵🏻 E14.0 index pointing at the viewer: light skin tone'),
+  (['\u{1faf5}\u{1f3fc}'], '🫵🏼 E14.0 index pointing at the viewer: medium-light skin tone'),
+  (['\u{1faf5}\u{1f3fd}'], '🫵🏽 E14.0 index pointing at the viewer: medium skin tone'),
+  (['\u{1faf5}\u{1f3fe}'], '🫵🏾 E14.0 index pointing at the viewer: medium-dark skin tone'),
+  (['\u{1faf5}\u{1f3ff}'], '🫵🏿 E14.0 index pointing at the viewer: dark skin tone'),
   (['\u{1f44d}'], '👍 E0.6 thumbs up'),
   (['\u{1f44d}\u{1f3fb}'], '👍🏻 E1.0 thumbs up: light skin tone'),
   (['\u{1f44d}\u{1f3fc}'], '👍🏼 E1.0 thumbs up: medium-light skin tone'),
@@ -4903,24 +1484,15 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f44a}\u{1f3ff}'], '👊🏿 E1.0 oncoming fist: dark skin tone'),
   (['\u{1f91b}'], '🤛 E3.0 left-facing fist'),
   (['\u{1f91b}\u{1f3fb}'], '🤛🏻 E3.0 left-facing fist: light skin tone'),
-  (
-    ['\u{1f91b}\u{1f3fc}'],
-    '🤛🏼 E3.0 left-facing fist: medium-light skin tone'
-  ),
+  (['\u{1f91b}\u{1f3fc}'], '🤛🏼 E3.0 left-facing fist: medium-light skin tone'),
   (['\u{1f91b}\u{1f3fd}'], '🤛🏽 E3.0 left-facing fist: medium skin tone'),
   (['\u{1f91b}\u{1f3fe}'], '🤛🏾 E3.0 left-facing fist: medium-dark skin tone'),
   (['\u{1f91b}\u{1f3ff}'], '🤛🏿 E3.0 left-facing fist: dark skin tone'),
   (['\u{1f91c}'], '🤜 E3.0 right-facing fist'),
   (['\u{1f91c}\u{1f3fb}'], '🤜🏻 E3.0 right-facing fist: light skin tone'),
-  (
-    ['\u{1f91c}\u{1f3fc}'],
-    '🤜🏼 E3.0 right-facing fist: medium-light skin tone'
-  ),
+  (['\u{1f91c}\u{1f3fc}'], '🤜🏼 E3.0 right-facing fist: medium-light skin tone'),
   (['\u{1f91c}\u{1f3fd}'], '🤜🏽 E3.0 right-facing fist: medium skin tone'),
-  (
-    ['\u{1f91c}\u{1f3fe}'],
-    '🤜🏾 E3.0 right-facing fist: medium-dark skin tone'
-  ),
+  (['\u{1f91c}\u{1f3fe}'], '🤜🏾 E3.0 right-facing fist: medium-dark skin tone'),
   (['\u{1f91c}\u{1f3ff}'], '🤜🏿 E3.0 right-facing fist: dark skin tone'),
   (['\u{1f44f}'], '👏 E0.6 clapping hands'),
   (['\u{1f44f}\u{1f3fb}'], '👏🏻 E1.0 clapping hands: light skin tone'),
@@ -4948,15 +1520,9 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f450}\u{1f3ff}'], '👐🏿 E1.0 open hands: dark skin tone'),
   (['\u{1f932}'], '🤲 E5.0 palms up together'),
   (['\u{1f932}\u{1f3fb}'], '🤲🏻 E5.0 palms up together: light skin tone'),
-  (
-    ['\u{1f932}\u{1f3fc}'],
-    '🤲🏼 E5.0 palms up together: medium-light skin tone'
-  ),
+  (['\u{1f932}\u{1f3fc}'], '🤲🏼 E5.0 palms up together: medium-light skin tone'),
   (['\u{1f932}\u{1f3fd}'], '🤲🏽 E5.0 palms up together: medium skin tone'),
-  (
-    ['\u{1f932}\u{1f3fe}'],
-    '🤲🏾 E5.0 palms up together: medium-dark skin tone'
-  ),
+  (['\u{1f932}\u{1f3fe}'], '🤲🏾 E5.0 palms up together: medium-dark skin tone'),
   (['\u{1f932}\u{1f3ff}'], '🤲🏿 E5.0 palms up together: dark skin tone'),
   (['\u{1f91d}'], '🤝 E3.0 handshake'),
   (['\u{1f91d}\u{1f3fb}'], '🤝🏻 E14.0 handshake: light skin tone'),
@@ -4964,86 +1530,26 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f91d}\u{1f3fd}'], '🤝🏽 E14.0 handshake: medium skin tone'),
   (['\u{1f91d}\u{1f3fe}'], '🤝🏾 E14.0 handshake: medium-dark skin tone'),
   (['\u{1f91d}\u{1f3ff}'], '🤝🏿 E14.0 handshake: dark skin tone'),
-  (
-    ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fc}'],
-    '🫱🏻‍🫲🏼 E14.0 handshake: light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fd}'],
-    '🫱🏻‍🫲🏽 E14.0 handshake: light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fe}'],
-    '🫱🏻‍🫲🏾 E14.0 handshake: light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3ff}'],
-    '🫱🏻‍🫲🏿 E14.0 handshake: light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fb}'],
-    '🫱🏼‍🫲🏻 E14.0 handshake: medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fd}'],
-    '🫱🏼‍🫲🏽 E14.0 handshake: medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fe}'],
-    '🫱🏼‍🫲🏾 E14.0 handshake: medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3ff}'],
-    '🫱🏼‍🫲🏿 E14.0 handshake: medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fb}'],
-    '🫱🏽‍🫲🏻 E14.0 handshake: medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fc}'],
-    '🫱🏽‍🫲🏼 E14.0 handshake: medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fe}'],
-    '🫱🏽‍🫲🏾 E14.0 handshake: medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3ff}'],
-    '🫱🏽‍🫲🏿 E14.0 handshake: medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fb}'],
-    '🫱🏾‍🫲🏻 E14.0 handshake: medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fc}'],
-    '🫱🏾‍🫲🏼 E14.0 handshake: medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fd}'],
-    '🫱🏾‍🫲🏽 E14.0 handshake: medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3ff}'],
-    '🫱🏾‍🫲🏿 E14.0 handshake: medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fb}'],
-    '🫱🏿‍🫲🏻 E14.0 handshake: dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fc}'],
-    '🫱🏿‍🫲🏼 E14.0 handshake: dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fd}'],
-    '🫱🏿‍🫲🏽 E14.0 handshake: dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fe}'],
-    '🫱🏿‍🫲🏾 E14.0 handshake: dark skin tone, medium-dark skin tone'
-  ),
+  (['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fc}'], '🫱🏻‍🫲🏼 E14.0 handshake: light skin tone, medium-light skin tone'),
+  (['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fd}'], '🫱🏻‍🫲🏽 E14.0 handshake: light skin tone, medium skin tone'),
+  (['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fe}'], '🫱🏻‍🫲🏾 E14.0 handshake: light skin tone, medium-dark skin tone'),
+  (['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3ff}'], '🫱🏻‍🫲🏿 E14.0 handshake: light skin tone, dark skin tone'),
+  (['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fb}'], '🫱🏼‍🫲🏻 E14.0 handshake: medium-light skin tone, light skin tone'),
+  (['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fd}'], '🫱🏼‍🫲🏽 E14.0 handshake: medium-light skin tone, medium skin tone'),
+  (['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fe}'], '🫱🏼‍🫲🏾 E14.0 handshake: medium-light skin tone, medium-dark skin tone'),
+  (['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3ff}'], '🫱🏼‍🫲🏿 E14.0 handshake: medium-light skin tone, dark skin tone'),
+  (['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fb}'], '🫱🏽‍🫲🏻 E14.0 handshake: medium skin tone, light skin tone'),
+  (['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fc}'], '🫱🏽‍🫲🏼 E14.0 handshake: medium skin tone, medium-light skin tone'),
+  (['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fe}'], '🫱🏽‍🫲🏾 E14.0 handshake: medium skin tone, medium-dark skin tone'),
+  (['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3ff}'], '🫱🏽‍🫲🏿 E14.0 handshake: medium skin tone, dark skin tone'),
+  (['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fb}'], '🫱🏾‍🫲🏻 E14.0 handshake: medium-dark skin tone, light skin tone'),
+  (['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fc}'], '🫱🏾‍🫲🏼 E14.0 handshake: medium-dark skin tone, medium-light skin tone'),
+  (['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fd}'], '🫱🏾‍🫲🏽 E14.0 handshake: medium-dark skin tone, medium skin tone'),
+  (['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3ff}'], '🫱🏾‍🫲🏿 E14.0 handshake: medium-dark skin tone, dark skin tone'),
+  (['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fb}'], '🫱🏿‍🫲🏻 E14.0 handshake: dark skin tone, light skin tone'),
+  (['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fc}'], '🫱🏿‍🫲🏼 E14.0 handshake: dark skin tone, medium-light skin tone'),
+  (['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fd}'], '🫱🏿‍🫲🏽 E14.0 handshake: dark skin tone, medium skin tone'),
+  (['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fe}'], '🫱🏿‍🫲🏾 E14.0 handshake: dark skin tone, medium-dark skin tone'),
   (['\u{1f64f}'], '🙏 E0.6 folded hands'),
   (['\u{1f64f}\u{1f3fb}'], '🙏🏻 E1.0 folded hands: light skin tone'),
   (['\u{1f64f}\u{1f3fc}'], '🙏🏼 E1.0 folded hands: medium-light skin tone'),
@@ -5097,15 +1603,9 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f442}\u{1f3ff}'], '👂🏿 E1.0 ear: dark skin tone'),
   (['\u{1f9bb}'], '🦻 E12.0 ear with hearing aid'),
   (['\u{1f9bb}\u{1f3fb}'], '🦻🏻 E12.0 ear with hearing aid: light skin tone'),
-  (
-    ['\u{1f9bb}\u{1f3fc}'],
-    '🦻🏼 E12.0 ear with hearing aid: medium-light skin tone'
-  ),
+  (['\u{1f9bb}\u{1f3fc}'], '🦻🏼 E12.0 ear with hearing aid: medium-light skin tone'),
   (['\u{1f9bb}\u{1f3fd}'], '🦻🏽 E12.0 ear with hearing aid: medium skin tone'),
-  (
-    ['\u{1f9bb}\u{1f3fe}'],
-    '🦻🏾 E12.0 ear with hearing aid: medium-dark skin tone'
-  ),
+  (['\u{1f9bb}\u{1f3fe}'], '🦻🏾 E12.0 ear with hearing aid: medium-dark skin tone'),
   (['\u{1f9bb}\u{1f3ff}'], '🦻🏿 E12.0 ear with hearing aid: dark skin tone'),
   (['\u{1f443}'], '👃 E0.6 nose'),
   (['\u{1f443}\u{1f3fb}'], '👃🏻 E1.0 nose: light skin tone'),
@@ -5156,15 +1656,9 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9d1}\u{1f3ff}'], '🧑🏿 E5.0 person: dark skin tone'),
   (['\u{1f471}'], '👱 E0.6 person: blond hair'),
   (['\u{1f471}\u{1f3fb}'], '👱🏻 E1.0 person: light skin tone, blond hair'),
-  (
-    ['\u{1f471}\u{1f3fc}'],
-    '👱🏼 E1.0 person: medium-light skin tone, blond hair'
-  ),
+  (['\u{1f471}\u{1f3fc}'], '👱🏼 E1.0 person: medium-light skin tone, blond hair'),
   (['\u{1f471}\u{1f3fd}'], '👱🏽 E1.0 person: medium skin tone, blond hair'),
-  (
-    ['\u{1f471}\u{1f3fe}'],
-    '👱🏾 E1.0 person: medium-dark skin tone, blond hair'
-  ),
+  (['\u{1f471}\u{1f3fe}'], '👱🏾 E1.0 person: medium-dark skin tone, blond hair'),
   (['\u{1f471}\u{1f3ff}'], '👱🏿 E1.0 person: dark skin tone, blond hair'),
   (['\u{1f468}'], '👨 E0.6 man'),
   (['\u{1f468}\u{1f3fb}'], '👨🏻 E1.0 man: light skin tone'),
@@ -5180,172 +1674,52 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9d4}\u{1f3ff}'], '🧔🏿 E5.0 person: dark skin tone, beard'),
   (['\u{1f9d4}\u200d\u2642\ufe0f'], '🧔‍♂️ E13.1 man: beard'),
   (['\u{1f9d4}\u200d\u2642'], '🧔‍♂ E13.1 man: beard'),
-  (
-    ['\u{1f9d4}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧔🏻‍♂️ E13.1 man: light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fb}\u200d\u2642'],
-    '🧔🏻‍♂ E13.1 man: light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧔🏼‍♂️ E13.1 man: medium-light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fc}\u200d\u2642'],
-    '🧔🏼‍♂ E13.1 man: medium-light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧔🏽‍♂️ E13.1 man: medium skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fd}\u200d\u2642'],
-    '🧔🏽‍♂ E13.1 man: medium skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧔🏾‍♂️ E13.1 man: medium-dark skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fe}\u200d\u2642'],
-    '🧔🏾‍♂ E13.1 man: medium-dark skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧔🏿‍♂️ E13.1 man: dark skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3ff}\u200d\u2642'],
-    '🧔🏿‍♂ E13.1 man: dark skin tone, beard'
-  ),
+  (['\u{1f9d4}\u{1f3fb}\u200d\u2642\ufe0f'], '🧔🏻‍♂️ E13.1 man: light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fb}\u200d\u2642'], '🧔🏻‍♂ E13.1 man: light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fc}\u200d\u2642\ufe0f'], '🧔🏼‍♂️ E13.1 man: medium-light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fc}\u200d\u2642'], '🧔🏼‍♂ E13.1 man: medium-light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fd}\u200d\u2642\ufe0f'], '🧔🏽‍♂️ E13.1 man: medium skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fd}\u200d\u2642'], '🧔🏽‍♂ E13.1 man: medium skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fe}\u200d\u2642\ufe0f'], '🧔🏾‍♂️ E13.1 man: medium-dark skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fe}\u200d\u2642'], '🧔🏾‍♂ E13.1 man: medium-dark skin tone, beard'),
+  (['\u{1f9d4}\u{1f3ff}\u200d\u2642\ufe0f'], '🧔🏿‍♂️ E13.1 man: dark skin tone, beard'),
+  (['\u{1f9d4}\u{1f3ff}\u200d\u2642'], '🧔🏿‍♂ E13.1 man: dark skin tone, beard'),
   (['\u{1f9d4}\u200d\u2640\ufe0f'], '🧔‍♀️ E13.1 woman: beard'),
   (['\u{1f9d4}\u200d\u2640'], '🧔‍♀ E13.1 woman: beard'),
-  (
-    ['\u{1f9d4}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧔🏻‍♀️ E13.1 woman: light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fb}\u200d\u2640'],
-    '🧔🏻‍♀ E13.1 woman: light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧔🏼‍♀️ E13.1 woman: medium-light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fc}\u200d\u2640'],
-    '🧔🏼‍♀ E13.1 woman: medium-light skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧔🏽‍♀️ E13.1 woman: medium skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fd}\u200d\u2640'],
-    '🧔🏽‍♀ E13.1 woman: medium skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧔🏾‍♀️ E13.1 woman: medium-dark skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3fe}\u200d\u2640'],
-    '🧔🏾‍♀ E13.1 woman: medium-dark skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧔🏿‍♀️ E13.1 woman: dark skin tone, beard'
-  ),
-  (
-    ['\u{1f9d4}\u{1f3ff}\u200d\u2640'],
-    '🧔🏿‍♀ E13.1 woman: dark skin tone, beard'
-  ),
+  (['\u{1f9d4}\u{1f3fb}\u200d\u2640\ufe0f'], '🧔🏻‍♀️ E13.1 woman: light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fb}\u200d\u2640'], '🧔🏻‍♀ E13.1 woman: light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fc}\u200d\u2640\ufe0f'], '🧔🏼‍♀️ E13.1 woman: medium-light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fc}\u200d\u2640'], '🧔🏼‍♀ E13.1 woman: medium-light skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fd}\u200d\u2640\ufe0f'], '🧔🏽‍♀️ E13.1 woman: medium skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fd}\u200d\u2640'], '🧔🏽‍♀ E13.1 woman: medium skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fe}\u200d\u2640\ufe0f'], '🧔🏾‍♀️ E13.1 woman: medium-dark skin tone, beard'),
+  (['\u{1f9d4}\u{1f3fe}\u200d\u2640'], '🧔🏾‍♀ E13.1 woman: medium-dark skin tone, beard'),
+  (['\u{1f9d4}\u{1f3ff}\u200d\u2640\ufe0f'], '🧔🏿‍♀️ E13.1 woman: dark skin tone, beard'),
+  (['\u{1f9d4}\u{1f3ff}\u200d\u2640'], '🧔🏿‍♀ E13.1 woman: dark skin tone, beard'),
   (['\u{1f468}\u200d\u{1f9b0}'], '👨‍🦰 E11.0 man: red hair'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9b0}'],
-    '👨🏻‍🦰 E11.0 man: light skin tone, red hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9b0}'],
-    '👨🏼‍🦰 E11.0 man: medium-light skin tone, red hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9b0}'],
-    '👨🏽‍🦰 E11.0 man: medium skin tone, red hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9b0}'],
-    '👨🏾‍🦰 E11.0 man: medium-dark skin tone, red hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9b0}'],
-    '👨🏿‍🦰 E11.0 man: dark skin tone, red hair'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9b0}'], '👨🏻‍🦰 E11.0 man: light skin tone, red hair'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9b0}'], '👨🏼‍🦰 E11.0 man: medium-light skin tone, red hair'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9b0}'], '👨🏽‍🦰 E11.0 man: medium skin tone, red hair'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9b0}'], '👨🏾‍🦰 E11.0 man: medium-dark skin tone, red hair'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9b0}'], '👨🏿‍🦰 E11.0 man: dark skin tone, red hair'),
   (['\u{1f468}\u200d\u{1f9b1}'], '👨‍🦱 E11.0 man: curly hair'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9b1}'],
-    '👨🏻‍🦱 E11.0 man: light skin tone, curly hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9b1}'],
-    '👨🏼‍🦱 E11.0 man: medium-light skin tone, curly hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9b1}'],
-    '👨🏽‍🦱 E11.0 man: medium skin tone, curly hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9b1}'],
-    '👨🏾‍🦱 E11.0 man: medium-dark skin tone, curly hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9b1}'],
-    '👨🏿‍🦱 E11.0 man: dark skin tone, curly hair'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9b1}'], '👨🏻‍🦱 E11.0 man: light skin tone, curly hair'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9b1}'], '👨🏼‍🦱 E11.0 man: medium-light skin tone, curly hair'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9b1}'], '👨🏽‍🦱 E11.0 man: medium skin tone, curly hair'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9b1}'], '👨🏾‍🦱 E11.0 man: medium-dark skin tone, curly hair'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9b1}'], '👨🏿‍🦱 E11.0 man: dark skin tone, curly hair'),
   (['\u{1f468}\u200d\u{1f9b3}'], '👨‍🦳 E11.0 man: white hair'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9b3}'],
-    '👨🏻‍🦳 E11.0 man: light skin tone, white hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9b3}'],
-    '👨🏼‍🦳 E11.0 man: medium-light skin tone, white hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9b3}'],
-    '👨🏽‍🦳 E11.0 man: medium skin tone, white hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9b3}'],
-    '👨🏾‍🦳 E11.0 man: medium-dark skin tone, white hair'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9b3}'],
-    '👨🏿‍🦳 E11.0 man: dark skin tone, white hair'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9b3}'], '👨🏻‍🦳 E11.0 man: light skin tone, white hair'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9b3}'], '👨🏼‍🦳 E11.0 man: medium-light skin tone, white hair'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9b3}'], '👨🏽‍🦳 E11.0 man: medium skin tone, white hair'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9b3}'], '👨🏾‍🦳 E11.0 man: medium-dark skin tone, white hair'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9b3}'], '👨🏿‍🦳 E11.0 man: dark skin tone, white hair'),
   (['\u{1f468}\u200d\u{1f9b2}'], '👨‍🦲 E11.0 man: bald'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9b2}'],
-    '👨🏻‍🦲 E11.0 man: light skin tone, bald'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9b2}'],
-    '👨🏼‍🦲 E11.0 man: medium-light skin tone, bald'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9b2}'],
-    '👨🏽‍🦲 E11.0 man: medium skin tone, bald'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9b2}'],
-    '👨🏾‍🦲 E11.0 man: medium-dark skin tone, bald'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9b2}'],
-    '👨🏿‍🦲 E11.0 man: dark skin tone, bald'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9b2}'], '👨🏻‍🦲 E11.0 man: light skin tone, bald'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9b2}'], '👨🏼‍🦲 E11.0 man: medium-light skin tone, bald'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9b2}'], '👨🏽‍🦲 E11.0 man: medium skin tone, bald'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9b2}'], '👨🏾‍🦲 E11.0 man: medium-dark skin tone, bald'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9b2}'], '👨🏿‍🦲 E11.0 man: dark skin tone, bald'),
   (['\u{1f469}'], '👩 E0.6 woman'),
   (['\u{1f469}\u{1f3fb}'], '👩🏻 E1.0 woman: light skin tone'),
   (['\u{1f469}\u{1f3fc}'], '👩🏼 E1.0 woman: medium-light skin tone'),
@@ -5353,257 +1727,77 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f469}\u{1f3fe}'], '👩🏾 E1.0 woman: medium-dark skin tone'),
   (['\u{1f469}\u{1f3ff}'], '👩🏿 E1.0 woman: dark skin tone'),
   (['\u{1f469}\u200d\u{1f9b0}'], '👩‍🦰 E11.0 woman: red hair'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9b0}'],
-    '👩🏻‍🦰 E11.0 woman: light skin tone, red hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9b0}'],
-    '👩🏼‍🦰 E11.0 woman: medium-light skin tone, red hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9b0}'],
-    '👩🏽‍🦰 E11.0 woman: medium skin tone, red hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9b0}'],
-    '👩🏾‍🦰 E11.0 woman: medium-dark skin tone, red hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9b0}'],
-    '👩🏿‍🦰 E11.0 woman: dark skin tone, red hair'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9b0}'], '👩🏻‍🦰 E11.0 woman: light skin tone, red hair'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9b0}'], '👩🏼‍🦰 E11.0 woman: medium-light skin tone, red hair'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9b0}'], '👩🏽‍🦰 E11.0 woman: medium skin tone, red hair'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9b0}'], '👩🏾‍🦰 E11.0 woman: medium-dark skin tone, red hair'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9b0}'], '👩🏿‍🦰 E11.0 woman: dark skin tone, red hair'),
   (['\u{1f9d1}\u200d\u{1f9b0}'], '🧑‍🦰 E12.1 person: red hair'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b0}'],
-    '🧑🏻‍🦰 E12.1 person: light skin tone, red hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b0}'],
-    '🧑🏼‍🦰 E12.1 person: medium-light skin tone, red hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b0}'],
-    '🧑🏽‍🦰 E12.1 person: medium skin tone, red hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b0}'],
-    '🧑🏾‍🦰 E12.1 person: medium-dark skin tone, red hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b0}'],
-    '🧑🏿‍🦰 E12.1 person: dark skin tone, red hair'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b0}'], '🧑🏻‍🦰 E12.1 person: light skin tone, red hair'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b0}'], '🧑🏼‍🦰 E12.1 person: medium-light skin tone, red hair'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b0}'], '🧑🏽‍🦰 E12.1 person: medium skin tone, red hair'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b0}'], '🧑🏾‍🦰 E12.1 person: medium-dark skin tone, red hair'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b0}'], '🧑🏿‍🦰 E12.1 person: dark skin tone, red hair'),
   (['\u{1f469}\u200d\u{1f9b1}'], '👩‍🦱 E11.0 woman: curly hair'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9b1}'],
-    '👩🏻‍🦱 E11.0 woman: light skin tone, curly hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9b1}'],
-    '👩🏼‍🦱 E11.0 woman: medium-light skin tone, curly hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9b1}'],
-    '👩🏽‍🦱 E11.0 woman: medium skin tone, curly hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9b1}'],
-    '👩🏾‍🦱 E11.0 woman: medium-dark skin tone, curly hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9b1}'],
-    '👩🏿‍🦱 E11.0 woman: dark skin tone, curly hair'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9b1}'], '👩🏻‍🦱 E11.0 woman: light skin tone, curly hair'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9b1}'], '👩🏼‍🦱 E11.0 woman: medium-light skin tone, curly hair'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9b1}'], '👩🏽‍🦱 E11.0 woman: medium skin tone, curly hair'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9b1}'], '👩🏾‍🦱 E11.0 woman: medium-dark skin tone, curly hair'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9b1}'], '👩🏿‍🦱 E11.0 woman: dark skin tone, curly hair'),
   (['\u{1f9d1}\u200d\u{1f9b1}'], '🧑‍🦱 E12.1 person: curly hair'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b1}'],
-    '🧑🏻‍🦱 E12.1 person: light skin tone, curly hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b1}'],
-    '🧑🏼‍🦱 E12.1 person: medium-light skin tone, curly hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b1}'],
-    '🧑🏽‍🦱 E12.1 person: medium skin tone, curly hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b1}'],
-    '🧑🏾‍🦱 E12.1 person: medium-dark skin tone, curly hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b1}'],
-    '🧑🏿‍🦱 E12.1 person: dark skin tone, curly hair'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b1}'], '🧑🏻‍🦱 E12.1 person: light skin tone, curly hair'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b1}'], '🧑🏼‍🦱 E12.1 person: medium-light skin tone, curly hair'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b1}'], '🧑🏽‍🦱 E12.1 person: medium skin tone, curly hair'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b1}'], '🧑🏾‍🦱 E12.1 person: medium-dark skin tone, curly hair'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b1}'], '🧑🏿‍🦱 E12.1 person: dark skin tone, curly hair'),
   (['\u{1f469}\u200d\u{1f9b3}'], '👩‍🦳 E11.0 woman: white hair'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9b3}'],
-    '👩🏻‍🦳 E11.0 woman: light skin tone, white hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9b3}'],
-    '👩🏼‍🦳 E11.0 woman: medium-light skin tone, white hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9b3}'],
-    '👩🏽‍🦳 E11.0 woman: medium skin tone, white hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9b3}'],
-    '👩🏾‍🦳 E11.0 woman: medium-dark skin tone, white hair'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9b3}'],
-    '👩🏿‍🦳 E11.0 woman: dark skin tone, white hair'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9b3}'], '👩🏻‍🦳 E11.0 woman: light skin tone, white hair'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9b3}'], '👩🏼‍🦳 E11.0 woman: medium-light skin tone, white hair'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9b3}'], '👩🏽‍🦳 E11.0 woman: medium skin tone, white hair'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9b3}'], '👩🏾‍🦳 E11.0 woman: medium-dark skin tone, white hair'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9b3}'], '👩🏿‍🦳 E11.0 woman: dark skin tone, white hair'),
   (['\u{1f9d1}\u200d\u{1f9b3}'], '🧑‍🦳 E12.1 person: white hair'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b3}'],
-    '🧑🏻‍🦳 E12.1 person: light skin tone, white hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b3}'],
-    '🧑🏼‍🦳 E12.1 person: medium-light skin tone, white hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b3}'],
-    '🧑🏽‍🦳 E12.1 person: medium skin tone, white hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b3}'],
-    '🧑🏾‍🦳 E12.1 person: medium-dark skin tone, white hair'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b3}'],
-    '🧑🏿‍🦳 E12.1 person: dark skin tone, white hair'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b3}'], '🧑🏻‍🦳 E12.1 person: light skin tone, white hair'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b3}'], '🧑🏼‍🦳 E12.1 person: medium-light skin tone, white hair'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b3}'], '🧑🏽‍🦳 E12.1 person: medium skin tone, white hair'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b3}'], '🧑🏾‍🦳 E12.1 person: medium-dark skin tone, white hair'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b3}'], '🧑🏿‍🦳 E12.1 person: dark skin tone, white hair'),
   (['\u{1f469}\u200d\u{1f9b2}'], '👩‍🦲 E11.0 woman: bald'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9b2}'],
-    '👩🏻‍🦲 E11.0 woman: light skin tone, bald'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9b2}'],
-    '👩🏼‍🦲 E11.0 woman: medium-light skin tone, bald'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9b2}'],
-    '👩🏽‍🦲 E11.0 woman: medium skin tone, bald'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9b2}'],
-    '👩🏾‍🦲 E11.0 woman: medium-dark skin tone, bald'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9b2}'],
-    '👩🏿‍🦲 E11.0 woman: dark skin tone, bald'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9b2}'], '👩🏻‍🦲 E11.0 woman: light skin tone, bald'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9b2}'], '👩🏼‍🦲 E11.0 woman: medium-light skin tone, bald'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9b2}'], '👩🏽‍🦲 E11.0 woman: medium skin tone, bald'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9b2}'], '👩🏾‍🦲 E11.0 woman: medium-dark skin tone, bald'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9b2}'], '👩🏿‍🦲 E11.0 woman: dark skin tone, bald'),
   (['\u{1f9d1}\u200d\u{1f9b2}'], '🧑‍🦲 E12.1 person: bald'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b2}'],
-    '🧑🏻‍🦲 E12.1 person: light skin tone, bald'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b2}'],
-    '🧑🏼‍🦲 E12.1 person: medium-light skin tone, bald'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b2}'],
-    '🧑🏽‍🦲 E12.1 person: medium skin tone, bald'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b2}'],
-    '🧑🏾‍🦲 E12.1 person: medium-dark skin tone, bald'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b2}'],
-    '🧑🏿‍🦲 E12.1 person: dark skin tone, bald'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b2}'], '🧑🏻‍🦲 E12.1 person: light skin tone, bald'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b2}'], '🧑🏼‍🦲 E12.1 person: medium-light skin tone, bald'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b2}'], '🧑🏽‍🦲 E12.1 person: medium skin tone, bald'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b2}'], '🧑🏾‍🦲 E12.1 person: medium-dark skin tone, bald'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b2}'], '🧑🏿‍🦲 E12.1 person: dark skin tone, bald'),
   (['\u{1f471}\u200d\u2640\ufe0f'], '👱‍♀️ E4.0 woman: blond hair'),
   (['\u{1f471}\u200d\u2640'], '👱‍♀ E4.0 woman: blond hair'),
-  (
-    ['\u{1f471}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '👱🏻‍♀️ E4.0 woman: light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fb}\u200d\u2640'],
-    '👱🏻‍♀ E4.0 woman: light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '👱🏼‍♀️ E4.0 woman: medium-light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fc}\u200d\u2640'],
-    '👱🏼‍♀ E4.0 woman: medium-light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '👱🏽‍♀️ E4.0 woman: medium skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fd}\u200d\u2640'],
-    '👱🏽‍♀ E4.0 woman: medium skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '👱🏾‍♀️ E4.0 woman: medium-dark skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fe}\u200d\u2640'],
-    '👱🏾‍♀ E4.0 woman: medium-dark skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '👱🏿‍♀️ E4.0 woman: dark skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3ff}\u200d\u2640'],
-    '👱🏿‍♀ E4.0 woman: dark skin tone, blond hair'
-  ),
+  (['\u{1f471}\u{1f3fb}\u200d\u2640\ufe0f'], '👱🏻‍♀️ E4.0 woman: light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fb}\u200d\u2640'], '👱🏻‍♀ E4.0 woman: light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fc}\u200d\u2640\ufe0f'], '👱🏼‍♀️ E4.0 woman: medium-light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fc}\u200d\u2640'], '👱🏼‍♀ E4.0 woman: medium-light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fd}\u200d\u2640\ufe0f'], '👱🏽‍♀️ E4.0 woman: medium skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fd}\u200d\u2640'], '👱🏽‍♀ E4.0 woman: medium skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fe}\u200d\u2640\ufe0f'], '👱🏾‍♀️ E4.0 woman: medium-dark skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fe}\u200d\u2640'], '👱🏾‍♀ E4.0 woman: medium-dark skin tone, blond hair'),
+  (['\u{1f471}\u{1f3ff}\u200d\u2640\ufe0f'], '👱🏿‍♀️ E4.0 woman: dark skin tone, blond hair'),
+  (['\u{1f471}\u{1f3ff}\u200d\u2640'], '👱🏿‍♀ E4.0 woman: dark skin tone, blond hair'),
   (['\u{1f471}\u200d\u2642\ufe0f'], '👱‍♂️ E4.0 man: blond hair'),
   (['\u{1f471}\u200d\u2642'], '👱‍♂ E4.0 man: blond hair'),
-  (
-    ['\u{1f471}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '👱🏻‍♂️ E4.0 man: light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fb}\u200d\u2642'],
-    '👱🏻‍♂ E4.0 man: light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '👱🏼‍♂️ E4.0 man: medium-light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fc}\u200d\u2642'],
-    '👱🏼‍♂ E4.0 man: medium-light skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '👱🏽‍♂️ E4.0 man: medium skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fd}\u200d\u2642'],
-    '👱🏽‍♂ E4.0 man: medium skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '👱🏾‍♂️ E4.0 man: medium-dark skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3fe}\u200d\u2642'],
-    '👱🏾‍♂ E4.0 man: medium-dark skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '👱🏿‍♂️ E4.0 man: dark skin tone, blond hair'
-  ),
-  (
-    ['\u{1f471}\u{1f3ff}\u200d\u2642'],
-    '👱🏿‍♂ E4.0 man: dark skin tone, blond hair'
-  ),
+  (['\u{1f471}\u{1f3fb}\u200d\u2642\ufe0f'], '👱🏻‍♂️ E4.0 man: light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fb}\u200d\u2642'], '👱🏻‍♂ E4.0 man: light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fc}\u200d\u2642\ufe0f'], '👱🏼‍♂️ E4.0 man: medium-light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fc}\u200d\u2642'], '👱🏼‍♂ E4.0 man: medium-light skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fd}\u200d\u2642\ufe0f'], '👱🏽‍♂️ E4.0 man: medium skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fd}\u200d\u2642'], '👱🏽‍♂ E4.0 man: medium skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fe}\u200d\u2642\ufe0f'], '👱🏾‍♂️ E4.0 man: medium-dark skin tone, blond hair'),
+  (['\u{1f471}\u{1f3fe}\u200d\u2642'], '👱🏾‍♂ E4.0 man: medium-dark skin tone, blond hair'),
+  (['\u{1f471}\u{1f3ff}\u200d\u2642\ufe0f'], '👱🏿‍♂️ E4.0 man: dark skin tone, blond hair'),
+  (['\u{1f471}\u{1f3ff}\u200d\u2642'], '👱🏿‍♂ E4.0 man: dark skin tone, blond hair'),
   (['\u{1f9d3}'], '🧓 E5.0 older person'),
   (['\u{1f9d3}\u{1f3fb}'], '🧓🏻 E5.0 older person: light skin tone'),
   (['\u{1f9d3}\u{1f3fc}'], '🧓🏼 E5.0 older person: medium-light skin tone'),
@@ -5630,88 +1824,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f64d}\u{1f3ff}'], '🙍🏿 E1.0 person frowning: dark skin tone'),
   (['\u{1f64d}\u200d\u2642\ufe0f'], '🙍‍♂️ E4.0 man frowning'),
   (['\u{1f64d}\u200d\u2642'], '🙍‍♂ E4.0 man frowning'),
-  (
-    ['\u{1f64d}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🙍🏻‍♂️ E4.0 man frowning: light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fb}\u200d\u2642'],
-    '🙍🏻‍♂ E4.0 man frowning: light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🙍🏼‍♂️ E4.0 man frowning: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fc}\u200d\u2642'],
-    '🙍🏼‍♂ E4.0 man frowning: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🙍🏽‍♂️ E4.0 man frowning: medium skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fd}\u200d\u2642'],
-    '🙍🏽‍♂ E4.0 man frowning: medium skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🙍🏾‍♂️ E4.0 man frowning: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fe}\u200d\u2642'],
-    '🙍🏾‍♂ E4.0 man frowning: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🙍🏿‍♂️ E4.0 man frowning: dark skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3ff}\u200d\u2642'],
-    '🙍🏿‍♂ E4.0 man frowning: dark skin tone'
-  ),
+  (['\u{1f64d}\u{1f3fb}\u200d\u2642\ufe0f'], '🙍🏻‍♂️ E4.0 man frowning: light skin tone'),
+  (['\u{1f64d}\u{1f3fb}\u200d\u2642'], '🙍🏻‍♂ E4.0 man frowning: light skin tone'),
+  (['\u{1f64d}\u{1f3fc}\u200d\u2642\ufe0f'], '🙍🏼‍♂️ E4.0 man frowning: medium-light skin tone'),
+  (['\u{1f64d}\u{1f3fc}\u200d\u2642'], '🙍🏼‍♂ E4.0 man frowning: medium-light skin tone'),
+  (['\u{1f64d}\u{1f3fd}\u200d\u2642\ufe0f'], '🙍🏽‍♂️ E4.0 man frowning: medium skin tone'),
+  (['\u{1f64d}\u{1f3fd}\u200d\u2642'], '🙍🏽‍♂ E4.0 man frowning: medium skin tone'),
+  (['\u{1f64d}\u{1f3fe}\u200d\u2642\ufe0f'], '🙍🏾‍♂️ E4.0 man frowning: medium-dark skin tone'),
+  (['\u{1f64d}\u{1f3fe}\u200d\u2642'], '🙍🏾‍♂ E4.0 man frowning: medium-dark skin tone'),
+  (['\u{1f64d}\u{1f3ff}\u200d\u2642\ufe0f'], '🙍🏿‍♂️ E4.0 man frowning: dark skin tone'),
+  (['\u{1f64d}\u{1f3ff}\u200d\u2642'], '🙍🏿‍♂ E4.0 man frowning: dark skin tone'),
   (['\u{1f64d}\u200d\u2640\ufe0f'], '🙍‍♀️ E4.0 woman frowning'),
   (['\u{1f64d}\u200d\u2640'], '🙍‍♀ E4.0 woman frowning'),
-  (
-    ['\u{1f64d}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🙍🏻‍♀️ E4.0 woman frowning: light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fb}\u200d\u2640'],
-    '🙍🏻‍♀ E4.0 woman frowning: light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🙍🏼‍♀️ E4.0 woman frowning: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fc}\u200d\u2640'],
-    '🙍🏼‍♀ E4.0 woman frowning: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🙍🏽‍♀️ E4.0 woman frowning: medium skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fd}\u200d\u2640'],
-    '🙍🏽‍♀ E4.0 woman frowning: medium skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🙍🏾‍♀️ E4.0 woman frowning: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3fe}\u200d\u2640'],
-    '🙍🏾‍♀ E4.0 woman frowning: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🙍🏿‍♀️ E4.0 woman frowning: dark skin tone'
-  ),
-  (
-    ['\u{1f64d}\u{1f3ff}\u200d\u2640'],
-    '🙍🏿‍♀ E4.0 woman frowning: dark skin tone'
-  ),
+  (['\u{1f64d}\u{1f3fb}\u200d\u2640\ufe0f'], '🙍🏻‍♀️ E4.0 woman frowning: light skin tone'),
+  (['\u{1f64d}\u{1f3fb}\u200d\u2640'], '🙍🏻‍♀ E4.0 woman frowning: light skin tone'),
+  (['\u{1f64d}\u{1f3fc}\u200d\u2640\ufe0f'], '🙍🏼‍♀️ E4.0 woman frowning: medium-light skin tone'),
+  (['\u{1f64d}\u{1f3fc}\u200d\u2640'], '🙍🏼‍♀ E4.0 woman frowning: medium-light skin tone'),
+  (['\u{1f64d}\u{1f3fd}\u200d\u2640\ufe0f'], '🙍🏽‍♀️ E4.0 woman frowning: medium skin tone'),
+  (['\u{1f64d}\u{1f3fd}\u200d\u2640'], '🙍🏽‍♀ E4.0 woman frowning: medium skin tone'),
+  (['\u{1f64d}\u{1f3fe}\u200d\u2640\ufe0f'], '🙍🏾‍♀️ E4.0 woman frowning: medium-dark skin tone'),
+  (['\u{1f64d}\u{1f3fe}\u200d\u2640'], '🙍🏾‍♀ E4.0 woman frowning: medium-dark skin tone'),
+  (['\u{1f64d}\u{1f3ff}\u200d\u2640\ufe0f'], '🙍🏿‍♀️ E4.0 woman frowning: dark skin tone'),
+  (['\u{1f64d}\u{1f3ff}\u200d\u2640'], '🙍🏿‍♀ E4.0 woman frowning: dark skin tone'),
   (['\u{1f64e}'], '🙎 E0.6 person pouting'),
   (['\u{1f64e}\u{1f3fb}'], '🙎🏻 E1.0 person pouting: light skin tone'),
   (['\u{1f64e}\u{1f3fc}'], '🙎🏼 E1.0 person pouting: medium-light skin tone'),
@@ -5720,472 +1854,148 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f64e}\u{1f3ff}'], '🙎🏿 E1.0 person pouting: dark skin tone'),
   (['\u{1f64e}\u200d\u2642\ufe0f'], '🙎‍♂️ E4.0 man pouting'),
   (['\u{1f64e}\u200d\u2642'], '🙎‍♂ E4.0 man pouting'),
-  (
-    ['\u{1f64e}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🙎🏻‍♂️ E4.0 man pouting: light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fb}\u200d\u2642'],
-    '🙎🏻‍♂ E4.0 man pouting: light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🙎🏼‍♂️ E4.0 man pouting: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fc}\u200d\u2642'],
-    '🙎🏼‍♂ E4.0 man pouting: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🙎🏽‍♂️ E4.0 man pouting: medium skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fd}\u200d\u2642'],
-    '🙎🏽‍♂ E4.0 man pouting: medium skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🙎🏾‍♂️ E4.0 man pouting: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fe}\u200d\u2642'],
-    '🙎🏾‍♂ E4.0 man pouting: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🙎🏿‍♂️ E4.0 man pouting: dark skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3ff}\u200d\u2642'],
-    '🙎🏿‍♂ E4.0 man pouting: dark skin tone'
-  ),
+  (['\u{1f64e}\u{1f3fb}\u200d\u2642\ufe0f'], '🙎🏻‍♂️ E4.0 man pouting: light skin tone'),
+  (['\u{1f64e}\u{1f3fb}\u200d\u2642'], '🙎🏻‍♂ E4.0 man pouting: light skin tone'),
+  (['\u{1f64e}\u{1f3fc}\u200d\u2642\ufe0f'], '🙎🏼‍♂️ E4.0 man pouting: medium-light skin tone'),
+  (['\u{1f64e}\u{1f3fc}\u200d\u2642'], '🙎🏼‍♂ E4.0 man pouting: medium-light skin tone'),
+  (['\u{1f64e}\u{1f3fd}\u200d\u2642\ufe0f'], '🙎🏽‍♂️ E4.0 man pouting: medium skin tone'),
+  (['\u{1f64e}\u{1f3fd}\u200d\u2642'], '🙎🏽‍♂ E4.0 man pouting: medium skin tone'),
+  (['\u{1f64e}\u{1f3fe}\u200d\u2642\ufe0f'], '🙎🏾‍♂️ E4.0 man pouting: medium-dark skin tone'),
+  (['\u{1f64e}\u{1f3fe}\u200d\u2642'], '🙎🏾‍♂ E4.0 man pouting: medium-dark skin tone'),
+  (['\u{1f64e}\u{1f3ff}\u200d\u2642\ufe0f'], '🙎🏿‍♂️ E4.0 man pouting: dark skin tone'),
+  (['\u{1f64e}\u{1f3ff}\u200d\u2642'], '🙎🏿‍♂ E4.0 man pouting: dark skin tone'),
   (['\u{1f64e}\u200d\u2640\ufe0f'], '🙎‍♀️ E4.0 woman pouting'),
   (['\u{1f64e}\u200d\u2640'], '🙎‍♀ E4.0 woman pouting'),
-  (
-    ['\u{1f64e}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🙎🏻‍♀️ E4.0 woman pouting: light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fb}\u200d\u2640'],
-    '🙎🏻‍♀ E4.0 woman pouting: light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🙎🏼‍♀️ E4.0 woman pouting: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fc}\u200d\u2640'],
-    '🙎🏼‍♀ E4.0 woman pouting: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🙎🏽‍♀️ E4.0 woman pouting: medium skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fd}\u200d\u2640'],
-    '🙎🏽‍♀ E4.0 woman pouting: medium skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🙎🏾‍♀️ E4.0 woman pouting: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3fe}\u200d\u2640'],
-    '🙎🏾‍♀ E4.0 woman pouting: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🙎🏿‍♀️ E4.0 woman pouting: dark skin tone'
-  ),
-  (
-    ['\u{1f64e}\u{1f3ff}\u200d\u2640'],
-    '🙎🏿‍♀ E4.0 woman pouting: dark skin tone'
-  ),
+  (['\u{1f64e}\u{1f3fb}\u200d\u2640\ufe0f'], '🙎🏻‍♀️ E4.0 woman pouting: light skin tone'),
+  (['\u{1f64e}\u{1f3fb}\u200d\u2640'], '🙎🏻‍♀ E4.0 woman pouting: light skin tone'),
+  (['\u{1f64e}\u{1f3fc}\u200d\u2640\ufe0f'], '🙎🏼‍♀️ E4.0 woman pouting: medium-light skin tone'),
+  (['\u{1f64e}\u{1f3fc}\u200d\u2640'], '🙎🏼‍♀ E4.0 woman pouting: medium-light skin tone'),
+  (['\u{1f64e}\u{1f3fd}\u200d\u2640\ufe0f'], '🙎🏽‍♀️ E4.0 woman pouting: medium skin tone'),
+  (['\u{1f64e}\u{1f3fd}\u200d\u2640'], '🙎🏽‍♀ E4.0 woman pouting: medium skin tone'),
+  (['\u{1f64e}\u{1f3fe}\u200d\u2640\ufe0f'], '🙎🏾‍♀️ E4.0 woman pouting: medium-dark skin tone'),
+  (['\u{1f64e}\u{1f3fe}\u200d\u2640'], '🙎🏾‍♀ E4.0 woman pouting: medium-dark skin tone'),
+  (['\u{1f64e}\u{1f3ff}\u200d\u2640\ufe0f'], '🙎🏿‍♀️ E4.0 woman pouting: dark skin tone'),
+  (['\u{1f64e}\u{1f3ff}\u200d\u2640'], '🙎🏿‍♀ E4.0 woman pouting: dark skin tone'),
   (['\u{1f645}'], '🙅 E0.6 person gesturing NO'),
   (['\u{1f645}\u{1f3fb}'], '🙅🏻 E1.0 person gesturing NO: light skin tone'),
-  (
-    ['\u{1f645}\u{1f3fc}'],
-    '🙅🏼 E1.0 person gesturing NO: medium-light skin tone'
-  ),
+  (['\u{1f645}\u{1f3fc}'], '🙅🏼 E1.0 person gesturing NO: medium-light skin tone'),
   (['\u{1f645}\u{1f3fd}'], '🙅🏽 E1.0 person gesturing NO: medium skin tone'),
-  (
-    ['\u{1f645}\u{1f3fe}'],
-    '🙅🏾 E1.0 person gesturing NO: medium-dark skin tone'
-  ),
+  (['\u{1f645}\u{1f3fe}'], '🙅🏾 E1.0 person gesturing NO: medium-dark skin tone'),
   (['\u{1f645}\u{1f3ff}'], '🙅🏿 E1.0 person gesturing NO: dark skin tone'),
   (['\u{1f645}\u200d\u2642\ufe0f'], '🙅‍♂️ E4.0 man gesturing NO'),
   (['\u{1f645}\u200d\u2642'], '🙅‍♂ E4.0 man gesturing NO'),
-  (
-    ['\u{1f645}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🙅🏻‍♂️ E4.0 man gesturing NO: light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fb}\u200d\u2642'],
-    '🙅🏻‍♂ E4.0 man gesturing NO: light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🙅🏼‍♂️ E4.0 man gesturing NO: medium-light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fc}\u200d\u2642'],
-    '🙅🏼‍♂ E4.0 man gesturing NO: medium-light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🙅🏽‍♂️ E4.0 man gesturing NO: medium skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fd}\u200d\u2642'],
-    '🙅🏽‍♂ E4.0 man gesturing NO: medium skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🙅🏾‍♂️ E4.0 man gesturing NO: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fe}\u200d\u2642'],
-    '🙅🏾‍♂ E4.0 man gesturing NO: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🙅🏿‍♂️ E4.0 man gesturing NO: dark skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3ff}\u200d\u2642'],
-    '🙅🏿‍♂ E4.0 man gesturing NO: dark skin tone'
-  ),
+  (['\u{1f645}\u{1f3fb}\u200d\u2642\ufe0f'], '🙅🏻‍♂️ E4.0 man gesturing NO: light skin tone'),
+  (['\u{1f645}\u{1f3fb}\u200d\u2642'], '🙅🏻‍♂ E4.0 man gesturing NO: light skin tone'),
+  (['\u{1f645}\u{1f3fc}\u200d\u2642\ufe0f'], '🙅🏼‍♂️ E4.0 man gesturing NO: medium-light skin tone'),
+  (['\u{1f645}\u{1f3fc}\u200d\u2642'], '🙅🏼‍♂ E4.0 man gesturing NO: medium-light skin tone'),
+  (['\u{1f645}\u{1f3fd}\u200d\u2642\ufe0f'], '🙅🏽‍♂️ E4.0 man gesturing NO: medium skin tone'),
+  (['\u{1f645}\u{1f3fd}\u200d\u2642'], '🙅🏽‍♂ E4.0 man gesturing NO: medium skin tone'),
+  (['\u{1f645}\u{1f3fe}\u200d\u2642\ufe0f'], '🙅🏾‍♂️ E4.0 man gesturing NO: medium-dark skin tone'),
+  (['\u{1f645}\u{1f3fe}\u200d\u2642'], '🙅🏾‍♂ E4.0 man gesturing NO: medium-dark skin tone'),
+  (['\u{1f645}\u{1f3ff}\u200d\u2642\ufe0f'], '🙅🏿‍♂️ E4.0 man gesturing NO: dark skin tone'),
+  (['\u{1f645}\u{1f3ff}\u200d\u2642'], '🙅🏿‍♂ E4.0 man gesturing NO: dark skin tone'),
   (['\u{1f645}\u200d\u2640\ufe0f'], '🙅‍♀️ E4.0 woman gesturing NO'),
   (['\u{1f645}\u200d\u2640'], '🙅‍♀ E4.0 woman gesturing NO'),
-  (
-    ['\u{1f645}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🙅🏻‍♀️ E4.0 woman gesturing NO: light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fb}\u200d\u2640'],
-    '🙅🏻‍♀ E4.0 woman gesturing NO: light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🙅🏼‍♀️ E4.0 woman gesturing NO: medium-light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fc}\u200d\u2640'],
-    '🙅🏼‍♀ E4.0 woman gesturing NO: medium-light skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🙅🏽‍♀️ E4.0 woman gesturing NO: medium skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fd}\u200d\u2640'],
-    '🙅🏽‍♀ E4.0 woman gesturing NO: medium skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🙅🏾‍♀️ E4.0 woman gesturing NO: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3fe}\u200d\u2640'],
-    '🙅🏾‍♀ E4.0 woman gesturing NO: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🙅🏿‍♀️ E4.0 woman gesturing NO: dark skin tone'
-  ),
-  (
-    ['\u{1f645}\u{1f3ff}\u200d\u2640'],
-    '🙅🏿‍♀ E4.0 woman gesturing NO: dark skin tone'
-  ),
+  (['\u{1f645}\u{1f3fb}\u200d\u2640\ufe0f'], '🙅🏻‍♀️ E4.0 woman gesturing NO: light skin tone'),
+  (['\u{1f645}\u{1f3fb}\u200d\u2640'], '🙅🏻‍♀ E4.0 woman gesturing NO: light skin tone'),
+  (['\u{1f645}\u{1f3fc}\u200d\u2640\ufe0f'], '🙅🏼‍♀️ E4.0 woman gesturing NO: medium-light skin tone'),
+  (['\u{1f645}\u{1f3fc}\u200d\u2640'], '🙅🏼‍♀ E4.0 woman gesturing NO: medium-light skin tone'),
+  (['\u{1f645}\u{1f3fd}\u200d\u2640\ufe0f'], '🙅🏽‍♀️ E4.0 woman gesturing NO: medium skin tone'),
+  (['\u{1f645}\u{1f3fd}\u200d\u2640'], '🙅🏽‍♀ E4.0 woman gesturing NO: medium skin tone'),
+  (['\u{1f645}\u{1f3fe}\u200d\u2640\ufe0f'], '🙅🏾‍♀️ E4.0 woman gesturing NO: medium-dark skin tone'),
+  (['\u{1f645}\u{1f3fe}\u200d\u2640'], '🙅🏾‍♀ E4.0 woman gesturing NO: medium-dark skin tone'),
+  (['\u{1f645}\u{1f3ff}\u200d\u2640\ufe0f'], '🙅🏿‍♀️ E4.0 woman gesturing NO: dark skin tone'),
+  (['\u{1f645}\u{1f3ff}\u200d\u2640'], '🙅🏿‍♀ E4.0 woman gesturing NO: dark skin tone'),
   (['\u{1f646}'], '🙆 E0.6 person gesturing OK'),
   (['\u{1f646}\u{1f3fb}'], '🙆🏻 E1.0 person gesturing OK: light skin tone'),
-  (
-    ['\u{1f646}\u{1f3fc}'],
-    '🙆🏼 E1.0 person gesturing OK: medium-light skin tone'
-  ),
+  (['\u{1f646}\u{1f3fc}'], '🙆🏼 E1.0 person gesturing OK: medium-light skin tone'),
   (['\u{1f646}\u{1f3fd}'], '🙆🏽 E1.0 person gesturing OK: medium skin tone'),
-  (
-    ['\u{1f646}\u{1f3fe}'],
-    '🙆🏾 E1.0 person gesturing OK: medium-dark skin tone'
-  ),
+  (['\u{1f646}\u{1f3fe}'], '🙆🏾 E1.0 person gesturing OK: medium-dark skin tone'),
   (['\u{1f646}\u{1f3ff}'], '🙆🏿 E1.0 person gesturing OK: dark skin tone'),
   (['\u{1f646}\u200d\u2642\ufe0f'], '🙆‍♂️ E4.0 man gesturing OK'),
   (['\u{1f646}\u200d\u2642'], '🙆‍♂ E4.0 man gesturing OK'),
-  (
-    ['\u{1f646}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🙆🏻‍♂️ E4.0 man gesturing OK: light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fb}\u200d\u2642'],
-    '🙆🏻‍♂ E4.0 man gesturing OK: light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🙆🏼‍♂️ E4.0 man gesturing OK: medium-light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fc}\u200d\u2642'],
-    '🙆🏼‍♂ E4.0 man gesturing OK: medium-light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🙆🏽‍♂️ E4.0 man gesturing OK: medium skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fd}\u200d\u2642'],
-    '🙆🏽‍♂ E4.0 man gesturing OK: medium skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🙆🏾‍♂️ E4.0 man gesturing OK: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fe}\u200d\u2642'],
-    '🙆🏾‍♂ E4.0 man gesturing OK: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🙆🏿‍♂️ E4.0 man gesturing OK: dark skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3ff}\u200d\u2642'],
-    '🙆🏿‍♂ E4.0 man gesturing OK: dark skin tone'
-  ),
+  (['\u{1f646}\u{1f3fb}\u200d\u2642\ufe0f'], '🙆🏻‍♂️ E4.0 man gesturing OK: light skin tone'),
+  (['\u{1f646}\u{1f3fb}\u200d\u2642'], '🙆🏻‍♂ E4.0 man gesturing OK: light skin tone'),
+  (['\u{1f646}\u{1f3fc}\u200d\u2642\ufe0f'], '🙆🏼‍♂️ E4.0 man gesturing OK: medium-light skin tone'),
+  (['\u{1f646}\u{1f3fc}\u200d\u2642'], '🙆🏼‍♂ E4.0 man gesturing OK: medium-light skin tone'),
+  (['\u{1f646}\u{1f3fd}\u200d\u2642\ufe0f'], '🙆🏽‍♂️ E4.0 man gesturing OK: medium skin tone'),
+  (['\u{1f646}\u{1f3fd}\u200d\u2642'], '🙆🏽‍♂ E4.0 man gesturing OK: medium skin tone'),
+  (['\u{1f646}\u{1f3fe}\u200d\u2642\ufe0f'], '🙆🏾‍♂️ E4.0 man gesturing OK: medium-dark skin tone'),
+  (['\u{1f646}\u{1f3fe}\u200d\u2642'], '🙆🏾‍♂ E4.0 man gesturing OK: medium-dark skin tone'),
+  (['\u{1f646}\u{1f3ff}\u200d\u2642\ufe0f'], '🙆🏿‍♂️ E4.0 man gesturing OK: dark skin tone'),
+  (['\u{1f646}\u{1f3ff}\u200d\u2642'], '🙆🏿‍♂ E4.0 man gesturing OK: dark skin tone'),
   (['\u{1f646}\u200d\u2640\ufe0f'], '🙆‍♀️ E4.0 woman gesturing OK'),
   (['\u{1f646}\u200d\u2640'], '🙆‍♀ E4.0 woman gesturing OK'),
-  (
-    ['\u{1f646}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🙆🏻‍♀️ E4.0 woman gesturing OK: light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fb}\u200d\u2640'],
-    '🙆🏻‍♀ E4.0 woman gesturing OK: light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🙆🏼‍♀️ E4.0 woman gesturing OK: medium-light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fc}\u200d\u2640'],
-    '🙆🏼‍♀ E4.0 woman gesturing OK: medium-light skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🙆🏽‍♀️ E4.0 woman gesturing OK: medium skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fd}\u200d\u2640'],
-    '🙆🏽‍♀ E4.0 woman gesturing OK: medium skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🙆🏾‍♀️ E4.0 woman gesturing OK: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3fe}\u200d\u2640'],
-    '🙆🏾‍♀ E4.0 woman gesturing OK: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🙆🏿‍♀️ E4.0 woman gesturing OK: dark skin tone'
-  ),
-  (
-    ['\u{1f646}\u{1f3ff}\u200d\u2640'],
-    '🙆🏿‍♀ E4.0 woman gesturing OK: dark skin tone'
-  ),
+  (['\u{1f646}\u{1f3fb}\u200d\u2640\ufe0f'], '🙆🏻‍♀️ E4.0 woman gesturing OK: light skin tone'),
+  (['\u{1f646}\u{1f3fb}\u200d\u2640'], '🙆🏻‍♀ E4.0 woman gesturing OK: light skin tone'),
+  (['\u{1f646}\u{1f3fc}\u200d\u2640\ufe0f'], '🙆🏼‍♀️ E4.0 woman gesturing OK: medium-light skin tone'),
+  (['\u{1f646}\u{1f3fc}\u200d\u2640'], '🙆🏼‍♀ E4.0 woman gesturing OK: medium-light skin tone'),
+  (['\u{1f646}\u{1f3fd}\u200d\u2640\ufe0f'], '🙆🏽‍♀️ E4.0 woman gesturing OK: medium skin tone'),
+  (['\u{1f646}\u{1f3fd}\u200d\u2640'], '🙆🏽‍♀ E4.0 woman gesturing OK: medium skin tone'),
+  (['\u{1f646}\u{1f3fe}\u200d\u2640\ufe0f'], '🙆🏾‍♀️ E4.0 woman gesturing OK: medium-dark skin tone'),
+  (['\u{1f646}\u{1f3fe}\u200d\u2640'], '🙆🏾‍♀ E4.0 woman gesturing OK: medium-dark skin tone'),
+  (['\u{1f646}\u{1f3ff}\u200d\u2640\ufe0f'], '🙆🏿‍♀️ E4.0 woman gesturing OK: dark skin tone'),
+  (['\u{1f646}\u{1f3ff}\u200d\u2640'], '🙆🏿‍♀ E4.0 woman gesturing OK: dark skin tone'),
   (['\u{1f481}'], '💁 E0.6 person tipping hand'),
   (['\u{1f481}\u{1f3fb}'], '💁🏻 E1.0 person tipping hand: light skin tone'),
-  (
-    ['\u{1f481}\u{1f3fc}'],
-    '💁🏼 E1.0 person tipping hand: medium-light skin tone'
-  ),
+  (['\u{1f481}\u{1f3fc}'], '💁🏼 E1.0 person tipping hand: medium-light skin tone'),
   (['\u{1f481}\u{1f3fd}'], '💁🏽 E1.0 person tipping hand: medium skin tone'),
-  (
-    ['\u{1f481}\u{1f3fe}'],
-    '💁🏾 E1.0 person tipping hand: medium-dark skin tone'
-  ),
+  (['\u{1f481}\u{1f3fe}'], '💁🏾 E1.0 person tipping hand: medium-dark skin tone'),
   (['\u{1f481}\u{1f3ff}'], '💁🏿 E1.0 person tipping hand: dark skin tone'),
   (['\u{1f481}\u200d\u2642\ufe0f'], '💁‍♂️ E4.0 man tipping hand'),
   (['\u{1f481}\u200d\u2642'], '💁‍♂ E4.0 man tipping hand'),
-  (
-    ['\u{1f481}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '💁🏻‍♂️ E4.0 man tipping hand: light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fb}\u200d\u2642'],
-    '💁🏻‍♂ E4.0 man tipping hand: light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '💁🏼‍♂️ E4.0 man tipping hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fc}\u200d\u2642'],
-    '💁🏼‍♂ E4.0 man tipping hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '💁🏽‍♂️ E4.0 man tipping hand: medium skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fd}\u200d\u2642'],
-    '💁🏽‍♂ E4.0 man tipping hand: medium skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '💁🏾‍♂️ E4.0 man tipping hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fe}\u200d\u2642'],
-    '💁🏾‍♂ E4.0 man tipping hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '💁🏿‍♂️ E4.0 man tipping hand: dark skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3ff}\u200d\u2642'],
-    '💁🏿‍♂ E4.0 man tipping hand: dark skin tone'
-  ),
+  (['\u{1f481}\u{1f3fb}\u200d\u2642\ufe0f'], '💁🏻‍♂️ E4.0 man tipping hand: light skin tone'),
+  (['\u{1f481}\u{1f3fb}\u200d\u2642'], '💁🏻‍♂ E4.0 man tipping hand: light skin tone'),
+  (['\u{1f481}\u{1f3fc}\u200d\u2642\ufe0f'], '💁🏼‍♂️ E4.0 man tipping hand: medium-light skin tone'),
+  (['\u{1f481}\u{1f3fc}\u200d\u2642'], '💁🏼‍♂ E4.0 man tipping hand: medium-light skin tone'),
+  (['\u{1f481}\u{1f3fd}\u200d\u2642\ufe0f'], '💁🏽‍♂️ E4.0 man tipping hand: medium skin tone'),
+  (['\u{1f481}\u{1f3fd}\u200d\u2642'], '💁🏽‍♂ E4.0 man tipping hand: medium skin tone'),
+  (['\u{1f481}\u{1f3fe}\u200d\u2642\ufe0f'], '💁🏾‍♂️ E4.0 man tipping hand: medium-dark skin tone'),
+  (['\u{1f481}\u{1f3fe}\u200d\u2642'], '💁🏾‍♂ E4.0 man tipping hand: medium-dark skin tone'),
+  (['\u{1f481}\u{1f3ff}\u200d\u2642\ufe0f'], '💁🏿‍♂️ E4.0 man tipping hand: dark skin tone'),
+  (['\u{1f481}\u{1f3ff}\u200d\u2642'], '💁🏿‍♂ E4.0 man tipping hand: dark skin tone'),
   (['\u{1f481}\u200d\u2640\ufe0f'], '💁‍♀️ E4.0 woman tipping hand'),
   (['\u{1f481}\u200d\u2640'], '💁‍♀ E4.0 woman tipping hand'),
-  (
-    ['\u{1f481}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '💁🏻‍♀️ E4.0 woman tipping hand: light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fb}\u200d\u2640'],
-    '💁🏻‍♀ E4.0 woman tipping hand: light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '💁🏼‍♀️ E4.0 woman tipping hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fc}\u200d\u2640'],
-    '💁🏼‍♀ E4.0 woman tipping hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '💁🏽‍♀️ E4.0 woman tipping hand: medium skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fd}\u200d\u2640'],
-    '💁🏽‍♀ E4.0 woman tipping hand: medium skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '💁🏾‍♀️ E4.0 woman tipping hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3fe}\u200d\u2640'],
-    '💁🏾‍♀ E4.0 woman tipping hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '💁🏿‍♀️ E4.0 woman tipping hand: dark skin tone'
-  ),
-  (
-    ['\u{1f481}\u{1f3ff}\u200d\u2640'],
-    '💁🏿‍♀ E4.0 woman tipping hand: dark skin tone'
-  ),
+  (['\u{1f481}\u{1f3fb}\u200d\u2640\ufe0f'], '💁🏻‍♀️ E4.0 woman tipping hand: light skin tone'),
+  (['\u{1f481}\u{1f3fb}\u200d\u2640'], '💁🏻‍♀ E4.0 woman tipping hand: light skin tone'),
+  (['\u{1f481}\u{1f3fc}\u200d\u2640\ufe0f'], '💁🏼‍♀️ E4.0 woman tipping hand: medium-light skin tone'),
+  (['\u{1f481}\u{1f3fc}\u200d\u2640'], '💁🏼‍♀ E4.0 woman tipping hand: medium-light skin tone'),
+  (['\u{1f481}\u{1f3fd}\u200d\u2640\ufe0f'], '💁🏽‍♀️ E4.0 woman tipping hand: medium skin tone'),
+  (['\u{1f481}\u{1f3fd}\u200d\u2640'], '💁🏽‍♀ E4.0 woman tipping hand: medium skin tone'),
+  (['\u{1f481}\u{1f3fe}\u200d\u2640\ufe0f'], '💁🏾‍♀️ E4.0 woman tipping hand: medium-dark skin tone'),
+  (['\u{1f481}\u{1f3fe}\u200d\u2640'], '💁🏾‍♀ E4.0 woman tipping hand: medium-dark skin tone'),
+  (['\u{1f481}\u{1f3ff}\u200d\u2640\ufe0f'], '💁🏿‍♀️ E4.0 woman tipping hand: dark skin tone'),
+  (['\u{1f481}\u{1f3ff}\u200d\u2640'], '💁🏿‍♀ E4.0 woman tipping hand: dark skin tone'),
   (['\u{1f64b}'], '🙋 E0.6 person raising hand'),
   (['\u{1f64b}\u{1f3fb}'], '🙋🏻 E1.0 person raising hand: light skin tone'),
-  (
-    ['\u{1f64b}\u{1f3fc}'],
-    '🙋🏼 E1.0 person raising hand: medium-light skin tone'
-  ),
+  (['\u{1f64b}\u{1f3fc}'], '🙋🏼 E1.0 person raising hand: medium-light skin tone'),
   (['\u{1f64b}\u{1f3fd}'], '🙋🏽 E1.0 person raising hand: medium skin tone'),
-  (
-    ['\u{1f64b}\u{1f3fe}'],
-    '🙋🏾 E1.0 person raising hand: medium-dark skin tone'
-  ),
+  (['\u{1f64b}\u{1f3fe}'], '🙋🏾 E1.0 person raising hand: medium-dark skin tone'),
   (['\u{1f64b}\u{1f3ff}'], '🙋🏿 E1.0 person raising hand: dark skin tone'),
   (['\u{1f64b}\u200d\u2642\ufe0f'], '🙋‍♂️ E4.0 man raising hand'),
   (['\u{1f64b}\u200d\u2642'], '🙋‍♂ E4.0 man raising hand'),
-  (
-    ['\u{1f64b}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🙋🏻‍♂️ E4.0 man raising hand: light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fb}\u200d\u2642'],
-    '🙋🏻‍♂ E4.0 man raising hand: light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🙋🏼‍♂️ E4.0 man raising hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fc}\u200d\u2642'],
-    '🙋🏼‍♂ E4.0 man raising hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🙋🏽‍♂️ E4.0 man raising hand: medium skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fd}\u200d\u2642'],
-    '🙋🏽‍♂ E4.0 man raising hand: medium skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🙋🏾‍♂️ E4.0 man raising hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fe}\u200d\u2642'],
-    '🙋🏾‍♂ E4.0 man raising hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🙋🏿‍♂️ E4.0 man raising hand: dark skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3ff}\u200d\u2642'],
-    '🙋🏿‍♂ E4.0 man raising hand: dark skin tone'
-  ),
+  (['\u{1f64b}\u{1f3fb}\u200d\u2642\ufe0f'], '🙋🏻‍♂️ E4.0 man raising hand: light skin tone'),
+  (['\u{1f64b}\u{1f3fb}\u200d\u2642'], '🙋🏻‍♂ E4.0 man raising hand: light skin tone'),
+  (['\u{1f64b}\u{1f3fc}\u200d\u2642\ufe0f'], '🙋🏼‍♂️ E4.0 man raising hand: medium-light skin tone'),
+  (['\u{1f64b}\u{1f3fc}\u200d\u2642'], '🙋🏼‍♂ E4.0 man raising hand: medium-light skin tone'),
+  (['\u{1f64b}\u{1f3fd}\u200d\u2642\ufe0f'], '🙋🏽‍♂️ E4.0 man raising hand: medium skin tone'),
+  (['\u{1f64b}\u{1f3fd}\u200d\u2642'], '🙋🏽‍♂ E4.0 man raising hand: medium skin tone'),
+  (['\u{1f64b}\u{1f3fe}\u200d\u2642\ufe0f'], '🙋🏾‍♂️ E4.0 man raising hand: medium-dark skin tone'),
+  (['\u{1f64b}\u{1f3fe}\u200d\u2642'], '🙋🏾‍♂ E4.0 man raising hand: medium-dark skin tone'),
+  (['\u{1f64b}\u{1f3ff}\u200d\u2642\ufe0f'], '🙋🏿‍♂️ E4.0 man raising hand: dark skin tone'),
+  (['\u{1f64b}\u{1f3ff}\u200d\u2642'], '🙋🏿‍♂ E4.0 man raising hand: dark skin tone'),
   (['\u{1f64b}\u200d\u2640\ufe0f'], '🙋‍♀️ E4.0 woman raising hand'),
   (['\u{1f64b}\u200d\u2640'], '🙋‍♀ E4.0 woman raising hand'),
-  (
-    ['\u{1f64b}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🙋🏻‍♀️ E4.0 woman raising hand: light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fb}\u200d\u2640'],
-    '🙋🏻‍♀ E4.0 woman raising hand: light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🙋🏼‍♀️ E4.0 woman raising hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fc}\u200d\u2640'],
-    '🙋🏼‍♀ E4.0 woman raising hand: medium-light skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🙋🏽‍♀️ E4.0 woman raising hand: medium skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fd}\u200d\u2640'],
-    '🙋🏽‍♀ E4.0 woman raising hand: medium skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🙋🏾‍♀️ E4.0 woman raising hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3fe}\u200d\u2640'],
-    '🙋🏾‍♀ E4.0 woman raising hand: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🙋🏿‍♀️ E4.0 woman raising hand: dark skin tone'
-  ),
-  (
-    ['\u{1f64b}\u{1f3ff}\u200d\u2640'],
-    '🙋🏿‍♀ E4.0 woman raising hand: dark skin tone'
-  ),
+  (['\u{1f64b}\u{1f3fb}\u200d\u2640\ufe0f'], '🙋🏻‍♀️ E4.0 woman raising hand: light skin tone'),
+  (['\u{1f64b}\u{1f3fb}\u200d\u2640'], '🙋🏻‍♀ E4.0 woman raising hand: light skin tone'),
+  (['\u{1f64b}\u{1f3fc}\u200d\u2640\ufe0f'], '🙋🏼‍♀️ E4.0 woman raising hand: medium-light skin tone'),
+  (['\u{1f64b}\u{1f3fc}\u200d\u2640'], '🙋🏼‍♀ E4.0 woman raising hand: medium-light skin tone'),
+  (['\u{1f64b}\u{1f3fd}\u200d\u2640\ufe0f'], '🙋🏽‍♀️ E4.0 woman raising hand: medium skin tone'),
+  (['\u{1f64b}\u{1f3fd}\u200d\u2640'], '🙋🏽‍♀ E4.0 woman raising hand: medium skin tone'),
+  (['\u{1f64b}\u{1f3fe}\u200d\u2640\ufe0f'], '🙋🏾‍♀️ E4.0 woman raising hand: medium-dark skin tone'),
+  (['\u{1f64b}\u{1f3fe}\u200d\u2640'], '🙋🏾‍♀ E4.0 woman raising hand: medium-dark skin tone'),
+  (['\u{1f64b}\u{1f3ff}\u200d\u2640\ufe0f'], '🙋🏿‍♀️ E4.0 woman raising hand: dark skin tone'),
+  (['\u{1f64b}\u{1f3ff}\u200d\u2640'], '🙋🏿‍♀ E4.0 woman raising hand: dark skin tone'),
   (['\u{1f9cf}'], '🧏 E12.0 deaf person'),
   (['\u{1f9cf}\u{1f3fb}'], '🧏🏻 E12.0 deaf person: light skin tone'),
   (['\u{1f9cf}\u{1f3fc}'], '🧏🏼 E12.0 deaf person: medium-light skin tone'),
@@ -6194,85 +2004,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9cf}\u{1f3ff}'], '🧏🏿 E12.0 deaf person: dark skin tone'),
   (['\u{1f9cf}\u200d\u2642\ufe0f'], '🧏‍♂️ E12.0 deaf man'),
   (['\u{1f9cf}\u200d\u2642'], '🧏‍♂ E12.0 deaf man'),
-  (
-    ['\u{1f9cf}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧏🏻‍♂️ E12.0 deaf man: light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fb}\u200d\u2642'],
-    '🧏🏻‍♂ E12.0 deaf man: light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧏🏼‍♂️ E12.0 deaf man: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fc}\u200d\u2642'],
-    '🧏🏼‍♂ E12.0 deaf man: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧏🏽‍♂️ E12.0 deaf man: medium skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fd}\u200d\u2642'],
-    '🧏🏽‍♂ E12.0 deaf man: medium skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧏🏾‍♂️ E12.0 deaf man: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fe}\u200d\u2642'],
-    '🧏🏾‍♂ E12.0 deaf man: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧏🏿‍♂️ E12.0 deaf man: dark skin tone'
-  ),
+  (['\u{1f9cf}\u{1f3fb}\u200d\u2642\ufe0f'], '🧏🏻‍♂️ E12.0 deaf man: light skin tone'),
+  (['\u{1f9cf}\u{1f3fb}\u200d\u2642'], '🧏🏻‍♂ E12.0 deaf man: light skin tone'),
+  (['\u{1f9cf}\u{1f3fc}\u200d\u2642\ufe0f'], '🧏🏼‍♂️ E12.0 deaf man: medium-light skin tone'),
+  (['\u{1f9cf}\u{1f3fc}\u200d\u2642'], '🧏🏼‍♂ E12.0 deaf man: medium-light skin tone'),
+  (['\u{1f9cf}\u{1f3fd}\u200d\u2642\ufe0f'], '🧏🏽‍♂️ E12.0 deaf man: medium skin tone'),
+  (['\u{1f9cf}\u{1f3fd}\u200d\u2642'], '🧏🏽‍♂ E12.0 deaf man: medium skin tone'),
+  (['\u{1f9cf}\u{1f3fe}\u200d\u2642\ufe0f'], '🧏🏾‍♂️ E12.0 deaf man: medium-dark skin tone'),
+  (['\u{1f9cf}\u{1f3fe}\u200d\u2642'], '🧏🏾‍♂ E12.0 deaf man: medium-dark skin tone'),
+  (['\u{1f9cf}\u{1f3ff}\u200d\u2642\ufe0f'], '🧏🏿‍♂️ E12.0 deaf man: dark skin tone'),
   (['\u{1f9cf}\u{1f3ff}\u200d\u2642'], '🧏🏿‍♂ E12.0 deaf man: dark skin tone'),
   (['\u{1f9cf}\u200d\u2640\ufe0f'], '🧏‍♀️ E12.0 deaf woman'),
   (['\u{1f9cf}\u200d\u2640'], '🧏‍♀ E12.0 deaf woman'),
-  (
-    ['\u{1f9cf}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧏🏻‍♀️ E12.0 deaf woman: light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fb}\u200d\u2640'],
-    '🧏🏻‍♀ E12.0 deaf woman: light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧏🏼‍♀️ E12.0 deaf woman: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fc}\u200d\u2640'],
-    '🧏🏼‍♀ E12.0 deaf woman: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧏🏽‍♀️ E12.0 deaf woman: medium skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fd}\u200d\u2640'],
-    '🧏🏽‍♀ E12.0 deaf woman: medium skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧏🏾‍♀️ E12.0 deaf woman: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3fe}\u200d\u2640'],
-    '🧏🏾‍♀ E12.0 deaf woman: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧏🏿‍♀️ E12.0 deaf woman: dark skin tone'
-  ),
-  (
-    ['\u{1f9cf}\u{1f3ff}\u200d\u2640'],
-    '🧏🏿‍♀ E12.0 deaf woman: dark skin tone'
-  ),
+  (['\u{1f9cf}\u{1f3fb}\u200d\u2640\ufe0f'], '🧏🏻‍♀️ E12.0 deaf woman: light skin tone'),
+  (['\u{1f9cf}\u{1f3fb}\u200d\u2640'], '🧏🏻‍♀ E12.0 deaf woman: light skin tone'),
+  (['\u{1f9cf}\u{1f3fc}\u200d\u2640\ufe0f'], '🧏🏼‍♀️ E12.0 deaf woman: medium-light skin tone'),
+  (['\u{1f9cf}\u{1f3fc}\u200d\u2640'], '🧏🏼‍♀ E12.0 deaf woman: medium-light skin tone'),
+  (['\u{1f9cf}\u{1f3fd}\u200d\u2640\ufe0f'], '🧏🏽‍♀️ E12.0 deaf woman: medium skin tone'),
+  (['\u{1f9cf}\u{1f3fd}\u200d\u2640'], '🧏🏽‍♀ E12.0 deaf woman: medium skin tone'),
+  (['\u{1f9cf}\u{1f3fe}\u200d\u2640\ufe0f'], '🧏🏾‍♀️ E12.0 deaf woman: medium-dark skin tone'),
+  (['\u{1f9cf}\u{1f3fe}\u200d\u2640'], '🧏🏾‍♀ E12.0 deaf woman: medium-dark skin tone'),
+  (['\u{1f9cf}\u{1f3ff}\u200d\u2640\ufe0f'], '🧏🏿‍♀️ E12.0 deaf woman: dark skin tone'),
+  (['\u{1f9cf}\u{1f3ff}\u200d\u2640'], '🧏🏿‍♀ E12.0 deaf woman: dark skin tone'),
   (['\u{1f647}'], '🙇 E0.6 person bowing'),
   (['\u{1f647}\u{1f3fb}'], '🙇🏻 E1.0 person bowing: light skin tone'),
   (['\u{1f647}\u{1f3fc}'], '🙇🏼 E1.0 person bowing: medium-light skin tone'),
@@ -6281,1447 +2034,430 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f647}\u{1f3ff}'], '🙇🏿 E1.0 person bowing: dark skin tone'),
   (['\u{1f647}\u200d\u2642\ufe0f'], '🙇‍♂️ E4.0 man bowing'),
   (['\u{1f647}\u200d\u2642'], '🙇‍♂ E4.0 man bowing'),
-  (
-    ['\u{1f647}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🙇🏻‍♂️ E4.0 man bowing: light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fb}\u200d\u2642'],
-    '🙇🏻‍♂ E4.0 man bowing: light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🙇🏼‍♂️ E4.0 man bowing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fc}\u200d\u2642'],
-    '🙇🏼‍♂ E4.0 man bowing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🙇🏽‍♂️ E4.0 man bowing: medium skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fd}\u200d\u2642'],
-    '🙇🏽‍♂ E4.0 man bowing: medium skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🙇🏾‍♂️ E4.0 man bowing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fe}\u200d\u2642'],
-    '🙇🏾‍♂ E4.0 man bowing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🙇🏿‍♂️ E4.0 man bowing: dark skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3ff}\u200d\u2642'],
-    '🙇🏿‍♂ E4.0 man bowing: dark skin tone'
-  ),
+  (['\u{1f647}\u{1f3fb}\u200d\u2642\ufe0f'], '🙇🏻‍♂️ E4.0 man bowing: light skin tone'),
+  (['\u{1f647}\u{1f3fb}\u200d\u2642'], '🙇🏻‍♂ E4.0 man bowing: light skin tone'),
+  (['\u{1f647}\u{1f3fc}\u200d\u2642\ufe0f'], '🙇🏼‍♂️ E4.0 man bowing: medium-light skin tone'),
+  (['\u{1f647}\u{1f3fc}\u200d\u2642'], '🙇🏼‍♂ E4.0 man bowing: medium-light skin tone'),
+  (['\u{1f647}\u{1f3fd}\u200d\u2642\ufe0f'], '🙇🏽‍♂️ E4.0 man bowing: medium skin tone'),
+  (['\u{1f647}\u{1f3fd}\u200d\u2642'], '🙇🏽‍♂ E4.0 man bowing: medium skin tone'),
+  (['\u{1f647}\u{1f3fe}\u200d\u2642\ufe0f'], '🙇🏾‍♂️ E4.0 man bowing: medium-dark skin tone'),
+  (['\u{1f647}\u{1f3fe}\u200d\u2642'], '🙇🏾‍♂ E4.0 man bowing: medium-dark skin tone'),
+  (['\u{1f647}\u{1f3ff}\u200d\u2642\ufe0f'], '🙇🏿‍♂️ E4.0 man bowing: dark skin tone'),
+  (['\u{1f647}\u{1f3ff}\u200d\u2642'], '🙇🏿‍♂ E4.0 man bowing: dark skin tone'),
   (['\u{1f647}\u200d\u2640\ufe0f'], '🙇‍♀️ E4.0 woman bowing'),
   (['\u{1f647}\u200d\u2640'], '🙇‍♀ E4.0 woman bowing'),
-  (
-    ['\u{1f647}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🙇🏻‍♀️ E4.0 woman bowing: light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fb}\u200d\u2640'],
-    '🙇🏻‍♀ E4.0 woman bowing: light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🙇🏼‍♀️ E4.0 woman bowing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fc}\u200d\u2640'],
-    '🙇🏼‍♀ E4.0 woman bowing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🙇🏽‍♀️ E4.0 woman bowing: medium skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fd}\u200d\u2640'],
-    '🙇🏽‍♀ E4.0 woman bowing: medium skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🙇🏾‍♀️ E4.0 woman bowing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3fe}\u200d\u2640'],
-    '🙇🏾‍♀ E4.0 woman bowing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🙇🏿‍♀️ E4.0 woman bowing: dark skin tone'
-  ),
-  (
-    ['\u{1f647}\u{1f3ff}\u200d\u2640'],
-    '🙇🏿‍♀ E4.0 woman bowing: dark skin tone'
-  ),
+  (['\u{1f647}\u{1f3fb}\u200d\u2640\ufe0f'], '🙇🏻‍♀️ E4.0 woman bowing: light skin tone'),
+  (['\u{1f647}\u{1f3fb}\u200d\u2640'], '🙇🏻‍♀ E4.0 woman bowing: light skin tone'),
+  (['\u{1f647}\u{1f3fc}\u200d\u2640\ufe0f'], '🙇🏼‍♀️ E4.0 woman bowing: medium-light skin tone'),
+  (['\u{1f647}\u{1f3fc}\u200d\u2640'], '🙇🏼‍♀ E4.0 woman bowing: medium-light skin tone'),
+  (['\u{1f647}\u{1f3fd}\u200d\u2640\ufe0f'], '🙇🏽‍♀️ E4.0 woman bowing: medium skin tone'),
+  (['\u{1f647}\u{1f3fd}\u200d\u2640'], '🙇🏽‍♀ E4.0 woman bowing: medium skin tone'),
+  (['\u{1f647}\u{1f3fe}\u200d\u2640\ufe0f'], '🙇🏾‍♀️ E4.0 woman bowing: medium-dark skin tone'),
+  (['\u{1f647}\u{1f3fe}\u200d\u2640'], '🙇🏾‍♀ E4.0 woman bowing: medium-dark skin tone'),
+  (['\u{1f647}\u{1f3ff}\u200d\u2640\ufe0f'], '🙇🏿‍♀️ E4.0 woman bowing: dark skin tone'),
+  (['\u{1f647}\u{1f3ff}\u200d\u2640'], '🙇🏿‍♀ E4.0 woman bowing: dark skin tone'),
   (['\u{1f926}'], '🤦 E3.0 person facepalming'),
   (['\u{1f926}\u{1f3fb}'], '🤦🏻 E3.0 person facepalming: light skin tone'),
-  (
-    ['\u{1f926}\u{1f3fc}'],
-    '🤦🏼 E3.0 person facepalming: medium-light skin tone'
-  ),
+  (['\u{1f926}\u{1f3fc}'], '🤦🏼 E3.0 person facepalming: medium-light skin tone'),
   (['\u{1f926}\u{1f3fd}'], '🤦🏽 E3.0 person facepalming: medium skin tone'),
-  (
-    ['\u{1f926}\u{1f3fe}'],
-    '🤦🏾 E3.0 person facepalming: medium-dark skin tone'
-  ),
+  (['\u{1f926}\u{1f3fe}'], '🤦🏾 E3.0 person facepalming: medium-dark skin tone'),
   (['\u{1f926}\u{1f3ff}'], '🤦🏿 E3.0 person facepalming: dark skin tone'),
   (['\u{1f926}\u200d\u2642\ufe0f'], '🤦‍♂️ E4.0 man facepalming'),
   (['\u{1f926}\u200d\u2642'], '🤦‍♂ E4.0 man facepalming'),
-  (
-    ['\u{1f926}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🤦🏻‍♂️ E4.0 man facepalming: light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fb}\u200d\u2642'],
-    '🤦🏻‍♂ E4.0 man facepalming: light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🤦🏼‍♂️ E4.0 man facepalming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fc}\u200d\u2642'],
-    '🤦🏼‍♂ E4.0 man facepalming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🤦🏽‍♂️ E4.0 man facepalming: medium skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fd}\u200d\u2642'],
-    '🤦🏽‍♂ E4.0 man facepalming: medium skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🤦🏾‍♂️ E4.0 man facepalming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fe}\u200d\u2642'],
-    '🤦🏾‍♂ E4.0 man facepalming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🤦🏿‍♂️ E4.0 man facepalming: dark skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3ff}\u200d\u2642'],
-    '🤦🏿‍♂ E4.0 man facepalming: dark skin tone'
-  ),
+  (['\u{1f926}\u{1f3fb}\u200d\u2642\ufe0f'], '🤦🏻‍♂️ E4.0 man facepalming: light skin tone'),
+  (['\u{1f926}\u{1f3fb}\u200d\u2642'], '🤦🏻‍♂ E4.0 man facepalming: light skin tone'),
+  (['\u{1f926}\u{1f3fc}\u200d\u2642\ufe0f'], '🤦🏼‍♂️ E4.0 man facepalming: medium-light skin tone'),
+  (['\u{1f926}\u{1f3fc}\u200d\u2642'], '🤦🏼‍♂ E4.0 man facepalming: medium-light skin tone'),
+  (['\u{1f926}\u{1f3fd}\u200d\u2642\ufe0f'], '🤦🏽‍♂️ E4.0 man facepalming: medium skin tone'),
+  (['\u{1f926}\u{1f3fd}\u200d\u2642'], '🤦🏽‍♂ E4.0 man facepalming: medium skin tone'),
+  (['\u{1f926}\u{1f3fe}\u200d\u2642\ufe0f'], '🤦🏾‍♂️ E4.0 man facepalming: medium-dark skin tone'),
+  (['\u{1f926}\u{1f3fe}\u200d\u2642'], '🤦🏾‍♂ E4.0 man facepalming: medium-dark skin tone'),
+  (['\u{1f926}\u{1f3ff}\u200d\u2642\ufe0f'], '🤦🏿‍♂️ E4.0 man facepalming: dark skin tone'),
+  (['\u{1f926}\u{1f3ff}\u200d\u2642'], '🤦🏿‍♂ E4.0 man facepalming: dark skin tone'),
   (['\u{1f926}\u200d\u2640\ufe0f'], '🤦‍♀️ E4.0 woman facepalming'),
   (['\u{1f926}\u200d\u2640'], '🤦‍♀ E4.0 woman facepalming'),
-  (
-    ['\u{1f926}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🤦🏻‍♀️ E4.0 woman facepalming: light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fb}\u200d\u2640'],
-    '🤦🏻‍♀ E4.0 woman facepalming: light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🤦🏼‍♀️ E4.0 woman facepalming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fc}\u200d\u2640'],
-    '🤦🏼‍♀ E4.0 woman facepalming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🤦🏽‍♀️ E4.0 woman facepalming: medium skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fd}\u200d\u2640'],
-    '🤦🏽‍♀ E4.0 woman facepalming: medium skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🤦🏾‍♀️ E4.0 woman facepalming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3fe}\u200d\u2640'],
-    '🤦🏾‍♀ E4.0 woman facepalming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🤦🏿‍♀️ E4.0 woman facepalming: dark skin tone'
-  ),
-  (
-    ['\u{1f926}\u{1f3ff}\u200d\u2640'],
-    '🤦🏿‍♀ E4.0 woman facepalming: dark skin tone'
-  ),
+  (['\u{1f926}\u{1f3fb}\u200d\u2640\ufe0f'], '🤦🏻‍♀️ E4.0 woman facepalming: light skin tone'),
+  (['\u{1f926}\u{1f3fb}\u200d\u2640'], '🤦🏻‍♀ E4.0 woman facepalming: light skin tone'),
+  (['\u{1f926}\u{1f3fc}\u200d\u2640\ufe0f'], '🤦🏼‍♀️ E4.0 woman facepalming: medium-light skin tone'),
+  (['\u{1f926}\u{1f3fc}\u200d\u2640'], '🤦🏼‍♀ E4.0 woman facepalming: medium-light skin tone'),
+  (['\u{1f926}\u{1f3fd}\u200d\u2640\ufe0f'], '🤦🏽‍♀️ E4.0 woman facepalming: medium skin tone'),
+  (['\u{1f926}\u{1f3fd}\u200d\u2640'], '🤦🏽‍♀ E4.0 woman facepalming: medium skin tone'),
+  (['\u{1f926}\u{1f3fe}\u200d\u2640\ufe0f'], '🤦🏾‍♀️ E4.0 woman facepalming: medium-dark skin tone'),
+  (['\u{1f926}\u{1f3fe}\u200d\u2640'], '🤦🏾‍♀ E4.0 woman facepalming: medium-dark skin tone'),
+  (['\u{1f926}\u{1f3ff}\u200d\u2640\ufe0f'], '🤦🏿‍♀️ E4.0 woman facepalming: dark skin tone'),
+  (['\u{1f926}\u{1f3ff}\u200d\u2640'], '🤦🏿‍♀ E4.0 woman facepalming: dark skin tone'),
   (['\u{1f937}'], '🤷 E3.0 person shrugging'),
   (['\u{1f937}\u{1f3fb}'], '🤷🏻 E3.0 person shrugging: light skin tone'),
-  (
-    ['\u{1f937}\u{1f3fc}'],
-    '🤷🏼 E3.0 person shrugging: medium-light skin tone'
-  ),
+  (['\u{1f937}\u{1f3fc}'], '🤷🏼 E3.0 person shrugging: medium-light skin tone'),
   (['\u{1f937}\u{1f3fd}'], '🤷🏽 E3.0 person shrugging: medium skin tone'),
   (['\u{1f937}\u{1f3fe}'], '🤷🏾 E3.0 person shrugging: medium-dark skin tone'),
   (['\u{1f937}\u{1f3ff}'], '🤷🏿 E3.0 person shrugging: dark skin tone'),
   (['\u{1f937}\u200d\u2642\ufe0f'], '🤷‍♂️ E4.0 man shrugging'),
   (['\u{1f937}\u200d\u2642'], '🤷‍♂ E4.0 man shrugging'),
-  (
-    ['\u{1f937}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🤷🏻‍♂️ E4.0 man shrugging: light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fb}\u200d\u2642'],
-    '🤷🏻‍♂ E4.0 man shrugging: light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🤷🏼‍♂️ E4.0 man shrugging: medium-light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fc}\u200d\u2642'],
-    '🤷🏼‍♂ E4.0 man shrugging: medium-light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🤷🏽‍♂️ E4.0 man shrugging: medium skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fd}\u200d\u2642'],
-    '🤷🏽‍♂ E4.0 man shrugging: medium skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🤷🏾‍♂️ E4.0 man shrugging: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fe}\u200d\u2642'],
-    '🤷🏾‍♂ E4.0 man shrugging: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🤷🏿‍♂️ E4.0 man shrugging: dark skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3ff}\u200d\u2642'],
-    '🤷🏿‍♂ E4.0 man shrugging: dark skin tone'
-  ),
+  (['\u{1f937}\u{1f3fb}\u200d\u2642\ufe0f'], '🤷🏻‍♂️ E4.0 man shrugging: light skin tone'),
+  (['\u{1f937}\u{1f3fb}\u200d\u2642'], '🤷🏻‍♂ E4.0 man shrugging: light skin tone'),
+  (['\u{1f937}\u{1f3fc}\u200d\u2642\ufe0f'], '🤷🏼‍♂️ E4.0 man shrugging: medium-light skin tone'),
+  (['\u{1f937}\u{1f3fc}\u200d\u2642'], '🤷🏼‍♂ E4.0 man shrugging: medium-light skin tone'),
+  (['\u{1f937}\u{1f3fd}\u200d\u2642\ufe0f'], '🤷🏽‍♂️ E4.0 man shrugging: medium skin tone'),
+  (['\u{1f937}\u{1f3fd}\u200d\u2642'], '🤷🏽‍♂ E4.0 man shrugging: medium skin tone'),
+  (['\u{1f937}\u{1f3fe}\u200d\u2642\ufe0f'], '🤷🏾‍♂️ E4.0 man shrugging: medium-dark skin tone'),
+  (['\u{1f937}\u{1f3fe}\u200d\u2642'], '🤷🏾‍♂ E4.0 man shrugging: medium-dark skin tone'),
+  (['\u{1f937}\u{1f3ff}\u200d\u2642\ufe0f'], '🤷🏿‍♂️ E4.0 man shrugging: dark skin tone'),
+  (['\u{1f937}\u{1f3ff}\u200d\u2642'], '🤷🏿‍♂ E4.0 man shrugging: dark skin tone'),
   (['\u{1f937}\u200d\u2640\ufe0f'], '🤷‍♀️ E4.0 woman shrugging'),
   (['\u{1f937}\u200d\u2640'], '🤷‍♀ E4.0 woman shrugging'),
-  (
-    ['\u{1f937}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🤷🏻‍♀️ E4.0 woman shrugging: light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fb}\u200d\u2640'],
-    '🤷🏻‍♀ E4.0 woman shrugging: light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🤷🏼‍♀️ E4.0 woman shrugging: medium-light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fc}\u200d\u2640'],
-    '🤷🏼‍♀ E4.0 woman shrugging: medium-light skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🤷🏽‍♀️ E4.0 woman shrugging: medium skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fd}\u200d\u2640'],
-    '🤷🏽‍♀ E4.0 woman shrugging: medium skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🤷🏾‍♀️ E4.0 woman shrugging: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3fe}\u200d\u2640'],
-    '🤷🏾‍♀ E4.0 woman shrugging: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🤷🏿‍♀️ E4.0 woman shrugging: dark skin tone'
-  ),
-  (
-    ['\u{1f937}\u{1f3ff}\u200d\u2640'],
-    '🤷🏿‍♀ E4.0 woman shrugging: dark skin tone'
-  ),
+  (['\u{1f937}\u{1f3fb}\u200d\u2640\ufe0f'], '🤷🏻‍♀️ E4.0 woman shrugging: light skin tone'),
+  (['\u{1f937}\u{1f3fb}\u200d\u2640'], '🤷🏻‍♀ E4.0 woman shrugging: light skin tone'),
+  (['\u{1f937}\u{1f3fc}\u200d\u2640\ufe0f'], '🤷🏼‍♀️ E4.0 woman shrugging: medium-light skin tone'),
+  (['\u{1f937}\u{1f3fc}\u200d\u2640'], '🤷🏼‍♀ E4.0 woman shrugging: medium-light skin tone'),
+  (['\u{1f937}\u{1f3fd}\u200d\u2640\ufe0f'], '🤷🏽‍♀️ E4.0 woman shrugging: medium skin tone'),
+  (['\u{1f937}\u{1f3fd}\u200d\u2640'], '🤷🏽‍♀ E4.0 woman shrugging: medium skin tone'),
+  (['\u{1f937}\u{1f3fe}\u200d\u2640\ufe0f'], '🤷🏾‍♀️ E4.0 woman shrugging: medium-dark skin tone'),
+  (['\u{1f937}\u{1f3fe}\u200d\u2640'], '🤷🏾‍♀ E4.0 woman shrugging: medium-dark skin tone'),
+  (['\u{1f937}\u{1f3ff}\u200d\u2640\ufe0f'], '🤷🏿‍♀️ E4.0 woman shrugging: dark skin tone'),
+  (['\u{1f937}\u{1f3ff}\u200d\u2640'], '🤷🏿‍♀ E4.0 woman shrugging: dark skin tone'),
   (['\u{1f9d1}\u200d\u2695\ufe0f'], '🧑‍⚕️ E12.1 health worker'),
   (['\u{1f9d1}\u200d\u2695'], '🧑‍⚕ E12.1 health worker'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2695\ufe0f'],
-    '🧑🏻‍⚕️ E12.1 health worker: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2695'],
-    '🧑🏻‍⚕ E12.1 health worker: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2695\ufe0f'],
-    '🧑🏼‍⚕️ E12.1 health worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2695'],
-    '🧑🏼‍⚕ E12.1 health worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2695\ufe0f'],
-    '🧑🏽‍⚕️ E12.1 health worker: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2695'],
-    '🧑🏽‍⚕ E12.1 health worker: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2695\ufe0f'],
-    '🧑🏾‍⚕️ E12.1 health worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2695'],
-    '🧑🏾‍⚕ E12.1 health worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2695\ufe0f'],
-    '🧑🏿‍⚕️ E12.1 health worker: dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2695'],
-    '🧑🏿‍⚕ E12.1 health worker: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2695\ufe0f'], '🧑🏻‍⚕️ E12.1 health worker: light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2695'], '🧑🏻‍⚕ E12.1 health worker: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2695\ufe0f'], '🧑🏼‍⚕️ E12.1 health worker: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2695'], '🧑🏼‍⚕ E12.1 health worker: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2695\ufe0f'], '🧑🏽‍⚕️ E12.1 health worker: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2695'], '🧑🏽‍⚕ E12.1 health worker: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2695\ufe0f'], '🧑🏾‍⚕️ E12.1 health worker: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2695'], '🧑🏾‍⚕ E12.1 health worker: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2695\ufe0f'], '🧑🏿‍⚕️ E12.1 health worker: dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2695'], '🧑🏿‍⚕ E12.1 health worker: dark skin tone'),
   (['\u{1f468}\u200d\u2695\ufe0f'], '👨‍⚕️ E4.0 man health worker'),
   (['\u{1f468}\u200d\u2695'], '👨‍⚕ E4.0 man health worker'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2695\ufe0f'],
-    '👨🏻‍⚕️ E4.0 man health worker: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2695'],
-    '👨🏻‍⚕ E4.0 man health worker: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2695\ufe0f'],
-    '👨🏼‍⚕️ E4.0 man health worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2695'],
-    '👨🏼‍⚕ E4.0 man health worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2695\ufe0f'],
-    '👨🏽‍⚕️ E4.0 man health worker: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2695'],
-    '👨🏽‍⚕ E4.0 man health worker: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2695\ufe0f'],
-    '👨🏾‍⚕️ E4.0 man health worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2695'],
-    '👨🏾‍⚕ E4.0 man health worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2695\ufe0f'],
-    '👨🏿‍⚕️ E4.0 man health worker: dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2695'],
-    '👨🏿‍⚕ E4.0 man health worker: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u2695\ufe0f'], '👨🏻‍⚕️ E4.0 man health worker: light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2695'], '👨🏻‍⚕ E4.0 man health worker: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2695\ufe0f'], '👨🏼‍⚕️ E4.0 man health worker: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2695'], '👨🏼‍⚕ E4.0 man health worker: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2695\ufe0f'], '👨🏽‍⚕️ E4.0 man health worker: medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2695'], '👨🏽‍⚕ E4.0 man health worker: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2695\ufe0f'], '👨🏾‍⚕️ E4.0 man health worker: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2695'], '👨🏾‍⚕ E4.0 man health worker: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2695\ufe0f'], '👨🏿‍⚕️ E4.0 man health worker: dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2695'], '👨🏿‍⚕ E4.0 man health worker: dark skin tone'),
   (['\u{1f469}\u200d\u2695\ufe0f'], '👩‍⚕️ E4.0 woman health worker'),
   (['\u{1f469}\u200d\u2695'], '👩‍⚕ E4.0 woman health worker'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2695\ufe0f'],
-    '👩🏻‍⚕️ E4.0 woman health worker: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2695'],
-    '👩🏻‍⚕ E4.0 woman health worker: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2695\ufe0f'],
-    '👩🏼‍⚕️ E4.0 woman health worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2695'],
-    '👩🏼‍⚕ E4.0 woman health worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2695\ufe0f'],
-    '👩🏽‍⚕️ E4.0 woman health worker: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2695'],
-    '👩🏽‍⚕ E4.0 woman health worker: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2695\ufe0f'],
-    '👩🏾‍⚕️ E4.0 woman health worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2695'],
-    '👩🏾‍⚕ E4.0 woman health worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2695\ufe0f'],
-    '👩🏿‍⚕️ E4.0 woman health worker: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2695'],
-    '👩🏿‍⚕ E4.0 woman health worker: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u2695\ufe0f'], '👩🏻‍⚕️ E4.0 woman health worker: light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2695'], '👩🏻‍⚕ E4.0 woman health worker: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2695\ufe0f'], '👩🏼‍⚕️ E4.0 woman health worker: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2695'], '👩🏼‍⚕ E4.0 woman health worker: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2695\ufe0f'], '👩🏽‍⚕️ E4.0 woman health worker: medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2695'], '👩🏽‍⚕ E4.0 woman health worker: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2695\ufe0f'], '👩🏾‍⚕️ E4.0 woman health worker: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2695'], '👩🏾‍⚕ E4.0 woman health worker: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2695\ufe0f'], '👩🏿‍⚕️ E4.0 woman health worker: dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2695'], '👩🏿‍⚕ E4.0 woman health worker: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f393}'], '🧑‍🎓 E12.1 student'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f393}'],
-    '🧑🏻‍🎓 E12.1 student: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f393}'],
-    '🧑🏼‍🎓 E12.1 student: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f393}'],
-    '🧑🏽‍🎓 E12.1 student: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f393}'],
-    '🧑🏾‍🎓 E12.1 student: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f393}'],
-    '🧑🏿‍🎓 E12.1 student: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f393}'], '🧑🏻‍🎓 E12.1 student: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f393}'], '🧑🏼‍🎓 E12.1 student: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f393}'], '🧑🏽‍🎓 E12.1 student: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f393}'], '🧑🏾‍🎓 E12.1 student: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f393}'], '🧑🏿‍🎓 E12.1 student: dark skin tone'),
   (['\u{1f468}\u200d\u{1f393}'], '👨‍🎓 E4.0 man student'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f393}'],
-    '👨🏻‍🎓 E4.0 man student: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f393}'],
-    '👨🏼‍🎓 E4.0 man student: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f393}'],
-    '👨🏽‍🎓 E4.0 man student: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f393}'],
-    '👨🏾‍🎓 E4.0 man student: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f393}'],
-    '👨🏿‍🎓 E4.0 man student: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f393}'], '👨🏻‍🎓 E4.0 man student: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f393}'], '👨🏼‍🎓 E4.0 man student: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f393}'], '👨🏽‍🎓 E4.0 man student: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f393}'], '👨🏾‍🎓 E4.0 man student: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f393}'], '👨🏿‍🎓 E4.0 man student: dark skin tone'),
   (['\u{1f469}\u200d\u{1f393}'], '👩‍🎓 E4.0 woman student'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f393}'],
-    '👩🏻‍🎓 E4.0 woman student: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f393}'],
-    '👩🏼‍🎓 E4.0 woman student: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f393}'],
-    '👩🏽‍🎓 E4.0 woman student: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f393}'],
-    '👩🏾‍🎓 E4.0 woman student: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f393}'],
-    '👩🏿‍🎓 E4.0 woman student: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f393}'], '👩🏻‍🎓 E4.0 woman student: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f393}'], '👩🏼‍🎓 E4.0 woman student: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f393}'], '👩🏽‍🎓 E4.0 woman student: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f393}'], '👩🏾‍🎓 E4.0 woman student: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f393}'], '👩🏿‍🎓 E4.0 woman student: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f3eb}'], '🧑‍🏫 E12.1 teacher'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3eb}'],
-    '🧑🏻‍🏫 E12.1 teacher: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3eb}'],
-    '🧑🏼‍🏫 E12.1 teacher: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3eb}'],
-    '🧑🏽‍🏫 E12.1 teacher: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3eb}'],
-    '🧑🏾‍🏫 E12.1 teacher: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3eb}'],
-    '🧑🏿‍🏫 E12.1 teacher: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f3eb}'], '🧑🏻‍🏫 E12.1 teacher: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f3eb}'], '🧑🏼‍🏫 E12.1 teacher: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f3eb}'], '🧑🏽‍🏫 E12.1 teacher: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f3eb}'], '🧑🏾‍🏫 E12.1 teacher: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f3eb}'], '🧑🏿‍🏫 E12.1 teacher: dark skin tone'),
   (['\u{1f468}\u200d\u{1f3eb}'], '👨‍🏫 E4.0 man teacher'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f3eb}'],
-    '👨🏻‍🏫 E4.0 man teacher: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f3eb}'],
-    '👨🏼‍🏫 E4.0 man teacher: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f3eb}'],
-    '👨🏽‍🏫 E4.0 man teacher: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f3eb}'],
-    '👨🏾‍🏫 E4.0 man teacher: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f3eb}'],
-    '👨🏿‍🏫 E4.0 man teacher: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f3eb}'], '👨🏻‍🏫 E4.0 man teacher: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f3eb}'], '👨🏼‍🏫 E4.0 man teacher: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f3eb}'], '👨🏽‍🏫 E4.0 man teacher: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f3eb}'], '👨🏾‍🏫 E4.0 man teacher: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f3eb}'], '👨🏿‍🏫 E4.0 man teacher: dark skin tone'),
   (['\u{1f469}\u200d\u{1f3eb}'], '👩‍🏫 E4.0 woman teacher'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f3eb}'],
-    '👩🏻‍🏫 E4.0 woman teacher: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f3eb}'],
-    '👩🏼‍🏫 E4.0 woman teacher: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f3eb}'],
-    '👩🏽‍🏫 E4.0 woman teacher: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f3eb}'],
-    '👩🏾‍🏫 E4.0 woman teacher: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f3eb}'],
-    '👩🏿‍🏫 E4.0 woman teacher: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f3eb}'], '👩🏻‍🏫 E4.0 woman teacher: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f3eb}'], '👩🏼‍🏫 E4.0 woman teacher: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f3eb}'], '👩🏽‍🏫 E4.0 woman teacher: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f3eb}'], '👩🏾‍🏫 E4.0 woman teacher: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f3eb}'], '👩🏿‍🏫 E4.0 woman teacher: dark skin tone'),
   (['\u{1f9d1}\u200d\u2696\ufe0f'], '🧑‍⚖️ E12.1 judge'),
   (['\u{1f9d1}\u200d\u2696'], '🧑‍⚖ E12.1 judge'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2696\ufe0f'],
-    '🧑🏻‍⚖️ E12.1 judge: light skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2696\ufe0f'], '🧑🏻‍⚖️ E12.1 judge: light skin tone'),
   (['\u{1f9d1}\u{1f3fb}\u200d\u2696'], '🧑🏻‍⚖ E12.1 judge: light skin tone'),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2696\ufe0f'],
-    '🧑🏼‍⚖️ E12.1 judge: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2696'],
-    '🧑🏼‍⚖ E12.1 judge: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2696\ufe0f'],
-    '🧑🏽‍⚖️ E12.1 judge: medium skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2696\ufe0f'], '🧑🏼‍⚖️ E12.1 judge: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2696'], '🧑🏼‍⚖ E12.1 judge: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2696\ufe0f'], '🧑🏽‍⚖️ E12.1 judge: medium skin tone'),
   (['\u{1f9d1}\u{1f3fd}\u200d\u2696'], '🧑🏽‍⚖ E12.1 judge: medium skin tone'),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2696\ufe0f'],
-    '🧑🏾‍⚖️ E12.1 judge: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2696'],
-    '🧑🏾‍⚖ E12.1 judge: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2696\ufe0f'],
-    '🧑🏿‍⚖️ E12.1 judge: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2696\ufe0f'], '🧑🏾‍⚖️ E12.1 judge: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2696'], '🧑🏾‍⚖ E12.1 judge: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2696\ufe0f'], '🧑🏿‍⚖️ E12.1 judge: dark skin tone'),
   (['\u{1f9d1}\u{1f3ff}\u200d\u2696'], '🧑🏿‍⚖ E12.1 judge: dark skin tone'),
   (['\u{1f468}\u200d\u2696\ufe0f'], '👨‍⚖️ E4.0 man judge'),
   (['\u{1f468}\u200d\u2696'], '👨‍⚖ E4.0 man judge'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2696\ufe0f'],
-    '👨🏻‍⚖️ E4.0 man judge: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2696'],
-    '👨🏻‍⚖ E4.0 man judge: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2696\ufe0f'],
-    '👨🏼‍⚖️ E4.0 man judge: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2696'],
-    '👨🏼‍⚖ E4.0 man judge: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2696\ufe0f'],
-    '👨🏽‍⚖️ E4.0 man judge: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2696'],
-    '👨🏽‍⚖ E4.0 man judge: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2696\ufe0f'],
-    '👨🏾‍⚖️ E4.0 man judge: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2696'],
-    '👨🏾‍⚖ E4.0 man judge: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2696\ufe0f'],
-    '👨🏿‍⚖️ E4.0 man judge: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u2696\ufe0f'], '👨🏻‍⚖️ E4.0 man judge: light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2696'], '👨🏻‍⚖ E4.0 man judge: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2696\ufe0f'], '👨🏼‍⚖️ E4.0 man judge: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2696'], '👨🏼‍⚖ E4.0 man judge: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2696\ufe0f'], '👨🏽‍⚖️ E4.0 man judge: medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2696'], '👨🏽‍⚖ E4.0 man judge: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2696\ufe0f'], '👨🏾‍⚖️ E4.0 man judge: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2696'], '👨🏾‍⚖ E4.0 man judge: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2696\ufe0f'], '👨🏿‍⚖️ E4.0 man judge: dark skin tone'),
   (['\u{1f468}\u{1f3ff}\u200d\u2696'], '👨🏿‍⚖ E4.0 man judge: dark skin tone'),
   (['\u{1f469}\u200d\u2696\ufe0f'], '👩‍⚖️ E4.0 woman judge'),
   (['\u{1f469}\u200d\u2696'], '👩‍⚖ E4.0 woman judge'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2696\ufe0f'],
-    '👩🏻‍⚖️ E4.0 woman judge: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2696'],
-    '👩🏻‍⚖ E4.0 woman judge: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2696\ufe0f'],
-    '👩🏼‍⚖️ E4.0 woman judge: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2696'],
-    '👩🏼‍⚖ E4.0 woman judge: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2696\ufe0f'],
-    '👩🏽‍⚖️ E4.0 woman judge: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2696'],
-    '👩🏽‍⚖ E4.0 woman judge: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2696\ufe0f'],
-    '👩🏾‍⚖️ E4.0 woman judge: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2696'],
-    '👩🏾‍⚖ E4.0 woman judge: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2696\ufe0f'],
-    '👩🏿‍⚖️ E4.0 woman judge: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2696'],
-    '👩🏿‍⚖ E4.0 woman judge: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u2696\ufe0f'], '👩🏻‍⚖️ E4.0 woman judge: light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2696'], '👩🏻‍⚖ E4.0 woman judge: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2696\ufe0f'], '👩🏼‍⚖️ E4.0 woman judge: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2696'], '👩🏼‍⚖ E4.0 woman judge: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2696\ufe0f'], '👩🏽‍⚖️ E4.0 woman judge: medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2696'], '👩🏽‍⚖ E4.0 woman judge: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2696\ufe0f'], '👩🏾‍⚖️ E4.0 woman judge: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2696'], '👩🏾‍⚖ E4.0 woman judge: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2696\ufe0f'], '👩🏿‍⚖️ E4.0 woman judge: dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2696'], '👩🏿‍⚖ E4.0 woman judge: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f33e}'], '🧑‍🌾 E12.1 farmer'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f33e}'],
-    '🧑🏻‍🌾 E12.1 farmer: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f33e}'],
-    '🧑🏼‍🌾 E12.1 farmer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f33e}'],
-    '🧑🏽‍🌾 E12.1 farmer: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f33e}'],
-    '🧑🏾‍🌾 E12.1 farmer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f33e}'],
-    '🧑🏿‍🌾 E12.1 farmer: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f33e}'], '🧑🏻‍🌾 E12.1 farmer: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f33e}'], '🧑🏼‍🌾 E12.1 farmer: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f33e}'], '🧑🏽‍🌾 E12.1 farmer: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f33e}'], '🧑🏾‍🌾 E12.1 farmer: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f33e}'], '🧑🏿‍🌾 E12.1 farmer: dark skin tone'),
   (['\u{1f468}\u200d\u{1f33e}'], '👨‍🌾 E4.0 man farmer'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f33e}'],
-    '👨🏻‍🌾 E4.0 man farmer: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f33e}'],
-    '👨🏼‍🌾 E4.0 man farmer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f33e}'],
-    '👨🏽‍🌾 E4.0 man farmer: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f33e}'],
-    '👨🏾‍🌾 E4.0 man farmer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f33e}'],
-    '👨🏿‍🌾 E4.0 man farmer: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f33e}'], '👨🏻‍🌾 E4.0 man farmer: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f33e}'], '👨🏼‍🌾 E4.0 man farmer: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f33e}'], '👨🏽‍🌾 E4.0 man farmer: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f33e}'], '👨🏾‍🌾 E4.0 man farmer: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f33e}'], '👨🏿‍🌾 E4.0 man farmer: dark skin tone'),
   (['\u{1f469}\u200d\u{1f33e}'], '👩‍🌾 E4.0 woman farmer'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f33e}'],
-    '👩🏻‍🌾 E4.0 woman farmer: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f33e}'],
-    '👩🏼‍🌾 E4.0 woman farmer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f33e}'],
-    '👩🏽‍🌾 E4.0 woman farmer: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f33e}'],
-    '👩🏾‍🌾 E4.0 woman farmer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f33e}'],
-    '👩🏿‍🌾 E4.0 woman farmer: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f33e}'], '👩🏻‍🌾 E4.0 woman farmer: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f33e}'], '👩🏼‍🌾 E4.0 woman farmer: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f33e}'], '👩🏽‍🌾 E4.0 woman farmer: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f33e}'], '👩🏾‍🌾 E4.0 woman farmer: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f33e}'], '👩🏿‍🌾 E4.0 woman farmer: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f373}'], '🧑‍🍳 E12.1 cook'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f373}'],
-    '🧑🏻‍🍳 E12.1 cook: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f373}'],
-    '🧑🏼‍🍳 E12.1 cook: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f373}'],
-    '🧑🏽‍🍳 E12.1 cook: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f373}'],
-    '🧑🏾‍🍳 E12.1 cook: medium-dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f373}'], '🧑🏻‍🍳 E12.1 cook: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f373}'], '🧑🏼‍🍳 E12.1 cook: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f373}'], '🧑🏽‍🍳 E12.1 cook: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f373}'], '🧑🏾‍🍳 E12.1 cook: medium-dark skin tone'),
   (['\u{1f9d1}\u{1f3ff}\u200d\u{1f373}'], '🧑🏿‍🍳 E12.1 cook: dark skin tone'),
   (['\u{1f468}\u200d\u{1f373}'], '👨‍🍳 E4.0 man cook'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f373}'],
-    '👨🏻‍🍳 E4.0 man cook: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f373}'],
-    '👨🏼‍🍳 E4.0 man cook: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f373}'],
-    '👨🏽‍🍳 E4.0 man cook: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f373}'],
-    '👨🏾‍🍳 E4.0 man cook: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f373}'],
-    '👨🏿‍🍳 E4.0 man cook: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f373}'], '👨🏻‍🍳 E4.0 man cook: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f373}'], '👨🏼‍🍳 E4.0 man cook: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f373}'], '👨🏽‍🍳 E4.0 man cook: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f373}'], '👨🏾‍🍳 E4.0 man cook: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f373}'], '👨🏿‍🍳 E4.0 man cook: dark skin tone'),
   (['\u{1f469}\u200d\u{1f373}'], '👩‍🍳 E4.0 woman cook'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f373}'],
-    '👩🏻‍🍳 E4.0 woman cook: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f373}'],
-    '👩🏼‍🍳 E4.0 woman cook: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f373}'],
-    '👩🏽‍🍳 E4.0 woman cook: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f373}'],
-    '👩🏾‍🍳 E4.0 woman cook: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f373}'],
-    '👩🏿‍🍳 E4.0 woman cook: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f373}'], '👩🏻‍🍳 E4.0 woman cook: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f373}'], '👩🏼‍🍳 E4.0 woman cook: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f373}'], '👩🏽‍🍳 E4.0 woman cook: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f373}'], '👩🏾‍🍳 E4.0 woman cook: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f373}'], '👩🏿‍🍳 E4.0 woman cook: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f527}'], '🧑‍🔧 E12.1 mechanic'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f527}'],
-    '🧑🏻‍🔧 E12.1 mechanic: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f527}'],
-    '🧑🏼‍🔧 E12.1 mechanic: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f527}'],
-    '🧑🏽‍🔧 E12.1 mechanic: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f527}'],
-    '🧑🏾‍🔧 E12.1 mechanic: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f527}'],
-    '🧑🏿‍🔧 E12.1 mechanic: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f527}'], '🧑🏻‍🔧 E12.1 mechanic: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f527}'], '🧑🏼‍🔧 E12.1 mechanic: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f527}'], '🧑🏽‍🔧 E12.1 mechanic: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f527}'], '🧑🏾‍🔧 E12.1 mechanic: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f527}'], '🧑🏿‍🔧 E12.1 mechanic: dark skin tone'),
   (['\u{1f468}\u200d\u{1f527}'], '👨‍🔧 E4.0 man mechanic'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f527}'],
-    '👨🏻‍🔧 E4.0 man mechanic: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f527}'],
-    '👨🏼‍🔧 E4.0 man mechanic: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f527}'],
-    '👨🏽‍🔧 E4.0 man mechanic: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f527}'],
-    '👨🏾‍🔧 E4.0 man mechanic: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f527}'],
-    '👨🏿‍🔧 E4.0 man mechanic: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f527}'], '👨🏻‍🔧 E4.0 man mechanic: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f527}'], '👨🏼‍🔧 E4.0 man mechanic: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f527}'], '👨🏽‍🔧 E4.0 man mechanic: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f527}'], '👨🏾‍🔧 E4.0 man mechanic: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f527}'], '👨🏿‍🔧 E4.0 man mechanic: dark skin tone'),
   (['\u{1f469}\u200d\u{1f527}'], '👩‍🔧 E4.0 woman mechanic'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f527}'],
-    '👩🏻‍🔧 E4.0 woman mechanic: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f527}'],
-    '👩🏼‍🔧 E4.0 woman mechanic: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f527}'],
-    '👩🏽‍🔧 E4.0 woman mechanic: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f527}'],
-    '👩🏾‍🔧 E4.0 woman mechanic: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f527}'],
-    '👩🏿‍🔧 E4.0 woman mechanic: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f527}'], '👩🏻‍🔧 E4.0 woman mechanic: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f527}'], '👩🏼‍🔧 E4.0 woman mechanic: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f527}'], '👩🏽‍🔧 E4.0 woman mechanic: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f527}'], '👩🏾‍🔧 E4.0 woman mechanic: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f527}'], '👩🏿‍🔧 E4.0 woman mechanic: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f3ed}'], '🧑‍🏭 E12.1 factory worker'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3ed}'],
-    '🧑🏻‍🏭 E12.1 factory worker: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3ed}'],
-    '🧑🏼‍🏭 E12.1 factory worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3ed}'],
-    '🧑🏽‍🏭 E12.1 factory worker: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3ed}'],
-    '🧑🏾‍🏭 E12.1 factory worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3ed}'],
-    '🧑🏿‍🏭 E12.1 factory worker: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f3ed}'], '🧑🏻‍🏭 E12.1 factory worker: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f3ed}'], '🧑🏼‍🏭 E12.1 factory worker: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f3ed}'], '🧑🏽‍🏭 E12.1 factory worker: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f3ed}'], '🧑🏾‍🏭 E12.1 factory worker: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f3ed}'], '🧑🏿‍🏭 E12.1 factory worker: dark skin tone'),
   (['\u{1f468}\u200d\u{1f3ed}'], '👨‍🏭 E4.0 man factory worker'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f3ed}'],
-    '👨🏻‍🏭 E4.0 man factory worker: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f3ed}'],
-    '👨🏼‍🏭 E4.0 man factory worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f3ed}'],
-    '👨🏽‍🏭 E4.0 man factory worker: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f3ed}'],
-    '👨🏾‍🏭 E4.0 man factory worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f3ed}'],
-    '👨🏿‍🏭 E4.0 man factory worker: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f3ed}'], '👨🏻‍🏭 E4.0 man factory worker: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f3ed}'], '👨🏼‍🏭 E4.0 man factory worker: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f3ed}'], '👨🏽‍🏭 E4.0 man factory worker: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f3ed}'], '👨🏾‍🏭 E4.0 man factory worker: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f3ed}'], '👨🏿‍🏭 E4.0 man factory worker: dark skin tone'),
   (['\u{1f469}\u200d\u{1f3ed}'], '👩‍🏭 E4.0 woman factory worker'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f3ed}'],
-    '👩🏻‍🏭 E4.0 woman factory worker: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f3ed}'],
-    '👩🏼‍🏭 E4.0 woman factory worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f3ed}'],
-    '👩🏽‍🏭 E4.0 woman factory worker: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f3ed}'],
-    '👩🏾‍🏭 E4.0 woman factory worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f3ed}'],
-    '👩🏿‍🏭 E4.0 woman factory worker: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f3ed}'], '👩🏻‍🏭 E4.0 woman factory worker: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f3ed}'], '👩🏼‍🏭 E4.0 woman factory worker: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f3ed}'], '👩🏽‍🏭 E4.0 woman factory worker: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f3ed}'], '👩🏾‍🏭 E4.0 woman factory worker: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f3ed}'], '👩🏿‍🏭 E4.0 woman factory worker: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f4bc}'], '🧑‍💼 E12.1 office worker'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f4bc}'],
-    '🧑🏻‍💼 E12.1 office worker: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f4bc}'],
-    '🧑🏼‍💼 E12.1 office worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f4bc}'],
-    '🧑🏽‍💼 E12.1 office worker: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f4bc}'],
-    '🧑🏾‍💼 E12.1 office worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f4bc}'],
-    '🧑🏿‍💼 E12.1 office worker: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f4bc}'], '🧑🏻‍💼 E12.1 office worker: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f4bc}'], '🧑🏼‍💼 E12.1 office worker: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f4bc}'], '🧑🏽‍💼 E12.1 office worker: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f4bc}'], '🧑🏾‍💼 E12.1 office worker: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f4bc}'], '🧑🏿‍💼 E12.1 office worker: dark skin tone'),
   (['\u{1f468}\u200d\u{1f4bc}'], '👨‍💼 E4.0 man office worker'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f4bc}'],
-    '👨🏻‍💼 E4.0 man office worker: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f4bc}'],
-    '👨🏼‍💼 E4.0 man office worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f4bc}'],
-    '👨🏽‍💼 E4.0 man office worker: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f4bc}'],
-    '👨🏾‍💼 E4.0 man office worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f4bc}'],
-    '👨🏿‍💼 E4.0 man office worker: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f4bc}'], '👨🏻‍💼 E4.0 man office worker: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f4bc}'], '👨🏼‍💼 E4.0 man office worker: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f4bc}'], '👨🏽‍💼 E4.0 man office worker: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f4bc}'], '👨🏾‍💼 E4.0 man office worker: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f4bc}'], '👨🏿‍💼 E4.0 man office worker: dark skin tone'),
   (['\u{1f469}\u200d\u{1f4bc}'], '👩‍💼 E4.0 woman office worker'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f4bc}'],
-    '👩🏻‍💼 E4.0 woman office worker: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f4bc}'],
-    '👩🏼‍💼 E4.0 woman office worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f4bc}'],
-    '👩🏽‍💼 E4.0 woman office worker: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f4bc}'],
-    '👩🏾‍💼 E4.0 woman office worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f4bc}'],
-    '👩🏿‍💼 E4.0 woman office worker: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f4bc}'], '👩🏻‍💼 E4.0 woman office worker: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f4bc}'], '👩🏼‍💼 E4.0 woman office worker: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f4bc}'], '👩🏽‍💼 E4.0 woman office worker: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f4bc}'], '👩🏾‍💼 E4.0 woman office worker: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f4bc}'], '👩🏿‍💼 E4.0 woman office worker: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f52c}'], '🧑‍🔬 E12.1 scientist'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f52c}'],
-    '🧑🏻‍🔬 E12.1 scientist: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f52c}'],
-    '🧑🏼‍🔬 E12.1 scientist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f52c}'],
-    '🧑🏽‍🔬 E12.1 scientist: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f52c}'],
-    '🧑🏾‍🔬 E12.1 scientist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f52c}'],
-    '🧑🏿‍🔬 E12.1 scientist: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f52c}'], '🧑🏻‍🔬 E12.1 scientist: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f52c}'], '🧑🏼‍🔬 E12.1 scientist: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f52c}'], '🧑🏽‍🔬 E12.1 scientist: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f52c}'], '🧑🏾‍🔬 E12.1 scientist: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f52c}'], '🧑🏿‍🔬 E12.1 scientist: dark skin tone'),
   (['\u{1f468}\u200d\u{1f52c}'], '👨‍🔬 E4.0 man scientist'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f52c}'],
-    '👨🏻‍🔬 E4.0 man scientist: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f52c}'],
-    '👨🏼‍🔬 E4.0 man scientist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f52c}'],
-    '👨🏽‍🔬 E4.0 man scientist: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f52c}'],
-    '👨🏾‍🔬 E4.0 man scientist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f52c}'],
-    '👨🏿‍🔬 E4.0 man scientist: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f52c}'], '👨🏻‍🔬 E4.0 man scientist: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f52c}'], '👨🏼‍🔬 E4.0 man scientist: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f52c}'], '👨🏽‍🔬 E4.0 man scientist: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f52c}'], '👨🏾‍🔬 E4.0 man scientist: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f52c}'], '👨🏿‍🔬 E4.0 man scientist: dark skin tone'),
   (['\u{1f469}\u200d\u{1f52c}'], '👩‍🔬 E4.0 woman scientist'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f52c}'],
-    '👩🏻‍🔬 E4.0 woman scientist: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f52c}'],
-    '👩🏼‍🔬 E4.0 woman scientist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f52c}'],
-    '👩🏽‍🔬 E4.0 woman scientist: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f52c}'],
-    '👩🏾‍🔬 E4.0 woman scientist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f52c}'],
-    '👩🏿‍🔬 E4.0 woman scientist: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f52c}'], '👩🏻‍🔬 E4.0 woman scientist: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f52c}'], '👩🏼‍🔬 E4.0 woman scientist: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f52c}'], '👩🏽‍🔬 E4.0 woman scientist: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f52c}'], '👩🏾‍🔬 E4.0 woman scientist: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f52c}'], '👩🏿‍🔬 E4.0 woman scientist: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f4bb}'], '🧑‍💻 E12.1 technologist'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f4bb}'],
-    '🧑🏻‍💻 E12.1 technologist: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f4bb}'],
-    '🧑🏼‍💻 E12.1 technologist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f4bb}'],
-    '🧑🏽‍💻 E12.1 technologist: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f4bb}'],
-    '🧑🏾‍💻 E12.1 technologist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f4bb}'],
-    '🧑🏿‍💻 E12.1 technologist: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f4bb}'], '🧑🏻‍💻 E12.1 technologist: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f4bb}'], '🧑🏼‍💻 E12.1 technologist: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f4bb}'], '🧑🏽‍💻 E12.1 technologist: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f4bb}'], '🧑🏾‍💻 E12.1 technologist: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f4bb}'], '🧑🏿‍💻 E12.1 technologist: dark skin tone'),
   (['\u{1f468}\u200d\u{1f4bb}'], '👨‍💻 E4.0 man technologist'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f4bb}'],
-    '👨🏻‍💻 E4.0 man technologist: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f4bb}'],
-    '👨🏼‍💻 E4.0 man technologist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f4bb}'],
-    '👨🏽‍💻 E4.0 man technologist: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f4bb}'],
-    '👨🏾‍💻 E4.0 man technologist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f4bb}'],
-    '👨🏿‍💻 E4.0 man technologist: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f4bb}'], '👨🏻‍💻 E4.0 man technologist: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f4bb}'], '👨🏼‍💻 E4.0 man technologist: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f4bb}'], '👨🏽‍💻 E4.0 man technologist: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f4bb}'], '👨🏾‍💻 E4.0 man technologist: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f4bb}'], '👨🏿‍💻 E4.0 man technologist: dark skin tone'),
   (['\u{1f469}\u200d\u{1f4bb}'], '👩‍💻 E4.0 woman technologist'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f4bb}'],
-    '👩🏻‍💻 E4.0 woman technologist: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f4bb}'],
-    '👩🏼‍💻 E4.0 woman technologist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f4bb}'],
-    '👩🏽‍💻 E4.0 woman technologist: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f4bb}'],
-    '👩🏾‍💻 E4.0 woman technologist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f4bb}'],
-    '👩🏿‍💻 E4.0 woman technologist: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f4bb}'], '👩🏻‍💻 E4.0 woman technologist: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f4bb}'], '👩🏼‍💻 E4.0 woman technologist: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f4bb}'], '👩🏽‍💻 E4.0 woman technologist: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f4bb}'], '👩🏾‍💻 E4.0 woman technologist: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f4bb}'], '👩🏿‍💻 E4.0 woman technologist: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f3a4}'], '🧑‍🎤 E12.1 singer'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3a4}'],
-    '🧑🏻‍🎤 E12.1 singer: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3a4}'],
-    '🧑🏼‍🎤 E12.1 singer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3a4}'],
-    '🧑🏽‍🎤 E12.1 singer: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3a4}'],
-    '🧑🏾‍🎤 E12.1 singer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3a4}'],
-    '🧑🏿‍🎤 E12.1 singer: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f3a4}'], '🧑🏻‍🎤 E12.1 singer: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f3a4}'], '🧑🏼‍🎤 E12.1 singer: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f3a4}'], '🧑🏽‍🎤 E12.1 singer: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f3a4}'], '🧑🏾‍🎤 E12.1 singer: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f3a4}'], '🧑🏿‍🎤 E12.1 singer: dark skin tone'),
   (['\u{1f468}\u200d\u{1f3a4}'], '👨‍🎤 E4.0 man singer'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f3a4}'],
-    '👨🏻‍🎤 E4.0 man singer: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f3a4}'],
-    '👨🏼‍🎤 E4.0 man singer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f3a4}'],
-    '👨🏽‍🎤 E4.0 man singer: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f3a4}'],
-    '👨🏾‍🎤 E4.0 man singer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f3a4}'],
-    '👨🏿‍🎤 E4.0 man singer: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f3a4}'], '👨🏻‍🎤 E4.0 man singer: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f3a4}'], '👨🏼‍🎤 E4.0 man singer: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f3a4}'], '👨🏽‍🎤 E4.0 man singer: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f3a4}'], '👨🏾‍🎤 E4.0 man singer: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f3a4}'], '👨🏿‍🎤 E4.0 man singer: dark skin tone'),
   (['\u{1f469}\u200d\u{1f3a4}'], '👩‍🎤 E4.0 woman singer'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f3a4}'],
-    '👩🏻‍🎤 E4.0 woman singer: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f3a4}'],
-    '👩🏼‍🎤 E4.0 woman singer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f3a4}'],
-    '👩🏽‍🎤 E4.0 woman singer: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f3a4}'],
-    '👩🏾‍🎤 E4.0 woman singer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f3a4}'],
-    '👩🏿‍🎤 E4.0 woman singer: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f3a4}'], '👩🏻‍🎤 E4.0 woman singer: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f3a4}'], '👩🏼‍🎤 E4.0 woman singer: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f3a4}'], '👩🏽‍🎤 E4.0 woman singer: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f3a4}'], '👩🏾‍🎤 E4.0 woman singer: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f3a4}'], '👩🏿‍🎤 E4.0 woman singer: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f3a8}'], '🧑‍🎨 E12.1 artist'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3a8}'],
-    '🧑🏻‍🎨 E12.1 artist: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3a8}'],
-    '🧑🏼‍🎨 E12.1 artist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3a8}'],
-    '🧑🏽‍🎨 E12.1 artist: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3a8}'],
-    '🧑🏾‍🎨 E12.1 artist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3a8}'],
-    '🧑🏿‍🎨 E12.1 artist: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f3a8}'], '🧑🏻‍🎨 E12.1 artist: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f3a8}'], '🧑🏼‍🎨 E12.1 artist: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f3a8}'], '🧑🏽‍🎨 E12.1 artist: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f3a8}'], '🧑🏾‍🎨 E12.1 artist: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f3a8}'], '🧑🏿‍🎨 E12.1 artist: dark skin tone'),
   (['\u{1f468}\u200d\u{1f3a8}'], '👨‍🎨 E4.0 man artist'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f3a8}'],
-    '👨🏻‍🎨 E4.0 man artist: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f3a8}'],
-    '👨🏼‍🎨 E4.0 man artist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f3a8}'],
-    '👨🏽‍🎨 E4.0 man artist: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f3a8}'],
-    '👨🏾‍🎨 E4.0 man artist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f3a8}'],
-    '👨🏿‍🎨 E4.0 man artist: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f3a8}'], '👨🏻‍🎨 E4.0 man artist: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f3a8}'], '👨🏼‍🎨 E4.0 man artist: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f3a8}'], '👨🏽‍🎨 E4.0 man artist: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f3a8}'], '👨🏾‍🎨 E4.0 man artist: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f3a8}'], '👨🏿‍🎨 E4.0 man artist: dark skin tone'),
   (['\u{1f469}\u200d\u{1f3a8}'], '👩‍🎨 E4.0 woman artist'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f3a8}'],
-    '👩🏻‍🎨 E4.0 woman artist: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f3a8}'],
-    '👩🏼‍🎨 E4.0 woman artist: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f3a8}'],
-    '👩🏽‍🎨 E4.0 woman artist: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f3a8}'],
-    '👩🏾‍🎨 E4.0 woman artist: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f3a8}'],
-    '👩🏿‍🎨 E4.0 woman artist: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f3a8}'], '👩🏻‍🎨 E4.0 woman artist: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f3a8}'], '👩🏼‍🎨 E4.0 woman artist: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f3a8}'], '👩🏽‍🎨 E4.0 woman artist: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f3a8}'], '👩🏾‍🎨 E4.0 woman artist: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f3a8}'], '👩🏿‍🎨 E4.0 woman artist: dark skin tone'),
   (['\u{1f9d1}\u200d\u2708\ufe0f'], '🧑‍✈️ E12.1 pilot'),
   (['\u{1f9d1}\u200d\u2708'], '🧑‍✈ E12.1 pilot'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2708\ufe0f'],
-    '🧑🏻‍✈️ E12.1 pilot: light skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2708\ufe0f'], '🧑🏻‍✈️ E12.1 pilot: light skin tone'),
   (['\u{1f9d1}\u{1f3fb}\u200d\u2708'], '🧑🏻‍✈ E12.1 pilot: light skin tone'),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2708\ufe0f'],
-    '🧑🏼‍✈️ E12.1 pilot: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2708'],
-    '🧑🏼‍✈ E12.1 pilot: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2708\ufe0f'],
-    '🧑🏽‍✈️ E12.1 pilot: medium skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2708\ufe0f'], '🧑🏼‍✈️ E12.1 pilot: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2708'], '🧑🏼‍✈ E12.1 pilot: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2708\ufe0f'], '🧑🏽‍✈️ E12.1 pilot: medium skin tone'),
   (['\u{1f9d1}\u{1f3fd}\u200d\u2708'], '🧑🏽‍✈ E12.1 pilot: medium skin tone'),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2708\ufe0f'],
-    '🧑🏾‍✈️ E12.1 pilot: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2708'],
-    '🧑🏾‍✈ E12.1 pilot: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2708\ufe0f'],
-    '🧑🏿‍✈️ E12.1 pilot: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2708\ufe0f'], '🧑🏾‍✈️ E12.1 pilot: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2708'], '🧑🏾‍✈ E12.1 pilot: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2708\ufe0f'], '🧑🏿‍✈️ E12.1 pilot: dark skin tone'),
   (['\u{1f9d1}\u{1f3ff}\u200d\u2708'], '🧑🏿‍✈ E12.1 pilot: dark skin tone'),
   (['\u{1f468}\u200d\u2708\ufe0f'], '👨‍✈️ E4.0 man pilot'),
   (['\u{1f468}\u200d\u2708'], '👨‍✈ E4.0 man pilot'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2708\ufe0f'],
-    '👨🏻‍✈️ E4.0 man pilot: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2708'],
-    '👨🏻‍✈ E4.0 man pilot: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2708\ufe0f'],
-    '👨🏼‍✈️ E4.0 man pilot: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2708'],
-    '👨🏼‍✈ E4.0 man pilot: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2708\ufe0f'],
-    '👨🏽‍✈️ E4.0 man pilot: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2708'],
-    '👨🏽‍✈ E4.0 man pilot: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2708\ufe0f'],
-    '👨🏾‍✈️ E4.0 man pilot: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2708'],
-    '👨🏾‍✈ E4.0 man pilot: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2708\ufe0f'],
-    '👨🏿‍✈️ E4.0 man pilot: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u2708\ufe0f'], '👨🏻‍✈️ E4.0 man pilot: light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2708'], '👨🏻‍✈ E4.0 man pilot: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2708\ufe0f'], '👨🏼‍✈️ E4.0 man pilot: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2708'], '👨🏼‍✈ E4.0 man pilot: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2708\ufe0f'], '👨🏽‍✈️ E4.0 man pilot: medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2708'], '👨🏽‍✈ E4.0 man pilot: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2708\ufe0f'], '👨🏾‍✈️ E4.0 man pilot: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2708'], '👨🏾‍✈ E4.0 man pilot: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2708\ufe0f'], '👨🏿‍✈️ E4.0 man pilot: dark skin tone'),
   (['\u{1f468}\u{1f3ff}\u200d\u2708'], '👨🏿‍✈ E4.0 man pilot: dark skin tone'),
   (['\u{1f469}\u200d\u2708\ufe0f'], '👩‍✈️ E4.0 woman pilot'),
   (['\u{1f469}\u200d\u2708'], '👩‍✈ E4.0 woman pilot'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2708\ufe0f'],
-    '👩🏻‍✈️ E4.0 woman pilot: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2708'],
-    '👩🏻‍✈ E4.0 woman pilot: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2708\ufe0f'],
-    '👩🏼‍✈️ E4.0 woman pilot: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2708'],
-    '👩🏼‍✈ E4.0 woman pilot: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2708\ufe0f'],
-    '👩🏽‍✈️ E4.0 woman pilot: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2708'],
-    '👩🏽‍✈ E4.0 woman pilot: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2708\ufe0f'],
-    '👩🏾‍✈️ E4.0 woman pilot: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2708'],
-    '👩🏾‍✈ E4.0 woman pilot: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2708\ufe0f'],
-    '👩🏿‍✈️ E4.0 woman pilot: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2708'],
-    '👩🏿‍✈ E4.0 woman pilot: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u2708\ufe0f'], '👩🏻‍✈️ E4.0 woman pilot: light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2708'], '👩🏻‍✈ E4.0 woman pilot: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2708\ufe0f'], '👩🏼‍✈️ E4.0 woman pilot: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2708'], '👩🏼‍✈ E4.0 woman pilot: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2708\ufe0f'], '👩🏽‍✈️ E4.0 woman pilot: medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2708'], '👩🏽‍✈ E4.0 woman pilot: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2708\ufe0f'], '👩🏾‍✈️ E4.0 woman pilot: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2708'], '👩🏾‍✈ E4.0 woman pilot: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2708\ufe0f'], '👩🏿‍✈️ E4.0 woman pilot: dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2708'], '👩🏿‍✈ E4.0 woman pilot: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f680}'], '🧑‍🚀 E12.1 astronaut'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f680}'],
-    '🧑🏻‍🚀 E12.1 astronaut: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f680}'],
-    '🧑🏼‍🚀 E12.1 astronaut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f680}'],
-    '🧑🏽‍🚀 E12.1 astronaut: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f680}'],
-    '🧑🏾‍🚀 E12.1 astronaut: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f680}'],
-    '🧑🏿‍🚀 E12.1 astronaut: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f680}'], '🧑🏻‍🚀 E12.1 astronaut: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f680}'], '🧑🏼‍🚀 E12.1 astronaut: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f680}'], '🧑🏽‍🚀 E12.1 astronaut: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f680}'], '🧑🏾‍🚀 E12.1 astronaut: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f680}'], '🧑🏿‍🚀 E12.1 astronaut: dark skin tone'),
   (['\u{1f468}\u200d\u{1f680}'], '👨‍🚀 E4.0 man astronaut'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f680}'],
-    '👨🏻‍🚀 E4.0 man astronaut: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f680}'],
-    '👨🏼‍🚀 E4.0 man astronaut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f680}'],
-    '👨🏽‍🚀 E4.0 man astronaut: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f680}'],
-    '👨🏾‍🚀 E4.0 man astronaut: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f680}'],
-    '👨🏿‍🚀 E4.0 man astronaut: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f680}'], '👨🏻‍🚀 E4.0 man astronaut: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f680}'], '👨🏼‍🚀 E4.0 man astronaut: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f680}'], '👨🏽‍🚀 E4.0 man astronaut: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f680}'], '👨🏾‍🚀 E4.0 man astronaut: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f680}'], '👨🏿‍🚀 E4.0 man astronaut: dark skin tone'),
   (['\u{1f469}\u200d\u{1f680}'], '👩‍🚀 E4.0 woman astronaut'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f680}'],
-    '👩🏻‍🚀 E4.0 woman astronaut: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f680}'],
-    '👩🏼‍🚀 E4.0 woman astronaut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f680}'],
-    '👩🏽‍🚀 E4.0 woman astronaut: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f680}'],
-    '👩🏾‍🚀 E4.0 woman astronaut: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f680}'],
-    '👩🏿‍🚀 E4.0 woman astronaut: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f680}'], '👩🏻‍🚀 E4.0 woman astronaut: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f680}'], '👩🏼‍🚀 E4.0 woman astronaut: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f680}'], '👩🏽‍🚀 E4.0 woman astronaut: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f680}'], '👩🏾‍🚀 E4.0 woman astronaut: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f680}'], '👩🏿‍🚀 E4.0 woman astronaut: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f692}'], '🧑‍🚒 E12.1 firefighter'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f692}'],
-    '🧑🏻‍🚒 E12.1 firefighter: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f692}'],
-    '🧑🏼‍🚒 E12.1 firefighter: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f692}'],
-    '🧑🏽‍🚒 E12.1 firefighter: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f692}'],
-    '🧑🏾‍🚒 E12.1 firefighter: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f692}'],
-    '🧑🏿‍🚒 E12.1 firefighter: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f692}'], '🧑🏻‍🚒 E12.1 firefighter: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f692}'], '🧑🏼‍🚒 E12.1 firefighter: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f692}'], '🧑🏽‍🚒 E12.1 firefighter: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f692}'], '🧑🏾‍🚒 E12.1 firefighter: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f692}'], '🧑🏿‍🚒 E12.1 firefighter: dark skin tone'),
   (['\u{1f468}\u200d\u{1f692}'], '👨‍🚒 E4.0 man firefighter'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f692}'],
-    '👨🏻‍🚒 E4.0 man firefighter: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f692}'],
-    '👨🏼‍🚒 E4.0 man firefighter: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f692}'],
-    '👨🏽‍🚒 E4.0 man firefighter: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f692}'],
-    '👨🏾‍🚒 E4.0 man firefighter: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f692}'],
-    '👨🏿‍🚒 E4.0 man firefighter: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f692}'], '👨🏻‍🚒 E4.0 man firefighter: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f692}'], '👨🏼‍🚒 E4.0 man firefighter: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f692}'], '👨🏽‍🚒 E4.0 man firefighter: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f692}'], '👨🏾‍🚒 E4.0 man firefighter: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f692}'], '👨🏿‍🚒 E4.0 man firefighter: dark skin tone'),
   (['\u{1f469}\u200d\u{1f692}'], '👩‍🚒 E4.0 woman firefighter'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f692}'],
-    '👩🏻‍🚒 E4.0 woman firefighter: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f692}'],
-    '👩🏼‍🚒 E4.0 woman firefighter: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f692}'],
-    '👩🏽‍🚒 E4.0 woman firefighter: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f692}'],
-    '👩🏾‍🚒 E4.0 woman firefighter: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f692}'],
-    '👩🏿‍🚒 E4.0 woman firefighter: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f692}'], '👩🏻‍🚒 E4.0 woman firefighter: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f692}'], '👩🏼‍🚒 E4.0 woman firefighter: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f692}'], '👩🏽‍🚒 E4.0 woman firefighter: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f692}'], '👩🏾‍🚒 E4.0 woman firefighter: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f692}'], '👩🏿‍🚒 E4.0 woman firefighter: dark skin tone'),
   (['\u{1f46e}'], '👮 E0.6 police officer'),
   (['\u{1f46e}\u{1f3fb}'], '👮🏻 E1.0 police officer: light skin tone'),
   (['\u{1f46e}\u{1f3fc}'], '👮🏼 E1.0 police officer: medium-light skin tone'),
@@ -7730,88 +2466,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f46e}\u{1f3ff}'], '👮🏿 E1.0 police officer: dark skin tone'),
   (['\u{1f46e}\u200d\u2642\ufe0f'], '👮‍♂️ E4.0 man police officer'),
   (['\u{1f46e}\u200d\u2642'], '👮‍♂ E4.0 man police officer'),
-  (
-    ['\u{1f46e}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '👮🏻‍♂️ E4.0 man police officer: light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fb}\u200d\u2642'],
-    '👮🏻‍♂ E4.0 man police officer: light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '👮🏼‍♂️ E4.0 man police officer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fc}\u200d\u2642'],
-    '👮🏼‍♂ E4.0 man police officer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '👮🏽‍♂️ E4.0 man police officer: medium skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fd}\u200d\u2642'],
-    '👮🏽‍♂ E4.0 man police officer: medium skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '👮🏾‍♂️ E4.0 man police officer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fe}\u200d\u2642'],
-    '👮🏾‍♂ E4.0 man police officer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '👮🏿‍♂️ E4.0 man police officer: dark skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3ff}\u200d\u2642'],
-    '👮🏿‍♂ E4.0 man police officer: dark skin tone'
-  ),
+  (['\u{1f46e}\u{1f3fb}\u200d\u2642\ufe0f'], '👮🏻‍♂️ E4.0 man police officer: light skin tone'),
+  (['\u{1f46e}\u{1f3fb}\u200d\u2642'], '👮🏻‍♂ E4.0 man police officer: light skin tone'),
+  (['\u{1f46e}\u{1f3fc}\u200d\u2642\ufe0f'], '👮🏼‍♂️ E4.0 man police officer: medium-light skin tone'),
+  (['\u{1f46e}\u{1f3fc}\u200d\u2642'], '👮🏼‍♂ E4.0 man police officer: medium-light skin tone'),
+  (['\u{1f46e}\u{1f3fd}\u200d\u2642\ufe0f'], '👮🏽‍♂️ E4.0 man police officer: medium skin tone'),
+  (['\u{1f46e}\u{1f3fd}\u200d\u2642'], '👮🏽‍♂ E4.0 man police officer: medium skin tone'),
+  (['\u{1f46e}\u{1f3fe}\u200d\u2642\ufe0f'], '👮🏾‍♂️ E4.0 man police officer: medium-dark skin tone'),
+  (['\u{1f46e}\u{1f3fe}\u200d\u2642'], '👮🏾‍♂ E4.0 man police officer: medium-dark skin tone'),
+  (['\u{1f46e}\u{1f3ff}\u200d\u2642\ufe0f'], '👮🏿‍♂️ E4.0 man police officer: dark skin tone'),
+  (['\u{1f46e}\u{1f3ff}\u200d\u2642'], '👮🏿‍♂ E4.0 man police officer: dark skin tone'),
   (['\u{1f46e}\u200d\u2640\ufe0f'], '👮‍♀️ E4.0 woman police officer'),
   (['\u{1f46e}\u200d\u2640'], '👮‍♀ E4.0 woman police officer'),
-  (
-    ['\u{1f46e}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '👮🏻‍♀️ E4.0 woman police officer: light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fb}\u200d\u2640'],
-    '👮🏻‍♀ E4.0 woman police officer: light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '👮🏼‍♀️ E4.0 woman police officer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fc}\u200d\u2640'],
-    '👮🏼‍♀ E4.0 woman police officer: medium-light skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '👮🏽‍♀️ E4.0 woman police officer: medium skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fd}\u200d\u2640'],
-    '👮🏽‍♀ E4.0 woman police officer: medium skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '👮🏾‍♀️ E4.0 woman police officer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3fe}\u200d\u2640'],
-    '👮🏾‍♀ E4.0 woman police officer: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '👮🏿‍♀️ E4.0 woman police officer: dark skin tone'
-  ),
-  (
-    ['\u{1f46e}\u{1f3ff}\u200d\u2640'],
-    '👮🏿‍♀ E4.0 woman police officer: dark skin tone'
-  ),
+  (['\u{1f46e}\u{1f3fb}\u200d\u2640\ufe0f'], '👮🏻‍♀️ E4.0 woman police officer: light skin tone'),
+  (['\u{1f46e}\u{1f3fb}\u200d\u2640'], '👮🏻‍♀ E4.0 woman police officer: light skin tone'),
+  (['\u{1f46e}\u{1f3fc}\u200d\u2640\ufe0f'], '👮🏼‍♀️ E4.0 woman police officer: medium-light skin tone'),
+  (['\u{1f46e}\u{1f3fc}\u200d\u2640'], '👮🏼‍♀ E4.0 woman police officer: medium-light skin tone'),
+  (['\u{1f46e}\u{1f3fd}\u200d\u2640\ufe0f'], '👮🏽‍♀️ E4.0 woman police officer: medium skin tone'),
+  (['\u{1f46e}\u{1f3fd}\u200d\u2640'], '👮🏽‍♀ E4.0 woman police officer: medium skin tone'),
+  (['\u{1f46e}\u{1f3fe}\u200d\u2640\ufe0f'], '👮🏾‍♀️ E4.0 woman police officer: medium-dark skin tone'),
+  (['\u{1f46e}\u{1f3fe}\u200d\u2640'], '👮🏾‍♀ E4.0 woman police officer: medium-dark skin tone'),
+  (['\u{1f46e}\u{1f3ff}\u200d\u2640\ufe0f'], '👮🏿‍♀️ E4.0 woman police officer: dark skin tone'),
+  (['\u{1f46e}\u{1f3ff}\u200d\u2640'], '👮🏿‍♀ E4.0 woman police officer: dark skin tone'),
   (['\u{1f575}\ufe0f'], '🕵️ E0.7 detective'),
   (['\u{1f575}'], '🕵 E0.7 detective'),
   (['\u{1f575}\u{1f3fb}'], '🕵🏻 E2.0 detective: light skin tone'),
@@ -7823,90 +2499,30 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f575}\u200d\u2642\ufe0f'], '🕵‍♂️ E4.0 man detective'),
   (['\u{1f575}\ufe0f\u200d\u2642'], '🕵️‍♂ E4.0 man detective'),
   (['\u{1f575}\u200d\u2642'], '🕵‍♂ E4.0 man detective'),
-  (
-    ['\u{1f575}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🕵🏻‍♂️ E4.0 man detective: light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fb}\u200d\u2642'],
-    '🕵🏻‍♂ E4.0 man detective: light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🕵🏼‍♂️ E4.0 man detective: medium-light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fc}\u200d\u2642'],
-    '🕵🏼‍♂ E4.0 man detective: medium-light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🕵🏽‍♂️ E4.0 man detective: medium skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fd}\u200d\u2642'],
-    '🕵🏽‍♂ E4.0 man detective: medium skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🕵🏾‍♂️ E4.0 man detective: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fe}\u200d\u2642'],
-    '🕵🏾‍♂ E4.0 man detective: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🕵🏿‍♂️ E4.0 man detective: dark skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3ff}\u200d\u2642'],
-    '🕵🏿‍♂ E4.0 man detective: dark skin tone'
-  ),
+  (['\u{1f575}\u{1f3fb}\u200d\u2642\ufe0f'], '🕵🏻‍♂️ E4.0 man detective: light skin tone'),
+  (['\u{1f575}\u{1f3fb}\u200d\u2642'], '🕵🏻‍♂ E4.0 man detective: light skin tone'),
+  (['\u{1f575}\u{1f3fc}\u200d\u2642\ufe0f'], '🕵🏼‍♂️ E4.0 man detective: medium-light skin tone'),
+  (['\u{1f575}\u{1f3fc}\u200d\u2642'], '🕵🏼‍♂ E4.0 man detective: medium-light skin tone'),
+  (['\u{1f575}\u{1f3fd}\u200d\u2642\ufe0f'], '🕵🏽‍♂️ E4.0 man detective: medium skin tone'),
+  (['\u{1f575}\u{1f3fd}\u200d\u2642'], '🕵🏽‍♂ E4.0 man detective: medium skin tone'),
+  (['\u{1f575}\u{1f3fe}\u200d\u2642\ufe0f'], '🕵🏾‍♂️ E4.0 man detective: medium-dark skin tone'),
+  (['\u{1f575}\u{1f3fe}\u200d\u2642'], '🕵🏾‍♂ E4.0 man detective: medium-dark skin tone'),
+  (['\u{1f575}\u{1f3ff}\u200d\u2642\ufe0f'], '🕵🏿‍♂️ E4.0 man detective: dark skin tone'),
+  (['\u{1f575}\u{1f3ff}\u200d\u2642'], '🕵🏿‍♂ E4.0 man detective: dark skin tone'),
   (['\u{1f575}\ufe0f\u200d\u2640\ufe0f'], '🕵️‍♀️ E4.0 woman detective'),
   (['\u{1f575}\u200d\u2640\ufe0f'], '🕵‍♀️ E4.0 woman detective'),
   (['\u{1f575}\ufe0f\u200d\u2640'], '🕵️‍♀ E4.0 woman detective'),
   (['\u{1f575}\u200d\u2640'], '🕵‍♀ E4.0 woman detective'),
-  (
-    ['\u{1f575}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🕵🏻‍♀️ E4.0 woman detective: light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fb}\u200d\u2640'],
-    '🕵🏻‍♀ E4.0 woman detective: light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🕵🏼‍♀️ E4.0 woman detective: medium-light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fc}\u200d\u2640'],
-    '🕵🏼‍♀ E4.0 woman detective: medium-light skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🕵🏽‍♀️ E4.0 woman detective: medium skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fd}\u200d\u2640'],
-    '🕵🏽‍♀ E4.0 woman detective: medium skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🕵🏾‍♀️ E4.0 woman detective: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3fe}\u200d\u2640'],
-    '🕵🏾‍♀ E4.0 woman detective: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🕵🏿‍♀️ E4.0 woman detective: dark skin tone'
-  ),
-  (
-    ['\u{1f575}\u{1f3ff}\u200d\u2640'],
-    '🕵🏿‍♀ E4.0 woman detective: dark skin tone'
-  ),
+  (['\u{1f575}\u{1f3fb}\u200d\u2640\ufe0f'], '🕵🏻‍♀️ E4.0 woman detective: light skin tone'),
+  (['\u{1f575}\u{1f3fb}\u200d\u2640'], '🕵🏻‍♀ E4.0 woman detective: light skin tone'),
+  (['\u{1f575}\u{1f3fc}\u200d\u2640\ufe0f'], '🕵🏼‍♀️ E4.0 woman detective: medium-light skin tone'),
+  (['\u{1f575}\u{1f3fc}\u200d\u2640'], '🕵🏼‍♀ E4.0 woman detective: medium-light skin tone'),
+  (['\u{1f575}\u{1f3fd}\u200d\u2640\ufe0f'], '🕵🏽‍♀️ E4.0 woman detective: medium skin tone'),
+  (['\u{1f575}\u{1f3fd}\u200d\u2640'], '🕵🏽‍♀ E4.0 woman detective: medium skin tone'),
+  (['\u{1f575}\u{1f3fe}\u200d\u2640\ufe0f'], '🕵🏾‍♀️ E4.0 woman detective: medium-dark skin tone'),
+  (['\u{1f575}\u{1f3fe}\u200d\u2640'], '🕵🏾‍♀ E4.0 woman detective: medium-dark skin tone'),
+  (['\u{1f575}\u{1f3ff}\u200d\u2640\ufe0f'], '🕵🏿‍♀️ E4.0 woman detective: dark skin tone'),
+  (['\u{1f575}\u{1f3ff}\u200d\u2640'], '🕵🏿‍♀ E4.0 woman detective: dark skin tone'),
   (['\u{1f482}'], '💂 E0.6 guard'),
   (['\u{1f482}\u{1f3fb}'], '💂🏻 E1.0 guard: light skin tone'),
   (['\u{1f482}\u{1f3fc}'], '💂🏼 E1.0 guard: medium-light skin tone'),
@@ -7915,85 +2531,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f482}\u{1f3ff}'], '💂🏿 E1.0 guard: dark skin tone'),
   (['\u{1f482}\u200d\u2642\ufe0f'], '💂‍♂️ E4.0 man guard'),
   (['\u{1f482}\u200d\u2642'], '💂‍♂ E4.0 man guard'),
-  (
-    ['\u{1f482}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '💂🏻‍♂️ E4.0 man guard: light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fb}\u200d\u2642'],
-    '💂🏻‍♂ E4.0 man guard: light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '💂🏼‍♂️ E4.0 man guard: medium-light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fc}\u200d\u2642'],
-    '💂🏼‍♂ E4.0 man guard: medium-light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '💂🏽‍♂️ E4.0 man guard: medium skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fd}\u200d\u2642'],
-    '💂🏽‍♂ E4.0 man guard: medium skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '💂🏾‍♂️ E4.0 man guard: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fe}\u200d\u2642'],
-    '💂🏾‍♂ E4.0 man guard: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '💂🏿‍♂️ E4.0 man guard: dark skin tone'
-  ),
+  (['\u{1f482}\u{1f3fb}\u200d\u2642\ufe0f'], '💂🏻‍♂️ E4.0 man guard: light skin tone'),
+  (['\u{1f482}\u{1f3fb}\u200d\u2642'], '💂🏻‍♂ E4.0 man guard: light skin tone'),
+  (['\u{1f482}\u{1f3fc}\u200d\u2642\ufe0f'], '💂🏼‍♂️ E4.0 man guard: medium-light skin tone'),
+  (['\u{1f482}\u{1f3fc}\u200d\u2642'], '💂🏼‍♂ E4.0 man guard: medium-light skin tone'),
+  (['\u{1f482}\u{1f3fd}\u200d\u2642\ufe0f'], '💂🏽‍♂️ E4.0 man guard: medium skin tone'),
+  (['\u{1f482}\u{1f3fd}\u200d\u2642'], '💂🏽‍♂ E4.0 man guard: medium skin tone'),
+  (['\u{1f482}\u{1f3fe}\u200d\u2642\ufe0f'], '💂🏾‍♂️ E4.0 man guard: medium-dark skin tone'),
+  (['\u{1f482}\u{1f3fe}\u200d\u2642'], '💂🏾‍♂ E4.0 man guard: medium-dark skin tone'),
+  (['\u{1f482}\u{1f3ff}\u200d\u2642\ufe0f'], '💂🏿‍♂️ E4.0 man guard: dark skin tone'),
   (['\u{1f482}\u{1f3ff}\u200d\u2642'], '💂🏿‍♂ E4.0 man guard: dark skin tone'),
   (['\u{1f482}\u200d\u2640\ufe0f'], '💂‍♀️ E4.0 woman guard'),
   (['\u{1f482}\u200d\u2640'], '💂‍♀ E4.0 woman guard'),
-  (
-    ['\u{1f482}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '💂🏻‍♀️ E4.0 woman guard: light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fb}\u200d\u2640'],
-    '💂🏻‍♀ E4.0 woman guard: light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '💂🏼‍♀️ E4.0 woman guard: medium-light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fc}\u200d\u2640'],
-    '💂🏼‍♀ E4.0 woman guard: medium-light skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '💂🏽‍♀️ E4.0 woman guard: medium skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fd}\u200d\u2640'],
-    '💂🏽‍♀ E4.0 woman guard: medium skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '💂🏾‍♀️ E4.0 woman guard: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3fe}\u200d\u2640'],
-    '💂🏾‍♀ E4.0 woman guard: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '💂🏿‍♀️ E4.0 woman guard: dark skin tone'
-  ),
-  (
-    ['\u{1f482}\u{1f3ff}\u200d\u2640'],
-    '💂🏿‍♀ E4.0 woman guard: dark skin tone'
-  ),
+  (['\u{1f482}\u{1f3fb}\u200d\u2640\ufe0f'], '💂🏻‍♀️ E4.0 woman guard: light skin tone'),
+  (['\u{1f482}\u{1f3fb}\u200d\u2640'], '💂🏻‍♀ E4.0 woman guard: light skin tone'),
+  (['\u{1f482}\u{1f3fc}\u200d\u2640\ufe0f'], '💂🏼‍♀️ E4.0 woman guard: medium-light skin tone'),
+  (['\u{1f482}\u{1f3fc}\u200d\u2640'], '💂🏼‍♀ E4.0 woman guard: medium-light skin tone'),
+  (['\u{1f482}\u{1f3fd}\u200d\u2640\ufe0f'], '💂🏽‍♀️ E4.0 woman guard: medium skin tone'),
+  (['\u{1f482}\u{1f3fd}\u200d\u2640'], '💂🏽‍♀ E4.0 woman guard: medium skin tone'),
+  (['\u{1f482}\u{1f3fe}\u200d\u2640\ufe0f'], '💂🏾‍♀️ E4.0 woman guard: medium-dark skin tone'),
+  (['\u{1f482}\u{1f3fe}\u200d\u2640'], '💂🏾‍♀ E4.0 woman guard: medium-dark skin tone'),
+  (['\u{1f482}\u{1f3ff}\u200d\u2640\ufe0f'], '💂🏿‍♀️ E4.0 woman guard: dark skin tone'),
+  (['\u{1f482}\u{1f3ff}\u200d\u2640'], '💂🏿‍♀ E4.0 woman guard: dark skin tone'),
   (['\u{1f977}'], '🥷 E13.0 ninja'),
   (['\u{1f977}\u{1f3fb}'], '🥷🏻 E13.0 ninja: light skin tone'),
   (['\u{1f977}\u{1f3fc}'], '🥷🏼 E13.0 ninja: medium-light skin tone'),
@@ -8002,111 +2561,39 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f977}\u{1f3ff}'], '🥷🏿 E13.0 ninja: dark skin tone'),
   (['\u{1f477}'], '👷 E0.6 construction worker'),
   (['\u{1f477}\u{1f3fb}'], '👷🏻 E1.0 construction worker: light skin tone'),
-  (
-    ['\u{1f477}\u{1f3fc}'],
-    '👷🏼 E1.0 construction worker: medium-light skin tone'
-  ),
+  (['\u{1f477}\u{1f3fc}'], '👷🏼 E1.0 construction worker: medium-light skin tone'),
   (['\u{1f477}\u{1f3fd}'], '👷🏽 E1.0 construction worker: medium skin tone'),
-  (
-    ['\u{1f477}\u{1f3fe}'],
-    '👷🏾 E1.0 construction worker: medium-dark skin tone'
-  ),
+  (['\u{1f477}\u{1f3fe}'], '👷🏾 E1.0 construction worker: medium-dark skin tone'),
   (['\u{1f477}\u{1f3ff}'], '👷🏿 E1.0 construction worker: dark skin tone'),
   (['\u{1f477}\u200d\u2642\ufe0f'], '👷‍♂️ E4.0 man construction worker'),
   (['\u{1f477}\u200d\u2642'], '👷‍♂ E4.0 man construction worker'),
-  (
-    ['\u{1f477}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '👷🏻‍♂️ E4.0 man construction worker: light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fb}\u200d\u2642'],
-    '👷🏻‍♂ E4.0 man construction worker: light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '👷🏼‍♂️ E4.0 man construction worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fc}\u200d\u2642'],
-    '👷🏼‍♂ E4.0 man construction worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '👷🏽‍♂️ E4.0 man construction worker: medium skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fd}\u200d\u2642'],
-    '👷🏽‍♂ E4.0 man construction worker: medium skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '👷🏾‍♂️ E4.0 man construction worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fe}\u200d\u2642'],
-    '👷🏾‍♂ E4.0 man construction worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '👷🏿‍♂️ E4.0 man construction worker: dark skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3ff}\u200d\u2642'],
-    '👷🏿‍♂ E4.0 man construction worker: dark skin tone'
-  ),
+  (['\u{1f477}\u{1f3fb}\u200d\u2642\ufe0f'], '👷🏻‍♂️ E4.0 man construction worker: light skin tone'),
+  (['\u{1f477}\u{1f3fb}\u200d\u2642'], '👷🏻‍♂ E4.0 man construction worker: light skin tone'),
+  (['\u{1f477}\u{1f3fc}\u200d\u2642\ufe0f'], '👷🏼‍♂️ E4.0 man construction worker: medium-light skin tone'),
+  (['\u{1f477}\u{1f3fc}\u200d\u2642'], '👷🏼‍♂ E4.0 man construction worker: medium-light skin tone'),
+  (['\u{1f477}\u{1f3fd}\u200d\u2642\ufe0f'], '👷🏽‍♂️ E4.0 man construction worker: medium skin tone'),
+  (['\u{1f477}\u{1f3fd}\u200d\u2642'], '👷🏽‍♂ E4.0 man construction worker: medium skin tone'),
+  (['\u{1f477}\u{1f3fe}\u200d\u2642\ufe0f'], '👷🏾‍♂️ E4.0 man construction worker: medium-dark skin tone'),
+  (['\u{1f477}\u{1f3fe}\u200d\u2642'], '👷🏾‍♂ E4.0 man construction worker: medium-dark skin tone'),
+  (['\u{1f477}\u{1f3ff}\u200d\u2642\ufe0f'], '👷🏿‍♂️ E4.0 man construction worker: dark skin tone'),
+  (['\u{1f477}\u{1f3ff}\u200d\u2642'], '👷🏿‍♂ E4.0 man construction worker: dark skin tone'),
   (['\u{1f477}\u200d\u2640\ufe0f'], '👷‍♀️ E4.0 woman construction worker'),
   (['\u{1f477}\u200d\u2640'], '👷‍♀ E4.0 woman construction worker'),
-  (
-    ['\u{1f477}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '👷🏻‍♀️ E4.0 woman construction worker: light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fb}\u200d\u2640'],
-    '👷🏻‍♀ E4.0 woman construction worker: light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '👷🏼‍♀️ E4.0 woman construction worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fc}\u200d\u2640'],
-    '👷🏼‍♀ E4.0 woman construction worker: medium-light skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '👷🏽‍♀️ E4.0 woman construction worker: medium skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fd}\u200d\u2640'],
-    '👷🏽‍♀ E4.0 woman construction worker: medium skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '👷🏾‍♀️ E4.0 woman construction worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3fe}\u200d\u2640'],
-    '👷🏾‍♀ E4.0 woman construction worker: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '👷🏿‍♀️ E4.0 woman construction worker: dark skin tone'
-  ),
-  (
-    ['\u{1f477}\u{1f3ff}\u200d\u2640'],
-    '👷🏿‍♀ E4.0 woman construction worker: dark skin tone'
-  ),
+  (['\u{1f477}\u{1f3fb}\u200d\u2640\ufe0f'], '👷🏻‍♀️ E4.0 woman construction worker: light skin tone'),
+  (['\u{1f477}\u{1f3fb}\u200d\u2640'], '👷🏻‍♀ E4.0 woman construction worker: light skin tone'),
+  (['\u{1f477}\u{1f3fc}\u200d\u2640\ufe0f'], '👷🏼‍♀️ E4.0 woman construction worker: medium-light skin tone'),
+  (['\u{1f477}\u{1f3fc}\u200d\u2640'], '👷🏼‍♀ E4.0 woman construction worker: medium-light skin tone'),
+  (['\u{1f477}\u{1f3fd}\u200d\u2640\ufe0f'], '👷🏽‍♀️ E4.0 woman construction worker: medium skin tone'),
+  (['\u{1f477}\u{1f3fd}\u200d\u2640'], '👷🏽‍♀ E4.0 woman construction worker: medium skin tone'),
+  (['\u{1f477}\u{1f3fe}\u200d\u2640\ufe0f'], '👷🏾‍♀️ E4.0 woman construction worker: medium-dark skin tone'),
+  (['\u{1f477}\u{1f3fe}\u200d\u2640'], '👷🏾‍♀ E4.0 woman construction worker: medium-dark skin tone'),
+  (['\u{1f477}\u{1f3ff}\u200d\u2640\ufe0f'], '👷🏿‍♀️ E4.0 woman construction worker: dark skin tone'),
+  (['\u{1f477}\u{1f3ff}\u200d\u2640'], '👷🏿‍♀ E4.0 woman construction worker: dark skin tone'),
   (['\u{1fac5}'], '🫅 E14.0 person with crown'),
   (['\u{1fac5}\u{1f3fb}'], '🫅🏻 E14.0 person with crown: light skin tone'),
-  (
-    ['\u{1fac5}\u{1f3fc}'],
-    '🫅🏼 E14.0 person with crown: medium-light skin tone'
-  ),
+  (['\u{1fac5}\u{1f3fc}'], '🫅🏼 E14.0 person with crown: medium-light skin tone'),
   (['\u{1fac5}\u{1f3fd}'], '🫅🏽 E14.0 person with crown: medium skin tone'),
-  (
-    ['\u{1fac5}\u{1f3fe}'],
-    '🫅🏾 E14.0 person with crown: medium-dark skin tone'
-  ),
+  (['\u{1fac5}\u{1f3fe}'], '🫅🏾 E14.0 person with crown: medium-dark skin tone'),
   (['\u{1fac5}\u{1f3ff}'], '🫅🏿 E14.0 person with crown: dark skin tone'),
   (['\u{1f934}'], '🤴 E3.0 prince'),
   (['\u{1f934}\u{1f3fb}'], '🤴🏻 E3.0 prince: light skin tone'),
@@ -8122,310 +2609,106 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f478}\u{1f3ff}'], '👸🏿 E1.0 princess: dark skin tone'),
   (['\u{1f473}'], '👳 E0.6 person wearing turban'),
   (['\u{1f473}\u{1f3fb}'], '👳🏻 E1.0 person wearing turban: light skin tone'),
-  (
-    ['\u{1f473}\u{1f3fc}'],
-    '👳🏼 E1.0 person wearing turban: medium-light skin tone'
-  ),
+  (['\u{1f473}\u{1f3fc}'], '👳🏼 E1.0 person wearing turban: medium-light skin tone'),
   (['\u{1f473}\u{1f3fd}'], '👳🏽 E1.0 person wearing turban: medium skin tone'),
-  (
-    ['\u{1f473}\u{1f3fe}'],
-    '👳🏾 E1.0 person wearing turban: medium-dark skin tone'
-  ),
+  (['\u{1f473}\u{1f3fe}'], '👳🏾 E1.0 person wearing turban: medium-dark skin tone'),
   (['\u{1f473}\u{1f3ff}'], '👳🏿 E1.0 person wearing turban: dark skin tone'),
   (['\u{1f473}\u200d\u2642\ufe0f'], '👳‍♂️ E4.0 man wearing turban'),
   (['\u{1f473}\u200d\u2642'], '👳‍♂ E4.0 man wearing turban'),
-  (
-    ['\u{1f473}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '👳🏻‍♂️ E4.0 man wearing turban: light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fb}\u200d\u2642'],
-    '👳🏻‍♂ E4.0 man wearing turban: light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '👳🏼‍♂️ E4.0 man wearing turban: medium-light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fc}\u200d\u2642'],
-    '👳🏼‍♂ E4.0 man wearing turban: medium-light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '👳🏽‍♂️ E4.0 man wearing turban: medium skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fd}\u200d\u2642'],
-    '👳🏽‍♂ E4.0 man wearing turban: medium skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '👳🏾‍♂️ E4.0 man wearing turban: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fe}\u200d\u2642'],
-    '👳🏾‍♂ E4.0 man wearing turban: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '👳🏿‍♂️ E4.0 man wearing turban: dark skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3ff}\u200d\u2642'],
-    '👳🏿‍♂ E4.0 man wearing turban: dark skin tone'
-  ),
+  (['\u{1f473}\u{1f3fb}\u200d\u2642\ufe0f'], '👳🏻‍♂️ E4.0 man wearing turban: light skin tone'),
+  (['\u{1f473}\u{1f3fb}\u200d\u2642'], '👳🏻‍♂ E4.0 man wearing turban: light skin tone'),
+  (['\u{1f473}\u{1f3fc}\u200d\u2642\ufe0f'], '👳🏼‍♂️ E4.0 man wearing turban: medium-light skin tone'),
+  (['\u{1f473}\u{1f3fc}\u200d\u2642'], '👳🏼‍♂ E4.0 man wearing turban: medium-light skin tone'),
+  (['\u{1f473}\u{1f3fd}\u200d\u2642\ufe0f'], '👳🏽‍♂️ E4.0 man wearing turban: medium skin tone'),
+  (['\u{1f473}\u{1f3fd}\u200d\u2642'], '👳🏽‍♂ E4.0 man wearing turban: medium skin tone'),
+  (['\u{1f473}\u{1f3fe}\u200d\u2642\ufe0f'], '👳🏾‍♂️ E4.0 man wearing turban: medium-dark skin tone'),
+  (['\u{1f473}\u{1f3fe}\u200d\u2642'], '👳🏾‍♂ E4.0 man wearing turban: medium-dark skin tone'),
+  (['\u{1f473}\u{1f3ff}\u200d\u2642\ufe0f'], '👳🏿‍♂️ E4.0 man wearing turban: dark skin tone'),
+  (['\u{1f473}\u{1f3ff}\u200d\u2642'], '👳🏿‍♂ E4.0 man wearing turban: dark skin tone'),
   (['\u{1f473}\u200d\u2640\ufe0f'], '👳‍♀️ E4.0 woman wearing turban'),
   (['\u{1f473}\u200d\u2640'], '👳‍♀ E4.0 woman wearing turban'),
-  (
-    ['\u{1f473}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '👳🏻‍♀️ E4.0 woman wearing turban: light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fb}\u200d\u2640'],
-    '👳🏻‍♀ E4.0 woman wearing turban: light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '👳🏼‍♀️ E4.0 woman wearing turban: medium-light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fc}\u200d\u2640'],
-    '👳🏼‍♀ E4.0 woman wearing turban: medium-light skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '👳🏽‍♀️ E4.0 woman wearing turban: medium skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fd}\u200d\u2640'],
-    '👳🏽‍♀ E4.0 woman wearing turban: medium skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '👳🏾‍♀️ E4.0 woman wearing turban: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3fe}\u200d\u2640'],
-    '👳🏾‍♀ E4.0 woman wearing turban: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '👳🏿‍♀️ E4.0 woman wearing turban: dark skin tone'
-  ),
-  (
-    ['\u{1f473}\u{1f3ff}\u200d\u2640'],
-    '👳🏿‍♀ E4.0 woman wearing turban: dark skin tone'
-  ),
+  (['\u{1f473}\u{1f3fb}\u200d\u2640\ufe0f'], '👳🏻‍♀️ E4.0 woman wearing turban: light skin tone'),
+  (['\u{1f473}\u{1f3fb}\u200d\u2640'], '👳🏻‍♀ E4.0 woman wearing turban: light skin tone'),
+  (['\u{1f473}\u{1f3fc}\u200d\u2640\ufe0f'], '👳🏼‍♀️ E4.0 woman wearing turban: medium-light skin tone'),
+  (['\u{1f473}\u{1f3fc}\u200d\u2640'], '👳🏼‍♀ E4.0 woman wearing turban: medium-light skin tone'),
+  (['\u{1f473}\u{1f3fd}\u200d\u2640\ufe0f'], '👳🏽‍♀️ E4.0 woman wearing turban: medium skin tone'),
+  (['\u{1f473}\u{1f3fd}\u200d\u2640'], '👳🏽‍♀ E4.0 woman wearing turban: medium skin tone'),
+  (['\u{1f473}\u{1f3fe}\u200d\u2640\ufe0f'], '👳🏾‍♀️ E4.0 woman wearing turban: medium-dark skin tone'),
+  (['\u{1f473}\u{1f3fe}\u200d\u2640'], '👳🏾‍♀ E4.0 woman wearing turban: medium-dark skin tone'),
+  (['\u{1f473}\u{1f3ff}\u200d\u2640\ufe0f'], '👳🏿‍♀️ E4.0 woman wearing turban: dark skin tone'),
+  (['\u{1f473}\u{1f3ff}\u200d\u2640'], '👳🏿‍♀ E4.0 woman wearing turban: dark skin tone'),
   (['\u{1f472}'], '👲 E0.6 person with skullcap'),
   (['\u{1f472}\u{1f3fb}'], '👲🏻 E1.0 person with skullcap: light skin tone'),
-  (
-    ['\u{1f472}\u{1f3fc}'],
-    '👲🏼 E1.0 person with skullcap: medium-light skin tone'
-  ),
+  (['\u{1f472}\u{1f3fc}'], '👲🏼 E1.0 person with skullcap: medium-light skin tone'),
   (['\u{1f472}\u{1f3fd}'], '👲🏽 E1.0 person with skullcap: medium skin tone'),
-  (
-    ['\u{1f472}\u{1f3fe}'],
-    '👲🏾 E1.0 person with skullcap: medium-dark skin tone'
-  ),
+  (['\u{1f472}\u{1f3fe}'], '👲🏾 E1.0 person with skullcap: medium-dark skin tone'),
   (['\u{1f472}\u{1f3ff}'], '👲🏿 E1.0 person with skullcap: dark skin tone'),
   (['\u{1f9d5}'], '🧕 E5.0 woman with headscarf'),
   (['\u{1f9d5}\u{1f3fb}'], '🧕🏻 E5.0 woman with headscarf: light skin tone'),
-  (
-    ['\u{1f9d5}\u{1f3fc}'],
-    '🧕🏼 E5.0 woman with headscarf: medium-light skin tone'
-  ),
+  (['\u{1f9d5}\u{1f3fc}'], '🧕🏼 E5.0 woman with headscarf: medium-light skin tone'),
   (['\u{1f9d5}\u{1f3fd}'], '🧕🏽 E5.0 woman with headscarf: medium skin tone'),
-  (
-    ['\u{1f9d5}\u{1f3fe}'],
-    '🧕🏾 E5.0 woman with headscarf: medium-dark skin tone'
-  ),
+  (['\u{1f9d5}\u{1f3fe}'], '🧕🏾 E5.0 woman with headscarf: medium-dark skin tone'),
   (['\u{1f9d5}\u{1f3ff}'], '🧕🏿 E5.0 woman with headscarf: dark skin tone'),
   (['\u{1f935}'], '🤵 E3.0 person in tuxedo'),
   (['\u{1f935}\u{1f3fb}'], '🤵🏻 E3.0 person in tuxedo: light skin tone'),
-  (
-    ['\u{1f935}\u{1f3fc}'],
-    '🤵🏼 E3.0 person in tuxedo: medium-light skin tone'
-  ),
+  (['\u{1f935}\u{1f3fc}'], '🤵🏼 E3.0 person in tuxedo: medium-light skin tone'),
   (['\u{1f935}\u{1f3fd}'], '🤵🏽 E3.0 person in tuxedo: medium skin tone'),
   (['\u{1f935}\u{1f3fe}'], '🤵🏾 E3.0 person in tuxedo: medium-dark skin tone'),
   (['\u{1f935}\u{1f3ff}'], '🤵🏿 E3.0 person in tuxedo: dark skin tone'),
   (['\u{1f935}\u200d\u2642\ufe0f'], '🤵‍♂️ E13.0 man in tuxedo'),
   (['\u{1f935}\u200d\u2642'], '🤵‍♂ E13.0 man in tuxedo'),
-  (
-    ['\u{1f935}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🤵🏻‍♂️ E13.0 man in tuxedo: light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fb}\u200d\u2642'],
-    '🤵🏻‍♂ E13.0 man in tuxedo: light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🤵🏼‍♂️ E13.0 man in tuxedo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fc}\u200d\u2642'],
-    '🤵🏼‍♂ E13.0 man in tuxedo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🤵🏽‍♂️ E13.0 man in tuxedo: medium skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fd}\u200d\u2642'],
-    '🤵🏽‍♂ E13.0 man in tuxedo: medium skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🤵🏾‍♂️ E13.0 man in tuxedo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fe}\u200d\u2642'],
-    '🤵🏾‍♂ E13.0 man in tuxedo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🤵🏿‍♂️ E13.0 man in tuxedo: dark skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3ff}\u200d\u2642'],
-    '🤵🏿‍♂ E13.0 man in tuxedo: dark skin tone'
-  ),
+  (['\u{1f935}\u{1f3fb}\u200d\u2642\ufe0f'], '🤵🏻‍♂️ E13.0 man in tuxedo: light skin tone'),
+  (['\u{1f935}\u{1f3fb}\u200d\u2642'], '🤵🏻‍♂ E13.0 man in tuxedo: light skin tone'),
+  (['\u{1f935}\u{1f3fc}\u200d\u2642\ufe0f'], '🤵🏼‍♂️ E13.0 man in tuxedo: medium-light skin tone'),
+  (['\u{1f935}\u{1f3fc}\u200d\u2642'], '🤵🏼‍♂ E13.0 man in tuxedo: medium-light skin tone'),
+  (['\u{1f935}\u{1f3fd}\u200d\u2642\ufe0f'], '🤵🏽‍♂️ E13.0 man in tuxedo: medium skin tone'),
+  (['\u{1f935}\u{1f3fd}\u200d\u2642'], '🤵🏽‍♂ E13.0 man in tuxedo: medium skin tone'),
+  (['\u{1f935}\u{1f3fe}\u200d\u2642\ufe0f'], '🤵🏾‍♂️ E13.0 man in tuxedo: medium-dark skin tone'),
+  (['\u{1f935}\u{1f3fe}\u200d\u2642'], '🤵🏾‍♂ E13.0 man in tuxedo: medium-dark skin tone'),
+  (['\u{1f935}\u{1f3ff}\u200d\u2642\ufe0f'], '🤵🏿‍♂️ E13.0 man in tuxedo: dark skin tone'),
+  (['\u{1f935}\u{1f3ff}\u200d\u2642'], '🤵🏿‍♂ E13.0 man in tuxedo: dark skin tone'),
   (['\u{1f935}\u200d\u2640\ufe0f'], '🤵‍♀️ E13.0 woman in tuxedo'),
   (['\u{1f935}\u200d\u2640'], '🤵‍♀ E13.0 woman in tuxedo'),
-  (
-    ['\u{1f935}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🤵🏻‍♀️ E13.0 woman in tuxedo: light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fb}\u200d\u2640'],
-    '🤵🏻‍♀ E13.0 woman in tuxedo: light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🤵🏼‍♀️ E13.0 woman in tuxedo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fc}\u200d\u2640'],
-    '🤵🏼‍♀ E13.0 woman in tuxedo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🤵🏽‍♀️ E13.0 woman in tuxedo: medium skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fd}\u200d\u2640'],
-    '🤵🏽‍♀ E13.0 woman in tuxedo: medium skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🤵🏾‍♀️ E13.0 woman in tuxedo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3fe}\u200d\u2640'],
-    '🤵🏾‍♀ E13.0 woman in tuxedo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🤵🏿‍♀️ E13.0 woman in tuxedo: dark skin tone'
-  ),
-  (
-    ['\u{1f935}\u{1f3ff}\u200d\u2640'],
-    '🤵🏿‍♀ E13.0 woman in tuxedo: dark skin tone'
-  ),
+  (['\u{1f935}\u{1f3fb}\u200d\u2640\ufe0f'], '🤵🏻‍♀️ E13.0 woman in tuxedo: light skin tone'),
+  (['\u{1f935}\u{1f3fb}\u200d\u2640'], '🤵🏻‍♀ E13.0 woman in tuxedo: light skin tone'),
+  (['\u{1f935}\u{1f3fc}\u200d\u2640\ufe0f'], '🤵🏼‍♀️ E13.0 woman in tuxedo: medium-light skin tone'),
+  (['\u{1f935}\u{1f3fc}\u200d\u2640'], '🤵🏼‍♀ E13.0 woman in tuxedo: medium-light skin tone'),
+  (['\u{1f935}\u{1f3fd}\u200d\u2640\ufe0f'], '🤵🏽‍♀️ E13.0 woman in tuxedo: medium skin tone'),
+  (['\u{1f935}\u{1f3fd}\u200d\u2640'], '🤵🏽‍♀ E13.0 woman in tuxedo: medium skin tone'),
+  (['\u{1f935}\u{1f3fe}\u200d\u2640\ufe0f'], '🤵🏾‍♀️ E13.0 woman in tuxedo: medium-dark skin tone'),
+  (['\u{1f935}\u{1f3fe}\u200d\u2640'], '🤵🏾‍♀ E13.0 woman in tuxedo: medium-dark skin tone'),
+  (['\u{1f935}\u{1f3ff}\u200d\u2640\ufe0f'], '🤵🏿‍♀️ E13.0 woman in tuxedo: dark skin tone'),
+  (['\u{1f935}\u{1f3ff}\u200d\u2640'], '🤵🏿‍♀ E13.0 woman in tuxedo: dark skin tone'),
   (['\u{1f470}'], '👰 E0.6 person with veil'),
   (['\u{1f470}\u{1f3fb}'], '👰🏻 E1.0 person with veil: light skin tone'),
-  (
-    ['\u{1f470}\u{1f3fc}'],
-    '👰🏼 E1.0 person with veil: medium-light skin tone'
-  ),
+  (['\u{1f470}\u{1f3fc}'], '👰🏼 E1.0 person with veil: medium-light skin tone'),
   (['\u{1f470}\u{1f3fd}'], '👰🏽 E1.0 person with veil: medium skin tone'),
   (['\u{1f470}\u{1f3fe}'], '👰🏾 E1.0 person with veil: medium-dark skin tone'),
   (['\u{1f470}\u{1f3ff}'], '👰🏿 E1.0 person with veil: dark skin tone'),
   (['\u{1f470}\u200d\u2642\ufe0f'], '👰‍♂️ E13.0 man with veil'),
   (['\u{1f470}\u200d\u2642'], '👰‍♂ E13.0 man with veil'),
-  (
-    ['\u{1f470}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '👰🏻‍♂️ E13.0 man with veil: light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fb}\u200d\u2642'],
-    '👰🏻‍♂ E13.0 man with veil: light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '👰🏼‍♂️ E13.0 man with veil: medium-light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fc}\u200d\u2642'],
-    '👰🏼‍♂ E13.0 man with veil: medium-light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '👰🏽‍♂️ E13.0 man with veil: medium skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fd}\u200d\u2642'],
-    '👰🏽‍♂ E13.0 man with veil: medium skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '👰🏾‍♂️ E13.0 man with veil: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fe}\u200d\u2642'],
-    '👰🏾‍♂ E13.0 man with veil: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '👰🏿‍♂️ E13.0 man with veil: dark skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3ff}\u200d\u2642'],
-    '👰🏿‍♂ E13.0 man with veil: dark skin tone'
-  ),
+  (['\u{1f470}\u{1f3fb}\u200d\u2642\ufe0f'], '👰🏻‍♂️ E13.0 man with veil: light skin tone'),
+  (['\u{1f470}\u{1f3fb}\u200d\u2642'], '👰🏻‍♂ E13.0 man with veil: light skin tone'),
+  (['\u{1f470}\u{1f3fc}\u200d\u2642\ufe0f'], '👰🏼‍♂️ E13.0 man with veil: medium-light skin tone'),
+  (['\u{1f470}\u{1f3fc}\u200d\u2642'], '👰🏼‍♂ E13.0 man with veil: medium-light skin tone'),
+  (['\u{1f470}\u{1f3fd}\u200d\u2642\ufe0f'], '👰🏽‍♂️ E13.0 man with veil: medium skin tone'),
+  (['\u{1f470}\u{1f3fd}\u200d\u2642'], '👰🏽‍♂ E13.0 man with veil: medium skin tone'),
+  (['\u{1f470}\u{1f3fe}\u200d\u2642\ufe0f'], '👰🏾‍♂️ E13.0 man with veil: medium-dark skin tone'),
+  (['\u{1f470}\u{1f3fe}\u200d\u2642'], '👰🏾‍♂ E13.0 man with veil: medium-dark skin tone'),
+  (['\u{1f470}\u{1f3ff}\u200d\u2642\ufe0f'], '👰🏿‍♂️ E13.0 man with veil: dark skin tone'),
+  (['\u{1f470}\u{1f3ff}\u200d\u2642'], '👰🏿‍♂ E13.0 man with veil: dark skin tone'),
   (['\u{1f470}\u200d\u2640\ufe0f'], '👰‍♀️ E13.0 woman with veil'),
   (['\u{1f470}\u200d\u2640'], '👰‍♀ E13.0 woman with veil'),
-  (
-    ['\u{1f470}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '👰🏻‍♀️ E13.0 woman with veil: light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fb}\u200d\u2640'],
-    '👰🏻‍♀ E13.0 woman with veil: light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '👰🏼‍♀️ E13.0 woman with veil: medium-light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fc}\u200d\u2640'],
-    '👰🏼‍♀ E13.0 woman with veil: medium-light skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '👰🏽‍♀️ E13.0 woman with veil: medium skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fd}\u200d\u2640'],
-    '👰🏽‍♀ E13.0 woman with veil: medium skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '👰🏾‍♀️ E13.0 woman with veil: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3fe}\u200d\u2640'],
-    '👰🏾‍♀ E13.0 woman with veil: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '👰🏿‍♀️ E13.0 woman with veil: dark skin tone'
-  ),
-  (
-    ['\u{1f470}\u{1f3ff}\u200d\u2640'],
-    '👰🏿‍♀ E13.0 woman with veil: dark skin tone'
-  ),
+  (['\u{1f470}\u{1f3fb}\u200d\u2640\ufe0f'], '👰🏻‍♀️ E13.0 woman with veil: light skin tone'),
+  (['\u{1f470}\u{1f3fb}\u200d\u2640'], '👰🏻‍♀ E13.0 woman with veil: light skin tone'),
+  (['\u{1f470}\u{1f3fc}\u200d\u2640\ufe0f'], '👰🏼‍♀️ E13.0 woman with veil: medium-light skin tone'),
+  (['\u{1f470}\u{1f3fc}\u200d\u2640'], '👰🏼‍♀ E13.0 woman with veil: medium-light skin tone'),
+  (['\u{1f470}\u{1f3fd}\u200d\u2640\ufe0f'], '👰🏽‍♀️ E13.0 woman with veil: medium skin tone'),
+  (['\u{1f470}\u{1f3fd}\u200d\u2640'], '👰🏽‍♀ E13.0 woman with veil: medium skin tone'),
+  (['\u{1f470}\u{1f3fe}\u200d\u2640\ufe0f'], '👰🏾‍♀️ E13.0 woman with veil: medium-dark skin tone'),
+  (['\u{1f470}\u{1f3fe}\u200d\u2640'], '👰🏾‍♀ E13.0 woman with veil: medium-dark skin tone'),
+  (['\u{1f470}\u{1f3ff}\u200d\u2640\ufe0f'], '👰🏿‍♀️ E13.0 woman with veil: dark skin tone'),
+  (['\u{1f470}\u{1f3ff}\u200d\u2640'], '👰🏿‍♀ E13.0 woman with veil: dark skin tone'),
   (['\u{1f930}'], '🤰 E3.0 pregnant woman'),
   (['\u{1f930}\u{1f3fb}'], '🤰🏻 E3.0 pregnant woman: light skin tone'),
   (['\u{1f930}\u{1f3fc}'], '🤰🏼 E3.0 pregnant woman: medium-light skin tone'),
@@ -8440,10 +2723,7 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1fac3}\u{1f3ff}'], '🫃🏿 E14.0 pregnant man: dark skin tone'),
   (['\u{1fac4}'], '🫄 E14.0 pregnant person'),
   (['\u{1fac4}\u{1f3fb}'], '🫄🏻 E14.0 pregnant person: light skin tone'),
-  (
-    ['\u{1fac4}\u{1f3fc}'],
-    '🫄🏼 E14.0 pregnant person: medium-light skin tone'
-  ),
+  (['\u{1fac4}\u{1f3fc}'], '🫄🏼 E14.0 pregnant person: medium-light skin tone'),
   (['\u{1fac4}\u{1f3fd}'], '🫄🏽 E14.0 pregnant person: medium skin tone'),
   (['\u{1fac4}\u{1f3fe}'], '🫄🏾 E14.0 pregnant person: medium-dark skin tone'),
   (['\u{1fac4}\u{1f3ff}'], '🫄🏿 E14.0 pregnant person: dark skin tone'),
@@ -8454,68 +2734,23 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f931}\u{1f3fe}'], '🤱🏾 E5.0 breast-feeding: medium-dark skin tone'),
   (['\u{1f931}\u{1f3ff}'], '🤱🏿 E5.0 breast-feeding: dark skin tone'),
   (['\u{1f469}\u200d\u{1f37c}'], '👩‍🍼 E13.0 woman feeding baby'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f37c}'],
-    '👩🏻‍🍼 E13.0 woman feeding baby: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f37c}'],
-    '👩🏼‍🍼 E13.0 woman feeding baby: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f37c}'],
-    '👩🏽‍🍼 E13.0 woman feeding baby: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f37c}'],
-    '👩🏾‍🍼 E13.0 woman feeding baby: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f37c}'],
-    '👩🏿‍🍼 E13.0 woman feeding baby: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f37c}'], '👩🏻‍🍼 E13.0 woman feeding baby: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f37c}'], '👩🏼‍🍼 E13.0 woman feeding baby: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f37c}'], '👩🏽‍🍼 E13.0 woman feeding baby: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f37c}'], '👩🏾‍🍼 E13.0 woman feeding baby: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f37c}'], '👩🏿‍🍼 E13.0 woman feeding baby: dark skin tone'),
   (['\u{1f468}\u200d\u{1f37c}'], '👨‍🍼 E13.0 man feeding baby'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f37c}'],
-    '👨🏻‍🍼 E13.0 man feeding baby: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f37c}'],
-    '👨🏼‍🍼 E13.0 man feeding baby: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f37c}'],
-    '👨🏽‍🍼 E13.0 man feeding baby: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f37c}'],
-    '👨🏾‍🍼 E13.0 man feeding baby: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f37c}'],
-    '👨🏿‍🍼 E13.0 man feeding baby: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f37c}'], '👨🏻‍🍼 E13.0 man feeding baby: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f37c}'], '👨🏼‍🍼 E13.0 man feeding baby: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f37c}'], '👨🏽‍🍼 E13.0 man feeding baby: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f37c}'], '👨🏾‍🍼 E13.0 man feeding baby: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f37c}'], '👨🏿‍🍼 E13.0 man feeding baby: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f37c}'], '🧑‍🍼 E13.0 person feeding baby'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f37c}'],
-    '🧑🏻‍🍼 E13.0 person feeding baby: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f37c}'],
-    '🧑🏼‍🍼 E13.0 person feeding baby: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f37c}'],
-    '🧑🏽‍🍼 E13.0 person feeding baby: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f37c}'],
-    '🧑🏾‍🍼 E13.0 person feeding baby: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f37c}'],
-    '🧑🏿‍🍼 E13.0 person feeding baby: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f37c}'], '🧑🏻‍🍼 E13.0 person feeding baby: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f37c}'], '🧑🏼‍🍼 E13.0 person feeding baby: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f37c}'], '🧑🏽‍🍼 E13.0 person feeding baby: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f37c}'], '🧑🏾‍🍼 E13.0 person feeding baby: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f37c}'], '🧑🏿‍🍼 E13.0 person feeding baby: dark skin tone'),
   (['\u{1f47c}'], '👼 E0.6 baby angel'),
   (['\u{1f47c}\u{1f3fb}'], '👼🏻 E1.0 baby angel: light skin tone'),
   (['\u{1f47c}\u{1f3fc}'], '👼🏼 E1.0 baby angel: medium-light skin tone'),
@@ -8535,26 +2770,11 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f936}\u{1f3fe}'], '🤶🏾 E3.0 Mrs. Claus: medium-dark skin tone'),
   (['\u{1f936}\u{1f3ff}'], '🤶🏿 E3.0 Mrs. Claus: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f384}'], '🧑‍🎄 E13.0 Mx Claus'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f384}'],
-    '🧑🏻‍🎄 E13.0 Mx Claus: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f384}'],
-    '🧑🏼‍🎄 E13.0 Mx Claus: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f384}'],
-    '🧑🏽‍🎄 E13.0 Mx Claus: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f384}'],
-    '🧑🏾‍🎄 E13.0 Mx Claus: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f384}'],
-    '🧑🏿‍🎄 E13.0 Mx Claus: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f384}'], '🧑🏻‍🎄 E13.0 Mx Claus: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f384}'], '🧑🏼‍🎄 E13.0 Mx Claus: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f384}'], '🧑🏽‍🎄 E13.0 Mx Claus: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f384}'], '🧑🏾‍🎄 E13.0 Mx Claus: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f384}'], '🧑🏿‍🎄 E13.0 Mx Claus: dark skin tone'),
   (['\u{1f9b8}'], '🦸 E11.0 superhero'),
   (['\u{1f9b8}\u{1f3fb}'], '🦸🏻 E11.0 superhero: light skin tone'),
   (['\u{1f9b8}\u{1f3fc}'], '🦸🏼 E11.0 superhero: medium-light skin tone'),
@@ -8563,88 +2783,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9b8}\u{1f3ff}'], '🦸🏿 E11.0 superhero: dark skin tone'),
   (['\u{1f9b8}\u200d\u2642\ufe0f'], '🦸‍♂️ E11.0 man superhero'),
   (['\u{1f9b8}\u200d\u2642'], '🦸‍♂ E11.0 man superhero'),
-  (
-    ['\u{1f9b8}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🦸🏻‍♂️ E11.0 man superhero: light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fb}\u200d\u2642'],
-    '🦸🏻‍♂ E11.0 man superhero: light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🦸🏼‍♂️ E11.0 man superhero: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fc}\u200d\u2642'],
-    '🦸🏼‍♂ E11.0 man superhero: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🦸🏽‍♂️ E11.0 man superhero: medium skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fd}\u200d\u2642'],
-    '🦸🏽‍♂ E11.0 man superhero: medium skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🦸🏾‍♂️ E11.0 man superhero: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fe}\u200d\u2642'],
-    '🦸🏾‍♂ E11.0 man superhero: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🦸🏿‍♂️ E11.0 man superhero: dark skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3ff}\u200d\u2642'],
-    '🦸🏿‍♂ E11.0 man superhero: dark skin tone'
-  ),
+  (['\u{1f9b8}\u{1f3fb}\u200d\u2642\ufe0f'], '🦸🏻‍♂️ E11.0 man superhero: light skin tone'),
+  (['\u{1f9b8}\u{1f3fb}\u200d\u2642'], '🦸🏻‍♂ E11.0 man superhero: light skin tone'),
+  (['\u{1f9b8}\u{1f3fc}\u200d\u2642\ufe0f'], '🦸🏼‍♂️ E11.0 man superhero: medium-light skin tone'),
+  (['\u{1f9b8}\u{1f3fc}\u200d\u2642'], '🦸🏼‍♂ E11.0 man superhero: medium-light skin tone'),
+  (['\u{1f9b8}\u{1f3fd}\u200d\u2642\ufe0f'], '🦸🏽‍♂️ E11.0 man superhero: medium skin tone'),
+  (['\u{1f9b8}\u{1f3fd}\u200d\u2642'], '🦸🏽‍♂ E11.0 man superhero: medium skin tone'),
+  (['\u{1f9b8}\u{1f3fe}\u200d\u2642\ufe0f'], '🦸🏾‍♂️ E11.0 man superhero: medium-dark skin tone'),
+  (['\u{1f9b8}\u{1f3fe}\u200d\u2642'], '🦸🏾‍♂ E11.0 man superhero: medium-dark skin tone'),
+  (['\u{1f9b8}\u{1f3ff}\u200d\u2642\ufe0f'], '🦸🏿‍♂️ E11.0 man superhero: dark skin tone'),
+  (['\u{1f9b8}\u{1f3ff}\u200d\u2642'], '🦸🏿‍♂ E11.0 man superhero: dark skin tone'),
   (['\u{1f9b8}\u200d\u2640\ufe0f'], '🦸‍♀️ E11.0 woman superhero'),
   (['\u{1f9b8}\u200d\u2640'], '🦸‍♀ E11.0 woman superhero'),
-  (
-    ['\u{1f9b8}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🦸🏻‍♀️ E11.0 woman superhero: light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fb}\u200d\u2640'],
-    '🦸🏻‍♀ E11.0 woman superhero: light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🦸🏼‍♀️ E11.0 woman superhero: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fc}\u200d\u2640'],
-    '🦸🏼‍♀ E11.0 woman superhero: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🦸🏽‍♀️ E11.0 woman superhero: medium skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fd}\u200d\u2640'],
-    '🦸🏽‍♀ E11.0 woman superhero: medium skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🦸🏾‍♀️ E11.0 woman superhero: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3fe}\u200d\u2640'],
-    '🦸🏾‍♀ E11.0 woman superhero: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🦸🏿‍♀️ E11.0 woman superhero: dark skin tone'
-  ),
-  (
-    ['\u{1f9b8}\u{1f3ff}\u200d\u2640'],
-    '🦸🏿‍♀ E11.0 woman superhero: dark skin tone'
-  ),
+  (['\u{1f9b8}\u{1f3fb}\u200d\u2640\ufe0f'], '🦸🏻‍♀️ E11.0 woman superhero: light skin tone'),
+  (['\u{1f9b8}\u{1f3fb}\u200d\u2640'], '🦸🏻‍♀ E11.0 woman superhero: light skin tone'),
+  (['\u{1f9b8}\u{1f3fc}\u200d\u2640\ufe0f'], '🦸🏼‍♀️ E11.0 woman superhero: medium-light skin tone'),
+  (['\u{1f9b8}\u{1f3fc}\u200d\u2640'], '🦸🏼‍♀ E11.0 woman superhero: medium-light skin tone'),
+  (['\u{1f9b8}\u{1f3fd}\u200d\u2640\ufe0f'], '🦸🏽‍♀️ E11.0 woman superhero: medium skin tone'),
+  (['\u{1f9b8}\u{1f3fd}\u200d\u2640'], '🦸🏽‍♀ E11.0 woman superhero: medium skin tone'),
+  (['\u{1f9b8}\u{1f3fe}\u200d\u2640\ufe0f'], '🦸🏾‍♀️ E11.0 woman superhero: medium-dark skin tone'),
+  (['\u{1f9b8}\u{1f3fe}\u200d\u2640'], '🦸🏾‍♀ E11.0 woman superhero: medium-dark skin tone'),
+  (['\u{1f9b8}\u{1f3ff}\u200d\u2640\ufe0f'], '🦸🏿‍♀️ E11.0 woman superhero: dark skin tone'),
+  (['\u{1f9b8}\u{1f3ff}\u200d\u2640'], '🦸🏿‍♀ E11.0 woman superhero: dark skin tone'),
   (['\u{1f9b9}'], '🦹 E11.0 supervillain'),
   (['\u{1f9b9}\u{1f3fb}'], '🦹🏻 E11.0 supervillain: light skin tone'),
   (['\u{1f9b9}\u{1f3fc}'], '🦹🏼 E11.0 supervillain: medium-light skin tone'),
@@ -8653,88 +2813,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9b9}\u{1f3ff}'], '🦹🏿 E11.0 supervillain: dark skin tone'),
   (['\u{1f9b9}\u200d\u2642\ufe0f'], '🦹‍♂️ E11.0 man supervillain'),
   (['\u{1f9b9}\u200d\u2642'], '🦹‍♂ E11.0 man supervillain'),
-  (
-    ['\u{1f9b9}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🦹🏻‍♂️ E11.0 man supervillain: light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fb}\u200d\u2642'],
-    '🦹🏻‍♂ E11.0 man supervillain: light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🦹🏼‍♂️ E11.0 man supervillain: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fc}\u200d\u2642'],
-    '🦹🏼‍♂ E11.0 man supervillain: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🦹🏽‍♂️ E11.0 man supervillain: medium skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fd}\u200d\u2642'],
-    '🦹🏽‍♂ E11.0 man supervillain: medium skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🦹🏾‍♂️ E11.0 man supervillain: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fe}\u200d\u2642'],
-    '🦹🏾‍♂ E11.0 man supervillain: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🦹🏿‍♂️ E11.0 man supervillain: dark skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3ff}\u200d\u2642'],
-    '🦹🏿‍♂ E11.0 man supervillain: dark skin tone'
-  ),
+  (['\u{1f9b9}\u{1f3fb}\u200d\u2642\ufe0f'], '🦹🏻‍♂️ E11.0 man supervillain: light skin tone'),
+  (['\u{1f9b9}\u{1f3fb}\u200d\u2642'], '🦹🏻‍♂ E11.0 man supervillain: light skin tone'),
+  (['\u{1f9b9}\u{1f3fc}\u200d\u2642\ufe0f'], '🦹🏼‍♂️ E11.0 man supervillain: medium-light skin tone'),
+  (['\u{1f9b9}\u{1f3fc}\u200d\u2642'], '🦹🏼‍♂ E11.0 man supervillain: medium-light skin tone'),
+  (['\u{1f9b9}\u{1f3fd}\u200d\u2642\ufe0f'], '🦹🏽‍♂️ E11.0 man supervillain: medium skin tone'),
+  (['\u{1f9b9}\u{1f3fd}\u200d\u2642'], '🦹🏽‍♂ E11.0 man supervillain: medium skin tone'),
+  (['\u{1f9b9}\u{1f3fe}\u200d\u2642\ufe0f'], '🦹🏾‍♂️ E11.0 man supervillain: medium-dark skin tone'),
+  (['\u{1f9b9}\u{1f3fe}\u200d\u2642'], '🦹🏾‍♂ E11.0 man supervillain: medium-dark skin tone'),
+  (['\u{1f9b9}\u{1f3ff}\u200d\u2642\ufe0f'], '🦹🏿‍♂️ E11.0 man supervillain: dark skin tone'),
+  (['\u{1f9b9}\u{1f3ff}\u200d\u2642'], '🦹🏿‍♂ E11.0 man supervillain: dark skin tone'),
   (['\u{1f9b9}\u200d\u2640\ufe0f'], '🦹‍♀️ E11.0 woman supervillain'),
   (['\u{1f9b9}\u200d\u2640'], '🦹‍♀ E11.0 woman supervillain'),
-  (
-    ['\u{1f9b9}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🦹🏻‍♀️ E11.0 woman supervillain: light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fb}\u200d\u2640'],
-    '🦹🏻‍♀ E11.0 woman supervillain: light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🦹🏼‍♀️ E11.0 woman supervillain: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fc}\u200d\u2640'],
-    '🦹🏼‍♀ E11.0 woman supervillain: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🦹🏽‍♀️ E11.0 woman supervillain: medium skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fd}\u200d\u2640'],
-    '🦹🏽‍♀ E11.0 woman supervillain: medium skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🦹🏾‍♀️ E11.0 woman supervillain: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3fe}\u200d\u2640'],
-    '🦹🏾‍♀ E11.0 woman supervillain: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🦹🏿‍♀️ E11.0 woman supervillain: dark skin tone'
-  ),
-  (
-    ['\u{1f9b9}\u{1f3ff}\u200d\u2640'],
-    '🦹🏿‍♀ E11.0 woman supervillain: dark skin tone'
-  ),
+  (['\u{1f9b9}\u{1f3fb}\u200d\u2640\ufe0f'], '🦹🏻‍♀️ E11.0 woman supervillain: light skin tone'),
+  (['\u{1f9b9}\u{1f3fb}\u200d\u2640'], '🦹🏻‍♀ E11.0 woman supervillain: light skin tone'),
+  (['\u{1f9b9}\u{1f3fc}\u200d\u2640\ufe0f'], '🦹🏼‍♀️ E11.0 woman supervillain: medium-light skin tone'),
+  (['\u{1f9b9}\u{1f3fc}\u200d\u2640'], '🦹🏼‍♀ E11.0 woman supervillain: medium-light skin tone'),
+  (['\u{1f9b9}\u{1f3fd}\u200d\u2640\ufe0f'], '🦹🏽‍♀️ E11.0 woman supervillain: medium skin tone'),
+  (['\u{1f9b9}\u{1f3fd}\u200d\u2640'], '🦹🏽‍♀ E11.0 woman supervillain: medium skin tone'),
+  (['\u{1f9b9}\u{1f3fe}\u200d\u2640\ufe0f'], '🦹🏾‍♀️ E11.0 woman supervillain: medium-dark skin tone'),
+  (['\u{1f9b9}\u{1f3fe}\u200d\u2640'], '🦹🏾‍♀ E11.0 woman supervillain: medium-dark skin tone'),
+  (['\u{1f9b9}\u{1f3ff}\u200d\u2640\ufe0f'], '🦹🏿‍♀️ E11.0 woman supervillain: dark skin tone'),
+  (['\u{1f9b9}\u{1f3ff}\u200d\u2640'], '🦹🏿‍♀ E11.0 woman supervillain: dark skin tone'),
   (['\u{1f9d9}'], '🧙 E5.0 mage'),
   (['\u{1f9d9}\u{1f3fb}'], '🧙🏻 E5.0 mage: light skin tone'),
   (['\u{1f9d9}\u{1f3fc}'], '🧙🏼 E5.0 mage: medium-light skin tone'),
@@ -8743,82 +2843,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9d9}\u{1f3ff}'], '🧙🏿 E5.0 mage: dark skin tone'),
   (['\u{1f9d9}\u200d\u2642\ufe0f'], '🧙‍♂️ E5.0 man mage'),
   (['\u{1f9d9}\u200d\u2642'], '🧙‍♂ E5.0 man mage'),
-  (
-    ['\u{1f9d9}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧙🏻‍♂️ E5.0 man mage: light skin tone'
-  ),
+  (['\u{1f9d9}\u{1f3fb}\u200d\u2642\ufe0f'], '🧙🏻‍♂️ E5.0 man mage: light skin tone'),
   (['\u{1f9d9}\u{1f3fb}\u200d\u2642'], '🧙🏻‍♂ E5.0 man mage: light skin tone'),
-  (
-    ['\u{1f9d9}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧙🏼‍♂️ E5.0 man mage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fc}\u200d\u2642'],
-    '🧙🏼‍♂ E5.0 man mage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧙🏽‍♂️ E5.0 man mage: medium skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fd}\u200d\u2642'],
-    '🧙🏽‍♂ E5.0 man mage: medium skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧙🏾‍♂️ E5.0 man mage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fe}\u200d\u2642'],
-    '🧙🏾‍♂ E5.0 man mage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧙🏿‍♂️ E5.0 man mage: dark skin tone'
-  ),
+  (['\u{1f9d9}\u{1f3fc}\u200d\u2642\ufe0f'], '🧙🏼‍♂️ E5.0 man mage: medium-light skin tone'),
+  (['\u{1f9d9}\u{1f3fc}\u200d\u2642'], '🧙🏼‍♂ E5.0 man mage: medium-light skin tone'),
+  (['\u{1f9d9}\u{1f3fd}\u200d\u2642\ufe0f'], '🧙🏽‍♂️ E5.0 man mage: medium skin tone'),
+  (['\u{1f9d9}\u{1f3fd}\u200d\u2642'], '🧙🏽‍♂ E5.0 man mage: medium skin tone'),
+  (['\u{1f9d9}\u{1f3fe}\u200d\u2642\ufe0f'], '🧙🏾‍♂️ E5.0 man mage: medium-dark skin tone'),
+  (['\u{1f9d9}\u{1f3fe}\u200d\u2642'], '🧙🏾‍♂ E5.0 man mage: medium-dark skin tone'),
+  (['\u{1f9d9}\u{1f3ff}\u200d\u2642\ufe0f'], '🧙🏿‍♂️ E5.0 man mage: dark skin tone'),
   (['\u{1f9d9}\u{1f3ff}\u200d\u2642'], '🧙🏿‍♂ E5.0 man mage: dark skin tone'),
   (['\u{1f9d9}\u200d\u2640\ufe0f'], '🧙‍♀️ E5.0 woman mage'),
   (['\u{1f9d9}\u200d\u2640'], '🧙‍♀ E5.0 woman mage'),
-  (
-    ['\u{1f9d9}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧙🏻‍♀️ E5.0 woman mage: light skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fb}\u200d\u2640'],
-    '🧙🏻‍♀ E5.0 woman mage: light skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧙🏼‍♀️ E5.0 woman mage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fc}\u200d\u2640'],
-    '🧙🏼‍♀ E5.0 woman mage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧙🏽‍♀️ E5.0 woman mage: medium skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fd}\u200d\u2640'],
-    '🧙🏽‍♀ E5.0 woman mage: medium skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧙🏾‍♀️ E5.0 woman mage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3fe}\u200d\u2640'],
-    '🧙🏾‍♀ E5.0 woman mage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧙🏿‍♀️ E5.0 woman mage: dark skin tone'
-  ),
-  (
-    ['\u{1f9d9}\u{1f3ff}\u200d\u2640'],
-    '🧙🏿‍♀ E5.0 woman mage: dark skin tone'
-  ),
+  (['\u{1f9d9}\u{1f3fb}\u200d\u2640\ufe0f'], '🧙🏻‍♀️ E5.0 woman mage: light skin tone'),
+  (['\u{1f9d9}\u{1f3fb}\u200d\u2640'], '🧙🏻‍♀ E5.0 woman mage: light skin tone'),
+  (['\u{1f9d9}\u{1f3fc}\u200d\u2640\ufe0f'], '🧙🏼‍♀️ E5.0 woman mage: medium-light skin tone'),
+  (['\u{1f9d9}\u{1f3fc}\u200d\u2640'], '🧙🏼‍♀ E5.0 woman mage: medium-light skin tone'),
+  (['\u{1f9d9}\u{1f3fd}\u200d\u2640\ufe0f'], '🧙🏽‍♀️ E5.0 woman mage: medium skin tone'),
+  (['\u{1f9d9}\u{1f3fd}\u200d\u2640'], '🧙🏽‍♀ E5.0 woman mage: medium skin tone'),
+  (['\u{1f9d9}\u{1f3fe}\u200d\u2640\ufe0f'], '🧙🏾‍♀️ E5.0 woman mage: medium-dark skin tone'),
+  (['\u{1f9d9}\u{1f3fe}\u200d\u2640'], '🧙🏾‍♀ E5.0 woman mage: medium-dark skin tone'),
+  (['\u{1f9d9}\u{1f3ff}\u200d\u2640\ufe0f'], '🧙🏿‍♀️ E5.0 woman mage: dark skin tone'),
+  (['\u{1f9d9}\u{1f3ff}\u200d\u2640'], '🧙🏿‍♀ E5.0 woman mage: dark skin tone'),
   (['\u{1f9da}'], '🧚 E5.0 fairy'),
   (['\u{1f9da}\u{1f3fb}'], '🧚🏻 E5.0 fairy: light skin tone'),
   (['\u{1f9da}\u{1f3fc}'], '🧚🏼 E5.0 fairy: medium-light skin tone'),
@@ -8827,85 +2873,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9da}\u{1f3ff}'], '🧚🏿 E5.0 fairy: dark skin tone'),
   (['\u{1f9da}\u200d\u2642\ufe0f'], '🧚‍♂️ E5.0 man fairy'),
   (['\u{1f9da}\u200d\u2642'], '🧚‍♂ E5.0 man fairy'),
-  (
-    ['\u{1f9da}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧚🏻‍♂️ E5.0 man fairy: light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fb}\u200d\u2642'],
-    '🧚🏻‍♂ E5.0 man fairy: light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧚🏼‍♂️ E5.0 man fairy: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fc}\u200d\u2642'],
-    '🧚🏼‍♂ E5.0 man fairy: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧚🏽‍♂️ E5.0 man fairy: medium skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fd}\u200d\u2642'],
-    '🧚🏽‍♂ E5.0 man fairy: medium skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧚🏾‍♂️ E5.0 man fairy: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fe}\u200d\u2642'],
-    '🧚🏾‍♂ E5.0 man fairy: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧚🏿‍♂️ E5.0 man fairy: dark skin tone'
-  ),
+  (['\u{1f9da}\u{1f3fb}\u200d\u2642\ufe0f'], '🧚🏻‍♂️ E5.0 man fairy: light skin tone'),
+  (['\u{1f9da}\u{1f3fb}\u200d\u2642'], '🧚🏻‍♂ E5.0 man fairy: light skin tone'),
+  (['\u{1f9da}\u{1f3fc}\u200d\u2642\ufe0f'], '🧚🏼‍♂️ E5.0 man fairy: medium-light skin tone'),
+  (['\u{1f9da}\u{1f3fc}\u200d\u2642'], '🧚🏼‍♂ E5.0 man fairy: medium-light skin tone'),
+  (['\u{1f9da}\u{1f3fd}\u200d\u2642\ufe0f'], '🧚🏽‍♂️ E5.0 man fairy: medium skin tone'),
+  (['\u{1f9da}\u{1f3fd}\u200d\u2642'], '🧚🏽‍♂ E5.0 man fairy: medium skin tone'),
+  (['\u{1f9da}\u{1f3fe}\u200d\u2642\ufe0f'], '🧚🏾‍♂️ E5.0 man fairy: medium-dark skin tone'),
+  (['\u{1f9da}\u{1f3fe}\u200d\u2642'], '🧚🏾‍♂ E5.0 man fairy: medium-dark skin tone'),
+  (['\u{1f9da}\u{1f3ff}\u200d\u2642\ufe0f'], '🧚🏿‍♂️ E5.0 man fairy: dark skin tone'),
   (['\u{1f9da}\u{1f3ff}\u200d\u2642'], '🧚🏿‍♂ E5.0 man fairy: dark skin tone'),
   (['\u{1f9da}\u200d\u2640\ufe0f'], '🧚‍♀️ E5.0 woman fairy'),
   (['\u{1f9da}\u200d\u2640'], '🧚‍♀ E5.0 woman fairy'),
-  (
-    ['\u{1f9da}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧚🏻‍♀️ E5.0 woman fairy: light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fb}\u200d\u2640'],
-    '🧚🏻‍♀ E5.0 woman fairy: light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧚🏼‍♀️ E5.0 woman fairy: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fc}\u200d\u2640'],
-    '🧚🏼‍♀ E5.0 woman fairy: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧚🏽‍♀️ E5.0 woman fairy: medium skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fd}\u200d\u2640'],
-    '🧚🏽‍♀ E5.0 woman fairy: medium skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧚🏾‍♀️ E5.0 woman fairy: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3fe}\u200d\u2640'],
-    '🧚🏾‍♀ E5.0 woman fairy: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧚🏿‍♀️ E5.0 woman fairy: dark skin tone'
-  ),
-  (
-    ['\u{1f9da}\u{1f3ff}\u200d\u2640'],
-    '🧚🏿‍♀ E5.0 woman fairy: dark skin tone'
-  ),
+  (['\u{1f9da}\u{1f3fb}\u200d\u2640\ufe0f'], '🧚🏻‍♀️ E5.0 woman fairy: light skin tone'),
+  (['\u{1f9da}\u{1f3fb}\u200d\u2640'], '🧚🏻‍♀ E5.0 woman fairy: light skin tone'),
+  (['\u{1f9da}\u{1f3fc}\u200d\u2640\ufe0f'], '🧚🏼‍♀️ E5.0 woman fairy: medium-light skin tone'),
+  (['\u{1f9da}\u{1f3fc}\u200d\u2640'], '🧚🏼‍♀ E5.0 woman fairy: medium-light skin tone'),
+  (['\u{1f9da}\u{1f3fd}\u200d\u2640\ufe0f'], '🧚🏽‍♀️ E5.0 woman fairy: medium skin tone'),
+  (['\u{1f9da}\u{1f3fd}\u200d\u2640'], '🧚🏽‍♀ E5.0 woman fairy: medium skin tone'),
+  (['\u{1f9da}\u{1f3fe}\u200d\u2640\ufe0f'], '🧚🏾‍♀️ E5.0 woman fairy: medium-dark skin tone'),
+  (['\u{1f9da}\u{1f3fe}\u200d\u2640'], '🧚🏾‍♀ E5.0 woman fairy: medium-dark skin tone'),
+  (['\u{1f9da}\u{1f3ff}\u200d\u2640\ufe0f'], '🧚🏿‍♀️ E5.0 woman fairy: dark skin tone'),
+  (['\u{1f9da}\u{1f3ff}\u200d\u2640'], '🧚🏿‍♀ E5.0 woman fairy: dark skin tone'),
   (['\u{1f9db}'], '🧛 E5.0 vampire'),
   (['\u{1f9db}\u{1f3fb}'], '🧛🏻 E5.0 vampire: light skin tone'),
   (['\u{1f9db}\u{1f3fc}'], '🧛🏼 E5.0 vampire: medium-light skin tone'),
@@ -8914,88 +2903,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9db}\u{1f3ff}'], '🧛🏿 E5.0 vampire: dark skin tone'),
   (['\u{1f9db}\u200d\u2642\ufe0f'], '🧛‍♂️ E5.0 man vampire'),
   (['\u{1f9db}\u200d\u2642'], '🧛‍♂ E5.0 man vampire'),
-  (
-    ['\u{1f9db}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧛🏻‍♂️ E5.0 man vampire: light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fb}\u200d\u2642'],
-    '🧛🏻‍♂ E5.0 man vampire: light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧛🏼‍♂️ E5.0 man vampire: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fc}\u200d\u2642'],
-    '🧛🏼‍♂ E5.0 man vampire: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧛🏽‍♂️ E5.0 man vampire: medium skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fd}\u200d\u2642'],
-    '🧛🏽‍♂ E5.0 man vampire: medium skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧛🏾‍♂️ E5.0 man vampire: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fe}\u200d\u2642'],
-    '🧛🏾‍♂ E5.0 man vampire: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧛🏿‍♂️ E5.0 man vampire: dark skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3ff}\u200d\u2642'],
-    '🧛🏿‍♂ E5.0 man vampire: dark skin tone'
-  ),
+  (['\u{1f9db}\u{1f3fb}\u200d\u2642\ufe0f'], '🧛🏻‍♂️ E5.0 man vampire: light skin tone'),
+  (['\u{1f9db}\u{1f3fb}\u200d\u2642'], '🧛🏻‍♂ E5.0 man vampire: light skin tone'),
+  (['\u{1f9db}\u{1f3fc}\u200d\u2642\ufe0f'], '🧛🏼‍♂️ E5.0 man vampire: medium-light skin tone'),
+  (['\u{1f9db}\u{1f3fc}\u200d\u2642'], '🧛🏼‍♂ E5.0 man vampire: medium-light skin tone'),
+  (['\u{1f9db}\u{1f3fd}\u200d\u2642\ufe0f'], '🧛🏽‍♂️ E5.0 man vampire: medium skin tone'),
+  (['\u{1f9db}\u{1f3fd}\u200d\u2642'], '🧛🏽‍♂ E5.0 man vampire: medium skin tone'),
+  (['\u{1f9db}\u{1f3fe}\u200d\u2642\ufe0f'], '🧛🏾‍♂️ E5.0 man vampire: medium-dark skin tone'),
+  (['\u{1f9db}\u{1f3fe}\u200d\u2642'], '🧛🏾‍♂ E5.0 man vampire: medium-dark skin tone'),
+  (['\u{1f9db}\u{1f3ff}\u200d\u2642\ufe0f'], '🧛🏿‍♂️ E5.0 man vampire: dark skin tone'),
+  (['\u{1f9db}\u{1f3ff}\u200d\u2642'], '🧛🏿‍♂ E5.0 man vampire: dark skin tone'),
   (['\u{1f9db}\u200d\u2640\ufe0f'], '🧛‍♀️ E5.0 woman vampire'),
   (['\u{1f9db}\u200d\u2640'], '🧛‍♀ E5.0 woman vampire'),
-  (
-    ['\u{1f9db}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧛🏻‍♀️ E5.0 woman vampire: light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fb}\u200d\u2640'],
-    '🧛🏻‍♀ E5.0 woman vampire: light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧛🏼‍♀️ E5.0 woman vampire: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fc}\u200d\u2640'],
-    '🧛🏼‍♀ E5.0 woman vampire: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧛🏽‍♀️ E5.0 woman vampire: medium skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fd}\u200d\u2640'],
-    '🧛🏽‍♀ E5.0 woman vampire: medium skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧛🏾‍♀️ E5.0 woman vampire: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3fe}\u200d\u2640'],
-    '🧛🏾‍♀ E5.0 woman vampire: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧛🏿‍♀️ E5.0 woman vampire: dark skin tone'
-  ),
-  (
-    ['\u{1f9db}\u{1f3ff}\u200d\u2640'],
-    '🧛🏿‍♀ E5.0 woman vampire: dark skin tone'
-  ),
+  (['\u{1f9db}\u{1f3fb}\u200d\u2640\ufe0f'], '🧛🏻‍♀️ E5.0 woman vampire: light skin tone'),
+  (['\u{1f9db}\u{1f3fb}\u200d\u2640'], '🧛🏻‍♀ E5.0 woman vampire: light skin tone'),
+  (['\u{1f9db}\u{1f3fc}\u200d\u2640\ufe0f'], '🧛🏼‍♀️ E5.0 woman vampire: medium-light skin tone'),
+  (['\u{1f9db}\u{1f3fc}\u200d\u2640'], '🧛🏼‍♀ E5.0 woman vampire: medium-light skin tone'),
+  (['\u{1f9db}\u{1f3fd}\u200d\u2640\ufe0f'], '🧛🏽‍♀️ E5.0 woman vampire: medium skin tone'),
+  (['\u{1f9db}\u{1f3fd}\u200d\u2640'], '🧛🏽‍♀ E5.0 woman vampire: medium skin tone'),
+  (['\u{1f9db}\u{1f3fe}\u200d\u2640\ufe0f'], '🧛🏾‍♀️ E5.0 woman vampire: medium-dark skin tone'),
+  (['\u{1f9db}\u{1f3fe}\u200d\u2640'], '🧛🏾‍♀ E5.0 woman vampire: medium-dark skin tone'),
+  (['\u{1f9db}\u{1f3ff}\u200d\u2640\ufe0f'], '🧛🏿‍♀️ E5.0 woman vampire: dark skin tone'),
+  (['\u{1f9db}\u{1f3ff}\u200d\u2640'], '🧛🏿‍♀ E5.0 woman vampire: dark skin tone'),
   (['\u{1f9dc}'], '🧜 E5.0 merperson'),
   (['\u{1f9dc}\u{1f3fb}'], '🧜🏻 E5.0 merperson: light skin tone'),
   (['\u{1f9dc}\u{1f3fc}'], '🧜🏼 E5.0 merperson: medium-light skin tone'),
@@ -9004,69 +2933,27 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9dc}\u{1f3ff}'], '🧜🏿 E5.0 merperson: dark skin tone'),
   (['\u{1f9dc}\u200d\u2642\ufe0f'], '🧜‍♂️ E5.0 merman'),
   (['\u{1f9dc}\u200d\u2642'], '🧜‍♂ E5.0 merman'),
-  (
-    ['\u{1f9dc}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧜🏻‍♂️ E5.0 merman: light skin tone'
-  ),
+  (['\u{1f9dc}\u{1f3fb}\u200d\u2642\ufe0f'], '🧜🏻‍♂️ E5.0 merman: light skin tone'),
   (['\u{1f9dc}\u{1f3fb}\u200d\u2642'], '🧜🏻‍♂ E5.0 merman: light skin tone'),
-  (
-    ['\u{1f9dc}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧜🏼‍♂️ E5.0 merman: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3fc}\u200d\u2642'],
-    '🧜🏼‍♂ E5.0 merman: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧜🏽‍♂️ E5.0 merman: medium skin tone'
-  ),
+  (['\u{1f9dc}\u{1f3fc}\u200d\u2642\ufe0f'], '🧜🏼‍♂️ E5.0 merman: medium-light skin tone'),
+  (['\u{1f9dc}\u{1f3fc}\u200d\u2642'], '🧜🏼‍♂ E5.0 merman: medium-light skin tone'),
+  (['\u{1f9dc}\u{1f3fd}\u200d\u2642\ufe0f'], '🧜🏽‍♂️ E5.0 merman: medium skin tone'),
   (['\u{1f9dc}\u{1f3fd}\u200d\u2642'], '🧜🏽‍♂ E5.0 merman: medium skin tone'),
-  (
-    ['\u{1f9dc}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧜🏾‍♂️ E5.0 merman: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3fe}\u200d\u2642'],
-    '🧜🏾‍♂ E5.0 merman: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧜🏿‍♂️ E5.0 merman: dark skin tone'
-  ),
+  (['\u{1f9dc}\u{1f3fe}\u200d\u2642\ufe0f'], '🧜🏾‍♂️ E5.0 merman: medium-dark skin tone'),
+  (['\u{1f9dc}\u{1f3fe}\u200d\u2642'], '🧜🏾‍♂ E5.0 merman: medium-dark skin tone'),
+  (['\u{1f9dc}\u{1f3ff}\u200d\u2642\ufe0f'], '🧜🏿‍♂️ E5.0 merman: dark skin tone'),
   (['\u{1f9dc}\u{1f3ff}\u200d\u2642'], '🧜🏿‍♂ E5.0 merman: dark skin tone'),
   (['\u{1f9dc}\u200d\u2640\ufe0f'], '🧜‍♀️ E5.0 mermaid'),
   (['\u{1f9dc}\u200d\u2640'], '🧜‍♀ E5.0 mermaid'),
-  (
-    ['\u{1f9dc}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧜🏻‍♀️ E5.0 mermaid: light skin tone'
-  ),
+  (['\u{1f9dc}\u{1f3fb}\u200d\u2640\ufe0f'], '🧜🏻‍♀️ E5.0 mermaid: light skin tone'),
   (['\u{1f9dc}\u{1f3fb}\u200d\u2640'], '🧜🏻‍♀ E5.0 mermaid: light skin tone'),
-  (
-    ['\u{1f9dc}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧜🏼‍♀️ E5.0 mermaid: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3fc}\u200d\u2640'],
-    '🧜🏼‍♀ E5.0 mermaid: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧜🏽‍♀️ E5.0 mermaid: medium skin tone'
-  ),
+  (['\u{1f9dc}\u{1f3fc}\u200d\u2640\ufe0f'], '🧜🏼‍♀️ E5.0 mermaid: medium-light skin tone'),
+  (['\u{1f9dc}\u{1f3fc}\u200d\u2640'], '🧜🏼‍♀ E5.0 mermaid: medium-light skin tone'),
+  (['\u{1f9dc}\u{1f3fd}\u200d\u2640\ufe0f'], '🧜🏽‍♀️ E5.0 mermaid: medium skin tone'),
   (['\u{1f9dc}\u{1f3fd}\u200d\u2640'], '🧜🏽‍♀ E5.0 mermaid: medium skin tone'),
-  (
-    ['\u{1f9dc}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧜🏾‍♀️ E5.0 mermaid: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3fe}\u200d\u2640'],
-    '🧜🏾‍♀ E5.0 mermaid: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dc}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧜🏿‍♀️ E5.0 mermaid: dark skin tone'
-  ),
+  (['\u{1f9dc}\u{1f3fe}\u200d\u2640\ufe0f'], '🧜🏾‍♀️ E5.0 mermaid: medium-dark skin tone'),
+  (['\u{1f9dc}\u{1f3fe}\u200d\u2640'], '🧜🏾‍♀ E5.0 mermaid: medium-dark skin tone'),
+  (['\u{1f9dc}\u{1f3ff}\u200d\u2640\ufe0f'], '🧜🏿‍♀️ E5.0 mermaid: dark skin tone'),
   (['\u{1f9dc}\u{1f3ff}\u200d\u2640'], '🧜🏿‍♀ E5.0 mermaid: dark skin tone'),
   (['\u{1f9dd}'], '🧝 E5.0 elf'),
   (['\u{1f9dd}\u{1f3fb}'], '🧝🏻 E5.0 elf: light skin tone'),
@@ -9076,75 +2963,27 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9dd}\u{1f3ff}'], '🧝🏿 E5.0 elf: dark skin tone'),
   (['\u{1f9dd}\u200d\u2642\ufe0f'], '🧝‍♂️ E5.0 man elf'),
   (['\u{1f9dd}\u200d\u2642'], '🧝‍♂ E5.0 man elf'),
-  (
-    ['\u{1f9dd}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧝🏻‍♂️ E5.0 man elf: light skin tone'
-  ),
+  (['\u{1f9dd}\u{1f3fb}\u200d\u2642\ufe0f'], '🧝🏻‍♂️ E5.0 man elf: light skin tone'),
   (['\u{1f9dd}\u{1f3fb}\u200d\u2642'], '🧝🏻‍♂ E5.0 man elf: light skin tone'),
-  (
-    ['\u{1f9dd}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧝🏼‍♂️ E5.0 man elf: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fc}\u200d\u2642'],
-    '🧝🏼‍♂ E5.0 man elf: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧝🏽‍♂️ E5.0 man elf: medium skin tone'
-  ),
+  (['\u{1f9dd}\u{1f3fc}\u200d\u2642\ufe0f'], '🧝🏼‍♂️ E5.0 man elf: medium-light skin tone'),
+  (['\u{1f9dd}\u{1f3fc}\u200d\u2642'], '🧝🏼‍♂ E5.0 man elf: medium-light skin tone'),
+  (['\u{1f9dd}\u{1f3fd}\u200d\u2642\ufe0f'], '🧝🏽‍♂️ E5.0 man elf: medium skin tone'),
   (['\u{1f9dd}\u{1f3fd}\u200d\u2642'], '🧝🏽‍♂ E5.0 man elf: medium skin tone'),
-  (
-    ['\u{1f9dd}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧝🏾‍♂️ E5.0 man elf: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fe}\u200d\u2642'],
-    '🧝🏾‍♂ E5.0 man elf: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧝🏿‍♂️ E5.0 man elf: dark skin tone'
-  ),
+  (['\u{1f9dd}\u{1f3fe}\u200d\u2642\ufe0f'], '🧝🏾‍♂️ E5.0 man elf: medium-dark skin tone'),
+  (['\u{1f9dd}\u{1f3fe}\u200d\u2642'], '🧝🏾‍♂ E5.0 man elf: medium-dark skin tone'),
+  (['\u{1f9dd}\u{1f3ff}\u200d\u2642\ufe0f'], '🧝🏿‍♂️ E5.0 man elf: dark skin tone'),
   (['\u{1f9dd}\u{1f3ff}\u200d\u2642'], '🧝🏿‍♂ E5.0 man elf: dark skin tone'),
   (['\u{1f9dd}\u200d\u2640\ufe0f'], '🧝‍♀️ E5.0 woman elf'),
   (['\u{1f9dd}\u200d\u2640'], '🧝‍♀ E5.0 woman elf'),
-  (
-    ['\u{1f9dd}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧝🏻‍♀️ E5.0 woman elf: light skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fb}\u200d\u2640'],
-    '🧝🏻‍♀ E5.0 woman elf: light skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧝🏼‍♀️ E5.0 woman elf: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fc}\u200d\u2640'],
-    '🧝🏼‍♀ E5.0 woman elf: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧝🏽‍♀️ E5.0 woman elf: medium skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fd}\u200d\u2640'],
-    '🧝🏽‍♀ E5.0 woman elf: medium skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧝🏾‍♀️ E5.0 woman elf: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3fe}\u200d\u2640'],
-    '🧝🏾‍♀ E5.0 woman elf: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9dd}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧝🏿‍♀️ E5.0 woman elf: dark skin tone'
-  ),
+  (['\u{1f9dd}\u{1f3fb}\u200d\u2640\ufe0f'], '🧝🏻‍♀️ E5.0 woman elf: light skin tone'),
+  (['\u{1f9dd}\u{1f3fb}\u200d\u2640'], '🧝🏻‍♀ E5.0 woman elf: light skin tone'),
+  (['\u{1f9dd}\u{1f3fc}\u200d\u2640\ufe0f'], '🧝🏼‍♀️ E5.0 woman elf: medium-light skin tone'),
+  (['\u{1f9dd}\u{1f3fc}\u200d\u2640'], '🧝🏼‍♀ E5.0 woman elf: medium-light skin tone'),
+  (['\u{1f9dd}\u{1f3fd}\u200d\u2640\ufe0f'], '🧝🏽‍♀️ E5.0 woman elf: medium skin tone'),
+  (['\u{1f9dd}\u{1f3fd}\u200d\u2640'], '🧝🏽‍♀ E5.0 woman elf: medium skin tone'),
+  (['\u{1f9dd}\u{1f3fe}\u200d\u2640\ufe0f'], '🧝🏾‍♀️ E5.0 woman elf: medium-dark skin tone'),
+  (['\u{1f9dd}\u{1f3fe}\u200d\u2640'], '🧝🏾‍♀ E5.0 woman elf: medium-dark skin tone'),
+  (['\u{1f9dd}\u{1f3ff}\u200d\u2640\ufe0f'], '🧝🏿‍♀️ E5.0 woman elf: dark skin tone'),
   (['\u{1f9dd}\u{1f3ff}\u200d\u2640'], '🧝🏿‍♀ E5.0 woman elf: dark skin tone'),
   (['\u{1f9de}'], '🧞 E5.0 genie'),
   (['\u{1f9de}\u200d\u2642\ufe0f'], '🧞‍♂️ E5.0 man genie'),
@@ -9159,202 +2998,64 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9cc}'], '🧌 E14.0 troll'),
   (['\u{1f486}'], '💆 E0.6 person getting massage'),
   (['\u{1f486}\u{1f3fb}'], '💆🏻 E1.0 person getting massage: light skin tone'),
-  (
-    ['\u{1f486}\u{1f3fc}'],
-    '💆🏼 E1.0 person getting massage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fd}'],
-    '💆🏽 E1.0 person getting massage: medium skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fe}'],
-    '💆🏾 E1.0 person getting massage: medium-dark skin tone'
-  ),
+  (['\u{1f486}\u{1f3fc}'], '💆🏼 E1.0 person getting massage: medium-light skin tone'),
+  (['\u{1f486}\u{1f3fd}'], '💆🏽 E1.0 person getting massage: medium skin tone'),
+  (['\u{1f486}\u{1f3fe}'], '💆🏾 E1.0 person getting massage: medium-dark skin tone'),
   (['\u{1f486}\u{1f3ff}'], '💆🏿 E1.0 person getting massage: dark skin tone'),
   (['\u{1f486}\u200d\u2642\ufe0f'], '💆‍♂️ E4.0 man getting massage'),
   (['\u{1f486}\u200d\u2642'], '💆‍♂ E4.0 man getting massage'),
-  (
-    ['\u{1f486}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '💆🏻‍♂️ E4.0 man getting massage: light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fb}\u200d\u2642'],
-    '💆🏻‍♂ E4.0 man getting massage: light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '💆🏼‍♂️ E4.0 man getting massage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fc}\u200d\u2642'],
-    '💆🏼‍♂ E4.0 man getting massage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '💆🏽‍♂️ E4.0 man getting massage: medium skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fd}\u200d\u2642'],
-    '💆🏽‍♂ E4.0 man getting massage: medium skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '💆🏾‍♂️ E4.0 man getting massage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fe}\u200d\u2642'],
-    '💆🏾‍♂ E4.0 man getting massage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '💆🏿‍♂️ E4.0 man getting massage: dark skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3ff}\u200d\u2642'],
-    '💆🏿‍♂ E4.0 man getting massage: dark skin tone'
-  ),
+  (['\u{1f486}\u{1f3fb}\u200d\u2642\ufe0f'], '💆🏻‍♂️ E4.0 man getting massage: light skin tone'),
+  (['\u{1f486}\u{1f3fb}\u200d\u2642'], '💆🏻‍♂ E4.0 man getting massage: light skin tone'),
+  (['\u{1f486}\u{1f3fc}\u200d\u2642\ufe0f'], '💆🏼‍♂️ E4.0 man getting massage: medium-light skin tone'),
+  (['\u{1f486}\u{1f3fc}\u200d\u2642'], '💆🏼‍♂ E4.0 man getting massage: medium-light skin tone'),
+  (['\u{1f486}\u{1f3fd}\u200d\u2642\ufe0f'], '💆🏽‍♂️ E4.0 man getting massage: medium skin tone'),
+  (['\u{1f486}\u{1f3fd}\u200d\u2642'], '💆🏽‍♂ E4.0 man getting massage: medium skin tone'),
+  (['\u{1f486}\u{1f3fe}\u200d\u2642\ufe0f'], '💆🏾‍♂️ E4.0 man getting massage: medium-dark skin tone'),
+  (['\u{1f486}\u{1f3fe}\u200d\u2642'], '💆🏾‍♂ E4.0 man getting massage: medium-dark skin tone'),
+  (['\u{1f486}\u{1f3ff}\u200d\u2642\ufe0f'], '💆🏿‍♂️ E4.0 man getting massage: dark skin tone'),
+  (['\u{1f486}\u{1f3ff}\u200d\u2642'], '💆🏿‍♂ E4.0 man getting massage: dark skin tone'),
   (['\u{1f486}\u200d\u2640\ufe0f'], '💆‍♀️ E4.0 woman getting massage'),
   (['\u{1f486}\u200d\u2640'], '💆‍♀ E4.0 woman getting massage'),
-  (
-    ['\u{1f486}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '💆🏻‍♀️ E4.0 woman getting massage: light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fb}\u200d\u2640'],
-    '💆🏻‍♀ E4.0 woman getting massage: light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '💆🏼‍♀️ E4.0 woman getting massage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fc}\u200d\u2640'],
-    '💆🏼‍♀ E4.0 woman getting massage: medium-light skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '💆🏽‍♀️ E4.0 woman getting massage: medium skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fd}\u200d\u2640'],
-    '💆🏽‍♀ E4.0 woman getting massage: medium skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '💆🏾‍♀️ E4.0 woman getting massage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3fe}\u200d\u2640'],
-    '💆🏾‍♀ E4.0 woman getting massage: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '💆🏿‍♀️ E4.0 woman getting massage: dark skin tone'
-  ),
-  (
-    ['\u{1f486}\u{1f3ff}\u200d\u2640'],
-    '💆🏿‍♀ E4.0 woman getting massage: dark skin tone'
-  ),
+  (['\u{1f486}\u{1f3fb}\u200d\u2640\ufe0f'], '💆🏻‍♀️ E4.0 woman getting massage: light skin tone'),
+  (['\u{1f486}\u{1f3fb}\u200d\u2640'], '💆🏻‍♀ E4.0 woman getting massage: light skin tone'),
+  (['\u{1f486}\u{1f3fc}\u200d\u2640\ufe0f'], '💆🏼‍♀️ E4.0 woman getting massage: medium-light skin tone'),
+  (['\u{1f486}\u{1f3fc}\u200d\u2640'], '💆🏼‍♀ E4.0 woman getting massage: medium-light skin tone'),
+  (['\u{1f486}\u{1f3fd}\u200d\u2640\ufe0f'], '💆🏽‍♀️ E4.0 woman getting massage: medium skin tone'),
+  (['\u{1f486}\u{1f3fd}\u200d\u2640'], '💆🏽‍♀ E4.0 woman getting massage: medium skin tone'),
+  (['\u{1f486}\u{1f3fe}\u200d\u2640\ufe0f'], '💆🏾‍♀️ E4.0 woman getting massage: medium-dark skin tone'),
+  (['\u{1f486}\u{1f3fe}\u200d\u2640'], '💆🏾‍♀ E4.0 woman getting massage: medium-dark skin tone'),
+  (['\u{1f486}\u{1f3ff}\u200d\u2640\ufe0f'], '💆🏿‍♀️ E4.0 woman getting massage: dark skin tone'),
+  (['\u{1f486}\u{1f3ff}\u200d\u2640'], '💆🏿‍♀ E4.0 woman getting massage: dark skin tone'),
   (['\u{1f487}'], '💇 E0.6 person getting haircut'),
   (['\u{1f487}\u{1f3fb}'], '💇🏻 E1.0 person getting haircut: light skin tone'),
-  (
-    ['\u{1f487}\u{1f3fc}'],
-    '💇🏼 E1.0 person getting haircut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fd}'],
-    '💇🏽 E1.0 person getting haircut: medium skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fe}'],
-    '💇🏾 E1.0 person getting haircut: medium-dark skin tone'
-  ),
+  (['\u{1f487}\u{1f3fc}'], '💇🏼 E1.0 person getting haircut: medium-light skin tone'),
+  (['\u{1f487}\u{1f3fd}'], '💇🏽 E1.0 person getting haircut: medium skin tone'),
+  (['\u{1f487}\u{1f3fe}'], '💇🏾 E1.0 person getting haircut: medium-dark skin tone'),
   (['\u{1f487}\u{1f3ff}'], '💇🏿 E1.0 person getting haircut: dark skin tone'),
   (['\u{1f487}\u200d\u2642\ufe0f'], '💇‍♂️ E4.0 man getting haircut'),
   (['\u{1f487}\u200d\u2642'], '💇‍♂ E4.0 man getting haircut'),
-  (
-    ['\u{1f487}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '💇🏻‍♂️ E4.0 man getting haircut: light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fb}\u200d\u2642'],
-    '💇🏻‍♂ E4.0 man getting haircut: light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '💇🏼‍♂️ E4.0 man getting haircut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fc}\u200d\u2642'],
-    '💇🏼‍♂ E4.0 man getting haircut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '💇🏽‍♂️ E4.0 man getting haircut: medium skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fd}\u200d\u2642'],
-    '💇🏽‍♂ E4.0 man getting haircut: medium skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '💇🏾‍♂️ E4.0 man getting haircut: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fe}\u200d\u2642'],
-    '💇🏾‍♂ E4.0 man getting haircut: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '💇🏿‍♂️ E4.0 man getting haircut: dark skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3ff}\u200d\u2642'],
-    '💇🏿‍♂ E4.0 man getting haircut: dark skin tone'
-  ),
+  (['\u{1f487}\u{1f3fb}\u200d\u2642\ufe0f'], '💇🏻‍♂️ E4.0 man getting haircut: light skin tone'),
+  (['\u{1f487}\u{1f3fb}\u200d\u2642'], '💇🏻‍♂ E4.0 man getting haircut: light skin tone'),
+  (['\u{1f487}\u{1f3fc}\u200d\u2642\ufe0f'], '💇🏼‍♂️ E4.0 man getting haircut: medium-light skin tone'),
+  (['\u{1f487}\u{1f3fc}\u200d\u2642'], '💇🏼‍♂ E4.0 man getting haircut: medium-light skin tone'),
+  (['\u{1f487}\u{1f3fd}\u200d\u2642\ufe0f'], '💇🏽‍♂️ E4.0 man getting haircut: medium skin tone'),
+  (['\u{1f487}\u{1f3fd}\u200d\u2642'], '💇🏽‍♂ E4.0 man getting haircut: medium skin tone'),
+  (['\u{1f487}\u{1f3fe}\u200d\u2642\ufe0f'], '💇🏾‍♂️ E4.0 man getting haircut: medium-dark skin tone'),
+  (['\u{1f487}\u{1f3fe}\u200d\u2642'], '💇🏾‍♂ E4.0 man getting haircut: medium-dark skin tone'),
+  (['\u{1f487}\u{1f3ff}\u200d\u2642\ufe0f'], '💇🏿‍♂️ E4.0 man getting haircut: dark skin tone'),
+  (['\u{1f487}\u{1f3ff}\u200d\u2642'], '💇🏿‍♂ E4.0 man getting haircut: dark skin tone'),
   (['\u{1f487}\u200d\u2640\ufe0f'], '💇‍♀️ E4.0 woman getting haircut'),
   (['\u{1f487}\u200d\u2640'], '💇‍♀ E4.0 woman getting haircut'),
-  (
-    ['\u{1f487}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '💇🏻‍♀️ E4.0 woman getting haircut: light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fb}\u200d\u2640'],
-    '💇🏻‍♀ E4.0 woman getting haircut: light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '💇🏼‍♀️ E4.0 woman getting haircut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fc}\u200d\u2640'],
-    '💇🏼‍♀ E4.0 woman getting haircut: medium-light skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '💇🏽‍♀️ E4.0 woman getting haircut: medium skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fd}\u200d\u2640'],
-    '💇🏽‍♀ E4.0 woman getting haircut: medium skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '💇🏾‍♀️ E4.0 woman getting haircut: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3fe}\u200d\u2640'],
-    '💇🏾‍♀ E4.0 woman getting haircut: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '💇🏿‍♀️ E4.0 woman getting haircut: dark skin tone'
-  ),
-  (
-    ['\u{1f487}\u{1f3ff}\u200d\u2640'],
-    '💇🏿‍♀ E4.0 woman getting haircut: dark skin tone'
-  ),
+  (['\u{1f487}\u{1f3fb}\u200d\u2640\ufe0f'], '💇🏻‍♀️ E4.0 woman getting haircut: light skin tone'),
+  (['\u{1f487}\u{1f3fb}\u200d\u2640'], '💇🏻‍♀ E4.0 woman getting haircut: light skin tone'),
+  (['\u{1f487}\u{1f3fc}\u200d\u2640\ufe0f'], '💇🏼‍♀️ E4.0 woman getting haircut: medium-light skin tone'),
+  (['\u{1f487}\u{1f3fc}\u200d\u2640'], '💇🏼‍♀ E4.0 woman getting haircut: medium-light skin tone'),
+  (['\u{1f487}\u{1f3fd}\u200d\u2640\ufe0f'], '💇🏽‍♀️ E4.0 woman getting haircut: medium skin tone'),
+  (['\u{1f487}\u{1f3fd}\u200d\u2640'], '💇🏽‍♀ E4.0 woman getting haircut: medium skin tone'),
+  (['\u{1f487}\u{1f3fe}\u200d\u2640\ufe0f'], '💇🏾‍♀️ E4.0 woman getting haircut: medium-dark skin tone'),
+  (['\u{1f487}\u{1f3fe}\u200d\u2640'], '💇🏾‍♀ E4.0 woman getting haircut: medium-dark skin tone'),
+  (['\u{1f487}\u{1f3ff}\u200d\u2640\ufe0f'], '💇🏿‍♀️ E4.0 woman getting haircut: dark skin tone'),
+  (['\u{1f487}\u{1f3ff}\u200d\u2640'], '💇🏿‍♀ E4.0 woman getting haircut: dark skin tone'),
   (['\u{1f6b6}'], '🚶 E0.6 person walking'),
   (['\u{1f6b6}\u{1f3fb}'], '🚶🏻 E1.0 person walking: light skin tone'),
   (['\u{1f6b6}\u{1f3fc}'], '🚶🏼 E1.0 person walking: medium-light skin tone'),
@@ -9363,1363 +3064,370 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f6b6}\u{1f3ff}'], '🚶🏿 E1.0 person walking: dark skin tone'),
   (['\u{1f6b6}\u200d\u2642\ufe0f'], '🚶‍♂️ E4.0 man walking'),
   (['\u{1f6b6}\u200d\u2642'], '🚶‍♂ E4.0 man walking'),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🚶🏻‍♂️ E4.0 man walking: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2642'],
-    '🚶🏻‍♂ E4.0 man walking: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🚶🏼‍♂️ E4.0 man walking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2642'],
-    '🚶🏼‍♂ E4.0 man walking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🚶🏽‍♂️ E4.0 man walking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2642'],
-    '🚶🏽‍♂ E4.0 man walking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🚶🏾‍♂️ E4.0 man walking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2642'],
-    '🚶🏾‍♂ E4.0 man walking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🚶🏿‍♂️ E4.0 man walking: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2642'],
-    '🚶🏿‍♂ E4.0 man walking: dark skin tone'
-  ),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2642\ufe0f'], '🚶🏻‍♂️ E4.0 man walking: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2642'], '🚶🏻‍♂ E4.0 man walking: light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2642\ufe0f'], '🚶🏼‍♂️ E4.0 man walking: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2642'], '🚶🏼‍♂ E4.0 man walking: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2642\ufe0f'], '🚶🏽‍♂️ E4.0 man walking: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2642'], '🚶🏽‍♂ E4.0 man walking: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2642\ufe0f'], '🚶🏾‍♂️ E4.0 man walking: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2642'], '🚶🏾‍♂ E4.0 man walking: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2642\ufe0f'], '🚶🏿‍♂️ E4.0 man walking: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2642'], '🚶🏿‍♂ E4.0 man walking: dark skin tone'),
   (['\u{1f6b6}\u200d\u2640\ufe0f'], '🚶‍♀️ E4.0 woman walking'),
   (['\u{1f6b6}\u200d\u2640'], '🚶‍♀ E4.0 woman walking'),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🚶🏻‍♀️ E4.0 woman walking: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2640'],
-    '🚶🏻‍♀ E4.0 woman walking: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🚶🏼‍♀️ E4.0 woman walking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2640'],
-    '🚶🏼‍♀ E4.0 woman walking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🚶🏽‍♀️ E4.0 woman walking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2640'],
-    '🚶🏽‍♀ E4.0 woman walking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🚶🏾‍♀️ E4.0 woman walking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2640'],
-    '🚶🏾‍♀ E4.0 woman walking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🚶🏿‍♀️ E4.0 woman walking: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2640'],
-    '🚶🏿‍♀ E4.0 woman walking: dark skin tone'
-  ),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2640\ufe0f'], '🚶🏻‍♀️ E4.0 woman walking: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2640'], '🚶🏻‍♀ E4.0 woman walking: light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2640\ufe0f'], '🚶🏼‍♀️ E4.0 woman walking: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2640'], '🚶🏼‍♀ E4.0 woman walking: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2640\ufe0f'], '🚶🏽‍♀️ E4.0 woman walking: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2640'], '🚶🏽‍♀ E4.0 woman walking: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2640\ufe0f'], '🚶🏾‍♀️ E4.0 woman walking: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2640'], '🚶🏾‍♀ E4.0 woman walking: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2640\ufe0f'], '🚶🏿‍♀️ E4.0 woman walking: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2640'], '🚶🏿‍♀ E4.0 woman walking: dark skin tone'),
   (['\u{1f6b6}\u200d\u27a1\ufe0f'], '🚶‍➡️ E15.1 person walking facing right'),
   (['\u{1f6b6}\u200d\u27a1'], '🚶‍➡ E15.1 person walking facing right'),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u27a1\ufe0f'],
-    '🚶🏻‍➡️ E15.1 person walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u27a1'],
-    '🚶🏻‍➡ E15.1 person walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u27a1\ufe0f'],
-    '🚶🏼‍➡️ E15.1 person walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u27a1'],
-    '🚶🏼‍➡ E15.1 person walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u27a1\ufe0f'],
-    '🚶🏽‍➡️ E15.1 person walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u27a1'],
-    '🚶🏽‍➡ E15.1 person walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u27a1\ufe0f'],
-    '🚶🏾‍➡️ E15.1 person walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u27a1'],
-    '🚶🏾‍➡ E15.1 person walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u27a1\ufe0f'],
-    '🚶🏿‍➡️ E15.1 person walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u27a1'],
-    '🚶🏿‍➡ E15.1 person walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶‍♀️‍➡️ E15.1 woman walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🚶‍♀‍➡️ E15.1 woman walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🚶‍♀️‍➡ E15.1 woman walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2640\u200d\u27a1'],
-    '🚶‍♀‍➡ E15.1 woman walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏻‍♀️‍➡️ E15.1 woman walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🚶🏻‍♀‍➡️ E15.1 woman walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🚶🏻‍♀️‍➡ E15.1 woman walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2640\u200d\u27a1'],
-    '🚶🏻‍♀‍➡ E15.1 woman walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏼‍♀️‍➡️ E15.1 woman walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🚶🏼‍♀‍➡️ E15.1 woman walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🚶🏼‍♀️‍➡ E15.1 woman walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2640\u200d\u27a1'],
-    '🚶🏼‍♀‍➡ E15.1 woman walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏽‍♀️‍➡️ E15.1 woman walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🚶🏽‍♀‍➡️ E15.1 woman walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🚶🏽‍♀️‍➡ E15.1 woman walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2640\u200d\u27a1'],
-    '🚶🏽‍♀‍➡ E15.1 woman walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏾‍♀️‍➡️ E15.1 woman walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🚶🏾‍♀‍➡️ E15.1 woman walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🚶🏾‍♀️‍➡ E15.1 woman walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2640\u200d\u27a1'],
-    '🚶🏾‍♀‍➡ E15.1 woman walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏿‍♀️‍➡️ E15.1 woman walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🚶🏿‍♀‍➡️ E15.1 woman walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🚶🏿‍♀️‍➡ E15.1 woman walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2640\u200d\u27a1'],
-    '🚶🏿‍♀‍➡ E15.1 woman walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶‍♂️‍➡️ E15.1 man walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🚶‍♂‍➡️ E15.1 man walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🚶‍♂️‍➡ E15.1 man walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u200d\u2642\u200d\u27a1'],
-    '🚶‍♂‍➡ E15.1 man walking facing right'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏻‍♂️‍➡️ E15.1 man walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🚶🏻‍♂‍➡️ E15.1 man walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🚶🏻‍♂️‍➡ E15.1 man walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fb}\u200d\u2642\u200d\u27a1'],
-    '🚶🏻‍♂‍➡ E15.1 man walking facing right: light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏼‍♂️‍➡️ E15.1 man walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🚶🏼‍♂‍➡️ E15.1 man walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🚶🏼‍♂️‍➡ E15.1 man walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fc}\u200d\u2642\u200d\u27a1'],
-    '🚶🏼‍♂‍➡ E15.1 man walking facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏽‍♂️‍➡️ E15.1 man walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🚶🏽‍♂‍➡️ E15.1 man walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🚶🏽‍♂️‍➡ E15.1 man walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fd}\u200d\u2642\u200d\u27a1'],
-    '🚶🏽‍♂‍➡ E15.1 man walking facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏾‍♂️‍➡️ E15.1 man walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🚶🏾‍♂‍➡️ E15.1 man walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🚶🏾‍♂️‍➡ E15.1 man walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3fe}\u200d\u2642\u200d\u27a1'],
-    '🚶🏾‍♂‍➡ E15.1 man walking facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🚶🏿‍♂️‍➡️ E15.1 man walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🚶🏿‍♂‍➡️ E15.1 man walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🚶🏿‍♂️‍➡ E15.1 man walking facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f6b6}\u{1f3ff}\u200d\u2642\u200d\u27a1'],
-    '🚶🏿‍♂‍➡ E15.1 man walking facing right: dark skin tone'
-  ),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u27a1\ufe0f'], '🚶🏻‍➡️ E15.1 person walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u27a1'], '🚶🏻‍➡ E15.1 person walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u27a1\ufe0f'], '🚶🏼‍➡️ E15.1 person walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u27a1'], '🚶🏼‍➡ E15.1 person walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u27a1\ufe0f'], '🚶🏽‍➡️ E15.1 person walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u27a1'], '🚶🏽‍➡ E15.1 person walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u27a1\ufe0f'], '🚶🏾‍➡️ E15.1 person walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u27a1'], '🚶🏾‍➡ E15.1 person walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u27a1\ufe0f'], '🚶🏿‍➡️ E15.1 person walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u27a1'], '🚶🏿‍➡ E15.1 person walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🚶‍♀️‍➡️ E15.1 woman walking facing right'),
+  (['\u{1f6b6}\u200d\u2640\u200d\u27a1\ufe0f'], '🚶‍♀‍➡️ E15.1 woman walking facing right'),
+  (['\u{1f6b6}\u200d\u2640\ufe0f\u200d\u27a1'], '🚶‍♀️‍➡ E15.1 woman walking facing right'),
+  (['\u{1f6b6}\u200d\u2640\u200d\u27a1'], '🚶‍♀‍➡ E15.1 woman walking facing right'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🚶🏻‍♀️‍➡️ E15.1 woman walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2640\u200d\u27a1\ufe0f'], '🚶🏻‍♀‍➡️ E15.1 woman walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1'], '🚶🏻‍♀️‍➡ E15.1 woman walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2640\u200d\u27a1'], '🚶🏻‍♀‍➡ E15.1 woman walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🚶🏼‍♀️‍➡️ E15.1 woman walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2640\u200d\u27a1\ufe0f'], '🚶🏼‍♀‍➡️ E15.1 woman walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1'], '🚶🏼‍♀️‍➡ E15.1 woman walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2640\u200d\u27a1'], '🚶🏼‍♀‍➡ E15.1 woman walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🚶🏽‍♀️‍➡️ E15.1 woman walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2640\u200d\u27a1\ufe0f'], '🚶🏽‍♀‍➡️ E15.1 woman walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1'], '🚶🏽‍♀️‍➡ E15.1 woman walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2640\u200d\u27a1'], '🚶🏽‍♀‍➡ E15.1 woman walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🚶🏾‍♀️‍➡️ E15.1 woman walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2640\u200d\u27a1\ufe0f'], '🚶🏾‍♀‍➡️ E15.1 woman walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1'], '🚶🏾‍♀️‍➡ E15.1 woman walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2640\u200d\u27a1'], '🚶🏾‍♀‍➡ E15.1 woman walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🚶🏿‍♀️‍➡️ E15.1 woman walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2640\u200d\u27a1\ufe0f'], '🚶🏿‍♀‍➡️ E15.1 woman walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1'], '🚶🏿‍♀️‍➡ E15.1 woman walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2640\u200d\u27a1'], '🚶🏿‍♀‍➡ E15.1 woman walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🚶‍♂️‍➡️ E15.1 man walking facing right'),
+  (['\u{1f6b6}\u200d\u2642\u200d\u27a1\ufe0f'], '🚶‍♂‍➡️ E15.1 man walking facing right'),
+  (['\u{1f6b6}\u200d\u2642\ufe0f\u200d\u27a1'], '🚶‍♂️‍➡ E15.1 man walking facing right'),
+  (['\u{1f6b6}\u200d\u2642\u200d\u27a1'], '🚶‍♂‍➡ E15.1 man walking facing right'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🚶🏻‍♂️‍➡️ E15.1 man walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2642\u200d\u27a1\ufe0f'], '🚶🏻‍♂‍➡️ E15.1 man walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1'], '🚶🏻‍♂️‍➡ E15.1 man walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fb}\u200d\u2642\u200d\u27a1'], '🚶🏻‍♂‍➡ E15.1 man walking facing right: light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🚶🏼‍♂️‍➡️ E15.1 man walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2642\u200d\u27a1\ufe0f'], '🚶🏼‍♂‍➡️ E15.1 man walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1'], '🚶🏼‍♂️‍➡ E15.1 man walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fc}\u200d\u2642\u200d\u27a1'], '🚶🏼‍♂‍➡ E15.1 man walking facing right: medium-light skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🚶🏽‍♂️‍➡️ E15.1 man walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2642\u200d\u27a1\ufe0f'], '🚶🏽‍♂‍➡️ E15.1 man walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1'], '🚶🏽‍♂️‍➡ E15.1 man walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fd}\u200d\u2642\u200d\u27a1'], '🚶🏽‍♂‍➡ E15.1 man walking facing right: medium skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🚶🏾‍♂️‍➡️ E15.1 man walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2642\u200d\u27a1\ufe0f'], '🚶🏾‍♂‍➡️ E15.1 man walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1'], '🚶🏾‍♂️‍➡ E15.1 man walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3fe}\u200d\u2642\u200d\u27a1'], '🚶🏾‍♂‍➡ E15.1 man walking facing right: medium-dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🚶🏿‍♂️‍➡️ E15.1 man walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2642\u200d\u27a1\ufe0f'], '🚶🏿‍♂‍➡️ E15.1 man walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1'], '🚶🏿‍♂️‍➡ E15.1 man walking facing right: dark skin tone'),
+  (['\u{1f6b6}\u{1f3ff}\u200d\u2642\u200d\u27a1'], '🚶🏿‍♂‍➡ E15.1 man walking facing right: dark skin tone'),
   (['\u{1f9cd}'], '🧍 E12.0 person standing'),
   (['\u{1f9cd}\u{1f3fb}'], '🧍🏻 E12.0 person standing: light skin tone'),
-  (
-    ['\u{1f9cd}\u{1f3fc}'],
-    '🧍🏼 E12.0 person standing: medium-light skin tone'
-  ),
+  (['\u{1f9cd}\u{1f3fc}'], '🧍🏼 E12.0 person standing: medium-light skin tone'),
   (['\u{1f9cd}\u{1f3fd}'], '🧍🏽 E12.0 person standing: medium skin tone'),
   (['\u{1f9cd}\u{1f3fe}'], '🧍🏾 E12.0 person standing: medium-dark skin tone'),
   (['\u{1f9cd}\u{1f3ff}'], '🧍🏿 E12.0 person standing: dark skin tone'),
   (['\u{1f9cd}\u200d\u2642\ufe0f'], '🧍‍♂️ E12.0 man standing'),
   (['\u{1f9cd}\u200d\u2642'], '🧍‍♂ E12.0 man standing'),
-  (
-    ['\u{1f9cd}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧍🏻‍♂️ E12.0 man standing: light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fb}\u200d\u2642'],
-    '🧍🏻‍♂ E12.0 man standing: light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧍🏼‍♂️ E12.0 man standing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fc}\u200d\u2642'],
-    '🧍🏼‍♂ E12.0 man standing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧍🏽‍♂️ E12.0 man standing: medium skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fd}\u200d\u2642'],
-    '🧍🏽‍♂ E12.0 man standing: medium skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧍🏾‍♂️ E12.0 man standing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fe}\u200d\u2642'],
-    '🧍🏾‍♂ E12.0 man standing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧍🏿‍♂️ E12.0 man standing: dark skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3ff}\u200d\u2642'],
-    '🧍🏿‍♂ E12.0 man standing: dark skin tone'
-  ),
+  (['\u{1f9cd}\u{1f3fb}\u200d\u2642\ufe0f'], '🧍🏻‍♂️ E12.0 man standing: light skin tone'),
+  (['\u{1f9cd}\u{1f3fb}\u200d\u2642'], '🧍🏻‍♂ E12.0 man standing: light skin tone'),
+  (['\u{1f9cd}\u{1f3fc}\u200d\u2642\ufe0f'], '🧍🏼‍♂️ E12.0 man standing: medium-light skin tone'),
+  (['\u{1f9cd}\u{1f3fc}\u200d\u2642'], '🧍🏼‍♂ E12.0 man standing: medium-light skin tone'),
+  (['\u{1f9cd}\u{1f3fd}\u200d\u2642\ufe0f'], '🧍🏽‍♂️ E12.0 man standing: medium skin tone'),
+  (['\u{1f9cd}\u{1f3fd}\u200d\u2642'], '🧍🏽‍♂ E12.0 man standing: medium skin tone'),
+  (['\u{1f9cd}\u{1f3fe}\u200d\u2642\ufe0f'], '🧍🏾‍♂️ E12.0 man standing: medium-dark skin tone'),
+  (['\u{1f9cd}\u{1f3fe}\u200d\u2642'], '🧍🏾‍♂ E12.0 man standing: medium-dark skin tone'),
+  (['\u{1f9cd}\u{1f3ff}\u200d\u2642\ufe0f'], '🧍🏿‍♂️ E12.0 man standing: dark skin tone'),
+  (['\u{1f9cd}\u{1f3ff}\u200d\u2642'], '🧍🏿‍♂ E12.0 man standing: dark skin tone'),
   (['\u{1f9cd}\u200d\u2640\ufe0f'], '🧍‍♀️ E12.0 woman standing'),
   (['\u{1f9cd}\u200d\u2640'], '🧍‍♀ E12.0 woman standing'),
-  (
-    ['\u{1f9cd}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧍🏻‍♀️ E12.0 woman standing: light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fb}\u200d\u2640'],
-    '🧍🏻‍♀ E12.0 woman standing: light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧍🏼‍♀️ E12.0 woman standing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fc}\u200d\u2640'],
-    '🧍🏼‍♀ E12.0 woman standing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧍🏽‍♀️ E12.0 woman standing: medium skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fd}\u200d\u2640'],
-    '🧍🏽‍♀ E12.0 woman standing: medium skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧍🏾‍♀️ E12.0 woman standing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3fe}\u200d\u2640'],
-    '🧍🏾‍♀ E12.0 woman standing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧍🏿‍♀️ E12.0 woman standing: dark skin tone'
-  ),
-  (
-    ['\u{1f9cd}\u{1f3ff}\u200d\u2640'],
-    '🧍🏿‍♀ E12.0 woman standing: dark skin tone'
-  ),
+  (['\u{1f9cd}\u{1f3fb}\u200d\u2640\ufe0f'], '🧍🏻‍♀️ E12.0 woman standing: light skin tone'),
+  (['\u{1f9cd}\u{1f3fb}\u200d\u2640'], '🧍🏻‍♀ E12.0 woman standing: light skin tone'),
+  (['\u{1f9cd}\u{1f3fc}\u200d\u2640\ufe0f'], '🧍🏼‍♀️ E12.0 woman standing: medium-light skin tone'),
+  (['\u{1f9cd}\u{1f3fc}\u200d\u2640'], '🧍🏼‍♀ E12.0 woman standing: medium-light skin tone'),
+  (['\u{1f9cd}\u{1f3fd}\u200d\u2640\ufe0f'], '🧍🏽‍♀️ E12.0 woman standing: medium skin tone'),
+  (['\u{1f9cd}\u{1f3fd}\u200d\u2640'], '🧍🏽‍♀ E12.0 woman standing: medium skin tone'),
+  (['\u{1f9cd}\u{1f3fe}\u200d\u2640\ufe0f'], '🧍🏾‍♀️ E12.0 woman standing: medium-dark skin tone'),
+  (['\u{1f9cd}\u{1f3fe}\u200d\u2640'], '🧍🏾‍♀ E12.0 woman standing: medium-dark skin tone'),
+  (['\u{1f9cd}\u{1f3ff}\u200d\u2640\ufe0f'], '🧍🏿‍♀️ E12.0 woman standing: dark skin tone'),
+  (['\u{1f9cd}\u{1f3ff}\u200d\u2640'], '🧍🏿‍♀ E12.0 woman standing: dark skin tone'),
   (['\u{1f9ce}'], '🧎 E12.0 person kneeling'),
   (['\u{1f9ce}\u{1f3fb}'], '🧎🏻 E12.0 person kneeling: light skin tone'),
-  (
-    ['\u{1f9ce}\u{1f3fc}'],
-    '🧎🏼 E12.0 person kneeling: medium-light skin tone'
-  ),
+  (['\u{1f9ce}\u{1f3fc}'], '🧎🏼 E12.0 person kneeling: medium-light skin tone'),
   (['\u{1f9ce}\u{1f3fd}'], '🧎🏽 E12.0 person kneeling: medium skin tone'),
   (['\u{1f9ce}\u{1f3fe}'], '🧎🏾 E12.0 person kneeling: medium-dark skin tone'),
   (['\u{1f9ce}\u{1f3ff}'], '🧎🏿 E12.0 person kneeling: dark skin tone'),
   (['\u{1f9ce}\u200d\u2642\ufe0f'], '🧎‍♂️ E12.0 man kneeling'),
   (['\u{1f9ce}\u200d\u2642'], '🧎‍♂ E12.0 man kneeling'),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧎🏻‍♂️ E12.0 man kneeling: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2642'],
-    '🧎🏻‍♂ E12.0 man kneeling: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧎🏼‍♂️ E12.0 man kneeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2642'],
-    '🧎🏼‍♂ E12.0 man kneeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧎🏽‍♂️ E12.0 man kneeling: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2642'],
-    '🧎🏽‍♂ E12.0 man kneeling: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧎🏾‍♂️ E12.0 man kneeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2642'],
-    '🧎🏾‍♂ E12.0 man kneeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧎🏿‍♂️ E12.0 man kneeling: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2642'],
-    '🧎🏿‍♂ E12.0 man kneeling: dark skin tone'
-  ),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2642\ufe0f'], '🧎🏻‍♂️ E12.0 man kneeling: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2642'], '🧎🏻‍♂ E12.0 man kneeling: light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2642\ufe0f'], '🧎🏼‍♂️ E12.0 man kneeling: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2642'], '🧎🏼‍♂ E12.0 man kneeling: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2642\ufe0f'], '🧎🏽‍♂️ E12.0 man kneeling: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2642'], '🧎🏽‍♂ E12.0 man kneeling: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2642\ufe0f'], '🧎🏾‍♂️ E12.0 man kneeling: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2642'], '🧎🏾‍♂ E12.0 man kneeling: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2642\ufe0f'], '🧎🏿‍♂️ E12.0 man kneeling: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2642'], '🧎🏿‍♂ E12.0 man kneeling: dark skin tone'),
   (['\u{1f9ce}\u200d\u2640\ufe0f'], '🧎‍♀️ E12.0 woman kneeling'),
   (['\u{1f9ce}\u200d\u2640'], '🧎‍♀ E12.0 woman kneeling'),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧎🏻‍♀️ E12.0 woman kneeling: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2640'],
-    '🧎🏻‍♀ E12.0 woman kneeling: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧎🏼‍♀️ E12.0 woman kneeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2640'],
-    '🧎🏼‍♀ E12.0 woman kneeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧎🏽‍♀️ E12.0 woman kneeling: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2640'],
-    '🧎🏽‍♀ E12.0 woman kneeling: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧎🏾‍♀️ E12.0 woman kneeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2640'],
-    '🧎🏾‍♀ E12.0 woman kneeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧎🏿‍♀️ E12.0 woman kneeling: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2640'],
-    '🧎🏿‍♀ E12.0 woman kneeling: dark skin tone'
-  ),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2640\ufe0f'], '🧎🏻‍♀️ E12.0 woman kneeling: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2640'], '🧎🏻‍♀ E12.0 woman kneeling: light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2640\ufe0f'], '🧎🏼‍♀️ E12.0 woman kneeling: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2640'], '🧎🏼‍♀ E12.0 woman kneeling: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2640\ufe0f'], '🧎🏽‍♀️ E12.0 woman kneeling: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2640'], '🧎🏽‍♀ E12.0 woman kneeling: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2640\ufe0f'], '🧎🏾‍♀️ E12.0 woman kneeling: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2640'], '🧎🏾‍♀ E12.0 woman kneeling: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2640\ufe0f'], '🧎🏿‍♀️ E12.0 woman kneeling: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2640'], '🧎🏿‍♀ E12.0 woman kneeling: dark skin tone'),
   (['\u{1f9ce}\u200d\u27a1\ufe0f'], '🧎‍➡️ E15.1 person kneeling facing right'),
   (['\u{1f9ce}\u200d\u27a1'], '🧎‍➡ E15.1 person kneeling facing right'),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u27a1\ufe0f'],
-    '🧎🏻‍➡️ E15.1 person kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u27a1'],
-    '🧎🏻‍➡ E15.1 person kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u27a1\ufe0f'],
-    '🧎🏼‍➡️ E15.1 person kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u27a1'],
-    '🧎🏼‍➡ E15.1 person kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u27a1\ufe0f'],
-    '🧎🏽‍➡️ E15.1 person kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u27a1'],
-    '🧎🏽‍➡ E15.1 person kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u27a1\ufe0f'],
-    '🧎🏾‍➡️ E15.1 person kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u27a1'],
-    '🧎🏾‍➡ E15.1 person kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u27a1\ufe0f'],
-    '🧎🏿‍➡️ E15.1 person kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u27a1'],
-    '🧎🏿‍➡ E15.1 person kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎‍♀️‍➡️ E15.1 woman kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🧎‍♀‍➡️ E15.1 woman kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🧎‍♀️‍➡ E15.1 woman kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2640\u200d\u27a1'],
-    '🧎‍♀‍➡ E15.1 woman kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏻‍♀️‍➡️ E15.1 woman kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🧎🏻‍♀‍➡️ E15.1 woman kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🧎🏻‍♀️‍➡ E15.1 woman kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2640\u200d\u27a1'],
-    '🧎🏻‍♀‍➡ E15.1 woman kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏼‍♀️‍➡️ E15.1 woman kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🧎🏼‍♀‍➡️ E15.1 woman kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🧎🏼‍♀️‍➡ E15.1 woman kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2640\u200d\u27a1'],
-    '🧎🏼‍♀‍➡ E15.1 woman kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏽‍♀️‍➡️ E15.1 woman kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🧎🏽‍♀‍➡️ E15.1 woman kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🧎🏽‍♀️‍➡ E15.1 woman kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2640\u200d\u27a1'],
-    '🧎🏽‍♀‍➡ E15.1 woman kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏾‍♀️‍➡️ E15.1 woman kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🧎🏾‍♀‍➡️ E15.1 woman kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🧎🏾‍♀️‍➡ E15.1 woman kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2640\u200d\u27a1'],
-    '🧎🏾‍♀‍➡ E15.1 woman kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏿‍♀️‍➡️ E15.1 woman kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🧎🏿‍♀‍➡️ E15.1 woman kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🧎🏿‍♀️‍➡ E15.1 woman kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2640\u200d\u27a1'],
-    '🧎🏿‍♀‍➡ E15.1 woman kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎‍♂️‍➡️ E15.1 man kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🧎‍♂‍➡️ E15.1 man kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🧎‍♂️‍➡ E15.1 man kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u200d\u2642\u200d\u27a1'],
-    '🧎‍♂‍➡ E15.1 man kneeling facing right'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏻‍♂️‍➡️ E15.1 man kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🧎🏻‍♂‍➡️ E15.1 man kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🧎🏻‍♂️‍➡ E15.1 man kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fb}\u200d\u2642\u200d\u27a1'],
-    '🧎🏻‍♂‍➡ E15.1 man kneeling facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏼‍♂️‍➡️ E15.1 man kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🧎🏼‍♂‍➡️ E15.1 man kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🧎🏼‍♂️‍➡ E15.1 man kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fc}\u200d\u2642\u200d\u27a1'],
-    '🧎🏼‍♂‍➡ E15.1 man kneeling facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏽‍♂️‍➡️ E15.1 man kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🧎🏽‍♂‍➡️ E15.1 man kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🧎🏽‍♂️‍➡ E15.1 man kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fd}\u200d\u2642\u200d\u27a1'],
-    '🧎🏽‍♂‍➡ E15.1 man kneeling facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏾‍♂️‍➡️ E15.1 man kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🧎🏾‍♂‍➡️ E15.1 man kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🧎🏾‍♂️‍➡ E15.1 man kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3fe}\u200d\u2642\u200d\u27a1'],
-    '🧎🏾‍♂‍➡ E15.1 man kneeling facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🧎🏿‍♂️‍➡️ E15.1 man kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🧎🏿‍♂‍➡️ E15.1 man kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🧎🏿‍♂️‍➡ E15.1 man kneeling facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9ce}\u{1f3ff}\u200d\u2642\u200d\u27a1'],
-    '🧎🏿‍♂‍➡ E15.1 man kneeling facing right: dark skin tone'
-  ),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u27a1\ufe0f'], '🧎🏻‍➡️ E15.1 person kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u27a1'], '🧎🏻‍➡ E15.1 person kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u27a1\ufe0f'], '🧎🏼‍➡️ E15.1 person kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u27a1'], '🧎🏼‍➡ E15.1 person kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u27a1\ufe0f'], '🧎🏽‍➡️ E15.1 person kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u27a1'], '🧎🏽‍➡ E15.1 person kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u27a1\ufe0f'], '🧎🏾‍➡️ E15.1 person kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u27a1'], '🧎🏾‍➡ E15.1 person kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u27a1\ufe0f'], '🧎🏿‍➡️ E15.1 person kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u27a1'], '🧎🏿‍➡ E15.1 person kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🧎‍♀️‍➡️ E15.1 woman kneeling facing right'),
+  (['\u{1f9ce}\u200d\u2640\u200d\u27a1\ufe0f'], '🧎‍♀‍➡️ E15.1 woman kneeling facing right'),
+  (['\u{1f9ce}\u200d\u2640\ufe0f\u200d\u27a1'], '🧎‍♀️‍➡ E15.1 woman kneeling facing right'),
+  (['\u{1f9ce}\u200d\u2640\u200d\u27a1'], '🧎‍♀‍➡ E15.1 woman kneeling facing right'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🧎🏻‍♀️‍➡️ E15.1 woman kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2640\u200d\u27a1\ufe0f'], '🧎🏻‍♀‍➡️ E15.1 woman kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1'], '🧎🏻‍♀️‍➡ E15.1 woman kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2640\u200d\u27a1'], '🧎🏻‍♀‍➡ E15.1 woman kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🧎🏼‍♀️‍➡️ E15.1 woman kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2640\u200d\u27a1\ufe0f'], '🧎🏼‍♀‍➡️ E15.1 woman kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1'], '🧎🏼‍♀️‍➡ E15.1 woman kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2640\u200d\u27a1'], '🧎🏼‍♀‍➡ E15.1 woman kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🧎🏽‍♀️‍➡️ E15.1 woman kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2640\u200d\u27a1\ufe0f'], '🧎🏽‍♀‍➡️ E15.1 woman kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1'], '🧎🏽‍♀️‍➡ E15.1 woman kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2640\u200d\u27a1'], '🧎🏽‍♀‍➡ E15.1 woman kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🧎🏾‍♀️‍➡️ E15.1 woman kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2640\u200d\u27a1\ufe0f'], '🧎🏾‍♀‍➡️ E15.1 woman kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1'], '🧎🏾‍♀️‍➡ E15.1 woman kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2640\u200d\u27a1'], '🧎🏾‍♀‍➡ E15.1 woman kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🧎🏿‍♀️‍➡️ E15.1 woman kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2640\u200d\u27a1\ufe0f'], '🧎🏿‍♀‍➡️ E15.1 woman kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1'], '🧎🏿‍♀️‍➡ E15.1 woman kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2640\u200d\u27a1'], '🧎🏿‍♀‍➡ E15.1 woman kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🧎‍♂️‍➡️ E15.1 man kneeling facing right'),
+  (['\u{1f9ce}\u200d\u2642\u200d\u27a1\ufe0f'], '🧎‍♂‍➡️ E15.1 man kneeling facing right'),
+  (['\u{1f9ce}\u200d\u2642\ufe0f\u200d\u27a1'], '🧎‍♂️‍➡ E15.1 man kneeling facing right'),
+  (['\u{1f9ce}\u200d\u2642\u200d\u27a1'], '🧎‍♂‍➡ E15.1 man kneeling facing right'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🧎🏻‍♂️‍➡️ E15.1 man kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2642\u200d\u27a1\ufe0f'], '🧎🏻‍♂‍➡️ E15.1 man kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1'], '🧎🏻‍♂️‍➡ E15.1 man kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fb}\u200d\u2642\u200d\u27a1'], '🧎🏻‍♂‍➡ E15.1 man kneeling facing right: light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🧎🏼‍♂️‍➡️ E15.1 man kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2642\u200d\u27a1\ufe0f'], '🧎🏼‍♂‍➡️ E15.1 man kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1'], '🧎🏼‍♂️‍➡ E15.1 man kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fc}\u200d\u2642\u200d\u27a1'], '🧎🏼‍♂‍➡ E15.1 man kneeling facing right: medium-light skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🧎🏽‍♂️‍➡️ E15.1 man kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2642\u200d\u27a1\ufe0f'], '🧎🏽‍♂‍➡️ E15.1 man kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1'], '🧎🏽‍♂️‍➡ E15.1 man kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fd}\u200d\u2642\u200d\u27a1'], '🧎🏽‍♂‍➡ E15.1 man kneeling facing right: medium skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🧎🏾‍♂️‍➡️ E15.1 man kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2642\u200d\u27a1\ufe0f'], '🧎🏾‍♂‍➡️ E15.1 man kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1'], '🧎🏾‍♂️‍➡ E15.1 man kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3fe}\u200d\u2642\u200d\u27a1'], '🧎🏾‍♂‍➡ E15.1 man kneeling facing right: medium-dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🧎🏿‍♂️‍➡️ E15.1 man kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2642\u200d\u27a1\ufe0f'], '🧎🏿‍♂‍➡️ E15.1 man kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1'], '🧎🏿‍♂️‍➡ E15.1 man kneeling facing right: dark skin tone'),
+  (['\u{1f9ce}\u{1f3ff}\u200d\u2642\u200d\u27a1'], '🧎🏿‍♂‍➡ E15.1 man kneeling facing right: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f9af}'], '🧑‍🦯 E12.1 person with white cane'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9af}'],
-    '🧑🏻‍🦯 E12.1 person with white cane: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9af}'],
-    '🧑🏼‍🦯 E12.1 person with white cane: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9af}'],
-    '🧑🏽‍🦯 E12.1 person with white cane: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9af}'],
-    '🧑🏾‍🦯 E12.1 person with white cane: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9af}'],
-    '🧑🏿‍🦯 E12.1 person with white cane: dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '🧑‍🦯‍➡️ E15.1 person with white cane facing right'
-  ),
-  (
-    ['\u{1f9d1}\u200d\u{1f9af}\u200d\u27a1'],
-    '🧑‍🦯‍➡ E15.1 person with white cane facing right'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '🧑🏻‍🦯‍➡️ E15.1 person with white cane facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1'],
-    '🧑🏻‍🦯‍➡ E15.1 person with white cane facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '🧑🏼‍🦯‍➡️ E15.1 person with white cane facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1'],
-    '🧑🏼‍🦯‍➡ E15.1 person with white cane facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '🧑🏽‍🦯‍➡️ E15.1 person with white cane facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1'],
-    '🧑🏽‍🦯‍➡ E15.1 person with white cane facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '🧑🏾‍🦯‍➡️ E15.1 person with white cane facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1'],
-    '🧑🏾‍🦯‍➡ E15.1 person with white cane facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '🧑🏿‍🦯‍➡️ E15.1 person with white cane facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1'],
-    '🧑🏿‍🦯‍➡ E15.1 person with white cane facing right: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9af}'], '🧑🏻‍🦯 E12.1 person with white cane: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9af}'], '🧑🏼‍🦯 E12.1 person with white cane: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9af}'], '🧑🏽‍🦯 E12.1 person with white cane: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9af}'], '🧑🏾‍🦯 E12.1 person with white cane: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9af}'], '🧑🏿‍🦯 E12.1 person with white cane: dark skin tone'),
+  (['\u{1f9d1}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '🧑‍🦯‍➡️ E15.1 person with white cane facing right'),
+  (['\u{1f9d1}\u200d\u{1f9af}\u200d\u27a1'], '🧑‍🦯‍➡ E15.1 person with white cane facing right'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '🧑🏻‍🦯‍➡️ E15.1 person with white cane facing right: light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1'], '🧑🏻‍🦯‍➡ E15.1 person with white cane facing right: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '🧑🏼‍🦯‍➡️ E15.1 person with white cane facing right: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1'], '🧑🏼‍🦯‍➡ E15.1 person with white cane facing right: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '🧑🏽‍🦯‍➡️ E15.1 person with white cane facing right: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1'], '🧑🏽‍🦯‍➡ E15.1 person with white cane facing right: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '🧑🏾‍🦯‍➡️ E15.1 person with white cane facing right: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1'], '🧑🏾‍🦯‍➡ E15.1 person with white cane facing right: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '🧑🏿‍🦯‍➡️ E15.1 person with white cane facing right: dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1'], '🧑🏿‍🦯‍➡ E15.1 person with white cane facing right: dark skin tone'),
   (['\u{1f468}\u200d\u{1f9af}'], '👨‍🦯 E12.0 man with white cane'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9af}'],
-    '👨🏻‍🦯 E12.0 man with white cane: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9af}'],
-    '👨🏼‍🦯 E12.0 man with white cane: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9af}'],
-    '👨🏽‍🦯 E12.0 man with white cane: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9af}'],
-    '👨🏾‍🦯 E12.0 man with white cane: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9af}'],
-    '👨🏿‍🦯 E12.0 man with white cane: dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👨‍🦯‍➡️ E15.1 man with white cane facing right'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f9af}\u200d\u27a1'],
-    '👨‍🦯‍➡ E15.1 man with white cane facing right'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👨🏻‍🦯‍➡️ E15.1 man with white cane facing right: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1'],
-    '👨🏻‍🦯‍➡ E15.1 man with white cane facing right: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👨🏼‍🦯‍➡️ E15.1 man with white cane facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1'],
-    '👨🏼‍🦯‍➡ E15.1 man with white cane facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👨🏽‍🦯‍➡️ E15.1 man with white cane facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1'],
-    '👨🏽‍🦯‍➡ E15.1 man with white cane facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👨🏾‍🦯‍➡️ E15.1 man with white cane facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1'],
-    '👨🏾‍🦯‍➡ E15.1 man with white cane facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👨🏿‍🦯‍➡️ E15.1 man with white cane facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1'],
-    '👨🏿‍🦯‍➡ E15.1 man with white cane facing right: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9af}'], '👨🏻‍🦯 E12.0 man with white cane: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9af}'], '👨🏼‍🦯 E12.0 man with white cane: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9af}'], '👨🏽‍🦯 E12.0 man with white cane: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9af}'], '👨🏾‍🦯 E12.0 man with white cane: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9af}'], '👨🏿‍🦯 E12.0 man with white cane: dark skin tone'),
+  (['\u{1f468}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👨‍🦯‍➡️ E15.1 man with white cane facing right'),
+  (['\u{1f468}\u200d\u{1f9af}\u200d\u27a1'], '👨‍🦯‍➡ E15.1 man with white cane facing right'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👨🏻‍🦯‍➡️ E15.1 man with white cane facing right: light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1'], '👨🏻‍🦯‍➡ E15.1 man with white cane facing right: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👨🏼‍🦯‍➡️ E15.1 man with white cane facing right: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1'], '👨🏼‍🦯‍➡ E15.1 man with white cane facing right: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👨🏽‍🦯‍➡️ E15.1 man with white cane facing right: medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1'], '👨🏽‍🦯‍➡ E15.1 man with white cane facing right: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👨🏾‍🦯‍➡️ E15.1 man with white cane facing right: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1'], '👨🏾‍🦯‍➡ E15.1 man with white cane facing right: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👨🏿‍🦯‍➡️ E15.1 man with white cane facing right: dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1'], '👨🏿‍🦯‍➡ E15.1 man with white cane facing right: dark skin tone'),
   (['\u{1f469}\u200d\u{1f9af}'], '👩‍🦯 E12.0 woman with white cane'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9af}'],
-    '👩🏻‍🦯 E12.0 woman with white cane: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9af}'],
-    '👩🏼‍🦯 E12.0 woman with white cane: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9af}'],
-    '👩🏽‍🦯 E12.0 woman with white cane: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9af}'],
-    '👩🏾‍🦯 E12.0 woman with white cane: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9af}'],
-    '👩🏿‍🦯 E12.0 woman with white cane: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👩‍🦯‍➡️ E15.1 woman with white cane facing right'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f9af}\u200d\u27a1'],
-    '👩‍🦯‍➡ E15.1 woman with white cane facing right'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👩🏻‍🦯‍➡️ E15.1 woman with white cane facing right: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1'],
-    '👩🏻‍🦯‍➡ E15.1 woman with white cane facing right: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👩🏼‍🦯‍➡️ E15.1 woman with white cane facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1'],
-    '👩🏼‍🦯‍➡ E15.1 woman with white cane facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👩🏽‍🦯‍➡️ E15.1 woman with white cane facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1'],
-    '👩🏽‍🦯‍➡ E15.1 woman with white cane facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👩🏾‍🦯‍➡️ E15.1 woman with white cane facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1'],
-    '👩🏾‍🦯‍➡ E15.1 woman with white cane facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1\ufe0f'],
-    '👩🏿‍🦯‍➡️ E15.1 woman with white cane facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1'],
-    '👩🏿‍🦯‍➡ E15.1 woman with white cane facing right: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9af}'], '👩🏻‍🦯 E12.0 woman with white cane: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9af}'], '👩🏼‍🦯 E12.0 woman with white cane: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9af}'], '👩🏽‍🦯 E12.0 woman with white cane: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9af}'], '👩🏾‍🦯 E12.0 woman with white cane: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9af}'], '👩🏿‍🦯 E12.0 woman with white cane: dark skin tone'),
+  (['\u{1f469}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👩‍🦯‍➡️ E15.1 woman with white cane facing right'),
+  (['\u{1f469}\u200d\u{1f9af}\u200d\u27a1'], '👩‍🦯‍➡ E15.1 woman with white cane facing right'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👩🏻‍🦯‍➡️ E15.1 woman with white cane facing right: light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9af}\u200d\u27a1'], '👩🏻‍🦯‍➡ E15.1 woman with white cane facing right: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👩🏼‍🦯‍➡️ E15.1 woman with white cane facing right: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9af}\u200d\u27a1'], '👩🏼‍🦯‍➡ E15.1 woman with white cane facing right: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👩🏽‍🦯‍➡️ E15.1 woman with white cane facing right: medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9af}\u200d\u27a1'], '👩🏽‍🦯‍➡ E15.1 woman with white cane facing right: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👩🏾‍🦯‍➡️ E15.1 woman with white cane facing right: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9af}\u200d\u27a1'], '👩🏾‍🦯‍➡ E15.1 woman with white cane facing right: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1\ufe0f'], '👩🏿‍🦯‍➡️ E15.1 woman with white cane facing right: dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9af}\u200d\u27a1'], '👩🏿‍🦯‍➡ E15.1 woman with white cane facing right: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f9bc}'], '🧑‍🦼 E12.1 person in motorized wheelchair'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bc}'],
-    '🧑🏻‍🦼 E12.1 person in motorized wheelchair: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bc}'],
-    '🧑🏼‍🦼 E12.1 person in motorized wheelchair: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bc}'],
-    '🧑🏽‍🦼 E12.1 person in motorized wheelchair: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bc}'],
-    '🧑🏾‍🦼 E12.1 person in motorized wheelchair: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bc}'],
-    '🧑🏿‍🦼 E12.1 person in motorized wheelchair: dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '🧑‍🦼‍➡️ E15.1 person in motorized wheelchair facing right'
-  ),
-  (
-    ['\u{1f9d1}\u200d\u{1f9bc}\u200d\u27a1'],
-    '🧑‍🦼‍➡ E15.1 person in motorized wheelchair facing right'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '🧑🏻‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1'],
-    '🧑🏻‍🦼‍➡ E15.1 person in motorized wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '🧑🏼‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1'],
-    '🧑🏼‍🦼‍➡ E15.1 person in motorized wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '🧑🏽‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1'],
-    '🧑🏽‍🦼‍➡ E15.1 person in motorized wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '🧑🏾‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1'],
-    '🧑🏾‍🦼‍➡ E15.1 person in motorized wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '🧑🏿‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1'],
-    '🧑🏿‍🦼‍➡ E15.1 person in motorized wheelchair facing right: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bc}'], '🧑🏻‍🦼 E12.1 person in motorized wheelchair: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bc}'], '🧑🏼‍🦼 E12.1 person in motorized wheelchair: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bc}'], '🧑🏽‍🦼 E12.1 person in motorized wheelchair: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bc}'], '🧑🏾‍🦼 E12.1 person in motorized wheelchair: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bc}'], '🧑🏿‍🦼 E12.1 person in motorized wheelchair: dark skin tone'),
+  (['\u{1f9d1}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '🧑‍🦼‍➡️ E15.1 person in motorized wheelchair facing right'),
+  (['\u{1f9d1}\u200d\u{1f9bc}\u200d\u27a1'], '🧑‍🦼‍➡ E15.1 person in motorized wheelchair facing right'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '🧑🏻‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1'], '🧑🏻‍🦼‍➡ E15.1 person in motorized wheelchair facing right: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '🧑🏼‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1'], '🧑🏼‍🦼‍➡ E15.1 person in motorized wheelchair facing right: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '🧑🏽‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1'], '🧑🏽‍🦼‍➡ E15.1 person in motorized wheelchair facing right: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '🧑🏾‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1'], '🧑🏾‍🦼‍➡ E15.1 person in motorized wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '🧑🏿‍🦼‍➡️ E15.1 person in motorized wheelchair facing right: dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1'], '🧑🏿‍🦼‍➡ E15.1 person in motorized wheelchair facing right: dark skin tone'),
   (['\u{1f468}\u200d\u{1f9bc}'], '👨‍🦼 E12.0 man in motorized wheelchair'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9bc}'],
-    '👨🏻‍🦼 E12.0 man in motorized wheelchair: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9bc}'],
-    '👨🏼‍🦼 E12.0 man in motorized wheelchair: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9bc}'],
-    '👨🏽‍🦼 E12.0 man in motorized wheelchair: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9bc}'],
-    '👨🏾‍🦼 E12.0 man in motorized wheelchair: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9bc}'],
-    '👨🏿‍🦼 E12.0 man in motorized wheelchair: dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👨‍🦼‍➡️ E15.1 man in motorized wheelchair facing right'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👨‍🦼‍➡ E15.1 man in motorized wheelchair facing right'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👨🏻‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👨🏻‍🦼‍➡ E15.1 man in motorized wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👨🏼‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👨🏼‍🦼‍➡ E15.1 man in motorized wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👨🏽‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👨🏽‍🦼‍➡ E15.1 man in motorized wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👨🏾‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👨🏾‍🦼‍➡ E15.1 man in motorized wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👨🏿‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👨🏿‍🦼‍➡ E15.1 man in motorized wheelchair facing right: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9bc}'], '👨🏻‍🦼 E12.0 man in motorized wheelchair: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9bc}'], '👨🏼‍🦼 E12.0 man in motorized wheelchair: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9bc}'], '👨🏽‍🦼 E12.0 man in motorized wheelchair: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9bc}'], '👨🏾‍🦼 E12.0 man in motorized wheelchair: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9bc}'], '👨🏿‍🦼 E12.0 man in motorized wheelchair: dark skin tone'),
+  (['\u{1f468}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👨‍🦼‍➡️ E15.1 man in motorized wheelchair facing right'),
+  (['\u{1f468}\u200d\u{1f9bc}\u200d\u27a1'], '👨‍🦼‍➡ E15.1 man in motorized wheelchair facing right'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👨🏻‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1'], '👨🏻‍🦼‍➡ E15.1 man in motorized wheelchair facing right: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👨🏼‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1'], '👨🏼‍🦼‍➡ E15.1 man in motorized wheelchair facing right: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👨🏽‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1'], '👨🏽‍🦼‍➡ E15.1 man in motorized wheelchair facing right: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👨🏾‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1'], '👨🏾‍🦼‍➡ E15.1 man in motorized wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👨🏿‍🦼‍➡️ E15.1 man in motorized wheelchair facing right: dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1'], '👨🏿‍🦼‍➡ E15.1 man in motorized wheelchair facing right: dark skin tone'),
   (['\u{1f469}\u200d\u{1f9bc}'], '👩‍🦼 E12.0 woman in motorized wheelchair'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9bc}'],
-    '👩🏻‍🦼 E12.0 woman in motorized wheelchair: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9bc}'],
-    '👩🏼‍🦼 E12.0 woman in motorized wheelchair: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9bc}'],
-    '👩🏽‍🦼 E12.0 woman in motorized wheelchair: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9bc}'],
-    '👩🏾‍🦼 E12.0 woman in motorized wheelchair: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9bc}'],
-    '👩🏿‍🦼 E12.0 woman in motorized wheelchair: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👩‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👩‍🦼‍➡ E15.1 woman in motorized wheelchair facing right'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👩🏻‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👩🏻‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👩🏼‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👩🏼‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👩🏽‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👩🏽‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👩🏾‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👩🏾‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'],
-    '👩🏿‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1'],
-    '👩🏿‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9bc}'], '👩🏻‍🦼 E12.0 woman in motorized wheelchair: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9bc}'], '👩🏼‍🦼 E12.0 woman in motorized wheelchair: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9bc}'], '👩🏽‍🦼 E12.0 woman in motorized wheelchair: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9bc}'], '👩🏾‍🦼 E12.0 woman in motorized wheelchair: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9bc}'], '👩🏿‍🦼 E12.0 woman in motorized wheelchair: dark skin tone'),
+  (['\u{1f469}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👩‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right'),
+  (['\u{1f469}\u200d\u{1f9bc}\u200d\u27a1'], '👩‍🦼‍➡ E15.1 woman in motorized wheelchair facing right'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👩🏻‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9bc}\u200d\u27a1'], '👩🏻‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👩🏼‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9bc}\u200d\u27a1'], '👩🏼‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👩🏽‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9bc}\u200d\u27a1'], '👩🏽‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👩🏾‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9bc}\u200d\u27a1'], '👩🏾‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1\ufe0f'], '👩🏿‍🦼‍➡️ E15.1 woman in motorized wheelchair facing right: dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9bc}\u200d\u27a1'], '👩🏿‍🦼‍➡ E15.1 woman in motorized wheelchair facing right: dark skin tone'),
   (['\u{1f9d1}\u200d\u{1f9bd}'], '🧑‍🦽 E12.1 person in manual wheelchair'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bd}'],
-    '🧑🏻‍🦽 E12.1 person in manual wheelchair: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bd}'],
-    '🧑🏼‍🦽 E12.1 person in manual wheelchair: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bd}'],
-    '🧑🏽‍🦽 E12.1 person in manual wheelchair: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bd}'],
-    '🧑🏾‍🦽 E12.1 person in manual wheelchair: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bd}'],
-    '🧑🏿‍🦽 E12.1 person in manual wheelchair: dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '🧑‍🦽‍➡️ E15.1 person in manual wheelchair facing right'
-  ),
-  (
-    ['\u{1f9d1}\u200d\u{1f9bd}\u200d\u27a1'],
-    '🧑‍🦽‍➡ E15.1 person in manual wheelchair facing right'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '🧑🏻‍🦽‍➡️ E15.1 person in manual wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1'],
-    '🧑🏻‍🦽‍➡ E15.1 person in manual wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '🧑🏼‍🦽‍➡️ E15.1 person in manual wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1'],
-    '🧑🏼‍🦽‍➡ E15.1 person in manual wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '🧑🏽‍🦽‍➡️ E15.1 person in manual wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1'],
-    '🧑🏽‍🦽‍➡ E15.1 person in manual wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '🧑🏾‍🦽‍➡️ E15.1 person in manual wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1'],
-    '🧑🏾‍🦽‍➡ E15.1 person in manual wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '🧑🏿‍🦽‍➡️ E15.1 person in manual wheelchair facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1'],
-    '🧑🏿‍🦽‍➡ E15.1 person in manual wheelchair facing right: dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bd}'], '🧑🏻‍🦽 E12.1 person in manual wheelchair: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bd}'], '🧑🏼‍🦽 E12.1 person in manual wheelchair: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bd}'], '🧑🏽‍🦽 E12.1 person in manual wheelchair: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bd}'], '🧑🏾‍🦽 E12.1 person in manual wheelchair: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bd}'], '🧑🏿‍🦽 E12.1 person in manual wheelchair: dark skin tone'),
+  (['\u{1f9d1}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '🧑‍🦽‍➡️ E15.1 person in manual wheelchair facing right'),
+  (['\u{1f9d1}\u200d\u{1f9bd}\u200d\u27a1'], '🧑‍🦽‍➡ E15.1 person in manual wheelchair facing right'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '🧑🏻‍🦽‍➡️ E15.1 person in manual wheelchair facing right: light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1'], '🧑🏻‍🦽‍➡ E15.1 person in manual wheelchair facing right: light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '🧑🏼‍🦽‍➡️ E15.1 person in manual wheelchair facing right: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1'], '🧑🏼‍🦽‍➡ E15.1 person in manual wheelchair facing right: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '🧑🏽‍🦽‍➡️ E15.1 person in manual wheelchair facing right: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1'], '🧑🏽‍🦽‍➡ E15.1 person in manual wheelchair facing right: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '🧑🏾‍🦽‍➡️ E15.1 person in manual wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1'], '🧑🏾‍🦽‍➡ E15.1 person in manual wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '🧑🏿‍🦽‍➡️ E15.1 person in manual wheelchair facing right: dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1'], '🧑🏿‍🦽‍➡ E15.1 person in manual wheelchair facing right: dark skin tone'),
   (['\u{1f468}\u200d\u{1f9bd}'], '👨‍🦽 E12.0 man in manual wheelchair'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9bd}'],
-    '👨🏻‍🦽 E12.0 man in manual wheelchair: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9bd}'],
-    '👨🏼‍🦽 E12.0 man in manual wheelchair: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9bd}'],
-    '👨🏽‍🦽 E12.0 man in manual wheelchair: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9bd}'],
-    '👨🏾‍🦽 E12.0 man in manual wheelchair: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9bd}'],
-    '👨🏿‍🦽 E12.0 man in manual wheelchair: dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👨‍🦽‍➡️ E15.1 man in manual wheelchair facing right'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👨‍🦽‍➡ E15.1 man in manual wheelchair facing right'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👨🏻‍🦽‍➡️ E15.1 man in manual wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👨🏻‍🦽‍➡ E15.1 man in manual wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👨🏼‍🦽‍➡️ E15.1 man in manual wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👨🏼‍🦽‍➡ E15.1 man in manual wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👨🏽‍🦽‍➡️ E15.1 man in manual wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👨🏽‍🦽‍➡ E15.1 man in manual wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👨🏾‍🦽‍➡️ E15.1 man in manual wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👨🏾‍🦽‍➡ E15.1 man in manual wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👨🏿‍🦽‍➡️ E15.1 man in manual wheelchair facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👨🏿‍🦽‍➡ E15.1 man in manual wheelchair facing right: dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9bd}'], '👨🏻‍🦽 E12.0 man in manual wheelchair: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9bd}'], '👨🏼‍🦽 E12.0 man in manual wheelchair: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9bd}'], '👨🏽‍🦽 E12.0 man in manual wheelchair: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9bd}'], '👨🏾‍🦽 E12.0 man in manual wheelchair: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9bd}'], '👨🏿‍🦽 E12.0 man in manual wheelchair: dark skin tone'),
+  (['\u{1f468}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👨‍🦽‍➡️ E15.1 man in manual wheelchair facing right'),
+  (['\u{1f468}\u200d\u{1f9bd}\u200d\u27a1'], '👨‍🦽‍➡ E15.1 man in manual wheelchair facing right'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👨🏻‍🦽‍➡️ E15.1 man in manual wheelchair facing right: light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1'], '👨🏻‍🦽‍➡ E15.1 man in manual wheelchair facing right: light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👨🏼‍🦽‍➡️ E15.1 man in manual wheelchair facing right: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1'], '👨🏼‍🦽‍➡ E15.1 man in manual wheelchair facing right: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👨🏽‍🦽‍➡️ E15.1 man in manual wheelchair facing right: medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1'], '👨🏽‍🦽‍➡ E15.1 man in manual wheelchair facing right: medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👨🏾‍🦽‍➡️ E15.1 man in manual wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1'], '👨🏾‍🦽‍➡ E15.1 man in manual wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👨🏿‍🦽‍➡️ E15.1 man in manual wheelchair facing right: dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1'], '👨🏿‍🦽‍➡ E15.1 man in manual wheelchair facing right: dark skin tone'),
   (['\u{1f469}\u200d\u{1f9bd}'], '👩‍🦽 E12.0 woman in manual wheelchair'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9bd}'],
-    '👩🏻‍🦽 E12.0 woman in manual wheelchair: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9bd}'],
-    '👩🏼‍🦽 E12.0 woman in manual wheelchair: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9bd}'],
-    '👩🏽‍🦽 E12.0 woman in manual wheelchair: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9bd}'],
-    '👩🏾‍🦽 E12.0 woman in manual wheelchair: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9bd}'],
-    '👩🏿‍🦽 E12.0 woman in manual wheelchair: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👩‍🦽‍➡️ E15.1 woman in manual wheelchair facing right'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👩‍🦽‍➡ E15.1 woman in manual wheelchair facing right'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👩🏻‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👩🏻‍🦽‍➡ E15.1 woman in manual wheelchair facing right: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👩🏼‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👩🏼‍🦽‍➡ E15.1 woman in manual wheelchair facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👩🏽‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👩🏽‍🦽‍➡ E15.1 woman in manual wheelchair facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👩🏾‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👩🏾‍🦽‍➡ E15.1 woman in manual wheelchair facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'],
-    '👩🏿‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1'],
-    '👩🏿‍🦽‍➡ E15.1 woman in manual wheelchair facing right: dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9bd}'], '👩🏻‍🦽 E12.0 woman in manual wheelchair: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9bd}'], '👩🏼‍🦽 E12.0 woman in manual wheelchair: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9bd}'], '👩🏽‍🦽 E12.0 woman in manual wheelchair: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9bd}'], '👩🏾‍🦽 E12.0 woman in manual wheelchair: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9bd}'], '👩🏿‍🦽 E12.0 woman in manual wheelchair: dark skin tone'),
+  (['\u{1f469}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👩‍🦽‍➡️ E15.1 woman in manual wheelchair facing right'),
+  (['\u{1f469}\u200d\u{1f9bd}\u200d\u27a1'], '👩‍🦽‍➡ E15.1 woman in manual wheelchair facing right'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👩🏻‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f9bd}\u200d\u27a1'], '👩🏻‍🦽‍➡ E15.1 woman in manual wheelchair facing right: light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👩🏼‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f9bd}\u200d\u27a1'], '👩🏼‍🦽‍➡ E15.1 woman in manual wheelchair facing right: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👩🏽‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f9bd}\u200d\u27a1'], '👩🏽‍🦽‍➡ E15.1 woman in manual wheelchair facing right: medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👩🏾‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f9bd}\u200d\u27a1'], '👩🏾‍🦽‍➡ E15.1 woman in manual wheelchair facing right: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1\ufe0f'], '👩🏿‍🦽‍➡️ E15.1 woman in manual wheelchair facing right: dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f9bd}\u200d\u27a1'], '👩🏿‍🦽‍➡ E15.1 woman in manual wheelchair facing right: dark skin tone'),
   (['\u{1f3c3}'], '🏃 E0.6 person running'),
   (['\u{1f3c3}\u{1f3fb}'], '🏃🏻 E1.0 person running: light skin tone'),
   (['\u{1f3c3}\u{1f3fc}'], '🏃🏼 E1.0 person running: medium-light skin tone'),
@@ -10728,322 +3436,88 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f3c3}\u{1f3ff}'], '🏃🏿 E1.0 person running: dark skin tone'),
   (['\u{1f3c3}\u200d\u2642\ufe0f'], '🏃‍♂️ E4.0 man running'),
   (['\u{1f3c3}\u200d\u2642'], '🏃‍♂ E4.0 man running'),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🏃🏻‍♂️ E4.0 man running: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2642'],
-    '🏃🏻‍♂ E4.0 man running: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🏃🏼‍♂️ E4.0 man running: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2642'],
-    '🏃🏼‍♂ E4.0 man running: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🏃🏽‍♂️ E4.0 man running: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2642'],
-    '🏃🏽‍♂ E4.0 man running: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🏃🏾‍♂️ E4.0 man running: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2642'],
-    '🏃🏾‍♂ E4.0 man running: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🏃🏿‍♂️ E4.0 man running: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2642'],
-    '🏃🏿‍♂ E4.0 man running: dark skin tone'
-  ),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2642\ufe0f'], '🏃🏻‍♂️ E4.0 man running: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2642'], '🏃🏻‍♂ E4.0 man running: light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2642\ufe0f'], '🏃🏼‍♂️ E4.0 man running: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2642'], '🏃🏼‍♂ E4.0 man running: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2642\ufe0f'], '🏃🏽‍♂️ E4.0 man running: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2642'], '🏃🏽‍♂ E4.0 man running: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2642\ufe0f'], '🏃🏾‍♂️ E4.0 man running: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2642'], '🏃🏾‍♂ E4.0 man running: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2642\ufe0f'], '🏃🏿‍♂️ E4.0 man running: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2642'], '🏃🏿‍♂ E4.0 man running: dark skin tone'),
   (['\u{1f3c3}\u200d\u2640\ufe0f'], '🏃‍♀️ E4.0 woman running'),
   (['\u{1f3c3}\u200d\u2640'], '🏃‍♀ E4.0 woman running'),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🏃🏻‍♀️ E4.0 woman running: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2640'],
-    '🏃🏻‍♀ E4.0 woman running: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🏃🏼‍♀️ E4.0 woman running: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2640'],
-    '🏃🏼‍♀ E4.0 woman running: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🏃🏽‍♀️ E4.0 woman running: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2640'],
-    '🏃🏽‍♀ E4.0 woman running: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🏃🏾‍♀️ E4.0 woman running: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2640'],
-    '🏃🏾‍♀ E4.0 woman running: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🏃🏿‍♀️ E4.0 woman running: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2640'],
-    '🏃🏿‍♀ E4.0 woman running: dark skin tone'
-  ),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2640\ufe0f'], '🏃🏻‍♀️ E4.0 woman running: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2640'], '🏃🏻‍♀ E4.0 woman running: light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2640\ufe0f'], '🏃🏼‍♀️ E4.0 woman running: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2640'], '🏃🏼‍♀ E4.0 woman running: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2640\ufe0f'], '🏃🏽‍♀️ E4.0 woman running: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2640'], '🏃🏽‍♀ E4.0 woman running: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2640\ufe0f'], '🏃🏾‍♀️ E4.0 woman running: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2640'], '🏃🏾‍♀ E4.0 woman running: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2640\ufe0f'], '🏃🏿‍♀️ E4.0 woman running: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2640'], '🏃🏿‍♀ E4.0 woman running: dark skin tone'),
   (['\u{1f3c3}\u200d\u27a1\ufe0f'], '🏃‍➡️ E15.1 person running facing right'),
   (['\u{1f3c3}\u200d\u27a1'], '🏃‍➡ E15.1 person running facing right'),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u27a1\ufe0f'],
-    '🏃🏻‍➡️ E15.1 person running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u27a1'],
-    '🏃🏻‍➡ E15.1 person running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u27a1\ufe0f'],
-    '🏃🏼‍➡️ E15.1 person running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u27a1'],
-    '🏃🏼‍➡ E15.1 person running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u27a1\ufe0f'],
-    '🏃🏽‍➡️ E15.1 person running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u27a1'],
-    '🏃🏽‍➡ E15.1 person running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u27a1\ufe0f'],
-    '🏃🏾‍➡️ E15.1 person running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u27a1'],
-    '🏃🏾‍➡ E15.1 person running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u27a1\ufe0f'],
-    '🏃🏿‍➡️ E15.1 person running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u27a1'],
-    '🏃🏿‍➡ E15.1 person running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃‍♀️‍➡️ E15.1 woman running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🏃‍♀‍➡️ E15.1 woman running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🏃‍♀️‍➡ E15.1 woman running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2640\u200d\u27a1'],
-    '🏃‍♀‍➡ E15.1 woman running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏻‍♀️‍➡️ E15.1 woman running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🏃🏻‍♀‍➡️ E15.1 woman running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🏃🏻‍♀️‍➡ E15.1 woman running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2640\u200d\u27a1'],
-    '🏃🏻‍♀‍➡ E15.1 woman running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏼‍♀️‍➡️ E15.1 woman running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🏃🏼‍♀‍➡️ E15.1 woman running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🏃🏼‍♀️‍➡ E15.1 woman running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2640\u200d\u27a1'],
-    '🏃🏼‍♀‍➡ E15.1 woman running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏽‍♀️‍➡️ E15.1 woman running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🏃🏽‍♀‍➡️ E15.1 woman running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🏃🏽‍♀️‍➡ E15.1 woman running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2640\u200d\u27a1'],
-    '🏃🏽‍♀‍➡ E15.1 woman running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏾‍♀️‍➡️ E15.1 woman running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🏃🏾‍♀‍➡️ E15.1 woman running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🏃🏾‍♀️‍➡ E15.1 woman running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2640\u200d\u27a1'],
-    '🏃🏾‍♀‍➡ E15.1 woman running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏿‍♀️‍➡️ E15.1 woman running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2640\u200d\u27a1\ufe0f'],
-    '🏃🏿‍♀‍➡️ E15.1 woman running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1'],
-    '🏃🏿‍♀️‍➡ E15.1 woman running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2640\u200d\u27a1'],
-    '🏃🏿‍♀‍➡ E15.1 woman running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃‍♂️‍➡️ E15.1 man running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🏃‍♂‍➡️ E15.1 man running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🏃‍♂️‍➡ E15.1 man running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u200d\u2642\u200d\u27a1'],
-    '🏃‍♂‍➡ E15.1 man running facing right'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏻‍♂️‍➡️ E15.1 man running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🏃🏻‍♂‍➡️ E15.1 man running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🏃🏻‍♂️‍➡ E15.1 man running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fb}\u200d\u2642\u200d\u27a1'],
-    '🏃🏻‍♂‍➡ E15.1 man running facing right: light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏼‍♂️‍➡️ E15.1 man running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🏃🏼‍♂‍➡️ E15.1 man running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🏃🏼‍♂️‍➡ E15.1 man running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fc}\u200d\u2642\u200d\u27a1'],
-    '🏃🏼‍♂‍➡ E15.1 man running facing right: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏽‍♂️‍➡️ E15.1 man running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🏃🏽‍♂‍➡️ E15.1 man running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🏃🏽‍♂️‍➡ E15.1 man running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fd}\u200d\u2642\u200d\u27a1'],
-    '🏃🏽‍♂‍➡ E15.1 man running facing right: medium skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏾‍♂️‍➡️ E15.1 man running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🏃🏾‍♂‍➡️ E15.1 man running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🏃🏾‍♂️‍➡ E15.1 man running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3fe}\u200d\u2642\u200d\u27a1'],
-    '🏃🏾‍♂‍➡ E15.1 man running facing right: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'],
-    '🏃🏿‍♂️‍➡️ E15.1 man running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2642\u200d\u27a1\ufe0f'],
-    '🏃🏿‍♂‍➡️ E15.1 man running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1'],
-    '🏃🏿‍♂️‍➡ E15.1 man running facing right: dark skin tone'
-  ),
-  (
-    ['\u{1f3c3}\u{1f3ff}\u200d\u2642\u200d\u27a1'],
-    '🏃🏿‍♂‍➡ E15.1 man running facing right: dark skin tone'
-  ),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u27a1\ufe0f'], '🏃🏻‍➡️ E15.1 person running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u27a1'], '🏃🏻‍➡ E15.1 person running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u27a1\ufe0f'], '🏃🏼‍➡️ E15.1 person running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u27a1'], '🏃🏼‍➡ E15.1 person running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u27a1\ufe0f'], '🏃🏽‍➡️ E15.1 person running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u27a1'], '🏃🏽‍➡ E15.1 person running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u27a1\ufe0f'], '🏃🏾‍➡️ E15.1 person running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u27a1'], '🏃🏾‍➡ E15.1 person running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u27a1\ufe0f'], '🏃🏿‍➡️ E15.1 person running facing right: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u27a1'], '🏃🏿‍➡ E15.1 person running facing right: dark skin tone'),
+  (['\u{1f3c3}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🏃‍♀️‍➡️ E15.1 woman running facing right'),
+  (['\u{1f3c3}\u200d\u2640\u200d\u27a1\ufe0f'], '🏃‍♀‍➡️ E15.1 woman running facing right'),
+  (['\u{1f3c3}\u200d\u2640\ufe0f\u200d\u27a1'], '🏃‍♀️‍➡ E15.1 woman running facing right'),
+  (['\u{1f3c3}\u200d\u2640\u200d\u27a1'], '🏃‍♀‍➡ E15.1 woman running facing right'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🏃🏻‍♀️‍➡️ E15.1 woman running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2640\u200d\u27a1\ufe0f'], '🏃🏻‍♀‍➡️ E15.1 woman running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2640\ufe0f\u200d\u27a1'], '🏃🏻‍♀️‍➡ E15.1 woman running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2640\u200d\u27a1'], '🏃🏻‍♀‍➡ E15.1 woman running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🏃🏼‍♀️‍➡️ E15.1 woman running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2640\u200d\u27a1\ufe0f'], '🏃🏼‍♀‍➡️ E15.1 woman running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2640\ufe0f\u200d\u27a1'], '🏃🏼‍♀️‍➡ E15.1 woman running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2640\u200d\u27a1'], '🏃🏼‍♀‍➡ E15.1 woman running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🏃🏽‍♀️‍➡️ E15.1 woman running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2640\u200d\u27a1\ufe0f'], '🏃🏽‍♀‍➡️ E15.1 woman running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2640\ufe0f\u200d\u27a1'], '🏃🏽‍♀️‍➡ E15.1 woman running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2640\u200d\u27a1'], '🏃🏽‍♀‍➡ E15.1 woman running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🏃🏾‍♀️‍➡️ E15.1 woman running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2640\u200d\u27a1\ufe0f'], '🏃🏾‍♀‍➡️ E15.1 woman running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2640\ufe0f\u200d\u27a1'], '🏃🏾‍♀️‍➡ E15.1 woman running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2640\u200d\u27a1'], '🏃🏾‍♀‍➡ E15.1 woman running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1\ufe0f'], '🏃🏿‍♀️‍➡️ E15.1 woman running facing right: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2640\u200d\u27a1\ufe0f'], '🏃🏿‍♀‍➡️ E15.1 woman running facing right: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2640\ufe0f\u200d\u27a1'], '🏃🏿‍♀️‍➡ E15.1 woman running facing right: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2640\u200d\u27a1'], '🏃🏿‍♀‍➡ E15.1 woman running facing right: dark skin tone'),
+  (['\u{1f3c3}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🏃‍♂️‍➡️ E15.1 man running facing right'),
+  (['\u{1f3c3}\u200d\u2642\u200d\u27a1\ufe0f'], '🏃‍♂‍➡️ E15.1 man running facing right'),
+  (['\u{1f3c3}\u200d\u2642\ufe0f\u200d\u27a1'], '🏃‍♂️‍➡ E15.1 man running facing right'),
+  (['\u{1f3c3}\u200d\u2642\u200d\u27a1'], '🏃‍♂‍➡ E15.1 man running facing right'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🏃🏻‍♂️‍➡️ E15.1 man running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2642\u200d\u27a1\ufe0f'], '🏃🏻‍♂‍➡️ E15.1 man running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2642\ufe0f\u200d\u27a1'], '🏃🏻‍♂️‍➡ E15.1 man running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fb}\u200d\u2642\u200d\u27a1'], '🏃🏻‍♂‍➡ E15.1 man running facing right: light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🏃🏼‍♂️‍➡️ E15.1 man running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2642\u200d\u27a1\ufe0f'], '🏃🏼‍♂‍➡️ E15.1 man running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2642\ufe0f\u200d\u27a1'], '🏃🏼‍♂️‍➡ E15.1 man running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fc}\u200d\u2642\u200d\u27a1'], '🏃🏼‍♂‍➡ E15.1 man running facing right: medium-light skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🏃🏽‍♂️‍➡️ E15.1 man running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2642\u200d\u27a1\ufe0f'], '🏃🏽‍♂‍➡️ E15.1 man running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2642\ufe0f\u200d\u27a1'], '🏃🏽‍♂️‍➡ E15.1 man running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fd}\u200d\u2642\u200d\u27a1'], '🏃🏽‍♂‍➡ E15.1 man running facing right: medium skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🏃🏾‍♂️‍➡️ E15.1 man running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2642\u200d\u27a1\ufe0f'], '🏃🏾‍♂‍➡️ E15.1 man running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2642\ufe0f\u200d\u27a1'], '🏃🏾‍♂️‍➡ E15.1 man running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3fe}\u200d\u2642\u200d\u27a1'], '🏃🏾‍♂‍➡ E15.1 man running facing right: medium-dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1\ufe0f'], '🏃🏿‍♂️‍➡️ E15.1 man running facing right: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2642\u200d\u27a1\ufe0f'], '🏃🏿‍♂‍➡️ E15.1 man running facing right: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2642\ufe0f\u200d\u27a1'], '🏃🏿‍♂️‍➡ E15.1 man running facing right: dark skin tone'),
+  (['\u{1f3c3}\u{1f3ff}\u200d\u2642\u200d\u27a1'], '🏃🏿‍♂‍➡ E15.1 man running facing right: dark skin tone'),
   (['\u{1f483}'], '💃 E0.6 woman dancing'),
   (['\u{1f483}\u{1f3fb}'], '💃🏻 E1.0 woman dancing: light skin tone'),
   (['\u{1f483}\u{1f3fc}'], '💃🏼 E1.0 woman dancing: medium-light skin tone'),
@@ -11058,26 +3532,11 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f57a}\u{1f3ff}'], '🕺🏿 E3.0 man dancing: dark skin tone'),
   (['\u{1f574}\ufe0f'], '🕴️ E0.7 person in suit levitating'),
   (['\u{1f574}'], '🕴 E0.7 person in suit levitating'),
-  (
-    ['\u{1f574}\u{1f3fb}'],
-    '🕴🏻 E4.0 person in suit levitating: light skin tone'
-  ),
-  (
-    ['\u{1f574}\u{1f3fc}'],
-    '🕴🏼 E4.0 person in suit levitating: medium-light skin tone'
-  ),
-  (
-    ['\u{1f574}\u{1f3fd}'],
-    '🕴🏽 E4.0 person in suit levitating: medium skin tone'
-  ),
-  (
-    ['\u{1f574}\u{1f3fe}'],
-    '🕴🏾 E4.0 person in suit levitating: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f574}\u{1f3ff}'],
-    '🕴🏿 E4.0 person in suit levitating: dark skin tone'
-  ),
+  (['\u{1f574}\u{1f3fb}'], '🕴🏻 E4.0 person in suit levitating: light skin tone'),
+  (['\u{1f574}\u{1f3fc}'], '🕴🏼 E4.0 person in suit levitating: medium-light skin tone'),
+  (['\u{1f574}\u{1f3fd}'], '🕴🏽 E4.0 person in suit levitating: medium skin tone'),
+  (['\u{1f574}\u{1f3fe}'], '🕴🏾 E4.0 person in suit levitating: medium-dark skin tone'),
+  (['\u{1f574}\u{1f3ff}'], '🕴🏿 E4.0 person in suit levitating: dark skin tone'),
   (['\u{1f46f}'], '👯 E0.6 people with bunny ears'),
   (['\u{1f46f}\u200d\u2642\ufe0f'], '👯‍♂️ E4.0 men with bunny ears'),
   (['\u{1f46f}\u200d\u2642'], '👯‍♂ E4.0 men with bunny ears'),
@@ -11085,100 +3544,34 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f46f}\u200d\u2640'], '👯‍♀ E4.0 women with bunny ears'),
   (['\u{1f9d6}'], '🧖 E5.0 person in steamy room'),
   (['\u{1f9d6}\u{1f3fb}'], '🧖🏻 E5.0 person in steamy room: light skin tone'),
-  (
-    ['\u{1f9d6}\u{1f3fc}'],
-    '🧖🏼 E5.0 person in steamy room: medium-light skin tone'
-  ),
+  (['\u{1f9d6}\u{1f3fc}'], '🧖🏼 E5.0 person in steamy room: medium-light skin tone'),
   (['\u{1f9d6}\u{1f3fd}'], '🧖🏽 E5.0 person in steamy room: medium skin tone'),
-  (
-    ['\u{1f9d6}\u{1f3fe}'],
-    '🧖🏾 E5.0 person in steamy room: medium-dark skin tone'
-  ),
+  (['\u{1f9d6}\u{1f3fe}'], '🧖🏾 E5.0 person in steamy room: medium-dark skin tone'),
   (['\u{1f9d6}\u{1f3ff}'], '🧖🏿 E5.0 person in steamy room: dark skin tone'),
   (['\u{1f9d6}\u200d\u2642\ufe0f'], '🧖‍♂️ E5.0 man in steamy room'),
   (['\u{1f9d6}\u200d\u2642'], '🧖‍♂ E5.0 man in steamy room'),
-  (
-    ['\u{1f9d6}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧖🏻‍♂️ E5.0 man in steamy room: light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fb}\u200d\u2642'],
-    '🧖🏻‍♂ E5.0 man in steamy room: light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧖🏼‍♂️ E5.0 man in steamy room: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fc}\u200d\u2642'],
-    '🧖🏼‍♂ E5.0 man in steamy room: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧖🏽‍♂️ E5.0 man in steamy room: medium skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fd}\u200d\u2642'],
-    '🧖🏽‍♂ E5.0 man in steamy room: medium skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧖🏾‍♂️ E5.0 man in steamy room: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fe}\u200d\u2642'],
-    '🧖🏾‍♂ E5.0 man in steamy room: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧖🏿‍♂️ E5.0 man in steamy room: dark skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3ff}\u200d\u2642'],
-    '🧖🏿‍♂ E5.0 man in steamy room: dark skin tone'
-  ),
+  (['\u{1f9d6}\u{1f3fb}\u200d\u2642\ufe0f'], '🧖🏻‍♂️ E5.0 man in steamy room: light skin tone'),
+  (['\u{1f9d6}\u{1f3fb}\u200d\u2642'], '🧖🏻‍♂ E5.0 man in steamy room: light skin tone'),
+  (['\u{1f9d6}\u{1f3fc}\u200d\u2642\ufe0f'], '🧖🏼‍♂️ E5.0 man in steamy room: medium-light skin tone'),
+  (['\u{1f9d6}\u{1f3fc}\u200d\u2642'], '🧖🏼‍♂ E5.0 man in steamy room: medium-light skin tone'),
+  (['\u{1f9d6}\u{1f3fd}\u200d\u2642\ufe0f'], '🧖🏽‍♂️ E5.0 man in steamy room: medium skin tone'),
+  (['\u{1f9d6}\u{1f3fd}\u200d\u2642'], '🧖🏽‍♂ E5.0 man in steamy room: medium skin tone'),
+  (['\u{1f9d6}\u{1f3fe}\u200d\u2642\ufe0f'], '🧖🏾‍♂️ E5.0 man in steamy room: medium-dark skin tone'),
+  (['\u{1f9d6}\u{1f3fe}\u200d\u2642'], '🧖🏾‍♂ E5.0 man in steamy room: medium-dark skin tone'),
+  (['\u{1f9d6}\u{1f3ff}\u200d\u2642\ufe0f'], '🧖🏿‍♂️ E5.0 man in steamy room: dark skin tone'),
+  (['\u{1f9d6}\u{1f3ff}\u200d\u2642'], '🧖🏿‍♂ E5.0 man in steamy room: dark skin tone'),
   (['\u{1f9d6}\u200d\u2640\ufe0f'], '🧖‍♀️ E5.0 woman in steamy room'),
   (['\u{1f9d6}\u200d\u2640'], '🧖‍♀ E5.0 woman in steamy room'),
-  (
-    ['\u{1f9d6}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧖🏻‍♀️ E5.0 woman in steamy room: light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fb}\u200d\u2640'],
-    '🧖🏻‍♀ E5.0 woman in steamy room: light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧖🏼‍♀️ E5.0 woman in steamy room: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fc}\u200d\u2640'],
-    '🧖🏼‍♀ E5.0 woman in steamy room: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧖🏽‍♀️ E5.0 woman in steamy room: medium skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fd}\u200d\u2640'],
-    '🧖🏽‍♀ E5.0 woman in steamy room: medium skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧖🏾‍♀️ E5.0 woman in steamy room: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3fe}\u200d\u2640'],
-    '🧖🏾‍♀ E5.0 woman in steamy room: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧖🏿‍♀️ E5.0 woman in steamy room: dark skin tone'
-  ),
-  (
-    ['\u{1f9d6}\u{1f3ff}\u200d\u2640'],
-    '🧖🏿‍♀ E5.0 woman in steamy room: dark skin tone'
-  ),
+  (['\u{1f9d6}\u{1f3fb}\u200d\u2640\ufe0f'], '🧖🏻‍♀️ E5.0 woman in steamy room: light skin tone'),
+  (['\u{1f9d6}\u{1f3fb}\u200d\u2640'], '🧖🏻‍♀ E5.0 woman in steamy room: light skin tone'),
+  (['\u{1f9d6}\u{1f3fc}\u200d\u2640\ufe0f'], '🧖🏼‍♀️ E5.0 woman in steamy room: medium-light skin tone'),
+  (['\u{1f9d6}\u{1f3fc}\u200d\u2640'], '🧖🏼‍♀ E5.0 woman in steamy room: medium-light skin tone'),
+  (['\u{1f9d6}\u{1f3fd}\u200d\u2640\ufe0f'], '🧖🏽‍♀️ E5.0 woman in steamy room: medium skin tone'),
+  (['\u{1f9d6}\u{1f3fd}\u200d\u2640'], '🧖🏽‍♀ E5.0 woman in steamy room: medium skin tone'),
+  (['\u{1f9d6}\u{1f3fe}\u200d\u2640\ufe0f'], '🧖🏾‍♀️ E5.0 woman in steamy room: medium-dark skin tone'),
+  (['\u{1f9d6}\u{1f3fe}\u200d\u2640'], '🧖🏾‍♀ E5.0 woman in steamy room: medium-dark skin tone'),
+  (['\u{1f9d6}\u{1f3ff}\u200d\u2640\ufe0f'], '🧖🏿‍♀️ E5.0 woman in steamy room: dark skin tone'),
+  (['\u{1f9d6}\u{1f3ff}\u200d\u2640'], '🧖🏿‍♀ E5.0 woman in steamy room: dark skin tone'),
   (['\u{1f9d7}'], '🧗 E5.0 person climbing'),
   (['\u{1f9d7}\u{1f3fb}'], '🧗🏻 E5.0 person climbing: light skin tone'),
   (['\u{1f9d7}\u{1f3fc}'], '🧗🏼 E5.0 person climbing: medium-light skin tone'),
@@ -11187,88 +3580,28 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f9d7}\u{1f3ff}'], '🧗🏿 E5.0 person climbing: dark skin tone'),
   (['\u{1f9d7}\u200d\u2642\ufe0f'], '🧗‍♂️ E5.0 man climbing'),
   (['\u{1f9d7}\u200d\u2642'], '🧗‍♂ E5.0 man climbing'),
-  (
-    ['\u{1f9d7}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧗🏻‍♂️ E5.0 man climbing: light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fb}\u200d\u2642'],
-    '🧗🏻‍♂ E5.0 man climbing: light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧗🏼‍♂️ E5.0 man climbing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fc}\u200d\u2642'],
-    '🧗🏼‍♂ E5.0 man climbing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧗🏽‍♂️ E5.0 man climbing: medium skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fd}\u200d\u2642'],
-    '🧗🏽‍♂ E5.0 man climbing: medium skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧗🏾‍♂️ E5.0 man climbing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fe}\u200d\u2642'],
-    '🧗🏾‍♂ E5.0 man climbing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧗🏿‍♂️ E5.0 man climbing: dark skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3ff}\u200d\u2642'],
-    '🧗🏿‍♂ E5.0 man climbing: dark skin tone'
-  ),
+  (['\u{1f9d7}\u{1f3fb}\u200d\u2642\ufe0f'], '🧗🏻‍♂️ E5.0 man climbing: light skin tone'),
+  (['\u{1f9d7}\u{1f3fb}\u200d\u2642'], '🧗🏻‍♂ E5.0 man climbing: light skin tone'),
+  (['\u{1f9d7}\u{1f3fc}\u200d\u2642\ufe0f'], '🧗🏼‍♂️ E5.0 man climbing: medium-light skin tone'),
+  (['\u{1f9d7}\u{1f3fc}\u200d\u2642'], '🧗🏼‍♂ E5.0 man climbing: medium-light skin tone'),
+  (['\u{1f9d7}\u{1f3fd}\u200d\u2642\ufe0f'], '🧗🏽‍♂️ E5.0 man climbing: medium skin tone'),
+  (['\u{1f9d7}\u{1f3fd}\u200d\u2642'], '🧗🏽‍♂ E5.0 man climbing: medium skin tone'),
+  (['\u{1f9d7}\u{1f3fe}\u200d\u2642\ufe0f'], '🧗🏾‍♂️ E5.0 man climbing: medium-dark skin tone'),
+  (['\u{1f9d7}\u{1f3fe}\u200d\u2642'], '🧗🏾‍♂ E5.0 man climbing: medium-dark skin tone'),
+  (['\u{1f9d7}\u{1f3ff}\u200d\u2642\ufe0f'], '🧗🏿‍♂️ E5.0 man climbing: dark skin tone'),
+  (['\u{1f9d7}\u{1f3ff}\u200d\u2642'], '🧗🏿‍♂ E5.0 man climbing: dark skin tone'),
   (['\u{1f9d7}\u200d\u2640\ufe0f'], '🧗‍♀️ E5.0 woman climbing'),
   (['\u{1f9d7}\u200d\u2640'], '🧗‍♀ E5.0 woman climbing'),
-  (
-    ['\u{1f9d7}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧗🏻‍♀️ E5.0 woman climbing: light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fb}\u200d\u2640'],
-    '🧗🏻‍♀ E5.0 woman climbing: light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧗🏼‍♀️ E5.0 woman climbing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fc}\u200d\u2640'],
-    '🧗🏼‍♀ E5.0 woman climbing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧗🏽‍♀️ E5.0 woman climbing: medium skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fd}\u200d\u2640'],
-    '🧗🏽‍♀ E5.0 woman climbing: medium skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧗🏾‍♀️ E5.0 woman climbing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3fe}\u200d\u2640'],
-    '🧗🏾‍♀ E5.0 woman climbing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧗🏿‍♀️ E5.0 woman climbing: dark skin tone'
-  ),
-  (
-    ['\u{1f9d7}\u{1f3ff}\u200d\u2640'],
-    '🧗🏿‍♀ E5.0 woman climbing: dark skin tone'
-  ),
+  (['\u{1f9d7}\u{1f3fb}\u200d\u2640\ufe0f'], '🧗🏻‍♀️ E5.0 woman climbing: light skin tone'),
+  (['\u{1f9d7}\u{1f3fb}\u200d\u2640'], '🧗🏻‍♀ E5.0 woman climbing: light skin tone'),
+  (['\u{1f9d7}\u{1f3fc}\u200d\u2640\ufe0f'], '🧗🏼‍♀️ E5.0 woman climbing: medium-light skin tone'),
+  (['\u{1f9d7}\u{1f3fc}\u200d\u2640'], '🧗🏼‍♀ E5.0 woman climbing: medium-light skin tone'),
+  (['\u{1f9d7}\u{1f3fd}\u200d\u2640\ufe0f'], '🧗🏽‍♀️ E5.0 woman climbing: medium skin tone'),
+  (['\u{1f9d7}\u{1f3fd}\u200d\u2640'], '🧗🏽‍♀ E5.0 woman climbing: medium skin tone'),
+  (['\u{1f9d7}\u{1f3fe}\u200d\u2640\ufe0f'], '🧗🏾‍♀️ E5.0 woman climbing: medium-dark skin tone'),
+  (['\u{1f9d7}\u{1f3fe}\u200d\u2640'], '🧗🏾‍♀ E5.0 woman climbing: medium-dark skin tone'),
+  (['\u{1f9d7}\u{1f3ff}\u200d\u2640\ufe0f'], '🧗🏿‍♀️ E5.0 woman climbing: dark skin tone'),
+  (['\u{1f9d7}\u{1f3ff}\u200d\u2640'], '🧗🏿‍♀ E5.0 woman climbing: dark skin tone'),
   (['\u{1f93a}'], '🤺 E3.0 person fencing'),
   (['\u{1f3c7}'], '🏇 E1.0 horse racing'),
   (['\u{1f3c7}\u{1f3fb}'], '🏇🏻 E1.0 horse racing: light skin tone'),
@@ -11295,90 +3628,30 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f3cc}\u200d\u2642\ufe0f'], '🏌‍♂️ E4.0 man golfing'),
   (['\u{1f3cc}\ufe0f\u200d\u2642'], '🏌️‍♂ E4.0 man golfing'),
   (['\u{1f3cc}\u200d\u2642'], '🏌‍♂ E4.0 man golfing'),
-  (
-    ['\u{1f3cc}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🏌🏻‍♂️ E4.0 man golfing: light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fb}\u200d\u2642'],
-    '🏌🏻‍♂ E4.0 man golfing: light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🏌🏼‍♂️ E4.0 man golfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fc}\u200d\u2642'],
-    '🏌🏼‍♂ E4.0 man golfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🏌🏽‍♂️ E4.0 man golfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fd}\u200d\u2642'],
-    '🏌🏽‍♂ E4.0 man golfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🏌🏾‍♂️ E4.0 man golfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fe}\u200d\u2642'],
-    '🏌🏾‍♂ E4.0 man golfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🏌🏿‍♂️ E4.0 man golfing: dark skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3ff}\u200d\u2642'],
-    '🏌🏿‍♂ E4.0 man golfing: dark skin tone'
-  ),
+  (['\u{1f3cc}\u{1f3fb}\u200d\u2642\ufe0f'], '🏌🏻‍♂️ E4.0 man golfing: light skin tone'),
+  (['\u{1f3cc}\u{1f3fb}\u200d\u2642'], '🏌🏻‍♂ E4.0 man golfing: light skin tone'),
+  (['\u{1f3cc}\u{1f3fc}\u200d\u2642\ufe0f'], '🏌🏼‍♂️ E4.0 man golfing: medium-light skin tone'),
+  (['\u{1f3cc}\u{1f3fc}\u200d\u2642'], '🏌🏼‍♂ E4.0 man golfing: medium-light skin tone'),
+  (['\u{1f3cc}\u{1f3fd}\u200d\u2642\ufe0f'], '🏌🏽‍♂️ E4.0 man golfing: medium skin tone'),
+  (['\u{1f3cc}\u{1f3fd}\u200d\u2642'], '🏌🏽‍♂ E4.0 man golfing: medium skin tone'),
+  (['\u{1f3cc}\u{1f3fe}\u200d\u2642\ufe0f'], '🏌🏾‍♂️ E4.0 man golfing: medium-dark skin tone'),
+  (['\u{1f3cc}\u{1f3fe}\u200d\u2642'], '🏌🏾‍♂ E4.0 man golfing: medium-dark skin tone'),
+  (['\u{1f3cc}\u{1f3ff}\u200d\u2642\ufe0f'], '🏌🏿‍♂️ E4.0 man golfing: dark skin tone'),
+  (['\u{1f3cc}\u{1f3ff}\u200d\u2642'], '🏌🏿‍♂ E4.0 man golfing: dark skin tone'),
   (['\u{1f3cc}\ufe0f\u200d\u2640\ufe0f'], '🏌️‍♀️ E4.0 woman golfing'),
   (['\u{1f3cc}\u200d\u2640\ufe0f'], '🏌‍♀️ E4.0 woman golfing'),
   (['\u{1f3cc}\ufe0f\u200d\u2640'], '🏌️‍♀ E4.0 woman golfing'),
   (['\u{1f3cc}\u200d\u2640'], '🏌‍♀ E4.0 woman golfing'),
-  (
-    ['\u{1f3cc}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🏌🏻‍♀️ E4.0 woman golfing: light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fb}\u200d\u2640'],
-    '🏌🏻‍♀ E4.0 woman golfing: light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🏌🏼‍♀️ E4.0 woman golfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fc}\u200d\u2640'],
-    '🏌🏼‍♀ E4.0 woman golfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🏌🏽‍♀️ E4.0 woman golfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fd}\u200d\u2640'],
-    '🏌🏽‍♀ E4.0 woman golfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🏌🏾‍♀️ E4.0 woman golfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3fe}\u200d\u2640'],
-    '🏌🏾‍♀ E4.0 woman golfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🏌🏿‍♀️ E4.0 woman golfing: dark skin tone'
-  ),
-  (
-    ['\u{1f3cc}\u{1f3ff}\u200d\u2640'],
-    '🏌🏿‍♀ E4.0 woman golfing: dark skin tone'
-  ),
+  (['\u{1f3cc}\u{1f3fb}\u200d\u2640\ufe0f'], '🏌🏻‍♀️ E4.0 woman golfing: light skin tone'),
+  (['\u{1f3cc}\u{1f3fb}\u200d\u2640'], '🏌🏻‍♀ E4.0 woman golfing: light skin tone'),
+  (['\u{1f3cc}\u{1f3fc}\u200d\u2640\ufe0f'], '🏌🏼‍♀️ E4.0 woman golfing: medium-light skin tone'),
+  (['\u{1f3cc}\u{1f3fc}\u200d\u2640'], '🏌🏼‍♀ E4.0 woman golfing: medium-light skin tone'),
+  (['\u{1f3cc}\u{1f3fd}\u200d\u2640\ufe0f'], '🏌🏽‍♀️ E4.0 woman golfing: medium skin tone'),
+  (['\u{1f3cc}\u{1f3fd}\u200d\u2640'], '🏌🏽‍♀ E4.0 woman golfing: medium skin tone'),
+  (['\u{1f3cc}\u{1f3fe}\u200d\u2640\ufe0f'], '🏌🏾‍♀️ E4.0 woman golfing: medium-dark skin tone'),
+  (['\u{1f3cc}\u{1f3fe}\u200d\u2640'], '🏌🏾‍♀ E4.0 woman golfing: medium-dark skin tone'),
+  (['\u{1f3cc}\u{1f3ff}\u200d\u2640\ufe0f'], '🏌🏿‍♀️ E4.0 woman golfing: dark skin tone'),
+  (['\u{1f3cc}\u{1f3ff}\u200d\u2640'], '🏌🏿‍♀ E4.0 woman golfing: dark skin tone'),
   (['\u{1f3c4}'], '🏄 E0.6 person surfing'),
   (['\u{1f3c4}\u{1f3fb}'], '🏄🏻 E1.0 person surfing: light skin tone'),
   (['\u{1f3c4}\u{1f3fc}'], '🏄🏼 E1.0 person surfing: medium-light skin tone'),
@@ -11387,184 +3660,58 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f3c4}\u{1f3ff}'], '🏄🏿 E1.0 person surfing: dark skin tone'),
   (['\u{1f3c4}\u200d\u2642\ufe0f'], '🏄‍♂️ E4.0 man surfing'),
   (['\u{1f3c4}\u200d\u2642'], '🏄‍♂ E4.0 man surfing'),
-  (
-    ['\u{1f3c4}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🏄🏻‍♂️ E4.0 man surfing: light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fb}\u200d\u2642'],
-    '🏄🏻‍♂ E4.0 man surfing: light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🏄🏼‍♂️ E4.0 man surfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fc}\u200d\u2642'],
-    '🏄🏼‍♂ E4.0 man surfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🏄🏽‍♂️ E4.0 man surfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fd}\u200d\u2642'],
-    '🏄🏽‍♂ E4.0 man surfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🏄🏾‍♂️ E4.0 man surfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fe}\u200d\u2642'],
-    '🏄🏾‍♂ E4.0 man surfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🏄🏿‍♂️ E4.0 man surfing: dark skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3ff}\u200d\u2642'],
-    '🏄🏿‍♂ E4.0 man surfing: dark skin tone'
-  ),
+  (['\u{1f3c4}\u{1f3fb}\u200d\u2642\ufe0f'], '🏄🏻‍♂️ E4.0 man surfing: light skin tone'),
+  (['\u{1f3c4}\u{1f3fb}\u200d\u2642'], '🏄🏻‍♂ E4.0 man surfing: light skin tone'),
+  (['\u{1f3c4}\u{1f3fc}\u200d\u2642\ufe0f'], '🏄🏼‍♂️ E4.0 man surfing: medium-light skin tone'),
+  (['\u{1f3c4}\u{1f3fc}\u200d\u2642'], '🏄🏼‍♂ E4.0 man surfing: medium-light skin tone'),
+  (['\u{1f3c4}\u{1f3fd}\u200d\u2642\ufe0f'], '🏄🏽‍♂️ E4.0 man surfing: medium skin tone'),
+  (['\u{1f3c4}\u{1f3fd}\u200d\u2642'], '🏄🏽‍♂ E4.0 man surfing: medium skin tone'),
+  (['\u{1f3c4}\u{1f3fe}\u200d\u2642\ufe0f'], '🏄🏾‍♂️ E4.0 man surfing: medium-dark skin tone'),
+  (['\u{1f3c4}\u{1f3fe}\u200d\u2642'], '🏄🏾‍♂ E4.0 man surfing: medium-dark skin tone'),
+  (['\u{1f3c4}\u{1f3ff}\u200d\u2642\ufe0f'], '🏄🏿‍♂️ E4.0 man surfing: dark skin tone'),
+  (['\u{1f3c4}\u{1f3ff}\u200d\u2642'], '🏄🏿‍♂ E4.0 man surfing: dark skin tone'),
   (['\u{1f3c4}\u200d\u2640\ufe0f'], '🏄‍♀️ E4.0 woman surfing'),
   (['\u{1f3c4}\u200d\u2640'], '🏄‍♀ E4.0 woman surfing'),
-  (
-    ['\u{1f3c4}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🏄🏻‍♀️ E4.0 woman surfing: light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fb}\u200d\u2640'],
-    '🏄🏻‍♀ E4.0 woman surfing: light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🏄🏼‍♀️ E4.0 woman surfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fc}\u200d\u2640'],
-    '🏄🏼‍♀ E4.0 woman surfing: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🏄🏽‍♀️ E4.0 woman surfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fd}\u200d\u2640'],
-    '🏄🏽‍♀ E4.0 woman surfing: medium skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🏄🏾‍♀️ E4.0 woman surfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3fe}\u200d\u2640'],
-    '🏄🏾‍♀ E4.0 woman surfing: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🏄🏿‍♀️ E4.0 woman surfing: dark skin tone'
-  ),
-  (
-    ['\u{1f3c4}\u{1f3ff}\u200d\u2640'],
-    '🏄🏿‍♀ E4.0 woman surfing: dark skin tone'
-  ),
+  (['\u{1f3c4}\u{1f3fb}\u200d\u2640\ufe0f'], '🏄🏻‍♀️ E4.0 woman surfing: light skin tone'),
+  (['\u{1f3c4}\u{1f3fb}\u200d\u2640'], '🏄🏻‍♀ E4.0 woman surfing: light skin tone'),
+  (['\u{1f3c4}\u{1f3fc}\u200d\u2640\ufe0f'], '🏄🏼‍♀️ E4.0 woman surfing: medium-light skin tone'),
+  (['\u{1f3c4}\u{1f3fc}\u200d\u2640'], '🏄🏼‍♀ E4.0 woman surfing: medium-light skin tone'),
+  (['\u{1f3c4}\u{1f3fd}\u200d\u2640\ufe0f'], '🏄🏽‍♀️ E4.0 woman surfing: medium skin tone'),
+  (['\u{1f3c4}\u{1f3fd}\u200d\u2640'], '🏄🏽‍♀ E4.0 woman surfing: medium skin tone'),
+  (['\u{1f3c4}\u{1f3fe}\u200d\u2640\ufe0f'], '🏄🏾‍♀️ E4.0 woman surfing: medium-dark skin tone'),
+  (['\u{1f3c4}\u{1f3fe}\u200d\u2640'], '🏄🏾‍♀ E4.0 woman surfing: medium-dark skin tone'),
+  (['\u{1f3c4}\u{1f3ff}\u200d\u2640\ufe0f'], '🏄🏿‍♀️ E4.0 woman surfing: dark skin tone'),
+  (['\u{1f3c4}\u{1f3ff}\u200d\u2640'], '🏄🏿‍♀ E4.0 woman surfing: dark skin tone'),
   (['\u{1f6a3}'], '🚣 E1.0 person rowing boat'),
   (['\u{1f6a3}\u{1f3fb}'], '🚣🏻 E1.0 person rowing boat: light skin tone'),
-  (
-    ['\u{1f6a3}\u{1f3fc}'],
-    '🚣🏼 E1.0 person rowing boat: medium-light skin tone'
-  ),
+  (['\u{1f6a3}\u{1f3fc}'], '🚣🏼 E1.0 person rowing boat: medium-light skin tone'),
   (['\u{1f6a3}\u{1f3fd}'], '🚣🏽 E1.0 person rowing boat: medium skin tone'),
-  (
-    ['\u{1f6a3}\u{1f3fe}'],
-    '🚣🏾 E1.0 person rowing boat: medium-dark skin tone'
-  ),
+  (['\u{1f6a3}\u{1f3fe}'], '🚣🏾 E1.0 person rowing boat: medium-dark skin tone'),
   (['\u{1f6a3}\u{1f3ff}'], '🚣🏿 E1.0 person rowing boat: dark skin tone'),
   (['\u{1f6a3}\u200d\u2642\ufe0f'], '🚣‍♂️ E4.0 man rowing boat'),
   (['\u{1f6a3}\u200d\u2642'], '🚣‍♂ E4.0 man rowing boat'),
-  (
-    ['\u{1f6a3}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🚣🏻‍♂️ E4.0 man rowing boat: light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fb}\u200d\u2642'],
-    '🚣🏻‍♂ E4.0 man rowing boat: light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🚣🏼‍♂️ E4.0 man rowing boat: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fc}\u200d\u2642'],
-    '🚣🏼‍♂ E4.0 man rowing boat: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🚣🏽‍♂️ E4.0 man rowing boat: medium skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fd}\u200d\u2642'],
-    '🚣🏽‍♂ E4.0 man rowing boat: medium skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🚣🏾‍♂️ E4.0 man rowing boat: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fe}\u200d\u2642'],
-    '🚣🏾‍♂ E4.0 man rowing boat: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🚣🏿‍♂️ E4.0 man rowing boat: dark skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3ff}\u200d\u2642'],
-    '🚣🏿‍♂ E4.0 man rowing boat: dark skin tone'
-  ),
+  (['\u{1f6a3}\u{1f3fb}\u200d\u2642\ufe0f'], '🚣🏻‍♂️ E4.0 man rowing boat: light skin tone'),
+  (['\u{1f6a3}\u{1f3fb}\u200d\u2642'], '🚣🏻‍♂ E4.0 man rowing boat: light skin tone'),
+  (['\u{1f6a3}\u{1f3fc}\u200d\u2642\ufe0f'], '🚣🏼‍♂️ E4.0 man rowing boat: medium-light skin tone'),
+  (['\u{1f6a3}\u{1f3fc}\u200d\u2642'], '🚣🏼‍♂ E4.0 man rowing boat: medium-light skin tone'),
+  (['\u{1f6a3}\u{1f3fd}\u200d\u2642\ufe0f'], '🚣🏽‍♂️ E4.0 man rowing boat: medium skin tone'),
+  (['\u{1f6a3}\u{1f3fd}\u200d\u2642'], '🚣🏽‍♂ E4.0 man rowing boat: medium skin tone'),
+  (['\u{1f6a3}\u{1f3fe}\u200d\u2642\ufe0f'], '🚣🏾‍♂️ E4.0 man rowing boat: medium-dark skin tone'),
+  (['\u{1f6a3}\u{1f3fe}\u200d\u2642'], '🚣🏾‍♂ E4.0 man rowing boat: medium-dark skin tone'),
+  (['\u{1f6a3}\u{1f3ff}\u200d\u2642\ufe0f'], '🚣🏿‍♂️ E4.0 man rowing boat: dark skin tone'),
+  (['\u{1f6a3}\u{1f3ff}\u200d\u2642'], '🚣🏿‍♂ E4.0 man rowing boat: dark skin tone'),
   (['\u{1f6a3}\u200d\u2640\ufe0f'], '🚣‍♀️ E4.0 woman rowing boat'),
   (['\u{1f6a3}\u200d\u2640'], '🚣‍♀ E4.0 woman rowing boat'),
-  (
-    ['\u{1f6a3}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🚣🏻‍♀️ E4.0 woman rowing boat: light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fb}\u200d\u2640'],
-    '🚣🏻‍♀ E4.0 woman rowing boat: light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🚣🏼‍♀️ E4.0 woman rowing boat: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fc}\u200d\u2640'],
-    '🚣🏼‍♀ E4.0 woman rowing boat: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🚣🏽‍♀️ E4.0 woman rowing boat: medium skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fd}\u200d\u2640'],
-    '🚣🏽‍♀ E4.0 woman rowing boat: medium skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🚣🏾‍♀️ E4.0 woman rowing boat: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3fe}\u200d\u2640'],
-    '🚣🏾‍♀ E4.0 woman rowing boat: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🚣🏿‍♀️ E4.0 woman rowing boat: dark skin tone'
-  ),
-  (
-    ['\u{1f6a3}\u{1f3ff}\u200d\u2640'],
-    '🚣🏿‍♀ E4.0 woman rowing boat: dark skin tone'
-  ),
+  (['\u{1f6a3}\u{1f3fb}\u200d\u2640\ufe0f'], '🚣🏻‍♀️ E4.0 woman rowing boat: light skin tone'),
+  (['\u{1f6a3}\u{1f3fb}\u200d\u2640'], '🚣🏻‍♀ E4.0 woman rowing boat: light skin tone'),
+  (['\u{1f6a3}\u{1f3fc}\u200d\u2640\ufe0f'], '🚣🏼‍♀️ E4.0 woman rowing boat: medium-light skin tone'),
+  (['\u{1f6a3}\u{1f3fc}\u200d\u2640'], '🚣🏼‍♀ E4.0 woman rowing boat: medium-light skin tone'),
+  (['\u{1f6a3}\u{1f3fd}\u200d\u2640\ufe0f'], '🚣🏽‍♀️ E4.0 woman rowing boat: medium skin tone'),
+  (['\u{1f6a3}\u{1f3fd}\u200d\u2640'], '🚣🏽‍♀ E4.0 woman rowing boat: medium skin tone'),
+  (['\u{1f6a3}\u{1f3fe}\u200d\u2640\ufe0f'], '🚣🏾‍♀️ E4.0 woman rowing boat: medium-dark skin tone'),
+  (['\u{1f6a3}\u{1f3fe}\u200d\u2640'], '🚣🏾‍♀ E4.0 woman rowing boat: medium-dark skin tone'),
+  (['\u{1f6a3}\u{1f3ff}\u200d\u2640\ufe0f'], '🚣🏿‍♀️ E4.0 woman rowing boat: dark skin tone'),
+  (['\u{1f6a3}\u{1f3ff}\u200d\u2640'], '🚣🏿‍♀ E4.0 woman rowing boat: dark skin tone'),
   (['\u{1f3ca}'], '🏊 E0.6 person swimming'),
   (['\u{1f3ca}\u{1f3fb}'], '🏊🏻 E1.0 person swimming: light skin tone'),
   (['\u{1f3ca}\u{1f3fc}'], '🏊🏼 E1.0 person swimming: medium-light skin tone'),
@@ -11573,95 +3720,32 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f3ca}\u{1f3ff}'], '🏊🏿 E1.0 person swimming: dark skin tone'),
   (['\u{1f3ca}\u200d\u2642\ufe0f'], '🏊‍♂️ E4.0 man swimming'),
   (['\u{1f3ca}\u200d\u2642'], '🏊‍♂ E4.0 man swimming'),
-  (
-    ['\u{1f3ca}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🏊🏻‍♂️ E4.0 man swimming: light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fb}\u200d\u2642'],
-    '🏊🏻‍♂ E4.0 man swimming: light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🏊🏼‍♂️ E4.0 man swimming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fc}\u200d\u2642'],
-    '🏊🏼‍♂ E4.0 man swimming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🏊🏽‍♂️ E4.0 man swimming: medium skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fd}\u200d\u2642'],
-    '🏊🏽‍♂ E4.0 man swimming: medium skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🏊🏾‍♂️ E4.0 man swimming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fe}\u200d\u2642'],
-    '🏊🏾‍♂ E4.0 man swimming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🏊🏿‍♂️ E4.0 man swimming: dark skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3ff}\u200d\u2642'],
-    '🏊🏿‍♂ E4.0 man swimming: dark skin tone'
-  ),
+  (['\u{1f3ca}\u{1f3fb}\u200d\u2642\ufe0f'], '🏊🏻‍♂️ E4.0 man swimming: light skin tone'),
+  (['\u{1f3ca}\u{1f3fb}\u200d\u2642'], '🏊🏻‍♂ E4.0 man swimming: light skin tone'),
+  (['\u{1f3ca}\u{1f3fc}\u200d\u2642\ufe0f'], '🏊🏼‍♂️ E4.0 man swimming: medium-light skin tone'),
+  (['\u{1f3ca}\u{1f3fc}\u200d\u2642'], '🏊🏼‍♂ E4.0 man swimming: medium-light skin tone'),
+  (['\u{1f3ca}\u{1f3fd}\u200d\u2642\ufe0f'], '🏊🏽‍♂️ E4.0 man swimming: medium skin tone'),
+  (['\u{1f3ca}\u{1f3fd}\u200d\u2642'], '🏊🏽‍♂ E4.0 man swimming: medium skin tone'),
+  (['\u{1f3ca}\u{1f3fe}\u200d\u2642\ufe0f'], '🏊🏾‍♂️ E4.0 man swimming: medium-dark skin tone'),
+  (['\u{1f3ca}\u{1f3fe}\u200d\u2642'], '🏊🏾‍♂ E4.0 man swimming: medium-dark skin tone'),
+  (['\u{1f3ca}\u{1f3ff}\u200d\u2642\ufe0f'], '🏊🏿‍♂️ E4.0 man swimming: dark skin tone'),
+  (['\u{1f3ca}\u{1f3ff}\u200d\u2642'], '🏊🏿‍♂ E4.0 man swimming: dark skin tone'),
   (['\u{1f3ca}\u200d\u2640\ufe0f'], '🏊‍♀️ E4.0 woman swimming'),
   (['\u{1f3ca}\u200d\u2640'], '🏊‍♀ E4.0 woman swimming'),
-  (
-    ['\u{1f3ca}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🏊🏻‍♀️ E4.0 woman swimming: light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fb}\u200d\u2640'],
-    '🏊🏻‍♀ E4.0 woman swimming: light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🏊🏼‍♀️ E4.0 woman swimming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fc}\u200d\u2640'],
-    '🏊🏼‍♀ E4.0 woman swimming: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🏊🏽‍♀️ E4.0 woman swimming: medium skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fd}\u200d\u2640'],
-    '🏊🏽‍♀ E4.0 woman swimming: medium skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🏊🏾‍♀️ E4.0 woman swimming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3fe}\u200d\u2640'],
-    '🏊🏾‍♀ E4.0 woman swimming: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🏊🏿‍♀️ E4.0 woman swimming: dark skin tone'
-  ),
-  (
-    ['\u{1f3ca}\u{1f3ff}\u200d\u2640'],
-    '🏊🏿‍♀ E4.0 woman swimming: dark skin tone'
-  ),
+  (['\u{1f3ca}\u{1f3fb}\u200d\u2640\ufe0f'], '🏊🏻‍♀️ E4.0 woman swimming: light skin tone'),
+  (['\u{1f3ca}\u{1f3fb}\u200d\u2640'], '🏊🏻‍♀ E4.0 woman swimming: light skin tone'),
+  (['\u{1f3ca}\u{1f3fc}\u200d\u2640\ufe0f'], '🏊🏼‍♀️ E4.0 woman swimming: medium-light skin tone'),
+  (['\u{1f3ca}\u{1f3fc}\u200d\u2640'], '🏊🏼‍♀ E4.0 woman swimming: medium-light skin tone'),
+  (['\u{1f3ca}\u{1f3fd}\u200d\u2640\ufe0f'], '🏊🏽‍♀️ E4.0 woman swimming: medium skin tone'),
+  (['\u{1f3ca}\u{1f3fd}\u200d\u2640'], '🏊🏽‍♀ E4.0 woman swimming: medium skin tone'),
+  (['\u{1f3ca}\u{1f3fe}\u200d\u2640\ufe0f'], '🏊🏾‍♀️ E4.0 woman swimming: medium-dark skin tone'),
+  (['\u{1f3ca}\u{1f3fe}\u200d\u2640'], '🏊🏾‍♀ E4.0 woman swimming: medium-dark skin tone'),
+  (['\u{1f3ca}\u{1f3ff}\u200d\u2640\ufe0f'], '🏊🏿‍♀️ E4.0 woman swimming: dark skin tone'),
+  (['\u{1f3ca}\u{1f3ff}\u200d\u2640'], '🏊🏿‍♀ E4.0 woman swimming: dark skin tone'),
   (['\u26f9\ufe0f'], '⛹️ E0.7 person bouncing ball'),
   (['\u26f9'], '⛹ E0.7 person bouncing ball'),
   (['\u26f9\u{1f3fb}'], '⛹🏻 E2.0 person bouncing ball: light skin tone'),
-  (
-    ['\u26f9\u{1f3fc}'],
-    '⛹🏼 E2.0 person bouncing ball: medium-light skin tone'
-  ),
+  (['\u26f9\u{1f3fc}'], '⛹🏼 E2.0 person bouncing ball: medium-light skin tone'),
   (['\u26f9\u{1f3fd}'], '⛹🏽 E2.0 person bouncing ball: medium skin tone'),
   (['\u26f9\u{1f3fe}'], '⛹🏾 E2.0 person bouncing ball: medium-dark skin tone'),
   (['\u26f9\u{1f3ff}'], '⛹🏿 E2.0 person bouncing ball: dark skin tone'),
@@ -11669,194 +3753,65 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u26f9\u200d\u2642\ufe0f'], '⛹‍♂️ E4.0 man bouncing ball'),
   (['\u26f9\ufe0f\u200d\u2642'], '⛹️‍♂ E4.0 man bouncing ball'),
   (['\u26f9\u200d\u2642'], '⛹‍♂ E4.0 man bouncing ball'),
-  (
-    ['\u26f9\u{1f3fb}\u200d\u2642\ufe0f'],
-    '⛹🏻‍♂️ E4.0 man bouncing ball: light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fb}\u200d\u2642'],
-    '⛹🏻‍♂ E4.0 man bouncing ball: light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fc}\u200d\u2642\ufe0f'],
-    '⛹🏼‍♂️ E4.0 man bouncing ball: medium-light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fc}\u200d\u2642'],
-    '⛹🏼‍♂ E4.0 man bouncing ball: medium-light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fd}\u200d\u2642\ufe0f'],
-    '⛹🏽‍♂️ E4.0 man bouncing ball: medium skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fd}\u200d\u2642'],
-    '⛹🏽‍♂ E4.0 man bouncing ball: medium skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fe}\u200d\u2642\ufe0f'],
-    '⛹🏾‍♂️ E4.0 man bouncing ball: medium-dark skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fe}\u200d\u2642'],
-    '⛹🏾‍♂ E4.0 man bouncing ball: medium-dark skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3ff}\u200d\u2642\ufe0f'],
-    '⛹🏿‍♂️ E4.0 man bouncing ball: dark skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3ff}\u200d\u2642'],
-    '⛹🏿‍♂ E4.0 man bouncing ball: dark skin tone'
-  ),
+  (['\u26f9\u{1f3fb}\u200d\u2642\ufe0f'], '⛹🏻‍♂️ E4.0 man bouncing ball: light skin tone'),
+  (['\u26f9\u{1f3fb}\u200d\u2642'], '⛹🏻‍♂ E4.0 man bouncing ball: light skin tone'),
+  (['\u26f9\u{1f3fc}\u200d\u2642\ufe0f'], '⛹🏼‍♂️ E4.0 man bouncing ball: medium-light skin tone'),
+  (['\u26f9\u{1f3fc}\u200d\u2642'], '⛹🏼‍♂ E4.0 man bouncing ball: medium-light skin tone'),
+  (['\u26f9\u{1f3fd}\u200d\u2642\ufe0f'], '⛹🏽‍♂️ E4.0 man bouncing ball: medium skin tone'),
+  (['\u26f9\u{1f3fd}\u200d\u2642'], '⛹🏽‍♂ E4.0 man bouncing ball: medium skin tone'),
+  (['\u26f9\u{1f3fe}\u200d\u2642\ufe0f'], '⛹🏾‍♂️ E4.0 man bouncing ball: medium-dark skin tone'),
+  (['\u26f9\u{1f3fe}\u200d\u2642'], '⛹🏾‍♂ E4.0 man bouncing ball: medium-dark skin tone'),
+  (['\u26f9\u{1f3ff}\u200d\u2642\ufe0f'], '⛹🏿‍♂️ E4.0 man bouncing ball: dark skin tone'),
+  (['\u26f9\u{1f3ff}\u200d\u2642'], '⛹🏿‍♂ E4.0 man bouncing ball: dark skin tone'),
   (['\u26f9\ufe0f\u200d\u2640\ufe0f'], '⛹️‍♀️ E4.0 woman bouncing ball'),
   (['\u26f9\u200d\u2640\ufe0f'], '⛹‍♀️ E4.0 woman bouncing ball'),
   (['\u26f9\ufe0f\u200d\u2640'], '⛹️‍♀ E4.0 woman bouncing ball'),
   (['\u26f9\u200d\u2640'], '⛹‍♀ E4.0 woman bouncing ball'),
-  (
-    ['\u26f9\u{1f3fb}\u200d\u2640\ufe0f'],
-    '⛹🏻‍♀️ E4.0 woman bouncing ball: light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fb}\u200d\u2640'],
-    '⛹🏻‍♀ E4.0 woman bouncing ball: light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fc}\u200d\u2640\ufe0f'],
-    '⛹🏼‍♀️ E4.0 woman bouncing ball: medium-light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fc}\u200d\u2640'],
-    '⛹🏼‍♀ E4.0 woman bouncing ball: medium-light skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fd}\u200d\u2640\ufe0f'],
-    '⛹🏽‍♀️ E4.0 woman bouncing ball: medium skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fd}\u200d\u2640'],
-    '⛹🏽‍♀ E4.0 woman bouncing ball: medium skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fe}\u200d\u2640\ufe0f'],
-    '⛹🏾‍♀️ E4.0 woman bouncing ball: medium-dark skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3fe}\u200d\u2640'],
-    '⛹🏾‍♀ E4.0 woman bouncing ball: medium-dark skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3ff}\u200d\u2640\ufe0f'],
-    '⛹🏿‍♀️ E4.0 woman bouncing ball: dark skin tone'
-  ),
-  (
-    ['\u26f9\u{1f3ff}\u200d\u2640'],
-    '⛹🏿‍♀ E4.0 woman bouncing ball: dark skin tone'
-  ),
+  (['\u26f9\u{1f3fb}\u200d\u2640\ufe0f'], '⛹🏻‍♀️ E4.0 woman bouncing ball: light skin tone'),
+  (['\u26f9\u{1f3fb}\u200d\u2640'], '⛹🏻‍♀ E4.0 woman bouncing ball: light skin tone'),
+  (['\u26f9\u{1f3fc}\u200d\u2640\ufe0f'], '⛹🏼‍♀️ E4.0 woman bouncing ball: medium-light skin tone'),
+  (['\u26f9\u{1f3fc}\u200d\u2640'], '⛹🏼‍♀ E4.0 woman bouncing ball: medium-light skin tone'),
+  (['\u26f9\u{1f3fd}\u200d\u2640\ufe0f'], '⛹🏽‍♀️ E4.0 woman bouncing ball: medium skin tone'),
+  (['\u26f9\u{1f3fd}\u200d\u2640'], '⛹🏽‍♀ E4.0 woman bouncing ball: medium skin tone'),
+  (['\u26f9\u{1f3fe}\u200d\u2640\ufe0f'], '⛹🏾‍♀️ E4.0 woman bouncing ball: medium-dark skin tone'),
+  (['\u26f9\u{1f3fe}\u200d\u2640'], '⛹🏾‍♀ E4.0 woman bouncing ball: medium-dark skin tone'),
+  (['\u26f9\u{1f3ff}\u200d\u2640\ufe0f'], '⛹🏿‍♀️ E4.0 woman bouncing ball: dark skin tone'),
+  (['\u26f9\u{1f3ff}\u200d\u2640'], '⛹🏿‍♀ E4.0 woman bouncing ball: dark skin tone'),
   (['\u{1f3cb}\ufe0f'], '🏋️ E0.7 person lifting weights'),
   (['\u{1f3cb}'], '🏋 E0.7 person lifting weights'),
   (['\u{1f3cb}\u{1f3fb}'], '🏋🏻 E2.0 person lifting weights: light skin tone'),
-  (
-    ['\u{1f3cb}\u{1f3fc}'],
-    '🏋🏼 E2.0 person lifting weights: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fd}'],
-    '🏋🏽 E2.0 person lifting weights: medium skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fe}'],
-    '🏋🏾 E2.0 person lifting weights: medium-dark skin tone'
-  ),
+  (['\u{1f3cb}\u{1f3fc}'], '🏋🏼 E2.0 person lifting weights: medium-light skin tone'),
+  (['\u{1f3cb}\u{1f3fd}'], '🏋🏽 E2.0 person lifting weights: medium skin tone'),
+  (['\u{1f3cb}\u{1f3fe}'], '🏋🏾 E2.0 person lifting weights: medium-dark skin tone'),
   (['\u{1f3cb}\u{1f3ff}'], '🏋🏿 E2.0 person lifting weights: dark skin tone'),
   (['\u{1f3cb}\ufe0f\u200d\u2642\ufe0f'], '🏋️‍♂️ E4.0 man lifting weights'),
   (['\u{1f3cb}\u200d\u2642\ufe0f'], '🏋‍♂️ E4.0 man lifting weights'),
   (['\u{1f3cb}\ufe0f\u200d\u2642'], '🏋️‍♂ E4.0 man lifting weights'),
   (['\u{1f3cb}\u200d\u2642'], '🏋‍♂ E4.0 man lifting weights'),
-  (
-    ['\u{1f3cb}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🏋🏻‍♂️ E4.0 man lifting weights: light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fb}\u200d\u2642'],
-    '🏋🏻‍♂ E4.0 man lifting weights: light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🏋🏼‍♂️ E4.0 man lifting weights: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fc}\u200d\u2642'],
-    '🏋🏼‍♂ E4.0 man lifting weights: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🏋🏽‍♂️ E4.0 man lifting weights: medium skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fd}\u200d\u2642'],
-    '🏋🏽‍♂ E4.0 man lifting weights: medium skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🏋🏾‍♂️ E4.0 man lifting weights: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fe}\u200d\u2642'],
-    '🏋🏾‍♂ E4.0 man lifting weights: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🏋🏿‍♂️ E4.0 man lifting weights: dark skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3ff}\u200d\u2642'],
-    '🏋🏿‍♂ E4.0 man lifting weights: dark skin tone'
-  ),
+  (['\u{1f3cb}\u{1f3fb}\u200d\u2642\ufe0f'], '🏋🏻‍♂️ E4.0 man lifting weights: light skin tone'),
+  (['\u{1f3cb}\u{1f3fb}\u200d\u2642'], '🏋🏻‍♂ E4.0 man lifting weights: light skin tone'),
+  (['\u{1f3cb}\u{1f3fc}\u200d\u2642\ufe0f'], '🏋🏼‍♂️ E4.0 man lifting weights: medium-light skin tone'),
+  (['\u{1f3cb}\u{1f3fc}\u200d\u2642'], '🏋🏼‍♂ E4.0 man lifting weights: medium-light skin tone'),
+  (['\u{1f3cb}\u{1f3fd}\u200d\u2642\ufe0f'], '🏋🏽‍♂️ E4.0 man lifting weights: medium skin tone'),
+  (['\u{1f3cb}\u{1f3fd}\u200d\u2642'], '🏋🏽‍♂ E4.0 man lifting weights: medium skin tone'),
+  (['\u{1f3cb}\u{1f3fe}\u200d\u2642\ufe0f'], '🏋🏾‍♂️ E4.0 man lifting weights: medium-dark skin tone'),
+  (['\u{1f3cb}\u{1f3fe}\u200d\u2642'], '🏋🏾‍♂ E4.0 man lifting weights: medium-dark skin tone'),
+  (['\u{1f3cb}\u{1f3ff}\u200d\u2642\ufe0f'], '🏋🏿‍♂️ E4.0 man lifting weights: dark skin tone'),
+  (['\u{1f3cb}\u{1f3ff}\u200d\u2642'], '🏋🏿‍♂ E4.0 man lifting weights: dark skin tone'),
   (['\u{1f3cb}\ufe0f\u200d\u2640\ufe0f'], '🏋️‍♀️ E4.0 woman lifting weights'),
   (['\u{1f3cb}\u200d\u2640\ufe0f'], '🏋‍♀️ E4.0 woman lifting weights'),
   (['\u{1f3cb}\ufe0f\u200d\u2640'], '🏋️‍♀ E4.0 woman lifting weights'),
   (['\u{1f3cb}\u200d\u2640'], '🏋‍♀ E4.0 woman lifting weights'),
-  (
-    ['\u{1f3cb}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🏋🏻‍♀️ E4.0 woman lifting weights: light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fb}\u200d\u2640'],
-    '🏋🏻‍♀ E4.0 woman lifting weights: light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🏋🏼‍♀️ E4.0 woman lifting weights: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fc}\u200d\u2640'],
-    '🏋🏼‍♀ E4.0 woman lifting weights: medium-light skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🏋🏽‍♀️ E4.0 woman lifting weights: medium skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fd}\u200d\u2640'],
-    '🏋🏽‍♀ E4.0 woman lifting weights: medium skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🏋🏾‍♀️ E4.0 woman lifting weights: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3fe}\u200d\u2640'],
-    '🏋🏾‍♀ E4.0 woman lifting weights: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🏋🏿‍♀️ E4.0 woman lifting weights: dark skin tone'
-  ),
-  (
-    ['\u{1f3cb}\u{1f3ff}\u200d\u2640'],
-    '🏋🏿‍♀ E4.0 woman lifting weights: dark skin tone'
-  ),
+  (['\u{1f3cb}\u{1f3fb}\u200d\u2640\ufe0f'], '🏋🏻‍♀️ E4.0 woman lifting weights: light skin tone'),
+  (['\u{1f3cb}\u{1f3fb}\u200d\u2640'], '🏋🏻‍♀ E4.0 woman lifting weights: light skin tone'),
+  (['\u{1f3cb}\u{1f3fc}\u200d\u2640\ufe0f'], '🏋🏼‍♀️ E4.0 woman lifting weights: medium-light skin tone'),
+  (['\u{1f3cb}\u{1f3fc}\u200d\u2640'], '🏋🏼‍♀ E4.0 woman lifting weights: medium-light skin tone'),
+  (['\u{1f3cb}\u{1f3fd}\u200d\u2640\ufe0f'], '🏋🏽‍♀️ E4.0 woman lifting weights: medium skin tone'),
+  (['\u{1f3cb}\u{1f3fd}\u200d\u2640'], '🏋🏽‍♀ E4.0 woman lifting weights: medium skin tone'),
+  (['\u{1f3cb}\u{1f3fe}\u200d\u2640\ufe0f'], '🏋🏾‍♀️ E4.0 woman lifting weights: medium-dark skin tone'),
+  (['\u{1f3cb}\u{1f3fe}\u200d\u2640'], '🏋🏾‍♀ E4.0 woman lifting weights: medium-dark skin tone'),
+  (['\u{1f3cb}\u{1f3ff}\u200d\u2640\ufe0f'], '🏋🏿‍♀️ E4.0 woman lifting weights: dark skin tone'),
+  (['\u{1f3cb}\u{1f3ff}\u200d\u2640'], '🏋🏿‍♀ E4.0 woman lifting weights: dark skin tone'),
   (['\u{1f6b4}'], '🚴 E1.0 person biking'),
   (['\u{1f6b4}\u{1f3fb}'], '🚴🏻 E1.0 person biking: light skin tone'),
   (['\u{1f6b4}\u{1f3fc}'], '🚴🏼 E1.0 person biking: medium-light skin tone'),
@@ -11865,495 +3820,153 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f6b4}\u{1f3ff}'], '🚴🏿 E1.0 person biking: dark skin tone'),
   (['\u{1f6b4}\u200d\u2642\ufe0f'], '🚴‍♂️ E4.0 man biking'),
   (['\u{1f6b4}\u200d\u2642'], '🚴‍♂ E4.0 man biking'),
-  (
-    ['\u{1f6b4}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🚴🏻‍♂️ E4.0 man biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fb}\u200d\u2642'],
-    '🚴🏻‍♂ E4.0 man biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🚴🏼‍♂️ E4.0 man biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fc}\u200d\u2642'],
-    '🚴🏼‍♂ E4.0 man biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🚴🏽‍♂️ E4.0 man biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fd}\u200d\u2642'],
-    '🚴🏽‍♂ E4.0 man biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🚴🏾‍♂️ E4.0 man biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fe}\u200d\u2642'],
-    '🚴🏾‍♂ E4.0 man biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🚴🏿‍♂️ E4.0 man biking: dark skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3ff}\u200d\u2642'],
-    '🚴🏿‍♂ E4.0 man biking: dark skin tone'
-  ),
+  (['\u{1f6b4}\u{1f3fb}\u200d\u2642\ufe0f'], '🚴🏻‍♂️ E4.0 man biking: light skin tone'),
+  (['\u{1f6b4}\u{1f3fb}\u200d\u2642'], '🚴🏻‍♂ E4.0 man biking: light skin tone'),
+  (['\u{1f6b4}\u{1f3fc}\u200d\u2642\ufe0f'], '🚴🏼‍♂️ E4.0 man biking: medium-light skin tone'),
+  (['\u{1f6b4}\u{1f3fc}\u200d\u2642'], '🚴🏼‍♂ E4.0 man biking: medium-light skin tone'),
+  (['\u{1f6b4}\u{1f3fd}\u200d\u2642\ufe0f'], '🚴🏽‍♂️ E4.0 man biking: medium skin tone'),
+  (['\u{1f6b4}\u{1f3fd}\u200d\u2642'], '🚴🏽‍♂ E4.0 man biking: medium skin tone'),
+  (['\u{1f6b4}\u{1f3fe}\u200d\u2642\ufe0f'], '🚴🏾‍♂️ E4.0 man biking: medium-dark skin tone'),
+  (['\u{1f6b4}\u{1f3fe}\u200d\u2642'], '🚴🏾‍♂ E4.0 man biking: medium-dark skin tone'),
+  (['\u{1f6b4}\u{1f3ff}\u200d\u2642\ufe0f'], '🚴🏿‍♂️ E4.0 man biking: dark skin tone'),
+  (['\u{1f6b4}\u{1f3ff}\u200d\u2642'], '🚴🏿‍♂ E4.0 man biking: dark skin tone'),
   (['\u{1f6b4}\u200d\u2640\ufe0f'], '🚴‍♀️ E4.0 woman biking'),
   (['\u{1f6b4}\u200d\u2640'], '🚴‍♀ E4.0 woman biking'),
-  (
-    ['\u{1f6b4}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🚴🏻‍♀️ E4.0 woman biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fb}\u200d\u2640'],
-    '🚴🏻‍♀ E4.0 woman biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🚴🏼‍♀️ E4.0 woman biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fc}\u200d\u2640'],
-    '🚴🏼‍♀ E4.0 woman biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🚴🏽‍♀️ E4.0 woman biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fd}\u200d\u2640'],
-    '🚴🏽‍♀ E4.0 woman biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🚴🏾‍♀️ E4.0 woman biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3fe}\u200d\u2640'],
-    '🚴🏾‍♀ E4.0 woman biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🚴🏿‍♀️ E4.0 woman biking: dark skin tone'
-  ),
-  (
-    ['\u{1f6b4}\u{1f3ff}\u200d\u2640'],
-    '🚴🏿‍♀ E4.0 woman biking: dark skin tone'
-  ),
+  (['\u{1f6b4}\u{1f3fb}\u200d\u2640\ufe0f'], '🚴🏻‍♀️ E4.0 woman biking: light skin tone'),
+  (['\u{1f6b4}\u{1f3fb}\u200d\u2640'], '🚴🏻‍♀ E4.0 woman biking: light skin tone'),
+  (['\u{1f6b4}\u{1f3fc}\u200d\u2640\ufe0f'], '🚴🏼‍♀️ E4.0 woman biking: medium-light skin tone'),
+  (['\u{1f6b4}\u{1f3fc}\u200d\u2640'], '🚴🏼‍♀ E4.0 woman biking: medium-light skin tone'),
+  (['\u{1f6b4}\u{1f3fd}\u200d\u2640\ufe0f'], '🚴🏽‍♀️ E4.0 woman biking: medium skin tone'),
+  (['\u{1f6b4}\u{1f3fd}\u200d\u2640'], '🚴🏽‍♀ E4.0 woman biking: medium skin tone'),
+  (['\u{1f6b4}\u{1f3fe}\u200d\u2640\ufe0f'], '🚴🏾‍♀️ E4.0 woman biking: medium-dark skin tone'),
+  (['\u{1f6b4}\u{1f3fe}\u200d\u2640'], '🚴🏾‍♀ E4.0 woman biking: medium-dark skin tone'),
+  (['\u{1f6b4}\u{1f3ff}\u200d\u2640\ufe0f'], '🚴🏿‍♀️ E4.0 woman biking: dark skin tone'),
+  (['\u{1f6b4}\u{1f3ff}\u200d\u2640'], '🚴🏿‍♀ E4.0 woman biking: dark skin tone'),
   (['\u{1f6b5}'], '🚵 E1.0 person mountain biking'),
   (['\u{1f6b5}\u{1f3fb}'], '🚵🏻 E1.0 person mountain biking: light skin tone'),
-  (
-    ['\u{1f6b5}\u{1f3fc}'],
-    '🚵🏼 E1.0 person mountain biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fd}'],
-    '🚵🏽 E1.0 person mountain biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fe}'],
-    '🚵🏾 E1.0 person mountain biking: medium-dark skin tone'
-  ),
+  (['\u{1f6b5}\u{1f3fc}'], '🚵🏼 E1.0 person mountain biking: medium-light skin tone'),
+  (['\u{1f6b5}\u{1f3fd}'], '🚵🏽 E1.0 person mountain biking: medium skin tone'),
+  (['\u{1f6b5}\u{1f3fe}'], '🚵🏾 E1.0 person mountain biking: medium-dark skin tone'),
   (['\u{1f6b5}\u{1f3ff}'], '🚵🏿 E1.0 person mountain biking: dark skin tone'),
   (['\u{1f6b5}\u200d\u2642\ufe0f'], '🚵‍♂️ E4.0 man mountain biking'),
   (['\u{1f6b5}\u200d\u2642'], '🚵‍♂ E4.0 man mountain biking'),
-  (
-    ['\u{1f6b5}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🚵🏻‍♂️ E4.0 man mountain biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fb}\u200d\u2642'],
-    '🚵🏻‍♂ E4.0 man mountain biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🚵🏼‍♂️ E4.0 man mountain biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fc}\u200d\u2642'],
-    '🚵🏼‍♂ E4.0 man mountain biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🚵🏽‍♂️ E4.0 man mountain biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fd}\u200d\u2642'],
-    '🚵🏽‍♂ E4.0 man mountain biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🚵🏾‍♂️ E4.0 man mountain biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fe}\u200d\u2642'],
-    '🚵🏾‍♂ E4.0 man mountain biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🚵🏿‍♂️ E4.0 man mountain biking: dark skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3ff}\u200d\u2642'],
-    '🚵🏿‍♂ E4.0 man mountain biking: dark skin tone'
-  ),
+  (['\u{1f6b5}\u{1f3fb}\u200d\u2642\ufe0f'], '🚵🏻‍♂️ E4.0 man mountain biking: light skin tone'),
+  (['\u{1f6b5}\u{1f3fb}\u200d\u2642'], '🚵🏻‍♂ E4.0 man mountain biking: light skin tone'),
+  (['\u{1f6b5}\u{1f3fc}\u200d\u2642\ufe0f'], '🚵🏼‍♂️ E4.0 man mountain biking: medium-light skin tone'),
+  (['\u{1f6b5}\u{1f3fc}\u200d\u2642'], '🚵🏼‍♂ E4.0 man mountain biking: medium-light skin tone'),
+  (['\u{1f6b5}\u{1f3fd}\u200d\u2642\ufe0f'], '🚵🏽‍♂️ E4.0 man mountain biking: medium skin tone'),
+  (['\u{1f6b5}\u{1f3fd}\u200d\u2642'], '🚵🏽‍♂ E4.0 man mountain biking: medium skin tone'),
+  (['\u{1f6b5}\u{1f3fe}\u200d\u2642\ufe0f'], '🚵🏾‍♂️ E4.0 man mountain biking: medium-dark skin tone'),
+  (['\u{1f6b5}\u{1f3fe}\u200d\u2642'], '🚵🏾‍♂ E4.0 man mountain biking: medium-dark skin tone'),
+  (['\u{1f6b5}\u{1f3ff}\u200d\u2642\ufe0f'], '🚵🏿‍♂️ E4.0 man mountain biking: dark skin tone'),
+  (['\u{1f6b5}\u{1f3ff}\u200d\u2642'], '🚵🏿‍♂ E4.0 man mountain biking: dark skin tone'),
   (['\u{1f6b5}\u200d\u2640\ufe0f'], '🚵‍♀️ E4.0 woman mountain biking'),
   (['\u{1f6b5}\u200d\u2640'], '🚵‍♀ E4.0 woman mountain biking'),
-  (
-    ['\u{1f6b5}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🚵🏻‍♀️ E4.0 woman mountain biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fb}\u200d\u2640'],
-    '🚵🏻‍♀ E4.0 woman mountain biking: light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🚵🏼‍♀️ E4.0 woman mountain biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fc}\u200d\u2640'],
-    '🚵🏼‍♀ E4.0 woman mountain biking: medium-light skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🚵🏽‍♀️ E4.0 woman mountain biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fd}\u200d\u2640'],
-    '🚵🏽‍♀ E4.0 woman mountain biking: medium skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🚵🏾‍♀️ E4.0 woman mountain biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3fe}\u200d\u2640'],
-    '🚵🏾‍♀ E4.0 woman mountain biking: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🚵🏿‍♀️ E4.0 woman mountain biking: dark skin tone'
-  ),
-  (
-    ['\u{1f6b5}\u{1f3ff}\u200d\u2640'],
-    '🚵🏿‍♀ E4.0 woman mountain biking: dark skin tone'
-  ),
+  (['\u{1f6b5}\u{1f3fb}\u200d\u2640\ufe0f'], '🚵🏻‍♀️ E4.0 woman mountain biking: light skin tone'),
+  (['\u{1f6b5}\u{1f3fb}\u200d\u2640'], '🚵🏻‍♀ E4.0 woman mountain biking: light skin tone'),
+  (['\u{1f6b5}\u{1f3fc}\u200d\u2640\ufe0f'], '🚵🏼‍♀️ E4.0 woman mountain biking: medium-light skin tone'),
+  (['\u{1f6b5}\u{1f3fc}\u200d\u2640'], '🚵🏼‍♀ E4.0 woman mountain biking: medium-light skin tone'),
+  (['\u{1f6b5}\u{1f3fd}\u200d\u2640\ufe0f'], '🚵🏽‍♀️ E4.0 woman mountain biking: medium skin tone'),
+  (['\u{1f6b5}\u{1f3fd}\u200d\u2640'], '🚵🏽‍♀ E4.0 woman mountain biking: medium skin tone'),
+  (['\u{1f6b5}\u{1f3fe}\u200d\u2640\ufe0f'], '🚵🏾‍♀️ E4.0 woman mountain biking: medium-dark skin tone'),
+  (['\u{1f6b5}\u{1f3fe}\u200d\u2640'], '🚵🏾‍♀ E4.0 woman mountain biking: medium-dark skin tone'),
+  (['\u{1f6b5}\u{1f3ff}\u200d\u2640\ufe0f'], '🚵🏿‍♀️ E4.0 woman mountain biking: dark skin tone'),
+  (['\u{1f6b5}\u{1f3ff}\u200d\u2640'], '🚵🏿‍♀ E4.0 woman mountain biking: dark skin tone'),
   (['\u{1f938}'], '🤸 E3.0 person cartwheeling'),
   (['\u{1f938}\u{1f3fb}'], '🤸🏻 E3.0 person cartwheeling: light skin tone'),
-  (
-    ['\u{1f938}\u{1f3fc}'],
-    '🤸🏼 E3.0 person cartwheeling: medium-light skin tone'
-  ),
+  (['\u{1f938}\u{1f3fc}'], '🤸🏼 E3.0 person cartwheeling: medium-light skin tone'),
   (['\u{1f938}\u{1f3fd}'], '🤸🏽 E3.0 person cartwheeling: medium skin tone'),
-  (
-    ['\u{1f938}\u{1f3fe}'],
-    '🤸🏾 E3.0 person cartwheeling: medium-dark skin tone'
-  ),
+  (['\u{1f938}\u{1f3fe}'], '🤸🏾 E3.0 person cartwheeling: medium-dark skin tone'),
   (['\u{1f938}\u{1f3ff}'], '🤸🏿 E3.0 person cartwheeling: dark skin tone'),
   (['\u{1f938}\u200d\u2642\ufe0f'], '🤸‍♂️ E4.0 man cartwheeling'),
   (['\u{1f938}\u200d\u2642'], '🤸‍♂ E4.0 man cartwheeling'),
-  (
-    ['\u{1f938}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🤸🏻‍♂️ E4.0 man cartwheeling: light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fb}\u200d\u2642'],
-    '🤸🏻‍♂ E4.0 man cartwheeling: light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🤸🏼‍♂️ E4.0 man cartwheeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fc}\u200d\u2642'],
-    '🤸🏼‍♂ E4.0 man cartwheeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🤸🏽‍♂️ E4.0 man cartwheeling: medium skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fd}\u200d\u2642'],
-    '🤸🏽‍♂ E4.0 man cartwheeling: medium skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🤸🏾‍♂️ E4.0 man cartwheeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fe}\u200d\u2642'],
-    '🤸🏾‍♂ E4.0 man cartwheeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🤸🏿‍♂️ E4.0 man cartwheeling: dark skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3ff}\u200d\u2642'],
-    '🤸🏿‍♂ E4.0 man cartwheeling: dark skin tone'
-  ),
+  (['\u{1f938}\u{1f3fb}\u200d\u2642\ufe0f'], '🤸🏻‍♂️ E4.0 man cartwheeling: light skin tone'),
+  (['\u{1f938}\u{1f3fb}\u200d\u2642'], '🤸🏻‍♂ E4.0 man cartwheeling: light skin tone'),
+  (['\u{1f938}\u{1f3fc}\u200d\u2642\ufe0f'], '🤸🏼‍♂️ E4.0 man cartwheeling: medium-light skin tone'),
+  (['\u{1f938}\u{1f3fc}\u200d\u2642'], '🤸🏼‍♂ E4.0 man cartwheeling: medium-light skin tone'),
+  (['\u{1f938}\u{1f3fd}\u200d\u2642\ufe0f'], '🤸🏽‍♂️ E4.0 man cartwheeling: medium skin tone'),
+  (['\u{1f938}\u{1f3fd}\u200d\u2642'], '🤸🏽‍♂ E4.0 man cartwheeling: medium skin tone'),
+  (['\u{1f938}\u{1f3fe}\u200d\u2642\ufe0f'], '🤸🏾‍♂️ E4.0 man cartwheeling: medium-dark skin tone'),
+  (['\u{1f938}\u{1f3fe}\u200d\u2642'], '🤸🏾‍♂ E4.0 man cartwheeling: medium-dark skin tone'),
+  (['\u{1f938}\u{1f3ff}\u200d\u2642\ufe0f'], '🤸🏿‍♂️ E4.0 man cartwheeling: dark skin tone'),
+  (['\u{1f938}\u{1f3ff}\u200d\u2642'], '🤸🏿‍♂ E4.0 man cartwheeling: dark skin tone'),
   (['\u{1f938}\u200d\u2640\ufe0f'], '🤸‍♀️ E4.0 woman cartwheeling'),
   (['\u{1f938}\u200d\u2640'], '🤸‍♀ E4.0 woman cartwheeling'),
-  (
-    ['\u{1f938}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🤸🏻‍♀️ E4.0 woman cartwheeling: light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fb}\u200d\u2640'],
-    '🤸🏻‍♀ E4.0 woman cartwheeling: light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🤸🏼‍♀️ E4.0 woman cartwheeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fc}\u200d\u2640'],
-    '🤸🏼‍♀ E4.0 woman cartwheeling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🤸🏽‍♀️ E4.0 woman cartwheeling: medium skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fd}\u200d\u2640'],
-    '🤸🏽‍♀ E4.0 woman cartwheeling: medium skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🤸🏾‍♀️ E4.0 woman cartwheeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3fe}\u200d\u2640'],
-    '🤸🏾‍♀ E4.0 woman cartwheeling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🤸🏿‍♀️ E4.0 woman cartwheeling: dark skin tone'
-  ),
-  (
-    ['\u{1f938}\u{1f3ff}\u200d\u2640'],
-    '🤸🏿‍♀ E4.0 woman cartwheeling: dark skin tone'
-  ),
+  (['\u{1f938}\u{1f3fb}\u200d\u2640\ufe0f'], '🤸🏻‍♀️ E4.0 woman cartwheeling: light skin tone'),
+  (['\u{1f938}\u{1f3fb}\u200d\u2640'], '🤸🏻‍♀ E4.0 woman cartwheeling: light skin tone'),
+  (['\u{1f938}\u{1f3fc}\u200d\u2640\ufe0f'], '🤸🏼‍♀️ E4.0 woman cartwheeling: medium-light skin tone'),
+  (['\u{1f938}\u{1f3fc}\u200d\u2640'], '🤸🏼‍♀ E4.0 woman cartwheeling: medium-light skin tone'),
+  (['\u{1f938}\u{1f3fd}\u200d\u2640\ufe0f'], '🤸🏽‍♀️ E4.0 woman cartwheeling: medium skin tone'),
+  (['\u{1f938}\u{1f3fd}\u200d\u2640'], '🤸🏽‍♀ E4.0 woman cartwheeling: medium skin tone'),
+  (['\u{1f938}\u{1f3fe}\u200d\u2640\ufe0f'], '🤸🏾‍♀️ E4.0 woman cartwheeling: medium-dark skin tone'),
+  (['\u{1f938}\u{1f3fe}\u200d\u2640'], '🤸🏾‍♀ E4.0 woman cartwheeling: medium-dark skin tone'),
+  (['\u{1f938}\u{1f3ff}\u200d\u2640\ufe0f'], '🤸🏿‍♀️ E4.0 woman cartwheeling: dark skin tone'),
+  (['\u{1f938}\u{1f3ff}\u200d\u2640'], '🤸🏿‍♀ E4.0 woman cartwheeling: dark skin tone'),
   (['\u{1f93c}'], '🤼 E3.0 people wrestling'),
   (['\u{1f93c}\u200d\u2642\ufe0f'], '🤼‍♂️ E4.0 men wrestling'),
   (['\u{1f93c}\u200d\u2642'], '🤼‍♂ E4.0 men wrestling'),
   (['\u{1f93c}\u200d\u2640\ufe0f'], '🤼‍♀️ E4.0 women wrestling'),
   (['\u{1f93c}\u200d\u2640'], '🤼‍♀ E4.0 women wrestling'),
   (['\u{1f93d}'], '🤽 E3.0 person playing water polo'),
-  (
-    ['\u{1f93d}\u{1f3fb}'],
-    '🤽🏻 E3.0 person playing water polo: light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fc}'],
-    '🤽🏼 E3.0 person playing water polo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fd}'],
-    '🤽🏽 E3.0 person playing water polo: medium skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fe}'],
-    '🤽🏾 E3.0 person playing water polo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3ff}'],
-    '🤽🏿 E3.0 person playing water polo: dark skin tone'
-  ),
+  (['\u{1f93d}\u{1f3fb}'], '🤽🏻 E3.0 person playing water polo: light skin tone'),
+  (['\u{1f93d}\u{1f3fc}'], '🤽🏼 E3.0 person playing water polo: medium-light skin tone'),
+  (['\u{1f93d}\u{1f3fd}'], '🤽🏽 E3.0 person playing water polo: medium skin tone'),
+  (['\u{1f93d}\u{1f3fe}'], '🤽🏾 E3.0 person playing water polo: medium-dark skin tone'),
+  (['\u{1f93d}\u{1f3ff}'], '🤽🏿 E3.0 person playing water polo: dark skin tone'),
   (['\u{1f93d}\u200d\u2642\ufe0f'], '🤽‍♂️ E4.0 man playing water polo'),
   (['\u{1f93d}\u200d\u2642'], '🤽‍♂ E4.0 man playing water polo'),
-  (
-    ['\u{1f93d}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🤽🏻‍♂️ E4.0 man playing water polo: light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fb}\u200d\u2642'],
-    '🤽🏻‍♂ E4.0 man playing water polo: light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🤽🏼‍♂️ E4.0 man playing water polo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fc}\u200d\u2642'],
-    '🤽🏼‍♂ E4.0 man playing water polo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🤽🏽‍♂️ E4.0 man playing water polo: medium skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fd}\u200d\u2642'],
-    '🤽🏽‍♂ E4.0 man playing water polo: medium skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🤽🏾‍♂️ E4.0 man playing water polo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fe}\u200d\u2642'],
-    '🤽🏾‍♂ E4.0 man playing water polo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🤽🏿‍♂️ E4.0 man playing water polo: dark skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3ff}\u200d\u2642'],
-    '🤽🏿‍♂ E4.0 man playing water polo: dark skin tone'
-  ),
+  (['\u{1f93d}\u{1f3fb}\u200d\u2642\ufe0f'], '🤽🏻‍♂️ E4.0 man playing water polo: light skin tone'),
+  (['\u{1f93d}\u{1f3fb}\u200d\u2642'], '🤽🏻‍♂ E4.0 man playing water polo: light skin tone'),
+  (['\u{1f93d}\u{1f3fc}\u200d\u2642\ufe0f'], '🤽🏼‍♂️ E4.0 man playing water polo: medium-light skin tone'),
+  (['\u{1f93d}\u{1f3fc}\u200d\u2642'], '🤽🏼‍♂ E4.0 man playing water polo: medium-light skin tone'),
+  (['\u{1f93d}\u{1f3fd}\u200d\u2642\ufe0f'], '🤽🏽‍♂️ E4.0 man playing water polo: medium skin tone'),
+  (['\u{1f93d}\u{1f3fd}\u200d\u2642'], '🤽🏽‍♂ E4.0 man playing water polo: medium skin tone'),
+  (['\u{1f93d}\u{1f3fe}\u200d\u2642\ufe0f'], '🤽🏾‍♂️ E4.0 man playing water polo: medium-dark skin tone'),
+  (['\u{1f93d}\u{1f3fe}\u200d\u2642'], '🤽🏾‍♂ E4.0 man playing water polo: medium-dark skin tone'),
+  (['\u{1f93d}\u{1f3ff}\u200d\u2642\ufe0f'], '🤽🏿‍♂️ E4.0 man playing water polo: dark skin tone'),
+  (['\u{1f93d}\u{1f3ff}\u200d\u2642'], '🤽🏿‍♂ E4.0 man playing water polo: dark skin tone'),
   (['\u{1f93d}\u200d\u2640\ufe0f'], '🤽‍♀️ E4.0 woman playing water polo'),
   (['\u{1f93d}\u200d\u2640'], '🤽‍♀ E4.0 woman playing water polo'),
-  (
-    ['\u{1f93d}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🤽🏻‍♀️ E4.0 woman playing water polo: light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fb}\u200d\u2640'],
-    '🤽🏻‍♀ E4.0 woman playing water polo: light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🤽🏼‍♀️ E4.0 woman playing water polo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fc}\u200d\u2640'],
-    '🤽🏼‍♀ E4.0 woman playing water polo: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🤽🏽‍♀️ E4.0 woman playing water polo: medium skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fd}\u200d\u2640'],
-    '🤽🏽‍♀ E4.0 woman playing water polo: medium skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🤽🏾‍♀️ E4.0 woman playing water polo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3fe}\u200d\u2640'],
-    '🤽🏾‍♀ E4.0 woman playing water polo: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🤽🏿‍♀️ E4.0 woman playing water polo: dark skin tone'
-  ),
-  (
-    ['\u{1f93d}\u{1f3ff}\u200d\u2640'],
-    '🤽🏿‍♀ E4.0 woman playing water polo: dark skin tone'
-  ),
+  (['\u{1f93d}\u{1f3fb}\u200d\u2640\ufe0f'], '🤽🏻‍♀️ E4.0 woman playing water polo: light skin tone'),
+  (['\u{1f93d}\u{1f3fb}\u200d\u2640'], '🤽🏻‍♀ E4.0 woman playing water polo: light skin tone'),
+  (['\u{1f93d}\u{1f3fc}\u200d\u2640\ufe0f'], '🤽🏼‍♀️ E4.0 woman playing water polo: medium-light skin tone'),
+  (['\u{1f93d}\u{1f3fc}\u200d\u2640'], '🤽🏼‍♀ E4.0 woman playing water polo: medium-light skin tone'),
+  (['\u{1f93d}\u{1f3fd}\u200d\u2640\ufe0f'], '🤽🏽‍♀️ E4.0 woman playing water polo: medium skin tone'),
+  (['\u{1f93d}\u{1f3fd}\u200d\u2640'], '🤽🏽‍♀ E4.0 woman playing water polo: medium skin tone'),
+  (['\u{1f93d}\u{1f3fe}\u200d\u2640\ufe0f'], '🤽🏾‍♀️ E4.0 woman playing water polo: medium-dark skin tone'),
+  (['\u{1f93d}\u{1f3fe}\u200d\u2640'], '🤽🏾‍♀ E4.0 woman playing water polo: medium-dark skin tone'),
+  (['\u{1f93d}\u{1f3ff}\u200d\u2640\ufe0f'], '🤽🏿‍♀️ E4.0 woman playing water polo: dark skin tone'),
+  (['\u{1f93d}\u{1f3ff}\u200d\u2640'], '🤽🏿‍♀ E4.0 woman playing water polo: dark skin tone'),
   (['\u{1f93e}'], '🤾 E3.0 person playing handball'),
-  (
-    ['\u{1f93e}\u{1f3fb}'],
-    '🤾🏻 E3.0 person playing handball: light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fc}'],
-    '🤾🏼 E3.0 person playing handball: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fd}'],
-    '🤾🏽 E3.0 person playing handball: medium skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fe}'],
-    '🤾🏾 E3.0 person playing handball: medium-dark skin tone'
-  ),
+  (['\u{1f93e}\u{1f3fb}'], '🤾🏻 E3.0 person playing handball: light skin tone'),
+  (['\u{1f93e}\u{1f3fc}'], '🤾🏼 E3.0 person playing handball: medium-light skin tone'),
+  (['\u{1f93e}\u{1f3fd}'], '🤾🏽 E3.0 person playing handball: medium skin tone'),
+  (['\u{1f93e}\u{1f3fe}'], '🤾🏾 E3.0 person playing handball: medium-dark skin tone'),
   (['\u{1f93e}\u{1f3ff}'], '🤾🏿 E3.0 person playing handball: dark skin tone'),
   (['\u{1f93e}\u200d\u2642\ufe0f'], '🤾‍♂️ E4.0 man playing handball'),
   (['\u{1f93e}\u200d\u2642'], '🤾‍♂ E4.0 man playing handball'),
-  (
-    ['\u{1f93e}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🤾🏻‍♂️ E4.0 man playing handball: light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fb}\u200d\u2642'],
-    '🤾🏻‍♂ E4.0 man playing handball: light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🤾🏼‍♂️ E4.0 man playing handball: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fc}\u200d\u2642'],
-    '🤾🏼‍♂ E4.0 man playing handball: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🤾🏽‍♂️ E4.0 man playing handball: medium skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fd}\u200d\u2642'],
-    '🤾🏽‍♂ E4.0 man playing handball: medium skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🤾🏾‍♂️ E4.0 man playing handball: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fe}\u200d\u2642'],
-    '🤾🏾‍♂ E4.0 man playing handball: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🤾🏿‍♂️ E4.0 man playing handball: dark skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3ff}\u200d\u2642'],
-    '🤾🏿‍♂ E4.0 man playing handball: dark skin tone'
-  ),
+  (['\u{1f93e}\u{1f3fb}\u200d\u2642\ufe0f'], '🤾🏻‍♂️ E4.0 man playing handball: light skin tone'),
+  (['\u{1f93e}\u{1f3fb}\u200d\u2642'], '🤾🏻‍♂ E4.0 man playing handball: light skin tone'),
+  (['\u{1f93e}\u{1f3fc}\u200d\u2642\ufe0f'], '🤾🏼‍♂️ E4.0 man playing handball: medium-light skin tone'),
+  (['\u{1f93e}\u{1f3fc}\u200d\u2642'], '🤾🏼‍♂ E4.0 man playing handball: medium-light skin tone'),
+  (['\u{1f93e}\u{1f3fd}\u200d\u2642\ufe0f'], '🤾🏽‍♂️ E4.0 man playing handball: medium skin tone'),
+  (['\u{1f93e}\u{1f3fd}\u200d\u2642'], '🤾🏽‍♂ E4.0 man playing handball: medium skin tone'),
+  (['\u{1f93e}\u{1f3fe}\u200d\u2642\ufe0f'], '🤾🏾‍♂️ E4.0 man playing handball: medium-dark skin tone'),
+  (['\u{1f93e}\u{1f3fe}\u200d\u2642'], '🤾🏾‍♂ E4.0 man playing handball: medium-dark skin tone'),
+  (['\u{1f93e}\u{1f3ff}\u200d\u2642\ufe0f'], '🤾🏿‍♂️ E4.0 man playing handball: dark skin tone'),
+  (['\u{1f93e}\u{1f3ff}\u200d\u2642'], '🤾🏿‍♂ E4.0 man playing handball: dark skin tone'),
   (['\u{1f93e}\u200d\u2640\ufe0f'], '🤾‍♀️ E4.0 woman playing handball'),
   (['\u{1f93e}\u200d\u2640'], '🤾‍♀ E4.0 woman playing handball'),
-  (
-    ['\u{1f93e}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🤾🏻‍♀️ E4.0 woman playing handball: light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fb}\u200d\u2640'],
-    '🤾🏻‍♀ E4.0 woman playing handball: light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🤾🏼‍♀️ E4.0 woman playing handball: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fc}\u200d\u2640'],
-    '🤾🏼‍♀ E4.0 woman playing handball: medium-light skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🤾🏽‍♀️ E4.0 woman playing handball: medium skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fd}\u200d\u2640'],
-    '🤾🏽‍♀ E4.0 woman playing handball: medium skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🤾🏾‍♀️ E4.0 woman playing handball: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3fe}\u200d\u2640'],
-    '🤾🏾‍♀ E4.0 woman playing handball: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🤾🏿‍♀️ E4.0 woman playing handball: dark skin tone'
-  ),
-  (
-    ['\u{1f93e}\u{1f3ff}\u200d\u2640'],
-    '🤾🏿‍♀ E4.0 woman playing handball: dark skin tone'
-  ),
+  (['\u{1f93e}\u{1f3fb}\u200d\u2640\ufe0f'], '🤾🏻‍♀️ E4.0 woman playing handball: light skin tone'),
+  (['\u{1f93e}\u{1f3fb}\u200d\u2640'], '🤾🏻‍♀ E4.0 woman playing handball: light skin tone'),
+  (['\u{1f93e}\u{1f3fc}\u200d\u2640\ufe0f'], '🤾🏼‍♀️ E4.0 woman playing handball: medium-light skin tone'),
+  (['\u{1f93e}\u{1f3fc}\u200d\u2640'], '🤾🏼‍♀ E4.0 woman playing handball: medium-light skin tone'),
+  (['\u{1f93e}\u{1f3fd}\u200d\u2640\ufe0f'], '🤾🏽‍♀️ E4.0 woman playing handball: medium skin tone'),
+  (['\u{1f93e}\u{1f3fd}\u200d\u2640'], '🤾🏽‍♀ E4.0 woman playing handball: medium skin tone'),
+  (['\u{1f93e}\u{1f3fe}\u200d\u2640\ufe0f'], '🤾🏾‍♀️ E4.0 woman playing handball: medium-dark skin tone'),
+  (['\u{1f93e}\u{1f3fe}\u200d\u2640'], '🤾🏾‍♀ E4.0 woman playing handball: medium-dark skin tone'),
+  (['\u{1f93e}\u{1f3ff}\u200d\u2640\ufe0f'], '🤾🏿‍♀️ E4.0 woman playing handball: dark skin tone'),
+  (['\u{1f93e}\u{1f3ff}\u200d\u2640'], '🤾🏿‍♀ E4.0 woman playing handball: dark skin tone'),
   (['\u{1f939}'], '🤹 E3.0 person juggling'),
   (['\u{1f939}\u{1f3fb}'], '🤹🏻 E3.0 person juggling: light skin tone'),
   (['\u{1f939}\u{1f3fc}'], '🤹🏼 E3.0 person juggling: medium-light skin tone'),
@@ -12362,204 +3975,63 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f939}\u{1f3ff}'], '🤹🏿 E3.0 person juggling: dark skin tone'),
   (['\u{1f939}\u200d\u2642\ufe0f'], '🤹‍♂️ E4.0 man juggling'),
   (['\u{1f939}\u200d\u2642'], '🤹‍♂ E4.0 man juggling'),
-  (
-    ['\u{1f939}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🤹🏻‍♂️ E4.0 man juggling: light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fb}\u200d\u2642'],
-    '🤹🏻‍♂ E4.0 man juggling: light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🤹🏼‍♂️ E4.0 man juggling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fc}\u200d\u2642'],
-    '🤹🏼‍♂ E4.0 man juggling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🤹🏽‍♂️ E4.0 man juggling: medium skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fd}\u200d\u2642'],
-    '🤹🏽‍♂ E4.0 man juggling: medium skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🤹🏾‍♂️ E4.0 man juggling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fe}\u200d\u2642'],
-    '🤹🏾‍♂ E4.0 man juggling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🤹🏿‍♂️ E4.0 man juggling: dark skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3ff}\u200d\u2642'],
-    '🤹🏿‍♂ E4.0 man juggling: dark skin tone'
-  ),
+  (['\u{1f939}\u{1f3fb}\u200d\u2642\ufe0f'], '🤹🏻‍♂️ E4.0 man juggling: light skin tone'),
+  (['\u{1f939}\u{1f3fb}\u200d\u2642'], '🤹🏻‍♂ E4.0 man juggling: light skin tone'),
+  (['\u{1f939}\u{1f3fc}\u200d\u2642\ufe0f'], '🤹🏼‍♂️ E4.0 man juggling: medium-light skin tone'),
+  (['\u{1f939}\u{1f3fc}\u200d\u2642'], '🤹🏼‍♂ E4.0 man juggling: medium-light skin tone'),
+  (['\u{1f939}\u{1f3fd}\u200d\u2642\ufe0f'], '🤹🏽‍♂️ E4.0 man juggling: medium skin tone'),
+  (['\u{1f939}\u{1f3fd}\u200d\u2642'], '🤹🏽‍♂ E4.0 man juggling: medium skin tone'),
+  (['\u{1f939}\u{1f3fe}\u200d\u2642\ufe0f'], '🤹🏾‍♂️ E4.0 man juggling: medium-dark skin tone'),
+  (['\u{1f939}\u{1f3fe}\u200d\u2642'], '🤹🏾‍♂ E4.0 man juggling: medium-dark skin tone'),
+  (['\u{1f939}\u{1f3ff}\u200d\u2642\ufe0f'], '🤹🏿‍♂️ E4.0 man juggling: dark skin tone'),
+  (['\u{1f939}\u{1f3ff}\u200d\u2642'], '🤹🏿‍♂ E4.0 man juggling: dark skin tone'),
   (['\u{1f939}\u200d\u2640\ufe0f'], '🤹‍♀️ E4.0 woman juggling'),
   (['\u{1f939}\u200d\u2640'], '🤹‍♀ E4.0 woman juggling'),
-  (
-    ['\u{1f939}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🤹🏻‍♀️ E4.0 woman juggling: light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fb}\u200d\u2640'],
-    '🤹🏻‍♀ E4.0 woman juggling: light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🤹🏼‍♀️ E4.0 woman juggling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fc}\u200d\u2640'],
-    '🤹🏼‍♀ E4.0 woman juggling: medium-light skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🤹🏽‍♀️ E4.0 woman juggling: medium skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fd}\u200d\u2640'],
-    '🤹🏽‍♀ E4.0 woman juggling: medium skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🤹🏾‍♀️ E4.0 woman juggling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3fe}\u200d\u2640'],
-    '🤹🏾‍♀ E4.0 woman juggling: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🤹🏿‍♀️ E4.0 woman juggling: dark skin tone'
-  ),
-  (
-    ['\u{1f939}\u{1f3ff}\u200d\u2640'],
-    '🤹🏿‍♀ E4.0 woman juggling: dark skin tone'
-  ),
+  (['\u{1f939}\u{1f3fb}\u200d\u2640\ufe0f'], '🤹🏻‍♀️ E4.0 woman juggling: light skin tone'),
+  (['\u{1f939}\u{1f3fb}\u200d\u2640'], '🤹🏻‍♀ E4.0 woman juggling: light skin tone'),
+  (['\u{1f939}\u{1f3fc}\u200d\u2640\ufe0f'], '🤹🏼‍♀️ E4.0 woman juggling: medium-light skin tone'),
+  (['\u{1f939}\u{1f3fc}\u200d\u2640'], '🤹🏼‍♀ E4.0 woman juggling: medium-light skin tone'),
+  (['\u{1f939}\u{1f3fd}\u200d\u2640\ufe0f'], '🤹🏽‍♀️ E4.0 woman juggling: medium skin tone'),
+  (['\u{1f939}\u{1f3fd}\u200d\u2640'], '🤹🏽‍♀ E4.0 woman juggling: medium skin tone'),
+  (['\u{1f939}\u{1f3fe}\u200d\u2640\ufe0f'], '🤹🏾‍♀️ E4.0 woman juggling: medium-dark skin tone'),
+  (['\u{1f939}\u{1f3fe}\u200d\u2640'], '🤹🏾‍♀ E4.0 woman juggling: medium-dark skin tone'),
+  (['\u{1f939}\u{1f3ff}\u200d\u2640\ufe0f'], '🤹🏿‍♀️ E4.0 woman juggling: dark skin tone'),
+  (['\u{1f939}\u{1f3ff}\u200d\u2640'], '🤹🏿‍♀ E4.0 woman juggling: dark skin tone'),
   (['\u{1f9d8}'], '🧘 E5.0 person in lotus position'),
-  (
-    ['\u{1f9d8}\u{1f3fb}'],
-    '🧘🏻 E5.0 person in lotus position: light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fc}'],
-    '🧘🏼 E5.0 person in lotus position: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fd}'],
-    '🧘🏽 E5.0 person in lotus position: medium skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fe}'],
-    '🧘🏾 E5.0 person in lotus position: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3ff}'],
-    '🧘🏿 E5.0 person in lotus position: dark skin tone'
-  ),
+  (['\u{1f9d8}\u{1f3fb}'], '🧘🏻 E5.0 person in lotus position: light skin tone'),
+  (['\u{1f9d8}\u{1f3fc}'], '🧘🏼 E5.0 person in lotus position: medium-light skin tone'),
+  (['\u{1f9d8}\u{1f3fd}'], '🧘🏽 E5.0 person in lotus position: medium skin tone'),
+  (['\u{1f9d8}\u{1f3fe}'], '🧘🏾 E5.0 person in lotus position: medium-dark skin tone'),
+  (['\u{1f9d8}\u{1f3ff}'], '🧘🏿 E5.0 person in lotus position: dark skin tone'),
   (['\u{1f9d8}\u200d\u2642\ufe0f'], '🧘‍♂️ E5.0 man in lotus position'),
   (['\u{1f9d8}\u200d\u2642'], '🧘‍♂ E5.0 man in lotus position'),
-  (
-    ['\u{1f9d8}\u{1f3fb}\u200d\u2642\ufe0f'],
-    '🧘🏻‍♂️ E5.0 man in lotus position: light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fb}\u200d\u2642'],
-    '🧘🏻‍♂ E5.0 man in lotus position: light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fc}\u200d\u2642\ufe0f'],
-    '🧘🏼‍♂️ E5.0 man in lotus position: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fc}\u200d\u2642'],
-    '🧘🏼‍♂ E5.0 man in lotus position: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fd}\u200d\u2642\ufe0f'],
-    '🧘🏽‍♂️ E5.0 man in lotus position: medium skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fd}\u200d\u2642'],
-    '🧘🏽‍♂ E5.0 man in lotus position: medium skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fe}\u200d\u2642\ufe0f'],
-    '🧘🏾‍♂️ E5.0 man in lotus position: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fe}\u200d\u2642'],
-    '🧘🏾‍♂ E5.0 man in lotus position: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3ff}\u200d\u2642\ufe0f'],
-    '🧘🏿‍♂️ E5.0 man in lotus position: dark skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3ff}\u200d\u2642'],
-    '🧘🏿‍♂ E5.0 man in lotus position: dark skin tone'
-  ),
+  (['\u{1f9d8}\u{1f3fb}\u200d\u2642\ufe0f'], '🧘🏻‍♂️ E5.0 man in lotus position: light skin tone'),
+  (['\u{1f9d8}\u{1f3fb}\u200d\u2642'], '🧘🏻‍♂ E5.0 man in lotus position: light skin tone'),
+  (['\u{1f9d8}\u{1f3fc}\u200d\u2642\ufe0f'], '🧘🏼‍♂️ E5.0 man in lotus position: medium-light skin tone'),
+  (['\u{1f9d8}\u{1f3fc}\u200d\u2642'], '🧘🏼‍♂ E5.0 man in lotus position: medium-light skin tone'),
+  (['\u{1f9d8}\u{1f3fd}\u200d\u2642\ufe0f'], '🧘🏽‍♂️ E5.0 man in lotus position: medium skin tone'),
+  (['\u{1f9d8}\u{1f3fd}\u200d\u2642'], '🧘🏽‍♂ E5.0 man in lotus position: medium skin tone'),
+  (['\u{1f9d8}\u{1f3fe}\u200d\u2642\ufe0f'], '🧘🏾‍♂️ E5.0 man in lotus position: medium-dark skin tone'),
+  (['\u{1f9d8}\u{1f3fe}\u200d\u2642'], '🧘🏾‍♂ E5.0 man in lotus position: medium-dark skin tone'),
+  (['\u{1f9d8}\u{1f3ff}\u200d\u2642\ufe0f'], '🧘🏿‍♂️ E5.0 man in lotus position: dark skin tone'),
+  (['\u{1f9d8}\u{1f3ff}\u200d\u2642'], '🧘🏿‍♂ E5.0 man in lotus position: dark skin tone'),
   (['\u{1f9d8}\u200d\u2640\ufe0f'], '🧘‍♀️ E5.0 woman in lotus position'),
   (['\u{1f9d8}\u200d\u2640'], '🧘‍♀ E5.0 woman in lotus position'),
-  (
-    ['\u{1f9d8}\u{1f3fb}\u200d\u2640\ufe0f'],
-    '🧘🏻‍♀️ E5.0 woman in lotus position: light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fb}\u200d\u2640'],
-    '🧘🏻‍♀ E5.0 woman in lotus position: light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fc}\u200d\u2640\ufe0f'],
-    '🧘🏼‍♀️ E5.0 woman in lotus position: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fc}\u200d\u2640'],
-    '🧘🏼‍♀ E5.0 woman in lotus position: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fd}\u200d\u2640\ufe0f'],
-    '🧘🏽‍♀️ E5.0 woman in lotus position: medium skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fd}\u200d\u2640'],
-    '🧘🏽‍♀ E5.0 woman in lotus position: medium skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fe}\u200d\u2640\ufe0f'],
-    '🧘🏾‍♀️ E5.0 woman in lotus position: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3fe}\u200d\u2640'],
-    '🧘🏾‍♀ E5.0 woman in lotus position: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3ff}\u200d\u2640\ufe0f'],
-    '🧘🏿‍♀️ E5.0 woman in lotus position: dark skin tone'
-  ),
-  (
-    ['\u{1f9d8}\u{1f3ff}\u200d\u2640'],
-    '🧘🏿‍♀ E5.0 woman in lotus position: dark skin tone'
-  ),
+  (['\u{1f9d8}\u{1f3fb}\u200d\u2640\ufe0f'], '🧘🏻‍♀️ E5.0 woman in lotus position: light skin tone'),
+  (['\u{1f9d8}\u{1f3fb}\u200d\u2640'], '🧘🏻‍♀ E5.0 woman in lotus position: light skin tone'),
+  (['\u{1f9d8}\u{1f3fc}\u200d\u2640\ufe0f'], '🧘🏼‍♀️ E5.0 woman in lotus position: medium-light skin tone'),
+  (['\u{1f9d8}\u{1f3fc}\u200d\u2640'], '🧘🏼‍♀ E5.0 woman in lotus position: medium-light skin tone'),
+  (['\u{1f9d8}\u{1f3fd}\u200d\u2640\ufe0f'], '🧘🏽‍♀️ E5.0 woman in lotus position: medium skin tone'),
+  (['\u{1f9d8}\u{1f3fd}\u200d\u2640'], '🧘🏽‍♀ E5.0 woman in lotus position: medium skin tone'),
+  (['\u{1f9d8}\u{1f3fe}\u200d\u2640\ufe0f'], '🧘🏾‍♀️ E5.0 woman in lotus position: medium-dark skin tone'),
+  (['\u{1f9d8}\u{1f3fe}\u200d\u2640'], '🧘🏾‍♀ E5.0 woman in lotus position: medium-dark skin tone'),
+  (['\u{1f9d8}\u{1f3ff}\u200d\u2640\ufe0f'], '🧘🏿‍♀️ E5.0 woman in lotus position: dark skin tone'),
+  (['\u{1f9d8}\u{1f3ff}\u200d\u2640'], '🧘🏿‍♀ E5.0 woman in lotus position: dark skin tone'),
   (['\u{1f6c0}'], '🛀 E0.6 person taking bath'),
   (['\u{1f6c0}\u{1f3fb}'], '🛀🏻 E1.0 person taking bath: light skin tone'),
-  (
-    ['\u{1f6c0}\u{1f3fc}'],
-    '🛀🏼 E1.0 person taking bath: medium-light skin tone'
-  ),
+  (['\u{1f6c0}\u{1f3fc}'], '🛀🏼 E1.0 person taking bath: medium-light skin tone'),
   (['\u{1f6c0}\u{1f3fd}'], '🛀🏽 E1.0 person taking bath: medium skin tone'),
-  (
-    ['\u{1f6c0}\u{1f3fe}'],
-    '🛀🏾 E1.0 person taking bath: medium-dark skin tone'
-  ),
+  (['\u{1f6c0}\u{1f3fe}'], '🛀🏾 E1.0 person taking bath: medium-dark skin tone'),
   (['\u{1f6c0}\u{1f3ff}'], '🛀🏿 E1.0 person taking bath: dark skin tone'),
   (['\u{1f6cc}'], '🛌 E1.0 person in bed'),
   (['\u{1f6cc}\u{1f3fb}'], '🛌🏻 E4.0 person in bed: light skin tone'),
@@ -12567,394 +4039,109 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f6cc}\u{1f3fd}'], '🛌🏽 E4.0 person in bed: medium skin tone'),
   (['\u{1f6cc}\u{1f3fe}'], '🛌🏾 E4.0 person in bed: medium-dark skin tone'),
   (['\u{1f6cc}\u{1f3ff}'], '🛌🏿 E4.0 person in bed: dark skin tone'),
-  (
-    ['\u{1f9d1}\u200d\u{1f91d}\u200d\u{1f9d1}'],
-    '🧑‍🤝‍🧑 E12.0 people holding hands'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏻‍🤝‍🧑🏻 E12.0 people holding hands: light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏻‍🤝‍🧑🏼 E12.1 people holding hands: light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏻‍🤝‍🧑🏽 E12.1 people holding hands: light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏻‍🤝‍🧑🏾 E12.1 people holding hands: light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏻‍🤝‍🧑🏿 E12.1 people holding hands: light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏼‍🤝‍🧑🏻 E12.0 people holding hands: medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏼‍🤝‍🧑🏼 E12.0 people holding hands: medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏼‍🤝‍🧑🏽 E12.1 people holding hands: medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏼‍🤝‍🧑🏾 E12.1 people holding hands: medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏼‍🤝‍🧑🏿 E12.1 people holding hands: medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏽‍🤝‍🧑🏻 E12.0 people holding hands: medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏽‍🤝‍🧑🏼 E12.0 people holding hands: medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏽‍🤝‍🧑🏽 E12.0 people holding hands: medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏽‍🤝‍🧑🏾 E12.1 people holding hands: medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏽‍🤝‍🧑🏿 E12.1 people holding hands: medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏾‍🤝‍🧑🏻 E12.0 people holding hands: medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏾‍🤝‍🧑🏼 E12.0 people holding hands: medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏾‍🤝‍🧑🏽 E12.0 people holding hands: medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏾‍🤝‍🧑🏾 E12.0 people holding hands: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏾‍🤝‍🧑🏿 E12.1 people holding hands: medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏿‍🤝‍🧑🏻 E12.0 people holding hands: dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏿‍🤝‍🧑🏼 E12.0 people holding hands: dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏿‍🤝‍🧑🏽 E12.0 people holding hands: dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏿‍🤝‍🧑🏾 E12.0 people holding hands: dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏿‍🤝‍🧑🏿 E12.0 people holding hands: dark skin tone'
-  ),
+  (['\u{1f9d1}\u200d\u{1f91d}\u200d\u{1f9d1}'], '🧑‍🤝‍🧑 E12.0 people holding hands'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏻‍🤝‍🧑🏻 E12.0 people holding hands: light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏻‍🤝‍🧑🏼 E12.1 people holding hands: light skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏻‍🤝‍🧑🏽 E12.1 people holding hands: light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏻‍🤝‍🧑🏾 E12.1 people holding hands: light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏻‍🤝‍🧑🏿 E12.1 people holding hands: light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏼‍🤝‍🧑🏻 E12.0 people holding hands: medium-light skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏼‍🤝‍🧑🏼 E12.0 people holding hands: medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏼‍🤝‍🧑🏽 E12.1 people holding hands: medium-light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏼‍🤝‍🧑🏾 E12.1 people holding hands: medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏼‍🤝‍🧑🏿 E12.1 people holding hands: medium-light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏽‍🤝‍🧑🏻 E12.0 people holding hands: medium skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏽‍🤝‍🧑🏼 E12.0 people holding hands: medium skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏽‍🤝‍🧑🏽 E12.0 people holding hands: medium skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏽‍🤝‍🧑🏾 E12.1 people holding hands: medium skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏽‍🤝‍🧑🏿 E12.1 people holding hands: medium skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏾‍🤝‍🧑🏻 E12.0 people holding hands: medium-dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏾‍🤝‍🧑🏼 E12.0 people holding hands: medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏾‍🤝‍🧑🏽 E12.0 people holding hands: medium-dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏾‍🤝‍🧑🏾 E12.0 people holding hands: medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏾‍🤝‍🧑🏿 E12.1 people holding hands: medium-dark skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏿‍🤝‍🧑🏻 E12.0 people holding hands: dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏿‍🤝‍🧑🏼 E12.0 people holding hands: dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏿‍🤝‍🧑🏽 E12.0 people holding hands: dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏿‍🤝‍🧑🏾 E12.0 people holding hands: dark skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏿‍🤝‍🧑🏿 E12.0 people holding hands: dark skin tone'),
   (['\u{1f46d}'], '👭 E1.0 women holding hands'),
   (['\u{1f46d}\u{1f3fb}'], '👭🏻 E12.0 women holding hands: light skin tone'),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏻‍🤝‍👩🏼 E12.1 women holding hands: light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏻‍🤝‍👩🏽 E12.1 women holding hands: light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏻‍🤝‍👩🏾 E12.1 women holding hands: light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏻‍🤝‍👩🏿 E12.1 women holding hands: light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏼‍🤝‍👩🏻 E12.0 women holding hands: medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f46d}\u{1f3fc}'],
-    '👭🏼 E12.0 women holding hands: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏼‍🤝‍👩🏽 E12.1 women holding hands: medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏼‍🤝‍👩🏾 E12.1 women holding hands: medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏼‍🤝‍👩🏿 E12.1 women holding hands: medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏽‍🤝‍👩🏻 E12.0 women holding hands: medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏽‍🤝‍👩🏼 E12.0 women holding hands: medium skin tone, medium-light skin tone'
-  ),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'], '👩🏻‍🤝‍👩🏼 E12.1 women holding hands: light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'], '👩🏻‍🤝‍👩🏽 E12.1 women holding hands: light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'], '👩🏻‍🤝‍👩🏾 E12.1 women holding hands: light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'], '👩🏻‍🤝‍👩🏿 E12.1 women holding hands: light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'], '👩🏼‍🤝‍👩🏻 E12.0 women holding hands: medium-light skin tone, light skin tone'),
+  (['\u{1f46d}\u{1f3fc}'], '👭🏼 E12.0 women holding hands: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'], '👩🏼‍🤝‍👩🏽 E12.1 women holding hands: medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'], '👩🏼‍🤝‍👩🏾 E12.1 women holding hands: medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'], '👩🏼‍🤝‍👩🏿 E12.1 women holding hands: medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'], '👩🏽‍🤝‍👩🏻 E12.0 women holding hands: medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'], '👩🏽‍🤝‍👩🏼 E12.0 women holding hands: medium skin tone, medium-light skin tone'),
   (['\u{1f46d}\u{1f3fd}'], '👭🏽 E12.0 women holding hands: medium skin tone'),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏽‍🤝‍👩🏾 E12.1 women holding hands: medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏽‍🤝‍👩🏿 E12.1 women holding hands: medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏾‍🤝‍👩🏻 E12.0 women holding hands: medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏾‍🤝‍👩🏼 E12.0 women holding hands: medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏾‍🤝‍👩🏽 E12.0 women holding hands: medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f46d}\u{1f3fe}'],
-    '👭🏾 E12.0 women holding hands: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏾‍🤝‍👩🏿 E12.1 women holding hands: medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏿‍🤝‍👩🏻 E12.0 women holding hands: dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏿‍🤝‍👩🏼 E12.0 women holding hands: dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏿‍🤝‍👩🏽 E12.0 women holding hands: dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏿‍🤝‍👩🏾 E12.0 women holding hands: dark skin tone, medium-dark skin tone'
-  ),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'], '👩🏽‍🤝‍👩🏾 E12.1 women holding hands: medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'], '👩🏽‍🤝‍👩🏿 E12.1 women holding hands: medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'], '👩🏾‍🤝‍👩🏻 E12.0 women holding hands: medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'], '👩🏾‍🤝‍👩🏼 E12.0 women holding hands: medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'], '👩🏾‍🤝‍👩🏽 E12.0 women holding hands: medium-dark skin tone, medium skin tone'),
+  (['\u{1f46d}\u{1f3fe}'], '👭🏾 E12.0 women holding hands: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'], '👩🏾‍🤝‍👩🏿 E12.1 women holding hands: medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'], '👩🏿‍🤝‍👩🏻 E12.0 women holding hands: dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'], '👩🏿‍🤝‍👩🏼 E12.0 women holding hands: dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'], '👩🏿‍🤝‍👩🏽 E12.0 women holding hands: dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'], '👩🏿‍🤝‍👩🏾 E12.0 women holding hands: dark skin tone, medium-dark skin tone'),
   (['\u{1f46d}\u{1f3ff}'], '👭🏿 E12.0 women holding hands: dark skin tone'),
   (['\u{1f46b}'], '👫 E0.6 woman and man holding hands'),
-  (
-    ['\u{1f46b}\u{1f3fb}'],
-    '👫🏻 E12.0 woman and man holding hands: light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏻‍🤝‍👨🏼 E12.0 woman and man holding hands: light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏻‍🤝‍👨🏽 E12.0 woman and man holding hands: light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏻‍🤝‍👨🏾 E12.0 woman and man holding hands: light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏻‍🤝‍👨🏿 E12.0 woman and man holding hands: light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏼‍🤝‍👨🏻 E12.0 woman and man holding hands: medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f46b}\u{1f3fc}'],
-    '👫🏼 E12.0 woman and man holding hands: medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏼‍🤝‍👨🏽 E12.0 woman and man holding hands: medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏼‍🤝‍👨🏾 E12.0 woman and man holding hands: medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏼‍🤝‍👨🏿 E12.0 woman and man holding hands: medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏽‍🤝‍👨🏻 E12.0 woman and man holding hands: medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏽‍🤝‍👨🏼 E12.0 woman and man holding hands: medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f46b}\u{1f3fd}'],
-    '👫🏽 E12.0 woman and man holding hands: medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏽‍🤝‍👨🏾 E12.0 woman and man holding hands: medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏽‍🤝‍👨🏿 E12.0 woman and man holding hands: medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏾‍🤝‍👨🏻 E12.0 woman and man holding hands: medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏾‍🤝‍👨🏼 E12.0 woman and man holding hands: medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏾‍🤝‍👨🏽 E12.0 woman and man holding hands: medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f46b}\u{1f3fe}'],
-    '👫🏾 E12.0 woman and man holding hands: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏾‍🤝‍👨🏿 E12.0 woman and man holding hands: medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏿‍🤝‍👨🏻 E12.0 woman and man holding hands: dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏿‍🤝‍👨🏼 E12.0 woman and man holding hands: dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏿‍🤝‍👨🏽 E12.0 woman and man holding hands: dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏿‍🤝‍👨🏾 E12.0 woman and man holding hands: dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f46b}\u{1f3ff}'],
-    '👫🏿 E12.0 woman and man holding hands: dark skin tone'
-  ),
+  (['\u{1f46b}\u{1f3fb}'], '👫🏻 E12.0 woman and man holding hands: light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👩🏻‍🤝‍👨🏼 E12.0 woman and man holding hands: light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👩🏻‍🤝‍👨🏽 E12.0 woman and man holding hands: light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👩🏻‍🤝‍👨🏾 E12.0 woman and man holding hands: light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👩🏻‍🤝‍👨🏿 E12.0 woman and man holding hands: light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👩🏼‍🤝‍👨🏻 E12.0 woman and man holding hands: medium-light skin tone, light skin tone'),
+  (['\u{1f46b}\u{1f3fc}'], '👫🏼 E12.0 woman and man holding hands: medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👩🏼‍🤝‍👨🏽 E12.0 woman and man holding hands: medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👩🏼‍🤝‍👨🏾 E12.0 woman and man holding hands: medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👩🏼‍🤝‍👨🏿 E12.0 woman and man holding hands: medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👩🏽‍🤝‍👨🏻 E12.0 woman and man holding hands: medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👩🏽‍🤝‍👨🏼 E12.0 woman and man holding hands: medium skin tone, medium-light skin tone'),
+  (['\u{1f46b}\u{1f3fd}'], '👫🏽 E12.0 woman and man holding hands: medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👩🏽‍🤝‍👨🏾 E12.0 woman and man holding hands: medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👩🏽‍🤝‍👨🏿 E12.0 woman and man holding hands: medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👩🏾‍🤝‍👨🏻 E12.0 woman and man holding hands: medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👩🏾‍🤝‍👨🏼 E12.0 woman and man holding hands: medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👩🏾‍🤝‍👨🏽 E12.0 woman and man holding hands: medium-dark skin tone, medium skin tone'),
+  (['\u{1f46b}\u{1f3fe}'], '👫🏾 E12.0 woman and man holding hands: medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👩🏾‍🤝‍👨🏿 E12.0 woman and man holding hands: medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👩🏿‍🤝‍👨🏻 E12.0 woman and man holding hands: dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👩🏿‍🤝‍👨🏼 E12.0 woman and man holding hands: dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👩🏿‍🤝‍👨🏽 E12.0 woman and man holding hands: dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👩🏿‍🤝‍👨🏾 E12.0 woman and man holding hands: dark skin tone, medium-dark skin tone'),
+  (['\u{1f46b}\u{1f3ff}'], '👫🏿 E12.0 woman and man holding hands: dark skin tone'),
   (['\u{1f46c}'], '👬 E1.0 men holding hands'),
   (['\u{1f46c}\u{1f3fb}'], '👬🏻 E12.0 men holding hands: light skin tone'),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏻‍🤝‍👨🏼 E12.1 men holding hands: light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏻‍🤝‍👨🏽 E12.1 men holding hands: light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏻‍🤝‍👨🏾 E12.1 men holding hands: light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏻‍🤝‍👨🏿 E12.1 men holding hands: light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏼‍🤝‍👨🏻 E12.0 men holding hands: medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f46c}\u{1f3fc}'],
-    '👬🏼 E12.0 men holding hands: medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏼‍🤝‍👨🏽 E12.1 men holding hands: medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏼‍🤝‍👨🏾 E12.1 men holding hands: medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏼‍🤝‍👨🏿 E12.1 men holding hands: medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏽‍🤝‍👨🏻 E12.0 men holding hands: medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏽‍🤝‍👨🏼 E12.0 men holding hands: medium skin tone, medium-light skin tone'
-  ),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👨🏻‍🤝‍👨🏼 E12.1 men holding hands: light skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👨🏻‍🤝‍👨🏽 E12.1 men holding hands: light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👨🏻‍🤝‍👨🏾 E12.1 men holding hands: light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👨🏻‍🤝‍👨🏿 E12.1 men holding hands: light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👨🏼‍🤝‍👨🏻 E12.0 men holding hands: medium-light skin tone, light skin tone'),
+  (['\u{1f46c}\u{1f3fc}'], '👬🏼 E12.0 men holding hands: medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👨🏼‍🤝‍👨🏽 E12.1 men holding hands: medium-light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👨🏼‍🤝‍👨🏾 E12.1 men holding hands: medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👨🏼‍🤝‍👨🏿 E12.1 men holding hands: medium-light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👨🏽‍🤝‍👨🏻 E12.0 men holding hands: medium skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👨🏽‍🤝‍👨🏼 E12.0 men holding hands: medium skin tone, medium-light skin tone'),
   (['\u{1f46c}\u{1f3fd}'], '👬🏽 E12.0 men holding hands: medium skin tone'),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏽‍🤝‍👨🏾 E12.1 men holding hands: medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏽‍🤝‍👨🏿 E12.1 men holding hands: medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏾‍🤝‍👨🏻 E12.0 men holding hands: medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏾‍🤝‍👨🏼 E12.0 men holding hands: medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏾‍🤝‍👨🏽 E12.0 men holding hands: medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f46c}\u{1f3fe}'],
-    '👬🏾 E12.0 men holding hands: medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏾‍🤝‍👨🏿 E12.1 men holding hands: medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏿‍🤝‍👨🏻 E12.0 men holding hands: dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏿‍🤝‍👨🏼 E12.0 men holding hands: dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏿‍🤝‍👨🏽 E12.0 men holding hands: dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏿‍🤝‍👨🏾 E12.0 men holding hands: dark skin tone, medium-dark skin tone'
-  ),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👨🏽‍🤝‍👨🏾 E12.1 men holding hands: medium skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👨🏽‍🤝‍👨🏿 E12.1 men holding hands: medium skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👨🏾‍🤝‍👨🏻 E12.0 men holding hands: medium-dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👨🏾‍🤝‍👨🏼 E12.0 men holding hands: medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👨🏾‍🤝‍👨🏽 E12.0 men holding hands: medium-dark skin tone, medium skin tone'),
+  (['\u{1f46c}\u{1f3fe}'], '👬🏾 E12.0 men holding hands: medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'], '👨🏾‍🤝‍👨🏿 E12.1 men holding hands: medium-dark skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'], '👨🏿‍🤝‍👨🏻 E12.0 men holding hands: dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'], '👨🏿‍🤝‍👨🏼 E12.0 men holding hands: dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'], '👨🏿‍🤝‍👨🏽 E12.0 men holding hands: dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'], '👨🏿‍🤝‍👨🏾 E12.0 men holding hands: dark skin tone, medium-dark skin tone'),
   (['\u{1f46c}\u{1f3ff}'], '👬🏿 E12.0 men holding hands: dark skin tone'),
   (['\u{1f48f}'], '💏 E0.6 kiss'),
   (['\u{1f48f}\u{1f3fb}'], '💏🏻 E13.1 kiss: light skin tone'),
@@ -12962,1883 +4149,439 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f48f}\u{1f3fd}'], '💏🏽 E13.1 kiss: medium skin tone'),
   (['\u{1f48f}\u{1f3fe}'], '💏🏾 E13.1 kiss: medium-dark skin tone'),
   (['\u{1f48f}\u{1f3ff}'], '💏🏿 E13.1 kiss: dark skin tone'),
-  (
-    [
-      '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-    ],
-    '🧑🏻‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏻‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, light skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-    ],
-    '🧑🏻‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏻‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-    ],
-    '🧑🏻‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏻‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-    ],
-    '🧑🏻‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏻‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-    ],
-    '🧑🏼‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏼‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, medium-light skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-    ],
-    '🧑🏼‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏼‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, medium-light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-    ],
-    '🧑🏼‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏼‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-    ],
-    '🧑🏼‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏼‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, medium-light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-    ],
-    '🧑🏽‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏽‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, medium skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-    ],
-    '🧑🏽‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏽‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, medium skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-    ],
-    '🧑🏽‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏽‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-    ],
-    '🧑🏽‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏽‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, medium skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-    ],
-    '🧑🏾‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏾‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, medium-dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-    ],
-    '🧑🏾‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏾‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-    ],
-    '🧑🏾‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏾‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-    ],
-    '🧑🏾‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏾‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-    ],
-    '🧑🏿‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏿‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-    ],
-    '🧑🏿‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏿‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-    ],
-    '🧑🏿‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏿‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-    ],
-    '🧑🏿‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏿‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}'],
-    '👩‍❤️‍💋‍👨 E2.0 kiss: woman, man'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}'],
-    '👩‍❤‍💋‍👨 E2.0 kiss: woman, man'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👩🏻‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏻‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👩🏻‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏻‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👩🏻‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏻‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👩🏻‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏻‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👩🏻‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏻‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👩🏼‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏼‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👩🏼‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏼‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👩🏼‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏼‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👩🏼‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏼‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👩🏼‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏼‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👩🏽‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏽‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, medium skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👩🏽‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏽‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👩🏽‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏽‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👩🏽‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏽‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👩🏽‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏽‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, medium skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👩🏾‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏾‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👩🏾‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏾‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👩🏾‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏾‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👩🏾‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏾‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👩🏾‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏾‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👩🏿‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏿‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👩🏿‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏿‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👩🏿‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏿‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👩🏿‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏿‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👩🏿‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏿‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}'],
-    '👨‍❤️‍💋‍👨 E2.0 kiss: man, man'
-  ),
-  (
-    ['\u{1f468}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}'],
-    '👨‍❤‍💋‍👨 E2.0 kiss: man, man'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👨🏻‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏻‍❤‍💋‍👨🏻 E13.1 kiss: man, man, light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👨🏻‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏻‍❤‍💋‍👨🏼 E13.1 kiss: man, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👨🏻‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏻‍❤‍💋‍👨🏽 E13.1 kiss: man, man, light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👨🏻‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏻‍❤‍💋‍👨🏾 E13.1 kiss: man, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👨🏻‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏻‍❤‍💋‍👨🏿 E13.1 kiss: man, man, light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👨🏼‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏼‍❤‍💋‍👨🏻 E13.1 kiss: man, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👨🏼‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏼‍❤‍💋‍👨🏼 E13.1 kiss: man, man, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👨🏼‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏼‍❤‍💋‍👨🏽 E13.1 kiss: man, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👨🏼‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏼‍❤‍💋‍👨🏾 E13.1 kiss: man, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👨🏼‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏼‍❤‍💋‍👨🏿 E13.1 kiss: man, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👨🏽‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏽‍❤‍💋‍👨🏻 E13.1 kiss: man, man, medium skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👨🏽‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏽‍❤‍💋‍👨🏼 E13.1 kiss: man, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👨🏽‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏽‍❤‍💋‍👨🏽 E13.1 kiss: man, man, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👨🏽‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏽‍❤‍💋‍👨🏾 E13.1 kiss: man, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👨🏽‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏽‍❤‍💋‍👨🏿 E13.1 kiss: man, man, medium skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👨🏾‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏾‍❤‍💋‍👨🏻 E13.1 kiss: man, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👨🏾‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏾‍❤‍💋‍👨🏼 E13.1 kiss: man, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👨🏾‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏾‍❤‍💋‍👨🏽 E13.1 kiss: man, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👨🏾‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏾‍❤‍💋‍👨🏾 E13.1 kiss: man, man, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👨🏾‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏾‍❤‍💋‍👨🏿 E13.1 kiss: man, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-    ],
-    '👨🏿‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏿‍❤‍💋‍👨🏻 E13.1 kiss: man, man, dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-    ],
-    '👨🏿‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏿‍❤‍💋‍👨🏼 E13.1 kiss: man, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-    ],
-    '👨🏿‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏿‍❤‍💋‍👨🏽 E13.1 kiss: man, man, dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-    ],
-    '👨🏿‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏿‍❤‍💋‍👨🏾 E13.1 kiss: man, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-    ],
-    '👨🏿‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏿‍❤‍💋‍👨🏿 E13.1 kiss: man, man, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}'],
-    '👩‍❤️‍💋‍👩 E2.0 kiss: woman, woman'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}'],
-    '👩‍❤‍💋‍👩 E2.0 kiss: woman, woman'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-    ],
-    '👩🏻‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏻‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-    ],
-    '👩🏻‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏻‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, light skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-    ],
-    '👩🏻‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏻‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-    ],
-    '👩🏻‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏻‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-    ],
-    '👩🏻‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏻‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-    ],
-    '👩🏼‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏼‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-light skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-    ],
-    '👩🏼‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏼‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-    ],
-    '👩🏼‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏼‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-light skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-    ],
-    '👩🏼‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏼‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-    ],
-    '👩🏼‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏼‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-light skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-    ],
-    '👩🏽‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏽‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, medium skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-    ],
-    '👩🏽‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏽‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, medium skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-    ],
-    '👩🏽‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏽‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-    ],
-    '👩🏽‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏽‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-    ],
-    '👩🏽‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏽‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, medium skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-    ],
-    '👩🏾‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏾‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-    ],
-    '👩🏾‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏾‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-    ],
-    '👩🏾‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏾‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-    ],
-    '👩🏾‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏾‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-    ],
-    '👩🏾‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏾‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-    ],
-    '👩🏿‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏿‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, dark skin tone, light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-    ],
-    '👩🏿‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏿‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, dark skin tone, medium-light skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-    ],
-    '👩🏿‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏿‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, dark skin tone, medium skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-    ],
-    '👩🏿‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏿‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    [
-      '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-    ],
-    '👩🏿‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏿‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, dark skin tone'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏻‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, light skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏻‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, light skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏻‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏻‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏻‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏻‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏻‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏻‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏼‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, medium-light skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏼‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, medium-light skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏼‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, medium-light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏼‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, medium-light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏼‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏼‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏼‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, medium-light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏼‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, medium-light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏽‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, medium skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏽‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, medium skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏽‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, medium skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏽‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, medium skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏽‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, medium skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏽‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, medium skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏽‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, medium skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏽‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, medium skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏾‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, medium-dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏾‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, medium-dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏾‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏾‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏾‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, medium-dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏾‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, medium-dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏾‍❤️‍💋‍🧑🏿 E13.1 kiss: person, person, medium-dark skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏾‍❤‍💋‍🧑🏿 E13.1 kiss: person, person, medium-dark skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏿‍❤️‍💋‍🧑🏻 E13.1 kiss: person, person, dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏿‍❤‍💋‍🧑🏻 E13.1 kiss: person, person, dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏿‍❤️‍💋‍🧑🏼 E13.1 kiss: person, person, dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏿‍❤‍💋‍🧑🏼 E13.1 kiss: person, person, dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏿‍❤️‍💋‍🧑🏽 E13.1 kiss: person, person, dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏿‍❤‍💋‍🧑🏽 E13.1 kiss: person, person, dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏿‍❤️‍💋‍🧑🏾 E13.1 kiss: person, person, dark skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏿‍❤‍💋‍🧑🏾 E13.1 kiss: person, person, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}'], '👩‍❤️‍💋‍👨 E2.0 kiss: woman, man'),
+  (['\u{1f469}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}'], '👩‍❤‍💋‍👨 E2.0 kiss: woman, man'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏻‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏻‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏻‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏻‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏻‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏻‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏻‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏻‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏻‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏻‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏼‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏼‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏼‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏼‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏼‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏼‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏼‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏼‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏼‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏼‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏽‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏽‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏽‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏽‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏽‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏽‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏽‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏽‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏽‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏽‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏾‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏾‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏾‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏾‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏾‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏾‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏾‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏾‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏾‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏾‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏿‍❤️‍💋‍👨🏻 E13.1 kiss: woman, man, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👩🏿‍❤‍💋‍👨🏻 E13.1 kiss: woman, man, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏿‍❤️‍💋‍👨🏼 E13.1 kiss: woman, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👩🏿‍❤‍💋‍👨🏼 E13.1 kiss: woman, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏿‍❤️‍💋‍👨🏽 E13.1 kiss: woman, man, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👩🏿‍❤‍💋‍👨🏽 E13.1 kiss: woman, man, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏿‍❤️‍💋‍👨🏾 E13.1 kiss: woman, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👩🏿‍❤‍💋‍👨🏾 E13.1 kiss: woman, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏿‍❤️‍💋‍👨🏿 E13.1 kiss: woman, man, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👩🏿‍❤‍💋‍👨🏿 E13.1 kiss: woman, man, dark skin tone'),
+  (['\u{1f468}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}'], '👨‍❤️‍💋‍👨 E2.0 kiss: man, man'),
+  (['\u{1f468}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}'], '👨‍❤‍💋‍👨 E2.0 kiss: man, man'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏻‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏻‍❤‍💋‍👨🏻 E13.1 kiss: man, man, light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏻‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, light skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏻‍❤‍💋‍👨🏼 E13.1 kiss: man, man, light skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏻‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏻‍❤‍💋‍👨🏽 E13.1 kiss: man, man, light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏻‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏻‍❤‍💋‍👨🏾 E13.1 kiss: man, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏻‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏻‍❤‍💋‍👨🏿 E13.1 kiss: man, man, light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏼‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, medium-light skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏼‍❤‍💋‍👨🏻 E13.1 kiss: man, man, medium-light skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏼‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏼‍❤‍💋‍👨🏼 E13.1 kiss: man, man, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏼‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏼‍❤‍💋‍👨🏽 E13.1 kiss: man, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏼‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏼‍❤‍💋‍👨🏾 E13.1 kiss: man, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏼‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏼‍❤‍💋‍👨🏿 E13.1 kiss: man, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏽‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, medium skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏽‍❤‍💋‍👨🏻 E13.1 kiss: man, man, medium skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏽‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏽‍❤‍💋‍👨🏼 E13.1 kiss: man, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏽‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏽‍❤‍💋‍👨🏽 E13.1 kiss: man, man, medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏽‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏽‍❤‍💋‍👨🏾 E13.1 kiss: man, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏽‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, medium skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏽‍❤‍💋‍👨🏿 E13.1 kiss: man, man, medium skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏾‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏾‍❤‍💋‍👨🏻 E13.1 kiss: man, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏾‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏾‍❤‍💋‍👨🏼 E13.1 kiss: man, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏾‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏾‍❤‍💋‍👨🏽 E13.1 kiss: man, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏾‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏾‍❤‍💋‍👨🏾 E13.1 kiss: man, man, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏾‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏾‍❤‍💋‍👨🏿 E13.1 kiss: man, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏿‍❤️‍💋‍👨🏻 E13.1 kiss: man, man, dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'], '👨🏿‍❤‍💋‍👨🏻 E13.1 kiss: man, man, dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏿‍❤️‍💋‍👨🏼 E13.1 kiss: man, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'], '👨🏿‍❤‍💋‍👨🏼 E13.1 kiss: man, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏿‍❤️‍💋‍👨🏽 E13.1 kiss: man, man, dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'], '👨🏿‍❤‍💋‍👨🏽 E13.1 kiss: man, man, dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏿‍❤️‍💋‍👨🏾 E13.1 kiss: man, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'], '👨🏿‍❤‍💋‍👨🏾 E13.1 kiss: man, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏿‍❤️‍💋‍👨🏿 E13.1 kiss: man, man, dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'], '👨🏿‍❤‍💋‍👨🏿 E13.1 kiss: man, man, dark skin tone'),
+  (['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}'], '👩‍❤️‍💋‍👩 E2.0 kiss: woman, woman'),
+  (['\u{1f469}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}'], '👩‍❤‍💋‍👩 E2.0 kiss: woman, woman'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏻‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏻‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏻‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏻‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏻‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏻‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏻‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏻‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏻‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏻‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏼‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏼‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏼‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏼‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏼‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏼‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏼‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏼‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏼‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏼‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏽‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏽‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏽‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏽‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏽‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏽‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏽‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏽‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏽‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏽‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏾‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏾‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏾‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏾‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏾‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏾‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏾‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏾‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏾‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏾‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏿‍❤️‍💋‍👩🏻 E13.1 kiss: woman, woman, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'], '👩🏿‍❤‍💋‍👩🏻 E13.1 kiss: woman, woman, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏿‍❤️‍💋‍👩🏼 E13.1 kiss: woman, woman, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'], '👩🏿‍❤‍💋‍👩🏼 E13.1 kiss: woman, woman, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏿‍❤️‍💋‍👩🏽 E13.1 kiss: woman, woman, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'], '👩🏿‍❤‍💋‍👩🏽 E13.1 kiss: woman, woman, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏿‍❤️‍💋‍👩🏾 E13.1 kiss: woman, woman, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'], '👩🏿‍❤‍💋‍👩🏾 E13.1 kiss: woman, woman, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏿‍❤️‍💋‍👩🏿 E13.1 kiss: woman, woman, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'], '👩🏿‍❤‍💋‍👩🏿 E13.1 kiss: woman, woman, dark skin tone'),
   (['\u{1f491}'], '💑 E0.6 couple with heart'),
   (['\u{1f491}\u{1f3fb}'], '💑🏻 E13.1 couple with heart: light skin tone'),
-  (
-    ['\u{1f491}\u{1f3fc}'],
-    '💑🏼 E13.1 couple with heart: medium-light skin tone'
-  ),
+  (['\u{1f491}\u{1f3fc}'], '💑🏼 E13.1 couple with heart: medium-light skin tone'),
   (['\u{1f491}\u{1f3fd}'], '💑🏽 E13.1 couple with heart: medium skin tone'),
-  (
-    ['\u{1f491}\u{1f3fe}'],
-    '💑🏾 E13.1 couple with heart: medium-dark skin tone'
-  ),
+  (['\u{1f491}\u{1f3fe}'], '💑🏾 E13.1 couple with heart: medium-dark skin tone'),
   (['\u{1f491}\u{1f3ff}'], '💑🏿 E13.1 couple with heart: dark skin tone'),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏻‍❤️‍🧑🏼 E13.1 couple with heart: person, person, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏻‍❤‍🧑🏼 E13.1 couple with heart: person, person, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏻‍❤️‍🧑🏽 E13.1 couple with heart: person, person, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏻‍❤‍🧑🏽 E13.1 couple with heart: person, person, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏻‍❤️‍🧑🏾 E13.1 couple with heart: person, person, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏻‍❤‍🧑🏾 E13.1 couple with heart: person, person, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏻‍❤️‍🧑🏿 E13.1 couple with heart: person, person, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏻‍❤‍🧑🏿 E13.1 couple with heart: person, person, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏼‍❤️‍🧑🏻 E13.1 couple with heart: person, person, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏼‍❤‍🧑🏻 E13.1 couple with heart: person, person, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏼‍❤️‍🧑🏽 E13.1 couple with heart: person, person, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏼‍❤‍🧑🏽 E13.1 couple with heart: person, person, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏼‍❤️‍🧑🏾 E13.1 couple with heart: person, person, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏼‍❤‍🧑🏾 E13.1 couple with heart: person, person, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏼‍❤️‍🧑🏿 E13.1 couple with heart: person, person, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏼‍❤‍🧑🏿 E13.1 couple with heart: person, person, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏽‍❤️‍🧑🏻 E13.1 couple with heart: person, person, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏽‍❤‍🧑🏻 E13.1 couple with heart: person, person, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏽‍❤️‍🧑🏼 E13.1 couple with heart: person, person, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏽‍❤‍🧑🏼 E13.1 couple with heart: person, person, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏽‍❤️‍🧑🏾 E13.1 couple with heart: person, person, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏽‍❤‍🧑🏾 E13.1 couple with heart: person, person, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏽‍❤️‍🧑🏿 E13.1 couple with heart: person, person, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏽‍❤‍🧑🏿 E13.1 couple with heart: person, person, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏾‍❤️‍🧑🏻 E13.1 couple with heart: person, person, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏾‍❤‍🧑🏻 E13.1 couple with heart: person, person, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏾‍❤️‍🧑🏼 E13.1 couple with heart: person, person, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏾‍❤‍🧑🏼 E13.1 couple with heart: person, person, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏾‍❤️‍🧑🏽 E13.1 couple with heart: person, person, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏾‍❤‍🧑🏽 E13.1 couple with heart: person, person, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏾‍❤️‍🧑🏿 E13.1 couple with heart: person, person, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-    '🧑🏾‍❤‍🧑🏿 E13.1 couple with heart: person, person, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏿‍❤️‍🧑🏻 E13.1 couple with heart: person, person, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-    '🧑🏿‍❤‍🧑🏻 E13.1 couple with heart: person, person, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏿‍❤️‍🧑🏼 E13.1 couple with heart: person, person, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-    '🧑🏿‍❤‍🧑🏼 E13.1 couple with heart: person, person, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏿‍❤️‍🧑🏽 E13.1 couple with heart: person, person, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-    '🧑🏿‍❤‍🧑🏽 E13.1 couple with heart: person, person, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏿‍❤️‍🧑🏾 E13.1 couple with heart: person, person, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-    '🧑🏿‍❤‍🧑🏾 E13.1 couple with heart: person, person, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f468}'],
-    '👩‍❤️‍👨 E2.0 couple with heart: woman, man'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\u200d\u{1f468}'],
-    '👩‍❤‍👨 E2.0 couple with heart: woman, man'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏻‍❤️‍👨🏻 E13.1 couple with heart: woman, man, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏻‍❤‍👨🏻 E13.1 couple with heart: woman, man, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏻‍❤️‍👨🏼 E13.1 couple with heart: woman, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏻‍❤‍👨🏼 E13.1 couple with heart: woman, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏻‍❤️‍👨🏽 E13.1 couple with heart: woman, man, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏻‍❤‍👨🏽 E13.1 couple with heart: woman, man, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏻‍❤️‍👨🏾 E13.1 couple with heart: woman, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏻‍❤‍👨🏾 E13.1 couple with heart: woman, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏻‍❤️‍👨🏿 E13.1 couple with heart: woman, man, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏻‍❤‍👨🏿 E13.1 couple with heart: woman, man, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏼‍❤️‍👨🏻 E13.1 couple with heart: woman, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏼‍❤‍👨🏻 E13.1 couple with heart: woman, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏼‍❤️‍👨🏼 E13.1 couple with heart: woman, man, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏼‍❤‍👨🏼 E13.1 couple with heart: woman, man, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏼‍❤️‍👨🏽 E13.1 couple with heart: woman, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏼‍❤‍👨🏽 E13.1 couple with heart: woman, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏼‍❤️‍👨🏾 E13.1 couple with heart: woman, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏼‍❤‍👨🏾 E13.1 couple with heart: woman, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏼‍❤️‍👨🏿 E13.1 couple with heart: woman, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏼‍❤‍👨🏿 E13.1 couple with heart: woman, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏽‍❤️‍👨🏻 E13.1 couple with heart: woman, man, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏽‍❤‍👨🏻 E13.1 couple with heart: woman, man, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏽‍❤️‍👨🏼 E13.1 couple with heart: woman, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏽‍❤‍👨🏼 E13.1 couple with heart: woman, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏽‍❤️‍👨🏽 E13.1 couple with heart: woman, man, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏽‍❤‍👨🏽 E13.1 couple with heart: woman, man, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏽‍❤️‍👨🏾 E13.1 couple with heart: woman, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏽‍❤‍👨🏾 E13.1 couple with heart: woman, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏽‍❤️‍👨🏿 E13.1 couple with heart: woman, man, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏽‍❤‍👨🏿 E13.1 couple with heart: woman, man, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏾‍❤️‍👨🏻 E13.1 couple with heart: woman, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏾‍❤‍👨🏻 E13.1 couple with heart: woman, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏾‍❤️‍👨🏼 E13.1 couple with heart: woman, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏾‍❤‍👨🏼 E13.1 couple with heart: woman, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏾‍❤️‍👨🏽 E13.1 couple with heart: woman, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏾‍❤‍👨🏽 E13.1 couple with heart: woman, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏾‍❤️‍👨🏾 E13.1 couple with heart: woman, man, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏾‍❤‍👨🏾 E13.1 couple with heart: woman, man, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏾‍❤️‍👨🏿 E13.1 couple with heart: woman, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏾‍❤‍👨🏿 E13.1 couple with heart: woman, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏿‍❤️‍👨🏻 E13.1 couple with heart: woman, man, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👩🏿‍❤‍👨🏻 E13.1 couple with heart: woman, man, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏿‍❤️‍👨🏼 E13.1 couple with heart: woman, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👩🏿‍❤‍👨🏼 E13.1 couple with heart: woman, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏿‍❤️‍👨🏽 E13.1 couple with heart: woman, man, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👩🏿‍❤‍👨🏽 E13.1 couple with heart: woman, man, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏿‍❤️‍👨🏾 E13.1 couple with heart: woman, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👩🏿‍❤‍👨🏾 E13.1 couple with heart: woman, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏿‍❤️‍👨🏿 E13.1 couple with heart: woman, man, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👩🏿‍❤‍👨🏿 E13.1 couple with heart: woman, man, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u200d\u2764\ufe0f\u200d\u{1f468}'],
-    '👨‍❤️‍👨 E2.0 couple with heart: man, man'
-  ),
-  (
-    ['\u{1f468}\u200d\u2764\u200d\u{1f468}'],
-    '👨‍❤‍👨 E2.0 couple with heart: man, man'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏻‍❤️‍👨🏻 E13.1 couple with heart: man, man, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏻‍❤‍👨🏻 E13.1 couple with heart: man, man, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏻‍❤️‍👨🏼 E13.1 couple with heart: man, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏻‍❤‍👨🏼 E13.1 couple with heart: man, man, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏻‍❤️‍👨🏽 E13.1 couple with heart: man, man, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏻‍❤‍👨🏽 E13.1 couple with heart: man, man, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏻‍❤️‍👨🏾 E13.1 couple with heart: man, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏻‍❤‍👨🏾 E13.1 couple with heart: man, man, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏻‍❤️‍👨🏿 E13.1 couple with heart: man, man, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏻‍❤‍👨🏿 E13.1 couple with heart: man, man, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏼‍❤️‍👨🏻 E13.1 couple with heart: man, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏼‍❤‍👨🏻 E13.1 couple with heart: man, man, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏼‍❤️‍👨🏼 E13.1 couple with heart: man, man, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏼‍❤‍👨🏼 E13.1 couple with heart: man, man, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏼‍❤️‍👨🏽 E13.1 couple with heart: man, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏼‍❤‍👨🏽 E13.1 couple with heart: man, man, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏼‍❤️‍👨🏾 E13.1 couple with heart: man, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏼‍❤‍👨🏾 E13.1 couple with heart: man, man, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏼‍❤️‍👨🏿 E13.1 couple with heart: man, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏼‍❤‍👨🏿 E13.1 couple with heart: man, man, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏽‍❤️‍👨🏻 E13.1 couple with heart: man, man, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏽‍❤‍👨🏻 E13.1 couple with heart: man, man, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏽‍❤️‍👨🏼 E13.1 couple with heart: man, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏽‍❤‍👨🏼 E13.1 couple with heart: man, man, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏽‍❤️‍👨🏽 E13.1 couple with heart: man, man, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏽‍❤‍👨🏽 E13.1 couple with heart: man, man, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏽‍❤️‍👨🏾 E13.1 couple with heart: man, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏽‍❤‍👨🏾 E13.1 couple with heart: man, man, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏽‍❤️‍👨🏿 E13.1 couple with heart: man, man, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏽‍❤‍👨🏿 E13.1 couple with heart: man, man, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏾‍❤️‍👨🏻 E13.1 couple with heart: man, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏾‍❤‍👨🏻 E13.1 couple with heart: man, man, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏾‍❤️‍👨🏼 E13.1 couple with heart: man, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏾‍❤‍👨🏼 E13.1 couple with heart: man, man, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏾‍❤️‍👨🏽 E13.1 couple with heart: man, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏾‍❤‍👨🏽 E13.1 couple with heart: man, man, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏾‍❤️‍👨🏾 E13.1 couple with heart: man, man, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏾‍❤‍👨🏾 E13.1 couple with heart: man, man, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏾‍❤️‍👨🏿 E13.1 couple with heart: man, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏾‍❤‍👨🏿 E13.1 couple with heart: man, man, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏿‍❤️‍👨🏻 E13.1 couple with heart: man, man, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-    '👨🏿‍❤‍👨🏻 E13.1 couple with heart: man, man, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏿‍❤️‍👨🏼 E13.1 couple with heart: man, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-    '👨🏿‍❤‍👨🏼 E13.1 couple with heart: man, man, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏿‍❤️‍👨🏽 E13.1 couple with heart: man, man, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-    '👨🏿‍❤‍👨🏽 E13.1 couple with heart: man, man, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏿‍❤️‍👨🏾 E13.1 couple with heart: man, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-    '👨🏿‍❤‍👨🏾 E13.1 couple with heart: man, man, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏿‍❤️‍👨🏿 E13.1 couple with heart: man, man, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-    '👨🏿‍❤‍👨🏿 E13.1 couple with heart: man, man, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f469}'],
-    '👩‍❤️‍👩 E2.0 couple with heart: woman, woman'
-  ),
-  (
-    ['\u{1f469}\u200d\u2764\u200d\u{1f469}'],
-    '👩‍❤‍👩 E2.0 couple with heart: woman, woman'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏻‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏻‍❤‍👩🏻 E13.1 couple with heart: woman, woman, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏻‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏻‍❤‍👩🏼 E13.1 couple with heart: woman, woman, light skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏻‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏻‍❤‍👩🏽 E13.1 couple with heart: woman, woman, light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏻‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏻‍❤‍👩🏾 E13.1 couple with heart: woman, woman, light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏻‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏻‍❤‍👩🏿 E13.1 couple with heart: woman, woman, light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏼‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏼‍❤‍👩🏻 E13.1 couple with heart: woman, woman, medium-light skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏼‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏼‍❤‍👩🏼 E13.1 couple with heart: woman, woman, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏼‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏼‍❤‍👩🏽 E13.1 couple with heart: woman, woman, medium-light skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏼‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏼‍❤‍👩🏾 E13.1 couple with heart: woman, woman, medium-light skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏼‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏼‍❤‍👩🏿 E13.1 couple with heart: woman, woman, medium-light skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏽‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏽‍❤‍👩🏻 E13.1 couple with heart: woman, woman, medium skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏽‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏽‍❤‍👩🏼 E13.1 couple with heart: woman, woman, medium skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏽‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏽‍❤‍👩🏽 E13.1 couple with heart: woman, woman, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏽‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏽‍❤‍👩🏾 E13.1 couple with heart: woman, woman, medium skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏽‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏽‍❤‍👩🏿 E13.1 couple with heart: woman, woman, medium skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏾‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏾‍❤‍👩🏻 E13.1 couple with heart: woman, woman, medium-dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏾‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏾‍❤‍👩🏼 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏾‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏾‍❤‍👩🏽 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏾‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏾‍❤‍👩🏾 E13.1 couple with heart: woman, woman, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏾‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏾‍❤‍👩🏿 E13.1 couple with heart: woman, woman, medium-dark skin tone, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏿‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-    '👩🏿‍❤‍👩🏻 E13.1 couple with heart: woman, woman, dark skin tone, light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏿‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-    '👩🏿‍❤‍👩🏼 E13.1 couple with heart: woman, woman, dark skin tone, medium-light skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏿‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-    '👩🏿‍❤‍👩🏽 E13.1 couple with heart: woman, woman, dark skin tone, medium skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏿‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-    '👩🏿‍❤‍👩🏾 E13.1 couple with heart: woman, woman, dark skin tone, medium-dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏿‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, dark skin tone'
-  ),
-  (
-    ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-    '👩🏿‍❤‍👩🏿 E13.1 couple with heart: woman, woman, dark skin tone'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f469}\u200d\u{1f466}'],
-    '👨‍👩‍👦 E2.0 family: man, woman, boy'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}'],
-    '👨‍👩‍👧 E2.0 family: man, woman, girl'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'],
-    '👨‍👩‍👧‍👦 E2.0 family: man, woman, girl, boy'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'],
-    '👨‍👩‍👦‍👦 E2.0 family: man, woman, boy, boy'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'],
-    '👨‍👩‍👧‍👧 E2.0 family: man, woman, girl, girl'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f468}\u200d\u{1f466}'],
-    '👨‍👨‍👦 E2.0 family: man, man, boy'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}'],
-    '👨‍👨‍👧 E2.0 family: man, man, girl'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}\u200d\u{1f466}'],
-    '👨‍👨‍👧‍👦 E2.0 family: man, man, girl, boy'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f468}\u200d\u{1f466}\u200d\u{1f466}'],
-    '👨‍👨‍👦‍👦 E2.0 family: man, man, boy, boy'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}\u200d\u{1f467}'],
-    '👨‍👨‍👧‍👧 E2.0 family: man, man, girl, girl'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f469}\u200d\u{1f466}'],
-    '👩‍👩‍👦 E2.0 family: woman, woman, boy'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}'],
-    '👩‍👩‍👧 E2.0 family: woman, woman, girl'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'],
-    '👩‍👩‍👧‍👦 E2.0 family: woman, woman, girl, boy'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'],
-    '👩‍👩‍👦‍👦 E2.0 family: woman, woman, boy, boy'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'],
-    '👩‍👩‍👧‍👧 E2.0 family: woman, woman, girl, girl'
-  ),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏻‍❤️‍🧑🏼 E13.1 couple with heart: person, person, light skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏻‍❤‍🧑🏼 E13.1 couple with heart: person, person, light skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏻‍❤️‍🧑🏽 E13.1 couple with heart: person, person, light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏻‍❤‍🧑🏽 E13.1 couple with heart: person, person, light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏻‍❤️‍🧑🏾 E13.1 couple with heart: person, person, light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏻‍❤‍🧑🏾 E13.1 couple with heart: person, person, light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏻‍❤️‍🧑🏿 E13.1 couple with heart: person, person, light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏻‍❤‍🧑🏿 E13.1 couple with heart: person, person, light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏼‍❤️‍🧑🏻 E13.1 couple with heart: person, person, medium-light skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏼‍❤‍🧑🏻 E13.1 couple with heart: person, person, medium-light skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏼‍❤️‍🧑🏽 E13.1 couple with heart: person, person, medium-light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏼‍❤‍🧑🏽 E13.1 couple with heart: person, person, medium-light skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏼‍❤️‍🧑🏾 E13.1 couple with heart: person, person, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏼‍❤‍🧑🏾 E13.1 couple with heart: person, person, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏼‍❤️‍🧑🏿 E13.1 couple with heart: person, person, medium-light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏼‍❤‍🧑🏿 E13.1 couple with heart: person, person, medium-light skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏽‍❤️‍🧑🏻 E13.1 couple with heart: person, person, medium skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏽‍❤‍🧑🏻 E13.1 couple with heart: person, person, medium skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏽‍❤️‍🧑🏼 E13.1 couple with heart: person, person, medium skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏽‍❤‍🧑🏼 E13.1 couple with heart: person, person, medium skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏽‍❤️‍🧑🏾 E13.1 couple with heart: person, person, medium skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏽‍❤‍🧑🏾 E13.1 couple with heart: person, person, medium skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏽‍❤️‍🧑🏿 E13.1 couple with heart: person, person, medium skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏽‍❤‍🧑🏿 E13.1 couple with heart: person, person, medium skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏾‍❤️‍🧑🏻 E13.1 couple with heart: person, person, medium-dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏾‍❤‍🧑🏻 E13.1 couple with heart: person, person, medium-dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏾‍❤️‍🧑🏼 E13.1 couple with heart: person, person, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏾‍❤‍🧑🏼 E13.1 couple with heart: person, person, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏾‍❤️‍🧑🏽 E13.1 couple with heart: person, person, medium-dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏾‍❤‍🧑🏽 E13.1 couple with heart: person, person, medium-dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏾‍❤️‍🧑🏿 E13.1 couple with heart: person, person, medium-dark skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'], '🧑🏾‍❤‍🧑🏿 E13.1 couple with heart: person, person, medium-dark skin tone, dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏿‍❤️‍🧑🏻 E13.1 couple with heart: person, person, dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'], '🧑🏿‍❤‍🧑🏻 E13.1 couple with heart: person, person, dark skin tone, light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏿‍❤️‍🧑🏼 E13.1 couple with heart: person, person, dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'], '🧑🏿‍❤‍🧑🏼 E13.1 couple with heart: person, person, dark skin tone, medium-light skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏿‍❤️‍🧑🏽 E13.1 couple with heart: person, person, dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'], '🧑🏿‍❤‍🧑🏽 E13.1 couple with heart: person, person, dark skin tone, medium skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏿‍❤️‍🧑🏾 E13.1 couple with heart: person, person, dark skin tone, medium-dark skin tone'),
+  (['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'], '🧑🏿‍❤‍🧑🏾 E13.1 couple with heart: person, person, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f468}'], '👩‍❤️‍👨 E2.0 couple with heart: woman, man'),
+  (['\u{1f469}\u200d\u2764\u200d\u{1f468}'], '👩‍❤‍👨 E2.0 couple with heart: woman, man'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👩🏻‍❤️‍👨🏻 E13.1 couple with heart: woman, man, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👩🏻‍❤‍👨🏻 E13.1 couple with heart: woman, man, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👩🏻‍❤️‍👨🏼 E13.1 couple with heart: woman, man, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👩🏻‍❤‍👨🏼 E13.1 couple with heart: woman, man, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👩🏻‍❤️‍👨🏽 E13.1 couple with heart: woman, man, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👩🏻‍❤‍👨🏽 E13.1 couple with heart: woman, man, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👩🏻‍❤️‍👨🏾 E13.1 couple with heart: woman, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👩🏻‍❤‍👨🏾 E13.1 couple with heart: woman, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👩🏻‍❤️‍👨🏿 E13.1 couple with heart: woman, man, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👩🏻‍❤‍👨🏿 E13.1 couple with heart: woman, man, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👩🏼‍❤️‍👨🏻 E13.1 couple with heart: woman, man, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👩🏼‍❤‍👨🏻 E13.1 couple with heart: woman, man, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👩🏼‍❤️‍👨🏼 E13.1 couple with heart: woman, man, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👩🏼‍❤‍👨🏼 E13.1 couple with heart: woman, man, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👩🏼‍❤️‍👨🏽 E13.1 couple with heart: woman, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👩🏼‍❤‍👨🏽 E13.1 couple with heart: woman, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👩🏼‍❤️‍👨🏾 E13.1 couple with heart: woman, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👩🏼‍❤‍👨🏾 E13.1 couple with heart: woman, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👩🏼‍❤️‍👨🏿 E13.1 couple with heart: woman, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👩🏼‍❤‍👨🏿 E13.1 couple with heart: woman, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👩🏽‍❤️‍👨🏻 E13.1 couple with heart: woman, man, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👩🏽‍❤‍👨🏻 E13.1 couple with heart: woman, man, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👩🏽‍❤️‍👨🏼 E13.1 couple with heart: woman, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👩🏽‍❤‍👨🏼 E13.1 couple with heart: woman, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👩🏽‍❤️‍👨🏽 E13.1 couple with heart: woman, man, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👩🏽‍❤‍👨🏽 E13.1 couple with heart: woman, man, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👩🏽‍❤️‍👨🏾 E13.1 couple with heart: woman, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👩🏽‍❤‍👨🏾 E13.1 couple with heart: woman, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👩🏽‍❤️‍👨🏿 E13.1 couple with heart: woman, man, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👩🏽‍❤‍👨🏿 E13.1 couple with heart: woman, man, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👩🏾‍❤️‍👨🏻 E13.1 couple with heart: woman, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👩🏾‍❤‍👨🏻 E13.1 couple with heart: woman, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👩🏾‍❤️‍👨🏼 E13.1 couple with heart: woman, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👩🏾‍❤‍👨🏼 E13.1 couple with heart: woman, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👩🏾‍❤️‍👨🏽 E13.1 couple with heart: woman, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👩🏾‍❤‍👨🏽 E13.1 couple with heart: woman, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👩🏾‍❤️‍👨🏾 E13.1 couple with heart: woman, man, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👩🏾‍❤‍👨🏾 E13.1 couple with heart: woman, man, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👩🏾‍❤️‍👨🏿 E13.1 couple with heart: woman, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👩🏾‍❤‍👨🏿 E13.1 couple with heart: woman, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👩🏿‍❤️‍👨🏻 E13.1 couple with heart: woman, man, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👩🏿‍❤‍👨🏻 E13.1 couple with heart: woman, man, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👩🏿‍❤️‍👨🏼 E13.1 couple with heart: woman, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👩🏿‍❤‍👨🏼 E13.1 couple with heart: woman, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👩🏿‍❤️‍👨🏽 E13.1 couple with heart: woman, man, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👩🏿‍❤‍👨🏽 E13.1 couple with heart: woman, man, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👩🏿‍❤️‍👨🏾 E13.1 couple with heart: woman, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👩🏿‍❤‍👨🏾 E13.1 couple with heart: woman, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👩🏿‍❤️‍👨🏿 E13.1 couple with heart: woman, man, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👩🏿‍❤‍👨🏿 E13.1 couple with heart: woman, man, dark skin tone'),
+  (['\u{1f468}\u200d\u2764\ufe0f\u200d\u{1f468}'], '👨‍❤️‍👨 E2.0 couple with heart: man, man'),
+  (['\u{1f468}\u200d\u2764\u200d\u{1f468}'], '👨‍❤‍👨 E2.0 couple with heart: man, man'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👨🏻‍❤️‍👨🏻 E13.1 couple with heart: man, man, light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👨🏻‍❤‍👨🏻 E13.1 couple with heart: man, man, light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👨🏻‍❤️‍👨🏼 E13.1 couple with heart: man, man, light skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👨🏻‍❤‍👨🏼 E13.1 couple with heart: man, man, light skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👨🏻‍❤️‍👨🏽 E13.1 couple with heart: man, man, light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👨🏻‍❤‍👨🏽 E13.1 couple with heart: man, man, light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👨🏻‍❤️‍👨🏾 E13.1 couple with heart: man, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👨🏻‍❤‍👨🏾 E13.1 couple with heart: man, man, light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👨🏻‍❤️‍👨🏿 E13.1 couple with heart: man, man, light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👨🏻‍❤‍👨🏿 E13.1 couple with heart: man, man, light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👨🏼‍❤️‍👨🏻 E13.1 couple with heart: man, man, medium-light skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👨🏼‍❤‍👨🏻 E13.1 couple with heart: man, man, medium-light skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👨🏼‍❤️‍👨🏼 E13.1 couple with heart: man, man, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👨🏼‍❤‍👨🏼 E13.1 couple with heart: man, man, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👨🏼‍❤️‍👨🏽 E13.1 couple with heart: man, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👨🏼‍❤‍👨🏽 E13.1 couple with heart: man, man, medium-light skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👨🏼‍❤️‍👨🏾 E13.1 couple with heart: man, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👨🏼‍❤‍👨🏾 E13.1 couple with heart: man, man, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👨🏼‍❤️‍👨🏿 E13.1 couple with heart: man, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👨🏼‍❤‍👨🏿 E13.1 couple with heart: man, man, medium-light skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👨🏽‍❤️‍👨🏻 E13.1 couple with heart: man, man, medium skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👨🏽‍❤‍👨🏻 E13.1 couple with heart: man, man, medium skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👨🏽‍❤️‍👨🏼 E13.1 couple with heart: man, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👨🏽‍❤‍👨🏼 E13.1 couple with heart: man, man, medium skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👨🏽‍❤️‍👨🏽 E13.1 couple with heart: man, man, medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👨🏽‍❤‍👨🏽 E13.1 couple with heart: man, man, medium skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👨🏽‍❤️‍👨🏾 E13.1 couple with heart: man, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👨🏽‍❤‍👨🏾 E13.1 couple with heart: man, man, medium skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👨🏽‍❤️‍👨🏿 E13.1 couple with heart: man, man, medium skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👨🏽‍❤‍👨🏿 E13.1 couple with heart: man, man, medium skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👨🏾‍❤️‍👨🏻 E13.1 couple with heart: man, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👨🏾‍❤‍👨🏻 E13.1 couple with heart: man, man, medium-dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👨🏾‍❤️‍👨🏼 E13.1 couple with heart: man, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👨🏾‍❤‍👨🏼 E13.1 couple with heart: man, man, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👨🏾‍❤️‍👨🏽 E13.1 couple with heart: man, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👨🏾‍❤‍👨🏽 E13.1 couple with heart: man, man, medium-dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👨🏾‍❤️‍👨🏾 E13.1 couple with heart: man, man, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👨🏾‍❤‍👨🏾 E13.1 couple with heart: man, man, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👨🏾‍❤️‍👨🏿 E13.1 couple with heart: man, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👨🏾‍❤‍👨🏿 E13.1 couple with heart: man, man, medium-dark skin tone, dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'], '👨🏿‍❤️‍👨🏻 E13.1 couple with heart: man, man, dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'], '👨🏿‍❤‍👨🏻 E13.1 couple with heart: man, man, dark skin tone, light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'], '👨🏿‍❤️‍👨🏼 E13.1 couple with heart: man, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'], '👨🏿‍❤‍👨🏼 E13.1 couple with heart: man, man, dark skin tone, medium-light skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'], '👨🏿‍❤️‍👨🏽 E13.1 couple with heart: man, man, dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'], '👨🏿‍❤‍👨🏽 E13.1 couple with heart: man, man, dark skin tone, medium skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'], '👨🏿‍❤️‍👨🏾 E13.1 couple with heart: man, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'], '👨🏿‍❤‍👨🏾 E13.1 couple with heart: man, man, dark skin tone, medium-dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'], '👨🏿‍❤️‍👨🏿 E13.1 couple with heart: man, man, dark skin tone'),
+  (['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'], '👨🏿‍❤‍👨🏿 E13.1 couple with heart: man, man, dark skin tone'),
+  (['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f469}'], '👩‍❤️‍👩 E2.0 couple with heart: woman, woman'),
+  (['\u{1f469}\u200d\u2764\u200d\u{1f469}'], '👩‍❤‍👩 E2.0 couple with heart: woman, woman'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'], '👩🏻‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'], '👩🏻‍❤‍👩🏻 E13.1 couple with heart: woman, woman, light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'], '👩🏻‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'], '👩🏻‍❤‍👩🏼 E13.1 couple with heart: woman, woman, light skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'], '👩🏻‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'], '👩🏻‍❤‍👩🏽 E13.1 couple with heart: woman, woman, light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'], '👩🏻‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'], '👩🏻‍❤‍👩🏾 E13.1 couple with heart: woman, woman, light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'], '👩🏻‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'], '👩🏻‍❤‍👩🏿 E13.1 couple with heart: woman, woman, light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'], '👩🏼‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'], '👩🏼‍❤‍👩🏻 E13.1 couple with heart: woman, woman, medium-light skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'], '👩🏼‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'], '👩🏼‍❤‍👩🏼 E13.1 couple with heart: woman, woman, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'], '👩🏼‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'], '👩🏼‍❤‍👩🏽 E13.1 couple with heart: woman, woman, medium-light skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'], '👩🏼‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'], '👩🏼‍❤‍👩🏾 E13.1 couple with heart: woman, woman, medium-light skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'], '👩🏼‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'], '👩🏼‍❤‍👩🏿 E13.1 couple with heart: woman, woman, medium-light skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'], '👩🏽‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'], '👩🏽‍❤‍👩🏻 E13.1 couple with heart: woman, woman, medium skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'], '👩🏽‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'], '👩🏽‍❤‍👩🏼 E13.1 couple with heart: woman, woman, medium skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'], '👩🏽‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'], '👩🏽‍❤‍👩🏽 E13.1 couple with heart: woman, woman, medium skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'], '👩🏽‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'], '👩🏽‍❤‍👩🏾 E13.1 couple with heart: woman, woman, medium skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'], '👩🏽‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'], '👩🏽‍❤‍👩🏿 E13.1 couple with heart: woman, woman, medium skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'], '👩🏾‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'], '👩🏾‍❤‍👩🏻 E13.1 couple with heart: woman, woman, medium-dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'], '👩🏾‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'], '👩🏾‍❤‍👩🏼 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'], '👩🏾‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'], '👩🏾‍❤‍👩🏽 E13.1 couple with heart: woman, woman, medium-dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'], '👩🏾‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'], '👩🏾‍❤‍👩🏾 E13.1 couple with heart: woman, woman, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'], '👩🏾‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'], '👩🏾‍❤‍👩🏿 E13.1 couple with heart: woman, woman, medium-dark skin tone, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'], '👩🏿‍❤️‍👩🏻 E13.1 couple with heart: woman, woman, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'], '👩🏿‍❤‍👩🏻 E13.1 couple with heart: woman, woman, dark skin tone, light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'], '👩🏿‍❤️‍👩🏼 E13.1 couple with heart: woman, woman, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'], '👩🏿‍❤‍👩🏼 E13.1 couple with heart: woman, woman, dark skin tone, medium-light skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'], '👩🏿‍❤️‍👩🏽 E13.1 couple with heart: woman, woman, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'], '👩🏿‍❤‍👩🏽 E13.1 couple with heart: woman, woman, dark skin tone, medium skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'], '👩🏿‍❤️‍👩🏾 E13.1 couple with heart: woman, woman, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'], '👩🏿‍❤‍👩🏾 E13.1 couple with heart: woman, woman, dark skin tone, medium-dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'], '👩🏿‍❤️‍👩🏿 E13.1 couple with heart: woman, woman, dark skin tone'),
+  (['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'], '👩🏿‍❤‍👩🏿 E13.1 couple with heart: woman, woman, dark skin tone'),
+  (['\u{1f468}\u200d\u{1f469}\u200d\u{1f466}'], '👨‍👩‍👦 E2.0 family: man, woman, boy'),
+  (['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}'], '👨‍👩‍👧 E2.0 family: man, woman, girl'),
+  (['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'], '👨‍👩‍👧‍👦 E2.0 family: man, woman, girl, boy'),
+  (['\u{1f468}\u200d\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'], '👨‍👩‍👦‍👦 E2.0 family: man, woman, boy, boy'),
+  (['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'], '👨‍👩‍👧‍👧 E2.0 family: man, woman, girl, girl'),
+  (['\u{1f468}\u200d\u{1f468}\u200d\u{1f466}'], '👨‍👨‍👦 E2.0 family: man, man, boy'),
+  (['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}'], '👨‍👨‍👧 E2.0 family: man, man, girl'),
+  (['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}\u200d\u{1f466}'], '👨‍👨‍👧‍👦 E2.0 family: man, man, girl, boy'),
+  (['\u{1f468}\u200d\u{1f468}\u200d\u{1f466}\u200d\u{1f466}'], '👨‍👨‍👦‍👦 E2.0 family: man, man, boy, boy'),
+  (['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}\u200d\u{1f467}'], '👨‍👨‍👧‍👧 E2.0 family: man, man, girl, girl'),
+  (['\u{1f469}\u200d\u{1f469}\u200d\u{1f466}'], '👩‍👩‍👦 E2.0 family: woman, woman, boy'),
+  (['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}'], '👩‍👩‍👧 E2.0 family: woman, woman, girl'),
+  (['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'], '👩‍👩‍👧‍👦 E2.0 family: woman, woman, girl, boy'),
+  (['\u{1f469}\u200d\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'], '👩‍👩‍👦‍👦 E2.0 family: woman, woman, boy, boy'),
+  (['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'], '👩‍👩‍👧‍👧 E2.0 family: woman, woman, girl, girl'),
   (['\u{1f468}\u200d\u{1f466}'], '👨‍👦 E4.0 family: man, boy'),
-  (
-    ['\u{1f468}\u200d\u{1f466}\u200d\u{1f466}'],
-    '👨‍👦‍👦 E4.0 family: man, boy, boy'
-  ),
+  (['\u{1f468}\u200d\u{1f466}\u200d\u{1f466}'], '👨‍👦‍👦 E4.0 family: man, boy, boy'),
   (['\u{1f468}\u200d\u{1f467}'], '👨‍👧 E4.0 family: man, girl'),
-  (
-    ['\u{1f468}\u200d\u{1f467}\u200d\u{1f466}'],
-    '👨‍👧‍👦 E4.0 family: man, girl, boy'
-  ),
-  (
-    ['\u{1f468}\u200d\u{1f467}\u200d\u{1f467}'],
-    '👨‍👧‍👧 E4.0 family: man, girl, girl'
-  ),
+  (['\u{1f468}\u200d\u{1f467}\u200d\u{1f466}'], '👨‍👧‍👦 E4.0 family: man, girl, boy'),
+  (['\u{1f468}\u200d\u{1f467}\u200d\u{1f467}'], '👨‍👧‍👧 E4.0 family: man, girl, girl'),
   (['\u{1f469}\u200d\u{1f466}'], '👩‍👦 E4.0 family: woman, boy'),
-  (
-    ['\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'],
-    '👩‍👦‍👦 E4.0 family: woman, boy, boy'
-  ),
+  (['\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'], '👩‍👦‍👦 E4.0 family: woman, boy, boy'),
   (['\u{1f469}\u200d\u{1f467}'], '👩‍👧 E4.0 family: woman, girl'),
-  (
-    ['\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'],
-    '👩‍👧‍👦 E4.0 family: woman, girl, boy'
-  ),
-  (
-    ['\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'],
-    '👩‍👧‍👧 E4.0 family: woman, girl, girl'
-  ),
+  (['\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'], '👩‍👧‍👦 E4.0 family: woman, girl, boy'),
+  (['\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'], '👩‍👧‍👧 E4.0 family: woman, girl, girl'),
   (['\u{1f5e3}\ufe0f'], '🗣️ E0.7 speaking head'),
   (['\u{1f5e3}'], '🗣 E0.7 speaking head'),
   (['\u{1f464}'], '👤 E0.6 bust in silhouette'),
   (['\u{1f465}'], '👥 E1.0 busts in silhouette'),
   (['\u{1fac2}'], '🫂 E13.0 people hugging'),
   (['\u{1f46a}'], '👪 E0.6 family'),
-  (
-    ['\u{1f9d1}\u200d\u{1f9d1}\u200d\u{1f9d2}'],
-    '🧑‍🧑‍🧒 E15.1 family: adult, adult, child'
-  ),
-  (
-    ['\u{1f9d1}\u200d\u{1f9d1}\u200d\u{1f9d2}\u200d\u{1f9d2}'],
-    '🧑‍🧑‍🧒‍🧒 E15.1 family: adult, adult, child, child'
-  ),
+  (['\u{1f9d1}\u200d\u{1f9d1}\u200d\u{1f9d2}'], '🧑‍🧑‍🧒 E15.1 family: adult, adult, child'),
+  (['\u{1f9d1}\u200d\u{1f9d1}\u200d\u{1f9d2}\u200d\u{1f9d2}'], '🧑‍🧑‍🧒‍🧒 E15.1 family: adult, adult, child, child'),
   (['\u{1f9d1}\u200d\u{1f9d2}'], '🧑‍🧒 E15.1 family: adult, child'),
-  (
-    ['\u{1f9d1}\u200d\u{1f9d2}\u200d\u{1f9d2}'],
-    '🧑‍🧒‍🧒 E15.1 family: adult, child, child'
-  ),
+  (['\u{1f9d1}\u200d\u{1f9d2}\u200d\u{1f9d2}'], '🧑‍🧒‍🧒 E15.1 family: adult, child, child'),
   (['\u{1f463}'], '👣 E0.6 footprints'),
   (['\u{1fac6}'], '🫆 E16.0 fingerprint'),
   (['\u{1f3fb}'], '🏻 E1.0 light skin tone'),
@@ -16240,10 +5983,7 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f1ec}\u{1f1f5}'], '🇬🇵 E2.0 flag: Guadeloupe'),
   (['\u{1f1ec}\u{1f1f6}'], '🇬🇶 E2.0 flag: Equatorial Guinea'),
   (['\u{1f1ec}\u{1f1f7}'], '🇬🇷 E2.0 flag: Greece'),
-  (
-    ['\u{1f1ec}\u{1f1f8}'],
-    '🇬🇸 E2.0 flag: South Georgia & South Sandwich Islands'
-  ),
+  (['\u{1f1ec}\u{1f1f8}'], '🇬🇸 E2.0 flag: South Georgia & South Sandwich Islands'),
   (['\u{1f1ec}\u{1f1f9}'], '🇬🇹 E2.0 flag: Guatemala'),
   (['\u{1f1ec}\u{1f1fa}'], '🇬🇺 E2.0 flag: Guam'),
   (['\u{1f1ec}\u{1f1fc}'], '🇬🇼 E2.0 flag: Guinea-Bissau'),
@@ -16407,16 +6147,8 @@ const List<(List<String> graphemeClusters, String description)> emojis = [
   (['\u{1f1ff}\u{1f1e6}'], '🇿🇦 E2.0 flag: South Africa'),
   (['\u{1f1ff}\u{1f1f2}'], '🇿🇲 E2.0 flag: Zambia'),
   (['\u{1f1ff}\u{1f1fc}'], '🇿🇼 E2.0 flag: Zimbabwe'),
-  (
-    ['\u{1f3f4}\u{e0067}\u{e0062}\u{e0065}\u{e006e}\u{e0067}\u{e007f}'],
-    '🏴󠁧󠁢󠁥󠁮󠁧󠁿 E5.0 flag: England'
-  ),
-  (
-    ['\u{1f3f4}\u{e0067}\u{e0062}\u{e0073}\u{e0063}\u{e0074}\u{e007f}'],
-    '🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland'
-  ),
-  (
-    ['\u{1f3f4}\u{e0067}\u{e0062}\u{e0077}\u{e006c}\u{e0073}\u{e007f}'],
-    '🏴󠁧󠁢󠁷󠁬󠁳󠁿 E5.0 flag: Wales'
-  ),
+  (['\u{1f3f4}\u{e0067}\u{e0062}\u{e0065}\u{e006e}\u{e0067}\u{e007f}'], '🏴󠁧󠁢󠁥󠁮󠁧󠁿 E5.0 flag: England'),
+  (['\u{1f3f4}\u{e0067}\u{e0062}\u{e0073}\u{e0063}\u{e0074}\u{e007f}'], '🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland'),
+  (['\u{1f3f4}\u{e0067}\u{e0062}\u{e0077}\u{e006c}\u{e0073}\u{e007f}'], '🏴󠁧󠁢󠁷󠁬󠁳󠁿 E5.0 flag: Wales'),
 ];
+// dart format on

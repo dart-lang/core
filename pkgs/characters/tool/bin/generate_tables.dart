@@ -102,6 +102,8 @@ Future<void> generateTables(
   // Generate the category mapping for all Unicode code points.
   // This is the table we want to create an compressed version of.
   var table = await loadGraphemeCategories(update: update, verbose: verbose);
+  var incbTable = await loadInCBCategories(update: update, verbose: verbose);
+  _logIntersection(table, incbTable);
 
   var lowChunkSize = defaultLowChunkSize;
   var highChunkSize = defaultHighChunkSize;
@@ -392,4 +394,43 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
 void printIndirectTable(IndirectTable table) {
   stderr.writeln("IT(chunks: ${table.chunks.map((x) => "#${x.length}")},"
       " entries: ${table.entries}");
+}
+
+void _logIntersection(Uint8List table, Uint8List incbTable) {
+  const catNames = [
+    "CR",
+    "ZWJ",
+    "Control",
+    "Other",
+    "Extend",
+    "SpacingMark",
+    "RegionalIndicator",
+    "Pictographic",
+    "LF",
+    "Prepend",
+    "L",
+    "V",
+    "T",
+    "LV",
+    "LVT",
+    "EoT",
+  ];
+  const incbNames = ["None", "Consonant", "Extend", "Linked"];
+
+  var counts = List<int>.filled(catNames.length * incbNames.length, 0);
+  for (var i = 0; i < table.length; i++) {
+    counts[table[i] * incbNames.length + incbTable[i]]++;
+  }
+  print(
+      "                    ${incbNames.map((s) => s.padRight(10)).join("  ")}");
+  for (var i = 0; i < catNames.length; i++) {
+    print("${catNames[i].padRight(20)}${[
+      for (var j = 0; j < incbNames.length; j++)
+        switch (counts[i * incbNames.length + j]) {
+          0 => "",
+          var v => v.toString()
+        }
+            .padLeft(10)
+    ].join("  ")}");
+  }
 }

@@ -23,6 +23,14 @@ const int categoryLV = 13;
 const int categoryLVT = 14;
 const int categoryEoT = 15; // End of Text (synthetic input)
 
+/// Indic Conjunct Break properties.
+// TODO: Find out how it overlaps with categories above.
+// so it can be incorporated into the same table and a single state machine.
+const int incbNone = 0;
+const int incbConsonant = 1;
+const int incbExtend = 2;
+const int incbLinker = 3;
+
 // Automaton states for forwards automaton.
 
 const int stateSoT = 0; // Start of text (or grapheme).
