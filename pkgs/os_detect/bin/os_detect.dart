@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Prints the operating system detected by the current compilation environment.
-library pkg.os_detect.run;
+library;
 
 import 'package:os_detect/os_detect.dart' as os_detect;
 
