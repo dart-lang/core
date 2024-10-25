@@ -10,4 +10,3 @@ linter:
     - avoid_unused_constructor_parameters
     - cancel_subscriptions
     - no_adjacent_strings_in_list
-    - package_api_docs
