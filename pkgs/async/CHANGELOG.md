@@ -1,3 +1,7 @@
+## 2.13.0-wip
+
+- migrate the Result class to sealed class
+
 ## 2.12.0
 
 - Require Dart 3.4.
