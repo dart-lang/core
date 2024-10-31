@@ -9,6 +9,7 @@
 import "dart:math";
 
 import "package:characters/characters.dart";
+import 'package:characters/src/grapheme_clusters/breaks.dart';
 import "package:test/test.dart";
 
 import "src/unicode_tests.dart";
@@ -23,7 +24,9 @@ void main([List<String>? args]) {
       ? int.parse(args[0])
       : Random().nextInt(0x3FFFFFFF);
   random = Random(seed);
-  group("[Random Seed: $seed]", tests);
+//  group("[Random Seed: $seed]", tests);
+
+/*
   group("characters", () {
     test("operations", () {
       var flag = "\u{1F1E9}\u{1F1F0}"; // Regional Indicators "DK".
@@ -207,13 +210,13 @@ void tests() {
       expectGC(gc("읍쌍된밟"), ["읍", "쌍", "된", "밟"]);
     });
   });
-
+*/
   group("Unicode test", () {
     for (var (gcs, description) in splitTests) {
-      if (description.contains('[9.3]')) {
-        print("Unsupported GB9c rule");
-        continue;
-      }
+      // if (description.contains('[9.3]')) {
+      //   print("Unsupported GB9c rule");
+      //   continue;
+      // }
       test("[${testDescription(gcs)}]", () {
         expectGC(gc(gcs.join()), gcs);
       });

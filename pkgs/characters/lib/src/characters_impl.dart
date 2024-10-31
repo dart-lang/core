@@ -485,7 +485,7 @@ class StringCharacterRange implements CharacterRange {
 
   bool _advanceEnd(int count, int newStart) {
     if (count > 0) {
-      var state = stateSoTNoBreak;
+      var state = scaledStateSoTNoBreak;
       var index = _end;
       while (index < _string.length) {
         var char = _string.codeUnitAt(index);
@@ -501,14 +501,14 @@ class StringCharacterRange implements CharacterRange {
           }
         }
         state = move(state, category);
-        if (state & stateNoBreak == 0 && --count == 0) {
+        if (state & flagNoBreak == 0 && --count == 0) {
           _move(newStart, index);
           return true;
         }
         index = nextIndex;
       }
       _move(newStart, _string.length);
-      return count == 1 && state != stateSoTNoBreak;
+      return count == 1 && state != scaledStateSoTNoBreak;
     } else if (count == 0) {
       _move(newStart, _end);
       return true;

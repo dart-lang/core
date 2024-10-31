@@ -5,6 +5,8 @@
 import "dart:io";
 import "dart:typed_data";
 
+import 'package:characters/src/grapheme_clusters/constants.dart';
+
 import "../src/args.dart";
 import "../src/automaton_builder.dart";
 import "../src/data_files.dart";
@@ -103,7 +105,15 @@ Future<void> generateTables(
   // This is the table we want to create an compressed version of.
   var table = await loadGraphemeCategories(update: update, verbose: verbose);
   var incbTable = await loadInCBCategories(update: update, verbose: verbose);
-  _logIntersection(table, incbTable);
+  if (verbose) {
+    _logIntersection(table, incbTable);
+  }
+  for (var i = 0; i < table.length; i++) {
+    var incb = incbTable[i];
+    if (incb != 0 && table[i] != categoryZWJ) {
+      table[i] = incb;
+    }
+  }
 
   var lowChunkSize = defaultLowChunkSize;
   var highChunkSize = defaultHighChunkSize;
@@ -138,7 +148,7 @@ Future<void> generateTables(
     assert(_validate(table, chunkTable, lowChunkSize, highChunkSize,
         verbose: false));
 
-    var size = chunkTable.chunks[0].length ~/ 2 + chunkTable.entries.length * 2;
+    var size = chunkTable.chunks[0].length + chunkTable.entries.length * 2;
     return size;
   }
 
@@ -182,9 +192,11 @@ Future<void> generateTables(
   var buffer = StringBuffer(copyright)
     ..writeln("// Generated code. Do not edit.")
     ..writeln("// Generated from [${graphemeBreakPropertyData.sourceLocation}]"
-        "(../../${graphemeBreakPropertyData.targetLocation})")
-    ..writeln("// and [${emojiData.sourceLocation}]"
-        "(../../${emojiData.targetLocation}).")
+        "(../../${graphemeBreakPropertyData.targetLocation}),")
+    ..writeln("// [${emojiData.sourceLocation}]"
+        "(../../${emojiData.targetLocation}) and")
+    ..writeln("// [${derivedData.sourceLocation}]"
+        "(../../${derivedData.targetLocation}).")
     ..writeln("// Licensed under the Unicode Inc. License Agreement")
     ..writeln("// (${licenseFile.sourceLocation}, "
         "../../third_party/${licenseFile.targetLocation})")
@@ -247,7 +259,8 @@ void updateReadmeVersion(String? version) {
 void writeTables(
     StringSink out, IndirectTable table, int lowChunkSize, int highChunkSize,
     {required bool verbose}) {
-  _writeNybbles(out, "_data", table.chunks[0], verbose: verbose);
+  assert(table.chunks.length == 1);
+  _writeBytes(out, "_data", table.chunks[0], verbose: verbose);
   _writeStringLiteral(out, "_start", table.entries.map((e) => e.start).toList(),
       verbose: verbose);
   _writeLookupFunction(out, "_data", "_start", lowChunkSize);
@@ -294,6 +307,23 @@ void _writeNybbles(StringSink out, String name, List<int> data,
   out.write(";\n");
 }
 
+void _writeBytes(StringSink out, String name, List<int> data,
+    {required bool verbose}) {
+  if (verbose) {
+    stderr.writeln("Writing ${data.length} bytes");
+  }
+  var prefix = "const String $name = ";
+  out.write(prefix);
+  var writer = StringLiteralWriter(out, padding: 4, escape: _needsEscape);
+  writer.start(prefix.length);
+  for (var i = 0; i < data.length; i++) {
+    var n1 = data[i];
+    writer.add(n1);
+  }
+  writer.end();
+  out.write(";\n");
+}
+
 bool _needsEscape(int codeUnit) =>
     codeUnit > 0xff || codeUnit == 0x7f || codeUnit & 0x60 == 0;
 
@@ -318,9 +348,7 @@ String _lookupMethod(
 int $name(int codeUnit) {
   var chunkStart = $startName.codeUnitAt(codeUnit >> ${chunkSize.bitLength - 1});
   var index = chunkStart + (codeUnit & ${chunkSize - 1});
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
 """;
 
@@ -331,9 +359,7 @@ String _lookupSurrogatesMethod(String name, String dataName, String startName,
 int $name(int lead, int tail) {
   var chunkStart = $startName.codeUnitAt($startOffset + (0x3ff & lead));
   var index = chunkStart + (0x3ff & tail);
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
 """
         : """
@@ -341,9 +367,7 @@ int $name(int lead, int tail) {
   var offset = ((0x3ff & lead) << 10) | (0x3ff & tail);
   var chunkStart = $startName.codeUnitAt($startOffset + (offset >> ${chunkSize.bitLength - 1}));
   var index = chunkStart + (offset & ${chunkSize - 1});
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
 """;
 
@@ -416,13 +440,20 @@ void _logIntersection(Uint8List table, Uint8List incbTable) {
     "EoT",
   ];
   const incbNames = ["None", "Consonant", "Extend", "Linked"];
+  const incbOffsets = {
+    0: 0,
+    categoryOtherIndicConsonant: 1,
+    categoryExtendIndicExtend: 2,
+    categoryExtendIndicLinked: 3,
+  };
 
   var counts = List<int>.filled(catNames.length * incbNames.length, 0);
   for (var i = 0; i < table.length; i++) {
-    counts[table[i] * incbNames.length + incbTable[i]]++;
+    var incbOffset = incbOffsets[incbTable[i]] ?? 0;
+    counts[table[i] * incbNames.length + incbOffset]++;
   }
   print(
-      "                    ${incbNames.map((s) => s.padRight(10)).join("  ")}");
+      "GC/InCB             ${incbNames.map((s) => s.padLeft(10)).join("  ")}");
   for (var i = 0; i < catNames.length; i++) {
     print("${catNames[i].padRight(20)}${[
       for (var j = 0; j < incbNames.length; j++)

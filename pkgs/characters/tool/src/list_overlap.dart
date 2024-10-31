@@ -9,7 +9,7 @@
 import "dart:typed_data";
 
 import "atsp.dart";
-import "simple_opt.dart";
+//import "simple_opt.dart";
 import "graph.dart";
 import "indirect_table.dart";
 

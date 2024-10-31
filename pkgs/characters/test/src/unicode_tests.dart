@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import "package:characters/src/grapheme_clusters/constants.dart";
+import 'package:characters/src/grapheme_clusters/table.dart';
 
 export "unicode_grapheme_tests.dart";
 
@@ -24,7 +25,18 @@ String testDescription(List<String> expected) {
   return "÷ $expectedString ÷";
 }
 
-final List<String> categoryName = List<String>.filled(16, "")
+int _category(int codePoint) {
+  if (codePoint < 0x10000) return low(codePoint);
+  return high((codePoint - 0x10000) >> 10, codePoint & 0x3ff);
+}
+
+String partCategories(List<String> parts) {
+  return parts.map((part) {
+    return part.runes.map((n) => categoryName[_category(n)]).join(" × ");
+  }).join(" ÷ ");
+}
+
+final List<String> categoryName = List<String>.filled(categoryCount, "")
   ..[categoryOther] = "Other"
   ..[categoryCR] = "CR"
   ..[categoryLF] = "LF"
@@ -40,4 +52,7 @@ final List<String> categoryName = List<String>.filled(16, "")
   ..[categoryLV] = "LV"
   ..[categoryLVT] = "LVT"
   ..[categoryPictographic] = "Pictographic"
+  ..[categoryOtherIndicConsonant] = "Other{InCB=Consonant}"
+  ..[categoryExtendIndicExtend] = "Extend{InCB=Extend}"
+  ..[categoryExtendIndicLinked] = "Extend{InCB=Linked}"
   ..[categoryEoT] = "EoT";

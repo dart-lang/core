@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import "dart:async";
-import 'dart:collection';
 import "dart:io" show stderr;
 import "dart:typed_data";
 
@@ -129,64 +128,68 @@ final _derivedPropertyTableRE = RegExp(
     multiLine: true);
 
 Uint8List _parseInCBCategories(String file, {required bool verbose}) {
-  const categoryName = ["None", "Consonant", "Extend", "Linker"];
+  const categoryByName = {
+    "Consonant": categoryOtherIndicConsonant,
+    "Extend": categoryExtendIndicExtend,
+    "Linker": categoryExtendIndicLinked
+  };
   var result = Uint8List(0x110000);
-  assert(incbNone == 0); // result.fillRange(0, result.length, incbNone);
   var lines = 0;
   var count = 0;
-  var counts = List<int>.filled(categoryName.length, 0);
-  var totalCounts = List<int>.filled(categoryName.length, 0);
-  var lastCategory = -1;
+  var counts = {for (var key in categoryByName.keys) key: 0};
+  var totalCounts = {for (var key in categoryByName.keys) key: 0};
+  var lastcategoryByName = "";
   for (var match in _derivedPropertyTableRE.allMatches(file)) {
     if (match[4] case var totalCountText?) {
-      if (lastCategory >= 0) {
-        if (totalCounts[lastCategory] != 0) {
+      if (lastcategoryByName.isNotEmpty) {
+        if (totalCounts[lastcategoryByName] != 0) {
           throw FormatException(
               "More than one total count per category", match[0]!);
         }
-        totalCounts[lastCategory] = int.parse(totalCountText);
-        lastCategory = -1;
+        totalCounts[lastcategoryByName] = int.parse(totalCountText);
+        lastcategoryByName = "";
       }
       continue;
     }
     var start = int.parse(match[1]!, radix: 16);
     // "None" should not occur in the table, since it's the default.
-    var incbCategory = categoryName.indexOf(match[3]!, 1);
-    if (incbCategory < 0) {
+    var name = match[3]!;
+    var incbCategory = categoryByName[name];
+    if (incbCategory == null) {
       throw FormatException("Invalid InCB category", match[0]!);
     }
     var endMatch = match[2];
     if (endMatch == null) {
-      assert(result[start] == incbNone);
+      assert(result[start] == 0);
       result[start] = incbCategory;
       if (verbose) {
         lines += 1;
         count += 1;
-        counts[incbCategory] += 1;
+        counts[name] = counts[name]! + 1;
       }
     } else {
       var end = int.parse(endMatch, radix: 16);
-      assert(result.getRange(start, end + 1).every((x) => x == incbNone));
+      assert(result.getRange(start, end + 1).every((x) => x == 0));
       result.fillRange(start, end + 1, incbCategory);
       if (verbose) {
         var range = end - start + 1;
         lines += 1;
         count += range;
-        counts[incbCategory] += range;
+        counts[name] = counts[name]! + range;
       }
     }
   }
-  for (var i = 0; i < counts.length; i++) {
-    if (counts[i] != totalCounts[i]) {
-      stderr.writeln("${categoryName[i]}: "
-          "Parsed: ${counts[i]}, expected: ${totalCounts[i]}");
+  for (var name in categoryByName.keys) {
+    if (counts[name] != totalCounts[name]) {
+      stderr.writeln("${categoryByName[name]}: "
+          "Parsed: ${counts[name]}, expected: ${totalCounts[name]}");
     }
   }
   if (verbose) {
     stderr.writeln("InCB categories: Loaded $count entries from $lines lines");
-    for (var i = 0; i < categoryName.length; i++) {
-      stderr.writeln("  ${categoryName[i].padRight(9)}: "
-          "${counts[i].toString().padLeft(6)}");
+    for (var name in categoryByName.keys) {
+      stderr.writeln("  ${name.padRight(9)}: "
+          "${counts[name].toString().padLeft(6)}");
     }
   }
   return result;
@@ -206,11 +209,9 @@ class UnicodePropertyTable {
   final List<_TableEntry> _entries =
       List.filled(_entryCount, const _ValueEntry(0));
 
-  @override
   int operator [](int index) =>
       _entries[index >> _entryShift][index & _entryMask];
 
-  @override
   void operator []=(int index, int value) {
     var entry = index >> _entryShift;
     _entries[entry] = _entries[entry].set(index & _entryMask, value);
@@ -237,9 +238,6 @@ class UnicodePropertyTable {
           .fillRange(startOffset, endOffset, value, fullEntry);
     }
   }
-
-  static Never _fixedLength() =>
-      throw UnsupportedError("Cannot change length of fixed length list");
 }
 
 sealed class _TableEntry {
