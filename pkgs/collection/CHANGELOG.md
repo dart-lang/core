@@ -1,3 +1,7 @@
+## 1.19.1-wip
+- Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
+  `Map.entries`.
+
 ## 1.19.1
 
 - Move to `dart-lang/core` monorepo.

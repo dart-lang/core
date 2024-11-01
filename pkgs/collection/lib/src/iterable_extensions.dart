@@ -914,6 +914,33 @@ extension IterableIterableExtension<T> on Iterable<Iterable<T>> {
       };
 }
 
+/// Extension on iterables of [MapEntry].
+///
+/// An [Iterable<MapEntry>] is obtained using [Map.entries], these extensions
+/// make it easy to work on a [Map] as a list of pairs.
+extension IterableMapEntryExtension<K, V> on Iterable<MapEntry<K, V>> {
+  /// Creates a new lazy [Iterable] with all elements whose [MapEntry.key]
+  /// satisfy the predicate [test].
+  Iterable<MapEntry<K, V>> whereKey(bool Function(K) test) =>
+      where((e) => test(e.key));
+
+  /// Creates a new lazy [Iterable] with all elements whose [MapEntry.value]
+  /// satisfy the predicate [test].
+  Iterable<MapEntry<K, V>> whereValue(bool Function(V) test) =>
+      where((e) => test(e.value));
+
+  /// Create an new lazy [Iterable] with [MapEntry.key] from all elements.
+  Iterable<K> get keys => map((e) => e.key);
+
+  /// Create an new lazy [Iterable] with [MapEntry.value] from all elements.
+  Iterable<V> get values => map((e) => e.value);
+
+  /// Create a [Map] from all elements.
+  ///
+  /// This is a short-hand for [Map.fromEntries].
+  Map<K, V> toMap() => Map.fromEntries(this);
+}
+
 /// Extensions that apply to iterables of [Comparable] elements.
 ///
 /// These operations can assume that the elements have a natural ordering,

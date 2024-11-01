@@ -1122,6 +1122,87 @@ void main() {
         });
       });
     });
+    group('of MapEntry', () {
+      group('.whereKey', () {
+        test('empty', () {
+          expect(<String, int>{}.entries.whereKey(unreachable), isEmpty);
+        });
+        test('single', () {
+          expect({'a': 1}.entries.whereKey((k) => k == 'a').toMap(), {'a': 1});
+          expect({'a': 1}.entries.whereKey((k) => k == 'b').toMap(), isEmpty);
+        });
+        test('multiple', () {
+          expect(
+            {'a': 1, 'b': 2}.entries.whereKey((k) => k == 'a').toMap(),
+            {'a': 1},
+          );
+          expect(
+            {'a': 1, 'b': 2}.entries.whereKey((k) => k == 'b').toMap(),
+            {'b': 2},
+          );
+          expect(
+            {'a': 1, 'b': 2}.entries.whereKey((k) => k != 'c').toMap(),
+            {'a': 1, 'b': 2},
+          );
+        });
+      });
+      group('.whereValue', () {
+        test('empty', () {
+          expect(<String, int>{}.entries.whereValue(unreachable), isEmpty);
+        });
+        test('single', () {
+          expect({'a': 1}.entries.whereValue((v) => v == 1).toMap(), {'a': 1});
+          expect({'a': 1}.entries.whereValue((v) => v == 2).toMap(), isEmpty);
+        });
+        test('multiple', () {
+          expect(
+            {'a': 1, 'b': 2}.entries.whereValue((v) => v == 1).toMap(),
+            {'a': 1},
+          );
+          expect(
+            {'a': 1, 'b': 2}.entries.whereValue((v) => v == 2).toMap(),
+            {'b': 2},
+          );
+          expect(
+            {'a': 1, 'b': 2}.entries.whereValue((v) => v != 3).toMap(),
+            {'a': 1, 'b': 2},
+          );
+        });
+      });
+      group('.keys', () {
+        test('empty', () {
+          expect(<String, int>{}.entries.keys, isEmpty);
+        });
+        test('single', () {
+          expect({'a': 1}.entries.keys, ['a']);
+        });
+        test('multiple', () {
+          expect({'a': 1, 'b': 2}.entries.keys, ['a', 'b']);
+        });
+      });
+      group('.values', () {
+        test('empty', () {
+          expect(<String, int>{}.entries.values, isEmpty);
+        });
+        test('single', () {
+          expect({'a': 1}.entries.values, [1]);
+        });
+        test('multiple', () {
+          expect({'a': 1, 'b': 2}.entries.values, [1, 2]);
+        });
+      });
+      group('.toMap', () {
+        test('empty', () {
+          expect(<String, int>{}.entries.toMap(), <String, int>{});
+        });
+        test('single', () {
+          expect({'a': 1}.entries.toMap(), {'a': 1});
+        });
+        test('multiple', () {
+          expect({'a': 1, 'b': 2}.entries.toMap(), {'a': 1, 'b': 2});
+        });
+      });
+    });
     group('of comparable', () {
       group('.min', () {
         test('empty', () {
