@@ -22,8 +22,8 @@ class DeepCollectionEqualityBase extends BenchmarkBase {
         super('DeepCollectionQuality${unordered ? 'Unordered' : ''}.$function');
 }
 
-class DeepCollectionEqualityEqualsBenchmark extends DeepCollectionEqualityBase {
-  DeepCollectionEqualityEqualsBenchmark(bool unordered)
+class DeepCollectionEqualityHashBenchmark extends DeepCollectionEqualityBase {
+  DeepCollectionEqualityHashBenchmark(bool unordered)
       : super(unordered, 'hash');
 
   @override
@@ -34,8 +34,8 @@ class DeepCollectionEqualityEqualsBenchmark extends DeepCollectionEqualityBase {
   static int hash = 0;
 }
 
-class DeepCollectionEqualityHashBenchmark extends DeepCollectionEqualityBase {
-  DeepCollectionEqualityHashBenchmark(bool unordered)
+class DeepCollectionEqualityEqualsBenchmark extends DeepCollectionEqualityBase {
+  DeepCollectionEqualityEqualsBenchmark(bool unordered)
       : super(unordered, 'equals');
 
   @override
