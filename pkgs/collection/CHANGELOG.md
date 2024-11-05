@@ -1,6 +1,11 @@
 ## 1.19.1-wip
+
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
   `Map.entries`.
+- Use `entries` and `update` in map equality implementations.
+  - Speeds up all equality checks.
+  - Speeds up implementations for maps with slow lookup, at a slight cost for
+    other implementations.
 
 ## 1.19.1
 
