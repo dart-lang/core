@@ -325,11 +325,15 @@ class MapEquality<K, V> implements Equality<Map<K, V>> {
     var length = map1.length;
     if (length != map2.length) return false;
     Map<_MapEntry, int> equalElementCounts = HashMap();
-    for (var MapEntry(:key, :value) in map1.entries) {
+    var values1 = map1.values.iterator;
+    for (var key in map1.keys) {
+      var value = (values1..moveNext()).current;
       var entry = _MapEntry(this, key, value);
       equalElementCounts.update(entry, (i) => i + 1, ifAbsent: () => 1);
     }
-    for (var MapEntry(:key, :value) in map2.entries) {
+    final values2 = map2.values.iterator;
+    for (var key in map2.keys) {
+      var value = (values2..moveNext()).current;
       var entry = _MapEntry(this, key, value);
       var count =
           equalElementCounts.update(entry, (i) => i - 1, ifAbsent: () => -1);
@@ -342,7 +346,9 @@ class MapEquality<K, V> implements Equality<Map<K, V>> {
   int hash(Map<K, V>? map) {
     if (map == null) return null.hashCode;
     var hash = 0;
-    for (var MapEntry(:key, :value) in map.entries) {
+    var values = map.values.iterator;
+    for (var key in map.keys) {
+      var value = (values..moveNext()).current;
       var keyHash = _keyEquality.hash(key);
       var valueHash = _valueEquality.hash(value);
       hash = (hash + 3 * keyHash + 7 * valueHash) & _hashMask;
