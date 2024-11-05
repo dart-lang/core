@@ -916,29 +916,39 @@ extension IterableIterableExtension<T> on Iterable<Iterable<T>> {
 
 /// Extension on iterables of [MapEntry].
 ///
-/// An [Iterable<MapEntry>] is obtained using [Map.entries], these extensions
-/// make it easy to work on a [Map] as a list of pairs.
+/// An [Iterable<MapEntry>] is obtained using [Map.entries]. These extensions
+/// facilitates working directly on the entries of a [Map].
 extension IterableMapEntryExtension<K, V> on Iterable<MapEntry<K, V>> {
-  /// Creates a new lazy [Iterable] with all elements whose [MapEntry.key]
-  /// satisfy the predicate [test].
+  /// The elements whose [MapEntry.key] values satisfy [test].
+  ///
+  /// The resulting iterable is lazily computing its elements
+  /// based on the elements this iterable.
   Iterable<MapEntry<K, V>> whereKey(bool Function(K) test) =>
       where((e) => test(e.key));
 
-  /// Creates a new lazy [Iterable] with all elements whose [MapEntry.value]
-  /// satisfy the predicate [test].
+  /// The elements whose [MapEntry.value] values satisfy [test].
+  ///
+  /// The resulting iterable is lazily computing its elements
+  /// based on the elements this iterable.
   Iterable<MapEntry<K, V>> whereValue(bool Function(V) test) =>
       where((e) => test(e.value));
 
-  /// Create an new lazy [Iterable] with [MapEntry.key] from all elements.
+  /// A new lazy [Iterable] of the [MapEntry.key]s of these entries.
+  ///
+  /// Do not use this getter as `map.entries.keys`, just use `map.keys`
+  /// directly.
   Iterable<K> get keys => map((e) => e.key);
 
-  /// Create an new lazy [Iterable] with [MapEntry.value] from all elements.
+  /// A new lazy [Iterable] of the [MapEntry.value]s of these entries.
+  ///
+  /// Do not use this getter as `map.entries.values`, just use `map.values`
+  /// directly.
   Iterable<V> get values => map((e) => e.value);
 
-  /// Create a [Map] from all elements.
+  /// Create a [Map<K, V>] from all elements.
   ///
   /// This is a short-hand for [Map.fromEntries].
-  Map<K, V> toMap() => Map.fromEntries(this);
+  Map<K, V> toMap() => Map<K, V>.fromEntries(this);
 }
 
 /// Extensions that apply to iterables of [Comparable] elements.
