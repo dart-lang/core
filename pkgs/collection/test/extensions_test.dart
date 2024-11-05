@@ -1122,6 +1122,180 @@ void main() {
         });
       });
     });
+    group('of MapEntry', () {
+      group('.whereKey', () {
+        test('empty', () {
+          expect(
+            iterable(<MapEntry<String, int>>[]).whereKey(unreachable),
+            isEmpty,
+          );
+        });
+        test('single', () {
+          expect(
+            iterable([const MapEntry('a', 1)]).whereKey((k) => k == 'a'),
+            [const MapEntry('a', 1)],
+          );
+          expect(
+            iterable([const MapEntry('a', 1)]).whereKey((k) => k == 'b'),
+            isEmpty,
+          );
+        });
+        test('multiple', () {
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+            ]).whereKey((k) => k == 'a'),
+            [const MapEntry('a', 1)],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+            ]).whereKey((k) => k == 'b'),
+            [const MapEntry('b', 2)],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+            ]).whereKey((k) => k != 'c'),
+            [const MapEntry('a', 1), const MapEntry('b', 2)],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+              const MapEntry('a', 3),
+            ]).whereKey((k) => k == 'a'),
+            [const MapEntry('a', 1), const MapEntry('a', 3)],
+          );
+        });
+      });
+      group('.whereValue', () {
+        test('empty', () {
+          expect(
+            iterable(<MapEntry<String, int>>[]).whereValue(unreachable),
+            isEmpty,
+          );
+        });
+        test('single', () {
+          expect(
+            iterable([const MapEntry('a', 1)]).whereValue((v) => v == 1),
+            [const MapEntry('a', 1)],
+          );
+          expect(
+            iterable([const MapEntry('a', 1)]).whereValue((v) => v == 2),
+            isEmpty,
+          );
+        });
+        test('multiple', () {
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+            ]).whereValue((v) => v == 1),
+            [const MapEntry('a', 1)],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+            ]).whereValue((v) => v == 2),
+            [const MapEntry('b', 2)],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+            ]).whereValue((v) => v != 3),
+            [const MapEntry('a', 1), const MapEntry('b', 2)],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+              const MapEntry('c', 1),
+            ]).whereValue((v) => v == 1),
+            [const MapEntry('a', 1), const MapEntry('c', 1)],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+              const MapEntry('a', 1),
+            ]).whereValue((v) => v == 1),
+            [const MapEntry('a', 1), const MapEntry('a', 1)],
+          );
+        });
+      });
+      group('.keys', () {
+        test('empty', () {
+          expect(iterable(<MapEntry<String, int>>[]).keys, isEmpty);
+        });
+        test('single', () {
+          expect(iterable([const MapEntry('a', 1)]).keys, ['a']);
+        });
+        test('multiple', () {
+          expect(
+            iterable([const MapEntry('a', 1), const MapEntry('b', 2)]).keys,
+            ['a', 'b'],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+              const MapEntry('a', 3),
+            ]).keys,
+            ['a', 'b', 'a'],
+          );
+        });
+      });
+      group('.values', () {
+        test('empty', () {
+          expect(iterable(<MapEntry<String, int>>[]).values, isEmpty);
+        });
+        test('single', () {
+          expect(iterable([const MapEntry('a', 1)]).values, [1]);
+        });
+        test('multiple', () {
+          expect(
+            iterable([const MapEntry('a', 1), const MapEntry('b', 2)]).values,
+            [1, 2],
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+              const MapEntry('a', 3),
+            ]).values,
+            [1, 2, 3],
+          );
+        });
+      });
+      group('.toMap', () {
+        test('empty', () {
+          expect(iterable(<MapEntry<String, int>>[]).toMap(), <String, int>{});
+        });
+        test('single', () {
+          expect(iterable([const MapEntry('a', 1)]).toMap(), {'a': 1});
+        });
+        test('multiple', () {
+          expect(
+            iterable([const MapEntry('a', 1), const MapEntry('b', 2)]).toMap(),
+            {'a': 1, 'b': 2},
+          );
+          expect(
+            iterable([
+              const MapEntry('a', 1),
+              const MapEntry('b', 2),
+              const MapEntry('a', 3),
+            ]).toMap(),
+            {'b': 2, 'a': 3},
+          );
+        });
+      });
+    });
     group('of comparable', () {
       group('.min', () {
         test('empty', () {
