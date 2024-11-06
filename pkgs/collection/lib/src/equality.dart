@@ -329,14 +329,14 @@ class MapEquality<K, V> implements Equality<Map<K, V>> {
     for (var key in map1.keys) {
       var value = (values1..moveNext()).current;
       var entry = _MapEntry(this, key, value);
-      equalElementCounts.update(entry, (i) => i + 1, ifAbsent: () => 1);
+      equalElementCounts.update(entry, _addOne, ifAbsent: _one);
     }
     final values2 = map2.values.iterator;
     for (var key in map2.keys) {
       var value = (values2..moveNext()).current;
       var entry = _MapEntry(this, key, value);
-      var count =
-          equalElementCounts.update(entry, (i) => i - 1, ifAbsent: () => -1);
+      var count = equalElementCounts.update(entry, _subtractOne,
+          ifAbsent: _negativeOne);
       if (count < 0) return false;
     }
     return true;
@@ -494,3 +494,8 @@ class CaseInsensitiveEquality implements Equality<String> {
   @override
   bool isValidKey(Object? object) => object is String;
 }
+
+int _addOne(int i) => i + 1;
+int _subtractOne(int i) => i - 1;
+int _one() => 1;
+int _negativeOne() => -1;
