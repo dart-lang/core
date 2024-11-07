@@ -3,6 +3,7 @@ version: 1.4.0
 description: >-
   Utility functions and classes related to the dart:typed_data library.
 repository: https://github.com/dart-lang/core/tree/main/pkgs/typed_data
+issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Atyped_data
 
 topics:
   - data-structures

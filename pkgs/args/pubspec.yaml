@@ -4,6 +4,7 @@ description: >-
   Library for defining parsers for parsing raw command-line arguments into a set
   of options and values using GNU and POSIX style options.
 repository: https://github.com/dart-lang/core/tree/main/pkgs/args
+issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Aargs
 
 topics:
   - cli

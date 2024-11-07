@@ -4,6 +4,7 @@ description: >-
   Library for 32- and 64-bit signed fixed-width integers with consistent
   behavior between native and JS runtimes.
 repository: https://github.com/dart-lang/core/tree/main/pkgs/fixnum
+issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Afixnum
 
 environment:
   sdk: ^3.1.0

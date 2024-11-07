@@ -3,6 +3,7 @@ version: 1.19.1-wip
 description: >-
   Collections and utilities functions and classes related to collections.
 repository: https://github.com/dart-lang/core/tree/main/pkgs/collection
+issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Acollection
 
 topics:
  - collections

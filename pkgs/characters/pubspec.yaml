@@ -3,6 +3,7 @@ version: 1.4.0
 description: >-
   String replacement with operations that are Unicode/grapheme cluster aware.
 repository: https://github.com/dart-lang/core/tree/main/pkgs/characters
+issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Acharacters
 
 topics:
   - strings
