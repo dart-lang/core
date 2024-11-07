@@ -179,7 +179,6 @@ void generateTables(
 
   writeTables(buffer, chunkTable, lowChunkSize, highChunkSize,
       verbose: verbose);
-  buffer.writeln();
 
   writeForwardAutomaton(buffer, verbose: verbose);
   buffer.writeln();
