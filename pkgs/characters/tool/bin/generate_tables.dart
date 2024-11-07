@@ -63,13 +63,12 @@ const tableFile = "lib/src/grapheme_clusters/table.dart";
 // next time, instead of hardcoding in the source file.
 
 // Chunk sizes must be powers of 2.
-const int defaultLowChunkSize = 64;
+const int defaultLowChunkSize = 32;
 
-// 512 gives best size by 431b and no discernible performance difference
-// from 1024 in benchmark.
-const int defaultHighChunkSize = 512;
+// Currently found best size.
+const int defaultHighChunkSize = 256;
 
-void main(List<String> args) {
+void main(List<String> args) async {
   var flags = parseArgs(args, "generate_tables", allowOptimize: true);
   var output = flags.dryrun
       ? null
@@ -84,25 +83,22 @@ void main(List<String> args) {
       output = null;
     }
   }
-  generateTables(output,
-      update: flags.update,
-      dryrun: flags.dryrun,
-      verbose: flags.verbose,
-      optimize: flags.optimize);
+
+  var categories =
+      await loadCategories(update: flags.update, verbose: flags.verbose);
+
+  generateTables(output, categories,
+      dryrun: flags.dryrun, verbose: flags.verbose, optimize: flags.optimize);
 }
 
-Future<void> generateTables(
-  File? output, {
-  bool update = false,
+void generateTables(
+  File? output,
+  Uint8List table, {
   bool dryrun = false,
   bool optimize = false,
   bool verbose = defaultVerbose,
   bool acceptLicenseChange = false,
 }) async {
-  // Generate the category mapping for all Unicode code points.
-  // This is the table we want to create an compressed version of.
-  var table = await loadGraphemeCategories(update: update, verbose: verbose);
-
   var lowChunkSize = defaultLowChunkSize;
   var highChunkSize = defaultHighChunkSize;
 
@@ -136,7 +132,7 @@ Future<void> generateTables(
     assert(_validate(table, chunkTable, lowChunkSize, highChunkSize,
         verbose: false));
 
-    var size = chunkTable.chunks[0].length ~/ 2 + chunkTable.entries.length * 2;
+    var size = chunkTable.chunks[0].length + chunkTable.entries.length * 2;
     return size;
   }
 
@@ -176,67 +172,24 @@ Future<void> generateTables(
     }
   }
 
-  // Write the table and automaton to source.
-  var buffer = StringBuffer(copyright)
-    ..writeln("// Generated code. Do not edit.")
-    ..writeln("// Generated from [${graphemeBreakPropertyData.sourceLocation}]"
-        "(../../${graphemeBreakPropertyData.targetLocation})")
-    ..writeln("// and [${emojiData.sourceLocation}]"
-        "(../../${emojiData.targetLocation}).")
-    ..writeln("// Licensed under the Unicode Inc. License Agreement")
-    ..writeln("// (${licenseFile.sourceLocation}, "
-        "../../third_party/${licenseFile.targetLocation})")
-    ..writeln();
+  var buffer = StringBuffer();
+  writeHeader(
+      buffer, [graphemeTestData, emojiTestData, graphemeBreakPropertyData]);
+  buffer.writeln();
 
   writeTables(buffer, chunkTable, lowChunkSize, highChunkSize,
       verbose: verbose);
+  buffer.writeln();
 
   writeForwardAutomaton(buffer, verbose: verbose);
   buffer.writeln();
+
   writeBackwardAutomaton(buffer, verbose: verbose);
 
   if (output == null) {
     stdout.write(buffer);
-  } else {
+  } else if (!dryrun) {
     output.writeAsStringSync(buffer.toString());
-  }
-  if (update && !dryrun) {
-    var version = guessVersion(await graphemeBreakPropertyData.contents);
-    updateReadmeVersion(version);
-  }
-}
-
-// -----------------------------------------------------------------------------
-// Unicode version number.
-
-String? guessVersion(String dataFile) {
-  // If first line has format:
-  //
-  // # GraphemeBreakProperty-16.0.0.txt
-  //
-  // Then use 16.0.0 as version number.
-  var match = RegExp(r"# \w+-(\d+\.\d+\.\d+)\.txt").matchAsPrefix(dataFile);
-  return match?[1];
-}
-
-void updateReadmeVersion(String? version) {
-  var readmeFile = File(packagePath("README.md"));
-  var contents = readmeFile.readAsStringSync();
-  String replacementText;
-  if (version != null) {
-    replacementText = "version $version";
-  } else {
-    var now = DateTime.timestamp();
-    replacementText = "of ${now.year}-${lz(now.month)}-${lz(now.day)}";
-  }
-  const startTag = "<!-- unicode-version -->";
-  const endTag = "<!-- /unicode-version -->";
-  var versionRE = RegExp('(?<=$startTag).*?(?=$endTag)');
-  var newContents = contents.replaceFirst(versionRE, replacementText);
-  if (contents != newContents) {
-    readmeFile.writeAsStringSync(newContents);
-  } else if (versionRE.firstMatch(contents) == null) {
-    stderr.writeln("MISSING VERSION TAGS IN README.md");
   }
 }
 
@@ -245,7 +198,8 @@ void updateReadmeVersion(String? version) {
 void writeTables(
     StringSink out, IndirectTable table, int lowChunkSize, int highChunkSize,
     {required bool verbose}) {
-  _writeNybbles(out, "_data", table.chunks[0], verbose: verbose);
+  assert(table.chunks.length == 1);
+  _writeStringLiteral(out, "_data", table.chunks[0], verbose: verbose);
   _writeStringLiteral(out, "_start", table.entries.map((e) => e.start).toList(),
       verbose: verbose);
   _writeLookupFunction(out, "_data", "_start", lowChunkSize);
@@ -257,39 +211,21 @@ void writeTables(
 
 void _writeStringLiteral(StringSink out, String name, List<int> data,
     {required bool verbose}) {
-  if (verbose) {
-    stderr.writeln("Writing ${data.length} chars");
-  }
   var prefix = "const String $name = ";
   out.write(prefix);
   var writer = StringLiteralWriter(out, padding: 4, escape: _needsEscape);
   writer.start(prefix.length);
+  var bytes = 0;
   for (var i = 0; i < data.length; i++) {
-    writer.add(data[i]);
+    var char = data[i];
+    writer.add(char);
+    bytes += char <= 0xFF ? 1 : 2;
   }
   writer.end();
   out.write(";\n");
-}
-
-void _writeNybbles(StringSink out, String name, List<int> data,
-    {required bool verbose}) {
   if (verbose) {
-    stderr.writeln("Writing ${data.length} nybbles");
+    stderr.writeln("Writing $bytes bytes");
   }
-  var prefix = "const String $name = ";
-  out.write(prefix);
-  var writer = StringLiteralWriter(out, padding: 4, escape: _needsEscape);
-  writer.start(prefix.length);
-  for (var i = 0; i < data.length - 1; i += 2) {
-    var n1 = data[i];
-    var n2 = data[i + 1];
-    assert(0 <= n1 && n1 <= 15);
-    assert(0 <= n2 && n2 <= 15);
-    writer.add(n1 + n2 * 16);
-  }
-  if (data.length.isOdd) writer.add(data.last);
-  writer.end();
-  out.write(";\n");
 }
 
 bool _needsEscape(int codeUnit) =>
@@ -316,9 +252,7 @@ String _lookupMethod(
 int $name(int codeUnit) {
   var chunkStart = $startName.codeUnitAt(codeUnit >> ${chunkSize.bitLength - 1});
   var index = chunkStart + (codeUnit & ${chunkSize - 1});
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
 """;
 
@@ -329,9 +263,7 @@ String _lookupSurrogatesMethod(String name, String dataName, String startName,
 int $name(int lead, int tail) {
   var chunkStart = $startName.codeUnitAt($startOffset + (0x3ff & lead));
   var index = chunkStart + (0x3ff & tail);
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
 """
         : """
@@ -339,9 +271,7 @@ int $name(int lead, int tail) {
   var offset = ((0x3ff & lead) << 10) | (0x3ff & tail);
   var chunkStart = $startName.codeUnitAt($startOffset + (offset >> ${chunkSize.bitLength - 1}));
   var index = chunkStart + (offset & ${chunkSize - 1});
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
 """;
 

@@ -2,7 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "package:characters/src/grapheme_clusters/constants.dart";
+import 'package:characters/src/grapheme_clusters/table.dart';
+
+import '../../tool/src/debug_names.dart';
 
 export "unicode_grapheme_tests.dart";
 
@@ -24,20 +26,22 @@ String testDescription(List<String> expected) {
   return "÷ $expectedString ÷";
 }
 
-final List<String> categoryName = List<String>.filled(16, "")
-  ..[categoryOther] = "Other"
-  ..[categoryCR] = "CR"
-  ..[categoryLF] = "LF"
-  ..[categoryControl] = "Control"
-  ..[categoryExtend] = "Extend"
-  ..[categoryZWJ] = "ZWJ"
-  ..[categoryRegionalIndicator] = "RI"
-  ..[categoryPrepend] = "Prepend"
-  ..[categorySpacingMark] = "SpacingMark"
-  ..[categoryL] = "L"
-  ..[categoryV] = "V"
-  ..[categoryT] = "T"
-  ..[categoryLV] = "LV"
-  ..[categoryLVT] = "LVT"
-  ..[categoryPictographic] = "Pictographic"
-  ..[categoryEoT] = "EoT";
+int _category(int codePoint) {
+  if (codePoint < 0x10000) return low(codePoint);
+  return high((codePoint - 0x10000) >> 10, codePoint & 0x3ff);
+}
+
+String partCategories(List<String> parts) {
+  var index = 0;
+  int posOf(int rune) {
+    var result = index;
+    index += rune >= 0xFFFF ? 2 : 1;
+    return result;
+  }
+
+  return parts.map((part) {
+    return part.runes
+        .map((n) => "#${posOf(n)}:${categoryLongNames[_category(n)]}")
+        .join(" × ");
+  }).join(" ÷ ");
+}

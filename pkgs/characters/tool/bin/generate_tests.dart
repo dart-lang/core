@@ -3,9 +3,13 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import "dart:io";
+import 'dart:typed_data';
+
+import 'package:characters/src/grapheme_clusters/constants.dart';
 
 import "../src/args.dart";
 import "../src/data_files.dart";
+import '../src/grapheme_category_loader.dart';
 import "../src/shared.dart";
 import "../src/string_literal_writer.dart";
 
@@ -34,43 +38,84 @@ void main(List<String> args) async {
       output = null;
     }
   }
-
-  await generateTests(output,
-      update: flags.update, verbose: flags.verbose, dryrun: flags.dryrun);
-}
-
-Future<void> generateTests(File? output,
-    {bool update = false,
-    bool dryrun = false,
-    bool verbose = defaultVerbose}) async {
-  var buffer = StringBuffer(copyright)
-    ..writeln("// Generated code. Do not edit.")
-    ..writeln("// Generated from [${graphemeTestData.sourceLocation}]"
-        "(../../${graphemeTestData.targetLocation})")
-    ..writeln("// and [${emojiTestData.sourceLocation}]"
-        "(../../${emojiTestData.targetLocation}).")
-    ..writeln("// Licensed under the Unicode Inc. License Agreement")
-    ..writeln("// (${licenseFile.sourceLocation}, "
-        "../../third_party/${licenseFile.targetLocation})")
-    ..writeln("// ignore_for_file: lines_longer_than_80_chars")
-    ..writeln("// dart format off")
-    ..writeln();
-
-  var texts = await Future.wait([
-    graphemeTestData.load(checkForUpdate: update),
-    emojiTestData.load(checkForUpdate: update)
-  ]);
-  if (update) {
+  if (flags.update) {
     // Force license file update.
     await licenseFile.load(checkForUpdate: true);
   }
+
+  var (categories, graphemeTests, emojiTests) = await (
+    loadCategories(update: flags.update, verbose: flags.verbose),
+    graphemeTestData.load(checkForUpdate: flags.update),
+    emojiTestData.load(checkForUpdate: flags.update)
+  ).wait;
+
+  generateTests(output, [graphemeTests, emojiTests], categories,
+      verbose: flags.verbose, dryrun: flags.dryrun);
+}
+
+void generateTests(File? output, List<String> texts, Uint8List categories,
+    {bool verbose = false, bool dryrun = false}) {
+  var buffer = StringBuffer();
+  writeHeader(buffer, [
+    graphemeTestData,
+    emojiTestData,
+    graphemeBreakPropertyData,
+    emojiData,
+    derivedData
+  ]);
+  buffer.writeln("// ignore_for_file: lines_longer_than_80_chars");
+  buffer.writeln("// dart format off");
+  buffer.writeln();
+
+  // Example character of a category which is in the upper planes.
+  var upperChars = List<int>.filled(inputCategoryCount, -1);
+  // Example character of a category which is in the lower planes.
+  var lowerChars = List<int>.filled(inputCategoryCount, -1);
+
+  writeTests(buffer, texts, categories, lowerChars, upperChars,
+      verbose: verbose, dryrun: dryrun);
+
+  buffer.writeln("// dart format on");
+
+  writeOtherCategories(buffer, categories, lowerChars, upperChars);
+
+  if (output == null) {
+    stdout.write(buffer);
+  } else if (!dryrun) {
+    output.writeAsStringSync(buffer.toString());
+  }
+}
+
+void writeTests(StringSink buffer, List<String> texts, Uint8List categories,
+    List<int> lowerChars, List<int> upperChars,
+    {bool dryrun = false, bool verbose = defaultVerbose}) async {
+  var writer = StringLiteralWriter(buffer, lineLength: 9999, escape: _escape);
+  void writeParts(List<List<int>> parts, String description) {
+    buffer.write("  ([");
+    for (var i = 0; i < parts.length; i++) {
+      if (i > 0) buffer.write(", ");
+      writer.start(0);
+      for (var char in parts[i]) {
+        writer.add(char);
+        var c = categories[char];
+        ((char < 0x10000) ? lowerChars : upperChars)[c] = char;
+      }
+      writer.end();
+    }
+    buffer
+      ..write("], '")
+      ..write(description)
+      ..writeln("'),");
+  }
+
+  // Write grapheme cluster tests.
   {
     buffer.writeln("// Grapheme cluster tests.");
     writeTestHeader(buffer, 'splitTests');
     var test = texts[0];
     var lineRE = RegExp(r"^(÷.*?)#[ \t]*(.*)", multiLine: true);
     var tokensRE = RegExp(r"[÷×]|[\dA-F]+");
-    var writer = StringLiteralWriter(buffer, lineLength: 9999, escape: _escape);
+
     for (var line in lineRE.allMatches(test)) {
       var description = line[2]!;
       var tokens = tokensRE.allMatches(line[1]!).map((x) => x[0]!).toList();
@@ -87,20 +132,11 @@ Future<void> generateTests(File? output,
           chars = [];
         }
       }
-      buffer.write("  ([");
-      for (var i = 0; i < parts.length; i++) {
-        if (i > 0) buffer.write(", ");
-        writer.start(0);
-        parts[i].forEach(writer.add);
-        writer.end();
-      }
-      buffer
-        ..write("], '")
-        ..write(description)
-        ..writeln("'),");
+      writeParts(parts, description);
     }
     buffer.writeln("];");
   }
+  // Write emoji cluster tests.
   {
     buffer.writeln("// Emoji tests.");
     writeTestHeader(buffer, 'emojis');
@@ -108,32 +144,16 @@ Future<void> generateTests(File? output,
     var emojis = texts[1];
     var lineRE = RegExp(r"^([ \dA-F]*?);[^#]*#[ \t]*(.*)", multiLine: true);
     var tokensRE = RegExp(r"[\dA-F]+");
-    var writer = StringLiteralWriter(buffer, lineLength: 9999, escape: _escape);
     for (var line in lineRE.allMatches(emojis)) {
       var description = line[2]!;
-      buffer.write("  ([");
-      writer.start();
+      var part = <int>[];
       for (var token in tokensRE.allMatches(line[1]!)) {
         var value = int.parse(token[0]!, radix: 16);
-        writer.add(value);
+        part.add(value);
       }
-      writer.end();
-      buffer
-        ..write("], '")
-        ..write(description) // No current description contains `'`.
-        ..writeln("'),");
+      writeParts([part], description);
     }
     buffer.writeln("];");
-  }
-  buffer.writeln("// dart format on");
-
-  if (dryrun || output == null) {
-    stdout.write(buffer);
-  } else {
-    if (verbose) {
-      stderr.writeln("Writing ${output.path}");
-    }
-    output.writeAsStringSync(buffer.toString());
   }
 }
 
@@ -144,4 +164,44 @@ void writeTestHeader(StringSink buffer, String testName) {
     ..write("const List<(List<String> graphemeClusters, String description)> ")
     ..write(testName)
     ..writeln(" = [");
+}
+
+void writeOtherCategories(StringSink output, Uint8List categories,
+    List<int> lowerChars, List<int> upperChars) {
+  var otherCategories = lowerChars;
+  for (var i = 0; i < 0x110000; i++) {
+    if (i == 0x10000) otherCategories = upperChars;
+    var category = categories[i];
+    if (otherCategories[category] < 0) otherCategories[category] = i;
+  }
+  // BMP characters.
+  output
+    ..writeln("// BMP character in each category, if any, -1 if none.")
+    ..writeln("const lowerChars = <int>[");
+  for (var char in lowerChars) {
+    output.write("  ");
+    writeHex(output, char);
+    output.writeln(",");
+  }
+  output.writeln("];");
+
+  output
+    ..writeln("// Non-BMP character in each category, if any, -1 if none.")
+    ..writeln("const upperChars = <int>[");
+  for (var char in upperChars) {
+    output.write("  ");
+    writeHex(output, char);
+    output.writeln(",");
+  }
+  output.writeln("];");
+}
+
+void writeHex(StringSink out, int value) {
+  if (value < 0) {
+    out.write("-");
+    value = -value;
+  }
+  out
+    ..write("0x")
+    ..write(value.toRadixString(16));
 }

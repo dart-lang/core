@@ -9,6 +9,7 @@
 import "dart:typed_data";
 
 import "atsp.dart";
+import "graph.dart";
 import "indirect_table.dart";
 
 /// Takes a set of distinct chunks, and finds a semi-optimal overlapping.

@@ -24,6 +24,7 @@ void main([List<String>? args]) {
       : Random().nextInt(0x3FFFFFFF);
   random = Random(seed);
   group("[Random Seed: $seed]", tests);
+
   group("characters", () {
     test("operations", () {
       var flag = "\u{1F1E9}\u{1F1F0}"; // Regional Indicators "DK".
@@ -136,7 +137,6 @@ void main([List<String>? args]) {
         range = range = CharacterRange.at(string, 0, string.length);
         expect(range.isEmpty, false);
         expect(range.current, string);
-        print("DONE");
       });
     });
   });
@@ -209,11 +209,7 @@ void tests() {
   });
 
   group("Unicode test", () {
-    for (var (gcs, description) in splitTests) {
-      if (description.contains('[9.3]')) {
-        print("Unsupported GB9c rule");
-        continue;
-      }
+    for (var (gcs, _) in splitTests) {
       test("[${testDescription(gcs)}]", () {
         expectGC(gc(gcs.join()), gcs);
       });
@@ -727,15 +723,30 @@ void testParts(
     expect(ri.currentCharacters, reg + reg);
     expect(ri.moveNext(), true);
     expect(ri.currentCharacters, reg);
+
+    c = inc + ine + pattern + ine + zwj + inc + ext;
+    // Breaks before and after `pattern`, before second `inc`.
+    expect(c.length, 4);
+    ci = c.iterator..moveTo(pattern);
+    ri = ci.replaceRange(non);
+    // Still breaks before second `inc`.
+    expect(ri.currentCharacters, inc + ine + ine + zwj);
+    expect(ri.source.length, 2);
+
+    ci = c.iterator..moveTo(pattern);
+    ri = ci.replaceRange(inl);
+    expect(ri.currentCharacters, inc + ine + inl + ine + zwj + inc + ext);
+    expect(ri.source.length, 1);
   });
 }
 
-/// Sample characters from each breaking algorithm category.
+// Sample characters from each breaking algorithm category.
+// TODO: Generate these.
 final Characters ctl = gc("\x00"); // Control, NUL.
 final Characters cr = gc("\r"); // Carriage Return, CR.
 final Characters lf = gc("\n"); // Newline, NL.
 final Characters otr = gc(" "); // Other, Space.
-final Characters ext = gc("\u0300"); // Extend, Combining Grave Accent.
+final Characters ext = gc("\u200c"); // Extend, Combining Grave Accent.
 final Characters spc = gc("\u0903"); // Spacing Mark, Devanagari Sign Visarga.
 final Characters pre = gc("\u0600"); // Prepend, Arabic Number Sign.
 final Characters zwj = gc("\u200d"); // Zero-Width Joiner.
@@ -746,3 +757,9 @@ final Characters hanv = gc("\u1160"); // Hangul V, Jungseong Filler.
 final Characters hant = gc("\u11a8"); // Hangul T, Jongseong Kiyeok.
 final Characters hanlv = gc("\uac00"); // Hangul LV, Syllable Ga.
 final Characters hanlvt = gc("\uac01"); // Hangul LVT, Syllable Gag.
+final Characters inc =
+    gc("\u0915"); // Other{InCL=Consonant}, Devanagari letter Ka.
+final Characters ine =
+    gc("\u0300"); // Extend{InCL=Extend}, Combining Grave Accent.
+final Characters inl =
+    gc("\u094d"); // Extend{InCL=Linker}, Devanagari Sign Virama.

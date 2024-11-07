@@ -97,6 +97,26 @@ const copyright = """
 
 """;
 
+// Generated file header:
+void writeHeader(StringSink output, List<DataFile> dependencies) {
+  output
+    ..write(copyright)
+    ..writeln("// Generated code. Do not edit.")
+    ..writeln("// Generated from:");
+  for (var sourceFile in dependencies) {
+    output
+      ..write("// - [")
+      ..write(sourceFile.sourceLocation)
+      ..write("](../../")
+      ..write(sourceFile.targetLocation)
+      ..writeln(")");
+  }
+  output
+    ..writeln("// Licensed under the Unicode Inc. License Agreement")
+    ..writeln("// (${licenseFile.sourceLocation}, "
+        "../../third_party/${licenseFile.targetLocation})");
+}
+
 /// Temporary directory. Created once and for all.
 Directory get tmpDirectory => _tmpDirectory ??=
     Directory.systemTemp.createTempSync('dart_pkg_characters');
