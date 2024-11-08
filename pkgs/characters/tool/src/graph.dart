@@ -45,38 +45,5 @@ class Graph {
     return weight;
   }
 
-  /// Swaps the positions of [vertex1] and [vertex2], updating the weight table.
-  void swap(int vertex1, int vertex2) {
-    if (vertex1 == vertex2) return;
-    // Swap rows.
-    for (var i = 0; i < vertexCount; i++) {
-      var weightTo1 = weight(i, vertex1);
-      var weightTo2 = weight(i, vertex2);
-      setWeight(i, vertex1, weightTo2);
-      setWeight(i, vertex2, weightTo1);
-    }
-    // Swap columns.
-    for (var i = 0; i < vertexCount; i++) {
-      var weightFrom1 = weight(vertex1, i);
-      var weightFrom2 = weight(vertex2, i);
-      setWeight(vertex1, i, weightFrom2);
-      setWeight(vertex2, i, weightFrom1);
-    }
-    assert(weight(vertex1, vertex1) == 0);
-    assert(weight(vertex2, vertex2) == 0);
-  }
-
-  /// Creates a new graph without the last vertex (or last [count] vertices).
-  Graph removeLastVertex([int count = 1]) {
-    RangeError.checkValueInInterval(count, 1, vertexCount, "count");
-    var newCount = vertexCount - count;
-    var result = Graph(newCount);
-    for (var i = 0; i < newCount; i++) {
-      result._table
-          .setRange(i * newCount, (i + 1) * newCount, _table, i * vertexCount);
-    }
-    return result;
-  }
-
   int get maxWeight => _table.reduce((a, b) => a >= b ? a : b);
 }
