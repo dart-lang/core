@@ -36,21 +36,37 @@ const int regionalIndicatorEnd = 0x1F1FF; // Z
 
 /// Bit flag or'ed to the automaton output if there should not be a break
 /// before the most recent input character.
-const int flagNoBreak = 1;
-const int flagBreak = 0;
+const int flagNoBreak = 0;
+const int flagBreak = 1;
 const int maskBreak = 1;
 
-/// Automaton row length, number of input categories rounded
-/// to an even number, so that an entry can store a state multiplied by
-/// the row length and always use the first bit for [flagNoBreak].
-const automatonRowLength = categoryCount + (categoryCount & 1);
+/// Extra bit used to trigger or modify the effect of lookahead/lookbehind.
+///
+/// Requires [automatonRowLength] to be a multiple of 4.
+/// It is currently 20.
+const int flagLookahead = 2;
+const int maskLookahead = 2;
 
-/// Stored states must be shifted by this amount to match
-/// [automatonRowLength].
-const stateShift = 1;
+/// Mask of entry in automatons without low flag bits.
+const int maskFlags = maskLookahead | maskBreak;
+const int maskState = ~maskFlags;
+
+// For complex lookahead (Indic Ext/Lnk+Con, ZWJ+PIC), where to put the
+// breaks and cursor afterwards.
+const int flagLookaheadBreakNone = flagNoBreak;
+const int flagLookaheadBreakEarly = flagBreak;
+const int flagLookaheadBreakLate = flagLookahead | flagNoBreak; // Not used?
+const int flagLookaheadBreakBoth = flagLookahead | flagBreak;
+
+/// Automaton row length, number of input categories rounded up
+/// to a multiple of `maskFlags + 1`, so that the state value
+/// has room for flags in the low bits.
+/// (Rather than having to right-shift the state to find the
+/// table entry.)
+const automatonRowLength = (categoryCount + maskFlags) & maskState;
 
 /// State IDs are multiplied by this to become state values.
-const scaleState = automatonRowLength >> stateShift;
+const scaleState = automatonRowLength;
 
 // Let states be the position of their entries in the automaton data.
 
@@ -61,62 +77,62 @@ const scaleState = automatonRowLength >> stateShift;
 // into the automaton tables).
 
 /// Always break before next.
-const int idStateBreak = 0x00;
+const StateId idStateBreak = 0x00 as StateId;
 const int stateBreak = idStateBreak * scaleState;
 
 /// Break unless next is LF.
-const int idStateCR = 0x01;
+const StateId idStateCR = 0x01 as StateId;
 const int stateCR = idStateCR * scaleState;
 
 /// Break unless next is Extend, ZWJ, SpacingMark.
-const int idStateOther = 0x02;
+const StateId idStateOther = 0x02 as StateId;
 const int stateOther = idStateOther * scaleState;
 
 /// Break only if next is Control/CR/LF/eot.
-const int idStatePrepend = 0x03;
+const StateId idStatePrepend = 0x03 as StateId;
 const int statePrepend = idStatePrepend * scaleState;
 
 /// As Other unless next is L, V, LV, LVT.
 ///
 /// Seen `L+`
-const int stateL = 0x04;
-const int scaledStateL = stateL * scaleState;
+const StateId idStateL = 0x04 as StateId;
+const int stateL = idStateL * scaleState;
 
 /// As Other unless next is V, T.
 /// Seen: `L* (LV|V) V*`
-const int stateV = 0x05;
-const int scaledStateV = stateV * scaleState;
+const StateId idStateV = 0x05 as StateId;
+const int stateV = idStateV * scaleState;
 
 /// As Other unless next is T.
 ///
 /// Seen `L*(LV?V*T|LVT)T*`.
-const int stateT = 0x06;
-const int scaledStateT = stateT * scaleState;
+const StateId idStateT = 0x06 as StateId;
+const int stateT = idStateT * scaleState;
 
 /// As Other unless followed by Ext* ZWJ Pic.
-const int idStatePictographic = 0x07;
+const StateId idStatePictographic = 0x07 as StateId;
 const int statePictographic = idStatePictographic * scaleState;
 
 /// As Other unless followed by Pic.
-const int idStatePictographicZWJ = 0x08;
+const StateId idStatePictographicZWJ = 0x08 as StateId;
 const int statePictographicZWJ = idStatePictographicZWJ * scaleState;
 
 /// As Other unless followed by RI.
 ///
 /// Unknown whether there is an even or odd number of prior RIs.
-const int idStateRegionalSingle = 0x09;
+const StateId idStateRegionalSingle = 0x09 as StateId;
 const int stateRegionalSingle = idStateRegionalSingle * scaleState;
 
 /// As Other unless next is InCB=Extend|Linked|.
 /// Has seen `{InCB=Consonant} {InCB=Extend}*`.
-const int idStateInC = 0x0A;
+const StateId idStateInC = 0x0A as StateId;
 const int stateInC = idStateInC * scaleState;
 
 /// As Other unless InCB=Extend|Linked|Consonant.
 /// Seen `{InCB=Consonant} {InCB=Extend}* {InCB=Linked} {InCB=Extend|Linked}*`.
 /// Don't break before a following `{InCB=Consonant}`.
 /// (Not used in backwards automaton).
-const int idStateInCL = 0x0B;
+const StateId idStateInCL = 0x0B as StateId;
 const int stateInCL = idStateInCL * scaleState;
 
 /// As SoT, but never cause break before next character.
@@ -124,19 +140,19 @@ const int stateInCL = idStateInCL * scaleState;
 /// Not reachable in automaton, only used as start state.
 /// Used internally at start of inputs, which is automatically considered a
 /// break anyway.
-const int idStateSoTNoBreak = 0x0C;
+const StateId idStateSoTNoBreak = 0x0C as StateId;
 const int stateSoTNoBreak = idStateSoTNoBreak * scaleState;
 
 /// Start of text (or known start of grapheme).
 ///
 /// Not reachable in automaton, only used as start state.
-const int idStateSoT = 0x0D;
+const StateId idStateSoT = 0x0D as StateId;
 const int stateSoT = idStateSoT * scaleState;
 
 // --------------------------------------------------------------------
 
 /// Number of states in forward automaton.
-const int idStateCount = idStateSoT + 1;
+const StateId idStateCount = idStateSoT + 1 as StateId;
 
 // ---------------------------------------------------------------------
 // Backwards Automaton extra/alternative states and categories.
@@ -147,32 +163,28 @@ const int idStateCount = idStateSoT + 1;
 const int categorySoT = categoryEoT; // Start of Text (synthetic input)
 
 /// Start of text (or grapheme).
-const int idStateEoT = idStateSoT;
+const StateId idStateEoT = idStateSoT;
 const int stateEoT = stateSoT;
 
 /// Break unless prev is CR.
-const int idStateLF = idStateCR;
+const StateId idStateLF = idStateCR;
 const int stateLF = stateCR;
 
 /// Only break if prev is Control/CR/LF/sot.
-const int idStateExtend = idStatePrepend;
+const StateId idStateExtend = idStatePrepend;
 const int stateExtend = statePrepend;
 
-/// Preceded by Pic Ext*.
-const int idStateZWJPictographic = idStatePictographicZWJ;
-const int stateZWJPictographic = statePictographicZWJ;
-
 /// As EoT but never cause break before.
-const int idStateEoTNoBreak = idStateSoTNoBreak;
+const StateId idStateEoTNoBreak = idStateSoTNoBreak;
 const int stateEoTNoBreak = stateSoTNoBreak;
 
 /// There is an even number of RIs before.
-const int idStateRegionalEven = idStateInCL;
+const StateId idStateRegionalEven = idStateInCL;
 const int stateRegionalEven = stateInCL;
 
 /// There is an odd (non-zero!) number of RIs before.
-const int idStateRegionalOdd = idStateZWJPictographic;
-const int stateRegionalOdd = stateZWJPictographic;
+const StateId idStateRegionalOdd = idStatePictographicZWJ;
+const int stateRegionalOdd = statePictographicZWJ;
 
 // Backwards automaton sometimes needs to perform lookahead.
 // The rules for grapheme cluster breaking can depend on knowing
@@ -189,27 +201,32 @@ const int stateRegionalOdd = stateZWJPictographic;
 // The extra states are not part of the state machine.
 
 /// Minimum state requesting a look-ahead.
-const int idStateLookaheadMin = idStateRegionalLookahead;
-const int stateLookaheadMin = stateRegionalLookahead;
-
-/// State requesting a look-ahead for an even or odd number of RIs.
-const int idStateRegionalLookahead = 0x0E;
-const int stateRegionalLookahead = idStateRegionalLookahead * scaleState;
+const StateId idStateLookaheadMin = idStateLookaheadZWJPictographic;
+const int stateLookaheadMin = idStateLookaheadMin * scaleState;
 
 /// State requesting a look-ahead for Pic Ext*.
-const int idStateZWJPictographicLookahead = 0x0F;
-const int stateZWJPictographicLookahead =
-    idStateZWJPictographicLookahead * scaleState;
+const StateId idStateLookaheadZWJPictographic = 0x0E as StateId;
+const int stateLookaheadZWJPictographic =
+    idStateLookaheadZWJPictographic * scaleState;
 
-/// State requesting a look-ahead for InCB consonant + InCB (Extend + Linked)+
-/// with at least one Linked.
-const int idStateInCLookahead = 0x10;
-const int stateInCLookahead = idStateInCLookahead * scaleState;
+/// State requesting a look-ahead for InCB consonant + InCB (Extend + inked)+
+/// with at least one inked.
+const StateId idStateLookaheadInC = 0x0F as StateId;
+const int stateLookaheadInC = idStateLookaheadInC * scaleState;
 
-/// State requesting a look-ahead for InCB consonant + InCB (Extend + Linked)+
+/// State requesting a look-ahead for InCB consonant + InCB (Extend + inked)+
 /// ending with a linked.
-const int idStateInCLLookahead = 0x11;
-const int stateInCLLookahead = idStateInCLLookahead * scaleState;
+const StateId idStateLookaheadInCL = 0x10 as StateId;
+const int stateLookaheadInCL = idStateLookaheadInCL * scaleState;
+
+/// Look-ahead state for regional indicators, having seen an even number.
+const StateId idStateLookaheadRegionalEven = 0x11 as StateId;
+const int stateLookaheadRegionalEven =
+    idStateLookaheadRegionalEven * scaleState;
+
+/// Look-ahead state for regional indicators, having seen an odd number.
+const StateId idStateLookaheadRegionalOdd = 0x12 as StateId;
+const int stateLookaheadRegionalOdd = idStateLookaheadRegionalOdd * scaleState;
 
 /// Number of real states in backwards automaton.
 const int backStateCount = idStateLookaheadMin;
@@ -218,4 +235,8 @@ const int backStateCount = idStateLookaheadMin;
 /// that trigger lookahead computations. (Those have no entries in the
 /// automaton, they are handled by code and then change to a real state
 /// depending on the lookahead.)
-const int backStateWithLACount = idStateInCLLookahead + 1;
+const int backStateWithLACount = idStateLookaheadRegionalOdd + 1;
+
+// Distinguishing types to avoid mixing states and IDs.
+extension type const State._(int _) implements int {}
+extension type const StateId._(int _) implements int {}

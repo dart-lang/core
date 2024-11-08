@@ -501,7 +501,7 @@ class StringCharacterRange implements CharacterRange {
           }
         }
         state = move(state, category);
-        if (state & maskBreak == flagBreak && --count == 0) {
+        if (state & maskBreak != flagNoBreak && --count == 0) {
           _move(newStart, index);
           return true;
         }

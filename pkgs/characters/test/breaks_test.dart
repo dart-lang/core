@@ -96,9 +96,9 @@ void main() {
         stateCR,
         stateOther,
         statePrepend,
-        scaledStateL,
-        scaledStateV,
-        scaledStateT,
+        stateL,
+        stateV,
+        stateT,
         statePictographic,
         statePictographicZWJ,
         stateRegionalSingle,
@@ -122,7 +122,7 @@ void main() {
         step++;
         var state = workList.removeLast();
         for (var c = 0; c < categoryCount; c++) {
-          var newState = move(state, c) & ~maskBreak;
+          var newState = move(state, c) & maskState;
           // No unexpected output states.
           expect(states, contains(newState),
               reason: "($state,$c): Unexpected output state");
@@ -163,8 +163,8 @@ void main() {
                 var newState1 = move(state1, c);
                 var newState2 = move(state2, c);
 
-                if ((newState1 ^ newState2) & maskBreak != 0 ||
-                    !eq.eq(newState1 & ~maskBreak, newState2 & ~maskBreak)) {
+                if ((newState1 ^ newState2) & maskFlags != 0 ||
+                    !eq.eq(newState1 & maskState, newState2 & maskState)) {
                   continue nextPair; // Keep distinguishable.
                 }
               }
@@ -189,18 +189,18 @@ void main() {
     });
 
     test("States backward reachable", () {
-      var workList = <int>[idStateEoTNoBreak];
+      var workList = <int>[stateEoTNoBreak];
       var states = {
         stateBreak,
         stateLF,
         stateOther,
         stateExtend,
-        scaledStateL,
-        scaledStateV,
-        scaledStateT,
+        stateL,
+        stateV,
+        stateT,
         statePictographic,
         // -- Only reachable through lookahead.
-        stateZWJPictographic | stateRegionalOdd,
+        stateRegionalOdd,
         stateRegionalSingle,
         stateInC,
         // -- Only reachable through lookahead.
@@ -209,42 +209,23 @@ void main() {
         // stateEoT,
         // Used as filler, and state after EoT.
         stateEoTNoBreak,
-        stateRegionalLookahead,
-        stateZWJPictographicLookahead,
-        stateInCLookahead,
-        stateInCLLookahead,
+        stateLookaheadZWJPictographic,
+        stateLookaheadInC,
+        stateLookaheadInCL,
+        stateLookaheadRegionalEven,
+        stateLookaheadRegionalOdd,
       };
       var unreachableStates = {...states};
       var step = 0;
-      void visit(int state) {
-        if (unreachableStates.remove(state)) {
-          workList.add(state);
-        }
-      }
 
       while (workList.isNotEmpty) {
         step += 1;
         var state = workList.removeLast();
         for (var c = 0; c < categoryCount; c++) {
-          var newState = moveBack(state, c) & ~maskBreak;
+          var newState = moveBack(state, c) & maskState;
           expect(states, contains(newState), reason: "Unexpected output state");
-          if (newState == stateRegionalLookahead) {
-            if (unreachableStates.remove(newState)) {
-              visit(stateRegionalEven);
-              visit(stateRegionalOdd);
-            }
-          } else if (newState == stateZWJPictographicLookahead) {
-            if (unreachableStates.remove(newState)) {
-              visit(stateZWJPictographic);
-              visit(stateExtend);
-            }
-          } else if (newState == stateInCLookahead ||
-              newState == stateInCLLookahead) {
-            if (unreachableStates.remove(newState)) {
-              visit(stateExtend);
-            }
-          } else {
-            visit(newState);
+          if (unreachableStates.remove(newState)) {
+            workList.add(newState);
           }
         }
         if (unreachableStates.isEmpty) {
@@ -252,7 +233,8 @@ void main() {
           return;
         }
       }
-      expect(unreachableStates, isEmpty, reason: "Should be reachable");
+      expect(unreachableStates, isEmpty,
+          reason: "Should be reachable, not reached in $step steps");
     });
 
     test("Backward states distinguishable", () {
@@ -268,7 +250,9 @@ void main() {
       //
       // Assume that any lookahead state can be distinguished from any other
       // state.
-      var states = [for (var i = 0; i < idStateCount; i++) i * scaleState];
+      var states = [
+        for (var i = 0; i < backStateWithLACount; i++) i * scaleState
+      ];
       var eqClasses = [states];
       var eq = Equivalence(eqClasses);
 
@@ -284,10 +268,10 @@ void main() {
               for (var c = 0; c < categoryCount; c++) {
                 var backState1 = moveBack(state1, c);
                 var backState2 = moveBack(state2, c);
-                if ((backState1 ^ backState2) & maskBreak != 0 ||
+                if ((backState1 ^ backState2) & maskFlags != 0 ||
                     backState1 >= idStateLookaheadMin ||
                     backState2 >= idStateLookaheadMin ||
-                    !eq.eq(backState1 & ~maskBreak, backState2 & ~maskBreak)) {
+                    !eq.eq(backState1 & maskState, backState2 & maskState)) {
                   continue nextPair; // Keep distinguishable.
                 }
               }
