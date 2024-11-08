@@ -398,7 +398,7 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
     var next = nextBreak(text, start, end, index);
     return next == index;
   }
-  return false;
+  return true;
 }
 
 /// The most recent break no later than [index] in
