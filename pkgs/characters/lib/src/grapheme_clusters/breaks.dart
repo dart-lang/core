@@ -578,7 +578,7 @@ int nextBreak(String text, int start, int end, int index) {
 /// or backwards from known breaks.
 ///
 /// That character is always one of [categoryOtherIndicConsonant],
-/// [categoryPictorgraphic] or [categoryRegionalIndicator], the only
+/// [categoryPictographic] or [categoryRegionalIndicator], the only
 /// characters where knowing whether to break before them depends on
 /// more than the single prior character.
 bool _lookaheadSimple(String text, int start, int cursor, int backState) {

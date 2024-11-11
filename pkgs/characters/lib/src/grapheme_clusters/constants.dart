@@ -194,7 +194,7 @@ const stateCExt = idStateCExt * scaleState;
 const StateId idStateCExZ = 0x17 as StateId;
 const stateCExZ = idStateCExZ * scaleState;
 
-/// Seen [RegionalIndicator] only.
+/// Seen single RegionalIndicator only.
 const StateId idStateCReg = 0x18 as StateId;
 const stateCReg = idStateCReg * scaleState;
 
