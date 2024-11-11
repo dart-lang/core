@@ -44,6 +44,4 @@ class Graph {
     }
     return weight;
   }
-
-  int get maxWeight => _table.reduce((a, b) => a >= b ? a : b);
 }

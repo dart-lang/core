@@ -13,6 +13,9 @@ import '../tool/src/debug_names.dart';
 import 'src/equiv.dart';
 import "src/unicode_tests.dart";
 
+// Can be set to true while debugging.
+const verbose = false;
+
 void main() {
   // Test [Breaks] on all the available Unicode tests.
   group("forward automaton:", () {
@@ -223,7 +226,7 @@ void main() {
             isEmpty,
             reason: "Should be reachable");
       }
-      print("Forward states reachable in $step steps");
+      if (verbose) print("Forward states reachable in $step steps");
     });
 
     test("States distinguishable", () {
@@ -262,19 +265,17 @@ void main() {
             }
           }
         }
-        var nextEqClasses = nextEq.classes;
-        if (nextEqClasses.length == states.length) {
-          print("Forwards states distinguishable in $r steps");
-          return; // All needed.
-        }
-        if (nextEqClasses.length == eqClasses.length) {
-          // No progress.
+        var prevEqClasses = eqClasses;
+        eqClasses = nextEq.classes;
+        eq = nextEq;
+        if (prevEqClasses.length == eqClasses.length) break; // No progress.
+        if (prevEqClasses.length == states.length) {
+          // Maximal progress achieved.
+          if (verbose) print("Forwards states distinguishable in $r steps");
           break;
         }
-        eq = nextEq;
-        eqClasses = nextEqClasses;
       }
-      expect(eqClasses.where((l) => l.length != 1).toList(), isEmpty,
+      expect(eqClasses, everyElement(hasLength(1)),
           reason: "Not distinguishable in $idStateCount steps");
     });
 
@@ -326,7 +327,7 @@ void main() {
           }
         }
         if (unreachableStates.isEmpty) {
-          print("Backward states reachable in $step steps");
+          if (verbose) print("Backward states reachable in $step steps");
           return;
         }
       }
@@ -382,18 +383,17 @@ void main() {
             }
           }
         }
-        var nextEqClasses = nextEq.classes;
-        if (nextEqClasses.length == eqClasses.length) break;
-        if (nextEqClasses.length == states.length) {
-          print("Backwards states distinguishable in $r steps");
-          return; // All needed.
+        var prevEqClasses = eqClasses;
+        eqClasses = nextEq.classes;
+        eq = nextEq;
+        if (prevEqClasses.length == eqClasses.length) break; // No progress.
+        if (prevEqClasses.length == states.length) {
+          // Maximal progress achieved.
+          if (verbose) print("Backwards states distinguishable in $r steps");
+          break;
         }
-        eqClasses = nextEqClasses;
       }
-      expect(
-        eqClasses.where((l) => l.length != 1).toList(),
-        isEmpty,
-      );
+      expect(eqClasses, everyElement(hasLength(1)));
     });
   });
 }
