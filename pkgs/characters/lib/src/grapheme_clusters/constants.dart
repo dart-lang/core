@@ -72,7 +72,7 @@ const scaleState = automatonRowLength;
 
 // States of forwards automaton ---------------------------------------
 
-// For each state, also have a `scaledState...` for the value of that
+// For each state, also have a `scaleState...` for the value of that
 // state that occurs in the automaton tables (and which is an index
 // into the automaton tables).
 
@@ -149,10 +149,62 @@ const int stateSoTNoBreak = idStateSoTNoBreak * scaleState;
 const StateId idStateSoT = 0x0D as StateId;
 const int stateSoT = idStateSoT * scaleState;
 
+// Context-unaware states in forward automaton.
+// States that do not know what's behind the current sequence of Ext{InCB=?}+ZWJ
+// sequence, and which may need to trigger a look-behind in some cases.
+
+/// Start of context=unaware lookahead, no characters seen.
+const StateId idStateCAny = 0x0E as StateId;
+const int stateCAny = idStateCAny * scaleState;
+
+/// Seen ZWJ only, as the first (prior) character.
+const StateId idStateCZWJ = 0x0F as StateId;
+const stateCZWJ = idStateCZWJ * scaleState;
+
+/// Seen Extend{InCB=Extend}+ only.
+const StateId idStateCIE = 0x10 as StateId;
+const stateCIE = idStateCIE * scaleState;
+
+/// Seen Extend{InCB=Extend|Lined}+, with at least one Linked
+const StateId idStateCIL = 0x11 as StateId;
+const stateCIL = idStateCIL * scaleState;
+
+/// Seen Extend{InCB=Extend}+ + ZWJ
+const StateId idStateCIEZ = 0x12 as StateId;
+const stateCIEZ = idStateCIEZ * scaleState;
+
+/// Seen Extend{InCB=Extend|Linked}+ + ZWJ with at least one Linked
+const StateId idStateCILZ = 0x13 as StateId;
+const stateCILZ = idStateCILZ * scaleState;
+
+/// Seen (Extend{InCB=Extend}|ZWJ)+ with at least one non-trailing ZWJ
+const StateId idStateCZIE = 0x14 as StateId;
+const stateCZIE = idStateCZIE * scaleState;
+
+/// Seen (Extend{InCB=Extend|Linked}|ZWJ)+
+/// with at least one non-trailing ZWJ and at least one Linked.
+const StateId idStateCZIL = 0x15 as StateId;
+const stateCZIL = idStateCZIL * scaleState;
+
+/// Seen Extend{InCB=?}+ with at least one Extend{InCB=None}
+const StateId idStateCExt = 0x16 as StateId;
+const stateCExt = idStateCExt * scaleState;
+
+/// Seen Extend{InCB=?}+ + ZWJ with at least one Extend{InCB=None}
+const StateId idStateCExZ = 0x17 as StateId;
+const stateCExZ = idStateCExZ * scaleState;
+
+/// Seen [RegionalIndicator] only.
+const StateId idStateCReg = 0x18 as StateId;
+const stateCReg = idStateCReg * scaleState;
+
 // --------------------------------------------------------------------
 
+/// First state which might trigger look-behind.
+const StateId idStateMinContextUnaware = idStateCAny;
+
 /// Number of states in forward automaton.
-const StateId idStateCount = idStateSoT + 1 as StateId;
+const StateId idStateCount = idStateCReg + 1 as StateId;
 
 // ---------------------------------------------------------------------
 // Backwards Automaton extra/alternative states and categories.

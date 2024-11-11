@@ -88,7 +88,19 @@ final stateNames = List<String>.filled(idStateCount, "")
   ..[idStateRegionalSingle] = "RegionalSingle"
   ..[idStateSoTNoBreak] = "SoTNoBreak"
   ..[idStateInC] = "InC"
-  ..[idStateInCL] = "InCL";
+  ..[idStateInCL] = "InCL"
+  ..[idStateCAny] = "?"
+  ..[idStateCZWJ] = "?+ZWJ"
+  ..[idStateCIE] = "?+IndicExtend"
+  ..[idStateCIL] = "?+IndicLinked"
+  ..[idStateCIEZ] = "?+IndicExtendZWJ"
+  ..[idStateCILZ] = "?+IndicLinkedZWJ"
+  ..[idStateCZIE] = "?+ZWJIndicExtend"
+  ..[idStateCZIL] = "?+ZWJIndicLinked"
+  ..[idStateCExt] = "?+Extend"
+  ..[idStateCExZ] = "?+ExtendZWJ"
+  ..[idStateCReg] = "?+Reg"
+  ;
 
 final stateShortNames = List<String>.filled(idStateCount, "")
   ..[idStateSoT] = "SoT"
@@ -104,7 +116,19 @@ final stateShortNames = List<String>.filled(idStateCount, "")
   ..[idStateRegionalSingle] = "Reg"
   ..[idStateSoTNoBreak] = "SoTN"
   ..[idStateInC] = "InC"
-  ..[idStateInCL] = "InCL";
+  ..[idStateInCL] = "InCL"
+  ..[idStateCAny] = "CAny"
+  ..[idStateCZWJ] = "CZWJ"
+  ..[idStateCIE] = "CIE"
+  ..[idStateCIL] = "CIL"
+  ..[idStateCIEZ] = "CIEZ"
+  ..[idStateCILZ] = "CILZ"
+  ..[idStateCZIE] = "CZIE"
+  ..[idStateCZIL] = "CZIL"
+  ..[idStateCExt] = "CExt"
+  ..[idStateCExZ] = "CExZ"
+  ..[idStateCReg] = "CReg"
+  ;
 
 final backStateNames = List<String>.filled(backStateWithLACount, "")
   ..[idStateEoT] = "EoT"

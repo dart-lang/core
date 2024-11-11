@@ -9,6 +9,7 @@ import 'package:characters/src/grapheme_clusters/constants.dart';
 import 'package:characters/src/grapheme_clusters/table.dart';
 import "package:test/test.dart";
 
+import '../tool/src/debug_names.dart';
 import 'src/equiv.dart';
 import "src/unicode_tests.dart";
 
@@ -56,7 +57,8 @@ void main() {
     }
   });
 
-  // Test the [nextBreak] function on all positions of all the Unicode tests.
+  // Test the top-level [nextBreak] function on all positions of all
+  // the Unicode tests.
   group("nextBreak", () {
     // Should find the next break at any position.
     for (var (expectedParts, _) in splitTests) {
@@ -74,6 +76,61 @@ void main() {
             if (i == nextExpectedBreak && i < input.length) {
               nextExpectedBreak += variantParts[partCursor].length;
               partCursor++;
+            }
+          }
+        });
+      }
+    }
+  });
+
+  // Test the top-level [previousBreak] function on all positions of all
+  // the Unicode tests.
+  group("previousBreak", () {
+    // Should find the next break at any position.
+    for (var (expectedParts, _) in splitTests) {
+      for (var (variantParts, kind) in testVariants(expectedParts)) {
+        test(testDescription(variantParts) + kind, () {
+          var input = variantParts.join("");
+          var description = partCategories(expectedParts);
+          var partCursor = 0;
+          var nextBreak = 0;
+          var expectedBreak = 0;
+
+          for (var i = 0; i <= input.length; i++) {
+            if (i == nextBreak) {
+              expectedBreak = nextBreak;
+              if (i < input.length) {
+                nextBreak += variantParts[partCursor++].length;
+              }
+            }
+            var actualBreak = previousBreak(input, 0, input.length, i);
+            expect(actualBreak, expectedBreak,
+                reason: "at $i: $description$kind");
+          }
+        });
+      }
+    }
+  });
+
+  // Test the top-level [previousBreak] function on all positions of all
+  // the Unicode tests.
+  group("isGraphemeClusterBreak", () {
+    // Should find the next break at any position.
+    for (var (expectedParts, _) in splitTests) {
+      for (var (variantParts, kind) in testVariants(expectedParts)) {
+        test(testDescription(variantParts) + kind, () {
+          var input = variantParts.join("");
+          var description = partCategories(expectedParts);
+          var partCursor = 0;
+          var nextBreak = 0;
+
+          for (var i = 0; i <= input.length; i++) {
+            expect(isGraphemeClusterBoundary(input, 0, input.length, i),
+                i == nextBreak,
+                reason: "at $i: $description");
+
+            if (i == nextBreak && i < input.length) {
+              nextBreak += variantParts[partCursor++].length;
             }
           }
         });
@@ -104,35 +161,68 @@ void main() {
         stateRegionalSingle,
         stateInC,
         stateInCL,
-        // Not expected in output.
-        // stateSoT,
-        // Used as filler and as state after EoT.
-        stateSoTNoBreak,
+        stateSoT, // Entry point.
+        stateSoTNoBreak, // Entry point.
+        stateCAny, // Entry point.
+        stateCZWJ,
+        stateCExZ,
+        stateCIE,
+        stateCIEZ,
+        stateCIL,
+        stateCILZ,
+        stateCZIE,
+        stateCZIL,
+        stateCReg,
+        stateCExt,
       };
       // Standard reachability algorithm.
       // Fringe of reachable states. Will contain all reachable states once.
-      var workList = <int>[idStateSoTNoBreak];
+
+      var entryStates = [stateSoTNoBreak, stateSoT, stateCAny];
+
       // All reachable state will be removed from this set,
       // and added to the worklist the first time they are seen.
-      var unreachableStates = {...states};
+      var unreachableStates = {...states}..removeAll(entryStates);
+      // Start with entry points.
+      var workList = <int>[...entryStates];
+      var nextStepList = <int>[];
 
-      var step = 0;
+      var step = 1;
       // Continue until all states reachable, or no states left in fringe.
-      while (workList.isNotEmpty && unreachableStates.isNotEmpty) {
-        step++;
+      while ((workList.isNotEmpty || nextStepList.isNotEmpty) &&
+          unreachableStates.isNotEmpty) {
+        if (workList.isEmpty) {
+          workList = nextStepList;
+          nextStepList = [];
+          step++;
+        }
         var state = workList.removeLast();
         for (var c = 0; c < categoryCount; c++) {
           var newState = move(state, c) & maskState;
+          if (newState & maskFlags == flagLookahead) {
+            // A lookahead in the forwards automaton uses the
+            // backwards automaton to determine whether to break.
+            // It should leave the context-unaware part of the states
+            // and reach a state that should otherwise be reachable too.
+            continue;
+          }
           // No unexpected output states.
           expect(states, contains(newState),
               reason: "($state,$c): Unexpected output state");
           // Add to fringe the first time a state is seen.
           if (unreachableStates.remove(newState)) {
-            workList.add(newState);
+            nextStepList.add(newState);
           }
         }
       }
-      expect(unreachableStates, isEmpty, reason: "Should be reachable");
+      if (unreachableStates.isNotEmpty) {
+        expect(
+            unreachableStates
+                .map((s) => stateShortNames[s ~/ scaleState])
+                .toList(),
+            isEmpty,
+            reason: "Should be reachable");
+      }
       print("Forward states reachable in $step steps");
     });
 
@@ -189,7 +279,6 @@ void main() {
     });
 
     test("States backward reachable", () {
-      var workList = <int>[stateEoTNoBreak];
       var states = {
         stateBreak,
         stateLF,
@@ -206,7 +295,7 @@ void main() {
         // -- Only reachable through lookahead.
         stateRegionalEven,
         // -- Not reachable, only used as start state.
-        // stateEoT,
+        stateEoT,
         // Used as filler, and state after EoT.
         stateEoTNoBreak,
         stateLookaheadZWJPictographic,
@@ -215,17 +304,25 @@ void main() {
         stateLookaheadRegionalEven,
         stateLookaheadRegionalOdd,
       };
-      var unreachableStates = {...states};
-      var step = 0;
+      var entryStates = <int>[stateEoTNoBreak, stateEoT];
+      var unreachableStates = {...states}..removeAll(entryStates);
+      var workList = <int>[...entryStates];
+      var nextStepList = <int>[];
+      var step = 1;
 
-      while (workList.isNotEmpty) {
-        step += 1;
+      while ((workList.isNotEmpty || nextStepList.isNotEmpty) &&
+          unreachableStates.isNotEmpty) {
+        if (workList.isEmpty) {
+          step++;
+          workList = nextStepList;
+          nextStepList = [];
+        }
         var state = workList.removeLast();
         for (var c = 0; c < categoryCount; c++) {
           var newState = moveBack(state, c) & maskState;
           expect(states, contains(newState), reason: "Unexpected output state");
           if (unreachableStates.remove(newState)) {
-            workList.add(newState);
+            nextStepList.add(newState);
           }
         }
         if (unreachableStates.isEmpty) {
@@ -233,8 +330,14 @@ void main() {
           return;
         }
       }
-      expect(unreachableStates, isEmpty,
-          reason: "Should be reachable, not reached in $step steps");
+      if (unreachableStates.isNotEmpty) {
+        expect(
+            unreachableStates
+                .map((s) => stateShortNames[s ~/ scaleState])
+                .toList(),
+            isEmpty,
+            reason: "Should be reachable, not reached in $step steps");
+      }
     });
 
     test("Backward states distinguishable", () {

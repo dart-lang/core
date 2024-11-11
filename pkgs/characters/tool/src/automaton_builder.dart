@@ -29,39 +29,53 @@ import "string_literal_writer.dart";
 //
 // Stored as string for comparison to actual generated automaton.
 const expectedAutomatonDescription = r"""
-Cat : State
-    :  Brk  CR   Otr  Pre  L    V    T    Pic  PicZ Reg  InC  InCL SoTN SoT :
------------------------------------------------------------------------------
-CR  : !CR  !CR  !CR  !CR  !CR  !CR  !CR  !CR  !CR  !CR  !CR  !CR   CR  !CR  :
-Ctl : !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk  Brk !Brk :
-Otr : !Otr !Otr !Otr  Otr !Otr !Otr !Otr !Otr !Otr !Otr !Otr !Otr  Otr !Otr :
-Ext : !Otr !Otr  Otr  Otr  Otr  Otr  Otr  Pic  Otr  Otr  Otr  Otr  Otr !Otr :
-Spc : !Otr !Otr  Otr  Otr  Otr  Otr  Otr  Otr  Otr  Otr  Otr  Otr  Otr !Otr :
-Reg : !Reg !Reg !Reg  Reg !Reg !Reg !Reg !Reg !Reg  Otr !Reg !Reg  Reg !Reg :
-Pic : !Pic !Pic !Pic  Pic !Pic !Pic !Pic !Pic  Pic !Pic !Pic !Pic  Pic !Pic :
-LF  : !Brk  Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk  Brk !Brk :
-Pre : !Pre !Pre !Pre  Pre !Pre !Pre !Pre !Pre !Pre !Pre !Pre !Pre  Pre !Pre :
-L   : !L   !L   !L    L    L   !L   !L   !L   !L   !L   !L   !L    L   !L   :
-V   : !V   !V   !V    V    V    V   !V   !V   !V   !V   !V   !V    V   !V   :
-T   : !T   !T   !T    T   !T    T    T   !T   !T   !T   !T   !T    T   !T   :
-LV  : !V   !V   !V    V    V   !V   !V   !V   !V   !V   !V   !V    V   !V   :
-LVT : !T   !T   !T    T    T   !T   !T   !T   !T   !T   !T   !T    T   !T   :
-OInC: !InC !InC !InC  InC !InC !InC !InC !InC !InC !InC !InC  InC  InC !InC :
-ZWJ : !Otr !Otr  Otr  Otr  Otr  Otr  Otr  PicZ Otr  Otr  InC  InCL Otr !Otr :
-EInE: !Otr !Otr  Otr  Otr  Otr  Otr  Otr  Pic  Otr  Otr  InC  InCL Otr !Otr :
-EInL: !Otr !Otr  Otr  Otr  Otr  Otr  Otr  Pic  Otr  Otr  InCL InCL Otr !Otr :
-EoT : ! -  ! -  ! -  ! -  ! -  ! -  ! -  ! -  ! -  ! -  ! -  ! -    -    -  :
+Stat: Cat
+    : CR   Ctl  Otr  Ext  Spc  Reg  Pic  LF   Pre  L    V    T    LV   LVT  OInC ZWJ  EInE EInL EoT :
+-----------------------------------------------------------------------------------------------------
+Brk :!CR  !Brk !Otr !Otr !Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC !Otr !Otr !Otr ! -  :
+CR  :!CR  !Brk !Otr !Otr !Otr !Reg !Pic  Brk !Pre !L   !V   !T   !V   !T   !InC !Otr !Otr !Otr ! -  :
+Otr :!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  Otr  Otr  Otr ! -  :
+Pre :!CR  !Brk  Otr  Otr  Otr  Reg  Pic !Brk  Pre  L    V    T    V    T    InC  Otr  Otr  Otr ! -  :
+L   :!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre  L    V   !T    V    T   !InC  Otr  Otr  Otr ! -  :
+V   :!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L    V    T   !V   !T   !InC  Otr  Otr  Otr ! -  :
+T   :!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L   !V    T   !V   !T   !InC  Otr  Otr  Otr ! -  :
+Pic :!CR  !Brk !Otr  Pic  Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  PicZ Pic  Pic ! -  :
+PicZ:!CR  !Brk !Otr  Otr  Otr !Reg  Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  Otr  Otr  Otr ! -  :
+Reg :!CR  !Brk !Otr  Otr  Otr  Otr !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  Otr  Otr  Otr ! -  :
+InC :!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  InC  InC  InCL! -  :
+InCL:!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T    InC  InCL InCL InCL! -  :
+SoTN: CR   Brk  Otr  Otr  Otr  Reg  Pic  Brk  Pre  L    V    T    V    T    InC  Otr  Otr  Otr   -  :
+SoT :!CR  !Brk !Otr !Otr !Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC !Otr !Otr !Otr   -  :
+CAny:!CR  !Brk  Otr  CExt Otr  CReg!Pic !Brk  Pre  L    V    T    V    T    InC  CZWJ CIE  CIL   -  :
+CZWJ:!CR  !Brk !Otr  Otr  Otr !Reg $LAZP!Brk !Pre !L   !V   !T   !V   !T   $LAIC CZIE CZIE CZIL! -  :
+CIE :!CR  !Brk !Otr  CExt Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   $LAIC CIEZ CIE  CIL ! -  :
+CIL :!CR  !Brk !Otr  CExt Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   $LAIL CILZ CIL  CIL ! -  :
+CIEZ:!CR  !Brk !Otr  Otr  Otr !Reg $LAZP!Brk !Pre !L   !V   !T   !V   !T   !InC  CZIE CZIE CZIL! -  :
+CILZ:!CR  !Brk !Otr  Otr  Otr !Reg $LAZP!Brk !Pre !L   !V   !T   !V   !T   $LAIL CZIL CZIL CZIL! -  :
+CZIE:!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   $LAIC CZIE CZIE CZIL! -  :
+CZIL:!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   $LAIL CZIL CZIL CZIL! -  :
+CExt:!CR  !Brk !Otr  CExt Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  CExZ CExt CExt! -  :
+CExZ:!CR  !Brk !Otr  Otr  Otr !Reg $LAZP!Brk !Pre !L   !V   !T   !V   !T   !InC  Otr  Otr  Otr ! -  :
+CReg:!CR  !Brk !Otr  Otr  Otr $LARe!Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  Otr  Otr  Otr ! -  :
 """;
 
 void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
   assert(categories.length == categoryCount);
   assert(automatonRowLength.isEven && automatonRowLength >= categoryCount);
   var table = Uint16List(idStateCount * automatonRowLength);
+  void transitionLA(
+      StateId stateId, int category, StateId newStateId, int flags) {
+    assert(flags <= maskFlags);
+    assert(flags & flagLookahead == 0 || newStateId >= idStateLookaheadMin);
+    table[stateId * automatonRowLength + category] =
+        (newStateId * scaleState) + flags;
+  }
+
   void transition(
       StateId stateId, int category, StateId newStateId, bool breakBefore) {
     assert(newStateId < idStateCount, "$stateId + $category -> $newStateId");
-    table[stateId * automatonRowLength + category] =
-        (newStateId * scaleState) | (breakBefore ? flagBreak : flagNoBreak);
+    transitionLA(
+        stateId, category, newStateId, breakBefore ? flagBreak : flagNoBreak);
   }
 
   for (var state = 0 as StateId;
@@ -74,8 +88,9 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
 
     // States that should never be broken after, unless `alwaysBreakBefore`
     // says otherwise (for example the rules in GB1..GB5).
-    var neverBreakBefore =
-        state == idStateSoTNoBreak || state == idStatePrepend;
+    var neverBreakBefore = state == idStateSoTNoBreak ||
+        state == idStateCAny || // Break in this state never matters.
+        state == idStatePrepend;
 
     // Other with InCB=None.
     // No rules apply specifically to Other, so break unless an
@@ -85,9 +100,19 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
     // GB9C. (Break unless Any rule applies, or preceded by indic sequence
     // with at least one Linked, `idStateInCL`).
     // Remember having seen InCB=Consonant and no InCB=Linked yet.
-    transition(state, categoryOtherIndicConsonant, idStateInC,
-        !(neverBreakBefore || state == idStateInCL));
 
+    if (state == idStateCZWJ || state == idStateCIE || state == idStateCZIE) {
+      transitionLA(state, categoryOtherIndicConsonant, idStateLookaheadInC,
+          flagLookahead);
+    } else if (state == idStateCIL ||
+        state == idStateCILZ ||
+        state == idStateCZIL) {
+      transitionLA(state, categoryOtherIndicConsonant, idStateLookaheadInCL,
+          flagLookahead);
+    } else {
+      transition(state, categoryOtherIndicConsonant, idStateInC,
+          !(neverBreakBefore || state == idStateInCL || state == idStateCAny));
+    }
     // CR.
     // GB4 + GB5. Always break, after unless followed by LF, so remember
     // having seen CR (`idStateCR`).
@@ -128,7 +153,7 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
       transition(state, categoryZWJ, state, false);
       // Extend with InCB=Linked.
       transition(state, categoryExtendIndicLinked, idStateInCL, false);
-    } else {
+    } else if (state < idStateMinContextUnaware || state == idStateCReg) {
       // GB9 alone.
       // No special rules for breaking after,
       // break before only if required by GB1-GB5.
@@ -138,6 +163,65 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
       transition(
           state, categoryExtendIndicLinked, idStateOther, alwaysBreakBefore);
       transition(state, categoryZWJ, idStateOther, alwaysBreakBefore);
+    } else {
+      transition(
+          state,
+          categoryZWJ,
+          switch (state) {
+            idStateCAny => idStateCZWJ,
+            idStateCZWJ => idStateCZIE,
+            idStateCIE => idStateCIEZ,
+            idStateCIL => idStateCILZ,
+            idStateCIEZ => idStateCZIE,
+            idStateCILZ => idStateCZIL,
+            idStateCZIE => idStateCZIE,
+            idStateCZIL => idStateCZIL,
+            idStateCExt => idStateCExZ,
+            _ => idStateOther,
+          },
+          false);
+      transition(
+          state,
+          categoryExtend,
+          (state == idStateCAny ||
+                  state == idStateCIE ||
+                  state == idStateCIL ||
+                  state == idStateCExt)
+              ? idStateCExt
+              : idStateOther,
+          false);
+      transition(
+          state,
+          categoryExtendIndicExtend,
+          switch (state) {
+            idStateCAny => idStateCIE,
+            idStateCZWJ => idStateCZIE,
+            idStateCIE => idStateCIE,
+            idStateCIL => idStateCIL,
+            idStateCIEZ => idStateCZIE,
+            idStateCILZ => idStateCZIL,
+            idStateCZIE => idStateCZIE,
+            idStateCZIL => idStateCZIL,
+            idStateCExt => idStateCExt,
+            _ => idStateOther,
+          },
+          false);
+      transition(
+          state,
+          categoryExtendIndicLinked,
+          switch (state) {
+            idStateCAny => idStateCIL,
+            idStateCZWJ => idStateCZIL,
+            idStateCIE => idStateCIL,
+            idStateCIL => idStateCIL,
+            idStateCIEZ => idStateCZIL,
+            idStateCILZ => idStateCZIL,
+            idStateCZIE => idStateCZIL,
+            idStateCZIL => idStateCZIL,
+            idStateCExt => idStateCExt,
+            _ => idStateOther,
+          },
+          false);
     }
     // Regional indicator.
     // GB12 + GB13: Don't break if after an odd number of Reg.
@@ -145,11 +229,17 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
     // prior state says not to.
     if (state == idStateRegionalSingle) {
       transition(state, categoryRegionalIndicator, idStateOther, false);
+    } else if (state == idStateCAny) {
+      transition(state, categoryRegionalIndicator, idStateCReg, false);
+    } else if (state == idStateCReg) {
+      transitionLA(state, categoryRegionalIndicator,
+          idStateLookaheadRegionalEven, flagLookahead);
     } else {
       // Break unless prior state says not to.
       transition(state, categoryRegionalIndicator, idStateRegionalSingle,
           !neverBreakBefore);
     }
+
     // Prepend.
     // GB9b: Never break after Prepend (unless required by next character
     // due to GB1..GB5).
@@ -173,17 +263,30 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
         !(neverBreakBefore || state == idStateV || state == idStateT));
     // Emoji
     // GB11.
-    transition(
-        state,
-        categoryPictographic,
-        idStatePictographic,
-        state != idStatePrepend &&
-            state != idStatePictographicZWJ &&
-            state != idStateSoTNoBreak);
+    if (state == idStateCZWJ ||
+        state == idStateCExZ ||
+        state == idStateCIEZ ||
+        state == idStateCILZ) {
+      transitionLA(state, categoryPictographic, idStateLookaheadZWJPictographic,
+          flagLookahead);
+    } else {
+      transition(
+          state,
+          categoryPictographic,
+          idStatePictographic,
+          state != idStatePrepend &&
+              state != idStatePictographicZWJ &&
+              state != idStateSoTNoBreak);
+    }
     // End of input.
     // GB2.
-    transition(state, categoryEoT, idStateSoTNoBreak,
-        state != idStateEoT && state != idStateSoTNoBreak);
+    transition(
+        state,
+        categoryEoT,
+        idStateSoTNoBreak,
+        state != idStateSoT &&
+            state != idStateSoTNoBreak &&
+            state != idStateCAny);
 
     // Pad table if necessary.
     for (var c = categoryCount; c < automatonRowLength; c++) {
@@ -249,28 +352,28 @@ const categories = [
 //
 // Stored as string for comparison to actual generated automaton.
 const expectedBackAutomatonDescription = r"""
-Cat : State
-    :  Brk  LF   Otr  Ext  L    V    T    Pic  RegO Reg  InC  RegE EoTN EoT  LAZP LAIC LAIL LARe LARo:
-------------------------------------------------------------------------------------------------------
-CR  : !Brk  Brk !Brk !Brk !Brk !Brk !Brk !Brk   -  !Brk !Brk !Brk  Brk !Brk #Ext #Ext #Ext  RegE!RegO:
-Ctl : !Brk !Brk !Brk !Brk !Brk !Brk !Brk !Brk   -  !Brk !Brk !Brk  Brk !Brk #Ext #Ext #Ext  RegE!RegO:
-Otr : !Otr !Otr !Otr  Otr !Otr !Otr !Otr !Otr   -  !Otr !Otr !Otr  Otr !Otr !Otr !Otr !Otr  RegE!RegO:
-Ext : !Ext !Ext !Ext  Ext !Ext !Ext !Ext !Ext   -  !Ext !Ext !Ext  Ext !Ext  LAZP!Ext !Ext  RegE!RegO:
-Spc : !Ext !Ext !Ext  Ext !Ext !Ext !Ext !Ext   -  !Ext !Ext !Ext  Ext !Ext !Ext !Ext !Ext  RegE!RegO:
-Reg : !Reg !Reg !Reg  Reg !Reg !Reg !Reg !Reg  RegE$LARe!Reg !RegO Reg !Reg !Reg !Reg !Reg  LARo LARe:
-Pic : !Pic !Pic !Pic  Pic !Pic !Pic !Pic !Pic   -  !Pic !Pic !Pic  Pic !Pic  Pic !Pic !Pic  RegE!RegO:
-LF  : !LF  !LF  !LF  !LF  !LF  !LF  !LF  !LF    -  !LF  !LF  !LF   LF  !LF  #Ext #Ext #Ext  RegE!RegO:
-Pre : !Otr !Otr  Otr  Otr  Otr  Otr  Otr  Otr   -   Otr  Otr  Otr  Otr !Otr !Otr !Otr !Otr  RegE!RegO:
-L   : !L   !L   !L    L    L    L   !L   !L     -  !L   !L   !L    L   !L   !L   !L   !L    RegE!RegO:
-V   : !V   !V   !V    V   !V    V    V   !V     -  !V   !V   !V    V   !V   !V   !V   !V    RegE!RegO:
-T   : !T   !T   !T    T   !T   !T    T   !T     -  !T   !T   !T    T   !T   !T   !T   !T    RegE!RegO:
-LV  : !L   !L   !L    L   !L    L    L   !L     -  !L   !L   !L    L   !L   !L   !L   !L    RegE!RegO:
-LVT : !L   !L   !L    L   !L   !L    L   !L     -  !L   !L   !L    L   !L   !L   !L   !L    RegE!RegO:
-OInC: !InC !InC !InC  InC !InC !InC !InC !InC   -  !InC !InC !InC  InC !InC !InC !InC  InC  RegE!RegO:
-ZWJ : !Ext !Ext !Ext  Ext !Ext !Ext !Ext $LAZP  -  !Ext $LAIC!Ext  Ext !Ext !Ext  LAIC LAIL RegE!RegO:
-EInE: !Ext !Ext !Ext  Ext !Ext !Ext !Ext !Ext   -  !Ext $LAIC!Ext  Ext !Ext  LAZP LAIC LAIL RegE!RegO:
-EInL: !Ext !Ext !Ext  Ext !Ext !Ext !Ext !Ext   -  !Ext $LAIL!Ext  Ext !Ext  LAZP LAIL LAIL RegE!RegO:
-SoT : ! -  ! -  ! -  ! -  ! -  ! -  ! -  ! -    -  ! -  ! -  ! -    -    -  #Ext #Ext #Ext  RegE!RegO:
+Stat: Cat
+    : CR   Ctl  Otr  Ext  Spc  Reg  Pic  LF   Pre  L    V    T    LV   LVT  OInC ZWJ  EInE EInL SoT :
+-----------------------------------------------------------------------------------------------------
+Brk :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF  !Otr !L   !V   !T   !L   !L   !InC !Ext !Ext !Ext ! -  :
+LF  : Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF  !Otr !L   !V   !T   !L   !L   !InC !Ext !Ext !Ext ! -  :
+Otr :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF   Otr !L   !V   !T   !L   !L   !InC !Ext !Ext !Ext ! -  :
+Ext :!Brk !Brk  Otr  Ext  Ext  Reg  Pic !LF   Otr  L    V    T    L    L    InC  Ext  Ext  Ext ! -  :
+L   :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF   Otr  L   !V   !T   !L   !L   !InC !Ext !Ext !Ext ! -  :
+V   :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF   Otr  L    V   !T    L   !L   !InC !Ext !Ext !Ext ! -  :
+T   :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF   Otr !L    V    T    L    L   !InC !Ext !Ext !Ext ! -  :
+Pic :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF   Otr !L   !V   !T   !L   !L   !InC $LAZP!Ext !Ext ! -  :
+RegO:  -    -    -    -    -   RegE  -    -    -    -    -    -    -    -    -    -    -    -    -  :
+Reg :!Brk !Brk !Otr !Ext !Ext $LARe!Pic !LF   Otr !L   !V   !T   !L   !L   !InC !Ext !Ext !Ext ! -  :
+InC :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF   Otr !L   !V   !T   !L   !L   !InC $LAIC$LAIC$LAIL! -  :
+RegE:!Brk !Brk !Otr !Ext !Ext !RegO!Pic !LF   Otr !L   !V   !T   !L   !L   !InC !Ext !Ext !Ext ! -  :
+EoTN: Brk  Brk  Otr  Ext  Ext  Reg  Pic  LF   Otr  L    V    T    L    L    InC  Ext  Ext  Ext   -  :
+EoT :!Brk !Brk !Otr !Ext !Ext !Reg !Pic !LF  !Otr !L   !V   !T   !L   !L   !InC !Ext !Ext !Ext   -  :
+LAZP:#Ext #Ext !Otr  LAZP!Ext !Reg  Pic #Ext !Otr !L   !V   !T   !L   !L   !InC !Ext  LAZP LAZP#Ext :
+LAIC:#Ext #Ext !Otr !Ext !Ext !Reg !Pic #Ext !Otr !L   !V   !T   !L   !L   !InC  LAIC LAIC LAIL#Ext :
+LAIL:#Ext #Ext !Otr !Ext !Ext !Reg !Pic #Ext !Otr !L   !V   !T   !L   !L    InC  LAIL LAIL LAIL#Ext :
+LARe: RegE RegE RegE RegE RegE LARo RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE:
+LARo:!RegO!RegO!RegO!RegO!RegO LARe!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO:
 """;
 
 // The look-ahead part of the state machine is triggered by the `$`-transitions
@@ -552,8 +655,14 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
 }
 
 void _writeForwardTable(Uint16List table, int automatonRowLength) {
-  var automaton = _generateTable(table, automatonRowLength, idStateCount,
-      stateShortNames, categoryShortNames, idStateSoTNoBreak);
+  var automaton = _generateTable(
+      table,
+      automatonRowLength,
+      idStateCount,
+      stateShortNames,
+      backStateShortNames,
+      categoryShortNames,
+      idStateSoTNoBreak);
   stdout.write(automaton);
   if (automaton != expectedAutomatonDescription) {
     stderr
@@ -569,6 +678,7 @@ void _writeBackTable(Uint16List table, int automatonRowLength) {
     automatonRowLength,
     backStateWithLACount,
     backStateShortNames,
+    backStateShortNames,
     backCategoryNames,
     idStateEoTNoBreak,
   );
@@ -582,7 +692,8 @@ void _writeBackTable(Uint16List table, int automatonRowLength) {
 
 /// Writes an automaton table to string, for debugging.
 ///
-/// The table has size `maxState * automatonRowLength`, and `automatonRowLength >= categoryCount`.
+/// The table has size `maxState * automatonRowLength`,
+/// and `automatonRowLength >= categoryCount`.
 /// The [stateNames] are the names of the states for this particular automaton
 /// (differs between forward and backward automaton).
 /// It has a name for every target state that occurs in the *table*.
@@ -592,38 +703,47 @@ void _writeBackTable(Uint16List table, int automatonRowLength) {
 /// states above that, if any, are synthetic states that trigger non-
 /// automaton based scanning.
 /// The [ignoreState] is a single state that is not displayed.
-String _generateTable(Uint16List table, int automatonRowLength, int stateCount,
-    List<String> stateNames, List<String> categoryNames, int ignoreState) {
+String _generateTable(
+    Uint16List table,
+    int automatonRowLength,
+    int stateCount,
+    List<String> stateNames,
+    List<String> lookaheadStateNames,
+    List<String> categoryNames,
+    int ignoreState) {
   assert(automatonRowLength >= categoryCount);
   assert(table.length == stateCount * automatonRowLength);
   var buf = StringBuffer();
-  buf.writeln("Cat : State");
+  buf.writeln("Stat: Cat");
   var preHeaderLength = buf.length;
-  buf.write("    : ");
-  for (var i = 0; i < stateCount; i++) {
+  buf.write("    :");
+  for (var i = 0; i < categoryCount; i++) {
     buf
       ..write(' ')
-      ..write(stateNames[i].padRight(4));
+      ..write(categoryNames[i].padRight(4));
   }
   buf.writeln(":");
   var lineLength = buf.length - preHeaderLength;
   buf.writeln("-" * (lineLength - 1));
-  for (var ci = 0; ci < categoryCount; ci++) {
-    var catName = categoryNames[ci];
+  for (var si = 0; si < stateCount; si++) {
+    var stateName = stateNames[si];
     buf
-      ..write(catName.padRight(4))
-      ..write(': ');
-
-    for (var si = 0; si < stateCount; si++) {
+      ..write(stateName.padRight(4))
+      ..write(':');
+    for (var ci = 0; ci < categoryCount; ci++) {
       var value = table[si * automatonRowLength + ci];
       var targetState = value ~/ automatonRowLength;
-      var prefix = r" !$#"[value & maskFlags];
-      var idStateName = stateNames[targetState];
+      var flags = value & maskFlags;
+      var prefix = r" !$#"[flags];
+
+      var targetStateName = (flags == flagLookahead)
+          ? lookaheadStateNames[targetState]
+          : stateNames[targetState];
       // EoT is marker for unreachable states.
-      if (targetState == ignoreState) idStateName = " -  ";
+      if (targetState == ignoreState) targetStateName = " -  ";
       buf
         ..write(prefix)
-        ..write(idStateName.padRight(4));
+        ..write(targetStateName.padRight(4));
     }
     buf.writeln(":");
   }

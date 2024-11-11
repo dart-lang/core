@@ -1149,7 +1149,12 @@ const _stateMachine = '\x15\x01)))µ\x8d\x01=QeyeyÉ)))ñð\x15\x01)))µ\x8d\x00
     '(µ\x8d\x01=QexeyÉ(((ñð\x15\x01)\x8c(µ\x8d\x01=QeyeyÉ\xa0\x8c\x8cñð\x15\x01'
     ')((µ\x8c\x01=QeyeyÉ(((ñð\x15\x01)(((\x8d\x01=QeyeyÉ(((ñð\x15\x01)((µ\x8d'
     '\x01=QeyeyÉÈÈÜñð\x15\x01)((µ\x8d\x01=QeyeyÈÜÜÜñð\x14\x00(((´\x8c\x00<Pdxdx'
-    'È(((ðð\x15\x01)))µ\x8d\x01=QeyeyÉ)))ðð';
+    'È(((ðð\x15\x01)))µ\x8d\x01=QeyeyÉ)))ðð\x15\x01(Ƹ(Ǡ\x8d\x01<PdxdxÈĬŀŔðð\x15'
+    '\x01)((µĚ\x01=QeyeyĮƐƐƤñð\x15\x01)Ƹ(µ\x8d\x01=QeyeyĮŨŀŔñð\x15\x01)Ƹ(µ\x8d'
+    '\x01=QeyeyłżŔŔñð\x15\x01)((µĚ\x01=QeyeyÉƐƐƤñð\x15\x01)((µĚ\x01=QeyeyłƤƤƤñð'
+    '\x15\x01)((µ\x8d\x01=QeyeyĮƐƐƤñð\x15\x01)((µ\x8d\x01=QeyeyłƤƤƤñð\x15\x01)Ƹ'
+    '(µ\x8d\x01=QeyeyÉǌƸƸñð\x15\x01)((µĚ\x01=QeyeyÉ(((ñð\x15\x01)((Ŗ\x8d\x01=Qe'
+    'yeyÉ(((ñð';
 int move(int state, int inputCategory) =>
     _stateMachine.codeUnitAt((state & -4) + inputCategory);
 

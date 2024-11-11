@@ -394,9 +394,48 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
   // The backwards automaton is built for this use case.
   // Most of the apparent complication in this function is merely dealing with
   // surrogates.
-  if (start <= index && index < end) {
-    var next = nextBreak(text, start, end, index);
-    return next == index;
+  if (start < index && index < end) {
+    int prevCategory, nextCategory;
+    var cursorBefore = index - 1;
+    var prevChar = text.codeUnitAt(cursorBefore);
+    var nextChar = text.codeUnitAt(index);
+    if (prevChar & 0xF800 != 0xD800) {
+      prevCategory = low(prevChar);
+    } else if (prevChar & 0xFC00 == 0xD800) {
+      // Either not a break because it's in the middle of a surrogate pair,
+      // or always a break after an unpaired surrogate.
+      return nextChar & 0xFC00 != 0xDC00;
+    } else if (start < cursorBefore) {
+      assert(prevChar & 0xFC00 == 0xDC00);
+      var headChar = text.codeUnitAt(--cursorBefore);
+      if (headChar & 0xFC00 != 0xD800) {
+        // Always break after unpaired tail surrogate.
+        return true;
+      }
+      prevCategory = high(headChar, prevChar);
+    } else {
+      // Break after unpaired tail surrogate.
+      return true;
+    }
+    if (nextChar & 0xF800 != 0xD800) {
+      nextCategory = low(nextChar);
+    } else if (nextChar & 0xFC00 == 0xD800 && index + 1 < end) {
+      var tailChar = text.codeUnitAt(index + 1);
+      if (tailChar & 0xFC00 != 0xDC00) {
+        // Always break before unpaired head surrogate.
+        return true;
+      }
+      nextCategory = high(nextChar, tailChar);
+    } else {
+      // Always break before unpaired tail surrogate.
+      return true;
+    }
+    var state = move(move(stateCAny, prevCategory), nextCategory);
+    if (state & maskBreak != flagNoBreak) {
+      return true;
+    }
+    if (state & maskLookahead == 0) return false;
+    return _lookaheadSimple(text, start, cursorBefore, state);
   }
   return true;
 }
@@ -479,207 +518,88 @@ int nextBreak(String text, int start, int end, int index) {
   // The `prevCategory` now is the category for the character
   // from `indexBefore` to `index`, and `index` is the minium valid
   // return value (earliest next break).
-
-  var state = stateSoTNoBreak;
-  // In many cases, the state at `index` can be predicted precisely
-  // from just the one prior character. That's the case for every
-  // input category where the output state doesn't depend on the input
-  // state (ignoring whether it breaks before the previous character or not).
-  //
-  // The cases where that is not possible are:
-  // - A regional indicator (need to know if there is an even or odd number
-  //   of regional indicators before that).
-  // - An Extend{InCB=None|Extend|Linked} or ZWJ
-  //   - For Extends{...} and ZWJ, it behaves differently if in state Pic
-  //     (after Pictographic+Extend*).
-  //   - For {InCB=Extend|Linked} or ZWJ (which is InCB=Extend),
-  //     it behaves differently if in state InC or InCL, so after
-  //     Other(InCB=Consonant)+(InCB={Extend|Linked})*
-  // In those cases, check the next character first. It may make the look-behind
-  // unnecessary, if it's a character that guarantees a break.
-  // Otherwise look-behind to see if the prior characters are `Pic+Extend`
-  // or `InCB=Consonant+InCB={Extend+Linked}` (and whether at least one Linked).
-  if (prevCategory == categoryRegionalIndicator ||
-      prevCategory == categoryExtend ||
-      prevCategory >= categoryZWJ) {
-    // >= ZWJ implies ZWJ|Extend(InCB={Extend|Linked}) for an input character.
-    // Only higher categories are synthetic EoT/SoT characters.
-
-    // TODO: Can this be made into an automaton?
-
-    var indexAfter = index + 1;
+  var state = move(stateCAny, prevCategory);
+  while (index < end) {
     var nextChar = text.codeUnitAt(index);
-    int nextCategory;
-    if (nextChar & 0xFC00 != 0xD800) {
-      nextCategory = low(nextChar);
-    } else if (indexAfter < end) {
-      // Lead surrogate.
-      var tailChar = text.codeUnitAt(indexAfter);
-      if (tailChar & 0xFC00 == 0xDC00) {
-        indexAfter += 1;
-        nextCategory = high(nextChar, tailChar);
-      } else {
-        return index; // Unpaired surrogate
+    var nextIndex = index + 1;
+    int category;
+    if (nextChar & 0xFC00 != 0xD800 || nextIndex == end) {
+      category = low(nextChar);
+      state = move(state, category);
+      if (state & maskFlags == flagNoBreak) {
+        index++;
+        continue;
       }
     } else {
-      return index; // Unpaired surrogate, treat as control.
+      var tail = text.codeUnitAt(nextIndex);
+      category = categoryControl;
+      if (tail & 0xFC00 == 0xDC00) {
+        nextIndex += 1;
+        category = high(nextChar, tail);
+      }
+      state = move(state, category);
+      if (state & maskFlags == flagNoBreak) {
+        index = nextIndex;
+        continue;
+      }
     }
+    if (state & maskFlags == flagBreak) return index;
+    assert(state & maskFlags == flagLookahead);
 
-    // The `nextCategory is the category of the character at positions
-    // from `index` to `indexAfter`.
+    if (_lookaheadSimple(text, start, indexBefore, state)) return index;
 
-    if (prevCategory == categoryRegionalIndicator) {
-      if (nextCategory == categoryRegionalIndicator) {
-        // Prev = RI, next = RI.
-        var idStateBefore = lookaheadRegional(text, start, indexBefore);
-        if (idStateBefore & maskBreak != flagNoBreak) {
-          // Break after previous character.
-          return index;
-        }
-        state = stateOther;
-        // Move index to after RI+RI.
-        index = indexAfter;
-      } else {
-        state = move(stateOther, nextCategory);
-        if (state & maskBreak != flagNoBreak) return index;
-        index = indexAfter;
-      }
-    } else if (prevCategory == categoryZWJ) {
-      if (nextCategory == categoryPictographic) {
-        var prevPic = lookaheadPictographicExtend(text, start, indexBefore);
-        if (prevPic < 0) {
-          return index;
-        }
-        state = statePictographic;
-      } else {
-        // Default for ZWJ if not after Pic+Ext* or
-        // InCB=Consonant+InCB={Extend|Linked}*
-        state = stateOther;
-        if (nextCategory >= categoryOtherIndicConsonant) {
-          var prevConsonant = lookaheadInCBLinkedConsonant(
-              text, start, indexBefore, prevCategory);
-          if (prevConsonant >= 0) {
-            state = prevConsonant.isOdd ? stateInCL : stateInC;
-          }
-        }
-        state = move(state, nextCategory);
-        if (state & maskBreak != flagNoBreak) return index;
-      }
-    } else if (prevCategory == categoryExtend ||
-        nextCategory == categoryExtend) {
-      // The `categoryExtend` has InCB=None, so not affected by GB9c, only GB9b.
-
-      // At this point `prevCategory` is definitely an Extend.
-      // Do Pictographic lookbehind if `nextCategory` is any Extend or ZWJ.
-      assert(prevCategory == categoryExtend ||
-          prevCategory == categoryExtendIndicExtend ||
-          prevCategory == categoryExtendIndicLinked);
-      state = stateOther;
-      if (nextCategory == categoryExtend || nextCategory >= categoryZWJ) {
-        // Look behind for Pic+Ext*.
-        var prevPic = lookaheadPictographicExtend(text, start, indexBefore);
-        if (prevPic >= 0) {
-          state = statePictographic;
-        }
-      }
-      state = move(state, nextCategory);
-      if (state & maskBreak != flagNoBreak) return index;
-    } else if (nextCategory == categoryOtherIndicConsonant) {
-      assert(prevCategory >= categoryExtendIndicExtend);
-      var prevConsonant =
-          lookaheadInCBLinkedConsonant(text, start, indexBefore, prevCategory);
-      if (prevConsonant.isEven) {
-        return index;
-      }
-      state = stateInC | flagNoBreak;
-    } else if (nextCategory >= categoryZWJ) {
-      assert(prevCategory >= categoryExtendIndicExtend);
-      // It's all Extend{InCB!=None}, can't say whether to look for
-      // Pic or InCB=Consonant.
-      state = lookaheadPictographicExtendOrIndic(
-          text, start, indexBefore, prevCategory, nextCategory);
-      if (state & maskBreak != flagNoBreak) {
-        return index;
-      }
+    // Find the correct forward category.
+    // There are only three possible character categories that can trigger
+    // a look-behind.
+    if (category == categoryRegionalIndicator) {
+      assert(state == stateLookaheadRegionalEven | flagLookahead);
+      // Started by RI+RI.
+      state = stateRegionalEven;
+    } else if (category == categoryOtherIndicConsonant) {
+      assert(
+          state == (stateLookaheadInC | flagLookahead) ||
+              state == (stateLookaheadInCL | flagLookahead),
+          state);
+      state = stateInC;
     } else {
-      // Doesn't need further lookahead, one character is enough.
-      state = move(stateSoTNoBreak, prevCategory);
-      state = move(state, nextCategory);
-      if (state & maskBreak != flagNoBreak) return index;
+      assert(category == categoryPictographic);
+      assert(state == (stateLookaheadZWJPictographic | flagLookahead));
+      state = statePictographic;
     }
-    index = indexAfter;
-  } else {
-    // Just look at one prior character.
-    state = move(stateSoTNoBreak, prevCategory);
+    index = nextIndex;
   }
-  // Break wasn't at index, so move forward until finding the break.
-  return Breaks(text, index, text.length, state).nextBreak();
+  assert(index == end);
+  return index;
 }
 
-// Look behind for a Pic+Ext+ZWJ? or Consonant+(Extend|Linked)* sequence.
-// Given the last two categories.
-//
-// The categories are ones that allow both prefixes, so
-// [category1] is either [categoryExtendInCBExtend] or
-// [categoryExtendInCBLinked], and [category2] is one of those or [categoryZWJ].
-//
-// Returns the state after `category2`, with the break flag reporting
-// whether to break before `category2` or not.
-int lookaheadPictographicExtendOrIndic(
-    String text, int start, int cursor, int category1, int category2) {
-  assert(
-      category1 == categoryExtendIndicExtend ||
-          category1 == categoryExtendIndicLinked,
-      category1);
-  assert(
-      category2 == categoryZWJ ||
-          category2 == categoryExtendIndicExtend ||
-          category2 == categoryExtendIndicLinked,
-      category2);
-  var linked = (category1 == categoryExtendIndicLinked ||
-          category2 == categoryExtendIndicLinked)
-      ? (stateInCL | flagNoBreak)
-      : (stateInC | flagNoBreak);
-  loop:
+/// Whether to break before a later character.
+///
+/// Used only to find grapheme category breaks, not part of moving forwards
+/// or backwards from known breaks.
+///
+/// That character is always one of [categoryOtherIndicConsonant],
+/// [categoryPictorgraphic] or [categoryRegionalIndicator], the only
+/// characters where knowing whether to break before them depends on
+/// more than the single prior character.
+bool _lookaheadSimple(String text, int start, int cursor, int backState) {
   while (cursor > start) {
-    int category;
-    var char = text.codeUnitAt(--cursor);
-    if (char & 0xFC00 != 0xDC00) {
-      category = low(char);
+    var prevChar = text.codeUnitAt(--cursor);
+    if (prevChar & 0xFC00 != 0xDC00 || cursor == start) {
+      backState = moveBack(backState, low(prevChar));
+      if (backState >= stateLookaheadMin) continue;
     } else {
-      if (cursor <= start) break;
-      var head = text.codeUnitAt(--cursor);
-      if (head & 0xFC00 != 0xD800) break;
-      category = high(head, char);
+      var headChar = text.codeUnitAt(--cursor);
+      int category;
+      if (headChar & 0xFC00 == 0xD800) {
+        category = high(headChar, prevChar);
+      } else {
+        category = categoryControl;
+        cursor++;
+      }
+      backState = moveBack(backState, category);
+      if (backState >= stateLookaheadMin) continue;
     }
-    switch (category) {
-      case categoryExtend:
-        var prevPic = lookaheadPictographicExtend(text, start, cursor);
-        if (prevPic < 0) break loop;
-        continue pictographic;
-      pictographic:
-      case categoryPictographic:
-        return category2 == categoryZWJ
-            ? (statePictographicZWJ | flagNoBreak)
-            : (statePictographic | flagNoBreak);
-      case categoryZWJ:
-        var prevConsonant =
-            lookaheadInCBLinkedConsonant(text, start, cursor, category);
-        if (prevConsonant < 0) break loop;
-        if (prevConsonant.isOdd) {
-          return stateInCL | flagNoBreak;
-        }
-        return linked;
-      case categoryOtherIndicConsonant:
-        return linked;
-      case categoryExtendIndicLinked:
-        linked = stateInCL | flagNoBreak;
-      case categoryExtendIndicExtend:
-        break; // No change.
-      default:
-        break loop;
-    }
+    return (backState & maskBreak != flagNoBreak);
   }
-  // Default behavior if no Pic or InCB=Consonant found.
-  return move(move(stateSoTNoBreak, category1), category2);
+  return moveBack(backState, categorySoT) & maskBreak != flagNoBreak;
 }
