@@ -209,7 +209,7 @@ void tests() {
   });
 
   group("Unicode test", () {
-    for (var (gcs, _) in splitTests) {
+    for (var gcs in splitTests) {
       test("[${testDescription(gcs)}]", () {
         expectGC(gc(gcs.join()), gcs);
       });
@@ -217,7 +217,7 @@ void tests() {
   });
 
   group("Emoji test", () {
-    for (var (gcs, _) in emojis) {
+    for (var gcs in emojis) {
       test("[${testDescription(gcs)}]", () {
         expectGC(gc(gcs.join()), gcs);
       });

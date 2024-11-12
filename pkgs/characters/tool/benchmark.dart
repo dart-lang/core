@@ -23,8 +23,8 @@ void main(List<String> args) {
       hangul +
       genesis +
       diacretics +
-      recJoin(splitTests.map(_fst)) +
-      recJoin(emojis.map(_fst)) +
+      recJoin(splitTests) +
+      recJoin(emojis) +
       recJoin(zalgo);
   var codeUnits = text.length;
   var codePoints = text.runes.length;
@@ -85,5 +85,3 @@ int benchBackward(String text, int i, int cp, int cu) {
       "$n rounds");
   return gc ~/ n;
 }
-
-List<String> _fst((List<String> gcs, String description) pair) => pair.$1;

@@ -91,21 +91,22 @@ void writeTests(StringSink buffer, List<String> texts, Uint8List categories,
     {bool dryrun = false, bool verbose = defaultVerbose}) async {
   var writer = StringLiteralWriter(buffer, lineLength: 9999, escape: _escape);
   void writeParts(List<List<int>> parts, String description) {
-    buffer.write("  ([");
+    buffer.writeln("  [");
+    const indent = "    ";
     for (var i = 0; i < parts.length; i++) {
-      if (i > 0) buffer.write(", ");
-      writer.start(0);
+      buffer.write(indent);
+      writer.start(indent.length);
       for (var char in parts[i]) {
         writer.add(char);
         var c = categories[char];
         ((char < 0x10000) ? lowerChars : upperChars)[c] = char;
       }
       writer.end();
+      buffer.writeln(",");
     }
     buffer
-      ..write("], '")
-      ..write(description)
-      ..writeln("'),");
+      ..write("  ], // ")
+      ..writeln(description);
   }
 
   // Write grapheme cluster tests.
@@ -161,7 +162,7 @@ bool _escape(int cp) => cp > 0xff || cp & 0x60 == 0 || cp == 0x7f;
 
 void writeTestHeader(StringSink buffer, String testName) {
   buffer
-    ..write("const List<(List<String> graphemeClusters, String description)> ")
+    ..write("const List<List<String>> ")
     ..write(testName)
     ..writeln(" = [");
 }

@@ -99,8 +99,7 @@ final stateNames = List<String>.filled(idStateCount, "")
   ..[idStateCZIL] = "?+ZWJIndicLinked"
   ..[idStateCExt] = "?+Extend"
   ..[idStateCExZ] = "?+ExtendZWJ"
-  ..[idStateCReg] = "?+Reg"
-  ;
+  ..[idStateCReg] = "?+Reg";
 
 final stateShortNames = List<String>.filled(idStateCount, "")
   ..[idStateSoT] = "SoT"
@@ -127,8 +126,7 @@ final stateShortNames = List<String>.filled(idStateCount, "")
   ..[idStateCZIL] = "CZIL"
   ..[idStateCExt] = "CExt"
   ..[idStateCExZ] = "CExZ"
-  ..[idStateCReg] = "CReg"
-  ;
+  ..[idStateCReg] = "CReg";
 
 final backStateNames = List<String>.filled(backStateWithLACount, "")
   ..[idStateEoT] = "EoT"

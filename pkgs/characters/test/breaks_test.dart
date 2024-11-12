@@ -19,7 +19,7 @@ const verbose = false;
 void main() {
   // Test [Breaks] on all the available Unicode tests.
   group("forward automaton:", () {
-    for (var (expectedParts, _) in splitTests) {
+    for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
           var input = variantParts.join("");
@@ -40,7 +40,7 @@ void main() {
 
   // Test [BackBreaks] directly on all the available Unicode tests.
   group("backward automaton:", () {
-    for (var (expectedParts, _) in splitTests) {
+    for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
           var input = variantParts.join("");
@@ -64,7 +64,7 @@ void main() {
   // the Unicode tests.
   group("nextBreak", () {
     // Should find the next break at any position.
-    for (var (expectedParts, _) in splitTests) {
+    for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
           var input = variantParts.join("");
@@ -90,7 +90,7 @@ void main() {
   // the Unicode tests.
   group("previousBreak", () {
     // Should find the next break at any position.
-    for (var (expectedParts, _) in splitTests) {
+    for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
           var input = variantParts.join("");
@@ -119,7 +119,7 @@ void main() {
   // the Unicode tests.
   group("isGraphemeClusterBreak", () {
     // Should find the next break at any position.
-    for (var (expectedParts, _) in splitTests) {
+    for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
           var input = variantParts.join("");
