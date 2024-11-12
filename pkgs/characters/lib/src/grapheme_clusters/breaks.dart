@@ -52,34 +52,94 @@ class Breaks {
   ///
   /// Returns a negative number if there are no further breaks,
   /// which means that [cursor] has reached [end].
+  ///
+  /// Also stops if reaching a state with the `flagLookahead` bit set,
+  /// with the returned position being before the character which triggered
+  /// that look-behind.
+  /// If the state is not one which can trigger a look-behind, the exit position
+  /// is always the next break (if any, or -1 if none, which only happens on
+  /// empty strings.)
   int nextBreak() {
     while (cursor < end) {
       var breakAt = cursor;
-      var char = base.codeUnitAt(cursor++);
-      if (char & 0xFC00 != 0xD800) {
-        state = move(state, low(char));
-        if (state & maskBreak != flagNoBreak) {
-          return breakAt;
-        }
-        continue;
-      }
-      // The category of an unpaired lead surrogate is Control.
-      var category = categoryControl;
-      if (cursor < end) {
-        var nextChar = base.codeUnitAt(cursor);
-        if (nextChar & 0xFC00 == 0xDC00) {
-          category = high(char, nextChar);
-          cursor++;
-        }
-      }
-      state = move(state, category);
-      if (state & maskBreak != flagNoBreak) {
+      step();
+      if (state & maskFlags != flagNoBreak) {
         return breakAt;
       }
     }
     state = move(state, categoryEoT);
-    if (state & maskBreak != flagNoBreak) return cursor;
+    if (state & maskFlags != flagNoBreak) return cursor;
     return -1;
+  }
+
+  /// Takes one step forward in the state machine.
+  void step() {
+    assert(cursor < end);
+    var char = base.codeUnitAt(cursor++);
+    if (char & 0xFC00 != 0xD800) {
+      state = move(state, low(char));
+      return;
+    }
+    // The category of an unpaired lead surrogate is Control.
+    int category;
+    int nextChar;
+    if (cursor < end &&
+        (nextChar = base.codeUnitAt(cursor)) & 0xFC00 == 0xDC00) {
+      category = high(char, nextChar);
+      cursor++;
+    } else {
+      category = categoryControl;
+    }
+    state = move(state, category);
+  }
+
+  /// Start with no knowledge about the position at [cursor].
+  ///
+  /// Starts from state `CAny` and takes one step based on the
+  /// latest character starting earlier than [cursor].
+  ///
+  /// Can be used if the [cursor] isn't even known to be at
+  /// a grapheme cluster boundary.
+  ///
+  /// Returns the start of that prior character, which is
+  /// one of `cursor` (if cursor is at start of input) or
+  /// `cursor - 1`or `cursor - 2` depending whether
+  /// it is a surrogate pair, and if so, where it ends.
+  int _unknownPositionFirstStep(int start) {
+    if (cursor == start) {
+      state = stateSoTNoBreak;
+      return cursor;
+    }
+    var indexBefore = cursor - 1;
+    var prevChar = base.codeUnitAt(indexBefore);
+    int prevCategory;
+    if (prevChar & 0xF800 != 0xD800) {
+      // Not surrogate.
+      prevCategory = low(prevChar);
+    } else if (prevChar & 0xFC00 == 0xD800) {
+      // Lead surrogate. Check for a following tail surrogate.
+      int tailChar;
+      if (cursor < end &&
+          (tailChar = base.codeUnitAt(cursor)) & 0xFC00 == 0xDC00) {
+        cursor += 1;
+        prevCategory = high(prevChar, tailChar);
+      } else {
+        prevCategory = categoryControl;
+      }
+    } else {
+      // Tail surrogate, check for prior lead surrogate.
+      int leadChar;
+      var leadIndex = indexBefore - 1;
+      if (leadIndex >= start &&
+          (leadChar = base.codeUnitAt(leadIndex)) & 0xFC00 == 0xD800) {
+        prevCategory = high(leadChar, prevChar);
+        indexBefore = leadIndex;
+      } else {
+        prevCategory = categoryControl;
+      }
+    }
+    state = move(stateCAny, prevCategory);
+    return indexBefore;
   }
 }
 
@@ -123,28 +183,9 @@ class BackBreaks {
   int nextBreak() {
     while (cursor > start) {
       var breakAt = cursor;
-      var char = base.codeUnitAt(--cursor);
-      if (char & 0xFC00 != 0xDC00) {
-        var category = low(char);
-        state = moveBack(state, category);
-        if (state & maskFlags == flagNoBreak) {
-          continue;
-        }
-      } else {
-        // Found tail surrogate, check for prior lead surrogate.
-        // The category of an unpaired tail surrogate is Control.
-        var category = categoryControl;
-        if (cursor >= start) {
-          var prevChar = base.codeUnitAt(cursor - 1);
-          if (prevChar & 0xFC00 == 0xD800) {
-            category = high(prevChar, char);
-            cursor -= 1;
-          }
-        }
-        state = moveBack(state, category);
-        if (state & maskFlags == flagNoBreak) {
-          continue;
-        }
+      step();
+      if (state & maskFlags == flagNoBreak) {
+        continue;
       }
       if (state & maskLookahead != 0) {
         _lookahead();
@@ -157,6 +198,28 @@ class BackBreaks {
     assert(state < stateLookaheadMin, state);
     if (state & maskBreak != flagNoBreak) return cursor;
     return -1;
+  }
+
+  void step() {
+    assert(cursor > start);
+    var char = base.codeUnitAt(--cursor);
+    if (char & 0xFC00 != 0xDC00) {
+      var category = low(char);
+      state = moveBack(state, category);
+      return;
+    }
+    // Found tail surrogate, check for prior lead surrogate.
+    // The category of an unpaired tail surrogate is Control.
+    int category;
+    int prevChar;
+    if (cursor >= start &&
+        (prevChar = base.codeUnitAt(--cursor)) & 0xFC00 == 0xD800) {
+      category = high(prevChar, char);
+    } else {
+      category = categoryControl;
+      cursor++;
+    }
+    state = moveBack(state, category);
   }
 
   void _lookahead() {
@@ -395,47 +458,17 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
   // Most of the apparent complication in this function is merely dealing with
   // surrogates.
   if (start < index && index < end) {
-    int prevCategory, nextCategory;
-    var cursorBefore = index - 1;
-    var prevChar = text.codeUnitAt(cursorBefore);
-    var nextChar = text.codeUnitAt(index);
-    if (prevChar & 0xF800 != 0xD800) {
-      prevCategory = low(prevChar);
-    } else if (prevChar & 0xFC00 == 0xD800) {
-      // Either not a break because it's in the middle of a surrogate pair,
-      // or always a break after an unpaired surrogate.
-      return nextChar & 0xFC00 != 0xDC00;
-    } else if (start < cursorBefore) {
-      assert(prevChar & 0xFC00 == 0xDC00);
-      var headChar = text.codeUnitAt(--cursorBefore);
-      if (headChar & 0xFC00 != 0xD800) {
-        // Always break after unpaired tail surrogate.
-        return true;
-      }
-      prevCategory = high(headChar, prevChar);
-    } else {
-      // Break after unpaired tail surrogate.
+    var breaks = Breaks(text, index, end, stateCAny);
+    var cursorBefore = breaks._unknownPositionFirstStep(start);
+    // If cursor moved, index is in the middle of a surrogate pair.
+    if (breaks.cursor != index) return false;
+    breaks.step();
+    if (breaks.state & maskBreak != flagNoBreak) {
       return true;
     }
-    if (nextChar & 0xF800 != 0xD800) {
-      nextCategory = low(nextChar);
-    } else if (nextChar & 0xFC00 == 0xD800 && index + 1 < end) {
-      var tailChar = text.codeUnitAt(index + 1);
-      if (tailChar & 0xFC00 != 0xDC00) {
-        // Always break before unpaired head surrogate.
-        return true;
-      }
-      nextCategory = high(nextChar, tailChar);
-    } else {
-      // Always break before unpaired tail surrogate.
-      return true;
-    }
-    var state = move(move(stateCAny, prevCategory), nextCategory);
-    if (state & maskBreak != flagNoBreak) {
-      return true;
-    }
-    if (state & maskLookahead == 0) return false;
-    return _lookaheadSimple(text, start, cursorBefore, state);
+    if (breaks.state & maskLookahead == 0) return false;
+    assert(breaks.state >= stateLookaheadMin);
+    return _lookaheadSimple(text, start, cursorBefore, breaks.state);
   }
   return true;
 }
@@ -447,30 +480,34 @@ int previousBreak(String text, int start, int end, int index) {
   assert(start <= index);
   assert(index <= end);
   assert(end <= text.length);
-  if (index == start || index == end) return index;
-  var indexBefore = index;
-  var nextChar = text.codeUnitAt(index);
-  var category = categoryControl;
-  if (nextChar & 0xF800 != 0xD800) {
-    category = low(nextChar);
-  } else if (nextChar & 0xFC00 == 0xD800) {
-    var indexAfter = index + 1;
-    if (indexAfter < end) {
-      var secondChar = text.codeUnitAt(indexAfter);
-      if (secondChar & 0xFC00 == 0xDC00) {
-        category = high(nextChar, secondChar);
+  // First character after `index`. Account for it if `index` is in the
+  // middle of a surrogate pair.
+  if (start < index && index < end) {
+    var indexBefore = index;
+    var nextChar = text.codeUnitAt(index);
+    var category = categoryControl;
+    if (nextChar & 0xF800 != 0xD800) {
+      category = low(nextChar);
+    } else if (nextChar & 0xFC00 == 0xD800) {
+      var indexAfter = index + 1;
+      if (indexAfter < end) {
+        var secondChar = text.codeUnitAt(indexAfter);
+        if (secondChar & 0xFC00 == 0xDC00) {
+          category = high(nextChar, secondChar);
+        }
+      }
+    } else {
+      var prevChar = text.codeUnitAt(index - 1);
+      if (prevChar & 0xFC00 == 0xD800) {
+        category = high(prevChar, nextChar);
+        indexBefore -= 1;
       }
     }
-  } else {
-    var prevChar = text.codeUnitAt(index - 1);
-    if (prevChar & 0xFC00 == 0xD800) {
-      category = high(prevChar, nextChar);
-      indexBefore -= 1;
-    }
+    return BackBreaks(
+            text, indexBefore, start, moveBack(stateEoTNoBreak, category))
+        .nextBreak();
   }
-  return BackBreaks(
-          text, indexBefore, start, moveBack(stateEoTNoBreak, category))
-      .nextBreak();
+  return index;
 }
 
 /// The next break no earlier than [index] in `string.substring(start, end)`.
@@ -485,91 +522,34 @@ int nextBreak(String text, int start, int end, int index) {
   assert(end <= text.length);
   // Always break at start or end (GB1).
   if (index == start || index == end) return index;
-  // Find (category of) of first character which ends no earlier than [index].
-  // If [index] is in the middle of a surrogate pair, it may end at `index + 1`.
-  // Position before character before first possible break after [index].
-  var indexBefore = index - 1;
-  var prevChar = text.codeUnitAt(indexBefore);
-  int prevCategory;
-  if (prevChar & 0xF800 != 0xD800) {
-    // Not surrogate.
-    prevCategory = low(prevChar);
-  } else if (prevChar & 0xFC00 == 0xD800) {
-    // Surrogate lead. Check next character.
-    var tailChar = text.codeUnitAt(index);
-    if (tailChar & 0xFC00 == 0xDC00) {
-      index += 1;
-      if (index == end) return end;
-      prevCategory = high(prevChar, tailChar);
-    } else {
-      // Unpaired surrogate, treat as control. Always break after control.
-      return index;
-    }
+  var breaks = Breaks(text, index, end, stateCAny);
+  var indexBefore = breaks._unknownPositionFirstStep(start);
+  var possibleBreak = breaks.nextBreak();
+  assert(breaks.state & maskFlags != 0);
+  if (breaks.state & maskFlags == flagBreak) return possibleBreak;
+  var lookbehindState = breaks.state;
+  assert(lookbehindState & maskFlags == flagLookahead);
+  assert(lookbehindState & maskState >= stateLookaheadMin);
+
+  if (_lookaheadSimple(text, start, indexBefore, lookbehindState)) {
+    return possibleBreak;
+  }
+
+  // Find the correct forward category.
+  // There are only three possible character categories that can trigger
+  // a look-behind.
+  if (lookbehindState == stateLookaheadRegionalEven | flagLookahead) {
+    // Started by RI+RI.
+    breaks.state = stateRegionalEven;
+  } else if (lookbehindState ==
+      (stateLookaheadZWJPictographic | flagLookahead)) {
+    breaks.state = statePictographic;
   } else {
-    // Surrogate tail. If there is not a prior surrogate head,
-    // treat as control and break immediately.
-    if (indexBefore <= start) return index;
-    var leadIndex = indexBefore - 1;
-    var lead = text.codeUnitAt(leadIndex);
-    if (lead & 0xFC00 != 0xD800) return index;
-    indexBefore = leadIndex;
-    prevCategory = high(lead, prevChar);
+    assert(lookbehindState == (stateLookaheadInC | flagLookahead) ||
+        lookbehindState == (stateLookaheadInCL | flagLookahead));
+    breaks.state = stateInC;
   }
-  // The `prevCategory` now is the category for the character
-  // from `indexBefore` to `index`, and `index` is the minium valid
-  // return value (earliest next break).
-  var state = move(stateCAny, prevCategory);
-  while (index < end) {
-    var nextChar = text.codeUnitAt(index);
-    var nextIndex = index + 1;
-    int category;
-    if (nextChar & 0xFC00 != 0xD800 || nextIndex == end) {
-      category = low(nextChar);
-      state = move(state, category);
-      if (state & maskFlags == flagNoBreak) {
-        index++;
-        continue;
-      }
-    } else {
-      var tail = text.codeUnitAt(nextIndex);
-      category = categoryControl;
-      if (tail & 0xFC00 == 0xDC00) {
-        nextIndex += 1;
-        category = high(nextChar, tail);
-      }
-      state = move(state, category);
-      if (state & maskFlags == flagNoBreak) {
-        index = nextIndex;
-        continue;
-      }
-    }
-    if (state & maskFlags == flagBreak) return index;
-    assert(state & maskFlags == flagLookahead);
-
-    if (_lookaheadSimple(text, start, indexBefore, state)) return index;
-
-    // Find the correct forward category.
-    // There are only three possible character categories that can trigger
-    // a look-behind.
-    if (category == categoryRegionalIndicator) {
-      assert(state == stateLookaheadRegionalEven | flagLookahead);
-      // Started by RI+RI.
-      state = stateRegionalEven;
-    } else if (category == categoryOtherIndicConsonant) {
-      assert(
-          state == (stateLookaheadInC | flagLookahead) ||
-              state == (stateLookaheadInCL | flagLookahead),
-          state);
-      state = stateInC;
-    } else {
-      assert(category == categoryPictographic);
-      assert(state == (stateLookaheadZWJPictographic | flagLookahead));
-      state = statePictographic;
-    }
-    index = nextIndex;
-  }
-  assert(index == end);
-  return index;
+  return breaks.nextBreak();
 }
 
 /// Whether to break before a later character.
@@ -582,24 +562,15 @@ int nextBreak(String text, int start, int end, int index) {
 /// characters where knowing whether to break before them depends on
 /// more than the single prior character.
 bool _lookaheadSimple(String text, int start, int cursor, int backState) {
-  while (cursor > start) {
-    var prevChar = text.codeUnitAt(--cursor);
-    if (prevChar & 0xFC00 != 0xDC00 || cursor == start) {
-      backState = moveBack(backState, low(prevChar));
-      if (backState >= stateLookaheadMin) continue;
-    } else {
-      var headChar = text.codeUnitAt(--cursor);
-      int category;
-      if (headChar & 0xFC00 == 0xD800) {
-        category = high(headChar, prevChar);
-      } else {
-        category = categoryControl;
-        cursor++;
+  var backBreaks = BackBreaks(text, cursor, start, backState);
+  while (true) {
+    if (backBreaks.cursor > start) {
+      backBreaks.step();
+      if (backBreaks.state < stateLookaheadMin) {
+        return backBreaks.state & maskBreak != flagNoBreak;
       }
-      backState = moveBack(backState, category);
-      if (backState >= stateLookaheadMin) continue;
+    } else {
+      return moveBack(backBreaks.state, categorySoT) & maskBreak != flagNoBreak;
     }
-    return (backState & maskBreak != flagNoBreak);
   }
-  return moveBack(backState, categorySoT) & maskBreak != flagNoBreak;
 }
