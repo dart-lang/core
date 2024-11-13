@@ -2,13 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:async";
-import "dart:io" show stderr;
-import "dart:typed_data";
+import 'dart:async';
+import 'dart:io' show stderr;
+import 'dart:typed_data';
 
-import "package:characters/src/grapheme_clusters/constants.dart";
+import 'package:characters/src/grapheme_clusters/constants.dart';
 
-import "data_files.dart";
+import 'data_files.dart';
 import 'debug_names.dart';
 
 // Loads the grapheme breaking categories from Unicode data files.
@@ -53,7 +53,7 @@ Future<Uint8List> loadGraphemeCategories(
     // https://www.unicode.org/Public/12.0.0/ucd/auxiliary/GraphemeBreakProperty-12.0.0d16.txt
     // Make sure it's included.
     Future.value(
-        "D800..DFFF    ; Control # Cc       <control-D800>..<control-DFFF>\n"),
+        'D800..DFFF    ; Control # Cc       <control-D800>..<control-DFFF>\n'),
   ]);
   var table = _parseCategories(dataFiles, verbose: verbose);
   return table;
@@ -70,7 +70,7 @@ Future<Uint8List> loadInCBCategories(
 /// Prints intersection between basic grapheme breaking properties
 /// and InCB categories.
 void _logIntersection(Uint8List table, Uint8List incbTable) {
-  const incbNames = ["None", "Consonant", "Extend", "Linked"];
+  const incbNames = ['None', 'Consonant', 'Extend', 'Linked'];
   const incbOffsets = {
     0: 0,
     categoryOtherIndicConsonant: 1,
@@ -107,25 +107,25 @@ void _logIntersection(Uint8List table, Uint8List incbTable) {
 
 // -----------------------------------------------------------------------------
 // Unicode table parser.
-final _tableRE = RegExp(r"^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*(\w+)\s*#",
+final _tableRE = RegExp(r'^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*(\w+)\s*#',
     multiLine: true);
 
 // The relevant names that occur in the Unicode tables.
 final categoryByName = {
-  "CR": categoryCR,
-  "LF": categoryLF,
-  "Control": categoryControl,
-  "Extend": categoryExtend,
-  "ZWJ": categoryZWJ,
-  "Regional_Indicator": categoryRegionalIndicator,
-  "Prepend": categoryPrepend,
-  "SpacingMark": categorySpacingMark,
-  "L": categoryL,
-  "V": categoryV,
-  "T": categoryT,
-  "LV": categoryLV,
-  "LVT": categoryLVT,
-  "Extended_Pictographic": categoryPictographic,
+  'CR': categoryCR,
+  'LF': categoryLF,
+  'Control': categoryControl,
+  'Extend': categoryExtend,
+  'ZWJ': categoryZWJ,
+  'Regional_Indicator': categoryRegionalIndicator,
+  'Prepend': categoryPrepend,
+  'SpacingMark': categorySpacingMark,
+  'L': categoryL,
+  'V': categoryV,
+  'T': categoryT,
+  'LV': categoryLV,
+  'LVT': categoryLVT,
+  'Extended_Pictographic': categoryPictographic,
 };
 
 Uint8List _parseCategories(List<String> files, {required bool verbose}) {
@@ -156,18 +156,18 @@ Uint8List _parseCategories(List<String> files, {required bool verbose}) {
     }
   }
   if (verbose) {
-    stderr.writeln("Loaded $count entries");
+    stderr.writeln('Loaded $count entries');
     categoryCount.forEach((category, count) {
-      stderr.writeln("  $category: $count, min: U+"
+      stderr.writeln('  $category: $count, min: U+'
           "${categoryMin[category]!.toRadixString(16).padLeft(4, "0")}");
     });
   }
   if (result[0xD800] != categoryControl) {
-    stderr.writeln("WARNING: Surrogates are not controls. Check inputs.");
+    stderr.writeln('WARNING: Surrogates are not controls. Check inputs.');
   }
-  if (categoryMin["Regional_Indicator"]! < 0x10000) {
-    stderr.writeln("WARNING: Regional Indicator in BMP. "
-        "Code assuming all RIs are non-BMP will fail");
+  if (categoryMin['Regional_Indicator']! < 0x10000) {
+    stderr.writeln('WARNING: Regional Indicator in BMP. '
+        'Code assuming all RIs are non-BMP will fail');
   }
   return result;
 }
@@ -193,32 +193,32 @@ Uint8List _parseCategories(List<String> files, {required bool verbose}) {
 // Luckily it is precomputed in a file of its own.
 
 final _derivedPropertyTableRE = RegExp(
-    r"^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*InCB\s*;\s*(\w+)\s*#"
-    r"|"
-    r"^# Total code points: (\d+)",
+    r'^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*InCB\s*;\s*(\w+)\s*#'
+    r'|'
+    r'^# Total code points: (\d+)',
     multiLine: true);
 
 Uint8List _parseInCBCategories(String file, {required bool verbose}) {
   const categoryByName = {
-    "Consonant": categoryOtherIndicConsonant,
-    "Extend": categoryExtendIndicExtend,
-    "Linker": categoryExtendIndicLinked
+    'Consonant': categoryOtherIndicConsonant,
+    'Extend': categoryExtendIndicExtend,
+    'Linker': categoryExtendIndicLinked
   };
   var result = Uint8List(0x110000);
   var lines = 0;
   var count = 0;
   var counts = {for (var key in categoryByName.keys) key: 0};
   var totalCounts = {for (var key in categoryByName.keys) key: 0};
-  var currentInCBCategory = "";
+  var currentInCBCategory = '';
   for (var match in _derivedPropertyTableRE.allMatches(file)) {
     if (match[4] case var totalCountText?) {
       if (currentInCBCategory.isNotEmpty) {
         if (totalCounts[currentInCBCategory] != 0) {
           throw FormatException(
-              "More than one total count per category", match[0]!);
+              'More than one total count per category', match[0]!);
         }
         totalCounts[currentInCBCategory] = int.parse(totalCountText);
-        currentInCBCategory = "";
+        currentInCBCategory = '';
       }
       continue;
     }
@@ -227,7 +227,7 @@ Uint8List _parseInCBCategories(String file, {required bool verbose}) {
     var name = match[3]!;
     var incbCategory = categoryByName[name];
     if (incbCategory == null) {
-      throw FormatException("Invalid InCB category", match[0]!);
+      throw FormatException('Invalid InCB category', match[0]!);
     }
     currentInCBCategory = name;
     var endMatch = match[2];
@@ -249,15 +249,15 @@ Uint8List _parseInCBCategories(String file, {required bool verbose}) {
   }
   for (var name in categoryByName.keys) {
     if (counts[name] != totalCounts[name]) {
-      stderr.writeln("${categoryByName[name]}: "
-          "Parsed: ${counts[name]}, expected: ${totalCounts[name]}");
+      stderr.writeln('${categoryByName[name]}: '
+          'Parsed: ${counts[name]}, expected: ${totalCounts[name]}');
     }
   }
   if (verbose) {
-    stderr.writeln("InCB categories: Loaded $count entries from $lines lines");
+    stderr.writeln('InCB categories: Loaded $count entries from $lines lines');
     for (var name in categoryByName.keys) {
-      stderr.writeln("  ${name.padRight(9)}: "
-          "${counts[name].toString().padLeft(6)}");
+      stderr.writeln('  ${name.padRight(9)}: '
+          '${counts[name].toString().padLeft(6)}');
     }
   }
   return result;

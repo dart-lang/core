@@ -2,17 +2,17 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:io";
-import "dart:typed_data";
+import 'dart:io';
+import 'dart:typed_data';
 
-import "../src/args.dart";
-import "../src/automaton_builder.dart";
-import "../src/data_files.dart";
-import "../src/grapheme_category_loader.dart";
-import "../src/indirect_table.dart";
-import "../src/shared.dart";
-import "../src/string_literal_writer.dart";
-import "../src/table_builder.dart";
+import '../src/args.dart';
+import '../src/automaton_builder.dart';
+import '../src/data_files.dart';
+import '../src/grapheme_category_loader.dart';
+import '../src/indirect_table.dart';
+import '../src/shared.dart';
+import '../src/string_literal_writer.dart';
+import '../src/table_builder.dart';
 
 // Generates tables used by the grapheme cluster breaking algorithm
 // and a state machine used to implement the algorithm.
@@ -53,7 +53,7 @@ import "../src/table_builder.dart";
 const defaultVerbose = false;
 
 /// Default location for table file.
-const tableFile = "lib/src/grapheme_clusters/table.dart";
+const tableFile = 'lib/src/grapheme_clusters/table.dart';
 
 // Best values found for current tables.
 // Update if better value found when updating data files.
@@ -69,7 +69,7 @@ const int defaultLowChunkSize = 32;
 const int defaultHighChunkSize = 256;
 
 void main(List<String> args) async {
-  var flags = parseArgs(args, "generate_tables", allowOptimize: true);
+  var flags = parseArgs(args, 'generate_tables', allowOptimize: true);
   var output = flags.dryrun
       ? null
       : flags.targetFile ?? File(path(packageRoot, tableFile));
@@ -78,8 +78,8 @@ void main(List<String> args) async {
     try {
       output.createSync(recursive: true);
     } catch (e) {
-      stderr.writeln("Cannot find or create file: ${output.path}");
-      stderr.writeln("Writing to stdout");
+      stderr.writeln('Cannot find or create file: ${output.path}');
+      stderr.writeln('Writing to stdout');
       output = null;
     }
   }
@@ -139,7 +139,7 @@ void generateTables(
   var chunkTable = IndirectTable([table.sublist(0, table.length)], []);
   var size = optimizeTable(chunkTable, lowChunkSize, highChunkSize);
   if (verbose) {
-    stderr.writeln("Default chunk size: $lowChunkSize/$highChunkSize: $size");
+    stderr.writeln('Default chunk size: $lowChunkSize/$highChunkSize: $size');
   }
   if (optimize) {
     // Chunk sizes must be powers of 2.
@@ -154,7 +154,7 @@ void generateTables(
         if (verbose) {
           var delta = newSize - size;
           stderr.writeln("${size < newSize ? "Worse" : "Better"}"
-              " chunk size: $low/$high: $newSize "
+              ' chunk size: $low/$high: $newSize '
               "(${delta > 0 ? "+$delta" : delta})");
         }
         if (newSize < size) {
@@ -166,9 +166,9 @@ void generateTables(
       }
     }
     if (verbose) {
-      stderr.writeln("Best low chunk size: $lowChunkSize");
-      stderr.writeln("Best high chunk size: $highChunkSize");
-      stderr.writeln("Best table size: $size");
+      stderr.writeln('Best low chunk size: $lowChunkSize');
+      stderr.writeln('Best high chunk size: $highChunkSize');
+      stderr.writeln('Best table size: $size');
     }
   }
 
@@ -198,19 +198,19 @@ void writeTables(
     StringSink out, IndirectTable table, int lowChunkSize, int highChunkSize,
     {required bool verbose}) {
   assert(table.chunks.length == 1);
-  _writeStringLiteral(out, "_data", table.chunks[0], verbose: verbose);
-  _writeStringLiteral(out, "_start", table.entries.map((e) => e.start).toList(),
+  _writeStringLiteral(out, '_data', table.chunks[0], verbose: verbose);
+  _writeStringLiteral(out, '_start', table.entries.map((e) => e.start).toList(),
       verbose: verbose);
-  _writeLookupFunction(out, "_data", "_start", lowChunkSize);
+  _writeLookupFunction(out, '_data', '_start', lowChunkSize);
   out.writeln();
   _writeSurrogateLookupFunction(
-      out, "_data", "_start", 65536 ~/ lowChunkSize, highChunkSize);
+      out, '_data', '_start', 65536 ~/ lowChunkSize, highChunkSize);
   out.writeln();
 }
 
 void _writeStringLiteral(StringSink out, String name, List<int> data,
     {required bool verbose}) {
-  var prefix = "const String $name = ";
+  var prefix = 'const String $name = ';
   out.write(prefix);
   var writer = StringLiteralWriter(out, padding: 4, escape: _needsEscape);
   writer.start(prefix.length);
@@ -221,9 +221,9 @@ void _writeStringLiteral(StringSink out, String name, List<int> data,
     bytes += char <= 0xFF ? 1 : 2;
   }
   writer.end();
-  out.write(";\n");
+  out.write(';\n');
   if (verbose) {
-    stderr.writeln("Writing $bytes bytes");
+    stderr.writeln('Writing $bytes bytes');
   }
 }
 
@@ -232,41 +232,41 @@ bool _needsEscape(int codeUnit) =>
 
 void _writeLookupFunction(
     StringSink out, String dataName, String startName, int chunkSize) {
-  out.write(_lookupMethod("low", dataName, startName, chunkSize));
+  out.write(_lookupMethod('low', dataName, startName, chunkSize));
 }
 
 void _writeSurrogateLookupFunction(StringSink out, String dataName,
     String startName, int startOffset, int chunkSize) {
   out.write(_lookupSurrogatesMethod(
-      "high", dataName, startName, startOffset, chunkSize));
+      'high', dataName, startName, startOffset, chunkSize));
 }
 
 String _lookupMethod(
         String name, String dataName, String startName, int chunkSize) =>
-    """
+    '''
 $preferInline
 int $name(int codeUnit) {
   var chunkStart = $startName.codeUnitAt(codeUnit >> ${chunkSize.bitLength - 1});
   var index = chunkStart + (codeUnit & ${chunkSize - 1});
   return $dataName.codeUnitAt(index);
 }
-""";
+''';
 
 String _lookupSurrogatesMethod(String name, String dataName, String startName,
     int startOffset, int chunkSize) {
   if (chunkSize == 1024) {
-    return """
+    return '''
 $preferInline
 int $name(int lead, int tail) {
   var chunkStart = $startName.codeUnitAt($startOffset + (0x3ff & lead));
   var index = chunkStart + (0x3ff & tail);
   return $dataName.codeUnitAt(index);
 }
-""";
+''';
   }
   var shift = chunkSize.bitLength - 1;
-  var indexVar = chunkSize < 1024 ? "tail" : "offset";
-  return """
+  var indexVar = chunkSize < 1024 ? 'tail' : 'offset';
+  return '''
 $preferInline
 int $name(int lead, int tail) {
   var offset = (((0x3ff & lead) << 10) + (0x3ff & tail)) + ($startOffset << $shift);
@@ -274,7 +274,7 @@ int $name(int lead, int tail) {
   var index = chunkStart + ($indexVar & ${chunkSize - 1});
   return $dataName.codeUnitAt(index);
 }
-""";
+''';
 }
 
 // -----------------------------------------------------------------------------
@@ -291,7 +291,7 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
     var indirectValue = indirectTable.chunks[entry.chunkNumber]
         [entry.start + (i & lowChunkMask)];
     if (value != indirectValue) {
-      stderr.writeln("$entryIndex: $entry");
+      stderr.writeln('$entryIndex: $entry');
       stderr.writeln('Error: ${i.toRadixString(16)} -> Expected $value,'
           ' was $indirectValue');
       printIndirectTable(indirectTable);
@@ -308,7 +308,7 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
     var indirectValue = indirectTable.chunks[entry.chunkNumber]
         [entry.start + (j & highChunkMask)];
     if (value != indirectValue) {
-      stderr.writeln("$entryIndex: $entry");
+      stderr.writeln('$entryIndex: $entry');
       stderr.writeln('Error: ${i.toRadixString(16)} -> Expected $value,'
           ' was $indirectValue');
       printIndirectTable(indirectTable);
@@ -316,12 +316,12 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
     }
   }
   if (verbose) {
-    stderr.writeln("Table validation success");
+    stderr.writeln('Table validation success');
   }
   return true;
 }
 
 void printIndirectTable(IndirectTable table) {
   stderr.writeln("IT(chunks: ${table.chunks.map((x) => "#${x.length}")},"
-      " entries: ${table.entries}");
+      ' entries: ${table.entries}');
 }

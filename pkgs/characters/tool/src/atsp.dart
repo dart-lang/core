@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "graph.dart";
+import 'graph.dart';
 
 // See: Asymmetric Traveling Salesman Problem.
 
@@ -165,7 +165,7 @@ bool opt3(Graph graph, List<int> cycle) {
           } else if (best == wFEDCBA) {
             _reverse(cycle, 0, cycle.length - 1);
           } else {
-            throw AssertionError("Unreachable");
+            throw AssertionError('Unreachable');
           }
           return true;
         }

@@ -2,12 +2,12 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "package:characters/src/grapheme_clusters/breaks.dart";
-import "package:characters/src/grapheme_clusters/constants.dart";
+import 'package:characters/src/grapheme_clusters/breaks.dart';
+import 'package:characters/src/grapheme_clusters/constants.dart';
 
-import "../test/src/text_samples.dart";
-import "../test/src/unicode_grapheme_tests.dart";
-import "../test/src/various_tests.dart";
+import '../test/src/text_samples.dart';
+import '../test/src/unicode_grapheme_tests.dart';
+import '../test/src/various_tests.dart';
 
 // Low-level benchmark of the grapheme cluster step functions.
 
@@ -32,19 +32,19 @@ void main(List<String> args) {
     gcsf = benchForward(text, i, codePoints, codeUnits);
     gcsb = benchBackward(text, i, codePoints, codeUnits);
   }
-  print("gc: Grapheme Clusters, cp: Code Points, cu: Code Units.");
+  print('gc: Grapheme Clusters, cp: Code Points, cu: Code Units.');
   if (gcsf != gcsb) {
-    print("ERROR: Did not count the same number of grapheme clusters: "
-        "$gcsf forward vs. $gcsb backward.");
+    print('ERROR: Did not count the same number of grapheme clusters: '
+        '$gcsf forward vs. $gcsb backward.');
   } else {
-    print("Total: $gcsf gc, $codePoints cp, $codeUnits cu");
-    print("Avg ${(codePoints / gcsf).toStringAsFixed(3)} cp/gc");
-    print("Avg ${(codeUnits / gcsf).toStringAsFixed(3)} cu/gc");
+    print('Total: $gcsf gc, $codePoints cp, $codeUnits cu');
+    print('Avg ${(codePoints / gcsf).toStringAsFixed(3)} cp/gc');
+    print('Avg ${(codeUnits / gcsf).toStringAsFixed(3)} cu/gc');
   }
 }
 
 String recJoin(Iterable<List<String>> texts) =>
-    texts.map((x) => x.join("")).join("\n");
+    texts.map((x) => x.join('')).join('\n');
 
 int benchForward(String text, int i, int cp, int cu) {
   var n = 0;
@@ -59,10 +59,10 @@ int benchForward(String text, int i, int cp, int cu) {
     e = sw.elapsedMilliseconds;
     n++;
   } while (e < 2000);
-  print("Forward  #$i: ${(gc / e).round()} gc/ms, "
-      "${(n * cp / e).round()} cp/ms, "
-      "${(n * cu / e).round()} cu/ms, "
-      "$n rounds");
+  print('Forward  #$i: ${(gc / e).round()} gc/ms, '
+      '${(n * cp / e).round()} cp/ms, '
+      '${(n * cu / e).round()} cu/ms, '
+      '$n rounds');
   return gc ~/ n;
 }
 
@@ -79,9 +79,9 @@ int benchBackward(String text, int i, int cp, int cu) {
     e = sw.elapsedMilliseconds;
     n++;
   } while (e < 2000);
-  print("Backward #$i: ${(gc / e).round()} gc/ms, "
-      "${(n * cp / e).round()} cp/ms, "
-      "${(n * cu / e).round()} cu/ms, "
-      "$n rounds");
+  print('Backward #$i: ${(gc / e).round()} gc/ms, '
+      '${(n * cp / e).round()} cp/ms, '
+      '${(n * cu / e).round()} cu/ms, '
+      '$n rounds');
   return gc ~/ n;
 }

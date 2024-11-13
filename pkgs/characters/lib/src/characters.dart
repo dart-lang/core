@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "characters_impl.dart";
+import 'characters_impl.dart';
 
 /// The characters of a string.
 ///
@@ -21,7 +21,7 @@ import "characters_impl.dart";
 /// in different ways.
 abstract class Characters implements Iterable<String> {
   /// An empty [Characters] containing no characters.
-  static const Characters empty = StringCharacters("");
+  static const Characters empty = StringCharacters('');
 
   /// Creates a [Characters] allowing iteration of
   /// the characters of [string].
@@ -260,9 +260,9 @@ abstract class Characters implements Iterable<String> {
   /// Any further occurrences will be included in the last part.
   /// Example:
   /// ```dart
-  /// var c = "abracadabra".characters;
-  /// var parts = c.split("a".characters, 4).toList();
-  /// print(parts); // Prints is ["", "br", "c", "dabra"]
+  /// var c = 'abracadabra'.characters;
+  /// var parts = c.split('a'.characters, 4).toList();
+  /// print(parts); // Prints is ['', 'br', 'c', 'dabra']
   /// ```
   /// If there are fewer than `maxParts - 1` occurrences of [pattern],
   /// then the characters are split at all occurrences.
@@ -790,9 +790,9 @@ abstract class CharacterRange implements Iterator<String> {
   ///
   /// Example:
   /// ```dart
-  /// var c = "abracadabra".characters.dropFirst().dropLast();
-  /// // c is "bracadabr".
-  /// var parts = c.split("a".characters, 3).toList();
+  /// var c = 'abracadabra'.characters.dropFirst().dropLast();
+  /// // c is 'bracadabr'.
+  /// var parts = c.split('a'.characters, 3).toList();
   /// print(parts); // [br, c, dabr]
   /// ```
   /// If there are fewer than `maxParts - 1` occurrences of [pattern],

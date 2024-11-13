@@ -2,13 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:io";
-import "dart:typed_data";
+import 'dart:io';
+import 'dart:typed_data';
 
-import "package:characters/src/grapheme_clusters/constants.dart";
+import 'package:characters/src/grapheme_clusters/constants.dart';
 
 import 'debug_names.dart';
-import "string_literal_writer.dart";
+import 'string_literal_writer.dart';
 
 // Builder for state automata used to find
 // next/previous grapheme cluster break.
@@ -28,7 +28,7 @@ import "string_literal_writer.dart";
 // state, but it will never matter for the code using this table.
 //
 // Stored as string for comparison to actual generated automaton.
-const expectedAutomatonDescription = r"""
+const expectedAutomatonDescription = r'''
 Stat: Cat
     : CR   Ctl  Otr  Ext  Spc  Reg  Pic  LF   Pre  L    V    T    LV   LVT  OInC ZWJ  EInE EInL EoT :
 -----------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ CZIL:!CR  !Brk !Otr  Otr  Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   $LAIL
 CExt:!CR  !Brk !Otr  CExt Otr !Reg !Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  CExZ CExt CExt! -  :
 CExZ:!CR  !Brk !Otr  Otr  Otr !Reg $LAZP!Brk !Pre !L   !V   !T   !V   !T   !InC  Otr  Otr  Otr ! -  :
 CReg:!CR  !Brk !Otr  Otr  Otr $LARe!Pic !Brk !Pre !L   !V   !T   !V   !T   !InC  Otr  Otr  Otr ! -  :
-""";
+''';
 
 void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
   assert(categories.length == categoryCount);
@@ -68,13 +68,13 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
     assert(flags <= maskFlags);
     assert(
         flags != flagLookahead || targetState >= stateLookaheadMin,
-        "${stateShortName(state)} x ${categoryNames[category]} -> "
-        "${_targetStateName(targetState, flags)} | $flags");
+        '${stateShortName(state)} x ${categoryNames[category]} -> '
+        '${_targetStateName(targetState, flags)} | $flags');
     table[state + category] = targetState + flags;
   }
 
   void transition(int state, int category, int targetState, bool breakBefore) {
-    assert(targetState < stateLimit, "$state + $category -> $targetState");
+    assert(targetState < stateLimit, '$state + $category -> $targetState');
     transitionLA(
         state, category, targetState, breakBefore ? flagBreak : flagNoBreak);
   }
@@ -284,7 +284,7 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
       transition(state, c, stateSoTNoBreak, false);
     }
   }
-  const prefix = "const _stateMachine = ";
+  const prefix = 'const _stateMachine = ';
   buffer.write(prefix);
   var stringWriter = StringLiteralWriter(buffer, padding: 4);
   stringWriter.start(prefix.length);
@@ -292,23 +292,23 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
     stringWriter.add(table[i]);
   }
   stringWriter.end();
-  buffer.write(";\n");
+  buffer.write(';\n');
   buffer.write(_moveMethod);
 
   if (verbose) _writeForwardTable(table, automatonRowLength);
 }
 
-const String _moveMethod = """
+const String _moveMethod = '''
 $preferInline
 int move(int state, int inputCategory) =>
     _stateMachine.codeUnitAt((state & $maskState) + inputCategory);
-""";
+''';
 
-const String _moveBackMethod = """
+const String _moveBackMethod = '''
 $preferInline
 int moveBack(int state, int inputCategory) =>
     _backStateMachine.codeUnitAt((state & $maskState) + inputCategory);
-""";
+''';
 
 const categories = [
   categoryOther,
@@ -344,7 +344,7 @@ const categories = [
 // the state and/or index as necessary.
 //
 // Stored as string for comparison to actual generated automaton.
-const expectedBackAutomatonDescription = r"""
+const expectedBackAutomatonDescription = r'''
 Stat: Cat
     : CR   Ctl  Otr  Ext  Spc  Reg  Pic  LF   Pre  L    V    T    LV   LVT  OInC ZWJ  EInE EInL SoT :
 -----------------------------------------------------------------------------------------------------
@@ -367,7 +367,7 @@ LAIC:#Ext #Ext !Otr !Ext !Ext !Reg !Pic #Ext !Otr !L   !V   !T   !L   !L   !InC 
 LAIL:#Ext #Ext !Otr !Ext !Ext !Reg !Pic #Ext !Otr !L   !V   !T   !L   !L    InC  LAIL LAIL LAIL#Ext :
 LARe: RegE RegE RegE RegE RegE LARo RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE RegE:
 LARo:!RegO!RegO!RegO!RegO!RegO LARe!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO!RegO:
-""";
+''';
 
 // The look-ahead part of the state machine is triggered by the `$`-transitions
 // above.
@@ -429,7 +429,7 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
   var table = Uint16List(backStateLimit);
   void transitionLA(int state, int category, int targetState, int flags) {
     assert(state < backStateLimit && targetState < backStateLimit,
-        "$state + $category -> $targetState");
+        '$state + $category -> $targetState');
     assert(
         switch ((state, targetState)) {
           (< stateLookaheadMin, < stateLookaheadMin) => flags < flagLookahead,
@@ -440,7 +440,7 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
           // Inside lookahead, not done yet.
           (_, _) => flags == 0,
         },
-        "$state + $category => $targetState | $flags");
+        '$state + $category => $targetState | $flags');
     table[state + category] = targetState | flags;
   }
 
@@ -617,13 +617,13 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
     }
   }
   var stringWriter = StringLiteralWriter(buffer, padding: 4);
-  buffer.write("const _backStateMachine = ");
-  stringWriter.start("const _backStateMachine = ".length);
+  buffer.write('const _backStateMachine = ');
+  stringWriter.start('const _backStateMachine = '.length);
   for (var i = 0; i < table.length; i++) {
     stringWriter.add(table[i]);
   }
   stringWriter.end();
-  buffer.write(";\n");
+  buffer.write(';\n');
   buffer.write(_moveBackMethod);
   if (verbose) _writeBackTable(table, automatonRowLength);
 }
@@ -634,13 +634,13 @@ void _writeForwardTable(Uint16List table, int automatonRowLength) {
   stdout.write(automaton);
   if (automaton != expectedAutomatonDescription) {
     stderr
-      ..writeln("DIFFERS FROM EXPECTATION:")
+      ..writeln('DIFFERS FROM EXPECTATION:')
       ..write(expectedAutomatonDescription);
   }
 }
 
 void _writeBackTable(Uint16List table, int automatonRowLength) {
-  var backCategoryNames = [...categoryShortNames]..[categorySoT] = "SoT";
+  var backCategoryNames = [...categoryShortNames]..[categorySoT] = 'SoT';
   var backAutomaton = _generateTable(
     table,
     automatonRowLength,
@@ -653,7 +653,7 @@ void _writeBackTable(Uint16List table, int automatonRowLength) {
   stdout.write(backAutomaton);
   if (backAutomaton != expectedBackAutomatonDescription) {
     stderr
-      ..writeln("DIFFERS FROM EXPECTATION:")
+      ..writeln('DIFFERS FROM EXPECTATION:')
       ..write(expectedBackAutomatonDescription);
   }
 }
@@ -682,17 +682,17 @@ String _generateTable(
   assert(automatonRowLength >= categoryCount);
   assert(table.length == stateLimit);
   var buf = StringBuffer();
-  buf.writeln("Stat: Cat");
+  buf.writeln('Stat: Cat');
   var preHeaderLength = buf.length;
-  buf.write("    :");
+  buf.write('    :');
   for (var i = 0; i < categoryCount; i++) {
     buf
       ..write(' ')
       ..write(categoryNames[i].padRight(4));
   }
-  buf.writeln(":");
+  buf.writeln(':');
   var lineLength = buf.length - preHeaderLength;
-  buf.writeln("-" * (lineLength - 1));
+  buf.writeln('-' * (lineLength - 1));
   for (var si = 0; si < stateLimit; si += automatonRowLength) {
     var stateName = stateNames(si);
     buf
@@ -702,18 +702,18 @@ String _generateTable(
       var value = table[si + ci];
       var targetState = value & maskState;
       var flags = value & maskFlags;
-      var prefix = r" !$#"[flags];
+      var prefix = r' !$#'[flags];
 
       var targetStateName = (flags == flagLookahead)
           ? lookaheadStateNames(targetState)
           : stateNames(targetState);
       // EoT is marker for unreachable states.
-      if (targetState == ignoreState) targetStateName = " -  ";
+      if (targetState == ignoreState) targetStateName = ' -  ';
       buf
         ..write(prefix)
         ..write(targetStateName.padRight(4));
     }
-    buf.writeln(":");
+    buf.writeln(':');
   }
   return buf.toString();
 }

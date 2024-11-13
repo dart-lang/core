@@ -6,11 +6,11 @@
 // these into a single list, with a list of indices telling where each
 // original list started.
 
-import "dart:typed_data";
+import 'dart:typed_data';
 
-import "atsp.dart";
-import "graph.dart";
-import "indirect_table.dart";
+import 'atsp.dart';
+import 'graph.dart';
+import 'indirect_table.dart';
 
 /// Takes a set of distinct chunks, and finds a semi-optimal overlapping.
 ///

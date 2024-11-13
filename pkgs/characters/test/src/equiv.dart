@@ -49,7 +49,7 @@ class Equivalence<T> {
         } else if (existing != newClass) {
           if (!allowCollapse) {
             // Wasn't in the *same* iterable.
-            throw ArgumentError.value(equivalenceClasses, "equivalenceClasses",
+            throw ArgumentError.value(equivalenceClasses, 'equivalenceClasses',
                 "Contains element '$element' more than once");
           }
           var c1 = _canonicalizeId(existing);

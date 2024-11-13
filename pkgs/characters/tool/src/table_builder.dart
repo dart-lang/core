@@ -2,11 +2,11 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:collection";
-import "dart:typed_data";
+import 'dart:collection';
+import 'dart:typed_data';
 
-import "indirect_table.dart";
-import "list_overlap.dart";
+import 'indirect_table.dart';
+import 'list_overlap.dart';
 
 /// Splits an indirect table with one large chunk into separate smaller chunks.
 ///
@@ -16,7 +16,7 @@ import "list_overlap.dart";
 /// All chunks are distinct, and no chunk is a sub-list of another chunk.
 void chunkifyTable(IndirectTable table) {
   if (table.chunks.length != 1) {
-    throw ArgumentError("Single chunk table required");
+    throw ArgumentError('Single chunk table required');
   }
   var data = table.chunks[0];
   var entries = table.entries.toList();

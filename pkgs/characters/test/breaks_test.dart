@@ -7,22 +7,22 @@
 import 'package:characters/src/grapheme_clusters/breaks.dart';
 import 'package:characters/src/grapheme_clusters/constants.dart';
 import 'package:characters/src/grapheme_clusters/table.dart';
-import "package:test/test.dart";
+import 'package:test/test.dart';
 
 import '../tool/src/debug_names.dart';
 import 'src/equiv.dart';
-import "src/unicode_tests.dart";
+import 'src/unicode_tests.dart';
 
 // Can be set to true while debugging.
 const verbose = false;
 
 void main() {
   // Test [Breaks] on all the available Unicode tests.
-  group("forward automaton:", () {
+  group('forward automaton:', () {
     for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
-          var input = variantParts.join("");
+          var input = variantParts.join('');
           var breaks = Breaks(input, 0, input.length, stateSoTNoBreak);
           var parts = <String>[];
           var start = 0;
@@ -39,11 +39,11 @@ void main() {
   });
 
   // Test [BackBreaks] directly on all the available Unicode tests.
-  group("backward automaton:", () {
+  group('backward automaton:', () {
     for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
-          var input = variantParts.join("");
+          var input = variantParts.join('');
           var breaks = BackBreaks(input, input.length, 0, stateEoTNoBreak);
           var parts = <String>[];
           var start = input.length;
@@ -62,12 +62,12 @@ void main() {
 
   // Test the top-level [nextBreak] function on all positions of all
   // the Unicode tests.
-  group("nextBreak", () {
+  group('nextBreak', () {
     // Should find the next break at any position.
     for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
-          var input = variantParts.join("");
+          var input = variantParts.join('');
           var description = partCategories(expectedParts);
           var partCursor = 0;
           var nextExpectedBreak = 0;
@@ -75,7 +75,7 @@ void main() {
           for (var i = 0; i <= input.length; i++) {
             var actualBreak = nextBreak(input, 0, input.length, i);
             expect(actualBreak, nextExpectedBreak,
-                reason: "at $i: $description$kind");
+                reason: 'at $i: $description$kind');
             if (i == nextExpectedBreak && i < input.length) {
               nextExpectedBreak += variantParts[partCursor].length;
               partCursor++;
@@ -88,12 +88,12 @@ void main() {
 
   // Test the top-level [previousBreak] function on all positions of all
   // the Unicode tests.
-  group("previousBreak", () {
+  group('previousBreak', () {
     // Should find the next break at any position.
     for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
-          var input = variantParts.join("");
+          var input = variantParts.join('');
           var description = partCategories(expectedParts);
           var partCursor = 0;
           var nextBreak = 0;
@@ -108,7 +108,7 @@ void main() {
             }
             var actualBreak = previousBreak(input, 0, input.length, i);
             expect(actualBreak, expectedBreak,
-                reason: "at $i: $description$kind");
+                reason: 'at $i: $description$kind');
           }
         });
       }
@@ -117,12 +117,12 @@ void main() {
 
   // Test the top-level [previousBreak] function on all positions of all
   // the Unicode tests.
-  group("isGraphemeClusterBreak", () {
+  group('isGraphemeClusterBreak', () {
     // Should find the next break at any position.
     for (var expectedParts in splitTests) {
       for (var (variantParts, kind) in testVariants(expectedParts)) {
         test(testDescription(variantParts) + kind, () {
-          var input = variantParts.join("");
+          var input = variantParts.join('');
           var description = partCategories(expectedParts);
           var partCursor = 0;
           var nextBreak = 0;
@@ -130,7 +130,7 @@ void main() {
           for (var i = 0; i <= input.length; i++) {
             expect(isGraphemeClusterBoundary(input, 0, input.length, i),
                 i == nextBreak,
-                reason: "at $i: $description");
+                reason: 'at $i: $description');
 
             if (i == nextBreak && i < input.length) {
               nextBreak += variantParts[partCursor++].length;
@@ -148,8 +148,8 @@ void main() {
   //
   // That means that no state can be removed, because it is unique and
   // used.
-  group("Minimal automaton:", () {
-    test("States reachable", () {
+  group('Minimal automaton:', () {
+    test('States reachable', () {
       // Expected reachable states.
       var states = {
         stateBreak,
@@ -211,7 +211,7 @@ void main() {
           }
           // No unexpected output states.
           expect(states, contains(newState),
-              reason: "($state,$c): Unexpected output state");
+              reason: '($state,$c): Unexpected output state');
           // Add to fringe the first time a state is seen.
           if (unreachableStates.remove(newState)) {
             nextStepList.add(newState);
@@ -220,12 +220,12 @@ void main() {
       }
       if (unreachableStates.isNotEmpty) {
         expect(unreachableStates.map(stateShortName).toList(), isEmpty,
-            reason: "Should be reachable");
+            reason: 'Should be reachable');
       }
-      if (verbose) print("Forward states reachable in $step steps");
+      if (verbose) print('Forward states reachable in $step steps');
     });
 
-    test("States distinguishable", () {
+    test('States distinguishable', () {
       // Classify states into equivalence categories based on whether they
       // can be distinguished by *n* transitions. Start with all states
       // indistinguishable, then create new equivalence classes by splitting
@@ -269,15 +269,15 @@ void main() {
         if (prevEqClasses.length == eqClasses.length) break; // No progress.
         if (prevEqClasses.length == states.length) {
           // Maximal progress achieved.
-          if (verbose) print("Forwards states distinguishable in $r steps");
+          if (verbose) print('Forwards states distinguishable in $r steps');
           break;
         }
       }
       expect(eqClasses, everyElement(hasLength(1)),
-          reason: "Not distinguishable in $stateCount steps");
+          reason: 'Not distinguishable in $stateCount steps');
     });
 
-    test("States backward reachable", () {
+    test('States backward reachable', () {
       var states = {
         stateBreak,
         stateLF,
@@ -319,23 +319,23 @@ void main() {
         var state = workList.removeLast();
         for (var c = 0; c < categoryCount; c++) {
           var newState = moveBack(state, c) & maskState;
-          expect(states, contains(newState), reason: "Unexpected output state");
+          expect(states, contains(newState), reason: 'Unexpected output state');
           if (unreachableStates.remove(newState)) {
             nextStepList.add(newState);
           }
         }
         if (unreachableStates.isEmpty) {
-          if (verbose) print("Backward states reachable in $step steps");
+          if (verbose) print('Backward states reachable in $step steps');
           return;
         }
       }
       if (unreachableStates.isNotEmpty) {
         expect(unreachableStates.map(stateShortName).toList(), isEmpty,
-            reason: "Should be reachable, not reached in $step steps");
+            reason: 'Should be reachable, not reached in $step steps');
       }
     });
 
-    test("Backward states distinguishable", () {
+    test('Backward states distinguishable', () {
       // Classify states into equivalence categories based on whether they
       // can be distinguished by *n* transitions. Start with all states
       // indistinguishable, then create new equivalence classes by splitting
@@ -384,7 +384,7 @@ void main() {
         if (prevEqClasses.length == eqClasses.length) break; // No progress.
         if (prevEqClasses.length == states.length) {
           // Maximal progress achieved.
-          if (verbose) print("Backwards states distinguishable in $r steps");
+          if (verbose) print('Backwards states distinguishable in $r steps');
           break;
         }
       }
@@ -434,17 +434,17 @@ List<(List<String> parts, String kind)> testVariants(List<String> parts) {
     }
   }
   var variants = [
-    (parts, ""),
+    (parts, ''),
     if (changes == hasNonBmp | hasBmp)
       // If it's only one or the other, then upperCase or lowerCase has the
       // same content.
-      ([...flipped.map(String.fromCharCodes)], "(Flip)"),
+      ([...flipped.map(String.fromCharCodes)], '(Flip)'),
     if (changes & hasNonBmp != 0)
-      ([...upper.map(String.fromCharCodes)], "(non-BMP)"),
-    if (changes & hasBmp != 0) ([...lower.map(String.fromCharCodes)], "(BMP)"),
+      ([...upper.map(String.fromCharCodes)], '(non-BMP)'),
+    if (changes & hasBmp != 0) ([...lower.map(String.fromCharCodes)], '(BMP)'),
     // Also include a version where the case is not at start/end of input.
     // (Wrap in control characters to ensure the breaks are still correct.)
-    (["\x00", ...parts, "\x00"], "(Wrapped)"),
+    (['\x00', ...parts, '\x00'], '(Wrapped)'),
   ];
   return variants;
 }

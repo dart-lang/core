@@ -6,7 +6,7 @@ import 'package:characters/src/grapheme_clusters/table.dart';
 
 import '../../tool/src/debug_names.dart';
 
-export "unicode_grapheme_tests.dart";
+export 'unicode_grapheme_tests.dart';
 
 /// Readable description of the [expected] grapheme clusters.
 ///
@@ -21,9 +21,9 @@ export "unicode_grapheme_tests.dart";
 String testDescription(List<String> expected) {
   var expectedString = expected
       .map((s) =>
-          s.runes.map((x) => x.toRadixString(16).padLeft(4, "0")).join(" × "))
-      .join(" ÷ ");
-  return "÷ $expectedString ÷";
+          s.runes.map((x) => x.toRadixString(16).padLeft(4, '0')).join(' × '))
+      .join(' ÷ ');
+  return '÷ $expectedString ÷';
 }
 
 int categoryOf(int codePoint) {
@@ -42,7 +42,7 @@ String partCategories(List<String> parts) {
 
   return parts.map((part) {
     return part.runes
-        .map((n) => "#${posOf(n)}:${categoryLongNames[categoryOf(n)]}")
-        .join(" × ");
-  }).join(" ÷ ");
+        .map((n) => '#${posOf(n)}:${categoryLongNames[categoryOf(n)]}')
+        .join(' × ');
+  }).join(' ÷ ');
 }

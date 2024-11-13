@@ -18,7 +18,7 @@ class StringLiteralWriter {
 
   StringLiteralWriter(this.buffer,
       {int padding = 0, int lineLength = 80, bool Function(int)? escape})
-      : _padding = " " * padding,
+      : _padding = ' ' * padding,
         _lineLength = lineLength,
         _escape = escape ?? _defaultEscape;
 
@@ -60,38 +60,38 @@ class StringLiteralWriter {
     var replacement = _escapeCache[codeUnit];
     if (replacement == null) {
       if (codeUnit < 0x10) {
-        if (codeUnit == "\b".codeUnitAt(0)) {
-          replacement = r"\b";
-        } else if (codeUnit == "\t".codeUnitAt(0)) {
-          replacement = r"\t";
-        } else if (codeUnit == "\n".codeUnitAt(0)) {
-          replacement = r"\n";
-        } else if (codeUnit == "\v".codeUnitAt(0)) {
-          replacement = r"\v";
-        } else if (codeUnit == "\f".codeUnitAt(0)) {
-          replacement = r"\f";
-        } else if (codeUnit == "\r".codeUnitAt(0)) {
-          replacement = r"\r";
+        if (codeUnit == '\b'.codeUnitAt(0)) {
+          replacement = r'\b';
+        } else if (codeUnit == '\t'.codeUnitAt(0)) {
+          replacement = r'\t';
+        } else if (codeUnit == '\n'.codeUnitAt(0)) {
+          replacement = r'\n';
+        } else if (codeUnit == '\v'.codeUnitAt(0)) {
+          replacement = r'\v';
+        } else if (codeUnit == '\f'.codeUnitAt(0)) {
+          replacement = r'\f';
+        } else if (codeUnit == '\r'.codeUnitAt(0)) {
+          replacement = r'\r';
         } else {
-          replacement = r"\x0" + codeUnit.toRadixString(16);
+          replacement = r'\x0' + codeUnit.toRadixString(16);
         }
       } else if (codeUnit < 0x100) {
-        if (codeUnit == r"$".codeUnitAt(0)) {
-          replacement = r"\$";
+        if (codeUnit == r'$'.codeUnitAt(0)) {
+          replacement = r'\$';
         } else if (codeUnit == "'".codeUnitAt(0)) {
           replacement = r"\'";
         }
-        if (codeUnit == r"\".codeUnitAt(0)) {
-          replacement = r"\\";
+        if (codeUnit == r''.codeUnitAt(0)) {
+          replacement = r'\';
         } else {
-          replacement = r"\x" + codeUnit.toRadixString(16);
+          replacement = r'\x' + codeUnit.toRadixString(16);
         }
       } else if (codeUnit < 0x1000) {
-        replacement = r"\u0" + codeUnit.toRadixString(16);
+        replacement = r'\u0' + codeUnit.toRadixString(16);
       } else if (codeUnit < 0x10000) {
-        replacement = r"\u" + codeUnit.toRadixString(16);
+        replacement = r'\u' + codeUnit.toRadixString(16);
       } else {
-        replacement = "\\u{${codeUnit.toRadixString(16)}}";
+        replacement = '\\u{${codeUnit.toRadixString(16)}}';
       }
       _escapeCache[codeUnit] = replacement;
     }

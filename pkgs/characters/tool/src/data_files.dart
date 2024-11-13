@@ -2,34 +2,34 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:io";
-import "shared.dart" as util;
+import 'dart:io';
+import 'shared.dart' as util;
 
 // Abstraction over files fetched from the `unicode.org/Public` UCD repository.
 // If any of these URIs stop working, find out where they have moved to.
 
 final graphemeBreakPropertyData = DataFile(
-    "https://unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakProperty.txt",
-    "third_party/Unicode_Consortium/GraphemeBreakProperty.txt");
+    'https://unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakProperty.txt',
+    'third_party/Unicode_Consortium/GraphemeBreakProperty.txt');
 
 final emojiData = DataFile(
-    "https://unicode.org/Public/UCD/latest/ucd/emoji/emoji-data.txt",
-    "third_party/Unicode_Consortium/emoji_data.txt");
+    'https://unicode.org/Public/UCD/latest/ucd/emoji/emoji-data.txt',
+    'third_party/Unicode_Consortium/emoji_data.txt');
 
 final graphemeTestData = DataFile(
-    "https://unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakTest.txt",
-    "third_party/Unicode_Consortium/GraphemeBreakTest.txt");
+    'https://unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakTest.txt',
+    'third_party/Unicode_Consortium/GraphemeBreakTest.txt');
 
 final emojiTestData = DataFile(
-    "https://unicode.org/Public/emoji/latest/emoji-test.txt",
-    "third_party/Unicode_Consortium/emoji_test.txt");
+    'https://unicode.org/Public/emoji/latest/emoji-test.txt',
+    'third_party/Unicode_Consortium/emoji_test.txt');
 
-final licenseFile = DataFile("https://www.unicode.org/license.txt",
-    "third_party/Unicode_Consortium/UNICODE_LICENSE.txt");
+final licenseFile = DataFile('https://www.unicode.org/license.txt',
+    'third_party/Unicode_Consortium/UNICODE_LICENSE.txt');
 
 final derivedData = DataFile(
-    "https://unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt",
-    "third_party/Unicode_Consortium/DerivedCoreProperties.txt");
+    'https://unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt',
+    'third_party/Unicode_Consortium/DerivedCoreProperties.txt');
 
 class DataFile {
   /// Source URI.

@@ -8,8 +8,8 @@
 
 library;
 
-import "constants.dart";
-import "table.dart";
+import 'constants.dart';
+import 'table.dart';
 
 /// Iterates grapheme cluster breaks of a string.
 ///
@@ -21,7 +21,7 @@ import "table.dart";
 /// var breaks = Breaks(string, start, end, stateSoT);
 /// int brk = 0;
 /// while((brk = breaks.nextBreak) >= 0) {
-///   print("Break at index $brk");
+///   print('Break at index $brk');
 /// }
 /// ```
 /// If you use [stateSoTNoBreak] instead of [stateSoT], the
@@ -153,7 +153,7 @@ class Breaks {
 /// var breaks = BackBreaks(string, start, end, idStateEoT);
 /// int brk = 0;
 /// while ((brk = breaks.nextBreak()) >= 0) {
-///   print("Break at index $brk");
+///   print('Break at index $brk');
 /// }
 /// ```
 /// If the initial [state] is [stateEoTNoBreak] instead of [stateEoT],

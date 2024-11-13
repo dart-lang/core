@@ -2,14 +2,14 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:io" show File, exit, stderr;
+import 'dart:io' show File, exit, stderr;
 
-import "bin/generate_tables.dart" show generateTables, tableFile;
-import "bin/generate_tests.dart" show generateTests, testFile;
-import "src/args.dart";
+import 'bin/generate_tables.dart' show generateTables, tableFile;
+import 'bin/generate_tests.dart' show generateTests, testFile;
+import 'src/args.dart';
 import 'src/data_files.dart';
 import 'src/grapheme_category_loader.dart';
-import "src/shared.dart";
+import 'src/shared.dart';
 
 /// Generates both tests and tables.
 ///
@@ -17,9 +17,9 @@ import "src/shared.dart";
 /// `bin/generate_tests.dart` directly during development of those files.
 void main(List<String> args) async {
   var flags =
-      parseArgs(args, "generate", allowOptimize: true, allowFile: false);
+      parseArgs(args, 'generate', allowOptimize: true, allowFile: false);
   if (flags.update && !await checkLicense(flags.acceptLicenseChange)) {
-    stderr.writeln("EXITING");
+    stderr.writeln('EXITING');
     exit(1);
   }
 
@@ -51,27 +51,27 @@ String? guessVersion(String dataFile) {
   // # GraphemeBreakProperty-16.0.0.txt
   //
   // Then use 16.0.0 as version number.
-  var match = RegExp(r"# \w+-(\d+\.\d+\.\d+)\.txt").matchAsPrefix(dataFile);
+  var match = RegExp(r'# \w+-(\d+\.\d+\.\d+)\.txt').matchAsPrefix(dataFile);
   return match?[1];
 }
 
 void updateReadmeVersion(String? version) {
-  var readmeFile = File(packagePath("README.md"));
+  var readmeFile = File(packagePath('README.md'));
   var contents = readmeFile.readAsStringSync();
   String replacementText;
   if (version != null) {
-    replacementText = "version $version";
+    replacementText = 'version $version';
   } else {
     var now = DateTime.timestamp();
-    replacementText = "of ${now.year}-${lz(now.month)}-${lz(now.day)}";
+    replacementText = 'of ${now.year}-${lz(now.month)}-${lz(now.day)}';
   }
-  const startTag = "<!-- unicode-version -->";
-  const endTag = "<!-- /unicode-version -->";
+  const startTag = '<!-- unicode-version -->';
+  const endTag = '<!-- /unicode-version -->';
   var versionRE = RegExp('(?<=$startTag).*?(?=$endTag)');
   var newContents = contents.replaceFirst(versionRE, replacementText);
   if (contents != newContents) {
     readmeFile.writeAsStringSync(newContents);
   } else if (versionRE.firstMatch(contents) == null) {
-    stderr.writeln("MISSING VERSION TAGS IN README.md");
+    stderr.writeln('MISSING VERSION TAGS IN README.md');
   }
 }
