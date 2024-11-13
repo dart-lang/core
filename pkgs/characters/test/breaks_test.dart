@@ -219,11 +219,7 @@ void main() {
         }
       }
       if (unreachableStates.isNotEmpty) {
-        expect(
-            unreachableStates
-                .map((s) => stateShortNames[s ~/ scaleState])
-                .toList(),
-            isEmpty,
+        expect(unreachableStates.map(stateShortName).toList(), isEmpty,
             reason: "Should be reachable");
       }
       if (verbose) print("Forward states reachable in $step steps");
@@ -239,10 +235,12 @@ void main() {
       // Continue until no further equivalence classes are introduced,
       // the equivalence classes are trivial (one element each),
       // or (as sanity check) at most `idStateCount` rounds.
-      var states = [for (var i = 0; i < idStateCount; i++) i * scaleState];
+
+      var states = [for (var i = 0; i < stateLimit; i += automatonRowLength) i];
       var eqClasses = [states];
       var eq = Equivalence(eqClasses);
-      for (var r = 0; r <= idStateCount; r++) {
+      var stateCount = stateLimit ~/ automatonRowLength;
+      for (var r = 0; r <= stateCount; r++) {
         // Sanity limit.
         var nextEq = Equivalence.distinct(states);
         // Upper bound.
@@ -276,7 +274,7 @@ void main() {
         }
       }
       expect(eqClasses, everyElement(hasLength(1)),
-          reason: "Not distinguishable in $idStateCount steps");
+          reason: "Not distinguishable in $stateCount steps");
     });
 
     test("States backward reachable", () {
@@ -332,11 +330,7 @@ void main() {
         }
       }
       if (unreachableStates.isNotEmpty) {
-        expect(
-            unreachableStates
-                .map((s) => stateShortNames[s ~/ scaleState])
-                .toList(),
-            isEmpty,
+        expect(unreachableStates.map(stateShortName).toList(), isEmpty,
             reason: "Should be reachable, not reached in $step steps");
       }
     });
@@ -355,12 +349,13 @@ void main() {
       // Assume that any lookahead state can be distinguished from any other
       // state.
       var states = [
-        for (var i = 0; i < backStateWithLACount; i++) i * scaleState
+        for (var i = 0; i < backStateLimit; i += automatonRowLength) i
       ];
       var eqClasses = [states];
       var eq = Equivalence(eqClasses);
 
-      for (var r = 0; r <= idStateCount; r++) {
+      var stateCount = backStateLimit ~/ automatonRowLength;
+      for (var r = 0; r <= stateCount; r++) {
         var nextEq = Equivalence<int>.distinct(states);
         // Upper bound.
         for (var eqClass in eqClasses) {
@@ -373,8 +368,8 @@ void main() {
                 var backState1 = moveBack(state1, c);
                 var backState2 = moveBack(state2, c);
                 if ((backState1 ^ backState2) & maskFlags != 0 ||
-                    backState1 >= idStateLookaheadMin ||
-                    backState2 >= idStateLookaheadMin ||
+                    backState1 >= stateLookaheadMin ||
+                    backState2 >= stateLookaheadMin ||
                     !eq.eq(backState1 & maskState, backState2 & maskState)) {
                   continue nextPair; // Keep distinguishable.
                 }
@@ -447,7 +442,10 @@ List<(List<String> parts, String kind)> testVariants(List<String> parts) {
       ([...flipped.map(String.fromCharCodes)], "(Flip)"),
     if (changes & hasNonBmp != 0)
       ([...upper.map(String.fromCharCodes)], "(non-BMP)"),
-    if (changes & hasBmp != 0) ([...lower.map(String.fromCharCodes)], "(BMP)")
+    if (changes & hasBmp != 0) ([...lower.map(String.fromCharCodes)], "(BMP)"),
+    // Also include a version where the case is not at start/end of input.
+    // (Wrap in control characters to ensure the breaks are still correct.)
+    (["\x00", ...parts, "\x00"], "(Wrapped)"),
   ];
   return variants;
 }

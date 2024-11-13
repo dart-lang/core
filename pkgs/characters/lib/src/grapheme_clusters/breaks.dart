@@ -39,8 +39,8 @@ class Breaks {
 
   /// Current state based on code points processed so far.
   ///
-  /// Scaled by [automatonRowLength], same as the values stored in the
-  /// automaton tables.
+  /// A state value is a multiple of [automatonRowLength] plus possibly
+  /// a few bits of flags.
   int state;
 
   Breaks(this.base, this.cursor, this.end, this.state);
@@ -110,8 +110,8 @@ class Breaks {
       state = stateSoTNoBreak;
       return cursor;
     }
-    var indexBefore = cursor - 1;
-    var prevChar = base.codeUnitAt(indexBefore);
+    var cursorBefore = cursor - 1;
+    var prevChar = base.codeUnitAt(cursorBefore);
     int prevCategory;
     if (prevChar & 0xF800 != 0xD800) {
       // Not surrogate.
@@ -129,17 +129,17 @@ class Breaks {
     } else {
       // Tail surrogate, check for prior lead surrogate.
       int leadChar;
-      var leadIndex = indexBefore - 1;
+      var leadIndex = cursorBefore - 1;
       if (leadIndex >= start &&
           (leadChar = base.codeUnitAt(leadIndex)) & 0xFC00 == 0xD800) {
         prevCategory = high(leadChar, prevChar);
-        indexBefore = leadIndex;
+        cursorBefore = leadIndex;
       } else {
         prevCategory = categoryControl;
       }
     }
     state = move(stateCAny, prevCategory);
-    return indexBefore;
+    return cursorBefore;
   }
 }
 
@@ -156,7 +156,7 @@ class Breaks {
 ///   print("Break at index $brk");
 /// }
 /// ```
-/// If the initial [state] is [idStateEoTNoBreak] instead of [idStateEoT],
+/// If the initial [state] is [stateEoTNoBreak] instead of [stateEoT],
 /// the initial break between the last grapheme and the end-of-text
 /// is suppressed.
 class BackBreaks {
@@ -179,7 +179,7 @@ class BackBreaks {
   /// The index of the next grapheme cluster break in first-to-last index order.
   ///
   /// Returns a negative number if there are no further breaks,
-  /// which means that [cursor] has reached [start].
+  /// which means that [cursor] was already at [start].
   int nextBreak() {
     while (cursor > start) {
       var breakAt = cursor;
@@ -188,7 +188,7 @@ class BackBreaks {
         continue;
       }
       if (state & maskLookahead != 0) {
-        _lookahead();
+        _lookaheadInNextBreak();
       }
       if (state & maskBreak != flagNoBreak) {
         return breakAt;
@@ -200,6 +200,9 @@ class BackBreaks {
     return -1;
   }
 
+  /// Reads a single code point before [cursor] and transition on it.
+  ///
+  /// Puts cursor before the code point.
   void step() {
     assert(cursor > start);
     var char = base.codeUnitAt(--cursor);
@@ -222,7 +225,29 @@ class BackBreaks {
     state = moveBack(state, category);
   }
 
-  void _lookahead() {
+  /// Steps back using lookahead states.
+  ///
+  /// Returns the position before the last scanned character.
+  /// (Because in some cases the next break will be at that point.)
+  int _lookahead() {
+    assert(state >= stateLookaheadMin);
+    while (cursor > start) {
+      var cursorBeforeLast = cursor;
+      step();
+      if (state < stateLookaheadMin) return cursorBeforeLast;
+    }
+    state = moveBack(state, categorySoT);
+    assert(state < stateLookaheadMin, state);
+    return start;
+  }
+
+  /// Called from [nextBreak] to perform a lookahead, and set the result state.
+  ///
+  /// After this call, the state has [flagBreak] set if it should break
+  /// between the two characters which triggered lookahead.
+  /// The state and cursor are set to a position prior to reaching the next
+  /// break.
+  void _lookaheadInNextBreak() {
     assert(state >= stateLookaheadMin, state);
     // To check if this was a regional lookahead afterwards.
     var preState = state;
@@ -230,41 +255,10 @@ class BackBreaks {
     var preCursor = cursor;
     // Non-regional lookahead may reset to the position before the last seen,
     // to avoid having to report two breaks.
-    var breakAt = preCursor;
-    lookahead:
-    {
-      while (cursor > start) {
-        breakAt = cursor;
-        var char = base.codeUnitAt(--cursor);
-        if (char & 0xFC00 != 0xDC00) {
-          var category = low(char);
+    var breakAt = _lookahead();
 
-          state = moveBack(state, category);
-          if (state < stateLookaheadMin) {
-            break lookahead;
-          }
-        } else {
-          // Found tail surrogate, check for prior lead surrogate.
-          // The category of an unpaired tail surrogate is Control.
-          var category = categoryControl;
-          if (cursor >= start) {
-            var prevChar = base.codeUnitAt(cursor - 1);
-            if (prevChar & 0xFC00 == 0xD800) {
-              category = high(prevChar, char);
-              cursor -= 1;
-            }
-          }
-          state = moveBack(state, category);
-          if (state < stateLookaheadMin) {
-            break lookahead;
-          }
-        }
-      }
-      breakAt = start;
-      state = moveBack(state, categorySoT);
-      assert(state < stateLookaheadMin, state);
-    }
     if (preState >= stateLookaheadRegionalEven) {
+      // Result is always one of one of flagBreak or flagNoBreak.
       assert(
           preState == (stateLookaheadRegionalOdd | flagLookahead) ||
               preState == (stateLookaheadRegionalEven | flagLookahead),
@@ -272,179 +266,33 @@ class BackBreaks {
       assert(state == (stateRegionalEven | flagNoBreak) ||
           state == (stateRegionalOdd | flagBreak));
       // Always reset cursor for regional lookahead.
+      // (Could detect stateRegionalOdd, decrease cursor two positions and
+      // switch to stateRegionalEven. Not worth the extra code.)
       cursor = preCursor;
     } else {
+      // Flags mean:
+      // flagNoBreak: Do not break before position, or before cursor.
+      // flagBreak: break at position before lookahead, keep cursor.
+      // flagLookahead: Not used.
+      // flagBreak+flagLookahead: Break at position before lookahead,
+      //   set cursor to reread the last character before cursor
+      //   (because it'll break again there.)
+
       // Keep cursor at or just before last read.
       if (state & maskFlags == flagLookaheadBreakBoth) {
         cursor = breakAt;
       }
-      state &= ~maskLookahead;
     }
   }
-}
-
-// -------------------------------------------------------------------
-// Only used by `nextBreak`.
-// TODO: Convert that to automaton states too.
-
-/// Counts preceding regional indicators.
-///
-/// The look-ahead for the backwards moving grapheme cluster
-/// state machine is called when two RIs are found in a row.
-/// The [cursor] points to the first code unit of the former of those RIs,
-/// and it preceding RIs until [start].
-/// If that count is even, there should not be a break before
-/// the second of the original RIs.
-/// If the count is odd, there should be a break, because that RI
-/// is combined with a prior RI in the string.
-int lookaheadRegional(String base, int start, int cursor) {
-  // Has just seen second regional indicator.
-  // Figure out if there are an odd or even number of preceding RIs.
-  assert(cursor <= base.length - 4);
-  assert(_isRegionalIndicator(base, cursor + 2),
-      base.substring(cursor + 2).runes.first.toRadixString(16));
-  assert(_isRegionalIndicator(base, cursor),
-      base.substring(cursor).runes.first.toRadixString(16));
-  var count = 0;
-  var index = cursor;
-  while ((index -= 2) >= start) {
-    if (!_isRegionalIndicator(base, index)) break;
-    count ^= 1;
-  }
-  if (count == 0) {
-    return stateRegionalEven | flagNoBreak;
-  } else {
-    return stateRegionalOdd | flagBreak;
-  }
-}
-
-/// Whether the two code points at [index] is a regional indicator.
-@pragma("vm:prefer-inline")
-@pragma("wasm:prefer-inline")
-@pragma("dart2js:prefer-inline")
-bool _isRegionalIndicator(String text, int index) {
-  // ALL REGIONAL INDICATORS ARE NON-BMP CHARACTERS
-  // in the same short range (1F1E6..1F1FF).
-  assert(index >= 0);
-  assert(index <= text.length - 2);
-  const riLead = 0xD800 + ((regionalIndicatorStart - 0x10000) >> 10);
-  const riTailMin = regionalIndicatorStart & 0x3FF | 0xDC00;
-  const riTailMax = regionalIndicatorEnd & 0x3FF | 0xDC00;
-  const riCount = (regionalIndicatorEnd + 1) - regionalIndicatorStart; // 26
-
-  var tail = text.codeUnitAt(index + 1);
-  if (tail ^ riTailMax >= riCount) return false;
-  assert(tail >= riTailMin && tail <= riTailMax);
-  var lead = text.codeUnitAt(index);
-  return lead == riLead;
-}
-
-/// Checks if a ZWJ+Pictographic token sequence should be broken.
-///
-/// Checks whether the characters preceding [cursor] are Pic Ext*.
-/// Only the [base] string from [start] to [cursor] is checked.
-///
-/// Returns the index of the Pic character if preceded by Pic Ext*,
-/// and negative if not.
-int lookaheadPictographicExtend(String base, int start, int cursor) {
-  // Has just seen ZWJ+Pictographic. Check if preceding is Pic Ext*.
-  // (If so, just move cursor back to the Pic).
-  var index = cursor;
-  while (index > start) {
-    var char = base.codeUnitAt(--index);
-    int category;
-    if (char & 0xFC00 != 0xDC00) {
-      category = low(char);
-    } else {
-      int prevChar;
-      if (index > start &&
-          (prevChar = base.codeUnitAt(--index)) & 0xFC00 == 0xD800) {
-        category = high(prevChar, char);
-      } else {
-        break;
-      }
-    }
-    if (category == categoryPictographic) {
-      return index;
-    }
-    if (category != categoryExtend &&
-        category != categoryExtendIndicExtend &&
-        category != categoryExtendIndicLinked) {
-      break;
-    }
-  }
-  return -1;
-}
-
-/// Look behind for Indic Conjunct Break information.
-///
-/// Looks for previous characters of the form:
-/// (InCB=Consonant + InCB={Extend|Linked}*)
-/// and if found, whether there was any InCB=Linked among the characters.
-///
-/// There should not be a break before InCB=Consonant if it was preceded
-/// by such a chain containing at least one InCB=Linked.
-///
-/// The [nextCategory] should be the category of the character after [cursor].
-/// It should always be an input character category of
-/// [categoryOtherIndicConsonant] or above ([categoryZWJ],
-/// [categoryExtendIndicExtend] or [categoryExtendIndicLinked]).
-/// It will only be a consonant if used by [nextBreak], otherwise
-/// lookahead is only used after seeing a consonant and then one of the
-/// other categories, which will be the [nextCategory] then.
-///
-/// Returns the number of code units back that a consonant is found,
-/// multiplied by 2, and with bit 0 set if an InCB=Linked character
-/// was seen in [nextCategory] or before.
-/// Returns an (even) negative value if no such consonant is found.
-int lookaheadInCBLinkedConsonant(
-    String base, int start, int cursor, int nextCategory) {
-  assert(
-      nextCategory == categoryOtherIndicConsonant ||
-          nextCategory == categoryExtendIndicExtend ||
-          nextCategory == categoryExtendIndicLinked ||
-          nextCategory == categoryZWJ,
-      nextCategory);
-
-  // Include character at cursor in "is linked" information.
-  var isLinked = nextCategory == categoryExtendIndicLinked ? 1 : 0;
-  var index = cursor;
-  while (index > start) {
-    var char = base.codeUnitAt(--index);
-    int category;
-    if (char & 0xFC00 != 0xDC00) {
-      category = low(char);
-    } else {
-      // InCB=Extend occurs in both low and high planes.
-      int prevChar;
-      if (index > start &&
-          (prevChar = base.codeUnitAt(--index)) & 0xFC00 == 0xD800) {
-        category = high(prevChar, char);
-      } else {
-        // Category of unpaired surrogate is Control.
-        break;
-      }
-    }
-    if (category >= categoryZWJ) {
-      assert(category == categoryExtendIndicExtend ||
-          category == categoryExtendIndicLinked ||
-          category == categoryZWJ);
-      if (category == categoryExtendIndicLinked) {
-        isLinked = 1;
-      }
-    } else if (category == categoryOtherIndicConsonant) {
-      return ((cursor - index) << 2) + isLinked;
-    } else {
-      break;
-    }
-  }
-  return -2;
 }
 
 /// Whether there is a grapheme cluster boundary before [index] in [text].
 ///
 /// This is a low-level function. There is no validation of the arguments.
 /// They should satisfy `0 <= start <= index <= end <= text.length`.
+///
+/// Allows [index] to not be at a grapheme cluster boundary
+/// (or even a code point boundary).
 bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
   assert(0 <= start);
   assert(start <= index);
@@ -468,22 +316,28 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
     }
     if (breaks.state & maskLookahead == 0) return false;
     assert(breaks.state >= stateLookaheadMin);
-    return _lookaheadSimple(text, start, cursorBefore, breaks.state);
+
+    var backBreaks = BackBreaks(text, cursorBefore, start, breaks.state);
+    backBreaks._lookahead();
+    return (backBreaks.state & maskBreak != flagNoBreak);
   }
   return true;
 }
 
 /// The most recent break no later than [index] in
 /// `string.substring(start, end)`.
+///
+/// Allows [index] to not be at a grapheme cluster boundary
+/// (or even a code point boundary).
 int previousBreak(String text, int start, int end, int index) {
   assert(0 <= start);
   assert(start <= index);
   assert(index <= end);
   assert(end <= text.length);
-  // First character after `index`. Account for it if `index` is in the
-  // middle of a surrogate pair.
+  // First character ending after `index`.
+  // Accounts for an `index` in the middle of a surrogate pair.
   if (start < index && index < end) {
-    var indexBefore = index;
+    var cursorBefore = index;
     var nextChar = text.codeUnitAt(index);
     var category = categoryControl;
     if (nextChar & 0xF800 != 0xD800) {
@@ -500,11 +354,11 @@ int previousBreak(String text, int start, int end, int index) {
       var prevChar = text.codeUnitAt(index - 1);
       if (prevChar & 0xFC00 == 0xD800) {
         category = high(prevChar, nextChar);
-        indexBefore -= 1;
+        cursorBefore -= 1;
       }
     }
     return BackBreaks(
-            text, indexBefore, start, moveBack(stateEoTNoBreak, category))
+            text, cursorBefore, start, moveBack(stateEoTNoBreak, category))
         .nextBreak();
   }
   return index;
@@ -512,9 +366,8 @@ int previousBreak(String text, int start, int end, int index) {
 
 /// The next break no earlier than [index] in `string.substring(start, end)`.
 ///
-/// Uniquely to this function, the index need not be at a grapheme cluster
-/// boundary. That means there may be need for look-behind to find a character
-/// where the exact state is known.
+/// Allows [index] to not be at a grapheme cluster boundary
+/// (or even a code point boundary).
 int nextBreak(String text, int start, int end, int index) {
   assert(0 <= start);
   assert(start <= index);
@@ -523,7 +376,7 @@ int nextBreak(String text, int start, int end, int index) {
   // Always break at start or end (GB1).
   if (index == start || index == end) return index;
   var breaks = Breaks(text, index, end, stateCAny);
-  var indexBefore = breaks._unknownPositionFirstStep(start);
+  var cursorBefore = breaks._unknownPositionFirstStep(start);
   var possibleBreak = breaks.nextBreak();
   assert(breaks.state & maskFlags != 0);
   if (breaks.state & maskFlags == flagBreak) return possibleBreak;
@@ -531,46 +384,38 @@ int nextBreak(String text, int start, int end, int index) {
   assert(lookbehindState & maskFlags == flagLookahead);
   assert(lookbehindState & maskState >= stateLookaheadMin);
 
-  if (_lookaheadSimple(text, start, indexBefore, lookbehindState)) {
+  var backBreaks = BackBreaks(text, cursorBefore, start, lookbehindState);
+  backBreaks._lookahead();
+  if (backBreaks.state & maskBreak != flagNoBreak) {
     return possibleBreak;
   }
 
-  // Find the correct forward category.
+  // Find the correct forward category to continue with.
   // There are only three possible character categories that can trigger
   // a look-behind.
   if (lookbehindState == stateLookaheadRegionalEven | flagLookahead) {
+    assert(backBreaks.state == stateRegionalEven);
     // Started by RI+RI.
     breaks.state = stateRegionalEven;
-  } else if (lookbehindState ==
-      (stateLookaheadZWJPictographic | flagLookahead)) {
-    breaks.state = statePictographic;
   } else {
-    assert(lookbehindState == (stateLookaheadInC | flagLookahead) ||
+    // Was triggered by ZWJ+Pic or InCB={Extend|Linked}+InCB=Consonant.
+    assert(lookbehindState == (stateLookaheadZWJPictographic | flagLookahead) ||
+        lookbehindState == (stateLookaheadInC | flagLookahead) ||
         lookbehindState == (stateLookaheadInCL | flagLookahead));
-    breaks.state = stateInC;
+    // If starting in lookahead state ZWJ+Pic, and not breaking,
+    // final backwards state is Pic.
+    assert(lookbehindState != (stateLookaheadZWJPictographic | flagLookahead) ||
+        backBreaks.state == statePictographic);
+    // If starting in lookahead state InC or InCL, and not breaking,
+    // final backwards state is Inc.
+    assert(lookbehindState != (stateLookaheadInC | flagLookahead) &&
+            lookbehindState != (stateLookaheadInCL | flagLookahead) ||
+        backBreaks.state == stateInC);
+    // In both cases, that's the same as the forward state
+    // at the point that triggered the look-behind.
+    breaks.state = backBreaks.state;
   }
-  return breaks.nextBreak();
-}
-
-/// Whether to break before a later character.
-///
-/// Used only to find grapheme category breaks, not part of moving forwards
-/// or backwards from known breaks.
-///
-/// That character is always one of [categoryOtherIndicConsonant],
-/// [categoryPictographic] or [categoryRegionalIndicator], the only
-/// characters where knowing whether to break before them depends on
-/// more than the single prior character.
-bool _lookaheadSimple(String text, int start, int cursor, int backState) {
-  var backBreaks = BackBreaks(text, cursor, start, backState);
-  while (true) {
-    if (backBreaks.cursor > start) {
-      backBreaks.step();
-      if (backBreaks.state < stateLookaheadMin) {
-        return backBreaks.state & maskBreak != flagNoBreak;
-      }
-    } else {
-      return moveBack(backBreaks.state, categorySoT) & maskBreak != flagNoBreak;
-    }
-  }
+  var result = breaks.nextBreak();
+  assert(breaks.state & maskFlags == flagBreak);
+  return result;
 }
