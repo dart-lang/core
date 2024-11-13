@@ -1126,7 +1126,6 @@ const String _start = '\u1132\u166c\u166c\u206f\u11c0\u13fb\u166c\u166c\u166c'
     '\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c'
     '\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c\u166c'
     '\u166c\u166c';
-
 @pragma('dart2js:prefer-inline')
 @pragma('vm:prefer-inline')
 @pragma('wasm:prefer-inline')
@@ -1136,10 +1135,13 @@ int low(int codeUnit) {
   return _data.codeUnitAt(index);
 }
 
+@pragma('dart2js:prefer-inline')
+@pragma('vm:prefer-inline')
+@pragma('wasm:prefer-inline')
 int high(int lead, int tail) {
-  var offset = ((0x3ff & lead) << 10) | (0x3ff & tail);
-  var chunkStart = _start.codeUnitAt(2048 + (offset >> 8));
-  var index = chunkStart + (offset & 255);
+  var offset = (((0x3ff & lead) << 10) + (0x3ff & tail)) + (2048 << 8);
+  var chunkStart = _start.codeUnitAt(offset >> 8);
+  var index = chunkStart + (tail & 255);
   return _data.codeUnitAt(index);
 }
 
@@ -1155,6 +1157,9 @@ const _stateMachine = '\x15\x01)))µ\x8d\x01=QeyeyÉ)))ñð\x15\x01)))µ\x8d\x00
     '\x15\x01)((µ\x8d\x01=QeyeyĮƐƐƤñð\x15\x01)((µ\x8d\x01=QeyeyłƤƤƤñð\x15\x01)Ƹ'
     '(µ\x8d\x01=QeyeyÉǌƸƸñð\x15\x01)((µĚ\x01=QeyeyÉ(((ñð\x15\x01)((Ŗ\x8d\x01=Qe'
     'yeyÉ(((ñð';
+@pragma('dart2js:prefer-inline')
+@pragma('vm:prefer-inline')
+@pragma('wasm:prefer-inline')
 int move(int state, int inputCategory) =>
     _stateMachine.codeUnitAt((state & -4) + inputCategory);
 
@@ -1166,5 +1171,8 @@ const _backStateMachine = '\x01\x01)==µ\x8d\x15)QeyQQÉ===ñð\x00\x01)==µ\x8d
     ')==¡\x8d\x15(QeyQQÉ===ñð\x00\x00(<<´\x8c\x14(PdxPPÈ<<<ðð\x01\x01)==µ\x8d'
     '\x15)QeyQQÉ===ðð??)Ę=µ\x8c?)QeyQQÉ=ĘĘ?ð??)==µ\x8d?)QeyQQÉĬĬŀ?ð??)==µ\x8d?)'
     'QeyQQÈŀŀŀ?ðÜÜÜÜÜŨÜÜÜÜÜÜÜÜÜÜÜÜÜ\x00¡¡¡¡¡Ŕ¡¡¡¡¡¡¡¡¡¡¡¡¡\x00';
+@pragma('dart2js:prefer-inline')
+@pragma('vm:prefer-inline')
+@pragma('wasm:prefer-inline')
 int moveBack(int state, int inputCategory) =>
     _backStateMachine.codeUnitAt((state & -4) + inputCategory);

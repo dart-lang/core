@@ -26,9 +26,10 @@ String testDescription(List<String> expected) {
   return "÷ $expectedString ÷";
 }
 
-int _category(int codePoint) {
+int categoryOf(int codePoint) {
   if (codePoint < 0x10000) return low(codePoint);
-  return high((codePoint - 0x10000) >> 10, codePoint & 0x3ff);
+  var nonBmpOffset = codePoint - 0x10000;
+  return high(0xD800 + (nonBmpOffset >> 10), 0xDC00 + (nonBmpOffset & 0x3ff));
 }
 
 String partCategories(List<String> parts) {
@@ -41,7 +42,7 @@ String partCategories(List<String> parts) {
 
   return parts.map((part) {
     return part.runes
-        .map((n) => "#${posOf(n)}:${categoryLongNames[_category(n)]}")
+        .map((n) => "#${posOf(n)}:${categoryLongNames[categoryOf(n)]}")
         .join(" × ");
   }).join(" ÷ ");
 }

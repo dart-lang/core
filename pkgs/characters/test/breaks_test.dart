@@ -412,9 +412,9 @@ List<(List<String> parts, String kind)> testVariants(List<String> parts) {
     lower.add([]);
     for (var rune in part.runes) {
       int category, runeLC = rune, runeFC = rune, runeUC = rune;
+      category = categoryOf(rune);
       if (rune < 0x10000) {
         runeLC = rune;
-        category = low(rune);
         var other = upperChars[category];
         if (other >= 0) {
           changes |= hasNonBmp;
@@ -422,7 +422,6 @@ List<(List<String> parts, String kind)> testVariants(List<String> parts) {
         }
       } else {
         runeUC = rune;
-        category = high((rune - 0x10000) >> 10, rune & 0x3FF);
         var other = lowerChars[category];
         if (other >= 0) {
           changes |= hasBmp;

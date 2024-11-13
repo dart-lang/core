@@ -244,10 +244,7 @@ void _writeSurrogateLookupFunction(StringSink out, String dataName,
 String _lookupMethod(
         String name, String dataName, String startName, int chunkSize) =>
     """
-
-@pragma('dart2js:prefer-inline')
-@pragma('vm:prefer-inline')
-@pragma('wasm:prefer-inline')
+$preferInline
 int $name(int codeUnit) {
   var chunkStart = $startName.codeUnitAt(codeUnit >> ${chunkSize.bitLength - 1});
   var index = chunkStart + (codeUnit & ${chunkSize - 1});
@@ -256,23 +253,29 @@ int $name(int codeUnit) {
 """;
 
 String _lookupSurrogatesMethod(String name, String dataName, String startName,
-        int startOffset, int chunkSize) =>
-    chunkSize == 1024
-        ? """
+    int startOffset, int chunkSize) {
+  if (chunkSize == 1024) {
+    return """
+$preferInline
 int $name(int lead, int tail) {
   var chunkStart = $startName.codeUnitAt($startOffset + (0x3ff & lead));
   var index = chunkStart + (0x3ff & tail);
   return $dataName.codeUnitAt(index);
 }
-"""
-        : """
+""";
+  }
+  var shift = chunkSize.bitLength - 1;
+  var indexVar = chunkSize < 1024 ? "tail" : "offset";
+  return """
+$preferInline
 int $name(int lead, int tail) {
-  var offset = ((0x3ff & lead) << 10) | (0x3ff & tail);
-  var chunkStart = $startName.codeUnitAt($startOffset + (offset >> ${chunkSize.bitLength - 1}));
-  var index = chunkStart + (offset & ${chunkSize - 1});
+  var offset = (((0x3ff & lead) << 10) + (0x3ff & tail)) + ($startOffset << $shift);
+  var chunkStart = $startName.codeUnitAt(offset >> $shift);
+  var index = chunkStart + ($indexVar & ${chunkSize - 1});
   return $dataName.codeUnitAt(index);
 }
 """;
+}
 
 // -----------------------------------------------------------------------------
 bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,

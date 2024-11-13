@@ -299,11 +299,13 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
 }
 
 const String _moveMethod = """
+$preferInline
 int move(int state, int inputCategory) =>
     _stateMachine.codeUnitAt((state & $maskState) + inputCategory);
 """;
 
 const String _moveBackMethod = """
+$preferInline
 int moveBack(int state, int inputCategory) =>
     _backStateMachine.codeUnitAt((state & $maskState) + inputCategory);
 """;
@@ -721,3 +723,8 @@ String _targetStateName(int state, int flags) {
   if (flags == flagLookahead) return backStateShortName(state);
   return stateShortName(state);
 }
+
+const preferInline = """
+@pragma('dart2js:prefer-inline')
+@pragma('vm:prefer-inline')
+@pragma('wasm:prefer-inline')""";
