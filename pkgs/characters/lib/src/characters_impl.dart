@@ -2,9 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "characters.dart";
-import "grapheme_clusters/breaks.dart";
-import "grapheme_clusters/constants.dart";
+import 'characters.dart';
+import 'grapheme_clusters/breaks.dart';
+import 'grapheme_clusters/constants.dart';
 import 'grapheme_clusters/table.dart';
 
 /// The grapheme clusters of a string.
@@ -28,23 +28,23 @@ final class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   String get first => string.isEmpty
-      ? throw StateError("No element")
+      ? throw StateError('No element')
       : string.substring(
           0, Breaks(string, 0, string.length, stateSoTNoBreak).nextBreak());
 
   @override
   String get last => string.isEmpty
-      ? throw StateError("No element")
+      ? throw StateError('No element')
       : string.substring(
           BackBreaks(string, string.length, 0, stateEoTNoBreak).nextBreak());
 
   @override
   String get single {
-    if (string.isEmpty) throw StateError("No element");
+    if (string.isEmpty) throw StateError('No element');
     var firstEnd =
         Breaks(string, 0, string.length, stateSoTNoBreak).nextBreak();
     if (firstEnd == string.length) return string;
-    throw StateError("Too many elements");
+    throw StateError('Too many elements');
   }
 
   @override
@@ -74,9 +74,9 @@ final class StringCharacters extends Iterable<String> implements Characters {
   }
 
   @override
-  String join([String separator = ""]) {
-    if (separator == "") return string;
-    return _explodeReplace(string, 0, string.length, separator, "");
+  String join([String separator = '']) {
+    if (separator == '') return string;
+    return _explodeReplace(string, 0, string.length, separator, '');
   }
 
   @override
@@ -91,12 +91,12 @@ final class StringCharacters extends Iterable<String> implements Characters {
       cursor = next;
     }
     if (orElse != null) return orElse();
-    throw StateError("No element");
+    throw StateError('No element');
   }
 
   @override
   String elementAt(int index) {
-    RangeError.checkNotNegative(index, "index");
+    RangeError.checkNotNegative(index, 'index');
     var count = 0;
     if (string.isNotEmpty) {
       var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
@@ -108,7 +108,7 @@ final class StringCharacters extends Iterable<String> implements Characters {
         start = end;
       }
     }
-    throw RangeError.index(index, this, "index", null, count);
+    throw RangeError.index(index, this, 'index', null, count);
   }
 
   @override
@@ -209,7 +209,7 @@ final class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   Characters skip(int count) {
-    RangeError.checkNotNegative(count, "count");
+    RangeError.checkNotNegative(count, 'count');
     return _skip(count);
   }
 
@@ -221,7 +221,7 @@ final class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   Characters take(int count) {
-    RangeError.checkNotNegative(count, "count");
+    RangeError.checkNotNegative(count, 'count');
     return _take(count);
   }
 
@@ -233,9 +233,9 @@ final class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   Characters getRange(int start, [int? end]) {
-    RangeError.checkNotNegative(start, "start");
+    RangeError.checkNotNegative(start, 'start');
     if (end == null) return _skip(start);
-    if (end < start) throw RangeError.range(end, start, null, "end");
+    if (end < start) throw RangeError.range(end, start, null, 'end');
     if (end == start) return Characters.empty;
     if (start == 0) return _take(end);
     if (string.isEmpty) return this;
@@ -254,10 +254,10 @@ final class StringCharacters extends Iterable<String> implements Characters {
     while (position > 0) {
       position--;
       start = breaks.nextBreak();
-      if (start < 0) throw StateError("No element");
+      if (start < 0) throw StateError('No element');
     }
     var end = breaks.nextBreak();
-    if (end < 0) throw StateError("No element");
+    if (end < 0) throw StateError('No element');
     if (start == 0 && end == string.length) return this;
     return StringCharacters(string.substring(start, end));
   }
@@ -311,7 +311,7 @@ final class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   Characters skipLast(int count) {
-    RangeError.checkNotNegative(count, "count");
+    RangeError.checkNotNegative(count, 'count');
     if (count == 0) return this;
     if (string.isNotEmpty) {
       var breaks = BackBreaks(string, string.length, 0, stateEoTNoBreak);
@@ -351,7 +351,7 @@ final class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   Characters takeLast(int count) {
-    RangeError.checkNotNegative(count, "count");
+    RangeError.checkNotNegative(count, 'count');
     if (count == 0) return Characters.empty;
     if (string.isNotEmpty) {
       var breaks = BackBreaks(string, string.length, 0, stateEoTNoBreak);
@@ -446,7 +446,7 @@ class StringCharacterRange implements CharacterRange {
   factory StringCharacterRange.at(String string, int startIndex,
       [int? endIndex]) {
     RangeError.checkValidRange(
-        startIndex, endIndex, string.length, "startIndex", "endIndex");
+        startIndex, endIndex, string.length, 'startIndex', 'endIndex');
     return _expandRange(string, startIndex, endIndex ?? startIndex);
   }
 
@@ -501,7 +501,7 @@ class StringCharacterRange implements CharacterRange {
           }
         }
         state = move(state, category);
-        if (state & stateNoBreak == 0 && --count == 0) {
+        if (state & maskBreak != flagNoBreak && --count == 0) {
           _move(newStart, index);
           return true;
         }
@@ -513,7 +513,7 @@ class StringCharacterRange implements CharacterRange {
       _move(newStart, _end);
       return true;
     } else {
-      throw RangeError.range(count, 0, null, "count");
+      throw RangeError.range(count, 0, null, 'count');
     }
   }
 
@@ -530,7 +530,7 @@ class StringCharacterRange implements CharacterRange {
   bool moveBack([int count = 1]) => _retractStart(count, _start);
 
   bool _retractStart(int count, int newEnd) {
-    RangeError.checkNotNegative(count, "count");
+    RangeError.checkNotNegative(count, 'count');
     var breaks = _backBreaksFromStart();
     var start = _start;
     while (count > 0) {
@@ -578,7 +578,7 @@ class StringCharacterRange implements CharacterRange {
 
   @override
   bool dropFirst([int count = 1]) {
-    RangeError.checkNotNegative(count, "count");
+    RangeError.checkNotNegative(count, 'count');
     if (_start == _end) return count == 0;
     var breaks = Breaks(_string, _start, _end, stateSoTNoBreak);
     while (count > 0) {
@@ -636,7 +636,7 @@ class StringCharacterRange implements CharacterRange {
 
   @override
   bool dropLast([int count = 1]) {
-    RangeError.checkNotNegative(count, "count");
+    RangeError.checkNotNegative(count, 'count');
     var breaks = BackBreaks(_string, _end, _start, stateEoTNoBreak);
     while (count > 0) {
       var nextBreak = breaks.nextBreak();

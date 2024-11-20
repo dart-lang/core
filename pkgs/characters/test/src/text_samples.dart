@@ -5,7 +5,7 @@
 /// From: https://ko.wikipedia.org/wiki/%ED%95%9C%EA%B8%80
 /// text converted to Unicode NFD format.
 /// Text is available under the [Creative Commons Attribution-ShareAlike License](https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License).
-const hangul = """
+const hangul = '''
 한글
 위키백과, 우리 모두의 백과사전.
 둘러보기로 가기검색하러 가기
@@ -494,10 +494,10 @@ Portal icon	문화 포털
 "한글 자음 쓰기 영상" - 유튜브
 "한글 모음 쓰기 영상" - 유튜브
 Heckert GNU white.svgCc.logo.circle.svg 이 문서에는 다음커뮤니케이션(현 카카오)에서 GFDL 또는 CC-SA 라이선스로 배포한 글로벌 세계대백과사전의 "양반관료의 문화" 항목을 기초로 작성된 글이 포함되어 있습니다.
-""";
+''';
 
 /// Sample ASCII text: Genesis from the King James Bible (1604).
-const genesis = """
+const genesis = '''
 Genesis
 
 1.
@@ -2132,12 +2132,12 @@ And Joseph saw Ephraim's children of the third generation: the children also of 
 And Joseph said unto his brethren, I die: and God will surely visit you, and bring you out of this land unto the land which he sware to Abraham, to Isaac, and to Jacob.
 And Joseph took an oath of the children of Israel, saying, God will surely visit you, and ye shall carry up my bones from hence.
 So Joseph died, being an hundred and ten years old: and they embalmed him, and he was put in a coffin in Egypt.
-""";
+''';
 
 /// From: https://en.wiktionary.org/wiki/Appendix:English_words_with_diacritics
 /// which no longer exists.
 /// Text is available under the [Creative Commons Attribution-ShareAlike License](https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License).
-const diacretics = """
+const diacretics = '''
 à bas, à la, à la carte, à la mode, à gogo, à propos, abacá, abaká,
 abbé, açaí, adiós, agèd, agrément, aikidō, Åland, ampère, Ancien
 Régime, André, ångström, animé (the oleo-resin), animēshon (usually
@@ -2198,4 +2198,4 @@ sumō, surströmming table d'hôte, takahē, télécommunication, tennō,
 tête-à-tête, Thaïs, tōfu, Tōkyō, tōtara, touché, toupée, tourtière
 über, Übermensch, ʻukulele vicuña, Việt Nam, vis-à-vis, voilà whekī
 Zaïre, Zoë, zoölogy, Zürich, zōri, złoty
-""";
+''';

@@ -13,10 +13,6 @@ using a [`CharacterRange`][CharacterRange].
 
 Based on Unicode <!-- unicode-version -->version 16.0.0<!-- /unicode-version -->.
 
-This package is not script-aware, and does not currently support the rule for
-Indic Conjunct Breaks introduced in Unicode 15.10.0
-([GB9c](https://www.unicode.org/reports/tr29/tr29-43.html#GB9c)).
-
 ## Unicode characters and representations
 
 There is no such thing as plain text.

@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:typed_data";
+import 'dart:typed_data';
 
 /// A table with chunks and indirections.
 ///
@@ -50,5 +50,5 @@ class TableEntry {
 
   @override
   String toString() =>
-      "$chunkNumber[${start.toRadixString(16)}:${end.toRadixString(16)}]";
+      '$chunkNumber[${start.toRadixString(16)}:${end.toRadixString(16)}]';
 }

@@ -2,9 +2,11 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "package:characters/src/grapheme_clusters/constants.dart";
+import 'package:characters/src/grapheme_clusters/table.dart';
 
-export "unicode_grapheme_tests.dart";
+import '../../tool/src/debug_names.dart';
+
+export 'unicode_grapheme_tests.dart';
 
 /// Readable description of the [expected] grapheme clusters.
 ///
@@ -19,25 +21,28 @@ export "unicode_grapheme_tests.dart";
 String testDescription(List<String> expected) {
   var expectedString = expected
       .map((s) =>
-          s.runes.map((x) => x.toRadixString(16).padLeft(4, "0")).join(" × "))
-      .join(" ÷ ");
-  return "÷ $expectedString ÷";
+          s.runes.map((x) => x.toRadixString(16).padLeft(4, '0')).join(' × '))
+      .join(' ÷ ');
+  return '÷ $expectedString ÷';
 }
 
-final List<String> categoryName = List<String>.filled(16, "")
-  ..[categoryOther] = "Other"
-  ..[categoryCR] = "CR"
-  ..[categoryLF] = "LF"
-  ..[categoryControl] = "Control"
-  ..[categoryExtend] = "Extend"
-  ..[categoryZWJ] = "ZWJ"
-  ..[categoryRegionalIndicator] = "RI"
-  ..[categoryPrepend] = "Prepend"
-  ..[categorySpacingMark] = "SpacingMark"
-  ..[categoryL] = "L"
-  ..[categoryV] = "V"
-  ..[categoryT] = "T"
-  ..[categoryLV] = "LV"
-  ..[categoryLVT] = "LVT"
-  ..[categoryPictographic] = "Pictographic"
-  ..[categoryEoT] = "EoT";
+int categoryOf(int codePoint) {
+  if (codePoint < 0x10000) return low(codePoint);
+  var nonBmpOffset = codePoint - 0x10000;
+  return high(0xD800 + (nonBmpOffset >> 10), 0xDC00 + (nonBmpOffset & 0x3ff));
+}
+
+String partCategories(List<String> parts) {
+  var index = 0;
+  int posOf(int rune) {
+    var result = index;
+    index += rune >= 0xFFFF ? 2 : 1;
+    return result;
+  }
+
+  return parts.map((part) {
+    return part.runes
+        .map((n) => '#${posOf(n)}:${categoryLongNames[categoryOf(n)]}')
+        .join(' × ');
+  }).join(' ÷ ');
+}
