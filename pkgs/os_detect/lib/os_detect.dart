@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Information about the current operating system.
-library pkg.os_detect;
+library;
 
 import 'src/os_override.dart';
 

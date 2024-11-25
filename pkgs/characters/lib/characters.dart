@@ -5,5 +5,5 @@
 /// String operations based on characters (Unicode grapheme clusters).
 library;
 
-export "src/characters.dart";
-export "src/extensions.dart";
+export 'src/characters.dart';
+export 'src/extensions.dart';

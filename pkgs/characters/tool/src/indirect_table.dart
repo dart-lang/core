@@ -2,14 +2,14 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:typed_data";
+import 'dart:typed_data';
 
 /// A table with chunks and indirections.
 ///
 /// Contains a number, one or more, of chunks,
 /// and a list of entries which point to entire chunks or parts of chunks.
 ///
-/// The entries represent sequnences of values.
+/// The entries represent sequences of values.
 /// Each such sequence is stored in one of the chunks.
 ///
 /// The main goal of these tools are to go from an initial complete
@@ -50,5 +50,5 @@ class TableEntry {
 
   @override
   String toString() =>
-      "$chunkNumber[${start.toRadixString(16)}:${end.toRadixString(16)}]";
+      '$chunkNumber[${start.toRadixString(16)}:${end.toRadixString(16)}]';
 }

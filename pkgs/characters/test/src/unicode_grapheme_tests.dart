@@ -1,5542 +1,6010 @@
-// Copyright (c) 2019, the Dart project authors.  Please see the AUTHORS file
+// Copyright (c) 2023, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
 // Generated code. Do not edit.
-// Generated from [https://unicode.org/Public/15.0.0/ucd/auxiliary/GraphemeBreakTest.txt](../../third_party/Unicode_Consortium/GraphemeBreakTest.txt)
-// and [https://www.unicode.org/Public/emoji/15.0/emoji-test.txt](../../third_party/Unicode_Consortium/emoji_test.txt).
+// Generated from:
+// - [https://unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakTest.txt](../../third_party/Unicode_Consortium/GraphemeBreakTest.txt)
+// - [https://unicode.org/Public/emoji/latest/emoji-test.txt](../../third_party/Unicode_Consortium/emoji_test.txt)
+// - [https://unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakProperty.txt](../../third_party/Unicode_Consortium/GraphemeBreakProperty.txt)
+// - [https://unicode.org/Public/UCD/latest/ucd/emoji/emoji-data.txt](../../third_party/Unicode_Consortium/emoji_data.txt)
+// - [https://unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt](../../third_party/Unicode_Consortium/DerivedCoreProperties.txt)
 // Licensed under the Unicode Inc. License Agreement
 // (https://www.unicode.org/license.txt, ../../third_party/third_party/Unicode_Consortium/UNICODE_LICENSE.txt)
 // ignore_for_file: lines_longer_than_80_chars
+// dart format off
 
 // Grapheme cluster tests.
 const List<List<String>> splitTests = [
-  [' ', ' '],
-  [' \u0308', ' '],
-  [' ', '\r'],
-  [' \u0308', '\r'],
-  [' ', '\n'],
-  [' \u0308', '\n'],
-  [' ', '\x01'],
-  [' \u0308', '\x01'],
-  [' \u034f'],
-  [' \u0308\u034f'],
-  [' ', '\u{1f1e6}'],
-  [' \u0308', '\u{1f1e6}'],
-  [' ', '\u0600'],
-  [' \u0308', '\u0600'],
-  [' \u0903'],
-  [' \u0308\u0903'],
-  [' ', '\u1100'],
-  [' \u0308', '\u1100'],
-  [' ', '\u1160'],
-  [' \u0308', '\u1160'],
-  [' ', '\u11a8'],
-  [' \u0308', '\u11a8'],
-  [' ', '\uac00'],
-  [' \u0308', '\uac00'],
-  [' ', '\uac01'],
-  [' \u0308', '\uac01'],
-  [' ', '\u231a'],
-  [' \u0308', '\u231a'],
-  [' \u0300'],
-  [' \u0308\u0300'],
-  [' \u200d'],
-  [' \u0308\u200d'],
-  [' ', '\u0378'],
-  [' \u0308', '\u0378'],
-  ['\r', ' '],
-  ['\r', '\u0308', ' '],
-  ['\r', '\r'],
-  ['\r', '\u0308', '\r'],
-  ['\r\n'],
-  ['\r', '\u0308', '\n'],
-  ['\r', '\x01'],
-  ['\r', '\u0308', '\x01'],
-  ['\r', '\u034f'],
-  ['\r', '\u0308\u034f'],
-  ['\r', '\u{1f1e6}'],
-  ['\r', '\u0308', '\u{1f1e6}'],
-  ['\r', '\u0600'],
-  ['\r', '\u0308', '\u0600'],
-  ['\r', '\u0903'],
-  ['\r', '\u0308\u0903'],
-  ['\r', '\u1100'],
-  ['\r', '\u0308', '\u1100'],
-  ['\r', '\u1160'],
-  ['\r', '\u0308', '\u1160'],
-  ['\r', '\u11a8'],
-  ['\r', '\u0308', '\u11a8'],
-  ['\r', '\uac00'],
-  ['\r', '\u0308', '\uac00'],
-  ['\r', '\uac01'],
-  ['\r', '\u0308', '\uac01'],
-  ['\r', '\u231a'],
-  ['\r', '\u0308', '\u231a'],
-  ['\r', '\u0300'],
-  ['\r', '\u0308\u0300'],
-  ['\r', '\u200d'],
-  ['\r', '\u0308\u200d'],
-  ['\r', '\u0378'],
-  ['\r', '\u0308', '\u0378'],
-  ['\n', ' '],
-  ['\n', '\u0308', ' '],
-  ['\n', '\r'],
-  ['\n', '\u0308', '\r'],
-  ['\n', '\n'],
-  ['\n', '\u0308', '\n'],
-  ['\n', '\x01'],
-  ['\n', '\u0308', '\x01'],
-  ['\n', '\u034f'],
-  ['\n', '\u0308\u034f'],
-  ['\n', '\u{1f1e6}'],
-  ['\n', '\u0308', '\u{1f1e6}'],
-  ['\n', '\u0600'],
-  ['\n', '\u0308', '\u0600'],
-  ['\n', '\u0903'],
-  ['\n', '\u0308\u0903'],
-  ['\n', '\u1100'],
-  ['\n', '\u0308', '\u1100'],
-  ['\n', '\u1160'],
-  ['\n', '\u0308', '\u1160'],
-  ['\n', '\u11a8'],
-  ['\n', '\u0308', '\u11a8'],
-  ['\n', '\uac00'],
-  ['\n', '\u0308', '\uac00'],
-  ['\n', '\uac01'],
-  ['\n', '\u0308', '\uac01'],
-  ['\n', '\u231a'],
-  ['\n', '\u0308', '\u231a'],
-  ['\n', '\u0300'],
-  ['\n', '\u0308\u0300'],
-  ['\n', '\u200d'],
-  ['\n', '\u0308\u200d'],
-  ['\n', '\u0378'],
-  ['\n', '\u0308', '\u0378'],
-  ['\x01', ' '],
-  ['\x01', '\u0308', ' '],
-  ['\x01', '\r'],
-  ['\x01', '\u0308', '\r'],
-  ['\x01', '\n'],
-  ['\x01', '\u0308', '\n'],
-  ['\x01', '\x01'],
-  ['\x01', '\u0308', '\x01'],
-  ['\x01', '\u034f'],
-  ['\x01', '\u0308\u034f'],
-  ['\x01', '\u{1f1e6}'],
-  ['\x01', '\u0308', '\u{1f1e6}'],
-  ['\x01', '\u0600'],
-  ['\x01', '\u0308', '\u0600'],
-  ['\x01', '\u0903'],
-  ['\x01', '\u0308\u0903'],
-  ['\x01', '\u1100'],
-  ['\x01', '\u0308', '\u1100'],
-  ['\x01', '\u1160'],
-  ['\x01', '\u0308', '\u1160'],
-  ['\x01', '\u11a8'],
-  ['\x01', '\u0308', '\u11a8'],
-  ['\x01', '\uac00'],
-  ['\x01', '\u0308', '\uac00'],
-  ['\x01', '\uac01'],
-  ['\x01', '\u0308', '\uac01'],
-  ['\x01', '\u231a'],
-  ['\x01', '\u0308', '\u231a'],
-  ['\x01', '\u0300'],
-  ['\x01', '\u0308\u0300'],
-  ['\x01', '\u200d'],
-  ['\x01', '\u0308\u200d'],
-  ['\x01', '\u0378'],
-  ['\x01', '\u0308', '\u0378'],
-  ['\u034f', ' '],
-  ['\u034f\u0308', ' '],
-  ['\u034f', '\r'],
-  ['\u034f\u0308', '\r'],
-  ['\u034f', '\n'],
-  ['\u034f\u0308', '\n'],
-  ['\u034f', '\x01'],
-  ['\u034f\u0308', '\x01'],
-  ['\u034f\u034f'],
-  ['\u034f\u0308\u034f'],
-  ['\u034f', '\u{1f1e6}'],
-  ['\u034f\u0308', '\u{1f1e6}'],
-  ['\u034f', '\u0600'],
-  ['\u034f\u0308', '\u0600'],
-  ['\u034f\u0903'],
-  ['\u034f\u0308\u0903'],
-  ['\u034f', '\u1100'],
-  ['\u034f\u0308', '\u1100'],
-  ['\u034f', '\u1160'],
-  ['\u034f\u0308', '\u1160'],
-  ['\u034f', '\u11a8'],
-  ['\u034f\u0308', '\u11a8'],
-  ['\u034f', '\uac00'],
-  ['\u034f\u0308', '\uac00'],
-  ['\u034f', '\uac01'],
-  ['\u034f\u0308', '\uac01'],
-  ['\u034f', '\u231a'],
-  ['\u034f\u0308', '\u231a'],
-  ['\u034f\u0300'],
-  ['\u034f\u0308\u0300'],
-  ['\u034f\u200d'],
-  ['\u034f\u0308\u200d'],
-  ['\u034f', '\u0378'],
-  ['\u034f\u0308', '\u0378'],
-  ['\u{1f1e6}', ' '],
-  ['\u{1f1e6}\u0308', ' '],
-  ['\u{1f1e6}', '\r'],
-  ['\u{1f1e6}\u0308', '\r'],
-  ['\u{1f1e6}', '\n'],
-  ['\u{1f1e6}\u0308', '\n'],
-  ['\u{1f1e6}', '\x01'],
-  ['\u{1f1e6}\u0308', '\x01'],
-  ['\u{1f1e6}\u034f'],
-  ['\u{1f1e6}\u0308\u034f'],
-  ['\u{1f1e6}\u{1f1e6}'],
-  ['\u{1f1e6}\u0308', '\u{1f1e6}'],
-  ['\u{1f1e6}', '\u0600'],
-  ['\u{1f1e6}\u0308', '\u0600'],
-  ['\u{1f1e6}\u0903'],
-  ['\u{1f1e6}\u0308\u0903'],
-  ['\u{1f1e6}', '\u1100'],
-  ['\u{1f1e6}\u0308', '\u1100'],
-  ['\u{1f1e6}', '\u1160'],
-  ['\u{1f1e6}\u0308', '\u1160'],
-  ['\u{1f1e6}', '\u11a8'],
-  ['\u{1f1e6}\u0308', '\u11a8'],
-  ['\u{1f1e6}', '\uac00'],
-  ['\u{1f1e6}\u0308', '\uac00'],
-  ['\u{1f1e6}', '\uac01'],
-  ['\u{1f1e6}\u0308', '\uac01'],
-  ['\u{1f1e6}', '\u231a'],
-  ['\u{1f1e6}\u0308', '\u231a'],
-  ['\u{1f1e6}\u0300'],
-  ['\u{1f1e6}\u0308\u0300'],
-  ['\u{1f1e6}\u200d'],
-  ['\u{1f1e6}\u0308\u200d'],
-  ['\u{1f1e6}', '\u0378'],
-  ['\u{1f1e6}\u0308', '\u0378'],
-  ['\u0600 '],
-  ['\u0600\u0308', ' '],
-  ['\u0600', '\r'],
-  ['\u0600\u0308', '\r'],
-  ['\u0600', '\n'],
-  ['\u0600\u0308', '\n'],
-  ['\u0600', '\x01'],
-  ['\u0600\u0308', '\x01'],
-  ['\u0600\u034f'],
-  ['\u0600\u0308\u034f'],
-  ['\u0600\u{1f1e6}'],
-  ['\u0600\u0308', '\u{1f1e6}'],
-  ['\u0600\u0600'],
-  ['\u0600\u0308', '\u0600'],
-  ['\u0600\u0903'],
-  ['\u0600\u0308\u0903'],
-  ['\u0600\u1100'],
-  ['\u0600\u0308', '\u1100'],
-  ['\u0600\u1160'],
-  ['\u0600\u0308', '\u1160'],
-  ['\u0600\u11a8'],
-  ['\u0600\u0308', '\u11a8'],
-  ['\u0600\uac00'],
-  ['\u0600\u0308', '\uac00'],
-  ['\u0600\uac01'],
-  ['\u0600\u0308', '\uac01'],
-  ['\u0600\u231a'],
-  ['\u0600\u0308', '\u231a'],
-  ['\u0600\u0300'],
-  ['\u0600\u0308\u0300'],
-  ['\u0600\u200d'],
-  ['\u0600\u0308\u200d'],
-  ['\u0600\u0378'],
-  ['\u0600\u0308', '\u0378'],
-  ['\u0903', ' '],
-  ['\u0903\u0308', ' '],
-  ['\u0903', '\r'],
-  ['\u0903\u0308', '\r'],
-  ['\u0903', '\n'],
-  ['\u0903\u0308', '\n'],
-  ['\u0903', '\x01'],
-  ['\u0903\u0308', '\x01'],
-  ['\u0903\u034f'],
-  ['\u0903\u0308\u034f'],
-  ['\u0903', '\u{1f1e6}'],
-  ['\u0903\u0308', '\u{1f1e6}'],
-  ['\u0903', '\u0600'],
-  ['\u0903\u0308', '\u0600'],
-  ['\u0903\u0903'],
-  ['\u0903\u0308\u0903'],
-  ['\u0903', '\u1100'],
-  ['\u0903\u0308', '\u1100'],
-  ['\u0903', '\u1160'],
-  ['\u0903\u0308', '\u1160'],
-  ['\u0903', '\u11a8'],
-  ['\u0903\u0308', '\u11a8'],
-  ['\u0903', '\uac00'],
-  ['\u0903\u0308', '\uac00'],
-  ['\u0903', '\uac01'],
-  ['\u0903\u0308', '\uac01'],
-  ['\u0903', '\u231a'],
-  ['\u0903\u0308', '\u231a'],
-  ['\u0903\u0300'],
-  ['\u0903\u0308\u0300'],
-  ['\u0903\u200d'],
-  ['\u0903\u0308\u200d'],
-  ['\u0903', '\u0378'],
-  ['\u0903\u0308', '\u0378'],
-  ['\u1100', ' '],
-  ['\u1100\u0308', ' '],
-  ['\u1100', '\r'],
-  ['\u1100\u0308', '\r'],
-  ['\u1100', '\n'],
-  ['\u1100\u0308', '\n'],
-  ['\u1100', '\x01'],
-  ['\u1100\u0308', '\x01'],
-  ['\u1100\u034f'],
-  ['\u1100\u0308\u034f'],
-  ['\u1100', '\u{1f1e6}'],
-  ['\u1100\u0308', '\u{1f1e6}'],
-  ['\u1100', '\u0600'],
-  ['\u1100\u0308', '\u0600'],
-  ['\u1100\u0903'],
-  ['\u1100\u0308\u0903'],
-  ['\u1100\u1100'],
-  ['\u1100\u0308', '\u1100'],
-  ['\u1100\u1160'],
-  ['\u1100\u0308', '\u1160'],
-  ['\u1100', '\u11a8'],
-  ['\u1100\u0308', '\u11a8'],
-  ['\u1100\uac00'],
-  ['\u1100\u0308', '\uac00'],
-  ['\u1100\uac01'],
-  ['\u1100\u0308', '\uac01'],
-  ['\u1100', '\u231a'],
-  ['\u1100\u0308', '\u231a'],
-  ['\u1100\u0300'],
-  ['\u1100\u0308\u0300'],
-  ['\u1100\u200d'],
-  ['\u1100\u0308\u200d'],
-  ['\u1100', '\u0378'],
-  ['\u1100\u0308', '\u0378'],
-  ['\u1160', ' '],
-  ['\u1160\u0308', ' '],
-  ['\u1160', '\r'],
-  ['\u1160\u0308', '\r'],
-  ['\u1160', '\n'],
-  ['\u1160\u0308', '\n'],
-  ['\u1160', '\x01'],
-  ['\u1160\u0308', '\x01'],
-  ['\u1160\u034f'],
-  ['\u1160\u0308\u034f'],
-  ['\u1160', '\u{1f1e6}'],
-  ['\u1160\u0308', '\u{1f1e6}'],
-  ['\u1160', '\u0600'],
-  ['\u1160\u0308', '\u0600'],
-  ['\u1160\u0903'],
-  ['\u1160\u0308\u0903'],
-  ['\u1160', '\u1100'],
-  ['\u1160\u0308', '\u1100'],
-  ['\u1160\u1160'],
-  ['\u1160\u0308', '\u1160'],
-  ['\u1160\u11a8'],
-  ['\u1160\u0308', '\u11a8'],
-  ['\u1160', '\uac00'],
-  ['\u1160\u0308', '\uac00'],
-  ['\u1160', '\uac01'],
-  ['\u1160\u0308', '\uac01'],
-  ['\u1160', '\u231a'],
-  ['\u1160\u0308', '\u231a'],
-  ['\u1160\u0300'],
-  ['\u1160\u0308\u0300'],
-  ['\u1160\u200d'],
-  ['\u1160\u0308\u200d'],
-  ['\u1160', '\u0378'],
-  ['\u1160\u0308', '\u0378'],
-  ['\u11a8', ' '],
-  ['\u11a8\u0308', ' '],
-  ['\u11a8', '\r'],
-  ['\u11a8\u0308', '\r'],
-  ['\u11a8', '\n'],
-  ['\u11a8\u0308', '\n'],
-  ['\u11a8', '\x01'],
-  ['\u11a8\u0308', '\x01'],
-  ['\u11a8\u034f'],
-  ['\u11a8\u0308\u034f'],
-  ['\u11a8', '\u{1f1e6}'],
-  ['\u11a8\u0308', '\u{1f1e6}'],
-  ['\u11a8', '\u0600'],
-  ['\u11a8\u0308', '\u0600'],
-  ['\u11a8\u0903'],
-  ['\u11a8\u0308\u0903'],
-  ['\u11a8', '\u1100'],
-  ['\u11a8\u0308', '\u1100'],
-  ['\u11a8', '\u1160'],
-  ['\u11a8\u0308', '\u1160'],
-  ['\u11a8\u11a8'],
-  ['\u11a8\u0308', '\u11a8'],
-  ['\u11a8', '\uac00'],
-  ['\u11a8\u0308', '\uac00'],
-  ['\u11a8', '\uac01'],
-  ['\u11a8\u0308', '\uac01'],
-  ['\u11a8', '\u231a'],
-  ['\u11a8\u0308', '\u231a'],
-  ['\u11a8\u0300'],
-  ['\u11a8\u0308\u0300'],
-  ['\u11a8\u200d'],
-  ['\u11a8\u0308\u200d'],
-  ['\u11a8', '\u0378'],
-  ['\u11a8\u0308', '\u0378'],
-  ['\uac00', ' '],
-  ['\uac00\u0308', ' '],
-  ['\uac00', '\r'],
-  ['\uac00\u0308', '\r'],
-  ['\uac00', '\n'],
-  ['\uac00\u0308', '\n'],
-  ['\uac00', '\x01'],
-  ['\uac00\u0308', '\x01'],
-  ['\uac00\u034f'],
-  ['\uac00\u0308\u034f'],
-  ['\uac00', '\u{1f1e6}'],
-  ['\uac00\u0308', '\u{1f1e6}'],
-  ['\uac00', '\u0600'],
-  ['\uac00\u0308', '\u0600'],
-  ['\uac00\u0903'],
-  ['\uac00\u0308\u0903'],
-  ['\uac00', '\u1100'],
-  ['\uac00\u0308', '\u1100'],
-  ['\uac00\u1160'],
-  ['\uac00\u0308', '\u1160'],
-  ['\uac00\u11a8'],
-  ['\uac00\u0308', '\u11a8'],
-  ['\uac00', '\uac00'],
-  ['\uac00\u0308', '\uac00'],
-  ['\uac00', '\uac01'],
-  ['\uac00\u0308', '\uac01'],
-  ['\uac00', '\u231a'],
-  ['\uac00\u0308', '\u231a'],
-  ['\uac00\u0300'],
-  ['\uac00\u0308\u0300'],
-  ['\uac00\u200d'],
-  ['\uac00\u0308\u200d'],
-  ['\uac00', '\u0378'],
-  ['\uac00\u0308', '\u0378'],
-  ['\uac01', ' '],
-  ['\uac01\u0308', ' '],
-  ['\uac01', '\r'],
-  ['\uac01\u0308', '\r'],
-  ['\uac01', '\n'],
-  ['\uac01\u0308', '\n'],
-  ['\uac01', '\x01'],
-  ['\uac01\u0308', '\x01'],
-  ['\uac01\u034f'],
-  ['\uac01\u0308\u034f'],
-  ['\uac01', '\u{1f1e6}'],
-  ['\uac01\u0308', '\u{1f1e6}'],
-  ['\uac01', '\u0600'],
-  ['\uac01\u0308', '\u0600'],
-  ['\uac01\u0903'],
-  ['\uac01\u0308\u0903'],
-  ['\uac01', '\u1100'],
-  ['\uac01\u0308', '\u1100'],
-  ['\uac01', '\u1160'],
-  ['\uac01\u0308', '\u1160'],
-  ['\uac01\u11a8'],
-  ['\uac01\u0308', '\u11a8'],
-  ['\uac01', '\uac00'],
-  ['\uac01\u0308', '\uac00'],
-  ['\uac01', '\uac01'],
-  ['\uac01\u0308', '\uac01'],
-  ['\uac01', '\u231a'],
-  ['\uac01\u0308', '\u231a'],
-  ['\uac01\u0300'],
-  ['\uac01\u0308\u0300'],
-  ['\uac01\u200d'],
-  ['\uac01\u0308\u200d'],
-  ['\uac01', '\u0378'],
-  ['\uac01\u0308', '\u0378'],
-  ['\u231a', ' '],
-  ['\u231a\u0308', ' '],
-  ['\u231a', '\r'],
-  ['\u231a\u0308', '\r'],
-  ['\u231a', '\n'],
-  ['\u231a\u0308', '\n'],
-  ['\u231a', '\x01'],
-  ['\u231a\u0308', '\x01'],
-  ['\u231a\u034f'],
-  ['\u231a\u0308\u034f'],
-  ['\u231a', '\u{1f1e6}'],
-  ['\u231a\u0308', '\u{1f1e6}'],
-  ['\u231a', '\u0600'],
-  ['\u231a\u0308', '\u0600'],
-  ['\u231a\u0903'],
-  ['\u231a\u0308\u0903'],
-  ['\u231a', '\u1100'],
-  ['\u231a\u0308', '\u1100'],
-  ['\u231a', '\u1160'],
-  ['\u231a\u0308', '\u1160'],
-  ['\u231a', '\u11a8'],
-  ['\u231a\u0308', '\u11a8'],
-  ['\u231a', '\uac00'],
-  ['\u231a\u0308', '\uac00'],
-  ['\u231a', '\uac01'],
-  ['\u231a\u0308', '\uac01'],
-  ['\u231a', '\u231a'],
-  ['\u231a\u0308', '\u231a'],
-  ['\u231a\u0300'],
-  ['\u231a\u0308\u0300'],
-  ['\u231a\u200d'],
-  ['\u231a\u0308\u200d'],
-  ['\u231a', '\u0378'],
-  ['\u231a\u0308', '\u0378'],
-  ['\u0300', ' '],
-  ['\u0300\u0308', ' '],
-  ['\u0300', '\r'],
-  ['\u0300\u0308', '\r'],
-  ['\u0300', '\n'],
-  ['\u0300\u0308', '\n'],
-  ['\u0300', '\x01'],
-  ['\u0300\u0308', '\x01'],
-  ['\u0300\u034f'],
-  ['\u0300\u0308\u034f'],
-  ['\u0300', '\u{1f1e6}'],
-  ['\u0300\u0308', '\u{1f1e6}'],
-  ['\u0300', '\u0600'],
-  ['\u0300\u0308', '\u0600'],
-  ['\u0300\u0903'],
-  ['\u0300\u0308\u0903'],
-  ['\u0300', '\u1100'],
-  ['\u0300\u0308', '\u1100'],
-  ['\u0300', '\u1160'],
-  ['\u0300\u0308', '\u1160'],
-  ['\u0300', '\u11a8'],
-  ['\u0300\u0308', '\u11a8'],
-  ['\u0300', '\uac00'],
-  ['\u0300\u0308', '\uac00'],
-  ['\u0300', '\uac01'],
-  ['\u0300\u0308', '\uac01'],
-  ['\u0300', '\u231a'],
-  ['\u0300\u0308', '\u231a'],
-  ['\u0300\u0300'],
-  ['\u0300\u0308\u0300'],
-  ['\u0300\u200d'],
-  ['\u0300\u0308\u200d'],
-  ['\u0300', '\u0378'],
-  ['\u0300\u0308', '\u0378'],
-  ['\u200d', ' '],
-  ['\u200d\u0308', ' '],
-  ['\u200d', '\r'],
-  ['\u200d\u0308', '\r'],
-  ['\u200d', '\n'],
-  ['\u200d\u0308', '\n'],
-  ['\u200d', '\x01'],
-  ['\u200d\u0308', '\x01'],
-  ['\u200d\u034f'],
-  ['\u200d\u0308\u034f'],
-  ['\u200d', '\u{1f1e6}'],
-  ['\u200d\u0308', '\u{1f1e6}'],
-  ['\u200d', '\u0600'],
-  ['\u200d\u0308', '\u0600'],
-  ['\u200d\u0903'],
-  ['\u200d\u0308\u0903'],
-  ['\u200d', '\u1100'],
-  ['\u200d\u0308', '\u1100'],
-  ['\u200d', '\u1160'],
-  ['\u200d\u0308', '\u1160'],
-  ['\u200d', '\u11a8'],
-  ['\u200d\u0308', '\u11a8'],
-  ['\u200d', '\uac00'],
-  ['\u200d\u0308', '\uac00'],
-  ['\u200d', '\uac01'],
-  ['\u200d\u0308', '\uac01'],
-  ['\u200d', '\u231a'],
-  ['\u200d\u0308', '\u231a'],
-  ['\u200d\u0300'],
-  ['\u200d\u0308\u0300'],
-  ['\u200d\u200d'],
-  ['\u200d\u0308\u200d'],
-  ['\u200d', '\u0378'],
-  ['\u200d\u0308', '\u0378'],
-  ['\u0378', ' '],
-  ['\u0378\u0308', ' '],
-  ['\u0378', '\r'],
-  ['\u0378\u0308', '\r'],
-  ['\u0378', '\n'],
-  ['\u0378\u0308', '\n'],
-  ['\u0378', '\x01'],
-  ['\u0378\u0308', '\x01'],
-  ['\u0378\u034f'],
-  ['\u0378\u0308\u034f'],
-  ['\u0378', '\u{1f1e6}'],
-  ['\u0378\u0308', '\u{1f1e6}'],
-  ['\u0378', '\u0600'],
-  ['\u0378\u0308', '\u0600'],
-  ['\u0378\u0903'],
-  ['\u0378\u0308\u0903'],
-  ['\u0378', '\u1100'],
-  ['\u0378\u0308', '\u1100'],
-  ['\u0378', '\u1160'],
-  ['\u0378\u0308', '\u1160'],
-  ['\u0378', '\u11a8'],
-  ['\u0378\u0308', '\u11a8'],
-  ['\u0378', '\uac00'],
-  ['\u0378\u0308', '\uac00'],
-  ['\u0378', '\uac01'],
-  ['\u0378\u0308', '\uac01'],
-  ['\u0378', '\u231a'],
-  ['\u0378\u0308', '\u231a'],
-  ['\u0378\u0300'],
-  ['\u0378\u0308\u0300'],
-  ['\u0378\u200d'],
-  ['\u0378\u0308\u200d'],
-  ['\u0378', '\u0378'],
-  ['\u0378\u0308', '\u0378'],
-  ['\r\n', 'a', '\n', '\u0308'],
-  ['a\u0308'],
-  [' \u200d', '\u0646'],
-  ['\u0646\u200d', ' '],
-  ['\u1100\u1100'],
-  ['\uac00\u11a8', '\u1100'],
-  ['\uac01\u11a8', '\u1100'],
-  ['\u{1f1e6}\u{1f1e7}', '\u{1f1e8}', 'b'],
-  ['a', '\u{1f1e6}\u{1f1e7}', '\u{1f1e8}', 'b'],
-  ['a', '\u{1f1e6}\u{1f1e7}\u200d', '\u{1f1e8}', 'b'],
-  ['a', '\u{1f1e6}\u200d', '\u{1f1e7}\u{1f1e8}', 'b'],
-  ['a', '\u{1f1e6}\u{1f1e7}', '\u{1f1e8}\u{1f1e9}', 'b'],
-  ['a\u200d'],
-  ['a\u0308', 'b'],
-  ['a\u0903', 'b'],
-  ['a', '\u0600b'],
-  ['\u{1f476}\u{1f3ff}', '\u{1f476}'],
-  ['a\u{1f3ff}', '\u{1f476}'],
-  ['a\u{1f3ff}', '\u{1f476}\u200d\u{1f6d1}'],
-  ['\u{1f476}\u{1f3ff}\u0308\u200d\u{1f476}\u{1f3ff}'],
-  ['\u{1f6d1}\u200d\u{1f6d1}'],
-  ['a\u200d', '\u{1f6d1}'],
-  ['\u2701\u200d\u2701'],
-  ['a\u200d', '\u2701'],
+  [
+    ' ',
+    ' ',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    ' \u0308',
+    ' ',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    ' ',
+    '\r',
+  ], // ÷ [0.2] SPACE (Other) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    ' \u0308',
+    '\r',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    ' ',
+    '\n',
+  ], // ÷ [0.2] SPACE (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    ' \u0308',
+    '\n',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    ' ',
+    '\x01',
+  ], // ÷ [0.2] SPACE (Other) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    ' \u0308',
+    '\x01',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    ' \u200c',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    ' \u0308\u200c',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    ' ',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    ' ',
+    '\u0600',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u0600',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    ' \u0a03',
+  ], // ÷ [0.2] SPACE (Other) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    ' \u0308\u0a03',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    ' ',
+    '\u1100',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u1100',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    ' ',
+    '\u1160',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u1160',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    ' ',
+    '\u11a8',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u11a8',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    ' ',
+    '\uac00',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    ' \u0308',
+    '\uac00',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    ' ',
+    '\uac01',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    ' \u0308',
+    '\uac01',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    ' \u0903',
+  ], // ÷ [0.2] SPACE (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    ' \u0308\u0903',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    ' ',
+    '\u0904',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u0904',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    ' ',
+    '\u0d4e',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    ' ',
+    '\u0915',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u0915',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    ' ',
+    '\u231a',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u231a',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    ' \u0300',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u0308\u0300',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u0900',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u0308\u0900',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u094d',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u0308\u094d',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u200d',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u0308\u200d',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    ' ',
+    '\u0378',
+  ], // ÷ [0.2] SPACE (Other) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    ' \u0308',
+    '\u0378',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\r',
+    ' ',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] SPACE (Other) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    ' ',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\r',
+    '\r',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\r',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\r\n',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) × [3.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\n',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\r',
+    '\x01',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\x01',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\r',
+    '\u200c',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\r',
+    '\u0308\u200c',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\r',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\r',
+    '\u0600',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u0600',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\r',
+    '\u0a03',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\r',
+    '\u0308\u0a03',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\r',
+    '\u1100',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u1100',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\r',
+    '\u1160',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u1160',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\r',
+    '\u11a8',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\r',
+    '\uac00',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\uac00',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\r',
+    '\uac01',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\uac01',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\r',
+    '\u0903',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\r',
+    '\u0308\u0903',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\r',
+    '\u0904',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u0904',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\r',
+    '\u0d4e',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\r',
+    '\u0915',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u0915',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\r',
+    '\u231a',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u231a',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\r',
+    '\u0300',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u0308\u0300',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u0900',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u0308\u0900',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u094d',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u0308\u094d',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u200d',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u0308\u200d',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\r',
+    '\u0378',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\r',
+    '\u0308',
+    '\u0378',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\n',
+    ' ',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] SPACE (Other) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    ' ',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\n',
+    '\r',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\r',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\n',
+    '\n',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\n',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\n',
+    '\x01',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\x01',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\n',
+    '\u200c',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\n',
+    '\u0308\u200c',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\n',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\n',
+    '\u0600',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u0600',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\n',
+    '\u0a03',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\n',
+    '\u0308\u0a03',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\n',
+    '\u1100',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u1100',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\n',
+    '\u1160',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u1160',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\n',
+    '\u11a8',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\n',
+    '\uac00',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\uac00',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\n',
+    '\uac01',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\uac01',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\n',
+    '\u0903',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\n',
+    '\u0308\u0903',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\n',
+    '\u0904',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u0904',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\n',
+    '\u0d4e',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\n',
+    '\u0915',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u0915',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\n',
+    '\u231a',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u231a',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\n',
+    '\u0300',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u0308\u0300',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u0900',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u0308\u0900',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u094d',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u0308\u094d',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u200d',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u0308\u200d',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\n',
+    '\u0378',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\n',
+    '\u0308',
+    '\u0378',
+  ], // ÷ [0.2] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\x01',
+    ' ',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] SPACE (Other) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    ' ',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\x01',
+    '\r',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\r',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\x01',
+    '\n',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\n',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\x01',
+    '\x01',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\x01',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\x01',
+    '\u200c',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308\u200c',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\x01',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\x01',
+    '\u0600',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u0600',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\x01',
+    '\u0a03',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308\u0a03',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\x01',
+    '\u1100',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u1100',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\x01',
+    '\u1160',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u1160',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\x01',
+    '\u11a8',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\x01',
+    '\uac00',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\uac00',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\x01',
+    '\uac01',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\uac01',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\x01',
+    '\u0903',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308\u0903',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\x01',
+    '\u0904',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u0904',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\x01',
+    '\u0d4e',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\x01',
+    '\u0915',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u0915',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\x01',
+    '\u231a',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u231a',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\x01',
+    '\u0300',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308\u0300',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u0900',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308\u0900',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u094d',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308\u094d',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u200d',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308\u200d',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\x01',
+    '\u0378',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\x01',
+    '\u0308',
+    '\u0378',
+  ], // ÷ [0.2] <START OF HEADING> (Control) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u200c',
+    ' ',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    ' ',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u200c',
+    '\r',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\r',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u200c',
+    '\n',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\n',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u200c',
+    '\x01',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\x01',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u200c\u200c',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u200c\u0308\u200c',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u200c',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u200c',
+    '\u0600',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u0600',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u200c\u0a03',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u200c\u0308\u0a03',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u200c',
+    '\u1100',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u1100',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u200c',
+    '\u1160',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u1160',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u200c',
+    '\u11a8',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u200c',
+    '\uac00',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\uac00',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u200c',
+    '\uac01',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\uac01',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u200c\u0903',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200c\u0308\u0903',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200c',
+    '\u0904',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u0904',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200c',
+    '\u0d4e',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200c',
+    '\u0915',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u0915',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u200c',
+    '\u231a',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u231a',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u200c\u0300',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c\u0308\u0300',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c\u0900',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c\u0308\u0900',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c\u094d',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c\u0308\u094d',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c\u200d',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c\u0308\u200d',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200c',
+    '\u0378',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u200c\u0308',
+    '\u0378',
+  ], // ÷ [0.2] ZERO WIDTH NON-JOINER (Extend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    ' ',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    ' ',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\r',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\r',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\n',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\n',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\x01',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\x01',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u{1f1e6}\u200c',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308\u200c',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u{1f1e6}\u{1f1e6}',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [12.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u0600',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u0600',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0a03',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308\u0a03',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u1100',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u1100',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u1160',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u1160',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u11a8',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\uac00',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\uac00',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\uac01',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\uac01',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0903',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308\u0903',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u0904',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u0904',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u0d4e',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u0915',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u0915',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u231a',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u231a',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0300',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308\u0300',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0900',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308\u0900',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}\u094d',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308\u094d',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}\u200d',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308\u200d',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f1e6}',
+    '\u0378',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u{1f1e6}\u0308',
+    '\u0378',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0600 ',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] SPACE (Other) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    ' ',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0600',
+    '\r',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\r',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0600',
+    '\n',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\n',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0600',
+    '\x01',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\x01',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0600\u200c',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0600\u0308\u200c',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0600\u{1f1e6}',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0600\u0600',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u0600',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0600\u0a03',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0600\u0308\u0a03',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0600\u1100',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u1100',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0600\u1160',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u1160',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0600\u11a8',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0600\uac00',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\uac00',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0600\uac01',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\uac01',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0600\u0903',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0600\u0308\u0903',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0600\u0904',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u0904',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0600\u0d4e',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0600\u0915',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u0915',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0600\u231a',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u231a',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0600\u0300',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u0308\u0300',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u0900',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u0308\u0900',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u094d',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u0308\u094d',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u200d',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u0308\u200d',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0600\u0378',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.2] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0600\u0308',
+    '\u0378',
+  ], // ÷ [0.2] ARABIC NUMBER SIGN (Prepend) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0a03',
+    ' ',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    ' ',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0a03',
+    '\r',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\r',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0a03',
+    '\n',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\n',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0a03',
+    '\x01',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\x01',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0a03\u200c',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0a03\u0308\u200c',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u0600',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u0600',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0a03\u0a03',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0a03\u0308\u0a03',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u1100',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u1100',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u1160',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u1160',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u11a8',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0a03',
+    '\uac00',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\uac00',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0a03',
+    '\uac01',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\uac01',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0a03\u0903',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0a03\u0308\u0903',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u0904',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u0904',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u0d4e',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u0915',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u0915',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u231a',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u231a',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0a03\u0300',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03\u0308\u0300',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03\u0900',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03\u0308\u0900',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03\u094d',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03\u0308\u094d',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03\u200d',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03\u0308\u200d',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0a03',
+    '\u0378',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0a03\u0308',
+    '\u0378',
+  ], // ÷ [0.2] GURMUKHI SIGN VISARGA (SpacingMark) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u1100',
+    ' ',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    ' ',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u1100',
+    '\r',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\r',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u1100',
+    '\n',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\n',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u1100',
+    '\x01',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\x01',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u1100\u200c',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u1100\u0308\u200c',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u1100',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u1100',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u1100\u0a03',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u1100\u0308\u0a03',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u1100\u1100',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u1100\u1160',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u1160',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u1100',
+    '\u11a8',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u1100\uac00',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u1100\uac01',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u1100\u0903',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1100\u0308\u0903',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1100',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1100',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1100',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u1100',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u1100\u0300',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100\u0308\u0300',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100\u0900',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100\u0308\u0900',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100\u094d',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100\u0308\u094d',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100\u200d',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100\u0308\u200d',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1100',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u1100\u0308',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u1160',
+    ' ',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    ' ',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u1160',
+    '\r',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\r',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u1160',
+    '\n',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\n',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u1160',
+    '\x01',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\x01',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u1160\u200c',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u1160\u0308\u200c',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u1160',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u1160',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u1160\u0a03',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u1160\u0308\u0a03',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u1160',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u1160\u1160',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [7.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u1160',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u1160\u11a8',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u1160',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u1160',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u1160\u0903',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1160\u0308\u0903',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1160',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1160',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u1160',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u1160',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u1160\u0300',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160\u0308\u0300',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160\u0900',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160\u0308\u0900',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160\u094d',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160\u0308\u094d',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160\u200d',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160\u0308\u200d',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u1160',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u1160\u0308',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL JUNGSEONG FILLER (V) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u11a8',
+    ' ',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    ' ',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u11a8',
+    '\r',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\r',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u11a8',
+    '\n',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\n',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u11a8',
+    '\x01',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\x01',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u11a8\u200c',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u11a8\u0308\u200c',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u11a8\u0a03',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u11a8\u0308\u0a03',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u1160',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u1160',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u11a8\u11a8',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u11a8',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u11a8',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u11a8\u0903',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u11a8\u0308\u0903',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u11a8\u0300',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8\u0308\u0300',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8\u0900',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8\u0308\u0900',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8\u094d',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8\u0308\u094d',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8\u200d',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8\u0308\u200d',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u11a8',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u11a8\u0308',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL JONGSEONG KIYEOK (T) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\uac00',
+    ' ',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    ' ',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\uac00',
+    '\r',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\r',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\uac00',
+    '\n',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\n',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\uac00',
+    '\x01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\x01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\uac00\u200c',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\uac00\u0308\u200c',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\uac00',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\uac00',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\uac00\u0a03',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\uac00\u0308\u0a03',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\uac00',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\uac00\u1160',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u1160',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\uac00\u11a8',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\uac00',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\uac00',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\uac00\u0903',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac00\u0308\u0903',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac00',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac00',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac00',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\uac00',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\uac00\u0300',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00\u0308\u0300',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00\u0900',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00\u0308\u0900',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00\u094d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00\u0308\u094d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00\u200d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00\u0308\u200d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac00',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\uac00\u0308',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\uac01',
+    ' ',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    ' ',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\uac01',
+    '\r',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\r',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\uac01',
+    '\n',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\n',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\uac01',
+    '\x01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\x01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\uac01\u200c',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\uac01\u0308\u200c',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\uac01',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\uac01',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u0600',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\uac01\u0a03',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\uac01\u0308\u0a03',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\uac01',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\uac01',
+    '\u1160',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u1160',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\uac01\u11a8',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\uac01',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\uac00',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\uac01',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\uac01',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\uac01\u0903',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac01\u0308\u0903',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac01',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u0904',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac01',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\uac01',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u0915',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\uac01',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u231a',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\uac01\u0300',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01\u0308\u0300',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01\u0900',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01\u0308\u0900',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01\u094d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01\u0308\u094d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01\u200d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01\u0308\u200d',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\uac01',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\uac01\u0308',
+    '\u0378',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0903',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0903',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0903',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0903',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0903\u200c',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0903\u0308\u200c',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0903',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0903',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0903\u0a03',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0903\u0308\u0a03',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0903',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0903',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0903',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0903',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0903',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0903\u0903',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0903\u0308\u0903',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0903',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0903',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0903',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0903',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0903\u0300',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903\u0308\u0300',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903\u0900',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903\u0308\u0900',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903\u094d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903\u0308\u094d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903\u200d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903\u0308\u200d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0903',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0903\u0308',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0904',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0904',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0904',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0904',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0904\u200c',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0904\u0308\u200c',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0904',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0904',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0904\u0a03',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0904\u0308\u0a03',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0904',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0904',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0904',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0904',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0904',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0904\u0903',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0904\u0308\u0903',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0904',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0904',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0904',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0904',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0904\u0300',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904\u0308\u0300',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904\u0900',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904\u0308\u0900',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904\u094d',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904\u0308\u094d',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904\u200d',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904\u0308\u200d',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0904',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0904\u0308',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0d4e ',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] SPACE (Other) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    ' ',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0d4e',
+    '\r',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\r',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0d4e',
+    '\n',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\n',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0d4e',
+    '\x01',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\x01',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0d4e\u200c',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0d4e\u0308\u200c',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0d4e\u{1f1e6}',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0d4e\u0600',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u0600',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0d4e\u0a03',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0d4e\u0308\u0a03',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0d4e\u1100',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u1100',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0d4e\u1160',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u1160',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0d4e\u11a8',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0d4e\uac00',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\uac00',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0d4e\uac01',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\uac01',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0d4e\u0903',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0d4e\u0308\u0903',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0d4e\u0904',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u0904',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0d4e\u0d4e',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0d4e\u0915',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u0915',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0d4e\u231a',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u231a',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0d4e\u0300',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u0308\u0300',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u0900',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u0308\u0900',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u094d',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u0308\u094d',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u200d',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u0308\u200d',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0d4e\u0378',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.2] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0d4e\u0308',
+    '\u0378',
+  ], // ÷ [0.2] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0915',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0915',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0915',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0915',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0915\u200c',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0915\u0308\u200c',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0915',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0915',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0915\u0a03',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0915\u0308\u0a03',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0915',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0915',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0915',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0915',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0915',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0915\u0903',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0915\u0308\u0903',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0915',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0915',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0915',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0915\u0300',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915\u0308\u0300',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915\u0900',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915\u0308\u0900',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915\u094d',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915\u0308\u094d',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915\u200d',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915\u0308\u200d',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0915',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0915\u0308',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u231a',
+    ' ',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    ' ',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u231a',
+    '\r',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\r',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u231a',
+    '\n',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\n',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u231a',
+    '\x01',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\x01',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u231a\u200c',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u231a\u0308\u200c',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u231a',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u231a',
+    '\u0600',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u0600',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u231a\u0a03',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u231a\u0308\u0a03',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u231a',
+    '\u1100',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u1100',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u231a',
+    '\u1160',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u1160',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u231a',
+    '\u11a8',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u231a',
+    '\uac00',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\uac00',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u231a',
+    '\uac01',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\uac01',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u231a\u0903',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u231a\u0308\u0903',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u231a',
+    '\u0904',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u0904',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u231a',
+    '\u0d4e',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u231a',
+    '\u0915',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u0915',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u231a',
+    '\u231a',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u231a',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u231a\u0300',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a\u0308\u0300',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a\u0900',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a\u0308\u0900',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a\u094d',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a\u0308\u094d',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a\u200d',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a\u0308\u200d',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u231a',
+    '\u0378',
+  ], // ÷ [0.2] WATCH (ExtPict) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u231a\u0308',
+    '\u0378',
+  ], // ÷ [0.2] WATCH (ExtPict) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0300',
+    ' ',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    ' ',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0300',
+    '\r',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\r',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0300',
+    '\n',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\n',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0300',
+    '\x01',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\x01',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0300\u200c',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0300\u0308\u200c',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0300',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0300',
+    '\u0600',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u0600',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0300\u0a03',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0300\u0308\u0a03',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0300',
+    '\u1100',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u1100',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0300',
+    '\u1160',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u1160',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0300',
+    '\u11a8',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0300',
+    '\uac00',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\uac00',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0300',
+    '\uac01',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\uac01',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0300\u0903',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0300\u0308\u0903',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0300',
+    '\u0904',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u0904',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0300',
+    '\u0d4e',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0300',
+    '\u0915',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u0915',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0300',
+    '\u231a',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u231a',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0300\u0300',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300\u0308\u0300',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300\u0900',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300\u0308\u0900',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300\u094d',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300\u0308\u094d',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300\u200d',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300\u0308\u200d',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0300',
+    '\u0378',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0300\u0308',
+    '\u0378',
+  ], // ÷ [0.2] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0900',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0900',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0900',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0900',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0900\u200c',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0900\u0308\u200c',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0900',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0900',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0900\u0a03',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0900\u0308\u0a03',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0900',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0900',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0900',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0900',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0900',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0900\u0903',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0900\u0308\u0903',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0900',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0900',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0900',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0900',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0900\u0300',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900\u0308\u0300',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900\u0900',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900\u0308\u0900',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900\u094d',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900\u0308\u094d',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900\u200d',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900\u0308\u200d',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0900',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0900\u0308',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u094d',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    ' ',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u094d',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\r',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u094d',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\n',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u094d',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\x01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u094d\u200c',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u094d\u0308\u200c',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u094d',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u094d',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u0600',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u094d\u0a03',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u094d\u0308\u0a03',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u094d',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u1100',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u094d',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u1160',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u094d',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u094d',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\uac00',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u094d',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\uac01',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u094d\u0903',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u094d\u0308\u0903',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u094d',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u0904',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u094d',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u094d',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u0915',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u094d',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u231a',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u094d\u0300',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d\u0308\u0300',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d\u0900',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d\u0308\u0900',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d\u094d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d\u0308\u094d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d\u200d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d\u0308\u200d',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u094d',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u094d\u0308',
+    '\u0378',
+  ], // ÷ [0.2] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u200d',
+    ' ',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    ' ',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u200d',
+    '\r',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\r',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u200d',
+    '\n',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\n',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u200d',
+    '\x01',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\x01',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u200d\u200c',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u200d\u0308\u200c',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u200d',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u200d',
+    '\u0600',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u0600',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u200d\u0a03',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u200d\u0308\u0a03',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u200d',
+    '\u1100',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u1100',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u200d',
+    '\u1160',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u1160',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u200d',
+    '\u11a8',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u200d',
+    '\uac00',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\uac00',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u200d',
+    '\uac01',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\uac01',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u200d\u0903',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200d\u0308\u0903',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200d',
+    '\u0904',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u0904',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200d',
+    '\u0d4e',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u200d',
+    '\u0915',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u0915',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u200d',
+    '\u231a',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u231a',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u200d\u0300',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d\u0308\u0300',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d\u0900',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d\u0308\u0900',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d\u094d',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d\u0308\u094d',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d\u200d',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d\u0308\u200d',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u200d',
+    '\u0378',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u200d\u0308',
+    '\u0378',
+  ], // ÷ [0.2] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0378',
+    ' ',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    ' ',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u0378',
+    '\r',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\r',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <CARRIAGE RETURN (CR)> (CR) ÷ [0.3]
+  [
+    '\u0378',
+    '\n',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\n',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [0.3]
+  [
+    '\u0378',
+    '\x01',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\x01',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [5.0] <START OF HEADING> (Control) ÷ [0.3]
+  [
+    '\u0378\u200c',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0378\u0308\u200c',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH NON-JOINER (Extend) ÷ [0.3]
+  [
+    '\u0378',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u{1f1e6}',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) ÷ [0.3]
+  [
+    '\u0378',
+    '\u0600',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u0600',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) ÷ [0.3]
+  [
+    '\u0378\u0a03',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0378\u0308\u0a03',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] GURMUKHI SIGN VISARGA (SpacingMark) ÷ [0.3]
+  [
+    '\u0378',
+    '\u1100',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u1100',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u0378',
+    '\u1160',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u1160',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JUNGSEONG FILLER (V) ÷ [0.3]
+  [
+    '\u0378',
+    '\u11a8',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u11a8',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL JONGSEONG KIYEOK (T) ÷ [0.3]
+  [
+    '\u0378',
+    '\uac00',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\uac00',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GA (LV) ÷ [0.3]
+  [
+    '\u0378',
+    '\uac01',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\uac01',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] HANGUL SYLLABLE GAG (LVT) ÷ [0.3]
+  [
+    '\u0378\u0903',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0378\u0308\u0903',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0378',
+    '\u0904',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u0904',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER SHORT A (ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0378',
+    '\u0d4e',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u0d4e',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] MALAYALAM LETTER DOT REPH (Prepend_ConjunctLinkingScripts) ÷ [0.3]
+  [
+    '\u0378',
+    '\u0915',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u0915',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0378',
+    '\u231a',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u231a',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] WATCH (ExtPict) ÷ [0.3]
+  [
+    '\u0378\u0300',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378\u0308\u0300',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] COMBINING GRAVE ACCENT (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378\u0900',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378\u0308\u0900',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN INVERTED CANDRABINDU (Extend_ConjunctLinkingScripts_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378\u094d',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378\u0308\u094d',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378\u200d',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378\u0308\u200d',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    '\u0378',
+    '\u0378',
+  ], // ÷ [0.2] <reserved-0378> (Other) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\u0378\u0308',
+    '\u0378',
+  ], // ÷ [0.2] <reserved-0378> (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] <reserved-0378> (Other) ÷ [0.3]
+  [
+    '\r\n',
+    'a',
+    '\n',
+    '\u0308',
+  ], // ÷ [0.2] <CARRIAGE RETURN (CR)> (CR) × [3.0] <LINE FEED (LF)> (LF) ÷ [4.0] LATIN SMALL LETTER A (Other) ÷ [5.0] <LINE FEED (LF)> (LF) ÷ [4.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    'a\u0308',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    ' \u200d',
+    '\u0646',
+  ], // ÷ [0.2] SPACE (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] ARABIC LETTER NOON (Other) ÷ [0.3]
+  [
+    '\u0646\u200d',
+    ' ',
+  ], // ÷ [0.2] ARABIC LETTER NOON (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] SPACE (Other) ÷ [0.3]
+  [
+    '\u1100\u1100',
+  ], // ÷ [0.2] HANGUL CHOSEONG KIYEOK (L) × [6.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\uac00\u11a8',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL SYLLABLE GA (LV) × [7.0] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\uac01\u11a8',
+    '\u1100',
+  ], // ÷ [0.2] HANGUL SYLLABLE GAG (LVT) × [8.0] HANGUL JONGSEONG KIYEOK (T) ÷ [999.0] HANGUL CHOSEONG KIYEOK (L) ÷ [0.3]
+  [
+    '\u{1f1e6}\u{1f1e7}',
+    '\u{1f1e8}',
+    'b',
+  ], // ÷ [0.2] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [12.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    'a',
+    '\u{1f1e6}\u{1f1e7}',
+    '\u{1f1e8}',
+    'b',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    'a',
+    '\u{1f1e6}\u{1f1e7}\u200d',
+    '\u{1f1e8}',
+    'b',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    'a',
+    '\u{1f1e6}\u200d',
+    '\u{1f1e7}\u{1f1e8}',
+    'b',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    'a',
+    '\u{1f1e6}\u{1f1e7}',
+    '\u{1f1e8}\u{1f1e9}',
+    'b',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER A (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER B (RI) ÷ [999.0] REGIONAL INDICATOR SYMBOL LETTER C (RI) × [13.0] REGIONAL INDICATOR SYMBOL LETTER D (RI) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    'a\u200d',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [0.3]
+  [
+    'a\u0308',
+    'b',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    'a\u0903',
+    'b',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.1] DEVANAGARI SIGN VISARGA (SpacingMark_ConjunctLinkingScripts) ÷ [999.0] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    'a',
+    '\u0600b',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) ÷ [999.0] ARABIC NUMBER SIGN (Prepend) × [9.2] LATIN SMALL LETTER B (Other) ÷ [0.3]
+  [
+    '\u{1f476}\u{1f3ff}',
+    '\u{1f476}',
+  ], // ÷ [0.2] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) ÷ [0.3]
+  [
+    'a\u{1f3ff}',
+    '\u{1f476}',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) ÷ [0.3]
+  [
+    'a\u{1f3ff}',
+    '\u{1f476}\u200d\u{1f6d1}',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [999.0] BABY (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]
+  [
+    '\u{1f476}\u{1f3ff}\u0308\u200d\u{1f476}\u{1f3ff}',
+  ], // ÷ [0.2] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) × [9.0] COMBINING DIAERESIS (Extend_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] BABY (ExtPict) × [9.0] EMOJI MODIFIER FITZPATRICK TYPE-6 (Extend_ExtCccZwj) ÷ [0.3]
+  [
+    '\u{1f6d1}\u200d\u{1f6d1}',
+  ], // ÷ [0.2] OCTAGONAL SIGN (ExtPict) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]
+  [
+    'a\u200d',
+    '\u{1f6d1}',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] OCTAGONAL SIGN (ExtPict) ÷ [0.3]
+  [
+    '\u2701\u200d\u2701',
+  ], // ÷ [0.2] UPPER BLADE SCISSORS (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [11.0] UPPER BLADE SCISSORS (Other) ÷ [0.3]
+  [
+    'a\u200d',
+    '\u2701',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) ÷ [999.0] UPPER BLADE SCISSORS (Other) ÷ [0.3]
+  [
+    '\u0915',
+    '\u0924',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u094d\u0924',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u094d\u094d\u0924',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u094d\u200d\u0924',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u093c\u200d\u094d\u0924',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN NUKTA (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u093c\u094d\u200d\u0924',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN NUKTA (Extend_ConjunctLinkingScripts_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] ZERO WIDTH JOINER (ZWJ_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u094d\u0924\u094d\u092f',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER YA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u094d',
+    'a',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] LATIN SMALL LETTER A (Other) ÷ [0.3]
+  [
+    'a\u094d',
+    '\u0924',
+  ], // ÷ [0.2] LATIN SMALL LETTER A (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '?\u094d',
+    '\u0924',
+  ], // ÷ [0.2] QUESTION MARK (Other) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) ÷ [999.0] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
+  [
+    '\u0915\u094d\u094d\u0924',
+  ], // ÷ [0.2] DEVANAGARI LETTER KA (ConjunctLinkingScripts_LinkingConsonant) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.0] DEVANAGARI SIGN VIRAMA (Extend_ConjunctLinkingScripts_ConjunctLinker_ExtCccZwj) × [9.3] DEVANAGARI LETTER TA (ConjunctLinkingScripts_LinkingConsonant) ÷ [0.3]
 ];
 // Emoji tests.
 const List<List<String>> emojis = [
-  ['\u{1f600}'],
-  ['\u{1f603}'],
-  ['\u{1f604}'],
-  ['\u{1f601}'],
-  ['\u{1f606}'],
-  ['\u{1f605}'],
-  ['\u{1f923}'],
-  ['\u{1f602}'],
-  ['\u{1f642}'],
-  ['\u{1f643}'],
-  ['\u{1fae0}'],
-  ['\u{1f609}'],
-  ['\u{1f60a}'],
-  ['\u{1f607}'],
-  ['\u{1f970}'],
-  ['\u{1f60d}'],
-  ['\u{1f929}'],
-  ['\u{1f618}'],
-  ['\u{1f617}'],
-  ['\u263a\ufe0f'],
-  ['\u263a'],
-  ['\u{1f61a}'],
-  ['\u{1f619}'],
-  ['\u{1f972}'],
-  ['\u{1f60b}'],
-  ['\u{1f61b}'],
-  ['\u{1f61c}'],
-  ['\u{1f92a}'],
-  ['\u{1f61d}'],
-  ['\u{1f911}'],
-  ['\u{1f917}'],
-  ['\u{1f92d}'],
-  ['\u{1fae2}'],
-  ['\u{1fae3}'],
-  ['\u{1f92b}'],
-  ['\u{1f914}'],
-  ['\u{1fae1}'],
-  ['\u{1f910}'],
-  ['\u{1f928}'],
-  ['\u{1f610}'],
-  ['\u{1f611}'],
-  ['\u{1f636}'],
-  ['\u{1fae5}'],
-  ['\u{1f636}\u200d\u{1f32b}\ufe0f'],
-  ['\u{1f636}\u200d\u{1f32b}'],
-  ['\u{1f60f}'],
-  ['\u{1f612}'],
-  ['\u{1f644}'],
-  ['\u{1f62c}'],
-  ['\u{1f62e}\u200d\u{1f4a8}'],
-  ['\u{1f925}'],
-  ['\u{1fae8}'],
-  ['\u{1f60c}'],
-  ['\u{1f614}'],
-  ['\u{1f62a}'],
-  ['\u{1f924}'],
-  ['\u{1f634}'],
-  ['\u{1f637}'],
-  ['\u{1f912}'],
-  ['\u{1f915}'],
-  ['\u{1f922}'],
-  ['\u{1f92e}'],
-  ['\u{1f927}'],
-  ['\u{1f975}'],
-  ['\u{1f976}'],
-  ['\u{1f974}'],
-  ['\u{1f635}'],
-  ['\u{1f635}\u200d\u{1f4ab}'],
-  ['\u{1f92f}'],
-  ['\u{1f920}'],
-  ['\u{1f973}'],
-  ['\u{1f978}'],
-  ['\u{1f60e}'],
-  ['\u{1f913}'],
-  ['\u{1f9d0}'],
-  ['\u{1f615}'],
-  ['\u{1fae4}'],
-  ['\u{1f61f}'],
-  ['\u{1f641}'],
-  ['\u2639\ufe0f'],
-  ['\u2639'],
-  ['\u{1f62e}'],
-  ['\u{1f62f}'],
-  ['\u{1f632}'],
-  ['\u{1f633}'],
-  ['\u{1f97a}'],
-  ['\u{1f979}'],
-  ['\u{1f626}'],
-  ['\u{1f627}'],
-  ['\u{1f628}'],
-  ['\u{1f630}'],
-  ['\u{1f625}'],
-  ['\u{1f622}'],
-  ['\u{1f62d}'],
-  ['\u{1f631}'],
-  ['\u{1f616}'],
-  ['\u{1f623}'],
-  ['\u{1f61e}'],
-  ['\u{1f613}'],
-  ['\u{1f629}'],
-  ['\u{1f62b}'],
-  ['\u{1f971}'],
-  ['\u{1f624}'],
-  ['\u{1f621}'],
-  ['\u{1f620}'],
-  ['\u{1f92c}'],
-  ['\u{1f608}'],
-  ['\u{1f47f}'],
-  ['\u{1f480}'],
-  ['\u2620\ufe0f'],
-  ['\u2620'],
-  ['\u{1f4a9}'],
-  ['\u{1f921}'],
-  ['\u{1f479}'],
-  ['\u{1f47a}'],
-  ['\u{1f47b}'],
-  ['\u{1f47d}'],
-  ['\u{1f47e}'],
-  ['\u{1f916}'],
-  ['\u{1f63a}'],
-  ['\u{1f638}'],
-  ['\u{1f639}'],
-  ['\u{1f63b}'],
-  ['\u{1f63c}'],
-  ['\u{1f63d}'],
-  ['\u{1f640}'],
-  ['\u{1f63f}'],
-  ['\u{1f63e}'],
-  ['\u{1f648}'],
-  ['\u{1f649}'],
-  ['\u{1f64a}'],
-  ['\u{1f48c}'],
-  ['\u{1f498}'],
-  ['\u{1f49d}'],
-  ['\u{1f496}'],
-  ['\u{1f497}'],
-  ['\u{1f493}'],
-  ['\u{1f49e}'],
-  ['\u{1f495}'],
-  ['\u{1f49f}'],
-  ['\u2763\ufe0f'],
-  ['\u2763'],
-  ['\u{1f494}'],
-  ['\u2764\ufe0f\u200d\u{1f525}'],
-  ['\u2764\u200d\u{1f525}'],
-  ['\u2764\ufe0f\u200d\u{1fa79}'],
-  ['\u2764\u200d\u{1fa79}'],
-  ['\u2764\ufe0f'],
-  ['\u2764'],
-  ['\u{1fa77}'],
-  ['\u{1f9e1}'],
-  ['\u{1f49b}'],
-  ['\u{1f49a}'],
-  ['\u{1f499}'],
-  ['\u{1fa75}'],
-  ['\u{1f49c}'],
-  ['\u{1f90e}'],
-  ['\u{1f5a4}'],
-  ['\u{1fa76}'],
-  ['\u{1f90d}'],
-  ['\u{1f48b}'],
-  ['\u{1f4af}'],
-  ['\u{1f4a2}'],
-  ['\u{1f4a5}'],
-  ['\u{1f4ab}'],
-  ['\u{1f4a6}'],
-  ['\u{1f4a8}'],
-  ['\u{1f573}\ufe0f'],
-  ['\u{1f573}'],
-  ['\u{1f4ac}'],
-  ['\u{1f441}\ufe0f\u200d\u{1f5e8}\ufe0f'],
-  ['\u{1f441}\u200d\u{1f5e8}\ufe0f'],
-  ['\u{1f441}\ufe0f\u200d\u{1f5e8}'],
-  ['\u{1f441}\u200d\u{1f5e8}'],
-  ['\u{1f5e8}\ufe0f'],
-  ['\u{1f5e8}'],
-  ['\u{1f5ef}\ufe0f'],
-  ['\u{1f5ef}'],
-  ['\u{1f4ad}'],
-  ['\u{1f4a4}'],
-  ['\u{1f44b}'],
-  ['\u{1f44b}\u{1f3fb}'],
-  ['\u{1f44b}\u{1f3fc}'],
-  ['\u{1f44b}\u{1f3fd}'],
-  ['\u{1f44b}\u{1f3fe}'],
-  ['\u{1f44b}\u{1f3ff}'],
-  ['\u{1f91a}'],
-  ['\u{1f91a}\u{1f3fb}'],
-  ['\u{1f91a}\u{1f3fc}'],
-  ['\u{1f91a}\u{1f3fd}'],
-  ['\u{1f91a}\u{1f3fe}'],
-  ['\u{1f91a}\u{1f3ff}'],
-  ['\u{1f590}\ufe0f'],
-  ['\u{1f590}'],
-  ['\u{1f590}\u{1f3fb}'],
-  ['\u{1f590}\u{1f3fc}'],
-  ['\u{1f590}\u{1f3fd}'],
-  ['\u{1f590}\u{1f3fe}'],
-  ['\u{1f590}\u{1f3ff}'],
-  ['\u270b'],
-  ['\u270b\u{1f3fb}'],
-  ['\u270b\u{1f3fc}'],
-  ['\u270b\u{1f3fd}'],
-  ['\u270b\u{1f3fe}'],
-  ['\u270b\u{1f3ff}'],
-  ['\u{1f596}'],
-  ['\u{1f596}\u{1f3fb}'],
-  ['\u{1f596}\u{1f3fc}'],
-  ['\u{1f596}\u{1f3fd}'],
-  ['\u{1f596}\u{1f3fe}'],
-  ['\u{1f596}\u{1f3ff}'],
-  ['\u{1faf1}'],
-  ['\u{1faf1}\u{1f3fb}'],
-  ['\u{1faf1}\u{1f3fc}'],
-  ['\u{1faf1}\u{1f3fd}'],
-  ['\u{1faf1}\u{1f3fe}'],
-  ['\u{1faf1}\u{1f3ff}'],
-  ['\u{1faf2}'],
-  ['\u{1faf2}\u{1f3fb}'],
-  ['\u{1faf2}\u{1f3fc}'],
-  ['\u{1faf2}\u{1f3fd}'],
-  ['\u{1faf2}\u{1f3fe}'],
-  ['\u{1faf2}\u{1f3ff}'],
-  ['\u{1faf3}'],
-  ['\u{1faf3}\u{1f3fb}'],
-  ['\u{1faf3}\u{1f3fc}'],
-  ['\u{1faf3}\u{1f3fd}'],
-  ['\u{1faf3}\u{1f3fe}'],
-  ['\u{1faf3}\u{1f3ff}'],
-  ['\u{1faf4}'],
-  ['\u{1faf4}\u{1f3fb}'],
-  ['\u{1faf4}\u{1f3fc}'],
-  ['\u{1faf4}\u{1f3fd}'],
-  ['\u{1faf4}\u{1f3fe}'],
-  ['\u{1faf4}\u{1f3ff}'],
-  ['\u{1faf7}'],
-  ['\u{1faf7}\u{1f3fb}'],
-  ['\u{1faf7}\u{1f3fc}'],
-  ['\u{1faf7}\u{1f3fd}'],
-  ['\u{1faf7}\u{1f3fe}'],
-  ['\u{1faf7}\u{1f3ff}'],
-  ['\u{1faf8}'],
-  ['\u{1faf8}\u{1f3fb}'],
-  ['\u{1faf8}\u{1f3fc}'],
-  ['\u{1faf8}\u{1f3fd}'],
-  ['\u{1faf8}\u{1f3fe}'],
-  ['\u{1faf8}\u{1f3ff}'],
-  ['\u{1f44c}'],
-  ['\u{1f44c}\u{1f3fb}'],
-  ['\u{1f44c}\u{1f3fc}'],
-  ['\u{1f44c}\u{1f3fd}'],
-  ['\u{1f44c}\u{1f3fe}'],
-  ['\u{1f44c}\u{1f3ff}'],
-  ['\u{1f90c}'],
-  ['\u{1f90c}\u{1f3fb}'],
-  ['\u{1f90c}\u{1f3fc}'],
-  ['\u{1f90c}\u{1f3fd}'],
-  ['\u{1f90c}\u{1f3fe}'],
-  ['\u{1f90c}\u{1f3ff}'],
-  ['\u{1f90f}'],
-  ['\u{1f90f}\u{1f3fb}'],
-  ['\u{1f90f}\u{1f3fc}'],
-  ['\u{1f90f}\u{1f3fd}'],
-  ['\u{1f90f}\u{1f3fe}'],
-  ['\u{1f90f}\u{1f3ff}'],
-  ['\u270c\ufe0f'],
-  ['\u270c'],
-  ['\u270c\u{1f3fb}'],
-  ['\u270c\u{1f3fc}'],
-  ['\u270c\u{1f3fd}'],
-  ['\u270c\u{1f3fe}'],
-  ['\u270c\u{1f3ff}'],
-  ['\u{1f91e}'],
-  ['\u{1f91e}\u{1f3fb}'],
-  ['\u{1f91e}\u{1f3fc}'],
-  ['\u{1f91e}\u{1f3fd}'],
-  ['\u{1f91e}\u{1f3fe}'],
-  ['\u{1f91e}\u{1f3ff}'],
-  ['\u{1faf0}'],
-  ['\u{1faf0}\u{1f3fb}'],
-  ['\u{1faf0}\u{1f3fc}'],
-  ['\u{1faf0}\u{1f3fd}'],
-  ['\u{1faf0}\u{1f3fe}'],
-  ['\u{1faf0}\u{1f3ff}'],
-  ['\u{1f91f}'],
-  ['\u{1f91f}\u{1f3fb}'],
-  ['\u{1f91f}\u{1f3fc}'],
-  ['\u{1f91f}\u{1f3fd}'],
-  ['\u{1f91f}\u{1f3fe}'],
-  ['\u{1f91f}\u{1f3ff}'],
-  ['\u{1f918}'],
-  ['\u{1f918}\u{1f3fb}'],
-  ['\u{1f918}\u{1f3fc}'],
-  ['\u{1f918}\u{1f3fd}'],
-  ['\u{1f918}\u{1f3fe}'],
-  ['\u{1f918}\u{1f3ff}'],
-  ['\u{1f919}'],
-  ['\u{1f919}\u{1f3fb}'],
-  ['\u{1f919}\u{1f3fc}'],
-  ['\u{1f919}\u{1f3fd}'],
-  ['\u{1f919}\u{1f3fe}'],
-  ['\u{1f919}\u{1f3ff}'],
-  ['\u{1f448}'],
-  ['\u{1f448}\u{1f3fb}'],
-  ['\u{1f448}\u{1f3fc}'],
-  ['\u{1f448}\u{1f3fd}'],
-  ['\u{1f448}\u{1f3fe}'],
-  ['\u{1f448}\u{1f3ff}'],
-  ['\u{1f449}'],
-  ['\u{1f449}\u{1f3fb}'],
-  ['\u{1f449}\u{1f3fc}'],
-  ['\u{1f449}\u{1f3fd}'],
-  ['\u{1f449}\u{1f3fe}'],
-  ['\u{1f449}\u{1f3ff}'],
-  ['\u{1f446}'],
-  ['\u{1f446}\u{1f3fb}'],
-  ['\u{1f446}\u{1f3fc}'],
-  ['\u{1f446}\u{1f3fd}'],
-  ['\u{1f446}\u{1f3fe}'],
-  ['\u{1f446}\u{1f3ff}'],
-  ['\u{1f595}'],
-  ['\u{1f595}\u{1f3fb}'],
-  ['\u{1f595}\u{1f3fc}'],
-  ['\u{1f595}\u{1f3fd}'],
-  ['\u{1f595}\u{1f3fe}'],
-  ['\u{1f595}\u{1f3ff}'],
-  ['\u{1f447}'],
-  ['\u{1f447}\u{1f3fb}'],
-  ['\u{1f447}\u{1f3fc}'],
-  ['\u{1f447}\u{1f3fd}'],
-  ['\u{1f447}\u{1f3fe}'],
-  ['\u{1f447}\u{1f3ff}'],
-  ['\u261d\ufe0f'],
-  ['\u261d'],
-  ['\u261d\u{1f3fb}'],
-  ['\u261d\u{1f3fc}'],
-  ['\u261d\u{1f3fd}'],
-  ['\u261d\u{1f3fe}'],
-  ['\u261d\u{1f3ff}'],
-  ['\u{1faf5}'],
-  ['\u{1faf5}\u{1f3fb}'],
-  ['\u{1faf5}\u{1f3fc}'],
-  ['\u{1faf5}\u{1f3fd}'],
-  ['\u{1faf5}\u{1f3fe}'],
-  ['\u{1faf5}\u{1f3ff}'],
-  ['\u{1f44d}'],
-  ['\u{1f44d}\u{1f3fb}'],
-  ['\u{1f44d}\u{1f3fc}'],
-  ['\u{1f44d}\u{1f3fd}'],
-  ['\u{1f44d}\u{1f3fe}'],
-  ['\u{1f44d}\u{1f3ff}'],
-  ['\u{1f44e}'],
-  ['\u{1f44e}\u{1f3fb}'],
-  ['\u{1f44e}\u{1f3fc}'],
-  ['\u{1f44e}\u{1f3fd}'],
-  ['\u{1f44e}\u{1f3fe}'],
-  ['\u{1f44e}\u{1f3ff}'],
-  ['\u270a'],
-  ['\u270a\u{1f3fb}'],
-  ['\u270a\u{1f3fc}'],
-  ['\u270a\u{1f3fd}'],
-  ['\u270a\u{1f3fe}'],
-  ['\u270a\u{1f3ff}'],
-  ['\u{1f44a}'],
-  ['\u{1f44a}\u{1f3fb}'],
-  ['\u{1f44a}\u{1f3fc}'],
-  ['\u{1f44a}\u{1f3fd}'],
-  ['\u{1f44a}\u{1f3fe}'],
-  ['\u{1f44a}\u{1f3ff}'],
-  ['\u{1f91b}'],
-  ['\u{1f91b}\u{1f3fb}'],
-  ['\u{1f91b}\u{1f3fc}'],
-  ['\u{1f91b}\u{1f3fd}'],
-  ['\u{1f91b}\u{1f3fe}'],
-  ['\u{1f91b}\u{1f3ff}'],
-  ['\u{1f91c}'],
-  ['\u{1f91c}\u{1f3fb}'],
-  ['\u{1f91c}\u{1f3fc}'],
-  ['\u{1f91c}\u{1f3fd}'],
-  ['\u{1f91c}\u{1f3fe}'],
-  ['\u{1f91c}\u{1f3ff}'],
-  ['\u{1f44f}'],
-  ['\u{1f44f}\u{1f3fb}'],
-  ['\u{1f44f}\u{1f3fc}'],
-  ['\u{1f44f}\u{1f3fd}'],
-  ['\u{1f44f}\u{1f3fe}'],
-  ['\u{1f44f}\u{1f3ff}'],
-  ['\u{1f64c}'],
-  ['\u{1f64c}\u{1f3fb}'],
-  ['\u{1f64c}\u{1f3fc}'],
-  ['\u{1f64c}\u{1f3fd}'],
-  ['\u{1f64c}\u{1f3fe}'],
-  ['\u{1f64c}\u{1f3ff}'],
-  ['\u{1faf6}'],
-  ['\u{1faf6}\u{1f3fb}'],
-  ['\u{1faf6}\u{1f3fc}'],
-  ['\u{1faf6}\u{1f3fd}'],
-  ['\u{1faf6}\u{1f3fe}'],
-  ['\u{1faf6}\u{1f3ff}'],
-  ['\u{1f450}'],
-  ['\u{1f450}\u{1f3fb}'],
-  ['\u{1f450}\u{1f3fc}'],
-  ['\u{1f450}\u{1f3fd}'],
-  ['\u{1f450}\u{1f3fe}'],
-  ['\u{1f450}\u{1f3ff}'],
-  ['\u{1f932}'],
-  ['\u{1f932}\u{1f3fb}'],
-  ['\u{1f932}\u{1f3fc}'],
-  ['\u{1f932}\u{1f3fd}'],
-  ['\u{1f932}\u{1f3fe}'],
-  ['\u{1f932}\u{1f3ff}'],
-  ['\u{1f91d}'],
-  ['\u{1f91d}\u{1f3fb}'],
-  ['\u{1f91d}\u{1f3fc}'],
-  ['\u{1f91d}\u{1f3fd}'],
-  ['\u{1f91d}\u{1f3fe}'],
-  ['\u{1f91d}\u{1f3ff}'],
-  ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fc}'],
-  ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fd}'],
-  ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3fe}'],
-  ['\u{1faf1}\u{1f3fb}\u200d\u{1faf2}\u{1f3ff}'],
-  ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fb}'],
-  ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fd}'],
-  ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3fe}'],
-  ['\u{1faf1}\u{1f3fc}\u200d\u{1faf2}\u{1f3ff}'],
-  ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fb}'],
-  ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fc}'],
-  ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3fe}'],
-  ['\u{1faf1}\u{1f3fd}\u200d\u{1faf2}\u{1f3ff}'],
-  ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fb}'],
-  ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fc}'],
-  ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3fd}'],
-  ['\u{1faf1}\u{1f3fe}\u200d\u{1faf2}\u{1f3ff}'],
-  ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fb}'],
-  ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fc}'],
-  ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fd}'],
-  ['\u{1faf1}\u{1f3ff}\u200d\u{1faf2}\u{1f3fe}'],
-  ['\u{1f64f}'],
-  ['\u{1f64f}\u{1f3fb}'],
-  ['\u{1f64f}\u{1f3fc}'],
-  ['\u{1f64f}\u{1f3fd}'],
-  ['\u{1f64f}\u{1f3fe}'],
-  ['\u{1f64f}\u{1f3ff}'],
-  ['\u270d\ufe0f'],
-  ['\u270d'],
-  ['\u270d\u{1f3fb}'],
-  ['\u270d\u{1f3fc}'],
-  ['\u270d\u{1f3fd}'],
-  ['\u270d\u{1f3fe}'],
-  ['\u270d\u{1f3ff}'],
-  ['\u{1f485}'],
-  ['\u{1f485}\u{1f3fb}'],
-  ['\u{1f485}\u{1f3fc}'],
-  ['\u{1f485}\u{1f3fd}'],
-  ['\u{1f485}\u{1f3fe}'],
-  ['\u{1f485}\u{1f3ff}'],
-  ['\u{1f933}'],
-  ['\u{1f933}\u{1f3fb}'],
-  ['\u{1f933}\u{1f3fc}'],
-  ['\u{1f933}\u{1f3fd}'],
-  ['\u{1f933}\u{1f3fe}'],
-  ['\u{1f933}\u{1f3ff}'],
-  ['\u{1f4aa}'],
-  ['\u{1f4aa}\u{1f3fb}'],
-  ['\u{1f4aa}\u{1f3fc}'],
-  ['\u{1f4aa}\u{1f3fd}'],
-  ['\u{1f4aa}\u{1f3fe}'],
-  ['\u{1f4aa}\u{1f3ff}'],
-  ['\u{1f9be}'],
-  ['\u{1f9bf}'],
-  ['\u{1f9b5}'],
-  ['\u{1f9b5}\u{1f3fb}'],
-  ['\u{1f9b5}\u{1f3fc}'],
-  ['\u{1f9b5}\u{1f3fd}'],
-  ['\u{1f9b5}\u{1f3fe}'],
-  ['\u{1f9b5}\u{1f3ff}'],
-  ['\u{1f9b6}'],
-  ['\u{1f9b6}\u{1f3fb}'],
-  ['\u{1f9b6}\u{1f3fc}'],
-  ['\u{1f9b6}\u{1f3fd}'],
-  ['\u{1f9b6}\u{1f3fe}'],
-  ['\u{1f9b6}\u{1f3ff}'],
-  ['\u{1f442}'],
-  ['\u{1f442}\u{1f3fb}'],
-  ['\u{1f442}\u{1f3fc}'],
-  ['\u{1f442}\u{1f3fd}'],
-  ['\u{1f442}\u{1f3fe}'],
-  ['\u{1f442}\u{1f3ff}'],
-  ['\u{1f9bb}'],
-  ['\u{1f9bb}\u{1f3fb}'],
-  ['\u{1f9bb}\u{1f3fc}'],
-  ['\u{1f9bb}\u{1f3fd}'],
-  ['\u{1f9bb}\u{1f3fe}'],
-  ['\u{1f9bb}\u{1f3ff}'],
-  ['\u{1f443}'],
-  ['\u{1f443}\u{1f3fb}'],
-  ['\u{1f443}\u{1f3fc}'],
-  ['\u{1f443}\u{1f3fd}'],
-  ['\u{1f443}\u{1f3fe}'],
-  ['\u{1f443}\u{1f3ff}'],
-  ['\u{1f9e0}'],
-  ['\u{1fac0}'],
-  ['\u{1fac1}'],
-  ['\u{1f9b7}'],
-  ['\u{1f9b4}'],
-  ['\u{1f440}'],
-  ['\u{1f441}\ufe0f'],
-  ['\u{1f441}'],
-  ['\u{1f445}'],
-  ['\u{1f444}'],
-  ['\u{1fae6}'],
-  ['\u{1f476}'],
-  ['\u{1f476}\u{1f3fb}'],
-  ['\u{1f476}\u{1f3fc}'],
-  ['\u{1f476}\u{1f3fd}'],
-  ['\u{1f476}\u{1f3fe}'],
-  ['\u{1f476}\u{1f3ff}'],
-  ['\u{1f9d2}'],
-  ['\u{1f9d2}\u{1f3fb}'],
-  ['\u{1f9d2}\u{1f3fc}'],
-  ['\u{1f9d2}\u{1f3fd}'],
-  ['\u{1f9d2}\u{1f3fe}'],
-  ['\u{1f9d2}\u{1f3ff}'],
-  ['\u{1f466}'],
-  ['\u{1f466}\u{1f3fb}'],
-  ['\u{1f466}\u{1f3fc}'],
-  ['\u{1f466}\u{1f3fd}'],
-  ['\u{1f466}\u{1f3fe}'],
-  ['\u{1f466}\u{1f3ff}'],
-  ['\u{1f467}'],
-  ['\u{1f467}\u{1f3fb}'],
-  ['\u{1f467}\u{1f3fc}'],
-  ['\u{1f467}\u{1f3fd}'],
-  ['\u{1f467}\u{1f3fe}'],
-  ['\u{1f467}\u{1f3ff}'],
-  ['\u{1f9d1}'],
-  ['\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f471}'],
-  ['\u{1f471}\u{1f3fb}'],
-  ['\u{1f471}\u{1f3fc}'],
-  ['\u{1f471}\u{1f3fd}'],
-  ['\u{1f471}\u{1f3fe}'],
-  ['\u{1f471}\u{1f3ff}'],
-  ['\u{1f468}'],
-  ['\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3ff}'],
-  ['\u{1f9d4}'],
-  ['\u{1f9d4}\u{1f3fb}'],
-  ['\u{1f9d4}\u{1f3fc}'],
-  ['\u{1f9d4}\u{1f3fd}'],
-  ['\u{1f9d4}\u{1f3fe}'],
-  ['\u{1f9d4}\u{1f3ff}'],
-  ['\u{1f9d4}\u200d\u2642\ufe0f'],
-  ['\u{1f9d4}\u200d\u2642'],
-  ['\u{1f9d4}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9d4}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9d4}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9d4}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9d4}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9d4}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9d4}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9d4}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9d4}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9d4}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9d4}\u200d\u2640\ufe0f'],
-  ['\u{1f9d4}\u200d\u2640'],
-  ['\u{1f9d4}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9d4}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9d4}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9d4}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9d4}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9d4}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9d4}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9d4}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9d4}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9d4}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f468}\u200d\u{1f9b0}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f9b0}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f9b0}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f9b0}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f9b0}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f9b0}'],
-  ['\u{1f468}\u200d\u{1f9b1}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f9b1}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f9b1}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f9b1}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f9b1}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f9b1}'],
-  ['\u{1f468}\u200d\u{1f9b3}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f9b3}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f9b3}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f9b3}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f9b3}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f9b3}'],
-  ['\u{1f468}\u200d\u{1f9b2}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f9b2}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f9b2}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f9b2}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f9b2}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f9b2}'],
-  ['\u{1f469}'],
-  ['\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u200d\u{1f9b0}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f9b0}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f9b0}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f9b0}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f9b0}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f9b0}'],
-  ['\u{1f9d1}\u200d\u{1f9b0}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b0}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b0}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b0}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b0}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b0}'],
-  ['\u{1f469}\u200d\u{1f9b1}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f9b1}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f9b1}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f9b1}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f9b1}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f9b1}'],
-  ['\u{1f9d1}\u200d\u{1f9b1}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b1}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b1}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b1}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b1}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b1}'],
-  ['\u{1f469}\u200d\u{1f9b3}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f9b3}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f9b3}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f9b3}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f9b3}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f9b3}'],
-  ['\u{1f9d1}\u200d\u{1f9b3}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b3}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b3}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b3}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b3}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b3}'],
-  ['\u{1f469}\u200d\u{1f9b2}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f9b2}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f9b2}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f9b2}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f9b2}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f9b2}'],
-  ['\u{1f9d1}\u200d\u{1f9b2}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9b2}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9b2}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9b2}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9b2}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9b2}'],
-  ['\u{1f471}\u200d\u2640\ufe0f'],
-  ['\u{1f471}\u200d\u2640'],
-  ['\u{1f471}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f471}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f471}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f471}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f471}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f471}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f471}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f471}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f471}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f471}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f471}\u200d\u2642\ufe0f'],
-  ['\u{1f471}\u200d\u2642'],
-  ['\u{1f471}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f471}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f471}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f471}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f471}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f471}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f471}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f471}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f471}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f471}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9d3}'],
-  ['\u{1f9d3}\u{1f3fb}'],
-  ['\u{1f9d3}\u{1f3fc}'],
-  ['\u{1f9d3}\u{1f3fd}'],
-  ['\u{1f9d3}\u{1f3fe}'],
-  ['\u{1f9d3}\u{1f3ff}'],
-  ['\u{1f474}'],
-  ['\u{1f474}\u{1f3fb}'],
-  ['\u{1f474}\u{1f3fc}'],
-  ['\u{1f474}\u{1f3fd}'],
-  ['\u{1f474}\u{1f3fe}'],
-  ['\u{1f474}\u{1f3ff}'],
-  ['\u{1f475}'],
-  ['\u{1f475}\u{1f3fb}'],
-  ['\u{1f475}\u{1f3fc}'],
-  ['\u{1f475}\u{1f3fd}'],
-  ['\u{1f475}\u{1f3fe}'],
-  ['\u{1f475}\u{1f3ff}'],
-  ['\u{1f64d}'],
-  ['\u{1f64d}\u{1f3fb}'],
-  ['\u{1f64d}\u{1f3fc}'],
-  ['\u{1f64d}\u{1f3fd}'],
-  ['\u{1f64d}\u{1f3fe}'],
-  ['\u{1f64d}\u{1f3ff}'],
-  ['\u{1f64d}\u200d\u2642\ufe0f'],
-  ['\u{1f64d}\u200d\u2642'],
-  ['\u{1f64d}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f64d}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f64d}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f64d}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f64d}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f64d}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f64d}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f64d}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f64d}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f64d}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f64d}\u200d\u2640\ufe0f'],
-  ['\u{1f64d}\u200d\u2640'],
-  ['\u{1f64d}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f64d}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f64d}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f64d}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f64d}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f64d}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f64d}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f64d}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f64d}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f64d}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f64e}'],
-  ['\u{1f64e}\u{1f3fb}'],
-  ['\u{1f64e}\u{1f3fc}'],
-  ['\u{1f64e}\u{1f3fd}'],
-  ['\u{1f64e}\u{1f3fe}'],
-  ['\u{1f64e}\u{1f3ff}'],
-  ['\u{1f64e}\u200d\u2642\ufe0f'],
-  ['\u{1f64e}\u200d\u2642'],
-  ['\u{1f64e}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f64e}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f64e}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f64e}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f64e}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f64e}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f64e}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f64e}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f64e}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f64e}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f64e}\u200d\u2640\ufe0f'],
-  ['\u{1f64e}\u200d\u2640'],
-  ['\u{1f64e}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f64e}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f64e}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f64e}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f64e}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f64e}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f64e}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f64e}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f64e}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f64e}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f645}'],
-  ['\u{1f645}\u{1f3fb}'],
-  ['\u{1f645}\u{1f3fc}'],
-  ['\u{1f645}\u{1f3fd}'],
-  ['\u{1f645}\u{1f3fe}'],
-  ['\u{1f645}\u{1f3ff}'],
-  ['\u{1f645}\u200d\u2642\ufe0f'],
-  ['\u{1f645}\u200d\u2642'],
-  ['\u{1f645}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f645}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f645}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f645}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f645}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f645}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f645}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f645}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f645}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f645}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f645}\u200d\u2640\ufe0f'],
-  ['\u{1f645}\u200d\u2640'],
-  ['\u{1f645}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f645}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f645}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f645}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f645}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f645}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f645}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f645}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f645}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f645}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f646}'],
-  ['\u{1f646}\u{1f3fb}'],
-  ['\u{1f646}\u{1f3fc}'],
-  ['\u{1f646}\u{1f3fd}'],
-  ['\u{1f646}\u{1f3fe}'],
-  ['\u{1f646}\u{1f3ff}'],
-  ['\u{1f646}\u200d\u2642\ufe0f'],
-  ['\u{1f646}\u200d\u2642'],
-  ['\u{1f646}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f646}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f646}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f646}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f646}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f646}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f646}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f646}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f646}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f646}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f646}\u200d\u2640\ufe0f'],
-  ['\u{1f646}\u200d\u2640'],
-  ['\u{1f646}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f646}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f646}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f646}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f646}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f646}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f646}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f646}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f646}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f646}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f481}'],
-  ['\u{1f481}\u{1f3fb}'],
-  ['\u{1f481}\u{1f3fc}'],
-  ['\u{1f481}\u{1f3fd}'],
-  ['\u{1f481}\u{1f3fe}'],
-  ['\u{1f481}\u{1f3ff}'],
-  ['\u{1f481}\u200d\u2642\ufe0f'],
-  ['\u{1f481}\u200d\u2642'],
-  ['\u{1f481}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f481}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f481}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f481}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f481}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f481}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f481}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f481}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f481}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f481}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f481}\u200d\u2640\ufe0f'],
-  ['\u{1f481}\u200d\u2640'],
-  ['\u{1f481}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f481}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f481}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f481}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f481}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f481}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f481}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f481}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f481}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f481}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f64b}'],
-  ['\u{1f64b}\u{1f3fb}'],
-  ['\u{1f64b}\u{1f3fc}'],
-  ['\u{1f64b}\u{1f3fd}'],
-  ['\u{1f64b}\u{1f3fe}'],
-  ['\u{1f64b}\u{1f3ff}'],
-  ['\u{1f64b}\u200d\u2642\ufe0f'],
-  ['\u{1f64b}\u200d\u2642'],
-  ['\u{1f64b}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f64b}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f64b}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f64b}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f64b}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f64b}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f64b}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f64b}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f64b}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f64b}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f64b}\u200d\u2640\ufe0f'],
-  ['\u{1f64b}\u200d\u2640'],
-  ['\u{1f64b}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f64b}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f64b}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f64b}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f64b}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f64b}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f64b}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f64b}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f64b}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f64b}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9cf}'],
-  ['\u{1f9cf}\u{1f3fb}'],
-  ['\u{1f9cf}\u{1f3fc}'],
-  ['\u{1f9cf}\u{1f3fd}'],
-  ['\u{1f9cf}\u{1f3fe}'],
-  ['\u{1f9cf}\u{1f3ff}'],
-  ['\u{1f9cf}\u200d\u2642\ufe0f'],
-  ['\u{1f9cf}\u200d\u2642'],
-  ['\u{1f9cf}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9cf}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9cf}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9cf}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9cf}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9cf}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9cf}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9cf}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9cf}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9cf}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9cf}\u200d\u2640\ufe0f'],
-  ['\u{1f9cf}\u200d\u2640'],
-  ['\u{1f9cf}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9cf}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9cf}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9cf}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9cf}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9cf}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9cf}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9cf}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9cf}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9cf}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f647}'],
-  ['\u{1f647}\u{1f3fb}'],
-  ['\u{1f647}\u{1f3fc}'],
-  ['\u{1f647}\u{1f3fd}'],
-  ['\u{1f647}\u{1f3fe}'],
-  ['\u{1f647}\u{1f3ff}'],
-  ['\u{1f647}\u200d\u2642\ufe0f'],
-  ['\u{1f647}\u200d\u2642'],
-  ['\u{1f647}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f647}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f647}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f647}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f647}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f647}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f647}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f647}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f647}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f647}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f647}\u200d\u2640\ufe0f'],
-  ['\u{1f647}\u200d\u2640'],
-  ['\u{1f647}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f647}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f647}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f647}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f647}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f647}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f647}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f647}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f647}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f647}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f926}'],
-  ['\u{1f926}\u{1f3fb}'],
-  ['\u{1f926}\u{1f3fc}'],
-  ['\u{1f926}\u{1f3fd}'],
-  ['\u{1f926}\u{1f3fe}'],
-  ['\u{1f926}\u{1f3ff}'],
-  ['\u{1f926}\u200d\u2642\ufe0f'],
-  ['\u{1f926}\u200d\u2642'],
-  ['\u{1f926}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f926}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f926}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f926}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f926}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f926}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f926}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f926}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f926}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f926}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f926}\u200d\u2640\ufe0f'],
-  ['\u{1f926}\u200d\u2640'],
-  ['\u{1f926}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f926}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f926}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f926}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f926}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f926}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f926}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f926}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f926}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f926}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f937}'],
-  ['\u{1f937}\u{1f3fb}'],
-  ['\u{1f937}\u{1f3fc}'],
-  ['\u{1f937}\u{1f3fd}'],
-  ['\u{1f937}\u{1f3fe}'],
-  ['\u{1f937}\u{1f3ff}'],
-  ['\u{1f937}\u200d\u2642\ufe0f'],
-  ['\u{1f937}\u200d\u2642'],
-  ['\u{1f937}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f937}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f937}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f937}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f937}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f937}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f937}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f937}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f937}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f937}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f937}\u200d\u2640\ufe0f'],
-  ['\u{1f937}\u200d\u2640'],
-  ['\u{1f937}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f937}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f937}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f937}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f937}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f937}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f937}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f937}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f937}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f937}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9d1}\u200d\u2695\ufe0f'],
-  ['\u{1f9d1}\u200d\u2695'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2695\ufe0f'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2695'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2695\ufe0f'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2695'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2695\ufe0f'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2695'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2695\ufe0f'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2695'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2695\ufe0f'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2695'],
-  ['\u{1f468}\u200d\u2695\ufe0f'],
-  ['\u{1f468}\u200d\u2695'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2695\ufe0f'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2695'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2695\ufe0f'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2695'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2695\ufe0f'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2695'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2695\ufe0f'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2695'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2695\ufe0f'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2695'],
-  ['\u{1f469}\u200d\u2695\ufe0f'],
-  ['\u{1f469}\u200d\u2695'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2695\ufe0f'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2695'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2695\ufe0f'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2695'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2695\ufe0f'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2695'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2695\ufe0f'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2695'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2695\ufe0f'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2695'],
-  ['\u{1f9d1}\u200d\u{1f393}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f393}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f393}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f393}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f393}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f393}'],
-  ['\u{1f468}\u200d\u{1f393}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f393}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f393}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f393}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f393}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f393}'],
-  ['\u{1f469}\u200d\u{1f393}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f393}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f393}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f393}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f393}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f393}'],
-  ['\u{1f9d1}\u200d\u{1f3eb}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3eb}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3eb}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3eb}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3eb}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3eb}'],
-  ['\u{1f468}\u200d\u{1f3eb}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f3eb}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f3eb}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f3eb}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f3eb}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f3eb}'],
-  ['\u{1f469}\u200d\u{1f3eb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f3eb}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f3eb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f3eb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f3eb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f3eb}'],
-  ['\u{1f9d1}\u200d\u2696\ufe0f'],
-  ['\u{1f9d1}\u200d\u2696'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2696\ufe0f'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2696'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2696\ufe0f'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2696'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2696\ufe0f'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2696'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2696\ufe0f'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2696'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2696\ufe0f'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2696'],
-  ['\u{1f468}\u200d\u2696\ufe0f'],
-  ['\u{1f468}\u200d\u2696'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2696\ufe0f'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2696'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2696\ufe0f'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2696'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2696\ufe0f'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2696'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2696\ufe0f'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2696'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2696\ufe0f'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2696'],
-  ['\u{1f469}\u200d\u2696\ufe0f'],
-  ['\u{1f469}\u200d\u2696'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2696\ufe0f'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2696'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2696\ufe0f'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2696'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2696\ufe0f'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2696'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2696\ufe0f'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2696'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2696\ufe0f'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2696'],
-  ['\u{1f9d1}\u200d\u{1f33e}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f33e}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f33e}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f33e}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f33e}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f33e}'],
-  ['\u{1f468}\u200d\u{1f33e}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f33e}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f33e}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f33e}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f33e}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f33e}'],
-  ['\u{1f469}\u200d\u{1f33e}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f33e}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f33e}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f33e}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f33e}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f33e}'],
-  ['\u{1f9d1}\u200d\u{1f373}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f373}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f373}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f373}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f373}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f373}'],
-  ['\u{1f468}\u200d\u{1f373}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f373}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f373}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f373}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f373}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f373}'],
-  ['\u{1f469}\u200d\u{1f373}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f373}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f373}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f373}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f373}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f373}'],
-  ['\u{1f9d1}\u200d\u{1f527}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f527}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f527}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f527}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f527}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f527}'],
-  ['\u{1f468}\u200d\u{1f527}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f527}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f527}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f527}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f527}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f527}'],
-  ['\u{1f469}\u200d\u{1f527}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f527}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f527}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f527}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f527}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f527}'],
-  ['\u{1f9d1}\u200d\u{1f3ed}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3ed}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3ed}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3ed}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3ed}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3ed}'],
-  ['\u{1f468}\u200d\u{1f3ed}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f3ed}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f3ed}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f3ed}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f3ed}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f3ed}'],
-  ['\u{1f469}\u200d\u{1f3ed}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f3ed}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f3ed}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f3ed}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f3ed}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f3ed}'],
-  ['\u{1f9d1}\u200d\u{1f4bc}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f4bc}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f4bc}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f4bc}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f4bc}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f4bc}'],
-  ['\u{1f468}\u200d\u{1f4bc}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f4bc}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f4bc}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f4bc}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f4bc}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f4bc}'],
-  ['\u{1f469}\u200d\u{1f4bc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f4bc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f4bc}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f4bc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f4bc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f4bc}'],
-  ['\u{1f9d1}\u200d\u{1f52c}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f52c}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f52c}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f52c}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f52c}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f52c}'],
-  ['\u{1f468}\u200d\u{1f52c}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f52c}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f52c}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f52c}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f52c}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f52c}'],
-  ['\u{1f469}\u200d\u{1f52c}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f52c}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f52c}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f52c}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f52c}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f52c}'],
-  ['\u{1f9d1}\u200d\u{1f4bb}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f4bb}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f4bb}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f4bb}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f4bb}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f4bb}'],
-  ['\u{1f468}\u200d\u{1f4bb}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f4bb}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f4bb}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f4bb}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f4bb}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f4bb}'],
-  ['\u{1f469}\u200d\u{1f4bb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f4bb}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f4bb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f4bb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f4bb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f4bb}'],
-  ['\u{1f9d1}\u200d\u{1f3a4}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3a4}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3a4}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3a4}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3a4}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3a4}'],
-  ['\u{1f468}\u200d\u{1f3a4}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f3a4}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f3a4}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f3a4}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f3a4}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f3a4}'],
-  ['\u{1f469}\u200d\u{1f3a4}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f3a4}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f3a4}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f3a4}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f3a4}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f3a4}'],
-  ['\u{1f9d1}\u200d\u{1f3a8}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f3a8}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f3a8}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f3a8}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f3a8}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f3a8}'],
-  ['\u{1f468}\u200d\u{1f3a8}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f3a8}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f3a8}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f3a8}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f3a8}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f3a8}'],
-  ['\u{1f469}\u200d\u{1f3a8}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f3a8}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f3a8}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f3a8}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f3a8}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f3a8}'],
-  ['\u{1f9d1}\u200d\u2708\ufe0f'],
-  ['\u{1f9d1}\u200d\u2708'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2708\ufe0f'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2708'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2708\ufe0f'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2708'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2708\ufe0f'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2708'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2708\ufe0f'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2708'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2708\ufe0f'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2708'],
-  ['\u{1f468}\u200d\u2708\ufe0f'],
-  ['\u{1f468}\u200d\u2708'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2708\ufe0f'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2708'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2708\ufe0f'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2708'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2708\ufe0f'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2708'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2708\ufe0f'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2708'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2708\ufe0f'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2708'],
-  ['\u{1f469}\u200d\u2708\ufe0f'],
-  ['\u{1f469}\u200d\u2708'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2708\ufe0f'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2708'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2708\ufe0f'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2708'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2708\ufe0f'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2708'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2708\ufe0f'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2708'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2708\ufe0f'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2708'],
-  ['\u{1f9d1}\u200d\u{1f680}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f680}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f680}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f680}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f680}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f680}'],
-  ['\u{1f468}\u200d\u{1f680}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f680}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f680}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f680}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f680}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f680}'],
-  ['\u{1f469}\u200d\u{1f680}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f680}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f680}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f680}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f680}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f680}'],
-  ['\u{1f9d1}\u200d\u{1f692}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f692}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f692}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f692}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f692}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f692}'],
-  ['\u{1f468}\u200d\u{1f692}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f692}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f692}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f692}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f692}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f692}'],
-  ['\u{1f469}\u200d\u{1f692}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f692}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f692}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f692}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f692}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f692}'],
-  ['\u{1f46e}'],
-  ['\u{1f46e}\u{1f3fb}'],
-  ['\u{1f46e}\u{1f3fc}'],
-  ['\u{1f46e}\u{1f3fd}'],
-  ['\u{1f46e}\u{1f3fe}'],
-  ['\u{1f46e}\u{1f3ff}'],
-  ['\u{1f46e}\u200d\u2642\ufe0f'],
-  ['\u{1f46e}\u200d\u2642'],
-  ['\u{1f46e}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f46e}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f46e}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f46e}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f46e}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f46e}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f46e}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f46e}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f46e}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f46e}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f46e}\u200d\u2640\ufe0f'],
-  ['\u{1f46e}\u200d\u2640'],
-  ['\u{1f46e}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f46e}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f46e}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f46e}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f46e}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f46e}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f46e}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f46e}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f46e}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f46e}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f575}\ufe0f'],
-  ['\u{1f575}'],
-  ['\u{1f575}\u{1f3fb}'],
-  ['\u{1f575}\u{1f3fc}'],
-  ['\u{1f575}\u{1f3fd}'],
-  ['\u{1f575}\u{1f3fe}'],
-  ['\u{1f575}\u{1f3ff}'],
-  ['\u{1f575}\ufe0f\u200d\u2642\ufe0f'],
-  ['\u{1f575}\u200d\u2642\ufe0f'],
-  ['\u{1f575}\ufe0f\u200d\u2642'],
-  ['\u{1f575}\u200d\u2642'],
-  ['\u{1f575}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f575}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f575}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f575}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f575}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f575}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f575}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f575}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f575}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f575}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f575}\ufe0f\u200d\u2640\ufe0f'],
-  ['\u{1f575}\u200d\u2640\ufe0f'],
-  ['\u{1f575}\ufe0f\u200d\u2640'],
-  ['\u{1f575}\u200d\u2640'],
-  ['\u{1f575}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f575}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f575}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f575}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f575}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f575}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f575}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f575}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f575}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f575}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f482}'],
-  ['\u{1f482}\u{1f3fb}'],
-  ['\u{1f482}\u{1f3fc}'],
-  ['\u{1f482}\u{1f3fd}'],
-  ['\u{1f482}\u{1f3fe}'],
-  ['\u{1f482}\u{1f3ff}'],
-  ['\u{1f482}\u200d\u2642\ufe0f'],
-  ['\u{1f482}\u200d\u2642'],
-  ['\u{1f482}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f482}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f482}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f482}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f482}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f482}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f482}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f482}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f482}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f482}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f482}\u200d\u2640\ufe0f'],
-  ['\u{1f482}\u200d\u2640'],
-  ['\u{1f482}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f482}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f482}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f482}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f482}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f482}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f482}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f482}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f482}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f482}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f977}'],
-  ['\u{1f977}\u{1f3fb}'],
-  ['\u{1f977}\u{1f3fc}'],
-  ['\u{1f977}\u{1f3fd}'],
-  ['\u{1f977}\u{1f3fe}'],
-  ['\u{1f977}\u{1f3ff}'],
-  ['\u{1f477}'],
-  ['\u{1f477}\u{1f3fb}'],
-  ['\u{1f477}\u{1f3fc}'],
-  ['\u{1f477}\u{1f3fd}'],
-  ['\u{1f477}\u{1f3fe}'],
-  ['\u{1f477}\u{1f3ff}'],
-  ['\u{1f477}\u200d\u2642\ufe0f'],
-  ['\u{1f477}\u200d\u2642'],
-  ['\u{1f477}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f477}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f477}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f477}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f477}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f477}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f477}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f477}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f477}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f477}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f477}\u200d\u2640\ufe0f'],
-  ['\u{1f477}\u200d\u2640'],
-  ['\u{1f477}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f477}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f477}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f477}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f477}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f477}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f477}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f477}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f477}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f477}\u{1f3ff}\u200d\u2640'],
-  ['\u{1fac5}'],
-  ['\u{1fac5}\u{1f3fb}'],
-  ['\u{1fac5}\u{1f3fc}'],
-  ['\u{1fac5}\u{1f3fd}'],
-  ['\u{1fac5}\u{1f3fe}'],
-  ['\u{1fac5}\u{1f3ff}'],
-  ['\u{1f934}'],
-  ['\u{1f934}\u{1f3fb}'],
-  ['\u{1f934}\u{1f3fc}'],
-  ['\u{1f934}\u{1f3fd}'],
-  ['\u{1f934}\u{1f3fe}'],
-  ['\u{1f934}\u{1f3ff}'],
-  ['\u{1f478}'],
-  ['\u{1f478}\u{1f3fb}'],
-  ['\u{1f478}\u{1f3fc}'],
-  ['\u{1f478}\u{1f3fd}'],
-  ['\u{1f478}\u{1f3fe}'],
-  ['\u{1f478}\u{1f3ff}'],
-  ['\u{1f473}'],
-  ['\u{1f473}\u{1f3fb}'],
-  ['\u{1f473}\u{1f3fc}'],
-  ['\u{1f473}\u{1f3fd}'],
-  ['\u{1f473}\u{1f3fe}'],
-  ['\u{1f473}\u{1f3ff}'],
-  ['\u{1f473}\u200d\u2642\ufe0f'],
-  ['\u{1f473}\u200d\u2642'],
-  ['\u{1f473}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f473}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f473}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f473}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f473}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f473}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f473}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f473}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f473}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f473}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f473}\u200d\u2640\ufe0f'],
-  ['\u{1f473}\u200d\u2640'],
-  ['\u{1f473}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f473}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f473}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f473}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f473}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f473}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f473}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f473}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f473}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f473}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f472}'],
-  ['\u{1f472}\u{1f3fb}'],
-  ['\u{1f472}\u{1f3fc}'],
-  ['\u{1f472}\u{1f3fd}'],
-  ['\u{1f472}\u{1f3fe}'],
-  ['\u{1f472}\u{1f3ff}'],
-  ['\u{1f9d5}'],
-  ['\u{1f9d5}\u{1f3fb}'],
-  ['\u{1f9d5}\u{1f3fc}'],
-  ['\u{1f9d5}\u{1f3fd}'],
-  ['\u{1f9d5}\u{1f3fe}'],
-  ['\u{1f9d5}\u{1f3ff}'],
-  ['\u{1f935}'],
-  ['\u{1f935}\u{1f3fb}'],
-  ['\u{1f935}\u{1f3fc}'],
-  ['\u{1f935}\u{1f3fd}'],
-  ['\u{1f935}\u{1f3fe}'],
-  ['\u{1f935}\u{1f3ff}'],
-  ['\u{1f935}\u200d\u2642\ufe0f'],
-  ['\u{1f935}\u200d\u2642'],
-  ['\u{1f935}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f935}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f935}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f935}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f935}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f935}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f935}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f935}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f935}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f935}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f935}\u200d\u2640\ufe0f'],
-  ['\u{1f935}\u200d\u2640'],
-  ['\u{1f935}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f935}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f935}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f935}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f935}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f935}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f935}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f935}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f935}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f935}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f470}'],
-  ['\u{1f470}\u{1f3fb}'],
-  ['\u{1f470}\u{1f3fc}'],
-  ['\u{1f470}\u{1f3fd}'],
-  ['\u{1f470}\u{1f3fe}'],
-  ['\u{1f470}\u{1f3ff}'],
-  ['\u{1f470}\u200d\u2642\ufe0f'],
-  ['\u{1f470}\u200d\u2642'],
-  ['\u{1f470}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f470}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f470}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f470}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f470}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f470}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f470}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f470}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f470}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f470}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f470}\u200d\u2640\ufe0f'],
-  ['\u{1f470}\u200d\u2640'],
-  ['\u{1f470}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f470}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f470}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f470}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f470}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f470}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f470}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f470}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f470}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f470}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f930}'],
-  ['\u{1f930}\u{1f3fb}'],
-  ['\u{1f930}\u{1f3fc}'],
-  ['\u{1f930}\u{1f3fd}'],
-  ['\u{1f930}\u{1f3fe}'],
-  ['\u{1f930}\u{1f3ff}'],
-  ['\u{1fac3}'],
-  ['\u{1fac3}\u{1f3fb}'],
-  ['\u{1fac3}\u{1f3fc}'],
-  ['\u{1fac3}\u{1f3fd}'],
-  ['\u{1fac3}\u{1f3fe}'],
-  ['\u{1fac3}\u{1f3ff}'],
-  ['\u{1fac4}'],
-  ['\u{1fac4}\u{1f3fb}'],
-  ['\u{1fac4}\u{1f3fc}'],
-  ['\u{1fac4}\u{1f3fd}'],
-  ['\u{1fac4}\u{1f3fe}'],
-  ['\u{1fac4}\u{1f3ff}'],
-  ['\u{1f931}'],
-  ['\u{1f931}\u{1f3fb}'],
-  ['\u{1f931}\u{1f3fc}'],
-  ['\u{1f931}\u{1f3fd}'],
-  ['\u{1f931}\u{1f3fe}'],
-  ['\u{1f931}\u{1f3ff}'],
-  ['\u{1f469}\u200d\u{1f37c}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f37c}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f37c}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f37c}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f37c}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f37c}'],
-  ['\u{1f468}\u200d\u{1f37c}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f37c}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f37c}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f37c}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f37c}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f37c}'],
-  ['\u{1f9d1}\u200d\u{1f37c}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f37c}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f37c}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f37c}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f37c}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f37c}'],
-  ['\u{1f47c}'],
-  ['\u{1f47c}\u{1f3fb}'],
-  ['\u{1f47c}\u{1f3fc}'],
-  ['\u{1f47c}\u{1f3fd}'],
-  ['\u{1f47c}\u{1f3fe}'],
-  ['\u{1f47c}\u{1f3ff}'],
-  ['\u{1f385}'],
-  ['\u{1f385}\u{1f3fb}'],
-  ['\u{1f385}\u{1f3fc}'],
-  ['\u{1f385}\u{1f3fd}'],
-  ['\u{1f385}\u{1f3fe}'],
-  ['\u{1f385}\u{1f3ff}'],
-  ['\u{1f936}'],
-  ['\u{1f936}\u{1f3fb}'],
-  ['\u{1f936}\u{1f3fc}'],
-  ['\u{1f936}\u{1f3fd}'],
-  ['\u{1f936}\u{1f3fe}'],
-  ['\u{1f936}\u{1f3ff}'],
-  ['\u{1f9d1}\u200d\u{1f384}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f384}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f384}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f384}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f384}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f384}'],
-  ['\u{1f9b8}'],
-  ['\u{1f9b8}\u{1f3fb}'],
-  ['\u{1f9b8}\u{1f3fc}'],
-  ['\u{1f9b8}\u{1f3fd}'],
-  ['\u{1f9b8}\u{1f3fe}'],
-  ['\u{1f9b8}\u{1f3ff}'],
-  ['\u{1f9b8}\u200d\u2642\ufe0f'],
-  ['\u{1f9b8}\u200d\u2642'],
-  ['\u{1f9b8}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9b8}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9b8}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9b8}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9b8}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9b8}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9b8}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9b8}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9b8}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9b8}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9b8}\u200d\u2640\ufe0f'],
-  ['\u{1f9b8}\u200d\u2640'],
-  ['\u{1f9b8}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9b8}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9b8}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9b8}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9b8}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9b8}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9b8}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9b8}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9b8}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9b8}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9b9}'],
-  ['\u{1f9b9}\u{1f3fb}'],
-  ['\u{1f9b9}\u{1f3fc}'],
-  ['\u{1f9b9}\u{1f3fd}'],
-  ['\u{1f9b9}\u{1f3fe}'],
-  ['\u{1f9b9}\u{1f3ff}'],
-  ['\u{1f9b9}\u200d\u2642\ufe0f'],
-  ['\u{1f9b9}\u200d\u2642'],
-  ['\u{1f9b9}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9b9}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9b9}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9b9}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9b9}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9b9}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9b9}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9b9}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9b9}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9b9}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9b9}\u200d\u2640\ufe0f'],
-  ['\u{1f9b9}\u200d\u2640'],
-  ['\u{1f9b9}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9b9}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9b9}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9b9}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9b9}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9b9}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9b9}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9b9}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9b9}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9b9}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9d9}'],
-  ['\u{1f9d9}\u{1f3fb}'],
-  ['\u{1f9d9}\u{1f3fc}'],
-  ['\u{1f9d9}\u{1f3fd}'],
-  ['\u{1f9d9}\u{1f3fe}'],
-  ['\u{1f9d9}\u{1f3ff}'],
-  ['\u{1f9d9}\u200d\u2642\ufe0f'],
-  ['\u{1f9d9}\u200d\u2642'],
-  ['\u{1f9d9}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9d9}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9d9}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9d9}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9d9}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9d9}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9d9}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9d9}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9d9}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9d9}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9d9}\u200d\u2640\ufe0f'],
-  ['\u{1f9d9}\u200d\u2640'],
-  ['\u{1f9d9}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9d9}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9d9}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9d9}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9d9}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9d9}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9d9}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9d9}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9d9}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9d9}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9da}'],
-  ['\u{1f9da}\u{1f3fb}'],
-  ['\u{1f9da}\u{1f3fc}'],
-  ['\u{1f9da}\u{1f3fd}'],
-  ['\u{1f9da}\u{1f3fe}'],
-  ['\u{1f9da}\u{1f3ff}'],
-  ['\u{1f9da}\u200d\u2642\ufe0f'],
-  ['\u{1f9da}\u200d\u2642'],
-  ['\u{1f9da}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9da}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9da}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9da}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9da}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9da}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9da}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9da}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9da}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9da}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9da}\u200d\u2640\ufe0f'],
-  ['\u{1f9da}\u200d\u2640'],
-  ['\u{1f9da}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9da}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9da}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9da}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9da}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9da}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9da}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9da}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9da}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9da}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9db}'],
-  ['\u{1f9db}\u{1f3fb}'],
-  ['\u{1f9db}\u{1f3fc}'],
-  ['\u{1f9db}\u{1f3fd}'],
-  ['\u{1f9db}\u{1f3fe}'],
-  ['\u{1f9db}\u{1f3ff}'],
-  ['\u{1f9db}\u200d\u2642\ufe0f'],
-  ['\u{1f9db}\u200d\u2642'],
-  ['\u{1f9db}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9db}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9db}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9db}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9db}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9db}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9db}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9db}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9db}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9db}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9db}\u200d\u2640\ufe0f'],
-  ['\u{1f9db}\u200d\u2640'],
-  ['\u{1f9db}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9db}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9db}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9db}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9db}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9db}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9db}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9db}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9db}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9db}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9dc}'],
-  ['\u{1f9dc}\u{1f3fb}'],
-  ['\u{1f9dc}\u{1f3fc}'],
-  ['\u{1f9dc}\u{1f3fd}'],
-  ['\u{1f9dc}\u{1f3fe}'],
-  ['\u{1f9dc}\u{1f3ff}'],
-  ['\u{1f9dc}\u200d\u2642\ufe0f'],
-  ['\u{1f9dc}\u200d\u2642'],
-  ['\u{1f9dc}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9dc}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9dc}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9dc}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9dc}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9dc}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9dc}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9dc}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9dc}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9dc}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9dc}\u200d\u2640\ufe0f'],
-  ['\u{1f9dc}\u200d\u2640'],
-  ['\u{1f9dc}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9dc}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9dc}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9dc}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9dc}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9dc}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9dc}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9dc}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9dc}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9dc}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9dd}'],
-  ['\u{1f9dd}\u{1f3fb}'],
-  ['\u{1f9dd}\u{1f3fc}'],
-  ['\u{1f9dd}\u{1f3fd}'],
-  ['\u{1f9dd}\u{1f3fe}'],
-  ['\u{1f9dd}\u{1f3ff}'],
-  ['\u{1f9dd}\u200d\u2642\ufe0f'],
-  ['\u{1f9dd}\u200d\u2642'],
-  ['\u{1f9dd}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9dd}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9dd}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9dd}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9dd}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9dd}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9dd}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9dd}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9dd}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9dd}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9dd}\u200d\u2640\ufe0f'],
-  ['\u{1f9dd}\u200d\u2640'],
-  ['\u{1f9dd}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9dd}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9dd}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9dd}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9dd}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9dd}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9dd}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9dd}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9dd}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9dd}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9de}'],
-  ['\u{1f9de}\u200d\u2642\ufe0f'],
-  ['\u{1f9de}\u200d\u2642'],
-  ['\u{1f9de}\u200d\u2640\ufe0f'],
-  ['\u{1f9de}\u200d\u2640'],
-  ['\u{1f9df}'],
-  ['\u{1f9df}\u200d\u2642\ufe0f'],
-  ['\u{1f9df}\u200d\u2642'],
-  ['\u{1f9df}\u200d\u2640\ufe0f'],
-  ['\u{1f9df}\u200d\u2640'],
-  ['\u{1f9cc}'],
-  ['\u{1f486}'],
-  ['\u{1f486}\u{1f3fb}'],
-  ['\u{1f486}\u{1f3fc}'],
-  ['\u{1f486}\u{1f3fd}'],
-  ['\u{1f486}\u{1f3fe}'],
-  ['\u{1f486}\u{1f3ff}'],
-  ['\u{1f486}\u200d\u2642\ufe0f'],
-  ['\u{1f486}\u200d\u2642'],
-  ['\u{1f486}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f486}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f486}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f486}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f486}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f486}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f486}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f486}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f486}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f486}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f486}\u200d\u2640\ufe0f'],
-  ['\u{1f486}\u200d\u2640'],
-  ['\u{1f486}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f486}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f486}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f486}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f486}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f486}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f486}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f486}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f486}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f486}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f487}'],
-  ['\u{1f487}\u{1f3fb}'],
-  ['\u{1f487}\u{1f3fc}'],
-  ['\u{1f487}\u{1f3fd}'],
-  ['\u{1f487}\u{1f3fe}'],
-  ['\u{1f487}\u{1f3ff}'],
-  ['\u{1f487}\u200d\u2642\ufe0f'],
-  ['\u{1f487}\u200d\u2642'],
-  ['\u{1f487}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f487}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f487}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f487}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f487}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f487}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f487}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f487}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f487}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f487}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f487}\u200d\u2640\ufe0f'],
-  ['\u{1f487}\u200d\u2640'],
-  ['\u{1f487}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f487}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f487}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f487}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f487}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f487}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f487}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f487}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f487}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f487}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f6b6}'],
-  ['\u{1f6b6}\u{1f3fb}'],
-  ['\u{1f6b6}\u{1f3fc}'],
-  ['\u{1f6b6}\u{1f3fd}'],
-  ['\u{1f6b6}\u{1f3fe}'],
-  ['\u{1f6b6}\u{1f3ff}'],
-  ['\u{1f6b6}\u200d\u2642\ufe0f'],
-  ['\u{1f6b6}\u200d\u2642'],
-  ['\u{1f6b6}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f6b6}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f6b6}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f6b6}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f6b6}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f6b6}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f6b6}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f6b6}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f6b6}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f6b6}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f6b6}\u200d\u2640\ufe0f'],
-  ['\u{1f6b6}\u200d\u2640'],
-  ['\u{1f6b6}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f6b6}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f6b6}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f6b6}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f6b6}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f6b6}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f6b6}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f6b6}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f6b6}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f6b6}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9cd}'],
-  ['\u{1f9cd}\u{1f3fb}'],
-  ['\u{1f9cd}\u{1f3fc}'],
-  ['\u{1f9cd}\u{1f3fd}'],
-  ['\u{1f9cd}\u{1f3fe}'],
-  ['\u{1f9cd}\u{1f3ff}'],
-  ['\u{1f9cd}\u200d\u2642\ufe0f'],
-  ['\u{1f9cd}\u200d\u2642'],
-  ['\u{1f9cd}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9cd}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9cd}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9cd}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9cd}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9cd}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9cd}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9cd}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9cd}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9cd}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9cd}\u200d\u2640\ufe0f'],
-  ['\u{1f9cd}\u200d\u2640'],
-  ['\u{1f9cd}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9cd}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9cd}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9cd}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9cd}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9cd}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9cd}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9cd}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9cd}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9cd}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9ce}'],
-  ['\u{1f9ce}\u{1f3fb}'],
-  ['\u{1f9ce}\u{1f3fc}'],
-  ['\u{1f9ce}\u{1f3fd}'],
-  ['\u{1f9ce}\u{1f3fe}'],
-  ['\u{1f9ce}\u{1f3ff}'],
-  ['\u{1f9ce}\u200d\u2642\ufe0f'],
-  ['\u{1f9ce}\u200d\u2642'],
-  ['\u{1f9ce}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9ce}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9ce}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9ce}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9ce}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9ce}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9ce}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9ce}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9ce}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9ce}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9ce}\u200d\u2640\ufe0f'],
-  ['\u{1f9ce}\u200d\u2640'],
-  ['\u{1f9ce}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9ce}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9ce}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9ce}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9ce}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9ce}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9ce}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9ce}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9ce}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9ce}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9d1}\u200d\u{1f9af}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9af}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9af}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9af}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9af}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9af}'],
-  ['\u{1f468}\u200d\u{1f9af}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f9af}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f9af}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f9af}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f9af}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f9af}'],
-  ['\u{1f469}\u200d\u{1f9af}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f9af}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f9af}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f9af}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f9af}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f9af}'],
-  ['\u{1f9d1}\u200d\u{1f9bc}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bc}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bc}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bc}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bc}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bc}'],
-  ['\u{1f468}\u200d\u{1f9bc}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f9bc}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f9bc}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f9bc}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f9bc}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f9bc}'],
-  ['\u{1f469}\u200d\u{1f9bc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f9bc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f9bc}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f9bc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f9bc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f9bc}'],
-  ['\u{1f9d1}\u200d\u{1f9bd}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f9bd}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f9bd}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f9bd}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f9bd}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f9bd}'],
-  ['\u{1f468}\u200d\u{1f9bd}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f9bd}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f9bd}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f9bd}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f9bd}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f9bd}'],
-  ['\u{1f469}\u200d\u{1f9bd}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f9bd}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f9bd}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f9bd}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f9bd}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f9bd}'],
-  ['\u{1f3c3}'],
-  ['\u{1f3c3}\u{1f3fb}'],
-  ['\u{1f3c3}\u{1f3fc}'],
-  ['\u{1f3c3}\u{1f3fd}'],
-  ['\u{1f3c3}\u{1f3fe}'],
-  ['\u{1f3c3}\u{1f3ff}'],
-  ['\u{1f3c3}\u200d\u2642\ufe0f'],
-  ['\u{1f3c3}\u200d\u2642'],
-  ['\u{1f3c3}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f3c3}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f3c3}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f3c3}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f3c3}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f3c3}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f3c3}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f3c3}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f3c3}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f3c3}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f3c3}\u200d\u2640\ufe0f'],
-  ['\u{1f3c3}\u200d\u2640'],
-  ['\u{1f3c3}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f3c3}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f3c3}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f3c3}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f3c3}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f3c3}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f3c3}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f3c3}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f3c3}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f3c3}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f483}'],
-  ['\u{1f483}\u{1f3fb}'],
-  ['\u{1f483}\u{1f3fc}'],
-  ['\u{1f483}\u{1f3fd}'],
-  ['\u{1f483}\u{1f3fe}'],
-  ['\u{1f483}\u{1f3ff}'],
-  ['\u{1f57a}'],
-  ['\u{1f57a}\u{1f3fb}'],
-  ['\u{1f57a}\u{1f3fc}'],
-  ['\u{1f57a}\u{1f3fd}'],
-  ['\u{1f57a}\u{1f3fe}'],
-  ['\u{1f57a}\u{1f3ff}'],
-  ['\u{1f574}\ufe0f'],
-  ['\u{1f574}'],
-  ['\u{1f574}\u{1f3fb}'],
-  ['\u{1f574}\u{1f3fc}'],
-  ['\u{1f574}\u{1f3fd}'],
-  ['\u{1f574}\u{1f3fe}'],
-  ['\u{1f574}\u{1f3ff}'],
-  ['\u{1f46f}'],
-  ['\u{1f46f}\u200d\u2642\ufe0f'],
-  ['\u{1f46f}\u200d\u2642'],
-  ['\u{1f46f}\u200d\u2640\ufe0f'],
-  ['\u{1f46f}\u200d\u2640'],
-  ['\u{1f9d6}'],
-  ['\u{1f9d6}\u{1f3fb}'],
-  ['\u{1f9d6}\u{1f3fc}'],
-  ['\u{1f9d6}\u{1f3fd}'],
-  ['\u{1f9d6}\u{1f3fe}'],
-  ['\u{1f9d6}\u{1f3ff}'],
-  ['\u{1f9d6}\u200d\u2642\ufe0f'],
-  ['\u{1f9d6}\u200d\u2642'],
-  ['\u{1f9d6}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9d6}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9d6}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9d6}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9d6}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9d6}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9d6}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9d6}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9d6}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9d6}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9d6}\u200d\u2640\ufe0f'],
-  ['\u{1f9d6}\u200d\u2640'],
-  ['\u{1f9d6}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9d6}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9d6}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9d6}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9d6}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9d6}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9d6}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9d6}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9d6}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9d6}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9d7}'],
-  ['\u{1f9d7}\u{1f3fb}'],
-  ['\u{1f9d7}\u{1f3fc}'],
-  ['\u{1f9d7}\u{1f3fd}'],
-  ['\u{1f9d7}\u{1f3fe}'],
-  ['\u{1f9d7}\u{1f3ff}'],
-  ['\u{1f9d7}\u200d\u2642\ufe0f'],
-  ['\u{1f9d7}\u200d\u2642'],
-  ['\u{1f9d7}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9d7}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9d7}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9d7}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9d7}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9d7}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9d7}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9d7}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9d7}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9d7}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9d7}\u200d\u2640\ufe0f'],
-  ['\u{1f9d7}\u200d\u2640'],
-  ['\u{1f9d7}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9d7}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9d7}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9d7}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9d7}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9d7}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9d7}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9d7}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9d7}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9d7}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f93a}'],
-  ['\u{1f3c7}'],
-  ['\u{1f3c7}\u{1f3fb}'],
-  ['\u{1f3c7}\u{1f3fc}'],
-  ['\u{1f3c7}\u{1f3fd}'],
-  ['\u{1f3c7}\u{1f3fe}'],
-  ['\u{1f3c7}\u{1f3ff}'],
-  ['\u26f7\ufe0f'],
-  ['\u26f7'],
-  ['\u{1f3c2}'],
-  ['\u{1f3c2}\u{1f3fb}'],
-  ['\u{1f3c2}\u{1f3fc}'],
-  ['\u{1f3c2}\u{1f3fd}'],
-  ['\u{1f3c2}\u{1f3fe}'],
-  ['\u{1f3c2}\u{1f3ff}'],
-  ['\u{1f3cc}\ufe0f'],
-  ['\u{1f3cc}'],
-  ['\u{1f3cc}\u{1f3fb}'],
-  ['\u{1f3cc}\u{1f3fc}'],
-  ['\u{1f3cc}\u{1f3fd}'],
-  ['\u{1f3cc}\u{1f3fe}'],
-  ['\u{1f3cc}\u{1f3ff}'],
-  ['\u{1f3cc}\ufe0f\u200d\u2642\ufe0f'],
-  ['\u{1f3cc}\u200d\u2642\ufe0f'],
-  ['\u{1f3cc}\ufe0f\u200d\u2642'],
-  ['\u{1f3cc}\u200d\u2642'],
-  ['\u{1f3cc}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f3cc}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f3cc}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f3cc}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f3cc}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f3cc}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f3cc}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f3cc}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f3cc}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f3cc}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f3cc}\ufe0f\u200d\u2640\ufe0f'],
-  ['\u{1f3cc}\u200d\u2640\ufe0f'],
-  ['\u{1f3cc}\ufe0f\u200d\u2640'],
-  ['\u{1f3cc}\u200d\u2640'],
-  ['\u{1f3cc}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f3cc}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f3cc}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f3cc}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f3cc}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f3cc}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f3cc}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f3cc}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f3cc}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f3cc}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f3c4}'],
-  ['\u{1f3c4}\u{1f3fb}'],
-  ['\u{1f3c4}\u{1f3fc}'],
-  ['\u{1f3c4}\u{1f3fd}'],
-  ['\u{1f3c4}\u{1f3fe}'],
-  ['\u{1f3c4}\u{1f3ff}'],
-  ['\u{1f3c4}\u200d\u2642\ufe0f'],
-  ['\u{1f3c4}\u200d\u2642'],
-  ['\u{1f3c4}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f3c4}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f3c4}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f3c4}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f3c4}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f3c4}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f3c4}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f3c4}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f3c4}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f3c4}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f3c4}\u200d\u2640\ufe0f'],
-  ['\u{1f3c4}\u200d\u2640'],
-  ['\u{1f3c4}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f3c4}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f3c4}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f3c4}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f3c4}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f3c4}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f3c4}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f3c4}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f3c4}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f3c4}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f6a3}'],
-  ['\u{1f6a3}\u{1f3fb}'],
-  ['\u{1f6a3}\u{1f3fc}'],
-  ['\u{1f6a3}\u{1f3fd}'],
-  ['\u{1f6a3}\u{1f3fe}'],
-  ['\u{1f6a3}\u{1f3ff}'],
-  ['\u{1f6a3}\u200d\u2642\ufe0f'],
-  ['\u{1f6a3}\u200d\u2642'],
-  ['\u{1f6a3}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f6a3}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f6a3}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f6a3}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f6a3}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f6a3}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f6a3}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f6a3}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f6a3}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f6a3}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f6a3}\u200d\u2640\ufe0f'],
-  ['\u{1f6a3}\u200d\u2640'],
-  ['\u{1f6a3}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f6a3}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f6a3}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f6a3}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f6a3}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f6a3}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f6a3}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f6a3}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f6a3}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f6a3}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f3ca}'],
-  ['\u{1f3ca}\u{1f3fb}'],
-  ['\u{1f3ca}\u{1f3fc}'],
-  ['\u{1f3ca}\u{1f3fd}'],
-  ['\u{1f3ca}\u{1f3fe}'],
-  ['\u{1f3ca}\u{1f3ff}'],
-  ['\u{1f3ca}\u200d\u2642\ufe0f'],
-  ['\u{1f3ca}\u200d\u2642'],
-  ['\u{1f3ca}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f3ca}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f3ca}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f3ca}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f3ca}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f3ca}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f3ca}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f3ca}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f3ca}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f3ca}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f3ca}\u200d\u2640\ufe0f'],
-  ['\u{1f3ca}\u200d\u2640'],
-  ['\u{1f3ca}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f3ca}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f3ca}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f3ca}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f3ca}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f3ca}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f3ca}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f3ca}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f3ca}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f3ca}\u{1f3ff}\u200d\u2640'],
-  ['\u26f9\ufe0f'],
-  ['\u26f9'],
-  ['\u26f9\u{1f3fb}'],
-  ['\u26f9\u{1f3fc}'],
-  ['\u26f9\u{1f3fd}'],
-  ['\u26f9\u{1f3fe}'],
-  ['\u26f9\u{1f3ff}'],
-  ['\u26f9\ufe0f\u200d\u2642\ufe0f'],
-  ['\u26f9\u200d\u2642\ufe0f'],
-  ['\u26f9\ufe0f\u200d\u2642'],
-  ['\u26f9\u200d\u2642'],
-  ['\u26f9\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u26f9\u{1f3fb}\u200d\u2642'],
-  ['\u26f9\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u26f9\u{1f3fc}\u200d\u2642'],
-  ['\u26f9\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u26f9\u{1f3fd}\u200d\u2642'],
-  ['\u26f9\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u26f9\u{1f3fe}\u200d\u2642'],
-  ['\u26f9\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u26f9\u{1f3ff}\u200d\u2642'],
-  ['\u26f9\ufe0f\u200d\u2640\ufe0f'],
-  ['\u26f9\u200d\u2640\ufe0f'],
-  ['\u26f9\ufe0f\u200d\u2640'],
-  ['\u26f9\u200d\u2640'],
-  ['\u26f9\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u26f9\u{1f3fb}\u200d\u2640'],
-  ['\u26f9\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u26f9\u{1f3fc}\u200d\u2640'],
-  ['\u26f9\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u26f9\u{1f3fd}\u200d\u2640'],
-  ['\u26f9\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u26f9\u{1f3fe}\u200d\u2640'],
-  ['\u26f9\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u26f9\u{1f3ff}\u200d\u2640'],
-  ['\u{1f3cb}\ufe0f'],
-  ['\u{1f3cb}'],
-  ['\u{1f3cb}\u{1f3fb}'],
-  ['\u{1f3cb}\u{1f3fc}'],
-  ['\u{1f3cb}\u{1f3fd}'],
-  ['\u{1f3cb}\u{1f3fe}'],
-  ['\u{1f3cb}\u{1f3ff}'],
-  ['\u{1f3cb}\ufe0f\u200d\u2642\ufe0f'],
-  ['\u{1f3cb}\u200d\u2642\ufe0f'],
-  ['\u{1f3cb}\ufe0f\u200d\u2642'],
-  ['\u{1f3cb}\u200d\u2642'],
-  ['\u{1f3cb}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f3cb}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f3cb}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f3cb}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f3cb}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f3cb}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f3cb}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f3cb}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f3cb}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f3cb}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f3cb}\ufe0f\u200d\u2640\ufe0f'],
-  ['\u{1f3cb}\u200d\u2640\ufe0f'],
-  ['\u{1f3cb}\ufe0f\u200d\u2640'],
-  ['\u{1f3cb}\u200d\u2640'],
-  ['\u{1f3cb}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f3cb}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f3cb}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f3cb}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f3cb}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f3cb}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f3cb}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f3cb}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f3cb}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f3cb}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f6b4}'],
-  ['\u{1f6b4}\u{1f3fb}'],
-  ['\u{1f6b4}\u{1f3fc}'],
-  ['\u{1f6b4}\u{1f3fd}'],
-  ['\u{1f6b4}\u{1f3fe}'],
-  ['\u{1f6b4}\u{1f3ff}'],
-  ['\u{1f6b4}\u200d\u2642\ufe0f'],
-  ['\u{1f6b4}\u200d\u2642'],
-  ['\u{1f6b4}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f6b4}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f6b4}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f6b4}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f6b4}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f6b4}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f6b4}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f6b4}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f6b4}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f6b4}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f6b4}\u200d\u2640\ufe0f'],
-  ['\u{1f6b4}\u200d\u2640'],
-  ['\u{1f6b4}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f6b4}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f6b4}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f6b4}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f6b4}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f6b4}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f6b4}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f6b4}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f6b4}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f6b4}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f6b5}'],
-  ['\u{1f6b5}\u{1f3fb}'],
-  ['\u{1f6b5}\u{1f3fc}'],
-  ['\u{1f6b5}\u{1f3fd}'],
-  ['\u{1f6b5}\u{1f3fe}'],
-  ['\u{1f6b5}\u{1f3ff}'],
-  ['\u{1f6b5}\u200d\u2642\ufe0f'],
-  ['\u{1f6b5}\u200d\u2642'],
-  ['\u{1f6b5}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f6b5}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f6b5}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f6b5}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f6b5}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f6b5}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f6b5}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f6b5}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f6b5}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f6b5}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f6b5}\u200d\u2640\ufe0f'],
-  ['\u{1f6b5}\u200d\u2640'],
-  ['\u{1f6b5}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f6b5}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f6b5}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f6b5}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f6b5}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f6b5}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f6b5}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f6b5}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f6b5}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f6b5}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f938}'],
-  ['\u{1f938}\u{1f3fb}'],
-  ['\u{1f938}\u{1f3fc}'],
-  ['\u{1f938}\u{1f3fd}'],
-  ['\u{1f938}\u{1f3fe}'],
-  ['\u{1f938}\u{1f3ff}'],
-  ['\u{1f938}\u200d\u2642\ufe0f'],
-  ['\u{1f938}\u200d\u2642'],
-  ['\u{1f938}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f938}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f938}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f938}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f938}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f938}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f938}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f938}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f938}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f938}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f938}\u200d\u2640\ufe0f'],
-  ['\u{1f938}\u200d\u2640'],
-  ['\u{1f938}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f938}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f938}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f938}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f938}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f938}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f938}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f938}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f938}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f938}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f93c}'],
-  ['\u{1f93c}\u200d\u2642\ufe0f'],
-  ['\u{1f93c}\u200d\u2642'],
-  ['\u{1f93c}\u200d\u2640\ufe0f'],
-  ['\u{1f93c}\u200d\u2640'],
-  ['\u{1f93d}'],
-  ['\u{1f93d}\u{1f3fb}'],
-  ['\u{1f93d}\u{1f3fc}'],
-  ['\u{1f93d}\u{1f3fd}'],
-  ['\u{1f93d}\u{1f3fe}'],
-  ['\u{1f93d}\u{1f3ff}'],
-  ['\u{1f93d}\u200d\u2642\ufe0f'],
-  ['\u{1f93d}\u200d\u2642'],
-  ['\u{1f93d}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f93d}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f93d}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f93d}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f93d}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f93d}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f93d}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f93d}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f93d}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f93d}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f93d}\u200d\u2640\ufe0f'],
-  ['\u{1f93d}\u200d\u2640'],
-  ['\u{1f93d}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f93d}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f93d}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f93d}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f93d}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f93d}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f93d}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f93d}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f93d}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f93d}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f93e}'],
-  ['\u{1f93e}\u{1f3fb}'],
-  ['\u{1f93e}\u{1f3fc}'],
-  ['\u{1f93e}\u{1f3fd}'],
-  ['\u{1f93e}\u{1f3fe}'],
-  ['\u{1f93e}\u{1f3ff}'],
-  ['\u{1f93e}\u200d\u2642\ufe0f'],
-  ['\u{1f93e}\u200d\u2642'],
-  ['\u{1f93e}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f93e}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f93e}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f93e}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f93e}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f93e}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f93e}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f93e}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f93e}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f93e}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f93e}\u200d\u2640\ufe0f'],
-  ['\u{1f93e}\u200d\u2640'],
-  ['\u{1f93e}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f93e}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f93e}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f93e}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f93e}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f93e}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f93e}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f93e}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f93e}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f93e}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f939}'],
-  ['\u{1f939}\u{1f3fb}'],
-  ['\u{1f939}\u{1f3fc}'],
-  ['\u{1f939}\u{1f3fd}'],
-  ['\u{1f939}\u{1f3fe}'],
-  ['\u{1f939}\u{1f3ff}'],
-  ['\u{1f939}\u200d\u2642\ufe0f'],
-  ['\u{1f939}\u200d\u2642'],
-  ['\u{1f939}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f939}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f939}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f939}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f939}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f939}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f939}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f939}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f939}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f939}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f939}\u200d\u2640\ufe0f'],
-  ['\u{1f939}\u200d\u2640'],
-  ['\u{1f939}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f939}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f939}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f939}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f939}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f939}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f939}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f939}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f939}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f939}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f9d8}'],
-  ['\u{1f9d8}\u{1f3fb}'],
-  ['\u{1f9d8}\u{1f3fc}'],
-  ['\u{1f9d8}\u{1f3fd}'],
-  ['\u{1f9d8}\u{1f3fe}'],
-  ['\u{1f9d8}\u{1f3ff}'],
-  ['\u{1f9d8}\u200d\u2642\ufe0f'],
-  ['\u{1f9d8}\u200d\u2642'],
-  ['\u{1f9d8}\u{1f3fb}\u200d\u2642\ufe0f'],
-  ['\u{1f9d8}\u{1f3fb}\u200d\u2642'],
-  ['\u{1f9d8}\u{1f3fc}\u200d\u2642\ufe0f'],
-  ['\u{1f9d8}\u{1f3fc}\u200d\u2642'],
-  ['\u{1f9d8}\u{1f3fd}\u200d\u2642\ufe0f'],
-  ['\u{1f9d8}\u{1f3fd}\u200d\u2642'],
-  ['\u{1f9d8}\u{1f3fe}\u200d\u2642\ufe0f'],
-  ['\u{1f9d8}\u{1f3fe}\u200d\u2642'],
-  ['\u{1f9d8}\u{1f3ff}\u200d\u2642\ufe0f'],
-  ['\u{1f9d8}\u{1f3ff}\u200d\u2642'],
-  ['\u{1f9d8}\u200d\u2640\ufe0f'],
-  ['\u{1f9d8}\u200d\u2640'],
-  ['\u{1f9d8}\u{1f3fb}\u200d\u2640\ufe0f'],
-  ['\u{1f9d8}\u{1f3fb}\u200d\u2640'],
-  ['\u{1f9d8}\u{1f3fc}\u200d\u2640\ufe0f'],
-  ['\u{1f9d8}\u{1f3fc}\u200d\u2640'],
-  ['\u{1f9d8}\u{1f3fd}\u200d\u2640\ufe0f'],
-  ['\u{1f9d8}\u{1f3fd}\u200d\u2640'],
-  ['\u{1f9d8}\u{1f3fe}\u200d\u2640\ufe0f'],
-  ['\u{1f9d8}\u{1f3fe}\u200d\u2640'],
-  ['\u{1f9d8}\u{1f3ff}\u200d\u2640\ufe0f'],
-  ['\u{1f9d8}\u{1f3ff}\u200d\u2640'],
-  ['\u{1f6c0}'],
-  ['\u{1f6c0}\u{1f3fb}'],
-  ['\u{1f6c0}\u{1f3fc}'],
-  ['\u{1f6c0}\u{1f3fd}'],
-  ['\u{1f6c0}\u{1f3fe}'],
-  ['\u{1f6c0}\u{1f3ff}'],
-  ['\u{1f6cc}'],
-  ['\u{1f6cc}\u{1f3fb}'],
-  ['\u{1f6cc}\u{1f3fc}'],
-  ['\u{1f6cc}\u{1f3fd}'],
-  ['\u{1f6cc}\u{1f3fe}'],
-  ['\u{1f6cc}\u{1f3ff}'],
-  ['\u{1f9d1}\u200d\u{1f91d}\u200d\u{1f9d1}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f46d}'],
-  ['\u{1f46d}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f46d}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f46d}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f46d}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f46d}\u{1f3ff}'],
-  ['\u{1f46b}'],
-  ['\u{1f46b}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f46b}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f46b}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f46b}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f46b}\u{1f3ff}'],
-  ['\u{1f46c}'],
-  ['\u{1f46c}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f46c}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f46c}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f46c}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u{1f91d}\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f46c}\u{1f3ff}'],
-  ['\u{1f48f}'],
-  ['\u{1f48f}\u{1f3fb}'],
-  ['\u{1f48f}\u{1f3fc}'],
-  ['\u{1f48f}\u{1f3fd}'],
-  ['\u{1f48f}\u{1f3fe}'],
-  ['\u{1f48f}\u{1f3ff}'],
-  [
-    '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-  ],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-  [
-    '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-  ],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-  [
-    '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-  ],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-  [
-    '\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-  ],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-  [
-    '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-  ],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-  [
-    '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-  ],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-  [
-    '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-  ],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-  [
-    '\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-  ],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-  [
-    '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-  ],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-  [
-    '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-  ],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-  [
-    '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-  ],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-  [
-    '\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-  ],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-  [
-    '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-  ],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-  [
-    '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-  ],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-  [
-    '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-  ],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-  [
-    '\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'
-  ],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3ff}'],
-  [
-    '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'
-  ],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fb}'],
-  [
-    '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'
-  ],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fc}'],
-  [
-    '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'
-  ],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fd}'],
-  [
-    '\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'
-  ],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}'],
-  ['\u{1f469}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}'],
-  ['\u{1f468}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}'],
-  [
-    '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  [
-    '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'
-  ],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fb}'],
-  [
-    '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'
-  ],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fc}'],
-  [
-    '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'
-  ],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fd}'],
-  [
-    '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'
-  ],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3fe}'],
-  [
-    '\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'
-  ],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}'],
-  ['\u{1f469}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fb}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fc}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fd}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3fe}'],
-  [
-    '\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'
-  ],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f48b}\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f491}'],
-  ['\u{1f491}\u{1f3fb}'],
-  ['\u{1f491}\u{1f3fc}'],
-  ['\u{1f491}\u{1f3fd}'],
-  ['\u{1f491}\u{1f3fe}'],
-  ['\u{1f491}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fb}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fc}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fd}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3fe}\u200d\u2764\u200d\u{1f9d1}\u{1f3ff}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fb}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fc}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fd}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f9d1}\u{1f3ff}\u200d\u2764\u200d\u{1f9d1}\u{1f3fe}'],
-  ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f468}'],
-  ['\u{1f469}\u200d\u2764\u200d\u{1f468}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u200d\u2764\ufe0f\u200d\u{1f468}'],
-  ['\u{1f468}\u200d\u2764\u200d\u{1f468}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fb}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fc}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fd}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3fe}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fb}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fc}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fd}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3fe}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f468}\u{1f3ff}\u200d\u2764\u200d\u{1f468}\u{1f3ff}'],
-  ['\u{1f469}\u200d\u2764\ufe0f\u200d\u{1f469}'],
-  ['\u{1f469}\u200d\u2764\u200d\u{1f469}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fb}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fc}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fd}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3fe}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fb}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fc}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fd}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3fe}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\ufe0f\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f469}\u{1f3ff}\u200d\u2764\u200d\u{1f469}\u{1f3ff}'],
-  ['\u{1f46a}'],
-  ['\u{1f468}\u200d\u{1f469}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}'],
-  ['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'],
-  ['\u{1f468}\u200d\u{1f468}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}'],
-  ['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f468}\u200d\u{1f466}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f468}\u200d\u{1f467}\u200d\u{1f467}'],
-  ['\u{1f469}\u200d\u{1f469}\u200d\u{1f466}'],
-  ['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}'],
-  ['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'],
-  ['\u{1f469}\u200d\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'],
-  ['\u{1f469}\u200d\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'],
-  ['\u{1f468}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f466}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f467}'],
-  ['\u{1f468}\u200d\u{1f467}\u200d\u{1f466}'],
-  ['\u{1f468}\u200d\u{1f467}\u200d\u{1f467}'],
-  ['\u{1f469}\u200d\u{1f466}'],
-  ['\u{1f469}\u200d\u{1f466}\u200d\u{1f466}'],
-  ['\u{1f469}\u200d\u{1f467}'],
-  ['\u{1f469}\u200d\u{1f467}\u200d\u{1f466}'],
-  ['\u{1f469}\u200d\u{1f467}\u200d\u{1f467}'],
-  ['\u{1f5e3}\ufe0f'],
-  ['\u{1f5e3}'],
-  ['\u{1f464}'],
-  ['\u{1f465}'],
-  ['\u{1fac2}'],
-  ['\u{1f463}'],
-  ['\u{1f3fb}'],
-  ['\u{1f3fc}'],
-  ['\u{1f3fd}'],
-  ['\u{1f3fe}'],
-  ['\u{1f3ff}'],
-  ['\u{1f9b0}'],
-  ['\u{1f9b1}'],
-  ['\u{1f9b3}'],
-  ['\u{1f9b2}'],
-  ['\u{1f435}'],
-  ['\u{1f412}'],
-  ['\u{1f98d}'],
-  ['\u{1f9a7}'],
-  ['\u{1f436}'],
-  ['\u{1f415}'],
-  ['\u{1f9ae}'],
-  ['\u{1f415}\u200d\u{1f9ba}'],
-  ['\u{1f429}'],
-  ['\u{1f43a}'],
-  ['\u{1f98a}'],
-  ['\u{1f99d}'],
-  ['\u{1f431}'],
-  ['\u{1f408}'],
-  ['\u{1f408}\u200d\u2b1b'],
-  ['\u{1f981}'],
-  ['\u{1f42f}'],
-  ['\u{1f405}'],
-  ['\u{1f406}'],
-  ['\u{1f434}'],
-  ['\u{1face}'],
-  ['\u{1facf}'],
-  ['\u{1f40e}'],
-  ['\u{1f984}'],
-  ['\u{1f993}'],
-  ['\u{1f98c}'],
-  ['\u{1f9ac}'],
-  ['\u{1f42e}'],
-  ['\u{1f402}'],
-  ['\u{1f403}'],
-  ['\u{1f404}'],
-  ['\u{1f437}'],
-  ['\u{1f416}'],
-  ['\u{1f417}'],
-  ['\u{1f43d}'],
-  ['\u{1f40f}'],
-  ['\u{1f411}'],
-  ['\u{1f410}'],
-  ['\u{1f42a}'],
-  ['\u{1f42b}'],
-  ['\u{1f999}'],
-  ['\u{1f992}'],
-  ['\u{1f418}'],
-  ['\u{1f9a3}'],
-  ['\u{1f98f}'],
-  ['\u{1f99b}'],
-  ['\u{1f42d}'],
-  ['\u{1f401}'],
-  ['\u{1f400}'],
-  ['\u{1f439}'],
-  ['\u{1f430}'],
-  ['\u{1f407}'],
-  ['\u{1f43f}\ufe0f'],
-  ['\u{1f43f}'],
-  ['\u{1f9ab}'],
-  ['\u{1f994}'],
-  ['\u{1f987}'],
-  ['\u{1f43b}'],
-  ['\u{1f43b}\u200d\u2744\ufe0f'],
-  ['\u{1f43b}\u200d\u2744'],
-  ['\u{1f428}'],
-  ['\u{1f43c}'],
-  ['\u{1f9a5}'],
-  ['\u{1f9a6}'],
-  ['\u{1f9a8}'],
-  ['\u{1f998}'],
-  ['\u{1f9a1}'],
-  ['\u{1f43e}'],
-  ['\u{1f983}'],
-  ['\u{1f414}'],
-  ['\u{1f413}'],
-  ['\u{1f423}'],
-  ['\u{1f424}'],
-  ['\u{1f425}'],
-  ['\u{1f426}'],
-  ['\u{1f427}'],
-  ['\u{1f54a}\ufe0f'],
-  ['\u{1f54a}'],
-  ['\u{1f985}'],
-  ['\u{1f986}'],
-  ['\u{1f9a2}'],
-  ['\u{1f989}'],
-  ['\u{1f9a4}'],
-  ['\u{1fab6}'],
-  ['\u{1f9a9}'],
-  ['\u{1f99a}'],
-  ['\u{1f99c}'],
-  ['\u{1fabd}'],
-  ['\u{1f426}\u200d\u2b1b'],
-  ['\u{1fabf}'],
-  ['\u{1f438}'],
-  ['\u{1f40a}'],
-  ['\u{1f422}'],
-  ['\u{1f98e}'],
-  ['\u{1f40d}'],
-  ['\u{1f432}'],
-  ['\u{1f409}'],
-  ['\u{1f995}'],
-  ['\u{1f996}'],
-  ['\u{1f433}'],
-  ['\u{1f40b}'],
-  ['\u{1f42c}'],
-  ['\u{1f9ad}'],
-  ['\u{1f41f}'],
-  ['\u{1f420}'],
-  ['\u{1f421}'],
-  ['\u{1f988}'],
-  ['\u{1f419}'],
-  ['\u{1f41a}'],
-  ['\u{1fab8}'],
-  ['\u{1fabc}'],
-  ['\u{1f40c}'],
-  ['\u{1f98b}'],
-  ['\u{1f41b}'],
-  ['\u{1f41c}'],
-  ['\u{1f41d}'],
-  ['\u{1fab2}'],
-  ['\u{1f41e}'],
-  ['\u{1f997}'],
-  ['\u{1fab3}'],
-  ['\u{1f577}\ufe0f'],
-  ['\u{1f577}'],
-  ['\u{1f578}\ufe0f'],
-  ['\u{1f578}'],
-  ['\u{1f982}'],
-  ['\u{1f99f}'],
-  ['\u{1fab0}'],
-  ['\u{1fab1}'],
-  ['\u{1f9a0}'],
-  ['\u{1f490}'],
-  ['\u{1f338}'],
-  ['\u{1f4ae}'],
-  ['\u{1fab7}'],
-  ['\u{1f3f5}\ufe0f'],
-  ['\u{1f3f5}'],
-  ['\u{1f339}'],
-  ['\u{1f940}'],
-  ['\u{1f33a}'],
-  ['\u{1f33b}'],
-  ['\u{1f33c}'],
-  ['\u{1f337}'],
-  ['\u{1fabb}'],
-  ['\u{1f331}'],
-  ['\u{1fab4}'],
-  ['\u{1f332}'],
-  ['\u{1f333}'],
-  ['\u{1f334}'],
-  ['\u{1f335}'],
-  ['\u{1f33e}'],
-  ['\u{1f33f}'],
-  ['\u2618\ufe0f'],
-  ['\u2618'],
-  ['\u{1f340}'],
-  ['\u{1f341}'],
-  ['\u{1f342}'],
-  ['\u{1f343}'],
-  ['\u{1fab9}'],
-  ['\u{1faba}'],
-  ['\u{1f344}'],
-  ['\u{1f347}'],
-  ['\u{1f348}'],
-  ['\u{1f349}'],
-  ['\u{1f34a}'],
-  ['\u{1f34b}'],
-  ['\u{1f34c}'],
-  ['\u{1f34d}'],
-  ['\u{1f96d}'],
-  ['\u{1f34e}'],
-  ['\u{1f34f}'],
-  ['\u{1f350}'],
-  ['\u{1f351}'],
-  ['\u{1f352}'],
-  ['\u{1f353}'],
-  ['\u{1fad0}'],
-  ['\u{1f95d}'],
-  ['\u{1f345}'],
-  ['\u{1fad2}'],
-  ['\u{1f965}'],
-  ['\u{1f951}'],
-  ['\u{1f346}'],
-  ['\u{1f954}'],
-  ['\u{1f955}'],
-  ['\u{1f33d}'],
-  ['\u{1f336}\ufe0f'],
-  ['\u{1f336}'],
-  ['\u{1fad1}'],
-  ['\u{1f952}'],
-  ['\u{1f96c}'],
-  ['\u{1f966}'],
-  ['\u{1f9c4}'],
-  ['\u{1f9c5}'],
-  ['\u{1f95c}'],
-  ['\u{1fad8}'],
-  ['\u{1f330}'],
-  ['\u{1fada}'],
-  ['\u{1fadb}'],
-  ['\u{1f35e}'],
-  ['\u{1f950}'],
-  ['\u{1f956}'],
-  ['\u{1fad3}'],
-  ['\u{1f968}'],
-  ['\u{1f96f}'],
-  ['\u{1f95e}'],
-  ['\u{1f9c7}'],
-  ['\u{1f9c0}'],
-  ['\u{1f356}'],
-  ['\u{1f357}'],
-  ['\u{1f969}'],
-  ['\u{1f953}'],
-  ['\u{1f354}'],
-  ['\u{1f35f}'],
-  ['\u{1f355}'],
-  ['\u{1f32d}'],
-  ['\u{1f96a}'],
-  ['\u{1f32e}'],
-  ['\u{1f32f}'],
-  ['\u{1fad4}'],
-  ['\u{1f959}'],
-  ['\u{1f9c6}'],
-  ['\u{1f95a}'],
-  ['\u{1f373}'],
-  ['\u{1f958}'],
-  ['\u{1f372}'],
-  ['\u{1fad5}'],
-  ['\u{1f963}'],
-  ['\u{1f957}'],
-  ['\u{1f37f}'],
-  ['\u{1f9c8}'],
-  ['\u{1f9c2}'],
-  ['\u{1f96b}'],
-  ['\u{1f371}'],
-  ['\u{1f358}'],
-  ['\u{1f359}'],
-  ['\u{1f35a}'],
-  ['\u{1f35b}'],
-  ['\u{1f35c}'],
-  ['\u{1f35d}'],
-  ['\u{1f360}'],
-  ['\u{1f362}'],
-  ['\u{1f363}'],
-  ['\u{1f364}'],
-  ['\u{1f365}'],
-  ['\u{1f96e}'],
-  ['\u{1f361}'],
-  ['\u{1f95f}'],
-  ['\u{1f960}'],
-  ['\u{1f961}'],
-  ['\u{1f980}'],
-  ['\u{1f99e}'],
-  ['\u{1f990}'],
-  ['\u{1f991}'],
-  ['\u{1f9aa}'],
-  ['\u{1f366}'],
-  ['\u{1f367}'],
-  ['\u{1f368}'],
-  ['\u{1f369}'],
-  ['\u{1f36a}'],
-  ['\u{1f382}'],
-  ['\u{1f370}'],
-  ['\u{1f9c1}'],
-  ['\u{1f967}'],
-  ['\u{1f36b}'],
-  ['\u{1f36c}'],
-  ['\u{1f36d}'],
-  ['\u{1f36e}'],
-  ['\u{1f36f}'],
-  ['\u{1f37c}'],
-  ['\u{1f95b}'],
-  ['\u2615'],
-  ['\u{1fad6}'],
-  ['\u{1f375}'],
-  ['\u{1f376}'],
-  ['\u{1f37e}'],
-  ['\u{1f377}'],
-  ['\u{1f378}'],
-  ['\u{1f379}'],
-  ['\u{1f37a}'],
-  ['\u{1f37b}'],
-  ['\u{1f942}'],
-  ['\u{1f943}'],
-  ['\u{1fad7}'],
-  ['\u{1f964}'],
-  ['\u{1f9cb}'],
-  ['\u{1f9c3}'],
-  ['\u{1f9c9}'],
-  ['\u{1f9ca}'],
-  ['\u{1f962}'],
-  ['\u{1f37d}\ufe0f'],
-  ['\u{1f37d}'],
-  ['\u{1f374}'],
-  ['\u{1f944}'],
-  ['\u{1f52a}'],
-  ['\u{1fad9}'],
-  ['\u{1f3fa}'],
-  ['\u{1f30d}'],
-  ['\u{1f30e}'],
-  ['\u{1f30f}'],
-  ['\u{1f310}'],
-  ['\u{1f5fa}\ufe0f'],
-  ['\u{1f5fa}'],
-  ['\u{1f5fe}'],
-  ['\u{1f9ed}'],
-  ['\u{1f3d4}\ufe0f'],
-  ['\u{1f3d4}'],
-  ['\u26f0\ufe0f'],
-  ['\u26f0'],
-  ['\u{1f30b}'],
-  ['\u{1f5fb}'],
-  ['\u{1f3d5}\ufe0f'],
-  ['\u{1f3d5}'],
-  ['\u{1f3d6}\ufe0f'],
-  ['\u{1f3d6}'],
-  ['\u{1f3dc}\ufe0f'],
-  ['\u{1f3dc}'],
-  ['\u{1f3dd}\ufe0f'],
-  ['\u{1f3dd}'],
-  ['\u{1f3de}\ufe0f'],
-  ['\u{1f3de}'],
-  ['\u{1f3df}\ufe0f'],
-  ['\u{1f3df}'],
-  ['\u{1f3db}\ufe0f'],
-  ['\u{1f3db}'],
-  ['\u{1f3d7}\ufe0f'],
-  ['\u{1f3d7}'],
-  ['\u{1f9f1}'],
-  ['\u{1faa8}'],
-  ['\u{1fab5}'],
-  ['\u{1f6d6}'],
-  ['\u{1f3d8}\ufe0f'],
-  ['\u{1f3d8}'],
-  ['\u{1f3da}\ufe0f'],
-  ['\u{1f3da}'],
-  ['\u{1f3e0}'],
-  ['\u{1f3e1}'],
-  ['\u{1f3e2}'],
-  ['\u{1f3e3}'],
-  ['\u{1f3e4}'],
-  ['\u{1f3e5}'],
-  ['\u{1f3e6}'],
-  ['\u{1f3e8}'],
-  ['\u{1f3e9}'],
-  ['\u{1f3ea}'],
-  ['\u{1f3eb}'],
-  ['\u{1f3ec}'],
-  ['\u{1f3ed}'],
-  ['\u{1f3ef}'],
-  ['\u{1f3f0}'],
-  ['\u{1f492}'],
-  ['\u{1f5fc}'],
-  ['\u{1f5fd}'],
-  ['\u26ea'],
-  ['\u{1f54c}'],
-  ['\u{1f6d5}'],
-  ['\u{1f54d}'],
-  ['\u26e9\ufe0f'],
-  ['\u26e9'],
-  ['\u{1f54b}'],
-  ['\u26f2'],
-  ['\u26fa'],
-  ['\u{1f301}'],
-  ['\u{1f303}'],
-  ['\u{1f3d9}\ufe0f'],
-  ['\u{1f3d9}'],
-  ['\u{1f304}'],
-  ['\u{1f305}'],
-  ['\u{1f306}'],
-  ['\u{1f307}'],
-  ['\u{1f309}'],
-  ['\u2668\ufe0f'],
-  ['\u2668'],
-  ['\u{1f3a0}'],
-  ['\u{1f6dd}'],
-  ['\u{1f3a1}'],
-  ['\u{1f3a2}'],
-  ['\u{1f488}'],
-  ['\u{1f3aa}'],
-  ['\u{1f682}'],
-  ['\u{1f683}'],
-  ['\u{1f684}'],
-  ['\u{1f685}'],
-  ['\u{1f686}'],
-  ['\u{1f687}'],
-  ['\u{1f688}'],
-  ['\u{1f689}'],
-  ['\u{1f68a}'],
-  ['\u{1f69d}'],
-  ['\u{1f69e}'],
-  ['\u{1f68b}'],
-  ['\u{1f68c}'],
-  ['\u{1f68d}'],
-  ['\u{1f68e}'],
-  ['\u{1f690}'],
-  ['\u{1f691}'],
-  ['\u{1f692}'],
-  ['\u{1f693}'],
-  ['\u{1f694}'],
-  ['\u{1f695}'],
-  ['\u{1f696}'],
-  ['\u{1f697}'],
-  ['\u{1f698}'],
-  ['\u{1f699}'],
-  ['\u{1f6fb}'],
-  ['\u{1f69a}'],
-  ['\u{1f69b}'],
-  ['\u{1f69c}'],
-  ['\u{1f3ce}\ufe0f'],
-  ['\u{1f3ce}'],
-  ['\u{1f3cd}\ufe0f'],
-  ['\u{1f3cd}'],
-  ['\u{1f6f5}'],
-  ['\u{1f9bd}'],
-  ['\u{1f9bc}'],
-  ['\u{1f6fa}'],
-  ['\u{1f6b2}'],
-  ['\u{1f6f4}'],
-  ['\u{1f6f9}'],
-  ['\u{1f6fc}'],
-  ['\u{1f68f}'],
-  ['\u{1f6e3}\ufe0f'],
-  ['\u{1f6e3}'],
-  ['\u{1f6e4}\ufe0f'],
-  ['\u{1f6e4}'],
-  ['\u{1f6e2}\ufe0f'],
-  ['\u{1f6e2}'],
-  ['\u26fd'],
-  ['\u{1f6de}'],
-  ['\u{1f6a8}'],
-  ['\u{1f6a5}'],
-  ['\u{1f6a6}'],
-  ['\u{1f6d1}'],
-  ['\u{1f6a7}'],
-  ['\u2693'],
-  ['\u{1f6df}'],
-  ['\u26f5'],
-  ['\u{1f6f6}'],
-  ['\u{1f6a4}'],
-  ['\u{1f6f3}\ufe0f'],
-  ['\u{1f6f3}'],
-  ['\u26f4\ufe0f'],
-  ['\u26f4'],
-  ['\u{1f6e5}\ufe0f'],
-  ['\u{1f6e5}'],
-  ['\u{1f6a2}'],
-  ['\u2708\ufe0f'],
-  ['\u2708'],
-  ['\u{1f6e9}\ufe0f'],
-  ['\u{1f6e9}'],
-  ['\u{1f6eb}'],
-  ['\u{1f6ec}'],
-  ['\u{1fa82}'],
-  ['\u{1f4ba}'],
-  ['\u{1f681}'],
-  ['\u{1f69f}'],
-  ['\u{1f6a0}'],
-  ['\u{1f6a1}'],
-  ['\u{1f6f0}\ufe0f'],
-  ['\u{1f6f0}'],
-  ['\u{1f680}'],
-  ['\u{1f6f8}'],
-  ['\u{1f6ce}\ufe0f'],
-  ['\u{1f6ce}'],
-  ['\u{1f9f3}'],
-  ['\u231b'],
-  ['\u23f3'],
-  ['\u231a'],
-  ['\u23f0'],
-  ['\u23f1\ufe0f'],
-  ['\u23f1'],
-  ['\u23f2\ufe0f'],
-  ['\u23f2'],
-  ['\u{1f570}\ufe0f'],
-  ['\u{1f570}'],
-  ['\u{1f55b}'],
-  ['\u{1f567}'],
-  ['\u{1f550}'],
-  ['\u{1f55c}'],
-  ['\u{1f551}'],
-  ['\u{1f55d}'],
-  ['\u{1f552}'],
-  ['\u{1f55e}'],
-  ['\u{1f553}'],
-  ['\u{1f55f}'],
-  ['\u{1f554}'],
-  ['\u{1f560}'],
-  ['\u{1f555}'],
-  ['\u{1f561}'],
-  ['\u{1f556}'],
-  ['\u{1f562}'],
-  ['\u{1f557}'],
-  ['\u{1f563}'],
-  ['\u{1f558}'],
-  ['\u{1f564}'],
-  ['\u{1f559}'],
-  ['\u{1f565}'],
-  ['\u{1f55a}'],
-  ['\u{1f566}'],
-  ['\u{1f311}'],
-  ['\u{1f312}'],
-  ['\u{1f313}'],
-  ['\u{1f314}'],
-  ['\u{1f315}'],
-  ['\u{1f316}'],
-  ['\u{1f317}'],
-  ['\u{1f318}'],
-  ['\u{1f319}'],
-  ['\u{1f31a}'],
-  ['\u{1f31b}'],
-  ['\u{1f31c}'],
-  ['\u{1f321}\ufe0f'],
-  ['\u{1f321}'],
-  ['\u2600\ufe0f'],
-  ['\u2600'],
-  ['\u{1f31d}'],
-  ['\u{1f31e}'],
-  ['\u{1fa90}'],
-  ['\u2b50'],
-  ['\u{1f31f}'],
-  ['\u{1f320}'],
-  ['\u{1f30c}'],
-  ['\u2601\ufe0f'],
-  ['\u2601'],
-  ['\u26c5'],
-  ['\u26c8\ufe0f'],
-  ['\u26c8'],
-  ['\u{1f324}\ufe0f'],
-  ['\u{1f324}'],
-  ['\u{1f325}\ufe0f'],
-  ['\u{1f325}'],
-  ['\u{1f326}\ufe0f'],
-  ['\u{1f326}'],
-  ['\u{1f327}\ufe0f'],
-  ['\u{1f327}'],
-  ['\u{1f328}\ufe0f'],
-  ['\u{1f328}'],
-  ['\u{1f329}\ufe0f'],
-  ['\u{1f329}'],
-  ['\u{1f32a}\ufe0f'],
-  ['\u{1f32a}'],
-  ['\u{1f32b}\ufe0f'],
-  ['\u{1f32b}'],
-  ['\u{1f32c}\ufe0f'],
-  ['\u{1f32c}'],
-  ['\u{1f300}'],
-  ['\u{1f308}'],
-  ['\u{1f302}'],
-  ['\u2602\ufe0f'],
-  ['\u2602'],
-  ['\u2614'],
-  ['\u26f1\ufe0f'],
-  ['\u26f1'],
-  ['\u26a1'],
-  ['\u2744\ufe0f'],
-  ['\u2744'],
-  ['\u2603\ufe0f'],
-  ['\u2603'],
-  ['\u26c4'],
-  ['\u2604\ufe0f'],
-  ['\u2604'],
-  ['\u{1f525}'],
-  ['\u{1f4a7}'],
-  ['\u{1f30a}'],
-  ['\u{1f383}'],
-  ['\u{1f384}'],
-  ['\u{1f386}'],
-  ['\u{1f387}'],
-  ['\u{1f9e8}'],
-  ['\u2728'],
-  ['\u{1f388}'],
-  ['\u{1f389}'],
-  ['\u{1f38a}'],
-  ['\u{1f38b}'],
-  ['\u{1f38d}'],
-  ['\u{1f38e}'],
-  ['\u{1f38f}'],
-  ['\u{1f390}'],
-  ['\u{1f391}'],
-  ['\u{1f9e7}'],
-  ['\u{1f380}'],
-  ['\u{1f381}'],
-  ['\u{1f397}\ufe0f'],
-  ['\u{1f397}'],
-  ['\u{1f39f}\ufe0f'],
-  ['\u{1f39f}'],
-  ['\u{1f3ab}'],
-  ['\u{1f396}\ufe0f'],
-  ['\u{1f396}'],
-  ['\u{1f3c6}'],
-  ['\u{1f3c5}'],
-  ['\u{1f947}'],
-  ['\u{1f948}'],
-  ['\u{1f949}'],
-  ['\u26bd'],
-  ['\u26be'],
-  ['\u{1f94e}'],
-  ['\u{1f3c0}'],
-  ['\u{1f3d0}'],
-  ['\u{1f3c8}'],
-  ['\u{1f3c9}'],
-  ['\u{1f3be}'],
-  ['\u{1f94f}'],
-  ['\u{1f3b3}'],
-  ['\u{1f3cf}'],
-  ['\u{1f3d1}'],
-  ['\u{1f3d2}'],
-  ['\u{1f94d}'],
-  ['\u{1f3d3}'],
-  ['\u{1f3f8}'],
-  ['\u{1f94a}'],
-  ['\u{1f94b}'],
-  ['\u{1f945}'],
-  ['\u26f3'],
-  ['\u26f8\ufe0f'],
-  ['\u26f8'],
-  ['\u{1f3a3}'],
-  ['\u{1f93f}'],
-  ['\u{1f3bd}'],
-  ['\u{1f3bf}'],
-  ['\u{1f6f7}'],
-  ['\u{1f94c}'],
-  ['\u{1f3af}'],
-  ['\u{1fa80}'],
-  ['\u{1fa81}'],
-  ['\u{1f52b}'],
-  ['\u{1f3b1}'],
-  ['\u{1f52e}'],
-  ['\u{1fa84}'],
-  ['\u{1f3ae}'],
-  ['\u{1f579}\ufe0f'],
-  ['\u{1f579}'],
-  ['\u{1f3b0}'],
-  ['\u{1f3b2}'],
-  ['\u{1f9e9}'],
-  ['\u{1f9f8}'],
-  ['\u{1fa85}'],
-  ['\u{1faa9}'],
-  ['\u{1fa86}'],
-  ['\u2660\ufe0f'],
-  ['\u2660'],
-  ['\u2665\ufe0f'],
-  ['\u2665'],
-  ['\u2666\ufe0f'],
-  ['\u2666'],
-  ['\u2663\ufe0f'],
-  ['\u2663'],
-  ['\u265f\ufe0f'],
-  ['\u265f'],
-  ['\u{1f0cf}'],
-  ['\u{1f004}'],
-  ['\u{1f3b4}'],
-  ['\u{1f3ad}'],
-  ['\u{1f5bc}\ufe0f'],
-  ['\u{1f5bc}'],
-  ['\u{1f3a8}'],
-  ['\u{1f9f5}'],
-  ['\u{1faa1}'],
-  ['\u{1f9f6}'],
-  ['\u{1faa2}'],
-  ['\u{1f453}'],
-  ['\u{1f576}\ufe0f'],
-  ['\u{1f576}'],
-  ['\u{1f97d}'],
-  ['\u{1f97c}'],
-  ['\u{1f9ba}'],
-  ['\u{1f454}'],
-  ['\u{1f455}'],
-  ['\u{1f456}'],
-  ['\u{1f9e3}'],
-  ['\u{1f9e4}'],
-  ['\u{1f9e5}'],
-  ['\u{1f9e6}'],
-  ['\u{1f457}'],
-  ['\u{1f458}'],
-  ['\u{1f97b}'],
-  ['\u{1fa71}'],
-  ['\u{1fa72}'],
-  ['\u{1fa73}'],
-  ['\u{1f459}'],
-  ['\u{1f45a}'],
-  ['\u{1faad}'],
-  ['\u{1f45b}'],
-  ['\u{1f45c}'],
-  ['\u{1f45d}'],
-  ['\u{1f6cd}\ufe0f'],
-  ['\u{1f6cd}'],
-  ['\u{1f392}'],
-  ['\u{1fa74}'],
-  ['\u{1f45e}'],
-  ['\u{1f45f}'],
-  ['\u{1f97e}'],
-  ['\u{1f97f}'],
-  ['\u{1f460}'],
-  ['\u{1f461}'],
-  ['\u{1fa70}'],
-  ['\u{1f462}'],
-  ['\u{1faae}'],
-  ['\u{1f451}'],
-  ['\u{1f452}'],
-  ['\u{1f3a9}'],
-  ['\u{1f393}'],
-  ['\u{1f9e2}'],
-  ['\u{1fa96}'],
-  ['\u26d1\ufe0f'],
-  ['\u26d1'],
-  ['\u{1f4ff}'],
-  ['\u{1f484}'],
-  ['\u{1f48d}'],
-  ['\u{1f48e}'],
-  ['\u{1f507}'],
-  ['\u{1f508}'],
-  ['\u{1f509}'],
-  ['\u{1f50a}'],
-  ['\u{1f4e2}'],
-  ['\u{1f4e3}'],
-  ['\u{1f4ef}'],
-  ['\u{1f514}'],
-  ['\u{1f515}'],
-  ['\u{1f3bc}'],
-  ['\u{1f3b5}'],
-  ['\u{1f3b6}'],
-  ['\u{1f399}\ufe0f'],
-  ['\u{1f399}'],
-  ['\u{1f39a}\ufe0f'],
-  ['\u{1f39a}'],
-  ['\u{1f39b}\ufe0f'],
-  ['\u{1f39b}'],
-  ['\u{1f3a4}'],
-  ['\u{1f3a7}'],
-  ['\u{1f4fb}'],
-  ['\u{1f3b7}'],
-  ['\u{1fa97}'],
-  ['\u{1f3b8}'],
-  ['\u{1f3b9}'],
-  ['\u{1f3ba}'],
-  ['\u{1f3bb}'],
-  ['\u{1fa95}'],
-  ['\u{1f941}'],
-  ['\u{1fa98}'],
-  ['\u{1fa87}'],
-  ['\u{1fa88}'],
-  ['\u{1f4f1}'],
-  ['\u{1f4f2}'],
-  ['\u260e\ufe0f'],
-  ['\u260e'],
-  ['\u{1f4de}'],
-  ['\u{1f4df}'],
-  ['\u{1f4e0}'],
-  ['\u{1f50b}'],
-  ['\u{1faab}'],
-  ['\u{1f50c}'],
-  ['\u{1f4bb}'],
-  ['\u{1f5a5}\ufe0f'],
-  ['\u{1f5a5}'],
-  ['\u{1f5a8}\ufe0f'],
-  ['\u{1f5a8}'],
-  ['\u2328\ufe0f'],
-  ['\u2328'],
-  ['\u{1f5b1}\ufe0f'],
-  ['\u{1f5b1}'],
-  ['\u{1f5b2}\ufe0f'],
-  ['\u{1f5b2}'],
-  ['\u{1f4bd}'],
-  ['\u{1f4be}'],
-  ['\u{1f4bf}'],
-  ['\u{1f4c0}'],
-  ['\u{1f9ee}'],
-  ['\u{1f3a5}'],
-  ['\u{1f39e}\ufe0f'],
-  ['\u{1f39e}'],
-  ['\u{1f4fd}\ufe0f'],
-  ['\u{1f4fd}'],
-  ['\u{1f3ac}'],
-  ['\u{1f4fa}'],
-  ['\u{1f4f7}'],
-  ['\u{1f4f8}'],
-  ['\u{1f4f9}'],
-  ['\u{1f4fc}'],
-  ['\u{1f50d}'],
-  ['\u{1f50e}'],
-  ['\u{1f56f}\ufe0f'],
-  ['\u{1f56f}'],
-  ['\u{1f4a1}'],
-  ['\u{1f526}'],
-  ['\u{1f3ee}'],
-  ['\u{1fa94}'],
-  ['\u{1f4d4}'],
-  ['\u{1f4d5}'],
-  ['\u{1f4d6}'],
-  ['\u{1f4d7}'],
-  ['\u{1f4d8}'],
-  ['\u{1f4d9}'],
-  ['\u{1f4da}'],
-  ['\u{1f4d3}'],
-  ['\u{1f4d2}'],
-  ['\u{1f4c3}'],
-  ['\u{1f4dc}'],
-  ['\u{1f4c4}'],
-  ['\u{1f4f0}'],
-  ['\u{1f5de}\ufe0f'],
-  ['\u{1f5de}'],
-  ['\u{1f4d1}'],
-  ['\u{1f516}'],
-  ['\u{1f3f7}\ufe0f'],
-  ['\u{1f3f7}'],
-  ['\u{1f4b0}'],
-  ['\u{1fa99}'],
-  ['\u{1f4b4}'],
-  ['\u{1f4b5}'],
-  ['\u{1f4b6}'],
-  ['\u{1f4b7}'],
-  ['\u{1f4b8}'],
-  ['\u{1f4b3}'],
-  ['\u{1f9fe}'],
-  ['\u{1f4b9}'],
-  ['\u2709\ufe0f'],
-  ['\u2709'],
-  ['\u{1f4e7}'],
-  ['\u{1f4e8}'],
-  ['\u{1f4e9}'],
-  ['\u{1f4e4}'],
-  ['\u{1f4e5}'],
-  ['\u{1f4e6}'],
-  ['\u{1f4eb}'],
-  ['\u{1f4ea}'],
-  ['\u{1f4ec}'],
-  ['\u{1f4ed}'],
-  ['\u{1f4ee}'],
-  ['\u{1f5f3}\ufe0f'],
-  ['\u{1f5f3}'],
-  ['\u270f\ufe0f'],
-  ['\u270f'],
-  ['\u2712\ufe0f'],
-  ['\u2712'],
-  ['\u{1f58b}\ufe0f'],
-  ['\u{1f58b}'],
-  ['\u{1f58a}\ufe0f'],
-  ['\u{1f58a}'],
-  ['\u{1f58c}\ufe0f'],
-  ['\u{1f58c}'],
-  ['\u{1f58d}\ufe0f'],
-  ['\u{1f58d}'],
-  ['\u{1f4dd}'],
-  ['\u{1f4bc}'],
-  ['\u{1f4c1}'],
-  ['\u{1f4c2}'],
-  ['\u{1f5c2}\ufe0f'],
-  ['\u{1f5c2}'],
-  ['\u{1f4c5}'],
-  ['\u{1f4c6}'],
-  ['\u{1f5d2}\ufe0f'],
-  ['\u{1f5d2}'],
-  ['\u{1f5d3}\ufe0f'],
-  ['\u{1f5d3}'],
-  ['\u{1f4c7}'],
-  ['\u{1f4c8}'],
-  ['\u{1f4c9}'],
-  ['\u{1f4ca}'],
-  ['\u{1f4cb}'],
-  ['\u{1f4cc}'],
-  ['\u{1f4cd}'],
-  ['\u{1f4ce}'],
-  ['\u{1f587}\ufe0f'],
-  ['\u{1f587}'],
-  ['\u{1f4cf}'],
-  ['\u{1f4d0}'],
-  ['\u2702\ufe0f'],
-  ['\u2702'],
-  ['\u{1f5c3}\ufe0f'],
-  ['\u{1f5c3}'],
-  ['\u{1f5c4}\ufe0f'],
-  ['\u{1f5c4}'],
-  ['\u{1f5d1}\ufe0f'],
-  ['\u{1f5d1}'],
-  ['\u{1f512}'],
-  ['\u{1f513}'],
-  ['\u{1f50f}'],
-  ['\u{1f510}'],
-  ['\u{1f511}'],
-  ['\u{1f5dd}\ufe0f'],
-  ['\u{1f5dd}'],
-  ['\u{1f528}'],
-  ['\u{1fa93}'],
-  ['\u26cf\ufe0f'],
-  ['\u26cf'],
-  ['\u2692\ufe0f'],
-  ['\u2692'],
-  ['\u{1f6e0}\ufe0f'],
-  ['\u{1f6e0}'],
-  ['\u{1f5e1}\ufe0f'],
-  ['\u{1f5e1}'],
-  ['\u2694\ufe0f'],
-  ['\u2694'],
-  ['\u{1f4a3}'],
-  ['\u{1fa83}'],
-  ['\u{1f3f9}'],
-  ['\u{1f6e1}\ufe0f'],
-  ['\u{1f6e1}'],
-  ['\u{1fa9a}'],
-  ['\u{1f527}'],
-  ['\u{1fa9b}'],
-  ['\u{1f529}'],
-  ['\u2699\ufe0f'],
-  ['\u2699'],
-  ['\u{1f5dc}\ufe0f'],
-  ['\u{1f5dc}'],
-  ['\u2696\ufe0f'],
-  ['\u2696'],
-  ['\u{1f9af}'],
-  ['\u{1f517}'],
-  ['\u26d3\ufe0f'],
-  ['\u26d3'],
-  ['\u{1fa9d}'],
-  ['\u{1f9f0}'],
-  ['\u{1f9f2}'],
-  ['\u{1fa9c}'],
-  ['\u2697\ufe0f'],
-  ['\u2697'],
-  ['\u{1f9ea}'],
-  ['\u{1f9eb}'],
-  ['\u{1f9ec}'],
-  ['\u{1f52c}'],
-  ['\u{1f52d}'],
-  ['\u{1f4e1}'],
-  ['\u{1f489}'],
-  ['\u{1fa78}'],
-  ['\u{1f48a}'],
-  ['\u{1fa79}'],
-  ['\u{1fa7c}'],
-  ['\u{1fa7a}'],
-  ['\u{1fa7b}'],
-  ['\u{1f6aa}'],
-  ['\u{1f6d7}'],
-  ['\u{1fa9e}'],
-  ['\u{1fa9f}'],
-  ['\u{1f6cf}\ufe0f'],
-  ['\u{1f6cf}'],
-  ['\u{1f6cb}\ufe0f'],
-  ['\u{1f6cb}'],
-  ['\u{1fa91}'],
-  ['\u{1f6bd}'],
-  ['\u{1faa0}'],
-  ['\u{1f6bf}'],
-  ['\u{1f6c1}'],
-  ['\u{1faa4}'],
-  ['\u{1fa92}'],
-  ['\u{1f9f4}'],
-  ['\u{1f9f7}'],
-  ['\u{1f9f9}'],
-  ['\u{1f9fa}'],
-  ['\u{1f9fb}'],
-  ['\u{1faa3}'],
-  ['\u{1f9fc}'],
-  ['\u{1fae7}'],
-  ['\u{1faa5}'],
-  ['\u{1f9fd}'],
-  ['\u{1f9ef}'],
-  ['\u{1f6d2}'],
-  ['\u{1f6ac}'],
-  ['\u26b0\ufe0f'],
-  ['\u26b0'],
-  ['\u{1faa6}'],
-  ['\u26b1\ufe0f'],
-  ['\u26b1'],
-  ['\u{1f9ff}'],
-  ['\u{1faac}'],
-  ['\u{1f5ff}'],
-  ['\u{1faa7}'],
-  ['\u{1faaa}'],
-  ['\u{1f3e7}'],
-  ['\u{1f6ae}'],
-  ['\u{1f6b0}'],
-  ['\u267f'],
-  ['\u{1f6b9}'],
-  ['\u{1f6ba}'],
-  ['\u{1f6bb}'],
-  ['\u{1f6bc}'],
-  ['\u{1f6be}'],
-  ['\u{1f6c2}'],
-  ['\u{1f6c3}'],
-  ['\u{1f6c4}'],
-  ['\u{1f6c5}'],
-  ['\u26a0\ufe0f'],
-  ['\u26a0'],
-  ['\u{1f6b8}'],
-  ['\u26d4'],
-  ['\u{1f6ab}'],
-  ['\u{1f6b3}'],
-  ['\u{1f6ad}'],
-  ['\u{1f6af}'],
-  ['\u{1f6b1}'],
-  ['\u{1f6b7}'],
-  ['\u{1f4f5}'],
-  ['\u{1f51e}'],
-  ['\u2622\ufe0f'],
-  ['\u2622'],
-  ['\u2623\ufe0f'],
-  ['\u2623'],
-  ['\u2b06\ufe0f'],
-  ['\u2b06'],
-  ['\u2197\ufe0f'],
-  ['\u2197'],
-  ['\u27a1\ufe0f'],
-  ['\u27a1'],
-  ['\u2198\ufe0f'],
-  ['\u2198'],
-  ['\u2b07\ufe0f'],
-  ['\u2b07'],
-  ['\u2199\ufe0f'],
-  ['\u2199'],
-  ['\u2b05\ufe0f'],
-  ['\u2b05'],
-  ['\u2196\ufe0f'],
-  ['\u2196'],
-  ['\u2195\ufe0f'],
-  ['\u2195'],
-  ['\u2194\ufe0f'],
-  ['\u2194'],
-  ['\u21a9\ufe0f'],
-  ['\u21a9'],
-  ['\u21aa\ufe0f'],
-  ['\u21aa'],
-  ['\u2934\ufe0f'],
-  ['\u2934'],
-  ['\u2935\ufe0f'],
-  ['\u2935'],
-  ['\u{1f503}'],
-  ['\u{1f504}'],
-  ['\u{1f519}'],
-  ['\u{1f51a}'],
-  ['\u{1f51b}'],
-  ['\u{1f51c}'],
-  ['\u{1f51d}'],
-  ['\u{1f6d0}'],
-  ['\u269b\ufe0f'],
-  ['\u269b'],
-  ['\u{1f549}\ufe0f'],
-  ['\u{1f549}'],
-  ['\u2721\ufe0f'],
-  ['\u2721'],
-  ['\u2638\ufe0f'],
-  ['\u2638'],
-  ['\u262f\ufe0f'],
-  ['\u262f'],
-  ['\u271d\ufe0f'],
-  ['\u271d'],
-  ['\u2626\ufe0f'],
-  ['\u2626'],
-  ['\u262a\ufe0f'],
-  ['\u262a'],
-  ['\u262e\ufe0f'],
-  ['\u262e'],
-  ['\u{1f54e}'],
-  ['\u{1f52f}'],
-  ['\u{1faaf}'],
-  ['\u2648'],
-  ['\u2649'],
-  ['\u264a'],
-  ['\u264b'],
-  ['\u264c'],
-  ['\u264d'],
-  ['\u264e'],
-  ['\u264f'],
-  ['\u2650'],
-  ['\u2651'],
-  ['\u2652'],
-  ['\u2653'],
-  ['\u26ce'],
-  ['\u{1f500}'],
-  ['\u{1f501}'],
-  ['\u{1f502}'],
-  ['\u25b6\ufe0f'],
-  ['\u25b6'],
-  ['\u23e9'],
-  ['\u23ed\ufe0f'],
-  ['\u23ed'],
-  ['\u23ef\ufe0f'],
-  ['\u23ef'],
-  ['\u25c0\ufe0f'],
-  ['\u25c0'],
-  ['\u23ea'],
-  ['\u23ee\ufe0f'],
-  ['\u23ee'],
-  ['\u{1f53c}'],
-  ['\u23eb'],
-  ['\u{1f53d}'],
-  ['\u23ec'],
-  ['\u23f8\ufe0f'],
-  ['\u23f8'],
-  ['\u23f9\ufe0f'],
-  ['\u23f9'],
-  ['\u23fa\ufe0f'],
-  ['\u23fa'],
-  ['\u23cf\ufe0f'],
-  ['\u23cf'],
-  ['\u{1f3a6}'],
-  ['\u{1f505}'],
-  ['\u{1f506}'],
-  ['\u{1f4f6}'],
-  ['\u{1f6dc}'],
-  ['\u{1f4f3}'],
-  ['\u{1f4f4}'],
-  ['\u2640\ufe0f'],
-  ['\u2640'],
-  ['\u2642\ufe0f'],
-  ['\u2642'],
-  ['\u26a7\ufe0f'],
-  ['\u26a7'],
-  ['\u2716\ufe0f'],
-  ['\u2716'],
-  ['\u2795'],
-  ['\u2796'],
-  ['\u2797'],
-  ['\u{1f7f0}'],
-  ['\u267e\ufe0f'],
-  ['\u267e'],
-  ['\u203c\ufe0f'],
-  ['\u203c'],
-  ['\u2049\ufe0f'],
-  ['\u2049'],
-  ['\u2753'],
-  ['\u2754'],
-  ['\u2755'],
-  ['\u2757'],
-  ['\u3030\ufe0f'],
-  ['\u3030'],
-  ['\u{1f4b1}'],
-  ['\u{1f4b2}'],
-  ['\u2695\ufe0f'],
-  ['\u2695'],
-  ['\u267b\ufe0f'],
-  ['\u267b'],
-  ['\u269c\ufe0f'],
-  ['\u269c'],
-  ['\u{1f531}'],
-  ['\u{1f4db}'],
-  ['\u{1f530}'],
-  ['\u2b55'],
-  ['\u2705'],
-  ['\u2611\ufe0f'],
-  ['\u2611'],
-  ['\u2714\ufe0f'],
-  ['\u2714'],
-  ['\u274c'],
-  ['\u274e'],
-  ['\u27b0'],
-  ['\u27bf'],
-  ['\u303d\ufe0f'],
-  ['\u303d'],
-  ['\u2733\ufe0f'],
-  ['\u2733'],
-  ['\u2734\ufe0f'],
-  ['\u2734'],
-  ['\u2747\ufe0f'],
-  ['\u2747'],
-  ['©\ufe0f'],
-  ['©'],
-  ['®\ufe0f'],
-  ['®'],
-  ['\u2122\ufe0f'],
-  ['\u2122'],
-  ['#\ufe0f\u20e3'],
-  ['#\u20e3'],
-  ['*\ufe0f\u20e3'],
-  ['*\u20e3'],
-  ['0\ufe0f\u20e3'],
-  ['0\u20e3'],
-  ['1\ufe0f\u20e3'],
-  ['1\u20e3'],
-  ['2\ufe0f\u20e3'],
-  ['2\u20e3'],
-  ['3\ufe0f\u20e3'],
-  ['3\u20e3'],
-  ['4\ufe0f\u20e3'],
-  ['4\u20e3'],
-  ['5\ufe0f\u20e3'],
-  ['5\u20e3'],
-  ['6\ufe0f\u20e3'],
-  ['6\u20e3'],
-  ['7\ufe0f\u20e3'],
-  ['7\u20e3'],
-  ['8\ufe0f\u20e3'],
-  ['8\u20e3'],
-  ['9\ufe0f\u20e3'],
-  ['9\u20e3'],
-  ['\u{1f51f}'],
-  ['\u{1f520}'],
-  ['\u{1f521}'],
-  ['\u{1f522}'],
-  ['\u{1f523}'],
-  ['\u{1f524}'],
-  ['\u{1f170}\ufe0f'],
-  ['\u{1f170}'],
-  ['\u{1f18e}'],
-  ['\u{1f171}\ufe0f'],
-  ['\u{1f171}'],
-  ['\u{1f191}'],
-  ['\u{1f192}'],
-  ['\u{1f193}'],
-  ['\u2139\ufe0f'],
-  ['\u2139'],
-  ['\u{1f194}'],
-  ['\u24c2\ufe0f'],
-  ['\u24c2'],
-  ['\u{1f195}'],
-  ['\u{1f196}'],
-  ['\u{1f17e}\ufe0f'],
-  ['\u{1f17e}'],
-  ['\u{1f197}'],
-  ['\u{1f17f}\ufe0f'],
-  ['\u{1f17f}'],
-  ['\u{1f198}'],
-  ['\u{1f199}'],
-  ['\u{1f19a}'],
-  ['\u{1f201}'],
-  ['\u{1f202}\ufe0f'],
-  ['\u{1f202}'],
-  ['\u{1f237}\ufe0f'],
-  ['\u{1f237}'],
-  ['\u{1f236}'],
-  ['\u{1f22f}'],
-  ['\u{1f250}'],
-  ['\u{1f239}'],
-  ['\u{1f21a}'],
-  ['\u{1f232}'],
-  ['\u{1f251}'],
-  ['\u{1f238}'],
-  ['\u{1f234}'],
-  ['\u{1f233}'],
-  ['\u3297\ufe0f'],
-  ['\u3297'],
-  ['\u3299\ufe0f'],
-  ['\u3299'],
-  ['\u{1f23a}'],
-  ['\u{1f235}'],
-  ['\u{1f534}'],
-  ['\u{1f7e0}'],
-  ['\u{1f7e1}'],
-  ['\u{1f7e2}'],
-  ['\u{1f535}'],
-  ['\u{1f7e3}'],
-  ['\u{1f7e4}'],
-  ['\u26ab'],
-  ['\u26aa'],
-  ['\u{1f7e5}'],
-  ['\u{1f7e7}'],
-  ['\u{1f7e8}'],
-  ['\u{1f7e9}'],
-  ['\u{1f7e6}'],
-  ['\u{1f7ea}'],
-  ['\u{1f7eb}'],
-  ['\u2b1b'],
-  ['\u2b1c'],
-  ['\u25fc\ufe0f'],
-  ['\u25fc'],
-  ['\u25fb\ufe0f'],
-  ['\u25fb'],
-  ['\u25fe'],
-  ['\u25fd'],
-  ['\u25aa\ufe0f'],
-  ['\u25aa'],
-  ['\u25ab\ufe0f'],
-  ['\u25ab'],
-  ['\u{1f536}'],
-  ['\u{1f537}'],
-  ['\u{1f538}'],
-  ['\u{1f539}'],
-  ['\u{1f53a}'],
-  ['\u{1f53b}'],
-  ['\u{1f4a0}'],
-  ['\u{1f518}'],
-  ['\u{1f533}'],
-  ['\u{1f532}'],
-  ['\u{1f3c1}'],
-  ['\u{1f6a9}'],
-  ['\u{1f38c}'],
-  ['\u{1f3f4}'],
-  ['\u{1f3f3}\ufe0f'],
-  ['\u{1f3f3}'],
-  ['\u{1f3f3}\ufe0f\u200d\u{1f308}'],
-  ['\u{1f3f3}\u200d\u{1f308}'],
-  ['\u{1f3f3}\ufe0f\u200d\u26a7\ufe0f'],
-  ['\u{1f3f3}\u200d\u26a7\ufe0f'],
-  ['\u{1f3f3}\ufe0f\u200d\u26a7'],
-  ['\u{1f3f3}\u200d\u26a7'],
-  ['\u{1f3f4}\u200d\u2620\ufe0f'],
-  ['\u{1f3f4}\u200d\u2620'],
-  ['\u{1f1e6}\u{1f1e8}'],
-  ['\u{1f1e6}\u{1f1e9}'],
-  ['\u{1f1e6}\u{1f1ea}'],
-  ['\u{1f1e6}\u{1f1eb}'],
-  ['\u{1f1e6}\u{1f1ec}'],
-  ['\u{1f1e6}\u{1f1ee}'],
-  ['\u{1f1e6}\u{1f1f1}'],
-  ['\u{1f1e6}\u{1f1f2}'],
-  ['\u{1f1e6}\u{1f1f4}'],
-  ['\u{1f1e6}\u{1f1f6}'],
-  ['\u{1f1e6}\u{1f1f7}'],
-  ['\u{1f1e6}\u{1f1f8}'],
-  ['\u{1f1e6}\u{1f1f9}'],
-  ['\u{1f1e6}\u{1f1fa}'],
-  ['\u{1f1e6}\u{1f1fc}'],
-  ['\u{1f1e6}\u{1f1fd}'],
-  ['\u{1f1e6}\u{1f1ff}'],
-  ['\u{1f1e7}\u{1f1e6}'],
-  ['\u{1f1e7}\u{1f1e7}'],
-  ['\u{1f1e7}\u{1f1e9}'],
-  ['\u{1f1e7}\u{1f1ea}'],
-  ['\u{1f1e7}\u{1f1eb}'],
-  ['\u{1f1e7}\u{1f1ec}'],
-  ['\u{1f1e7}\u{1f1ed}'],
-  ['\u{1f1e7}\u{1f1ee}'],
-  ['\u{1f1e7}\u{1f1ef}'],
-  ['\u{1f1e7}\u{1f1f1}'],
-  ['\u{1f1e7}\u{1f1f2}'],
-  ['\u{1f1e7}\u{1f1f3}'],
-  ['\u{1f1e7}\u{1f1f4}'],
-  ['\u{1f1e7}\u{1f1f6}'],
-  ['\u{1f1e7}\u{1f1f7}'],
-  ['\u{1f1e7}\u{1f1f8}'],
-  ['\u{1f1e7}\u{1f1f9}'],
-  ['\u{1f1e7}\u{1f1fb}'],
-  ['\u{1f1e7}\u{1f1fc}'],
-  ['\u{1f1e7}\u{1f1fe}'],
-  ['\u{1f1e7}\u{1f1ff}'],
-  ['\u{1f1e8}\u{1f1e6}'],
-  ['\u{1f1e8}\u{1f1e8}'],
-  ['\u{1f1e8}\u{1f1e9}'],
-  ['\u{1f1e8}\u{1f1eb}'],
-  ['\u{1f1e8}\u{1f1ec}'],
-  ['\u{1f1e8}\u{1f1ed}'],
-  ['\u{1f1e8}\u{1f1ee}'],
-  ['\u{1f1e8}\u{1f1f0}'],
-  ['\u{1f1e8}\u{1f1f1}'],
-  ['\u{1f1e8}\u{1f1f2}'],
-  ['\u{1f1e8}\u{1f1f3}'],
-  ['\u{1f1e8}\u{1f1f4}'],
-  ['\u{1f1e8}\u{1f1f5}'],
-  ['\u{1f1e8}\u{1f1f7}'],
-  ['\u{1f1e8}\u{1f1fa}'],
-  ['\u{1f1e8}\u{1f1fb}'],
-  ['\u{1f1e8}\u{1f1fc}'],
-  ['\u{1f1e8}\u{1f1fd}'],
-  ['\u{1f1e8}\u{1f1fe}'],
-  ['\u{1f1e8}\u{1f1ff}'],
-  ['\u{1f1e9}\u{1f1ea}'],
-  ['\u{1f1e9}\u{1f1ec}'],
-  ['\u{1f1e9}\u{1f1ef}'],
-  ['\u{1f1e9}\u{1f1f0}'],
-  ['\u{1f1e9}\u{1f1f2}'],
-  ['\u{1f1e9}\u{1f1f4}'],
-  ['\u{1f1e9}\u{1f1ff}'],
-  ['\u{1f1ea}\u{1f1e6}'],
-  ['\u{1f1ea}\u{1f1e8}'],
-  ['\u{1f1ea}\u{1f1ea}'],
-  ['\u{1f1ea}\u{1f1ec}'],
-  ['\u{1f1ea}\u{1f1ed}'],
-  ['\u{1f1ea}\u{1f1f7}'],
-  ['\u{1f1ea}\u{1f1f8}'],
-  ['\u{1f1ea}\u{1f1f9}'],
-  ['\u{1f1ea}\u{1f1fa}'],
-  ['\u{1f1eb}\u{1f1ee}'],
-  ['\u{1f1eb}\u{1f1ef}'],
-  ['\u{1f1eb}\u{1f1f0}'],
-  ['\u{1f1eb}\u{1f1f2}'],
-  ['\u{1f1eb}\u{1f1f4}'],
-  ['\u{1f1eb}\u{1f1f7}'],
-  ['\u{1f1ec}\u{1f1e6}'],
-  ['\u{1f1ec}\u{1f1e7}'],
-  ['\u{1f1ec}\u{1f1e9}'],
-  ['\u{1f1ec}\u{1f1ea}'],
-  ['\u{1f1ec}\u{1f1eb}'],
-  ['\u{1f1ec}\u{1f1ec}'],
-  ['\u{1f1ec}\u{1f1ed}'],
-  ['\u{1f1ec}\u{1f1ee}'],
-  ['\u{1f1ec}\u{1f1f1}'],
-  ['\u{1f1ec}\u{1f1f2}'],
-  ['\u{1f1ec}\u{1f1f3}'],
-  ['\u{1f1ec}\u{1f1f5}'],
-  ['\u{1f1ec}\u{1f1f6}'],
-  ['\u{1f1ec}\u{1f1f7}'],
-  ['\u{1f1ec}\u{1f1f8}'],
-  ['\u{1f1ec}\u{1f1f9}'],
-  ['\u{1f1ec}\u{1f1fa}'],
-  ['\u{1f1ec}\u{1f1fc}'],
-  ['\u{1f1ec}\u{1f1fe}'],
-  ['\u{1f1ed}\u{1f1f0}'],
-  ['\u{1f1ed}\u{1f1f2}'],
-  ['\u{1f1ed}\u{1f1f3}'],
-  ['\u{1f1ed}\u{1f1f7}'],
-  ['\u{1f1ed}\u{1f1f9}'],
-  ['\u{1f1ed}\u{1f1fa}'],
-  ['\u{1f1ee}\u{1f1e8}'],
-  ['\u{1f1ee}\u{1f1e9}'],
-  ['\u{1f1ee}\u{1f1ea}'],
-  ['\u{1f1ee}\u{1f1f1}'],
-  ['\u{1f1ee}\u{1f1f2}'],
-  ['\u{1f1ee}\u{1f1f3}'],
-  ['\u{1f1ee}\u{1f1f4}'],
-  ['\u{1f1ee}\u{1f1f6}'],
-  ['\u{1f1ee}\u{1f1f7}'],
-  ['\u{1f1ee}\u{1f1f8}'],
-  ['\u{1f1ee}\u{1f1f9}'],
-  ['\u{1f1ef}\u{1f1ea}'],
-  ['\u{1f1ef}\u{1f1f2}'],
-  ['\u{1f1ef}\u{1f1f4}'],
-  ['\u{1f1ef}\u{1f1f5}'],
-  ['\u{1f1f0}\u{1f1ea}'],
-  ['\u{1f1f0}\u{1f1ec}'],
-  ['\u{1f1f0}\u{1f1ed}'],
-  ['\u{1f1f0}\u{1f1ee}'],
-  ['\u{1f1f0}\u{1f1f2}'],
-  ['\u{1f1f0}\u{1f1f3}'],
-  ['\u{1f1f0}\u{1f1f5}'],
-  ['\u{1f1f0}\u{1f1f7}'],
-  ['\u{1f1f0}\u{1f1fc}'],
-  ['\u{1f1f0}\u{1f1fe}'],
-  ['\u{1f1f0}\u{1f1ff}'],
-  ['\u{1f1f1}\u{1f1e6}'],
-  ['\u{1f1f1}\u{1f1e7}'],
-  ['\u{1f1f1}\u{1f1e8}'],
-  ['\u{1f1f1}\u{1f1ee}'],
-  ['\u{1f1f1}\u{1f1f0}'],
-  ['\u{1f1f1}\u{1f1f7}'],
-  ['\u{1f1f1}\u{1f1f8}'],
-  ['\u{1f1f1}\u{1f1f9}'],
-  ['\u{1f1f1}\u{1f1fa}'],
-  ['\u{1f1f1}\u{1f1fb}'],
-  ['\u{1f1f1}\u{1f1fe}'],
-  ['\u{1f1f2}\u{1f1e6}'],
-  ['\u{1f1f2}\u{1f1e8}'],
-  ['\u{1f1f2}\u{1f1e9}'],
-  ['\u{1f1f2}\u{1f1ea}'],
-  ['\u{1f1f2}\u{1f1eb}'],
-  ['\u{1f1f2}\u{1f1ec}'],
-  ['\u{1f1f2}\u{1f1ed}'],
-  ['\u{1f1f2}\u{1f1f0}'],
-  ['\u{1f1f2}\u{1f1f1}'],
-  ['\u{1f1f2}\u{1f1f2}'],
-  ['\u{1f1f2}\u{1f1f3}'],
-  ['\u{1f1f2}\u{1f1f4}'],
-  ['\u{1f1f2}\u{1f1f5}'],
-  ['\u{1f1f2}\u{1f1f6}'],
-  ['\u{1f1f2}\u{1f1f7}'],
-  ['\u{1f1f2}\u{1f1f8}'],
-  ['\u{1f1f2}\u{1f1f9}'],
-  ['\u{1f1f2}\u{1f1fa}'],
-  ['\u{1f1f2}\u{1f1fb}'],
-  ['\u{1f1f2}\u{1f1fc}'],
-  ['\u{1f1f2}\u{1f1fd}'],
-  ['\u{1f1f2}\u{1f1fe}'],
-  ['\u{1f1f2}\u{1f1ff}'],
-  ['\u{1f1f3}\u{1f1e6}'],
-  ['\u{1f1f3}\u{1f1e8}'],
-  ['\u{1f1f3}\u{1f1ea}'],
-  ['\u{1f1f3}\u{1f1eb}'],
-  ['\u{1f1f3}\u{1f1ec}'],
-  ['\u{1f1f3}\u{1f1ee}'],
-  ['\u{1f1f3}\u{1f1f1}'],
-  ['\u{1f1f3}\u{1f1f4}'],
-  ['\u{1f1f3}\u{1f1f5}'],
-  ['\u{1f1f3}\u{1f1f7}'],
-  ['\u{1f1f3}\u{1f1fa}'],
-  ['\u{1f1f3}\u{1f1ff}'],
-  ['\u{1f1f4}\u{1f1f2}'],
-  ['\u{1f1f5}\u{1f1e6}'],
-  ['\u{1f1f5}\u{1f1ea}'],
-  ['\u{1f1f5}\u{1f1eb}'],
-  ['\u{1f1f5}\u{1f1ec}'],
-  ['\u{1f1f5}\u{1f1ed}'],
-  ['\u{1f1f5}\u{1f1f0}'],
-  ['\u{1f1f5}\u{1f1f1}'],
-  ['\u{1f1f5}\u{1f1f2}'],
-  ['\u{1f1f5}\u{1f1f3}'],
-  ['\u{1f1f5}\u{1f1f7}'],
-  ['\u{1f1f5}\u{1f1f8}'],
-  ['\u{1f1f5}\u{1f1f9}'],
-  ['\u{1f1f5}\u{1f1fc}'],
-  ['\u{1f1f5}\u{1f1fe}'],
-  ['\u{1f1f6}\u{1f1e6}'],
-  ['\u{1f1f7}\u{1f1ea}'],
-  ['\u{1f1f7}\u{1f1f4}'],
-  ['\u{1f1f7}\u{1f1f8}'],
-  ['\u{1f1f7}\u{1f1fa}'],
-  ['\u{1f1f7}\u{1f1fc}'],
-  ['\u{1f1f8}\u{1f1e6}'],
-  ['\u{1f1f8}\u{1f1e7}'],
-  ['\u{1f1f8}\u{1f1e8}'],
-  ['\u{1f1f8}\u{1f1e9}'],
-  ['\u{1f1f8}\u{1f1ea}'],
-  ['\u{1f1f8}\u{1f1ec}'],
-  ['\u{1f1f8}\u{1f1ed}'],
-  ['\u{1f1f8}\u{1f1ee}'],
-  ['\u{1f1f8}\u{1f1ef}'],
-  ['\u{1f1f8}\u{1f1f0}'],
-  ['\u{1f1f8}\u{1f1f1}'],
-  ['\u{1f1f8}\u{1f1f2}'],
-  ['\u{1f1f8}\u{1f1f3}'],
-  ['\u{1f1f8}\u{1f1f4}'],
-  ['\u{1f1f8}\u{1f1f7}'],
-  ['\u{1f1f8}\u{1f1f8}'],
-  ['\u{1f1f8}\u{1f1f9}'],
-  ['\u{1f1f8}\u{1f1fb}'],
-  ['\u{1f1f8}\u{1f1fd}'],
-  ['\u{1f1f8}\u{1f1fe}'],
-  ['\u{1f1f8}\u{1f1ff}'],
-  ['\u{1f1f9}\u{1f1e6}'],
-  ['\u{1f1f9}\u{1f1e8}'],
-  ['\u{1f1f9}\u{1f1e9}'],
-  ['\u{1f1f9}\u{1f1eb}'],
-  ['\u{1f1f9}\u{1f1ec}'],
-  ['\u{1f1f9}\u{1f1ed}'],
-  ['\u{1f1f9}\u{1f1ef}'],
-  ['\u{1f1f9}\u{1f1f0}'],
-  ['\u{1f1f9}\u{1f1f1}'],
-  ['\u{1f1f9}\u{1f1f2}'],
-  ['\u{1f1f9}\u{1f1f3}'],
-  ['\u{1f1f9}\u{1f1f4}'],
-  ['\u{1f1f9}\u{1f1f7}'],
-  ['\u{1f1f9}\u{1f1f9}'],
-  ['\u{1f1f9}\u{1f1fb}'],
-  ['\u{1f1f9}\u{1f1fc}'],
-  ['\u{1f1f9}\u{1f1ff}'],
-  ['\u{1f1fa}\u{1f1e6}'],
-  ['\u{1f1fa}\u{1f1ec}'],
-  ['\u{1f1fa}\u{1f1f2}'],
-  ['\u{1f1fa}\u{1f1f3}'],
-  ['\u{1f1fa}\u{1f1f8}'],
-  ['\u{1f1fa}\u{1f1fe}'],
-  ['\u{1f1fa}\u{1f1ff}'],
-  ['\u{1f1fb}\u{1f1e6}'],
-  ['\u{1f1fb}\u{1f1e8}'],
-  ['\u{1f1fb}\u{1f1ea}'],
-  ['\u{1f1fb}\u{1f1ec}'],
-  ['\u{1f1fb}\u{1f1ee}'],
-  ['\u{1f1fb}\u{1f1f3}'],
-  ['\u{1f1fb}\u{1f1fa}'],
-  ['\u{1f1fc}\u{1f1eb}'],
-  ['\u{1f1fc}\u{1f1f8}'],
-  ['\u{1f1fd}\u{1f1f0}'],
-  ['\u{1f1fe}\u{1f1ea}'],
-  ['\u{1f1fe}\u{1f1f9}'],
-  ['\u{1f1ff}\u{1f1e6}'],
-  ['\u{1f1ff}\u{1f1f2}'],
-  ['\u{1f1ff}\u{1f1fc}'],
-  ['\u{1f3f4}\u{e0067}\u{e0062}\u{e0065}\u{e006e}\u{e0067}\u{e007f}'],
-  ['\u{1f3f4}\u{e0067}\u{e0062}\u{e0073}\u{e0063}\u{e0074}\u{e007f}'],
-  ['\u{1f3f4}\u{e0067}\u{e0062}\u{e0077}\u{e006c}\u{e0073}\u{e007f}'],
+  [
+    '#',
+  ], // E0.0   [1] (#️)       hash sign
+  [
+    '*',
+  ], // E0.0   [1] (*️)       asterisk
+  [
+    '©',
+  ], // E0.6   [1] (©️)       copyright
+  [
+    '®',
+  ], // E0.6   [1] (®️)       registered
+  [
+    '\u203c',
+  ], // E0.6   [1] (‼️)       double exclamation mark
+  [
+    '\u2049',
+  ], // E0.6   [1] (⁉️)       exclamation question mark
+  [
+    '\u2122',
+  ], // E0.6   [1] (™️)       trade mark
+  [
+    '\u2139',
+  ], // E0.6   [1] (ℹ️)       information
+  [
+    '\u2328',
+  ], // E1.0   [1] (⌨️)       keyboard
+  [
+    '\u23cf',
+  ], // E1.0   [1] (⏏️)       eject button
+  [
+    '\u23ef',
+  ], // E1.0   [1] (⏯️)       play or pause button
+  [
+    '\u23f0',
+  ], // E0.6   [1] (⏰)       alarm clock
+  [
+    '\u23f3',
+  ], // E0.6   [1] (⏳)       hourglass not done
+  [
+    '\u24c2',
+  ], // E0.6   [1] (Ⓜ️)       circled M
+  [
+    '\u25b6',
+  ], // E0.6   [1] (▶️)       play button
+  [
+    '\u25c0',
+  ], // E0.6   [1] (◀️)       reverse button
+  [
+    '\u2604',
+  ], // E1.0   [1] (☄️)       comet
+  [
+    '\u260e',
+  ], // E0.6   [1] (☎️)       telephone
+  [
+    '\u2611',
+  ], // E0.6   [1] (☑️)       check box with check
+  [
+    '\u2618',
+  ], // E1.0   [1] (☘️)       shamrock
+  [
+    '\u261d',
+  ], // E0.6   [1] (☝️)       index pointing up
+  [
+    '\u2620',
+  ], // E1.0   [1] (☠️)       skull and crossbones
+  [
+    '\u2626',
+  ], // E1.0   [1] (☦️)       orthodox cross
+  [
+    '\u262a',
+  ], // E0.7   [1] (☪️)       star and crescent
+  [
+    '\u262e',
+  ], // E1.0   [1] (☮️)       peace symbol
+  [
+    '\u262f',
+  ], // E0.7   [1] (☯️)       yin yang
+  [
+    '\u263a',
+  ], // E0.6   [1] (☺️)       smiling face
+  [
+    '\u2640',
+  ], // E4.0   [1] (♀️)       female sign
+  [
+    '\u2642',
+  ], // E4.0   [1] (♂️)       male sign
+  [
+    '\u265f',
+  ], // E11.0  [1] (♟️)       chess pawn
+  [
+    '\u2660',
+  ], // E0.6   [1] (♠️)       spade suit
+  [
+    '\u2663',
+  ], // E0.6   [1] (♣️)       club suit
+  [
+    '\u2668',
+  ], // E0.6   [1] (♨️)       hot springs
+  [
+    '\u267b',
+  ], // E0.6   [1] (♻️)       recycling symbol
+  [
+    '\u267e',
+  ], // E11.0  [1] (♾️)       infinity
+  [
+    '\u267f',
+  ], // E0.6   [1] (♿)       wheelchair symbol
+  [
+    '\u2692',
+  ], // E1.0   [1] (⚒️)       hammer and pick
+  [
+    '\u2693',
+  ], // E0.6   [1] (⚓)       anchor
+  [
+    '\u2694',
+  ], // E1.0   [1] (⚔️)       crossed swords
+  [
+    '\u2695',
+  ], // E4.0   [1] (⚕️)       medical symbol
+  [
+    '\u2699',
+  ], // E1.0   [1] (⚙️)       gear
+  [
+    '\u26a7',
+  ], // E13.0  [1] (⚧️)       transgender symbol
+  [
+    '\u26c8',
+  ], // E0.7   [1] (⛈️)       cloud with lightning and rain
+  [
+    '\u26ce',
+  ], // E0.6   [1] (⛎)       Ophiuchus
+  [
+    '\u26cf',
+  ], // E0.7   [1] (⛏️)       pick
+  [
+    '\u26d1',
+  ], // E0.7   [1] (⛑️)       rescue worker’s helmet
+  [
+    '\u26d3',
+  ], // E0.7   [1] (⛓️)       chains
+  [
+    '\u26d4',
+  ], // E0.6   [1] (⛔)       no entry
+  [
+    '\u26e9',
+  ], // E0.7   [1] (⛩️)       shinto shrine
+  [
+    '\u26ea',
+  ], // E0.6   [1] (⛪)       church
+  [
+    '\u26f4',
+  ], // E0.7   [1] (⛴️)       ferry
+  [
+    '\u26f5',
+  ], // E0.6   [1] (⛵)       sailboat
+  [
+    '\u26fa',
+  ], // E0.6   [1] (⛺)       tent
+  [
+    '\u26fd',
+  ], // E0.6   [1] (⛽)       fuel pump
+  [
+    '\u2702',
+  ], // E0.6   [1] (✂️)       scissors
+  [
+    '\u2705',
+  ], // E0.6   [1] (✅)       check mark button
+  [
+    '\u270d',
+  ], // E0.7   [1] (✍️)       writing hand
+  [
+    '\u270f',
+  ], // E0.6   [1] (✏️)       pencil
+  [
+    '\u2712',
+  ], // E0.6   [1] (✒️)       black nib
+  [
+    '\u2714',
+  ], // E0.6   [1] (✔️)       check mark
+  [
+    '\u2716',
+  ], // E0.6   [1] (✖️)       multiply
+  [
+    '\u271d',
+  ], // E0.7   [1] (✝️)       latin cross
+  [
+    '\u2721',
+  ], // E0.7   [1] (✡️)       star of David
+  [
+    '\u2728',
+  ], // E0.6   [1] (✨)       sparkles
+  [
+    '\u2744',
+  ], // E0.6   [1] (❄️)       snowflake
+  [
+    '\u2747',
+  ], // E0.6   [1] (❇️)       sparkle
+  [
+    '\u274c',
+  ], // E0.6   [1] (❌)       cross mark
+  [
+    '\u274e',
+  ], // E0.6   [1] (❎)       cross mark button
+  [
+    '\u2757',
+  ], // E0.6   [1] (❗)       red exclamation mark
+  [
+    '\u2763',
+  ], // E1.0   [1] (❣️)       heart exclamation
+  [
+    '\u2764',
+  ], // E0.6   [1] (❤️)       red heart
+  [
+    '\u27a1',
+  ], // E0.6   [1] (➡️)       right arrow
+  [
+    '\u27b0',
+  ], // E0.6   [1] (➰)       curly loop
+  [
+    '\u27bf',
+  ], // E1.0   [1] (➿)       double curly loop
+  [
+    '\u2b50',
+  ], // E0.6   [1] (⭐)       star
+  [
+    '\u2b55',
+  ], // E0.6   [1] (⭕)       hollow red circle
+  [
+    '\u3030',
+  ], // E0.6   [1] (〰️)       wavy dash
+  [
+    '\u303d',
+  ], // E0.6   [1] (〽️)       part alternation mark
+  [
+    '\u3297',
+  ], // E0.6   [1] (㊗️)       Japanese “congratulations” button
+  [
+    '\u3299',
+  ], // E0.6   [1] (㊙️)       Japanese “secret” button
+  [
+    '\u{1f004}',
+  ], // E0.6   [1] (🀄)       mahjong red dragon
+  [
+    '\u{1f0cf}',
+  ], // E0.6   [1] (🃏)       joker
+  [
+    '\u{1f18e}',
+  ], // E0.6   [1] (🆎)       AB button (blood type)
+  [
+    '\u{1f21a}',
+  ], // E0.6   [1] (🈚)       Japanese “free of charge” button
+  [
+    '\u{1f22f}',
+  ], // E0.6   [1] (🈯)       Japanese “reserved” button
+  [
+    '\u{1f30f}',
+  ], // E0.6   [1] (🌏)       globe showing Asia-Australia
+  [
+    '\u{1f310}',
+  ], // E1.0   [1] (🌐)       globe with meridians
+  [
+    '\u{1f311}',
+  ], // E0.6   [1] (🌑)       new moon
+  [
+    '\u{1f312}',
+  ], // E1.0   [1] (🌒)       waxing crescent moon
+  [
+    '\u{1f319}',
+  ], // E0.6   [1] (🌙)       crescent moon
+  [
+    '\u{1f31a}',
+  ], // E1.0   [1] (🌚)       new moon face
+  [
+    '\u{1f31b}',
+  ], // E0.6   [1] (🌛)       first quarter moon face
+  [
+    '\u{1f31c}',
+  ], // E0.7   [1] (🌜)       last quarter moon face
+  [
+    '\u{1f321}',
+  ], // E0.7   [1] (🌡️)       thermometer
+  [
+    '\u{1f336}',
+  ], // E0.7   [1] (🌶️)       hot pepper
+  [
+    '\u{1f34b}',
+  ], // E1.0   [1] (🍋)       lemon
+  [
+    '\u{1f350}',
+  ], // E1.0   [1] (🍐)       pear
+  [
+    '\u{1f37c}',
+  ], // E1.0   [1] (🍼)       baby bottle
+  [
+    '\u{1f37d}',
+  ], // E0.7   [1] (🍽️)       fork and knife with plate
+  [
+    '\u{1f3c5}',
+  ], // E1.0   [1] (🏅)       sports medal
+  [
+    '\u{1f3c6}',
+  ], // E0.6   [1] (🏆)       trophy
+  [
+    '\u{1f3c7}',
+  ], // E1.0   [1] (🏇)       horse racing
+  [
+    '\u{1f3c8}',
+  ], // E0.6   [1] (🏈)       american football
+  [
+    '\u{1f3c9}',
+  ], // E1.0   [1] (🏉)       rugby football
+  [
+    '\u{1f3ca}',
+  ], // E0.6   [1] (🏊)       person swimming
+  [
+    '\u{1f3e4}',
+  ], // E1.0   [1] (🏤)       post office
+  [
+    '\u{1f3f3}',
+  ], // E0.7   [1] (🏳️)       white flag
+  [
+    '\u{1f3f4}',
+  ], // E1.0   [1] (🏴)       black flag
+  [
+    '\u{1f3f5}',
+  ], // E0.7   [1] (🏵️)       rosette
+  [
+    '\u{1f3f7}',
+  ], // E0.7   [1] (🏷️)       label
+  [
+    '\u{1f408}',
+  ], // E0.7   [1] (🐈)       cat
+  [
+    '\u{1f413}',
+  ], // E1.0   [1] (🐓)       rooster
+  [
+    '\u{1f414}',
+  ], // E0.6   [1] (🐔)       chicken
+  [
+    '\u{1f415}',
+  ], // E0.7   [1] (🐕)       dog
+  [
+    '\u{1f416}',
+  ], // E1.0   [1] (🐖)       pig
+  [
+    '\u{1f42a}',
+  ], // E1.0   [1] (🐪)       camel
+  [
+    '\u{1f43f}',
+  ], // E0.7   [1] (🐿️)       chipmunk
+  [
+    '\u{1f440}',
+  ], // E0.6   [1] (👀)       eyes
+  [
+    '\u{1f441}',
+  ], // E0.7   [1] (👁️)       eye
+  [
+    '\u{1f465}',
+  ], // E1.0   [1] (👥)       busts in silhouette
+  [
+    '\u{1f4ad}',
+  ], // E1.0   [1] (💭)       thought balloon
+  [
+    '\u{1f4ee}',
+  ], // E0.6   [1] (📮)       postbox
+  [
+    '\u{1f4ef}',
+  ], // E1.0   [1] (📯)       postal horn
+  [
+    '\u{1f4f5}',
+  ], // E1.0   [1] (📵)       no mobile phones
+  [
+    '\u{1f4f8}',
+  ], // E1.0   [1] (📸)       camera with flash
+  [
+    '\u{1f4fd}',
+  ], // E0.7   [1] (📽️)       film projector
+  [
+    '\u{1f503}',
+  ], // E0.6   [1] (🔃)       clockwise vertical arrows
+  [
+    '\u{1f508}',
+  ], // E0.7   [1] (🔈)       speaker low volume
+  [
+    '\u{1f509}',
+  ], // E1.0   [1] (🔉)       speaker medium volume
+  [
+    '\u{1f515}',
+  ], // E1.0   [1] (🔕)       bell with slash
+  [
+    '\u{1f57a}',
+  ], // E3.0   [1] (🕺)       man dancing
+  [
+    '\u{1f587}',
+  ], // E0.7   [1] (🖇️)       linked paperclips
+  [
+    '\u{1f590}',
+  ], // E0.7   [1] (🖐️)       hand with fingers splayed
+  [
+    '\u{1f5a4}',
+  ], // E3.0   [1] (🖤)       black heart
+  [
+    '\u{1f5a5}',
+  ], // E0.7   [1] (🖥️)       desktop computer
+  [
+    '\u{1f5a8}',
+  ], // E0.7   [1] (🖨️)       printer
+  [
+    '\u{1f5bc}',
+  ], // E0.7   [1] (🖼️)       framed picture
+  [
+    '\u{1f5e1}',
+  ], // E0.7   [1] (🗡️)       dagger
+  [
+    '\u{1f5e3}',
+  ], // E0.7   [1] (🗣️)       speaking head
+  [
+    '\u{1f5e8}',
+  ], // E2.0   [1] (🗨️)       left speech bubble
+  [
+    '\u{1f5ef}',
+  ], // E0.7   [1] (🗯️)       right anger bubble
+  [
+    '\u{1f5f3}',
+  ], // E0.7   [1] (🗳️)       ballot box with ballot
+  [
+    '\u{1f5fa}',
+  ], // E0.7   [1] (🗺️)       world map
+  [
+    '\u{1f600}',
+  ], // E1.0   [1] (😀)       grinning face
+  [
+    '\u{1f60e}',
+  ], // E1.0   [1] (😎)       smiling face with sunglasses
+  [
+    '\u{1f60f}',
+  ], // E0.6   [1] (😏)       smirking face
+  [
+    '\u{1f610}',
+  ], // E0.7   [1] (😐)       neutral face
+  [
+    '\u{1f611}',
+  ], // E1.0   [1] (😑)       expressionless face
+  [
+    '\u{1f615}',
+  ], // E1.0   [1] (😕)       confused face
+  [
+    '\u{1f616}',
+  ], // E0.6   [1] (😖)       confounded face
+  [
+    '\u{1f617}',
+  ], // E1.0   [1] (😗)       kissing face
+  [
+    '\u{1f618}',
+  ], // E0.6   [1] (😘)       face blowing a kiss
+  [
+    '\u{1f619}',
+  ], // E1.0   [1] (😙)       kissing face with smiling eyes
+  [
+    '\u{1f61a}',
+  ], // E0.6   [1] (😚)       kissing face with closed eyes
+  [
+    '\u{1f61b}',
+  ], // E1.0   [1] (😛)       face with tongue
+  [
+    '\u{1f61f}',
+  ], // E1.0   [1] (😟)       worried face
+  [
+    '\u{1f62c}',
+  ], // E1.0   [1] (😬)       grimacing face
+  [
+    '\u{1f62d}',
+  ], // E0.6   [1] (😭)       loudly crying face
+  [
+    '\u{1f634}',
+  ], // E1.0   [1] (😴)       sleeping face
+  [
+    '\u{1f635}',
+  ], // E0.6   [1] (😵)       face with crossed-out eyes
+  [
+    '\u{1f636}',
+  ], // E1.0   [1] (😶)       face without mouth
+  [
+    '\u{1f680}',
+  ], // E0.6   [1] (🚀)       rocket
+  [
+    '\u{1f686}',
+  ], // E1.0   [1] (🚆)       train
+  [
+    '\u{1f687}',
+  ], // E0.6   [1] (🚇)       metro
+  [
+    '\u{1f688}',
+  ], // E1.0   [1] (🚈)       light rail
+  [
+    '\u{1f689}',
+  ], // E0.6   [1] (🚉)       station
+  [
+    '\u{1f68c}',
+  ], // E0.6   [1] (🚌)       bus
+  [
+    '\u{1f68d}',
+  ], // E0.7   [1] (🚍)       oncoming bus
+  [
+    '\u{1f68e}',
+  ], // E1.0   [1] (🚎)       trolleybus
+  [
+    '\u{1f68f}',
+  ], // E0.6   [1] (🚏)       bus stop
+  [
+    '\u{1f690}',
+  ], // E1.0   [1] (🚐)       minibus
+  [
+    '\u{1f694}',
+  ], // E0.7   [1] (🚔)       oncoming police car
+  [
+    '\u{1f695}',
+  ], // E0.6   [1] (🚕)       taxi
+  [
+    '\u{1f696}',
+  ], // E1.0   [1] (🚖)       oncoming taxi
+  [
+    '\u{1f697}',
+  ], // E0.6   [1] (🚗)       automobile
+  [
+    '\u{1f698}',
+  ], // E0.7   [1] (🚘)       oncoming automobile
+  [
+    '\u{1f6a2}',
+  ], // E0.6   [1] (🚢)       ship
+  [
+    '\u{1f6a3}',
+  ], // E1.0   [1] (🚣)       person rowing boat
+  [
+    '\u{1f6a6}',
+  ], // E1.0   [1] (🚦)       vertical traffic light
+  [
+    '\u{1f6b2}',
+  ], // E0.6   [1] (🚲)       bicycle
+  [
+    '\u{1f6b6}',
+  ], // E0.6   [1] (🚶)       person walking
+  [
+    '\u{1f6bf}',
+  ], // E1.0   [1] (🚿)       shower
+  [
+    '\u{1f6c0}',
+  ], // E0.6   [1] (🛀)       person taking bath
+  [
+    '\u{1f6cb}',
+  ], // E0.7   [1] (🛋️)       couch and lamp
+  [
+    '\u{1f6cc}',
+  ], // E1.0   [1] (🛌)       person in bed
+  [
+    '\u{1f6d0}',
+  ], // E1.0   [1] (🛐)       place of worship
+  [
+    '\u{1f6d5}',
+  ], // E12.0  [1] (🛕)       hindu temple
+  [
+    '\u{1f6dc}',
+  ], // E15.0  [1] (🛜)       wireless
+  [
+    '\u{1f6e9}',
+  ], // E0.7   [1] (🛩️)       small airplane
+  [
+    '\u{1f6f0}',
+  ], // E0.7   [1] (🛰️)       satellite
+  [
+    '\u{1f6f3}',
+  ], // E0.7   [1] (🛳️)       passenger ship
+  [
+    '\u{1f6f9}',
+  ], // E11.0  [1] (🛹)       skateboard
+  [
+    '\u{1f6fa}',
+  ], // E12.0  [1] (🛺)       auto rickshaw
+  [
+    '\u{1f7f0}',
+  ], // E14.0  [1] (🟰)       heavy equals sign
+  [
+    '\u{1f90c}',
+  ], // E13.0  [1] (🤌)       pinched fingers
+  [
+    '\u{1f91f}',
+  ], // E5.0   [1] (🤟)       love-you gesture
+  [
+    '\u{1f930}',
+  ], // E3.0   [1] (🤰)       pregnant woman
+  [
+    '\u{1f93f}',
+  ], // E12.0  [1] (🤿)       diving mask
+  [
+    '\u{1f94c}',
+  ], // E5.0   [1] (🥌)       curling stone
+  [
+    '\u{1f971}',
+  ], // E12.0  [1] (🥱)       yawning face
+  [
+    '\u{1f972}',
+  ], // E13.0  [1] (🥲)       smiling face with tear
+  [
+    '\u{1f979}',
+  ], // E14.0  [1] (🥹)       face holding back tears
+  [
+    '\u{1f97a}',
+  ], // E11.0  [1] (🥺)       pleading face
+  [
+    '\u{1f97b}',
+  ], // E12.0  [1] (🥻)       sari
+  [
+    '\u{1f9c0}',
+  ], // E1.0   [1] (🧀)       cheese wedge
+  [
+    '\u{1f9cb}',
+  ], // E13.0  [1] (🧋)       bubble tea
+  [
+    '\u{1f9cc}',
+  ], // E14.0  [1] (🧌)       troll
+  [
+    '\u{1fa74}',
+  ], // E13.0  [1] (🩴)       thong sandal
+  [
+    '\u{1fa89}',
+  ], // E16.0  [1] (🪉)       harp
+  [
+    '\u{1fa8f}',
+  ], // E16.0  [1] (🪏)       shovel
+  [
+    '\u{1fabe}',
+  ], // E16.0  [1] (🪾)       leafless tree
+  [
+    '\u{1fabf}',
+  ], // E15.0  [1] (🪿)       goose
+  [
+    '\u{1fac6}',
+  ], // E16.0  [1] (🫆)       fingerprint
+  [
+    '\u{1fadc}',
+  ], // E16.0  [1] (🫜)       root vegetable
+  [
+    '\u{1fadf}',
+  ], // E16.0  [1] (🫟)       splatter
+  [
+    '\u{1fae8}',
+  ], // E15.0  [1] (🫨)       shaking face
+  [
+    '\u{1fae9}',
+  ], // E16.0  [1] (🫩)       face with bags under eyes
+  [
+    '\u23f0',
+  ], // E0.6   [1] (⏰)       alarm clock
+  [
+    '\u23f3',
+  ], // E0.6   [1] (⏳)       hourglass not done
+  [
+    '\u267f',
+  ], // E0.6   [1] (♿)       wheelchair symbol
+  [
+    '\u2693',
+  ], // E0.6   [1] (⚓)       anchor
+  [
+    '\u26a1',
+  ], // E0.6   [1] (⚡)       high voltage
+  [
+    '\u26ce',
+  ], // E0.6   [1] (⛎)       Ophiuchus
+  [
+    '\u26d4',
+  ], // E0.6   [1] (⛔)       no entry
+  [
+    '\u26ea',
+  ], // E0.6   [1] (⛪)       church
+  [
+    '\u26f5',
+  ], // E0.6   [1] (⛵)       sailboat
+  [
+    '\u26fa',
+  ], // E0.6   [1] (⛺)       tent
+  [
+    '\u26fd',
+  ], // E0.6   [1] (⛽)       fuel pump
+  [
+    '\u2705',
+  ], // E0.6   [1] (✅)       check mark button
+  [
+    '\u2728',
+  ], // E0.6   [1] (✨)       sparkles
+  [
+    '\u274c',
+  ], // E0.6   [1] (❌)       cross mark
+  [
+    '\u274e',
+  ], // E0.6   [1] (❎)       cross mark button
+  [
+    '\u2757',
+  ], // E0.6   [1] (❗)       red exclamation mark
+  [
+    '\u27b0',
+  ], // E0.6   [1] (➰)       curly loop
+  [
+    '\u27bf',
+  ], // E1.0   [1] (➿)       double curly loop
+  [
+    '\u2b50',
+  ], // E0.6   [1] (⭐)       star
+  [
+    '\u2b55',
+  ], // E0.6   [1] (⭕)       hollow red circle
+  [
+    '\u{1f004}',
+  ], // E0.6   [1] (🀄)       mahjong red dragon
+  [
+    '\u{1f0cf}',
+  ], // E0.6   [1] (🃏)       joker
+  [
+    '\u{1f18e}',
+  ], // E0.6   [1] (🆎)       AB button (blood type)
+  [
+    '\u{1f201}',
+  ], // E0.6   [1] (🈁)       Japanese “here” button
+  [
+    '\u{1f21a}',
+  ], // E0.6   [1] (🈚)       Japanese “free of charge” button
+  [
+    '\u{1f22f}',
+  ], // E0.6   [1] (🈯)       Japanese “reserved” button
+  [
+    '\u{1f30f}',
+  ], // E0.6   [1] (🌏)       globe showing Asia-Australia
+  [
+    '\u{1f310}',
+  ], // E1.0   [1] (🌐)       globe with meridians
+  [
+    '\u{1f311}',
+  ], // E0.6   [1] (🌑)       new moon
+  [
+    '\u{1f312}',
+  ], // E1.0   [1] (🌒)       waxing crescent moon
+  [
+    '\u{1f319}',
+  ], // E0.6   [1] (🌙)       crescent moon
+  [
+    '\u{1f31a}',
+  ], // E1.0   [1] (🌚)       new moon face
+  [
+    '\u{1f31b}',
+  ], // E0.6   [1] (🌛)       first quarter moon face
+  [
+    '\u{1f31c}',
+  ], // E0.7   [1] (🌜)       last quarter moon face
+  [
+    '\u{1f34b}',
+  ], // E1.0   [1] (🍋)       lemon
+  [
+    '\u{1f350}',
+  ], // E1.0   [1] (🍐)       pear
+  [
+    '\u{1f37c}',
+  ], // E1.0   [1] (🍼)       baby bottle
+  [
+    '\u{1f3c5}',
+  ], // E1.0   [1] (🏅)       sports medal
+  [
+    '\u{1f3c6}',
+  ], // E0.6   [1] (🏆)       trophy
+  [
+    '\u{1f3c7}',
+  ], // E1.0   [1] (🏇)       horse racing
+  [
+    '\u{1f3c8}',
+  ], // E0.6   [1] (🏈)       american football
+  [
+    '\u{1f3c9}',
+  ], // E1.0   [1] (🏉)       rugby football
+  [
+    '\u{1f3ca}',
+  ], // E0.6   [1] (🏊)       person swimming
+  [
+    '\u{1f3e4}',
+  ], // E1.0   [1] (🏤)       post office
+  [
+    '\u{1f3f4}',
+  ], // E1.0   [1] (🏴)       black flag
+  [
+    '\u{1f408}',
+  ], // E0.7   [1] (🐈)       cat
+  [
+    '\u{1f413}',
+  ], // E1.0   [1] (🐓)       rooster
+  [
+    '\u{1f414}',
+  ], // E0.6   [1] (🐔)       chicken
+  [
+    '\u{1f415}',
+  ], // E0.7   [1] (🐕)       dog
+  [
+    '\u{1f416}',
+  ], // E1.0   [1] (🐖)       pig
+  [
+    '\u{1f42a}',
+  ], // E1.0   [1] (🐪)       camel
+  [
+    '\u{1f440}',
+  ], // E0.6   [1] (👀)       eyes
+  [
+    '\u{1f465}',
+  ], // E1.0   [1] (👥)       busts in silhouette
+  [
+    '\u{1f4ad}',
+  ], // E1.0   [1] (💭)       thought balloon
+  [
+    '\u{1f4ee}',
+  ], // E0.6   [1] (📮)       postbox
+  [
+    '\u{1f4ef}',
+  ], // E1.0   [1] (📯)       postal horn
+  [
+    '\u{1f4f5}',
+  ], // E1.0   [1] (📵)       no mobile phones
+  [
+    '\u{1f4f8}',
+  ], // E1.0   [1] (📸)       camera with flash
+  [
+    '\u{1f503}',
+  ], // E0.6   [1] (🔃)       clockwise vertical arrows
+  [
+    '\u{1f508}',
+  ], // E0.7   [1] (🔈)       speaker low volume
+  [
+    '\u{1f509}',
+  ], // E1.0   [1] (🔉)       speaker medium volume
+  [
+    '\u{1f515}',
+  ], // E1.0   [1] (🔕)       bell with slash
+  [
+    '\u{1f57a}',
+  ], // E3.0   [1] (🕺)       man dancing
+  [
+    '\u{1f5a4}',
+  ], // E3.0   [1] (🖤)       black heart
+  [
+    '\u{1f600}',
+  ], // E1.0   [1] (😀)       grinning face
+  [
+    '\u{1f60e}',
+  ], // E1.0   [1] (😎)       smiling face with sunglasses
+  [
+    '\u{1f60f}',
+  ], // E0.6   [1] (😏)       smirking face
+  [
+    '\u{1f610}',
+  ], // E0.7   [1] (😐)       neutral face
+  [
+    '\u{1f611}',
+  ], // E1.0   [1] (😑)       expressionless face
+  [
+    '\u{1f615}',
+  ], // E1.0   [1] (😕)       confused face
+  [
+    '\u{1f616}',
+  ], // E0.6   [1] (😖)       confounded face
+  [
+    '\u{1f617}',
+  ], // E1.0   [1] (😗)       kissing face
+  [
+    '\u{1f618}',
+  ], // E0.6   [1] (😘)       face blowing a kiss
+  [
+    '\u{1f619}',
+  ], // E1.0   [1] (😙)       kissing face with smiling eyes
+  [
+    '\u{1f61a}',
+  ], // E0.6   [1] (😚)       kissing face with closed eyes
+  [
+    '\u{1f61b}',
+  ], // E1.0   [1] (😛)       face with tongue
+  [
+    '\u{1f61f}',
+  ], // E1.0   [1] (😟)       worried face
+  [
+    '\u{1f62c}',
+  ], // E1.0   [1] (😬)       grimacing face
+  [
+    '\u{1f62d}',
+  ], // E0.6   [1] (😭)       loudly crying face
+  [
+    '\u{1f634}',
+  ], // E1.0   [1] (😴)       sleeping face
+  [
+    '\u{1f635}',
+  ], // E0.6   [1] (😵)       face with crossed-out eyes
+  [
+    '\u{1f636}',
+  ], // E1.0   [1] (😶)       face without mouth
+  [
+    '\u{1f680}',
+  ], // E0.6   [1] (🚀)       rocket
+  [
+    '\u{1f686}',
+  ], // E1.0   [1] (🚆)       train
+  [
+    '\u{1f687}',
+  ], // E0.6   [1] (🚇)       metro
+  [
+    '\u{1f688}',
+  ], // E1.0   [1] (🚈)       light rail
+  [
+    '\u{1f689}',
+  ], // E0.6   [1] (🚉)       station
+  [
+    '\u{1f68c}',
+  ], // E0.6   [1] (🚌)       bus
+  [
+    '\u{1f68d}',
+  ], // E0.7   [1] (🚍)       oncoming bus
+  [
+    '\u{1f68e}',
+  ], // E1.0   [1] (🚎)       trolleybus
+  [
+    '\u{1f68f}',
+  ], // E0.6   [1] (🚏)       bus stop
+  [
+    '\u{1f690}',
+  ], // E1.0   [1] (🚐)       minibus
+  [
+    '\u{1f694}',
+  ], // E0.7   [1] (🚔)       oncoming police car
+  [
+    '\u{1f695}',
+  ], // E0.6   [1] (🚕)       taxi
+  [
+    '\u{1f696}',
+  ], // E1.0   [1] (🚖)       oncoming taxi
+  [
+    '\u{1f697}',
+  ], // E0.6   [1] (🚗)       automobile
+  [
+    '\u{1f698}',
+  ], // E0.7   [1] (🚘)       oncoming automobile
+  [
+    '\u{1f6a2}',
+  ], // E0.6   [1] (🚢)       ship
+  [
+    '\u{1f6a3}',
+  ], // E1.0   [1] (🚣)       person rowing boat
+  [
+    '\u{1f6a6}',
+  ], // E1.0   [1] (🚦)       vertical traffic light
+  [
+    '\u{1f6b2}',
+  ], // E0.6   [1] (🚲)       bicycle
+  [
+    '\u{1f6b6}',
+  ], // E0.6   [1] (🚶)       person walking
+  [
+    '\u{1f6bf}',
+  ], // E1.0   [1] (🚿)       shower
+  [
+    '\u{1f6c0}',
+  ], // E0.6   [1] (🛀)       person taking bath
+  [
+    '\u{1f6cc}',
+  ], // E1.0   [1] (🛌)       person in bed
+  [
+    '\u{1f6d0}',
+  ], // E1.0   [1] (🛐)       place of worship
+  [
+    '\u{1f6d5}',
+  ], // E12.0  [1] (🛕)       hindu temple
+  [
+    '\u{1f6dc}',
+  ], // E15.0  [1] (🛜)       wireless
+  [
+    '\u{1f6f9}',
+  ], // E11.0  [1] (🛹)       skateboard
+  [
+    '\u{1f6fa}',
+  ], // E12.0  [1] (🛺)       auto rickshaw
+  [
+    '\u{1f7f0}',
+  ], // E14.0  [1] (🟰)       heavy equals sign
+  [
+    '\u{1f90c}',
+  ], // E13.0  [1] (🤌)       pinched fingers
+  [
+    '\u{1f91f}',
+  ], // E5.0   [1] (🤟)       love-you gesture
+  [
+    '\u{1f930}',
+  ], // E3.0   [1] (🤰)       pregnant woman
+  [
+    '\u{1f93f}',
+  ], // E12.0  [1] (🤿)       diving mask
+  [
+    '\u{1f94c}',
+  ], // E5.0   [1] (🥌)       curling stone
+  [
+    '\u{1f971}',
+  ], // E12.0  [1] (🥱)       yawning face
+  [
+    '\u{1f972}',
+  ], // E13.0  [1] (🥲)       smiling face with tear
+  [
+    '\u{1f979}',
+  ], // E14.0  [1] (🥹)       face holding back tears
+  [
+    '\u{1f97a}',
+  ], // E11.0  [1] (🥺)       pleading face
+  [
+    '\u{1f97b}',
+  ], // E12.0  [1] (🥻)       sari
+  [
+    '\u{1f9c0}',
+  ], // E1.0   [1] (🧀)       cheese wedge
+  [
+    '\u{1f9cb}',
+  ], // E13.0  [1] (🧋)       bubble tea
+  [
+    '\u{1f9cc}',
+  ], // E14.0  [1] (🧌)       troll
+  [
+    '\u{1fa74}',
+  ], // E13.0  [1] (🩴)       thong sandal
+  [
+    '\u{1fa89}',
+  ], // E16.0  [1] (🪉)       harp
+  [
+    '\u{1fa8f}',
+  ], // E16.0  [1] (🪏)       shovel
+  [
+    '\u{1fabe}',
+  ], // E16.0  [1] (🪾)       leafless tree
+  [
+    '\u{1fabf}',
+  ], // E15.0  [1] (🪿)       goose
+  [
+    '\u{1fac6}',
+  ], // E16.0  [1] (🫆)       fingerprint
+  [
+    '\u{1fadc}',
+  ], // E16.0  [1] (🫜)       root vegetable
+  [
+    '\u{1fadf}',
+  ], // E16.0  [1] (🫟)       splatter
+  [
+    '\u{1fae8}',
+  ], // E15.0  [1] (🫨)       shaking face
+  [
+    '\u{1fae9}',
+  ], // E16.0  [1] (🫩)       face with bags under eyes
+  [
+    '\u261d',
+  ], // E0.6   [1] (☝️)       index pointing up
+  [
+    '\u26f9',
+  ], // E0.7   [1] (⛹️)       person bouncing ball
+  [
+    '\u270d',
+  ], // E0.7   [1] (✍️)       writing hand
+  [
+    '\u{1f385}',
+  ], // E0.6   [1] (🎅)       Santa Claus
+  [
+    '\u{1f3c7}',
+  ], // E1.0   [1] (🏇)       horse racing
+  [
+    '\u{1f3ca}',
+  ], // E0.6   [1] (🏊)       person swimming
+  [
+    '\u{1f47c}',
+  ], // E0.6   [1] (👼)       baby angel
+  [
+    '\u{1f48f}',
+  ], // E0.6   [1] (💏)       kiss
+  [
+    '\u{1f491}',
+  ], // E0.6   [1] (💑)       couple with heart
+  [
+    '\u{1f4aa}',
+  ], // E0.6   [1] (💪)       flexed biceps
+  [
+    '\u{1f57a}',
+  ], // E3.0   [1] (🕺)       man dancing
+  [
+    '\u{1f590}',
+  ], // E0.7   [1] (🖐️)       hand with fingers splayed
+  [
+    '\u{1f6a3}',
+  ], // E1.0   [1] (🚣)       person rowing boat
+  [
+    '\u{1f6b6}',
+  ], // E0.6   [1] (🚶)       person walking
+  [
+    '\u{1f6c0}',
+  ], // E0.6   [1] (🛀)       person taking bath
+  [
+    '\u{1f6cc}',
+  ], // E1.0   [1] (🛌)       person in bed
+  [
+    '\u{1f90c}',
+  ], // E13.0  [1] (🤌)       pinched fingers
+  [
+    '\u{1f90f}',
+  ], // E12.0  [1] (🤏)       pinching hand
+  [
+    '\u{1f918}',
+  ], // E1.0   [1] (🤘)       sign of the horns
+  [
+    '\u{1f91f}',
+  ], // E5.0   [1] (🤟)       love-you gesture
+  [
+    '\u{1f926}',
+  ], // E3.0   [1] (🤦)       person facepalming
+  [
+    '\u{1f930}',
+  ], // E3.0   [1] (🤰)       pregnant woman
+  [
+    '\u{1f977}',
+  ], // E13.0  [1] (🥷)       ninja
+  [
+    '\u{1f9bb}',
+  ], // E12.0  [1] (🦻)       ear with hearing aid
+  [
+    '#',
+  ], // E0.0   [1] (#️)       hash sign
+  [
+    '*',
+  ], // E0.0   [1] (*️)       asterisk
+  [
+    '\u200d',
+  ], // E0.0   [1] (‍)        zero width joiner
+  [
+    '\u20e3',
+  ], // E0.0   [1] (⃣)       combining enclosing keycap
+  [
+    '\ufe0f',
+  ], // E0.0   [1] ()        VARIATION SELECTOR-16
+  [
+    '©',
+  ], // E0.6   [1] (©️)       copyright
+  [
+    '®',
+  ], // E0.6   [1] (®️)       registered
+  [
+    '\u203c',
+  ], // E0.6   [1] (‼️)       double exclamation mark
+  [
+    '\u2049',
+  ], // E0.6   [1] (⁉️)       exclamation question mark
+  [
+    '\u2122',
+  ], // E0.6   [1] (™️)       trade mark
+  [
+    '\u2139',
+  ], // E0.6   [1] (ℹ️)       information
+  [
+    '\u2328',
+  ], // E1.0   [1] (⌨️)       keyboard
+  [
+    '\u2388',
+  ], // E0.0   [1] (⎈)       HELM SYMBOL
+  [
+    '\u23cf',
+  ], // E1.0   [1] (⏏️)       eject button
+  [
+    '\u23ef',
+  ], // E1.0   [1] (⏯️)       play or pause button
+  [
+    '\u23f0',
+  ], // E0.6   [1] (⏰)       alarm clock
+  [
+    '\u23f3',
+  ], // E0.6   [1] (⏳)       hourglass not done
+  [
+    '\u24c2',
+  ], // E0.6   [1] (Ⓜ️)       circled M
+  [
+    '\u25b6',
+  ], // E0.6   [1] (▶️)       play button
+  [
+    '\u25c0',
+  ], // E0.6   [1] (◀️)       reverse button
+  [
+    '\u2604',
+  ], // E1.0   [1] (☄️)       comet
+  [
+    '\u2605',
+  ], // E0.0   [1] (★)       BLACK STAR
+  [
+    '\u260e',
+  ], // E0.6   [1] (☎️)       telephone
+  [
+    '\u2611',
+  ], // E0.6   [1] (☑️)       check box with check
+  [
+    '\u2612',
+  ], // E0.0   [1] (☒)       BALLOT BOX WITH X
+  [
+    '\u2618',
+  ], // E1.0   [1] (☘️)       shamrock
+  [
+    '\u261d',
+  ], // E0.6   [1] (☝️)       index pointing up
+  [
+    '\u2620',
+  ], // E1.0   [1] (☠️)       skull and crossbones
+  [
+    '\u2621',
+  ], // E0.0   [1] (☡)       CAUTION SIGN
+  [
+    '\u2626',
+  ], // E1.0   [1] (☦️)       orthodox cross
+  [
+    '\u262a',
+  ], // E0.7   [1] (☪️)       star and crescent
+  [
+    '\u262e',
+  ], // E1.0   [1] (☮️)       peace symbol
+  [
+    '\u262f',
+  ], // E0.7   [1] (☯️)       yin yang
+  [
+    '\u263a',
+  ], // E0.6   [1] (☺️)       smiling face
+  [
+    '\u2640',
+  ], // E4.0   [1] (♀️)       female sign
+  [
+    '\u2641',
+  ], // E0.0   [1] (♁)       EARTH
+  [
+    '\u2642',
+  ], // E4.0   [1] (♂️)       male sign
+  [
+    '\u265f',
+  ], // E11.0  [1] (♟️)       chess pawn
+  [
+    '\u2660',
+  ], // E0.6   [1] (♠️)       spade suit
+  [
+    '\u2663',
+  ], // E0.6   [1] (♣️)       club suit
+  [
+    '\u2664',
+  ], // E0.0   [1] (♤)       WHITE SPADE SUIT
+  [
+    '\u2667',
+  ], // E0.0   [1] (♧)       WHITE CLUB SUIT
+  [
+    '\u2668',
+  ], // E0.6   [1] (♨️)       hot springs
+  [
+    '\u267b',
+  ], // E0.6   [1] (♻️)       recycling symbol
+  [
+    '\u267e',
+  ], // E11.0  [1] (♾️)       infinity
+  [
+    '\u267f',
+  ], // E0.6   [1] (♿)       wheelchair symbol
+  [
+    '\u2692',
+  ], // E1.0   [1] (⚒️)       hammer and pick
+  [
+    '\u2693',
+  ], // E0.6   [1] (⚓)       anchor
+  [
+    '\u2694',
+  ], // E1.0   [1] (⚔️)       crossed swords
+  [
+    '\u2695',
+  ], // E4.0   [1] (⚕️)       medical symbol
+  [
+    '\u2698',
+  ], // E0.0   [1] (⚘)       FLOWER
+  [
+    '\u2699',
+  ], // E1.0   [1] (⚙️)       gear
+  [
+    '\u269a',
+  ], // E0.0   [1] (⚚)       STAFF OF HERMES
+  [
+    '\u26a7',
+  ], // E13.0  [1] (⚧️)       transgender symbol
+  [
+    '\u26c8',
+  ], // E0.7   [1] (⛈️)       cloud with lightning and rain
+  [
+    '\u26ce',
+  ], // E0.6   [1] (⛎)       Ophiuchus
+  [
+    '\u26cf',
+  ], // E0.7   [1] (⛏️)       pick
+  [
+    '\u26d0',
+  ], // E0.0   [1] (⛐)       CAR SLIDING
+  [
+    '\u26d1',
+  ], // E0.7   [1] (⛑️)       rescue worker’s helmet
+  [
+    '\u26d2',
+  ], // E0.0   [1] (⛒)       CIRCLED CROSSING LANES
+  [
+    '\u26d3',
+  ], // E0.7   [1] (⛓️)       chains
+  [
+    '\u26d4',
+  ], // E0.6   [1] (⛔)       no entry
+  [
+    '\u26e9',
+  ], // E0.7   [1] (⛩️)       shinto shrine
+  [
+    '\u26ea',
+  ], // E0.6   [1] (⛪)       church
+  [
+    '\u26f4',
+  ], // E0.7   [1] (⛴️)       ferry
+  [
+    '\u26f5',
+  ], // E0.6   [1] (⛵)       sailboat
+  [
+    '\u26f6',
+  ], // E0.0   [1] (⛶)       SQUARE FOUR CORNERS
+  [
+    '\u26fa',
+  ], // E0.6   [1] (⛺)       tent
+  [
+    '\u26fd',
+  ], // E0.6   [1] (⛽)       fuel pump
+  [
+    '\u2702',
+  ], // E0.6   [1] (✂️)       scissors
+  [
+    '\u2705',
+  ], // E0.6   [1] (✅)       check mark button
+  [
+    '\u270d',
+  ], // E0.7   [1] (✍️)       writing hand
+  [
+    '\u270e',
+  ], // E0.0   [1] (✎)       LOWER RIGHT PENCIL
+  [
+    '\u270f',
+  ], // E0.6   [1] (✏️)       pencil
+  [
+    '\u2712',
+  ], // E0.6   [1] (✒️)       black nib
+  [
+    '\u2714',
+  ], // E0.6   [1] (✔️)       check mark
+  [
+    '\u2716',
+  ], // E0.6   [1] (✖️)       multiply
+  [
+    '\u271d',
+  ], // E0.7   [1] (✝️)       latin cross
+  [
+    '\u2721',
+  ], // E0.7   [1] (✡️)       star of David
+  [
+    '\u2728',
+  ], // E0.6   [1] (✨)       sparkles
+  [
+    '\u2744',
+  ], // E0.6   [1] (❄️)       snowflake
+  [
+    '\u2747',
+  ], // E0.6   [1] (❇️)       sparkle
+  [
+    '\u274c',
+  ], // E0.6   [1] (❌)       cross mark
+  [
+    '\u274e',
+  ], // E0.6   [1] (❎)       cross mark button
+  [
+    '\u2757',
+  ], // E0.6   [1] (❗)       red exclamation mark
+  [
+    '\u2763',
+  ], // E1.0   [1] (❣️)       heart exclamation
+  [
+    '\u2764',
+  ], // E0.6   [1] (❤️)       red heart
+  [
+    '\u27a1',
+  ], // E0.6   [1] (➡️)       right arrow
+  [
+    '\u27b0',
+  ], // E0.6   [1] (➰)       curly loop
+  [
+    '\u27bf',
+  ], // E1.0   [1] (➿)       double curly loop
+  [
+    '\u2b50',
+  ], // E0.6   [1] (⭐)       star
+  [
+    '\u2b55',
+  ], // E0.6   [1] (⭕)       hollow red circle
+  [
+    '\u3030',
+  ], // E0.6   [1] (〰️)       wavy dash
+  [
+    '\u303d',
+  ], // E0.6   [1] (〽️)       part alternation mark
+  [
+    '\u3297',
+  ], // E0.6   [1] (㊗️)       Japanese “congratulations” button
+  [
+    '\u3299',
+  ], // E0.6   [1] (㊙️)       Japanese “secret” button
+  [
+    '\u{1f004}',
+  ], // E0.6   [1] (🀄)       mahjong red dragon
+  [
+    '\u{1f0cf}',
+  ], // E0.6   [1] (🃏)       joker
+  [
+    '\u{1f12f}',
+  ], // E0.0   [1] (🄯)       COPYLEFT SYMBOL
+  [
+    '\u{1f18e}',
+  ], // E0.6   [1] (🆎)       AB button (blood type)
+  [
+    '\u{1f21a}',
+  ], // E0.6   [1] (🈚)       Japanese “free of charge” button
+  [
+    '\u{1f22f}',
+  ], // E0.6   [1] (🈯)       Japanese “reserved” button
+  [
+    '\u{1f30f}',
+  ], // E0.6   [1] (🌏)       globe showing Asia-Australia
+  [
+    '\u{1f310}',
+  ], // E1.0   [1] (🌐)       globe with meridians
+  [
+    '\u{1f311}',
+  ], // E0.6   [1] (🌑)       new moon
+  [
+    '\u{1f312}',
+  ], // E1.0   [1] (🌒)       waxing crescent moon
+  [
+    '\u{1f319}',
+  ], // E0.6   [1] (🌙)       crescent moon
+  [
+    '\u{1f31a}',
+  ], // E1.0   [1] (🌚)       new moon face
+  [
+    '\u{1f31b}',
+  ], // E0.6   [1] (🌛)       first quarter moon face
+  [
+    '\u{1f31c}',
+  ], // E0.7   [1] (🌜)       last quarter moon face
+  [
+    '\u{1f321}',
+  ], // E0.7   [1] (🌡️)       thermometer
+  [
+    '\u{1f336}',
+  ], // E0.7   [1] (🌶️)       hot pepper
+  [
+    '\u{1f34b}',
+  ], // E1.0   [1] (🍋)       lemon
+  [
+    '\u{1f350}',
+  ], // E1.0   [1] (🍐)       pear
+  [
+    '\u{1f37c}',
+  ], // E1.0   [1] (🍼)       baby bottle
+  [
+    '\u{1f37d}',
+  ], // E0.7   [1] (🍽️)       fork and knife with plate
+  [
+    '\u{1f398}',
+  ], // E0.0   [1] (🎘)       MUSICAL KEYBOARD WITH JACKS
+  [
+    '\u{1f3c5}',
+  ], // E1.0   [1] (🏅)       sports medal
+  [
+    '\u{1f3c6}',
+  ], // E0.6   [1] (🏆)       trophy
+  [
+    '\u{1f3c7}',
+  ], // E1.0   [1] (🏇)       horse racing
+  [
+    '\u{1f3c8}',
+  ], // E0.6   [1] (🏈)       american football
+  [
+    '\u{1f3c9}',
+  ], // E1.0   [1] (🏉)       rugby football
+  [
+    '\u{1f3ca}',
+  ], // E0.6   [1] (🏊)       person swimming
+  [
+    '\u{1f3e4}',
+  ], // E1.0   [1] (🏤)       post office
+  [
+    '\u{1f3f3}',
+  ], // E0.7   [1] (🏳️)       white flag
+  [
+    '\u{1f3f4}',
+  ], // E1.0   [1] (🏴)       black flag
+  [
+    '\u{1f3f5}',
+  ], // E0.7   [1] (🏵️)       rosette
+  [
+    '\u{1f3f6}',
+  ], // E0.0   [1] (🏶)       BLACK ROSETTE
+  [
+    '\u{1f3f7}',
+  ], // E0.7   [1] (🏷️)       label
+  [
+    '\u{1f408}',
+  ], // E0.7   [1] (🐈)       cat
+  [
+    '\u{1f413}',
+  ], // E1.0   [1] (🐓)       rooster
+  [
+    '\u{1f414}',
+  ], // E0.6   [1] (🐔)       chicken
+  [
+    '\u{1f415}',
+  ], // E0.7   [1] (🐕)       dog
+  [
+    '\u{1f416}',
+  ], // E1.0   [1] (🐖)       pig
+  [
+    '\u{1f42a}',
+  ], // E1.0   [1] (🐪)       camel
+  [
+    '\u{1f43f}',
+  ], // E0.7   [1] (🐿️)       chipmunk
+  [
+    '\u{1f440}',
+  ], // E0.6   [1] (👀)       eyes
+  [
+    '\u{1f441}',
+  ], // E0.7   [1] (👁️)       eye
+  [
+    '\u{1f465}',
+  ], // E1.0   [1] (👥)       busts in silhouette
+  [
+    '\u{1f4ad}',
+  ], // E1.0   [1] (💭)       thought balloon
+  [
+    '\u{1f4ee}',
+  ], // E0.6   [1] (📮)       postbox
+  [
+    '\u{1f4ef}',
+  ], // E1.0   [1] (📯)       postal horn
+  [
+    '\u{1f4f5}',
+  ], // E1.0   [1] (📵)       no mobile phones
+  [
+    '\u{1f4f8}',
+  ], // E1.0   [1] (📸)       camera with flash
+  [
+    '\u{1f4fd}',
+  ], // E0.7   [1] (📽️)       film projector
+  [
+    '\u{1f4fe}',
+  ], // E0.0   [1] (📾)       PORTABLE STEREO
+  [
+    '\u{1f503}',
+  ], // E0.6   [1] (🔃)       clockwise vertical arrows
+  [
+    '\u{1f508}',
+  ], // E0.7   [1] (🔈)       speaker low volume
+  [
+    '\u{1f509}',
+  ], // E1.0   [1] (🔉)       speaker medium volume
+  [
+    '\u{1f515}',
+  ], // E1.0   [1] (🔕)       bell with slash
+  [
+    '\u{1f54f}',
+  ], // E0.0   [1] (🕏)       BOWL OF HYGIEIA
+  [
+    '\u{1f57a}',
+  ], // E3.0   [1] (🕺)       man dancing
+  [
+    '\u{1f587}',
+  ], // E0.7   [1] (🖇️)       linked paperclips
+  [
+    '\u{1f590}',
+  ], // E0.7   [1] (🖐️)       hand with fingers splayed
+  [
+    '\u{1f5a4}',
+  ], // E3.0   [1] (🖤)       black heart
+  [
+    '\u{1f5a5}',
+  ], // E0.7   [1] (🖥️)       desktop computer
+  [
+    '\u{1f5a8}',
+  ], // E0.7   [1] (🖨️)       printer
+  [
+    '\u{1f5bc}',
+  ], // E0.7   [1] (🖼️)       framed picture
+  [
+    '\u{1f5e1}',
+  ], // E0.7   [1] (🗡️)       dagger
+  [
+    '\u{1f5e2}',
+  ], // E0.0   [1] (🗢)       LIPS
+  [
+    '\u{1f5e3}',
+  ], // E0.7   [1] (🗣️)       speaking head
+  [
+    '\u{1f5e8}',
+  ], // E2.0   [1] (🗨️)       left speech bubble
+  [
+    '\u{1f5ef}',
+  ], // E0.7   [1] (🗯️)       right anger bubble
+  [
+    '\u{1f5f3}',
+  ], // E0.7   [1] (🗳️)       ballot box with ballot
+  [
+    '\u{1f5fa}',
+  ], // E0.7   [1] (🗺️)       world map
+  [
+    '\u{1f600}',
+  ], // E1.0   [1] (😀)       grinning face
+  [
+    '\u{1f60e}',
+  ], // E1.0   [1] (😎)       smiling face with sunglasses
+  [
+    '\u{1f60f}',
+  ], // E0.6   [1] (😏)       smirking face
+  [
+    '\u{1f610}',
+  ], // E0.7   [1] (😐)       neutral face
+  [
+    '\u{1f611}',
+  ], // E1.0   [1] (😑)       expressionless face
+  [
+    '\u{1f615}',
+  ], // E1.0   [1] (😕)       confused face
+  [
+    '\u{1f616}',
+  ], // E0.6   [1] (😖)       confounded face
+  [
+    '\u{1f617}',
+  ], // E1.0   [1] (😗)       kissing face
+  [
+    '\u{1f618}',
+  ], // E0.6   [1] (😘)       face blowing a kiss
+  [
+    '\u{1f619}',
+  ], // E1.0   [1] (😙)       kissing face with smiling eyes
+  [
+    '\u{1f61a}',
+  ], // E0.6   [1] (😚)       kissing face with closed eyes
+  [
+    '\u{1f61b}',
+  ], // E1.0   [1] (😛)       face with tongue
+  [
+    '\u{1f61f}',
+  ], // E1.0   [1] (😟)       worried face
+  [
+    '\u{1f62c}',
+  ], // E1.0   [1] (😬)       grimacing face
+  [
+    '\u{1f62d}',
+  ], // E0.6   [1] (😭)       loudly crying face
+  [
+    '\u{1f634}',
+  ], // E1.0   [1] (😴)       sleeping face
+  [
+    '\u{1f635}',
+  ], // E0.6   [1] (😵)       face with crossed-out eyes
+  [
+    '\u{1f636}',
+  ], // E1.0   [1] (😶)       face without mouth
+  [
+    '\u{1f680}',
+  ], // E0.6   [1] (🚀)       rocket
+  [
+    '\u{1f686}',
+  ], // E1.0   [1] (🚆)       train
+  [
+    '\u{1f687}',
+  ], // E0.6   [1] (🚇)       metro
+  [
+    '\u{1f688}',
+  ], // E1.0   [1] (🚈)       light rail
+  [
+    '\u{1f689}',
+  ], // E0.6   [1] (🚉)       station
+  [
+    '\u{1f68c}',
+  ], // E0.6   [1] (🚌)       bus
+  [
+    '\u{1f68d}',
+  ], // E0.7   [1] (🚍)       oncoming bus
+  [
+    '\u{1f68e}',
+  ], // E1.0   [1] (🚎)       trolleybus
+  [
+    '\u{1f68f}',
+  ], // E0.6   [1] (🚏)       bus stop
+  [
+    '\u{1f690}',
+  ], // E1.0   [1] (🚐)       minibus
+  [
+    '\u{1f694}',
+  ], // E0.7   [1] (🚔)       oncoming police car
+  [
+    '\u{1f695}',
+  ], // E0.6   [1] (🚕)       taxi
+  [
+    '\u{1f696}',
+  ], // E1.0   [1] (🚖)       oncoming taxi
+  [
+    '\u{1f697}',
+  ], // E0.6   [1] (🚗)       automobile
+  [
+    '\u{1f698}',
+  ], // E0.7   [1] (🚘)       oncoming automobile
+  [
+    '\u{1f6a2}',
+  ], // E0.6   [1] (🚢)       ship
+  [
+    '\u{1f6a3}',
+  ], // E1.0   [1] (🚣)       person rowing boat
+  [
+    '\u{1f6a6}',
+  ], // E1.0   [1] (🚦)       vertical traffic light
+  [
+    '\u{1f6b2}',
+  ], // E0.6   [1] (🚲)       bicycle
+  [
+    '\u{1f6b6}',
+  ], // E0.6   [1] (🚶)       person walking
+  [
+    '\u{1f6bf}',
+  ], // E1.0   [1] (🚿)       shower
+  [
+    '\u{1f6c0}',
+  ], // E0.6   [1] (🛀)       person taking bath
+  [
+    '\u{1f6cb}',
+  ], // E0.7   [1] (🛋️)       couch and lamp
+  [
+    '\u{1f6cc}',
+  ], // E1.0   [1] (🛌)       person in bed
+  [
+    '\u{1f6d0}',
+  ], // E1.0   [1] (🛐)       place of worship
+  [
+    '\u{1f6d5}',
+  ], // E12.0  [1] (🛕)       hindu temple
+  [
+    '\u{1f6dc}',
+  ], // E15.0  [1] (🛜)       wireless
+  [
+    '\u{1f6e9}',
+  ], // E0.7   [1] (🛩️)       small airplane
+  [
+    '\u{1f6ea}',
+  ], // E0.0   [1] (🛪)       NORTHEAST-POINTING AIRPLANE
+  [
+    '\u{1f6f0}',
+  ], // E0.7   [1] (🛰️)       satellite
+  [
+    '\u{1f6f3}',
+  ], // E0.7   [1] (🛳️)       passenger ship
+  [
+    '\u{1f6f9}',
+  ], // E11.0  [1] (🛹)       skateboard
+  [
+    '\u{1f6fa}',
+  ], // E12.0  [1] (🛺)       auto rickshaw
+  [
+    '\u{1f7f0}',
+  ], // E14.0  [1] (🟰)       heavy equals sign
+  [
+    '\u{1f90c}',
+  ], // E13.0  [1] (🤌)       pinched fingers
+  [
+    '\u{1f91f}',
+  ], // E5.0   [1] (🤟)       love-you gesture
+  [
+    '\u{1f930}',
+  ], // E3.0   [1] (🤰)       pregnant woman
+  [
+    '\u{1f93f}',
+  ], // E12.0  [1] (🤿)       diving mask
+  [
+    '\u{1f94c}',
+  ], // E5.0   [1] (🥌)       curling stone
+  [
+    '\u{1f971}',
+  ], // E12.0  [1] (🥱)       yawning face
+  [
+    '\u{1f972}',
+  ], // E13.0  [1] (🥲)       smiling face with tear
+  [
+    '\u{1f979}',
+  ], // E14.0  [1] (🥹)       face holding back tears
+  [
+    '\u{1f97a}',
+  ], // E11.0  [1] (🥺)       pleading face
+  [
+    '\u{1f97b}',
+  ], // E12.0  [1] (🥻)       sari
+  [
+    '\u{1f9c0}',
+  ], // E1.0   [1] (🧀)       cheese wedge
+  [
+    '\u{1f9cb}',
+  ], // E13.0  [1] (🧋)       bubble tea
+  [
+    '\u{1f9cc}',
+  ], // E14.0  [1] (🧌)       troll
+  [
+    '\u{1fa74}',
+  ], // E13.0  [1] (🩴)       thong sandal
+  [
+    '\u{1fa89}',
+  ], // E16.0  [1] (🪉)       harp
+  [
+    '\u{1fa8f}',
+  ], // E16.0  [1] (🪏)       shovel
+  [
+    '\u{1fabe}',
+  ], // E16.0  [1] (🪾)       leafless tree
+  [
+    '\u{1fabf}',
+  ], // E15.0  [1] (🪿)       goose
+  [
+    '\u{1fac6}',
+  ], // E16.0  [1] (🫆)       fingerprint
+  [
+    '\u{1fadc}',
+  ], // E16.0  [1] (🫜)       root vegetable
+  [
+    '\u{1fadf}',
+  ], // E16.0  [1] (🫟)       splatter
+  [
+    '\u{1fae8}',
+  ], // E15.0  [1] (🫨)       shaking face
+  [
+    '\u{1fae9}',
+  ], // E16.0  [1] (🫩)       face with bags under eyes
+];
+// dart format on
+// BMP character in each category, if any, -1 if none.
+const lowerChars = <int>[
+  0xd,
+  0x1,
+  0x2a,
+  0x200c,
+  0x903,
+  -0x1,
+  0x3299,
+  0xa,
+  0x600,
+  0x1100,
+  0x1160,
+  0x11a8,
+  0xac00,
+  0xac01,
+  0x924,
+  0x200d,
+  0xfe0f,
+  0x94d,
+];
+// Non-BMP character in each category, if any, -1 if none.
+const upperChars = <int>[
+  -0x1,
+  0x13430,
+  0x10000,
+  -0x1,
+  0x11000,
+  0x1f1e9,
+  0x1fae9,
+  -0x1,
+  0x110bd,
+  -0x1,
+  0x16d63,
+  -0x1,
+  -0x1,
+  -0x1,
+  -0x1,
+  -0x1,
+  0x1f3ff,
+  -0x1,
 ];

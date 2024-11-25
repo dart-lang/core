@@ -4,9 +4,9 @@
 
 // Benchmark of efficiency of grapheme cluster operations.
 
-import "package:characters/characters.dart";
+import 'package:characters/characters.dart';
 
-import "../test/src/text_samples.dart";
+import '../test/src/text_samples.dart';
 
 double bench(int Function() action, int ms) {
   var elapsed = 0;
@@ -49,12 +49,12 @@ int reverseStrings() {
   var revHangul = reverse(hangul);
   var rev2Hangul = reverse(revHangul);
   if (hangul != rev2Hangul || hangul == revHangul) {
-    throw AssertionError("Bad reverse");
+    throw AssertionError('Bad reverse');
   }
   var revGenesis = reverse(genesis);
   var rev2Genesis = reverse(revGenesis);
   if (genesis != rev2Genesis || genesis == revGenesis) {
-    throw AssertionError("Bad reverse");
+    throw AssertionError('Bad reverse');
   }
 
   return (hangul.length + genesis.length) * 2;
@@ -63,16 +63,16 @@ int reverseStrings() {
 int replaceStrings() {
   var count = 0;
   {
-    const language = "한글";
+    const language = '한글';
     assert(language.length == 6);
     var chars = Characters(hangul);
     var replaced =
-        chars.replaceAll(Characters(language), Characters("Hangul!"));
+        chars.replaceAll(Characters(language), Characters('Hangul!'));
     count += replaced.string.length - hangul.length;
   }
   {
     var chars = Characters(genesis);
-    var replaced = chars.replaceAll(Characters("And"), Characters("Also"));
+    var replaced = chars.replaceAll(Characters('And'), Characters('Also'));
     count += replaced.string.length - genesis.length;
   }
   return count;
@@ -111,27 +111,27 @@ void main(List<String> args) {
 
   for (var i = 0; i < count; i++) {
     var performance = bench(iterateIndicesOnly, 2000);
-    print("Index Iteration: ${toDigits(performance)} gc/ms");
+    print('Index Iteration: ${toDigits(performance)} gc/ms');
     if (performance > bestIterateIndices) bestIterateIndices = performance;
 
     performance = bench(iterateStrings, 2000);
-    print("String Iteration: ${toDigits(performance)} cu/ms");
+    print('String Iteration: ${toDigits(performance)} cu/ms');
     if (performance > bestIterateStrings) bestIterateStrings = performance;
 
     performance = bench(reverseStrings, 2000);
-    print("String Reversing: ${toDigits(performance)} cu/ms");
+    print('String Reversing: ${toDigits(performance)} cu/ms');
     if (performance > bestReverseStrings) bestReverseStrings = performance;
 
     performance = bench(replaceStrings, 2000);
-    print("String Replacing: ${toDigits(performance)} changes/ms");
+    print('String Replacing: ${toDigits(performance)} changes/ms');
     if (performance > bestReplaceStrings) bestReplaceStrings = performance;
   }
 
   if (count > 1) {
-    print("Best: ");
-    print("Index Iteration: ${toDigits(bestIterateIndices)} gc/ms");
-    print("String Iteration: ${toDigits(bestIterateStrings)} cu/ms");
-    print("String Reversing: ${toDigits(bestReverseStrings)} cu/ms");
-    print("String Replacing: ${toDigits(bestReplaceStrings)} changes/ms");
+    print('Best: ');
+    print('Index Iteration: ${toDigits(bestIterateIndices)} gc/ms');
+    print('String Iteration: ${toDigits(bestIterateStrings)} cu/ms');
+    print('String Reversing: ${toDigits(bestReverseStrings)} cu/ms');
+    print('String Replacing: ${toDigits(bestReplaceStrings)} changes/ms');
   }
 }

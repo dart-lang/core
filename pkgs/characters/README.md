@@ -11,6 +11,8 @@ the individual characters of a string,
 and a way to navigate back and forth between them
 using a [`CharacterRange`][CharacterRange].
 
+Based on Unicode <!-- unicode-version -->version 16.0.0<!-- /unicode-version -->.
+
 ## Unicode characters and representations
 
 There is no such thing as plain text.

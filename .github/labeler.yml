@@ -1,37 +1,53 @@
-# Configuration for .github/workflows/pull_request_label.yaml.
+# Configuration for .github/workflows/pull_request_label.yml.
 
-"package:args":
+'type-infra':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/args/**'
+    - any-glob-to-any-file: '.github/**'
 
-"package:async":
+'package:args':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/async/**'
+    - any-glob-to-any-file: 'pkgs/args/**'
 
-"package:characters":
+'package:async':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/characters/**'
+    - any-glob-to-any-file: 'pkgs/async/**'
 
-"package:convert":
+'package:characters':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/convert/**'
+    - any-glob-to-any-file: 'pkgs/characters/**'
 
-"package:crypto":
+'package:collection':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/crypto/**'
+    - any-glob-to-any-file: 'pkgs/collection/**'
 
-"package:fixnum":
+'package:convert':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/fixnum/**'
+    - any-glob-to-any-file: 'pkgs/convert/**'
 
-"package:logging":
+'package:crypto':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/logging/**'
+    - any-glob-to-any-file: 'pkgs/crypto/**'
 
-"package:os_detect":
+'package:fixnum':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/os_detect/**'
-      
-"package:path":
+    - any-glob-to-any-file: 'pkgs/fixnum/**'
+
+'package:logging':
   - changed-files:
-      - any-glob-to-any-file: 'pkgs/path/**'
+    - any-glob-to-any-file: 'pkgs/logging/**'
+
+'package:os_detect':
+  - changed-files:
+    - any-glob-to-any-file: 'pkgs/os_detect/**'
+
+'package:path':
+  - changed-files:
+    - any-glob-to-any-file: 'pkgs/path/**'
+
+'package:platform':
+  - changed-files:
+    - any-glob-to-any-file: 'pkgs/platform/**'
+
+'package:typed_data':
+  - changed-files:
+    - any-glob-to-any-file: 'pkgs/typed_data/**'

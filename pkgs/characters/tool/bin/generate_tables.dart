@@ -2,17 +2,17 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "dart:io";
-import "dart:typed_data";
+import 'dart:io';
+import 'dart:typed_data';
 
-import "../src/args.dart";
-import "../src/automaton_builder.dart";
-import "../src/data_files.dart";
-import "../src/grapheme_category_loader.dart";
-import "../src/indirect_table.dart";
-import "../src/shared.dart";
-import "../src/string_literal_writer.dart";
-import "../src/table_builder.dart";
+import '../src/args.dart';
+import '../src/automaton_builder.dart';
+import '../src/data_files.dart';
+import '../src/grapheme_category_loader.dart';
+import '../src/indirect_table.dart';
+import '../src/shared.dart';
+import '../src/string_literal_writer.dart';
+import '../src/table_builder.dart';
 
 // Generates tables used by the grapheme cluster breaking algorithm
 // and a state machine used to implement the algorithm.
@@ -53,7 +53,7 @@ import "../src/table_builder.dart";
 const defaultVerbose = false;
 
 /// Default location for table file.
-const tableFile = "lib/src/grapheme_clusters/table.dart";
+const tableFile = 'lib/src/grapheme_clusters/table.dart';
 
 // Best values found for current tables.
 // Update if better value found when updating data files.
@@ -63,14 +63,13 @@ const tableFile = "lib/src/grapheme_clusters/table.dart";
 // next time, instead of hardcoding in the source file.
 
 // Chunk sizes must be powers of 2.
-const int defaultLowChunkSize = 64;
+const int defaultLowChunkSize = 32;
 
-// 512 gives best size by 431b and no discernible performance difference
-// from 1024 in benchmark.
-const int defaultHighChunkSize = 512;
+// Currently found best size.
+const int defaultHighChunkSize = 256;
 
-void main(List<String> args) {
-  var flags = parseArgs(args, "gentable", allowOptimize: true);
+void main(List<String> args) async {
+  var flags = parseArgs(args, 'generate_tables', allowOptimize: true);
   var output = flags.dryrun
       ? null
       : flags.targetFile ?? File(path(packageRoot, tableFile));
@@ -79,31 +78,27 @@ void main(List<String> args) {
     try {
       output.createSync(recursive: true);
     } catch (e) {
-      stderr.writeln("Cannot find or create file: ${output.path}");
-      stderr.writeln("Writing to stdout");
+      stderr.writeln('Cannot find or create file: ${output.path}');
+      stderr.writeln('Writing to stdout');
       output = null;
     }
   }
-  generateTables(output,
-      update: flags.update,
-      dryrun: flags.dryrun,
-      verbose: flags.verbose,
-      optimize: flags.optimize);
+
+  var categories =
+      await loadCategories(update: flags.update, verbose: flags.verbose);
+
+  generateTables(output, categories,
+      dryrun: flags.dryrun, verbose: flags.verbose, optimize: flags.optimize);
 }
 
-Future<void> generateTables(File? output,
-    {bool update = false,
-    bool dryrun = false,
-    bool optimize = false,
-    bool verbose = defaultVerbose}) async {
-  // Generate the category mapping for all Unicode code points.
-  // This is the table we want to create an compressed version of.
-  var table = await loadGraphemeCategories(update: update, verbose: verbose);
-  if (update) {
-    // Force license file update.
-    await licenseFile.load(checkForUpdate: true);
-  }
-
+void generateTables(
+  File? output,
+  Uint8List table, {
+  bool dryrun = false,
+  bool optimize = false,
+  bool verbose = defaultVerbose,
+  bool acceptLicenseChange = false,
+}) async {
   var lowChunkSize = defaultLowChunkSize;
   var highChunkSize = defaultHighChunkSize;
 
@@ -137,14 +132,14 @@ Future<void> generateTables(File? output,
     assert(_validate(table, chunkTable, lowChunkSize, highChunkSize,
         verbose: false));
 
-    var size = chunkTable.chunks[0].length ~/ 2 + chunkTable.entries.length * 2;
+    var size = chunkTable.chunks[0].length + chunkTable.entries.length * 2;
     return size;
   }
 
   var chunkTable = IndirectTable([table.sublist(0, table.length)], []);
   var size = optimizeTable(chunkTable, lowChunkSize, highChunkSize);
   if (verbose) {
-    stderr.writeln("Default chunk size: $lowChunkSize/$highChunkSize: $size");
+    stderr.writeln('Default chunk size: $lowChunkSize/$highChunkSize: $size');
   }
   if (optimize) {
     // Chunk sizes must be powers of 2.
@@ -159,7 +154,7 @@ Future<void> generateTables(File? output,
         if (verbose) {
           var delta = newSize - size;
           stderr.writeln("${size < newSize ? "Worse" : "Better"}"
-              " chunk size: $low/$high: $newSize "
+              ' chunk size: $low/$high: $newSize '
               "(${delta > 0 ? "+$delta" : delta})");
         }
         if (newSize < size) {
@@ -171,34 +166,28 @@ Future<void> generateTables(File? output,
       }
     }
     if (verbose) {
-      stderr.writeln("Best low chunk size: $lowChunkSize");
-      stderr.writeln("Best high chunk size: $highChunkSize");
-      stderr.writeln("Best table size: $size");
+      stderr.writeln('Best low chunk size: $lowChunkSize');
+      stderr.writeln('Best high chunk size: $highChunkSize');
+      stderr.writeln('Best table size: $size');
     }
   }
 
-  // Write the table and automaton to source.
-  var buffer = StringBuffer(copyright)
-    ..writeln("// Generated code. Do not edit.")
-    ..writeln("// Generated from [${graphemeBreakPropertyData.sourceLocation}]"
-        "(../../${graphemeBreakPropertyData.targetLocation})")
-    ..writeln("// and [${emojiData.sourceLocation}]"
-        "(../../${emojiData.targetLocation}).")
-    ..writeln("// Licensed under the Unicode Inc. License Agreement")
-    ..writeln("// (${licenseFile.sourceLocation}, "
-        "../../third_party/${licenseFile.targetLocation})")
-    ..writeln();
+  var buffer = StringBuffer();
+  writeHeader(
+      buffer, [graphemeTestData, emojiTestData, graphemeBreakPropertyData]);
+  buffer.writeln();
 
   writeTables(buffer, chunkTable, lowChunkSize, highChunkSize,
       verbose: verbose);
 
   writeForwardAutomaton(buffer, verbose: verbose);
   buffer.writeln();
+
   writeBackwardAutomaton(buffer, verbose: verbose);
 
   if (output == null) {
     stdout.write(buffer);
-  } else {
+  } else if (!dryrun) {
     output.writeAsStringSync(buffer.toString());
   }
 }
@@ -208,51 +197,34 @@ Future<void> generateTables(File? output,
 void writeTables(
     StringSink out, IndirectTable table, int lowChunkSize, int highChunkSize,
     {required bool verbose}) {
-  _writeNybbles(out, "_data", table.chunks[0], verbose: verbose);
-  _writeStringLiteral(out, "_start", table.entries.map((e) => e.start).toList(),
+  assert(table.chunks.length == 1);
+  _writeStringLiteral(out, '_data', table.chunks[0], verbose: verbose);
+  _writeStringLiteral(out, '_start', table.entries.map((e) => e.start).toList(),
       verbose: verbose);
-  _writeLookupFunction(out, "_data", "_start", lowChunkSize);
+  _writeLookupFunction(out, '_data', '_start', lowChunkSize);
   out.writeln();
   _writeSurrogateLookupFunction(
-      out, "_data", "_start", 65536 ~/ lowChunkSize, highChunkSize);
+      out, '_data', '_start', 65536 ~/ lowChunkSize, highChunkSize);
   out.writeln();
 }
 
 void _writeStringLiteral(StringSink out, String name, List<int> data,
     {required bool verbose}) {
-  if (verbose) {
-    stderr.writeln("Writing ${data.length} chars");
-  }
-  var prefix = "const String $name = ";
+  var prefix = 'const String $name = ';
   out.write(prefix);
   var writer = StringLiteralWriter(out, padding: 4, escape: _needsEscape);
   writer.start(prefix.length);
+  var bytes = 0;
   for (var i = 0; i < data.length; i++) {
-    writer.add(data[i]);
+    var char = data[i];
+    writer.add(char);
+    bytes += char <= 0xFF ? 1 : 2;
   }
   writer.end();
-  out.write(";\n");
-}
-
-void _writeNybbles(StringSink out, String name, List<int> data,
-    {required bool verbose}) {
+  out.write(';\n');
   if (verbose) {
-    stderr.writeln("Writing ${data.length} nybbles");
+    stderr.writeln('Writing $bytes bytes');
   }
-  var prefix = "const String $name = ";
-  out.write(prefix);
-  var writer = StringLiteralWriter(out, padding: 4, escape: _needsEscape);
-  writer.start(prefix.length);
-  for (var i = 0; i < data.length - 1; i += 2) {
-    var n1 = data[i];
-    var n2 = data[i + 1];
-    assert(0 <= n1 && n1 <= 15);
-    assert(0 <= n2 && n2 <= 15);
-    writer.add(n1 + n2 * 16);
-  }
-  if (data.length.isOdd) writer.add(data.last);
-  writer.end();
-  out.write(";\n");
 }
 
 bool _needsEscape(int codeUnit) =>
@@ -260,49 +232,50 @@ bool _needsEscape(int codeUnit) =>
 
 void _writeLookupFunction(
     StringSink out, String dataName, String startName, int chunkSize) {
-  out.write(_lookupMethod("low", dataName, startName, chunkSize));
+  out.write(_lookupMethod('low', dataName, startName, chunkSize));
 }
 
 void _writeSurrogateLookupFunction(StringSink out, String dataName,
     String startName, int startOffset, int chunkSize) {
   out.write(_lookupSurrogatesMethod(
-      "high", dataName, startName, startOffset, chunkSize));
+      'high', dataName, startName, startOffset, chunkSize));
 }
 
 String _lookupMethod(
         String name, String dataName, String startName, int chunkSize) =>
-    """
+    '''
+$preferInline
 int $name(int codeUnit) {
   var chunkStart = $startName.codeUnitAt(codeUnit >> ${chunkSize.bitLength - 1});
   var index = chunkStart + (codeUnit & ${chunkSize - 1});
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
-""";
+''';
 
 String _lookupSurrogatesMethod(String name, String dataName, String startName,
-        int startOffset, int chunkSize) =>
-    chunkSize == 1024
-        ? """
+    int startOffset, int chunkSize) {
+  if (chunkSize == 1024) {
+    return '''
+$preferInline
 int $name(int lead, int tail) {
   var chunkStart = $startName.codeUnitAt($startOffset + (0x3ff & lead));
   var index = chunkStart + (0x3ff & tail);
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  return $dataName.codeUnitAt(index);
 }
-"""
-        : """
+''';
+  }
+  var shift = chunkSize.bitLength - 1;
+  var indexVar = chunkSize < 1024 ? 'tail' : 'offset';
+  return '''
+$preferInline
 int $name(int lead, int tail) {
-  var offset = ((0x3ff & lead) << 10) | (0x3ff & tail);
-  var chunkStart = $startName.codeUnitAt($startOffset + (offset >> ${chunkSize.bitLength - 1}));
-  var index = chunkStart + (offset & ${chunkSize - 1});
-  var bit = index & 1;
-  var pair = $dataName.codeUnitAt(index >> 1);
-  return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
+  var offset = (((0x3ff & lead) << 10) + (0x3ff & tail)) + ($startOffset << $shift);
+  var chunkStart = $startName.codeUnitAt(offset >> $shift);
+  var index = chunkStart + ($indexVar & ${chunkSize - 1});
+  return $dataName.codeUnitAt(index);
 }
-""";
+''';
+}
 
 // -----------------------------------------------------------------------------
 bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
@@ -318,7 +291,7 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
     var indirectValue = indirectTable.chunks[entry.chunkNumber]
         [entry.start + (i & lowChunkMask)];
     if (value != indirectValue) {
-      stderr.writeln("$entryIndex: $entry");
+      stderr.writeln('$entryIndex: $entry');
       stderr.writeln('Error: ${i.toRadixString(16)} -> Expected $value,'
           ' was $indirectValue');
       printIndirectTable(indirectTable);
@@ -335,7 +308,7 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
     var indirectValue = indirectTable.chunks[entry.chunkNumber]
         [entry.start + (j & highChunkMask)];
     if (value != indirectValue) {
-      stderr.writeln("$entryIndex: $entry");
+      stderr.writeln('$entryIndex: $entry');
       stderr.writeln('Error: ${i.toRadixString(16)} -> Expected $value,'
           ' was $indirectValue');
       printIndirectTable(indirectTable);
@@ -343,12 +316,12 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
     }
   }
   if (verbose) {
-    stderr.writeln("Table validation success");
+    stderr.writeln('Table validation success');
   }
   return true;
 }
 
 void printIndirectTable(IndirectTable table) {
   stderr.writeln("IT(chunks: ${table.chunks.map((x) => "#${x.length}")},"
-      " entries: ${table.entries}");
+      ' entries: ${table.entries}');
 }

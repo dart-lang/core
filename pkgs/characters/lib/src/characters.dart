@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import "characters_impl.dart";
+import 'characters_impl.dart';
 
 /// The characters of a string.
 ///
@@ -21,7 +21,7 @@ import "characters_impl.dart";
 /// in different ways.
 abstract class Characters implements Iterable<String> {
   /// An empty [Characters] containing no characters.
-  static const Characters empty = StringCharacters("");
+  static const Characters empty = StringCharacters('');
 
   /// Creates a [Characters] allowing iteration of
   /// the characters of [string].
@@ -260,9 +260,9 @@ abstract class Characters implements Iterable<String> {
   /// Any further occurrences will be included in the last part.
   /// Example:
   /// ```dart
-  /// var c = "abracadabra".characters;
-  /// var parts = c.split("a".characters, 4).toList();
-  /// print(parts); // Prints is ["", "br", "c", "dabra"]
+  /// var c = 'abracadabra'.characters;
+  /// var parts = c.split('a'.characters, 4).toList();
+  /// print(parts); // Prints is ['', 'br', 'c', 'dabra']
   /// ```
   /// If there are fewer than `maxParts - 1` occurrences of [pattern],
   /// then the characters are split at all occurrences.
@@ -272,7 +272,7 @@ abstract class Characters implements Iterable<String> {
 
   /// Replaces the first occurrence of [pattern] with [replacement].
   ///
-  /// Returns a new [Characters] where the first occurence of the
+  /// Returns a new [Characters] where the first occurrence of the
   /// [pattern] character sequence, if any, is replaced by [replacement].
   ///
   /// Returns the current characters if there is no occurrence of [pattern].
@@ -304,7 +304,7 @@ abstract class Characters implements Iterable<String> {
 /// The range may even be empty, but that will still correspond to a position
 /// where both start and end happen to be the same position.
 ///
-/// The source sequence can be separated into the *preceeding* characters,
+/// The source sequence can be separated into the *preceding* characters,
 /// those before the range, the range itself, and the *following* characters,
 /// those after the range.
 ///
@@ -318,11 +318,11 @@ abstract class Characters implements Iterable<String> {
 /// Operations starting with `collapse` reduces the current range to
 /// a sub-range of itself.
 /// Operations starting with `expand` increase the current range
-/// by moving/ the end postion to a later position
+/// by moving the end position to a later position
 /// or the start position to an earlier position,
 /// and operations starting with `drop` reduce the current range
 /// by moving the start to a later position or the end to an earlier position,
-/// therebyt dropping characters from one or both ends from the current range.
+/// thereby dropping characters from one or both ends from the current range.
 ///
 ///
 /// The character range implements [Iterator]
@@ -479,7 +479,7 @@ abstract class CharacterRange implements Iterator<String> {
   /// Returns `true` if the range is modified and `false` if not.
   bool moveBackTo(Characters target);
 
-  /// Moves to the range after the previous occurence of [target].
+  /// Moves to the range after the previous occurrence of [target].
   ///
   /// If there is an occurrence of [target] in the characters preceding
   /// the current range,
@@ -506,7 +506,7 @@ abstract class CharacterRange implements Iterator<String> {
   /// the current range, and `false` if not.
   bool expandNext([int count = 1]);
 
-  /// Expands the range to include the next occurence of [target].
+  /// Expands the range to include the next occurrence of [target].
   ///
   /// If there is an occurrence of [target] in the characters following
   /// the current range, the end of the the range is moved to just after
@@ -554,7 +554,7 @@ abstract class CharacterRange implements Iterator<String> {
   /// the current range, and `false` if not.
   bool expandBack([int count = 1]);
 
-  /// Expands the range to include the previous occurence of [target].
+  /// Expands the range to include the previous occurrence of [target].
   ///
   /// If there is an occurrence of [target] in the characters preceding
   /// the current range, the stat of the the range is moved to just before
@@ -579,7 +579,7 @@ abstract class CharacterRange implements Iterator<String> {
   /// Returns `true` if there is an occurrence of [target] and `false` if not.
   bool expandBackUntil(Characters target);
 
-  /// Expands the range with the preceding characters satisffying [test].
+  /// Expands the range with the preceding characters satisfying [test].
   ///
   /// Iterates back through the characters preceding the current range
   /// and includes them into the range until finding a character that
@@ -661,7 +661,7 @@ abstract class CharacterRange implements Iterator<String> {
   /// first occurrence of [target].
   ///
   /// If there are no occurrences of [target] in the range,
-  /// all characteres in the range are removed,
+  /// all characters in the range are removed,
   /// which gives the same effect as [collapseToEnd].
   ///
   /// Returns `true` if there is an occurrence of [target] and `false` if not.
@@ -713,7 +713,7 @@ abstract class CharacterRange implements Iterator<String> {
   /// last occurrence of [target].
   ///
   /// If there are no occurrences of [target] in the range,
-  /// all characteres in the range are removed,
+  /// all characters in the range are removed,
   /// which gives the same effect as [collapseToStart].
   ///
   /// Returns `true` if there is an occurrence of [target] and `false` if not.
@@ -790,9 +790,9 @@ abstract class CharacterRange implements Iterator<String> {
   ///
   /// Example:
   /// ```dart
-  /// var c = "abracadabra".characters.dropFirst().dropLast();
-  /// // c is "bracadabr".
-  /// var parts = c.split("a".characters, 3).toList();
+  /// var c = 'abracadabra'.characters.dropFirst().dropLast();
+  /// // c is 'bracadabr'.
+  /// var parts = c.split('a'.characters, 3).toList();
   /// print(parts); // [br, c, dabr]
   /// ```
   /// If there are fewer than `maxParts - 1` occurrences of [pattern],
