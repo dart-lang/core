@@ -64,6 +64,16 @@ void main() {
         test('multiple', () {
           expect(iterable(<int>[3, 20, 100]).sortedBy(toString), [100, 20, 3]);
         });
+        test('multiple ascending', () {
+          expect(
+              iterable(<int>[3, 20, 100]).sortedBy(toString, ascending: true),
+              [100, 20, 3]);
+        });
+        test('multiple descending', () {
+          expect(
+              iterable(<int>[3, 20, 100]).sortedBy(toString, ascending: false),
+              [3, 20, 100]);
+        });
       });
       group('.sortedByCompare', () {
         test('empty', () {
