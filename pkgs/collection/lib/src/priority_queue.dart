@@ -36,6 +36,19 @@ abstract class PriorityQueue<E> {
   factory PriorityQueue([int Function(E, E)? comparison]) =
       HeapPriorityQueue<E>;
 
+  /// Create a new priority queue.
+  ///
+  /// The [comparison] is a [Comparator] used to compare the priority of
+  /// elements. An element that compares as less than another element has
+  /// a higher priority.
+  ///
+  /// If [comparison] is omitted, it defaults to [Comparable.compare]. If this
+  /// is the case, `E` must implement [Comparable], and this is checked at
+  /// runtime for every comparison.
+  factory PriorityQueue.of(
+          Iterable<E> elements, int Function(E, E) comparison) =
+      HeapPriorityQueue<E>.of;
+
   /// Number of elements in the queue.
   int get length;
 
@@ -169,27 +182,16 @@ abstract class PriorityQueue<E> {
 /// * The [toSet] operation effectively adds each element to the new set, taking
 ///   an expected O(n*log(n)) time.
 class HeapPriorityQueue<E> implements PriorityQueue<E> {
-  /// Initial capacity of a queue when created, or when added to after a
-  /// [clear].
-  ///
-  /// Number can be any positive value. Picking a size that gives a whole
-  /// number of "tree levels" in the heap is only done for aesthetic reasons.
-  static const int _initialCapacity = 7;
-
   /// The comparison being used to compare the priority of elements.
   final Comparator<E> comparison;
 
   /// List implementation of a heap.
-  List<E?> _queue = List<E?>.filled(_initialCapacity, null);
-
-  /// Number of elements in queue.
-  ///
-  /// The heap is implemented in the first [_length] entries of [_queue].
-  int _length = 0;
+  List<E> _queue;
 
   /// Modification count.
   ///
   /// Used to detect concurrent modifications during iteration.
+  /// Incremented whenever an element is added or removed.
   int _modificationCount = 0;
 
   /// Create a new priority queue.
@@ -202,31 +204,72 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   /// is the case, `E` must implement [Comparable], and this is checked at
   /// runtime for every comparison.
   HeapPriorityQueue([int Function(E, E)? comparison])
-      : comparison = comparison ?? defaultCompare;
+      : comparison = comparison ?? defaultCompare,
+        _queue = <E>[];
 
-  E _elementAt(int index) => _queue[index] ?? (null as E);
+  /// Creates a new priority queue containing [elements].
+  ///
+  /// The [comparison] is a [Comparator] used to compare the priority of
+  /// elements. An element that compares as less than another element has
+  /// a higher priority.
+  HeapPriorityQueue.of(Iterable<E> elements, int Function(E, E) this.comparison)
+      : _queue = elements.toList() {
+    _heapify();
+  }
+
+  /// Converts an unordered list of elements to a heap-ordered list of elements.
+  ///
+  /// Does so by ordering sub-trees iteratively, then bubbling their parent
+  /// down into the two ordered subtrees.
+  /// Trivially ignores the last half of elements, which have no children.
+  /// Does a number of bubble-down steps that is bounded by the number
+  /// of elements. Each bubble-down step does two comparisons.
+  void _heapify() {
+    // Last non-leaf node's index, negative for empty or one-element queue.
+    var cursor = _queue.length ~/ 2 - 1;
+    while (cursor >= 0) {
+      _bubbleDown(_queue[cursor], cursor);
+      cursor -= 1;
+    }
+  }
 
   @override
   void add(E element) {
     _modificationCount++;
-    _add(element);
+    _queue.add(element);
+    _bubbleUp(element, _queue.length - 1);
   }
 
   @override
   void addAll(Iterable<E> elements) {
-    var modified = 0;
-    for (var element in elements) {
-      modified = 1;
-      _add(element);
+    var endIndex = _queue.length;
+    _queue.addAll(elements);
+    var newLength = _queue.length;
+    var addedCount = newLength - endIndex;
+    if (addedCount == 0) return;
+    _modificationCount++;
+    // Approximation for when the time to bubble up all added elements,
+    // taking approx. addedCount * (log2(newLength)-1) comparisons worst-case,
+    // (bubble-up does one comparison per element per level),
+    // is slower than just heapifying the entire heap, which does
+    // newLength * 2 comparisons worst-case.
+    // Uses `endIndex.bitLength` instead of `newLength.bitLength` because
+    // if `addedCount` is greater than `newLength`, the bitLength won't matter
+    // for any non-trivial heap, and if not, every added element is a leaf
+    // element, so it only has to look at log2(endIndex) parents.
+    if (addedCount * endIndex.bitLength >= newLength * 2) {
+      _heapify();
+      return;
     }
-    _modificationCount += modified;
+    for (var i = endIndex; i < newLength; i++) {
+      _bubbleUp(_queue[i], i);
+    }
   }
 
   @override
   void clear() {
     _modificationCount++;
-    _queue = const [];
-    _length = 0;
+    _queue.clear();
   }
 
   @override
@@ -243,27 +286,24 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   Iterable<E> get unorderedElements => _UnorderedElementsIterable<E>(this);
 
   @override
-  E get first {
-    if (_length == 0) throw StateError('No element');
-    return _elementAt(0);
-  }
+  E get first => _queue.first;
 
   @override
-  bool get isEmpty => _length == 0;
+  bool get isEmpty => _queue.isEmpty;
 
   @override
-  bool get isNotEmpty => _length != 0;
+  bool get isNotEmpty => _queue.isNotEmpty;
 
   @override
-  int get length => _length;
+  int get length => _queue.length;
 
   @override
   bool remove(E element) {
     var index = _locate(element);
     if (index < 0) return false;
     _modificationCount++;
-    var last = _removeLast();
-    if (index < _length) {
+    var last = _queue.removeLast();
+    if (index < _queue.length) {
       var comp = comparison(last, element);
       if (comp <= 0) {
         _bubbleUp(last, index);
@@ -284,19 +324,17 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   Iterable<E> removeAll() {
     _modificationCount++;
     var result = _queue;
-    var length = _length;
-    _queue = const [];
-    _length = 0;
-    return result.take(length).cast();
+    _queue = <E>[];
+    return result.skip(0); // Hide list nature.
   }
 
   @override
   E removeFirst() {
-    if (_length == 0) throw StateError('No element');
+    if (_queue.isEmpty) throw StateError('No element');
     _modificationCount++;
-    var result = _elementAt(0);
-    var last = _removeLast();
-    if (_length > 0) {
+    var result = _queue.first;
+    var last = _queue.removeLast();
+    if (_queue.length > 0) {
       _bubbleDown(last, 0);
     }
     return result;
@@ -306,34 +344,19 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   List<E> toList() => _toUnorderedList()..sort(comparison);
 
   @override
-  Set<E> toSet() {
-    var set = SplayTreeSet<E>(comparison);
-    for (var i = 0; i < _length; i++) {
-      set.add(_elementAt(i));
-    }
-    return set;
-  }
+  Set<E> toSet() => SplayTreeSet<E>(comparison)..addAll(_queue);
 
   @override
   List<E> toUnorderedList() => _toUnorderedList();
 
-  List<E> _toUnorderedList() =>
-      [for (var i = 0; i < _length; i++) _elementAt(i)];
+  List<E> _toUnorderedList() => _queue.toList();
 
   /// Returns some representation of the queue.
   ///
   /// The format isn't significant, and may change in the future.
   @override
   String toString() {
-    return _queue.take(_length).toString();
-  }
-
-  /// Add element to the queue.
-  ///
-  /// Grows the capacity if the backing list is full.
-  void _add(E element) {
-    if (_length == _queue.length) _grow();
-    _bubbleUp(element, _length++);
+    return _queue.skip(0).toString();
   }
 
   /// Find the index of an object in the heap.
@@ -343,7 +366,7 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   /// A matching object, `o`, must satisfy that
   /// `comparison(o, object) == 0 && o == object`.
   int _locate(E object) {
-    if (_length == 0) return -1;
+    if (_queue.isEmpty) return -1;
     // Count positions from one instead of zero. This gives the numbers
     // some nice properties. For example, all right children are odd,
     // their left sibling is even, and the parent is found by shifting
@@ -355,14 +378,14 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
     // in the heap will also have lower priority.
     do {
       var index = position - 1;
-      var element = _elementAt(index);
+      var element = _queue[index];
       var comp = comparison(element, object);
       if (comp <= 0) {
         if (comp == 0 && element == object) return index;
         // Element may be in subtree.
         // Continue with the left child, if it is there.
         var leftChildPosition = position * 2;
-        if (leftChildPosition <= _length) {
+        if (leftChildPosition <= _queue.length) {
           position = leftChildPosition;
           continue;
         }
@@ -375,18 +398,13 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
         }
         // Then go to the right sibling of the left-child.
         position += 1;
-      } while (position > _length); // Happens if last element is a left child.
+      } while (
+          position > _queue.length); // Happens if last element is a left child.
     } while (position != 1); // At root again. Happens for right-most element.
     return -1;
   }
 
-  E _removeLast() {
-    var newLength = _length - 1;
-    var last = _elementAt(newLength);
-    _queue[newLength] = null;
-    _length = newLength;
-    return last;
-  }
+  E _removeLast() => _queue.removeLast();
 
   /// Place [element] in heap at [index] or above.
   ///
@@ -396,7 +414,7 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   void _bubbleUp(E element, int index) {
     while (index > 0) {
       var parentIndex = (index - 1) ~/ 2;
-      var parent = _elementAt(parentIndex);
+      var parent = _queue[parentIndex];
       if (comparison(element, parent) > 0) break;
       _queue[index] = parent;
       index = parentIndex;
@@ -411,10 +429,10 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   /// swap it with the highest priority child.
   void _bubbleDown(E element, int index) {
     var rightChildIndex = index * 2 + 2;
-    while (rightChildIndex < _length) {
+    while (rightChildIndex < _queue.length) {
       var leftChildIndex = rightChildIndex - 1;
-      var leftChild = _elementAt(leftChildIndex);
-      var rightChild = _elementAt(rightChildIndex);
+      var leftChild = _queue[leftChildIndex];
+      var rightChild = _queue[rightChildIndex];
       var comp = comparison(leftChild, rightChild);
       int minChildIndex;
       E minChild;
@@ -435,8 +453,8 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
       rightChildIndex = index * 2 + 2;
     }
     var leftChildIndex = rightChildIndex - 1;
-    if (leftChildIndex < _length) {
-      var child = _elementAt(leftChildIndex);
+    if (leftChildIndex < _queue.length) {
+      var child = _queue[leftChildIndex];
       var comp = comparison(element, child);
       if (comp > 0) {
         _queue[index] = child;
@@ -444,17 +462,6 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
       }
     }
     _queue[index] = element;
-  }
-
-  /// Grows the capacity of the list holding the heap.
-  ///
-  /// Called when the list is full.
-  void _grow() {
-    var newCapacity = _queue.length * 2 + 1;
-    if (newCapacity < _initialCapacity) newCapacity = _initialCapacity;
-    var newQueue = List<E?>.filled(newCapacity, null);
-    newQueue.setRange(0, _length, _queue);
-    _queue = newQueue;
   }
 }
 
