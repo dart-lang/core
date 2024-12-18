@@ -183,7 +183,7 @@ abstract class PriorityQueue<E> {
 ///   an expected O(n*log(n)) time.
 class HeapPriorityQueue<E> implements PriorityQueue<E> {
   /// The comparison being used to compare the priority of elements.
-  final Comparator<E> comparison;
+  final int Function(E, E) comparison;
 
   /// List implementation of a heap.
   List<E> _queue;
@@ -212,7 +212,7 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   /// The [comparison] is a [Comparator] used to compare the priority of
   /// elements. An element that compares as less than another element has
   /// a higher priority.
-  HeapPriorityQueue.of(Iterable<E> elements, int Function(E, E) this.comparison)
+  HeapPriorityQueue.of(Iterable<E> elements, this.comparison)
       : _queue = elements.toList() {
     _heapify();
   }
@@ -334,7 +334,7 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
     _modificationCount++;
     var result = _queue.first;
     var last = _queue.removeLast();
-    if (_queue.length > 0) {
+    if (_queue.isNotEmpty) {
       _bubbleDown(last, 0);
     }
     return result;
@@ -403,8 +403,6 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
     } while (position != 1); // At root again. Happens for right-most element.
     return -1;
   }
-
-  E _removeLast() => _queue.removeLast();
 
   /// Place [element] in heap at [index] or above.
   ///
