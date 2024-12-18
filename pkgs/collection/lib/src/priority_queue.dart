@@ -181,7 +181,7 @@ abstract class PriorityQueue<E> {
 ///   time.
 /// * The [toUnorderedList] operation copies, but does not sort, the elements,
 ///   and is linear, O(n).
-/// * The [toSet] operation effectively adds each element to the new 
+/// * The [toSet] operation effectively adds each element to the new
 ///   [SplayTreeSet], taking an expected O(n * log(*N*)) time.
 ///
 /// The [comparison] function is used to order elements, with earlier elements
@@ -326,6 +326,8 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
   ///
   /// The [HeapPriorityQueue] returns a [List] of its elements,
   /// with no guaranteed order.
+  ///
+  /// If the elements are not needed, use [clear] instead.
   @override
   List<E> removeAll() {
     _modificationCount++;
@@ -407,7 +409,7 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
       } while (
           position > _queue.length); // Happens if last element is a left child.
     } while (position != 1); // At root again. Happens for right-most element.
-    return -1;  
+    return -1;
   }
 
   /// Place [element] in heap at [index] or above.
