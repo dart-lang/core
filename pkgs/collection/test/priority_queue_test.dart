@@ -23,6 +23,35 @@ void testDefault() {
   });
   testInt(PriorityQueue<int>.new);
   testCustom(PriorityQueue<C>.new);
+
+  group('(Heap)PriorityQueue.of returns functional priority queue', () {
+    List<int> extract(PriorityQueue<int> queue) {
+      var result = <int>[];
+      while (queue.isNotEmpty) {
+        result.add(queue.removeFirst());
+      }
+      return result;
+    }
+
+    for (var i = 0; i < 1024; i = i * 2 + 1) {
+      test('size $i', () {
+        var input = List<int>.generate(i, (x) => x);
+        for (var j = 0; j < 5; j++) {
+          var copy = (input.toList()..shuffle()).where((_) => true);
+          {
+            var queue = HeapPriorityQueue<int>.of(copy, (a, b) => a - b);
+            var elements = extract(queue);
+            expect(elements, input);
+          }
+          {
+            var queue = HeapPriorityQueue<int>.of(copy, (a, b) => a - b);
+            var elements = extract(queue);
+            expect(elements, input);
+          }
+        }
+      });
+    }
+  });
 }
 
 void testInt(PriorityQueue<int> Function() create) {
