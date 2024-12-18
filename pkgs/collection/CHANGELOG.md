@@ -4,6 +4,7 @@
   `Map.entries`.
 - Optimize equality and hash code for maps by using `update` and a `values`
   iterator to avoid extra lookups.
+- Add `PriorityQueue.of` constructor and optimize adding many elements.
 
 ## 1.19.1
 
