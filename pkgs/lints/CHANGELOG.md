@@ -1,6 +1,7 @@
 ## 5.1.1
 
 - Updated the SDK lower bound to 3.6.
+- Move to `dart-lang/core` monorepo.
 
 ## 5.1.0
 
