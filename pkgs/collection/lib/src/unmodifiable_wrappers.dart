@@ -193,4 +193,12 @@ abstract mixin class UnmodifiableMapMixin<K, V> implements Map<K, V> {
   /// operations that change the map are disallowed.
   @override
   void clear() => _throw();
+
+  /// Throws an [UnsupportedError].
+  @Deprecated('This will be removed at a later date.')
+  set first(dynamic _) => _throw();
+
+  /// Throws an [UnsupportedError].
+  @Deprecated('This will be removed at a later date.')
+  set last(dynamic _) => _throw();
 }
