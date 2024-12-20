@@ -193,12 +193,4 @@ abstract mixin class UnmodifiableMapMixin<K, V> implements Map<K, V> {
   /// operations that change the map are disallowed.
   @override
   void clear() => _throw();
-
-  /// Throws an [UnsupportedError];
-  /// operations that change the map are disallowed.
-  set first(_) => _throw();
-
-  /// Throws an [UnsupportedError];
-  /// operations that change the map are disallowed.
-  set last(_) => _throw();
 }
