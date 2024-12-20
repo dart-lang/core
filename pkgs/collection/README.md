@@ -56,4 +56,4 @@ functions on an existing object.
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: https://github.com/dart-lang/collection/issues
+[tracker]: https://github.com/dart-lang/core/issues/new/choose
