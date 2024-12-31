@@ -2,6 +2,8 @@
 
 - Require Dart 3.4.
 - Move to `dart-lang/core` monorepo.
+- Can decide `fetch` method of `AsyncCache` will store exception or not 
+  by using `cacheErrors` property.
 
 ## 2.11.0
 
