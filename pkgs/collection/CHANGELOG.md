@@ -4,6 +4,7 @@
   `Map.entries`.
 - Optimize equality and hash code for maps by using `update` and a `values`
   iterator to avoid extra lookups.
+- Address diagnostics from `strict_top_level_inference`.
 
 ## 1.19.1
 
