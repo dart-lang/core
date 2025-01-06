@@ -195,10 +195,10 @@ abstract mixin class UnmodifiableMapMixin<K, V> implements Map<K, V> {
   void clear() => _throw();
 
   /// Throws an [UnsupportedError].
-  @Deprecated('This will be removed at a later date.')
-  set first(dynamic _) => _throw();
+  @deprecated
+  set first(Object? _) => _throw();
 
   /// Throws an [UnsupportedError].
-  @Deprecated('This will be removed at a later date.')
-  set last(dynamic _) => _throw();
+  @deprecated
+  set last(Object? _) => _throw();
 }
