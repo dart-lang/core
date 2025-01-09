@@ -92,7 +92,7 @@ we know to write Dart code. The process we use is:
 
 1.  Anyone can file an [issue] to discuss a potential change to a lint set
     (i.e., adding or removing a lint from one or both sets; if you're proposing
-    an entirely new lint, the place to suggest that is at the [linter repo]).
+    an entirely new lint, the place to suggest that is at the [sdk repo]).
     Feedback is welcome from any Dart user.
 
 2.  Periodically, a group of Dart and Flutter team members meet to review the
@@ -102,14 +102,14 @@ we know to write Dart code. The process we use is:
 
 ## Lint set contents
 
-See [rules.md](https://github.com/dart-lang/lints/blob/main/rules.md) for a list
-of rules that make up the core and recommended rule sets.
+See [rules.md](https://github.com/dart-lang/core/blob/main/pkgs/lints/rules.md)
+for a list of rules that make up the core and recommended rule sets.
 
 [dart create]: https://dart.dev/tools/dart-create
 [scoring]: https://pub.dev/help/scoring
 [customizing static analysis]: https://dart.dev/tools/analysis
 [rules]: https://dart.dev/tools/linter-rules
 [pub.dev]: https://pub.dev
-[issue]: https://github.com/dart-lang/lints/issues
-[linter repo]: https://github.com/dart-lang/linter
+[issue]: https://github.com/dart-lang/core/issues
+[sdk repo]: https://github.com/dart-lang/sdk
 [`package:flutter_lints`]: https://pub.dev/packages/flutter_lints
