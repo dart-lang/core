@@ -5,10 +5,9 @@
 @TestOn('browser')
 library;
 
-import 'dart:html';
-
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
+import 'package:web/web.dart';
 
 void main() {
   group('new Context()', () {
