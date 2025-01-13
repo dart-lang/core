@@ -1,5 +1,5 @@
 name: path
-version: 1.9.1
+version: 1.9.2-wip
 description: A string-based path manipulation library.  
 repository: https://github.com/dart-lang/core/tree/main/pkgs/path
 issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Apath
