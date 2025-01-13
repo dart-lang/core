@@ -1,3 +1,7 @@
+## 2.13.0
+
+* Add `FutureGroup.addCancelable()`.
+
 ## 2.12.0
 
 - Require Dart 3.4.
