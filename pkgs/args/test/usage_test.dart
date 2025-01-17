@@ -216,10 +216,10 @@ void main() {
       validateUsage(parser, '''
           --suit              Like in cards
 
+                [spades]      Swords of a soldier
                 [clubs]       Weapons of war
                 [diamonds]    Money for this art
                 [hearts]      The shape of my heart
-                [spades]      Swords of a soldier
           ''');
     });
 
@@ -244,10 +244,10 @@ void main() {
       validateUsage(parser, '''
           --suit                     Like in cards
 
+                [spades]             Swords of a soldier
                 [clubs] (default)    Weapons of war
                 [diamonds]           Money for this art
                 [hearts]             The shape of my heart
-                [spades]             Swords of a soldier
           ''');
     });
 
@@ -271,10 +271,10 @@ void main() {
       validateUsage(parser, '''
           --suit                      Like in cards
 
+                [spades]              Swords of a soldier
                 [clubs] (default)     Weapons of war
                 [diamonds]            Money for this art
                 [hearts] (default)    The shape of my heart
-                [spades]              Swords of a soldier
           ''');
     });
 

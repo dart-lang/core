@@ -90,8 +90,7 @@ class _Usage {
     if (option.help != null) _write(2, option.help!);
 
     if (option.allowedHelp != null) {
-      var allowedNames = option.allowedHelp!.keys.toList();
-      allowedNames.sort();
+      var allowedNames = [...option.allowedHelp!.keys];
       _newline();
       for (var name in allowedNames) {
         _write(1, _allowedTitle(option, name));
