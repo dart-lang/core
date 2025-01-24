@@ -5,7 +5,7 @@ repository: https://github.com/dart-lang/core/tree/main/pkgs/path
 issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Apath
 
 topics:
- - file-system
+  - file-system
 
 environment:
   sdk: ^3.4.0
