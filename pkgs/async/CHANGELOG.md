@@ -1,3 +1,7 @@
+## 2.13.0
+
+- Fix type check and cast in SubscriptionStream's cancelOnError wrapper
+
 ## 2.12.0
 
 - Require Dart 3.4.
