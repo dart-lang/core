@@ -2,10 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
-
-import 'error.dart';
-import 'result.dart';
+part of 'result.dart';
 
 /// A result representing a returned value.
 class ValueResult<T> implements Result<T> {
