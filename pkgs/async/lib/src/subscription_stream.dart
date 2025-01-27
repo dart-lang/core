@@ -76,12 +76,20 @@ class _CancelOnErrorSubscriptionWrapper<T>
     super.onError((Object error, StackTrace stackTrace) {
       // Wait for the cancel to complete before sending the error event.
       super.cancel().whenComplete(() {
-        if (handleError is ZoneBinaryCallback<void, Object, StackTrace> || handleError is ZoneBinaryCallback) {
-          handleError?.call(error, stackTrace);
-        } else if (handleError is ZoneUnaryCallback<void, Object> || handleError is ZoneUnaryCallback) {
-          handleError?.call(error);
+        if (handleError is ZoneBinaryCallback<void, Object, StackTrace>) {
+          handleError(error, stackTrace);
+        } else if (handleError is ZoneBinaryCallback) {
+          handleError(error, stackTrace);
+        } else if (handleError is ZoneUnaryCallback<void, Object>) {
+          handleError(error);
+        } else if (handleError is ZoneUnaryCallback) {
+          handleError(error);
         }
       });
     });
   }
+}
+
+abstract class BinaryWrapper {
+  void binaryCall<T1, T2>(T1 t1, T2 t2);
 }
