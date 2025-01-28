@@ -53,7 +53,7 @@ class ErrorResult implements Result<Never> {
       errorHandler(error);
     } else {
       throw ArgumentError(
-        'is nor Function(Object, StackTrace) neither Function(Object)',
+        'is neither Function(Object, StackTrace) nor Function(Object)',
         'errorHandler',
       );
     }
