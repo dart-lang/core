@@ -150,7 +150,7 @@ void main() {
   });
 
   group('subscriptionStream error callback', () {
-    test('- binary typed', () async {
+    test('binary typed', () async {
       var completer = Completer<void>();
       var stream = createErrorStream();
       var sourceSubscription = stream.listen(null, cancelOnError: true);
@@ -168,7 +168,7 @@ void main() {
       await flushMicrotasks();
     });
 
-    test('- binary dynamic', () async {
+    test('binary dynamic', () async {
       var completer = Completer<void>();
       var stream = createErrorStream();
       var sourceSubscription = stream.listen(null, cancelOnError: true);
@@ -184,7 +184,7 @@ void main() {
       await flushMicrotasks();
     });
 
-    test('- unary typed', () async {
+    test('unary typed', () async {
       var completer = Completer<void>();
       var stream = createErrorStream();
       var sourceSubscription = stream.listen(null, cancelOnError: true);
@@ -202,7 +202,7 @@ void main() {
       await flushMicrotasks();
     });
 
-    test('- unary dynamic', () async {
+    test('unary dynamic', () async {
       var completer = Completer<void>();
       var stream = createErrorStream();
       var sourceSubscription = stream.listen(null, cancelOnError: true);
@@ -219,8 +219,6 @@ void main() {
     });
   });
 }
-
-typedef BinaryFunc = void Function(Object s, StackTrace tr);
 
 Stream<int> createStream() async* {
   yield 1;
