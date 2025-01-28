@@ -148,6 +148,76 @@ void main() {
       });
     }
   });
+
+  group('subscriptionStream error callback', () {
+    test('binary typed', () async {
+      var completer = Completer<void>();
+      var stream = createErrorStream();
+      var sourceSubscription = stream.listen(null, cancelOnError: true);
+      var subscriptionStream = SubscriptionStream(sourceSubscription);
+
+      void f(Object error, StackTrace stackTrace) {
+        completer.complete();
+      }
+
+      subscriptionStream.listen((_) {},
+          onError: f,
+          onDone: () => throw 'should not happen',
+          cancelOnError: true);
+      await completer.future;
+      await flushMicrotasks();
+    });
+
+    test('binary dynamic', () async {
+      var completer = Completer<void>();
+      var stream = createErrorStream();
+      var sourceSubscription = stream.listen(null, cancelOnError: true);
+      var subscriptionStream = SubscriptionStream(sourceSubscription);
+
+      subscriptionStream.listen((_) {},
+          onError: (error, stackTrace) {
+            completer.complete();
+          },
+          onDone: () => throw 'should not happen',
+          cancelOnError: true);
+      await completer.future;
+      await flushMicrotasks();
+    });
+
+    test('unary typed', () async {
+      var completer = Completer<void>();
+      var stream = createErrorStream();
+      var sourceSubscription = stream.listen(null, cancelOnError: true);
+      var subscriptionStream = SubscriptionStream(sourceSubscription);
+
+      void f(Object error) {
+        completer.complete();
+      }
+
+      subscriptionStream.listen((_) {},
+          onError: f,
+          onDone: () => throw 'should not happen',
+          cancelOnError: true);
+      await completer.future;
+      await flushMicrotasks();
+    });
+
+    test('unary dynamic', () async {
+      var completer = Completer<void>();
+      var stream = createErrorStream();
+      var sourceSubscription = stream.listen(null, cancelOnError: true);
+      var subscriptionStream = SubscriptionStream(sourceSubscription);
+
+      subscriptionStream.listen((_) {},
+          onError: (error) {
+            completer.complete();
+          },
+          onDone: () => throw 'should not happen',
+          cancelOnError: true);
+      await completer.future;
+      await flushMicrotasks();
+    });
+  });
 }
 
 Stream<int> createStream() async* {
