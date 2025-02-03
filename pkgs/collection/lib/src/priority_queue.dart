@@ -22,9 +22,9 @@ import 'utils.dart';
 /// always give equal objects the same priority,
 /// otherwise [contains] or [remove] might not work correctly.
 abstract class PriorityQueue<E> {
-  /// Creates an empty [PriorityQueue].
+  /// Creates an empty priority queue.
   ///
-  /// The created [PriorityQueue] is a plain [HeapPriorityQueue].
+  /// The created `PriorityQueue` is a plain [HeapPriorityQueue].
   ///
   /// The [comparison] is a [Comparator] used to compare the priority of
   /// elements. An element that compares as less than another element has
@@ -36,15 +36,16 @@ abstract class PriorityQueue<E> {
   factory PriorityQueue([int Function(E, E)? comparison]) =
       HeapPriorityQueue<E>;
 
-  /// Create a new priority queue.
+  /// Creates a new [HeapPriorityQueue] containing [elements].
   ///
   /// The [comparison] is a [Comparator] used to compare the priority of
   /// elements. An element that compares as less than another element has
   /// a higher priority.
   ///
-  /// If [comparison] is omitted, it defaults to [Comparable.compare]. If this
-  /// is the case, `E` must implement [Comparable], and this is checked at
-  /// runtime for every comparison.
+  /// Unlike [PriorityQueue.new], the [comparison] cannot be omitted.
+  /// If the elements are comparable to each other, use [Comparable.compare]
+  /// as the comparison function, or use a more specialized function
+  /// if one is available.
   factory PriorityQueue.of(
           Iterable<E> elements, int Function(E, E) comparison) =
       HeapPriorityQueue<E>.of;
@@ -164,23 +165,30 @@ abstract class PriorityQueue<E> {
 ///
 /// The elements are kept in a heap structure,
 /// where the element with the highest priority is immediately accessible,
-/// and modifying a single element takes
-/// logarithmic time in the number of elements on average.
+/// and modifying a single element takes, on average,
+/// logarithmic time in the number of elements.
 ///
 /// * The [add] and [removeFirst] operations take amortized logarithmic time,
-///   O(log(n)), but may occasionally take linear time when growing the capacity
-///   of the heap.
-/// * The [addAll] operation works as doing repeated [add] operations.
+///   O(log(*N*)) where *N* is the number of elements, but may occasionally
+///   take linear time when growing the capacity of the heap.
+/// * The [addAll] operation works by doing repeated [add] operations.
+///   May be more efficient in some cases.
 /// * The [first] getter takes constant time, O(1).
 /// * The [clear] and [removeAll] methods also take constant time, O(1).
 /// * The [contains] and [remove] operations may need to search the entire
-///   queue for the elements, taking O(n) time.
-/// * The [toList] operation effectively sorts the elements, taking O(n*log(n))
+///   queue for the elements, taking O(*N*) time.
+/// * The [toList] operation effectively sorts the elements, taking O(n * log(*N*))
 ///   time.
 /// * The [toUnorderedList] operation copies, but does not sort, the elements,
 ///   and is linear, O(n).
-/// * The [toSet] operation effectively adds each element to the new set, taking
-///   an expected O(n*log(n)) time.
+/// * The [toSet] operation effectively adds each element to the new 
+///   [SplayTreeSet], taking an expected O(n * log(*N*)) time.
+///
+/// The [comparison] function is used to order elements, with earlier elements
+/// having higher priority. That is, elements are extracted from the queue
+/// in ascending [comparison] order.
+/// If two elements have the same priority, their ordering is unspecified
+/// and may be arbitary.
 class HeapPriorityQueue<E> implements PriorityQueue<E> {
   /// The comparison being used to compare the priority of elements.
   final int Function(E, E) comparison;
@@ -316,16 +324,14 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
 
   /// Removes all the elements from this queue and returns them.
   ///
-  /// The returned iterable has no specified order.
-  /// The operation does not copy the elements,
-  /// but instead keeps them in the existing heap structure,
-  /// and iterates over that directly.
+  /// The [HeapPriorityQueue] returns a [List] of its elements,
+  /// with no guaranteed order.
   @override
-  Iterable<E> removeAll() {
+  List<E> removeAll() {
     _modificationCount++;
     var result = _queue;
     _queue = <E>[];
-    return result.skip(0); // Hide list nature.
+    return result;
   }
 
   @override
@@ -401,7 +407,7 @@ class HeapPriorityQueue<E> implements PriorityQueue<E> {
       } while (
           position > _queue.length); // Happens if last element is a left child.
     } while (position != 1); // At root again. Happens for right-most element.
-    return -1;
+    return -1;  
   }
 
   /// Place [element] in heap at [index] or above.
