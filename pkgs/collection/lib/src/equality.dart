@@ -325,19 +325,16 @@ class MapEquality<K, V> implements Equality<Map<K, V>> {
     var length = map1.length;
     if (length != map2.length) return false;
     Map<_MapEntry, int> equalElementCounts = HashMap();
-    var values1 = map1.values.iterator;
     for (var key in map1.keys) {
-      var value = (values1..moveNext()).current;
-      var entry = _MapEntry(this, key, value);
-      equalElementCounts.update(entry, _addOne, ifAbsent: _one);
+      var entry = _MapEntry(this, key, map1[key]);
+      var count = equalElementCounts[entry] ?? 0;
+      equalElementCounts[entry] = count + 1;
     }
-    final values2 = map2.values.iterator;
     for (var key in map2.keys) {
-      var value = (values2..moveNext()).current;
-      var entry = _MapEntry(this, key, value);
-      var count = equalElementCounts.update(entry, _subtractOne,
-          ifAbsent: _negativeOne);
-      if (count < 0) return false;
+      var entry = _MapEntry(this, key, map2[key]);
+      var count = equalElementCounts[entry];
+      if (count == null || count == 0) return false;
+      equalElementCounts[entry] = count - 1;
     }
     return true;
   }
@@ -346,11 +343,9 @@ class MapEquality<K, V> implements Equality<Map<K, V>> {
   int hash(Map<K, V>? map) {
     if (map == null) return null.hashCode;
     var hash = 0;
-    var values = map.values.iterator;
     for (var key in map.keys) {
-      var value = (values..moveNext()).current;
       var keyHash = _keyEquality.hash(key);
-      var valueHash = _valueEquality.hash(value);
+      var valueHash = _valueEquality.hash(map[key] as V);
       hash = (hash + 3 * keyHash + 7 * valueHash) & _hashMask;
     }
     hash = (hash + (hash << 3)) & _hashMask;
@@ -494,8 +489,3 @@ class CaseInsensitiveEquality implements Equality<String> {
   @override
   bool isValidKey(Object? object) => object is String;
 }
-
-int _addOne(int i) => i + 1;
-int _subtractOne(int i) => i - 1;
-int _one() => 1;
-int _negativeOne() => -1;
