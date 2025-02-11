@@ -1,9 +1,8 @@
+
 ## 1.20.0-wip
 
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
   `Map.entries`.
-- Optimize equality and hash code for maps by using `update` and a `values`
-  iterator to avoid extra lookups.
 - Address diagnostics from `strict_top_level_inference`.
 
 ## 1.19.1
