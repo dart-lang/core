@@ -31,8 +31,8 @@ class CanonicalizedMap<C, K, V> implements Map<K, V> {
   CanonicalizedMap(
     C Function(K key) canonicalize, {
     bool Function(K key)? isValidKey,
-  }) : _canonicalize = canonicalize,
-       _isValidKeyFn = isValidKey;
+  })  : _canonicalize = canonicalize,
+        _isValidKeyFn = isValidKey;
 
   /// Creates a canonicalized map that is initialized with the key/value pairs
   /// of [other].
@@ -47,8 +47,8 @@ class CanonicalizedMap<C, K, V> implements Map<K, V> {
     Map<K, V> other,
     C Function(K key) canonicalize, {
     bool Function(K key)? isValidKey,
-  }) : _canonicalize = canonicalize,
-       _isValidKeyFn = isValidKey {
+  })  : _canonicalize = canonicalize,
+        _isValidKeyFn = isValidKey {
     addAll(other);
   }
 
@@ -65,8 +65,8 @@ class CanonicalizedMap<C, K, V> implements Map<K, V> {
     Iterable<MapEntry<K, V>> entries,
     C Function(K key) canonicalize, {
     bool Function(K key)? isValidKey,
-  }) : _canonicalize = canonicalize,
-       _isValidKeyFn = isValidKey {
+  })  : _canonicalize = canonicalize,
+        _isValidKeyFn = isValidKey {
     addEntries(entries);
   }
 
@@ -103,10 +103,10 @@ class CanonicalizedMap<C, K, V> implements Map<K, V> {
 
   @override
   void addEntries(Iterable<MapEntry<K, V>> entries) => _base.addEntries(
-    entries.map(
-      (e) => MapEntry(_canonicalize(e.key), MapEntry(e.key, e.value)),
-    ),
-  );
+        entries.map(
+          (e) => MapEntry(_canonicalize(e.key), MapEntry(e.key, e.value)),
+        ),
+      );
 
   @override
   Map<K2, V2> cast<K2, V2>() => _base.cast<K2, V2>();
@@ -208,6 +208,6 @@ class CanonicalizedMap<C, K, V> implements Map<K, V> {
   /// Creates a `Map<C,V>` (with the canonicalized keys).
   /// See [toMap].
   Map<C, V> toMapOfCanonicalKeys() => Map<C, V>.fromEntries(
-    _base.entries.map((e) => MapEntry<C, V>(e.key, e.value.value)),
-  );
+        _base.entries.map((e) => MapEntry<C, V>(e.key, e.value.value)),
+      );
 }
