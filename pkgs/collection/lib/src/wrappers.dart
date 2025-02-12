@@ -503,7 +503,7 @@ class DelegatingMap<K, V> implements Map<K, V> {
 /// getter only shows an [Iterable] view of the keys.
 ///
 /// Note that [lookup] is not supported for this set.
-class MapKeySet<E> extends _DelegatingIterableBase<E>
+final class MapKeySet<E> extends _DelegatingIterableBase<E>
     with UnmodifiableSetMixin<E> {
   final Map<E, dynamic> _baseMap;
 
@@ -597,7 +597,8 @@ class MapKeySet<E> extends _DelegatingIterableBase<E>
 /// `recordSet.add(databaseRecord)` and `recordMap[id]`.
 ///
 /// Effectively, the map will act as a kind of index for the set.
-class MapValueSet<K, V> extends _DelegatingIterableBase<V> implements Set<V> {
+final class MapValueSet<K, V> extends _DelegatingIterableBase<V>
+    implements Set<V> {
   final Map<K, V> _baseMap;
   final K Function(V) _keyForValue;
 

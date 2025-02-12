@@ -8,7 +8,7 @@ import 'unmodifiable_wrappers.dart';
 import 'wrappers.dart';
 
 /// An unmodifiable, empty set which can be constant.
-class EmptyUnmodifiableSet<E> extends IterableBase<E>
+final class EmptyUnmodifiableSet<E> extends IterableBase<E>
     with UnmodifiableSetMixin<E>
     implements UnmodifiableSetView<E> {
   const EmptyUnmodifiableSet();

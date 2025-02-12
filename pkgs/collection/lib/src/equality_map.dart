@@ -8,7 +8,7 @@ import 'equality.dart';
 import 'wrappers.dart';
 
 /// A [Map] whose key equality is determined by an [Equality] object.
-class EqualityMap<K, V> extends DelegatingMap<K, V> {
+final class EqualityMap<K, V> extends DelegatingMap<K, V> {
   /// Creates a map with equality based on [equality].
   EqualityMap(Equality<K> equality)
       : super(LinkedHashMap(
