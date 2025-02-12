@@ -16,7 +16,7 @@ import 'utils.dart';
 ///
 /// More specialized extension methods that only apply to
 /// iterables with specific element types include those of
-/// [IterableComparableExtension] and [IterableNullableExtension].
+/// [IterableComparableExtension].
 extension IterableExtension<T> on Iterable<T> {
   /// Selects [count] elements at random from this iterable.
   ///
