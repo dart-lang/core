@@ -33,6 +33,7 @@ linter:
     - prefer_typing_uninitialized_variables
     - provide_deprecation_message
     - secure_pubspec_urls
+    - strict_top_level_inference
     - type_literal_in_constant_pattern
     - unintended_html_in_doc_comment
     - unnecessary_overrides
