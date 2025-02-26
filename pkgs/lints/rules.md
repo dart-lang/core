@@ -32,6 +32,7 @@
 | [`prefer_typing_uninitialized_variables`](https://dart.dev/lints/prefer_typing_uninitialized_variables) | Prefer typing uninitialized variables and fields. | ✅ |
 | [`provide_deprecation_message`](https://dart.dev/lints/provide_deprecation_message) | Provide a deprecation message, via `@Deprecated("message")`. |  |
 | [`secure_pubspec_urls`](https://dart.dev/lints/secure_pubspec_urls) | Use secure urls in `pubspec.yaml`. |  |
+| [`strict_top_level_inference`](https://dart.dev/lints/strict_top_level_inference) | Specify type annotations. | ✅ |
 | [`type_literal_in_constant_pattern`](https://dart.dev/lints/type_literal_in_constant_pattern) | Don't use constant patterns with type literals. | ✅ |
 | [`unintended_html_in_doc_comment`](https://dart.dev/lints/unintended_html_in_doc_comment) | Use of angle brackets in a doc comment is treated as HTML by Markdown. |  |
 | [`unnecessary_overrides`](https://dart.dev/lints/unnecessary_overrides) | Don't override a method to do a super method invocation with the same parameters. | ✅ |
