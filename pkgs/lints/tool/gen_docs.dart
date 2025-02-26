@@ -48,8 +48,10 @@ void main(List<String> args) async {
   }
 
   // Generate new documentation.
-  var newRulesMarkdownContent =
-      _updateMarkdown(rulesMarkdownContent, rulesJson);
+  var newRulesMarkdownContent = _updateMarkdown(
+    rulesMarkdownContent,
+    rulesJson,
+  );
 
   // If no documentation change, all is up-to-date.
   if (newRulesMarkdownContent == rulesMarkdownContent) {
@@ -59,8 +61,10 @@ void main(List<String> args) async {
 
   /// Documentation has changed.
   if (verifyOnly) {
-    print('${rulesMarkdownFile.path} is not up-to-date (lint tables need to be '
-        'regenerated).');
+    print(
+      '${rulesMarkdownFile.path} is not up-to-date (lint tables need to be '
+      'regenerated).',
+    );
     print('');
     print("Run 'dart tool/gen_docs.dart' to re-generate.");
     exit(1);
@@ -79,8 +83,9 @@ void main(List<String> args) async {
 ///
 /// If [verifyOnly] is `true`, only reads the cached data back from
 /// [rulesCacheFilePath].
-Future<Map<String, Map<String, String>>> _fetchRulesJson(
-    {required bool verifyOnly}) async {
+Future<Map<String, Map<String, String>>> _fetchRulesJson({
+  required bool verifyOnly,
+}) async {
   final rulesJsonFile = _packageRelativeFile(rulesCacheFilePath);
   if (verifyOnly) {
     final rulesJsonText = rulesJsonFile.readAsStringSync();
@@ -91,8 +96,9 @@ Future<Map<String, Map<String, String>>> _fetchRulesJson(
 
   // Re-save [rulesJsonFile] file.
   var newRulesJson = [...rulesJson.values];
-  rulesJsonFile
-      .writeAsStringSync(JsonEncoder.withIndent('  ').convert(newRulesJson));
+  rulesJsonFile.writeAsStringSync(
+    JsonEncoder.withIndent('  ').convert(newRulesJson),
+  );
 
   return rulesJson;
 }
@@ -108,8 +114,8 @@ Map<String, Map<String, String>> _readJson(String rulesJsonText) {
   return {
     for (Map<String, Object?> rule in rulesJson)
       rule['name'] as String: {
-        for (var key in relevantKeys) key: rule[key] as String
-      }
+        for (var key in relevantKeys) key: rule[key] as String,
+      },
   };
 }
 
@@ -121,7 +127,9 @@ Map<String, Map<String, String>> _readJson(String rulesJsonText) {
 /// [rulesJson], based on the list of rules in `lib/core.yaml` and
 /// `lib/recommended.yaml`.
 String _updateMarkdown(
-    String content, Map<String, Map<String, String>> rulesJson) {
+  String content,
+  Map<String, Map<String, String>> rulesJson,
+) {
   for (var ruleSetName in ['core', 'recommended']) {
     var ruleFile = _packageRelativeFile(p.join('lib', '$ruleSetName.yaml'));
     var ruleSet = _parseRules(ruleFile);
@@ -134,7 +142,10 @@ String _updateMarkdown(
       continue;
     }
     content = content.replaceRange(
-        rangeStart, rangeEnd, _createRuleTable(ruleSet, rulesJson));
+      rangeStart,
+      rangeEnd,
+      _createRuleTable(ruleSet, rulesJson),
+    );
   }
   return content;
 }
@@ -148,7 +159,9 @@ List<String> _parseRules(File yamlFile) {
 
 /// Creates markdown source for a table of lint rules.
 String _createRuleTable(
-    List<String> rules, Map<String, Map<String, String>> lintMeta) {
+  List<String> rules,
+  Map<String, Map<String, String>> lintMeta,
+) {
   rules.sort();
 
   final lines = [
@@ -166,15 +179,18 @@ String _createRuleTable(
 /// The row should have the same number of entires as the table format,
 /// and should be on a single line with no newline at the end.
 String _createRuleTableRow(
-    String rule, Map<String, Map<String, String>> lintMeta) {
+  String rule,
+  Map<String, Map<String, String>> lintMeta,
+) {
   final ruleMeta = lintMeta[rule];
   if (ruleMeta == null) {
     stderr.writeln("WARNING: Missing rule information for rule: $rule");
   }
-  final description = (ruleMeta?['description'] ?? '')
-      .replaceAll('\n', ' ')
-      .replaceAll(RegExp(r'\s+'), ' ')
-      .trim();
+  final description =
+      (ruleMeta?['description'] ?? '')
+          .replaceAll('\n', ' ')
+          .replaceAll(RegExp(r'\s+'), ' ')
+          .trim();
   final hasFix = ruleMeta?['fixStatus'] == 'hasFix';
   final fixDesc = hasFix ? '✅' : '';
 
