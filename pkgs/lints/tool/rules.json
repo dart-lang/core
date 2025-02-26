@@ -905,6 +905,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "strict_top_level_inference",
+    "description": "Specify type annotations.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "super_goes_last",
     "description": "Place the `super` call last in a constructor initialization list.",
     "fixStatus": "noFix"
@@ -950,6 +955,11 @@
     "fixStatus": "needsFix"
   },
   {
+    "name": "unnecessary_async",
+    "description": "No await no async.",
+    "fixStatus": "needsFix"
+  },
+  {
     "name": "unnecessary_await_in_return",
     "description": "Unnecessary `await` keyword in return.",
     "fixStatus": "hasFix"
@@ -982,6 +992,11 @@
   {
     "name": "unnecessary_getters_setters",
     "description": "Avoid wrapping fields in getters and setters just to be \"safe\".",
+    "fixStatus": "hasFix"
+  },
+  {
+    "name": "unnecessary_ignore",
+    "description": "Don't ignore a diagnostic code that is not produced.",
     "fixStatus": "hasFix"
   },
   {
@@ -1072,6 +1087,11 @@
   {
     "name": "unnecessary_to_list_in_spreads",
     "description": "Unnecessary `toList()` in spreads.",
+    "fixStatus": "hasFix"
+  },
+  {
+    "name": "unnecessary_underscores",
+    "description": "Unnecessary underscores can be removed.",
     "fixStatus": "hasFix"
   },
   {
