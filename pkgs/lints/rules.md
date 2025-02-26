@@ -98,6 +98,7 @@
 | [`unnecessary_string_interpolations`](https://dart.dev/lints/unnecessary_string_interpolations) | Unnecessary string interpolation. | ✅ |
 | [`unnecessary_this`](https://dart.dev/lints/unnecessary_this) | Don't access members with `this` unless avoiding shadowing. | ✅ |
 | [`unnecessary_to_list_in_spreads`](https://dart.dev/lints/unnecessary_to_list_in_spreads) | Unnecessary `toList()` in spreads. | ✅ |
+| [`unnecessary_underscores`](https://dart.dev/lints/unnecessary_underscores) | Unnecessary underscores can be removed. | ✅ |
 | [`use_function_type_syntax_for_parameters`](https://dart.dev/lints/use_function_type_syntax_for_parameters) | Use generic function type syntax for parameters. | ✅ |
 | [`use_rethrow_when_possible`](https://dart.dev/lints/use_rethrow_when_possible) | Use rethrow to rethrow a caught exception. | ✅ |
 | [`use_super_parameters`](https://dart.dev/lints/use_super_parameters) | Use super-initializer parameters where possible. | ✅ |

@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sdk: [beta] # todo: re-add stable
+        sdk: [dev, beta, stable]
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -36,6 +36,7 @@ jobs:
 
       - run: dart pub get
       - run: dart format --output=none --set-exit-if-changed .
+        if: ${{ matrix.sdk == 'stable' }}
       - run: dart analyze --fatal-infos
       - run: dart tool/validate_lib.dart
       - run: dart tool/gen_docs.dart --verify

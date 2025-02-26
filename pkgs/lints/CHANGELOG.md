@@ -1,3 +1,9 @@
+## 6.0.0-wip
+
+- `recommended`:
+  - added [unnecessary_underscores] (https://github.com/dart-lang/core/issues/856)
+- Require Dart 3.7.
+
 ## 5.1.1
 
 - Updated the SDK lower bound to 3.6.
