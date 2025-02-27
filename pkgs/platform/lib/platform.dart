@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 // Core interfaces & classes.
-export 'src/interface/local_platform.dart';
+export 'src/interface/local_platform.dart'
+    if (dart.library.js_interop) 'src/interface/local_platform_web.dart';
 export 'src/interface/platform.dart';
 export 'src/testing/fake_platform.dart';
