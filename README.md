@@ -9,6 +9,7 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 | Package | Description | Issues | Version |
 | --- | --- | --- | --- |
 | [args](pkgs/args/) | Library for defining parsers for parsing raw command-line arguments into a set of options and values using GNU and POSIX style options. | [![issues](https://img.shields.io/badge/issues-4774bc)][args_issues] | [![pub package](https://img.shields.io/pub/v/args.svg)](https://pub.dev/packages/args) |
+| [assets](pkgs/assets/) | Loading assets using the Dart asset bundle system. | [![issues](https://img.shields.io/badge/issues-4774bc)][assets_issues] | [![pub package](https://img.shields.io/pub/v/assets.svg)](https://pub.dev/packages/assets) |
 | [async](pkgs/async/) | Utility functions and classes related to the 'dart:async' library. | [![issues](https://img.shields.io/badge/issues-4774bc)][async_issues] | [![pub package](https://img.shields.io/pub/v/async.svg)](https://pub.dev/packages/async) |
 | [characters](pkgs/characters/) | String replacement with operations that are Unicode/grapheme cluster aware. | [![issues](https://img.shields.io/badge/issues-4774bc)][characters_issues] | [![pub package](https://img.shields.io/pub/v/characters.svg)](https://pub.dev/packages/characters) |
 | [collection](pkgs/collection/) | Collections and utilities functions and classes related to collections. | [![issues](https://img.shields.io/badge/issues-4774bc)][collection_issues] | [![pub package](https://img.shields.io/pub/v/collection.svg)](https://pub.dev/packages/collection) |
@@ -23,6 +24,7 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 | [typed_data](pkgs/typed_data/) | Utility functions and classes related to the dart:typed_data library. | [![issues](https://img.shields.io/badge/issues-4774bc)][typed_data_issues] | [![pub package](https://img.shields.io/pub/v/typed_data.svg)](https://pub.dev/packages/typed_data) |
 
 [args_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Aargs
+[assets_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Aassets
 [async_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Aasync
 [characters_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Acharacters
 [collection_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Acollection
