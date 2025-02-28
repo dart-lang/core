@@ -1,6 +1,6 @@
 name: assets
 description: Loading assets using the Dart asset bundle system.
-version: 0.0.2
+version: 0.1.0
 repository: https://github.com/dart-lang/core/tree/main/pkgs/assets
 issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Aassets
 
