@@ -1,4 +1,4 @@
-## 1.2.0
+## 1.2.0-wip
 
 * Change `IntX` such that it implements `Comparable<IntX>`. This makes it
   possible for `IntX` (and in turn `Int64` and `Int32`) be used with methods
