@@ -6,6 +6,9 @@
   - added [unnecessary_underscores] (https://github.com/dart-lang/core/issues/856)
 - Require Dart 3.7.
 
+[strict_top_level_inference]: https://dart.dev/lints/strict_top_level_inference
+[unnecessary_underscores]: https://dart.dev/lints/unnecessary_underscores
+
 ## 5.1.1
 
 - Updated the SDK lower bound to 3.6.
