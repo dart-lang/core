@@ -45,9 +45,9 @@ class AssetBuilder {
             .entries,
       ].map(
         (file) => DataAsset(
-          file: file.value,
           name: file.key,
           package: input.packageName,
+          file: file.value,
         ),
       ),
       linkInPackage: linkInPackage,

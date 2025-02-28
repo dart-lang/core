@@ -5,6 +5,6 @@
 import 'package:assets/assets.dart';
 
 Future<void> main() async {
-  final awesome = const StringAsset('testKey');
+  final awesome = const StringAsset(name: 'testKey', package: 'myPackage');
   print('awesome: ${await awesome.load()}');
 }

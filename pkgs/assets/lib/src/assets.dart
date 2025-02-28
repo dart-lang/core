@@ -10,9 +10,10 @@ import 'assets_internal.dart';
 import 'hook/assets_build.dart' show AssetBuilder;
 
 abstract class Asset<T> {
-  final String key;
+  final String package;
+  final String name;
 
-  const Asset(this.key);
+  const Asset({required this.package, required this.name});
 
   /// Load the asset asynchronously.
   Future<T> load();
@@ -22,20 +23,28 @@ abstract class Asset<T> {
 class StringAsset extends Asset<String> {
   static const uniquePrefix = 'StringAsset';
 
-  const StringAsset(@mustBeConst super.key);
+  const StringAsset({
+    @mustBeConst required super.package,
+    @mustBeConst required super.name,
+  });
 
   @override
-  Future<String> load() =>
-      loadAssetString(AssetBuilder.assetNameMangler<StringAsset>(key));
+  Future<String> load() => loadAssetString(
+    'package/$package/${AssetBuilder.assetNameMangler<StringAsset>(name)}',
+  );
 }
 
 @RecordUse()
 class ByteAsset extends Asset<Uint8List> {
   static const uniquePrefix = 'ByteAsset';
 
-  const ByteAsset(@mustBeConst super.key);
+  const ByteAsset({
+    @mustBeConst required super.package,
+    @mustBeConst required super.name,
+  });
 
   @override
-  Future<Uint8List> load() =>
-      loadAssetBytes(AssetBuilder.assetNameMangler<ByteAsset>(key));
+  Future<Uint8List> load() => loadAssetBytes(
+    'package/$package/${AssetBuilder.assetNameMangler<ByteAsset>(name)}',
+  );
 }

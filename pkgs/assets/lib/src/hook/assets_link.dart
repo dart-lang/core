@@ -34,10 +34,10 @@ class AssetLinker {
     final assets = input.assets.data.where(
       (asset) =>
           usedStringSymbols.contains(
-            AssetBuilder.assetNameMangler<StringAsset>(asset.id),
+            AssetBuilder.assetNameMangler<StringAsset>(asset.name),
           ) ||
           usedByteSymbols.contains(
-            AssetBuilder.assetNameMangler<ByteAsset>(asset.id),
+            AssetBuilder.assetNameMangler<ByteAsset>(asset.name),
           ),
     );
     output.assets.data.addAll(assets);
@@ -58,8 +58,8 @@ extension on record_use.RecordedUsages {
       (instancesOf(identifier) ?? [])
           .map(
             (instance) =>
-                // Get the "key" field value from "RecordSymbol"
-                (instance.instanceConstant.fields.values.first
+                // Get the "name" field value from the String/ByteAsset class
+                (instance.instanceConstant.fields['name']
                         as record_use.StringConstant)
                     .value,
           )
