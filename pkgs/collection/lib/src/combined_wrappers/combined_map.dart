@@ -19,7 +19,7 @@ import 'combined_iterable.dart';
 ///
 /// The `length` getter is `O(M)` where M is the total number of entries in
 /// all maps, since it has to remove duplicate entries.
-class CombinedMapView<K, V> extends UnmodifiableMapBase<K, V> {
+final class CombinedMapView<K, V> extends UnmodifiableMapBase<K, V> {
   final Iterable<Map<K, V>> _maps;
 
   /// Create a new combined view of multiple maps.
