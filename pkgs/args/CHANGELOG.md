@@ -1,10 +1,11 @@
-## 2.6.1-wip
+## 2.7.0
 
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will
   depend on key order for the passed `Map`.
 * Fix the repository URL in `pubspec.yaml`.
 * Added option `hideNegatedUsage` to `ArgParser.flag()` allowing a flag to be
   `negatable` without showing it in the usage text.
+* Fixed #101, adding check for mandatory when using `.option()`.
 
 ## 2.6.0
 
