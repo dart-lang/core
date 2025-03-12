@@ -1,4 +1,4 @@
-## 2.6.1
+## 2.7.0
 
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will
   depend on key order for the passed `Map`.
