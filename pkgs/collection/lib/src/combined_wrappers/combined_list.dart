@@ -15,7 +15,7 @@ import 'combined_iterator.dart';
 ///
 /// The index operator (`[]`) and [length] property of a [CombinedListView] are
 /// both `O(lists)` rather than `O(1)`. A [CombinedListView] is unmodifiable.
-class CombinedListView<T> extends ListBase<T>
+final class CombinedListView<T> extends ListBase<T>
     implements UnmodifiableListView<T> {
   static Never _throw() {
     throw UnsupportedError('Cannot modify an unmodifiable List');
