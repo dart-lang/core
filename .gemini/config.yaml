@@ -1,0 +1,19 @@
+# A configuration files for the Gemini Code Assist bot.
+#
+# https://developers.google.com/gemini-code-assist/docs/customize-gemini-behavior-github.
+
+# No poems please.
+have_fun: false
+
+code_review:
+  # Options here are LOW, MEDIUM, HIGH, and CRITICAL. The default is MEDIUM.
+  comment_severity_threshold: MEDIUM
+
+  # Configure the behavior for PR opened events.
+  pull_request_opened:
+    # Keep the default of no help message comments when pull requests are opened.
+    help: false
+    # This is noisy; disable.
+    summary: false
+    # Keep this on for now.
+    code_review: true

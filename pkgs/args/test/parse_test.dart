@@ -621,6 +621,7 @@ void main() {
           var results = parser.parse(['-h']);
           expect(results['help'], true);
           expect(() => results['test'], throwsA(isA<ArgumentError>()));
+          expect(() => results.option('test'), throwsA(isA<ArgumentError>()));
         });
       });
     });

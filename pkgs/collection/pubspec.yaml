@@ -6,8 +6,8 @@ repository: https://github.com/dart-lang/core/tree/main/pkgs/collection
 issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Acollection
 
 topics:
- - collections
- - data-structures
+  - collections
+  - data-structures
 
 environment:
   sdk: ^3.4.0

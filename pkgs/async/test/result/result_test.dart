@@ -281,6 +281,29 @@ void main() {
     expect(called, isTrue);
   });
 
+  test('handle typed binary', () {
+    final result = ErrorResult('error', stack);
+    var called = false;
+    void f(Object error, StackTrace stackTrace) {
+      called = true;
+    }
+
+    result.handle(f);
+    expect(called, isTrue);
+  });
+
+  test('handle typed unary', () {
+    final result = ErrorResult('error', stack);
+    var called = false;
+
+    void f(Object error) {
+      called = true;
+    }
+
+    result.handle(f);
+    expect(called, isTrue);
+  });
+
   test('handle unary and binary', () {
     var result = ErrorResult('error', stack);
     var called = false;

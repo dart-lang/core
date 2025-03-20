@@ -177,6 +177,12 @@ class ArgParser {
   ///
   /// The [allowedHelp] argument is a map from values in [allowed] to
   /// documentation for those values that will be included in [usage].
+  /// The map may include a subset of the allowed values.
+  /// Additional values that are not in [allowed] should be omitted, however
+  /// there is no validation.
+  /// When both [allowed] and [allowedHelp] are passed, only [allowed] will
+  /// be validated at parse time, and only [allowedHelp] will be included in
+  /// usage output.
   ///
   /// The [defaultsTo] argument indicates the value this option will have if the
   /// user doesn't explicitly pass it in (or `null` by default).
@@ -231,6 +237,12 @@ class ArgParser {
   ///
   /// The [allowedHelp] argument is a map from values in [allowed] to
   /// documentation for those values that will be included in [usage].
+  /// The map may include a subset of the allowed values.
+  /// Additional values that are not in [allowed] should be omitted, however
+  /// there is no validation.
+  /// When both [allowed] and [allowedHelp] are passed, only [allowed] will
+  /// be validated at parse time, and only [allowedHelp] will be included in
+  /// usage output.
   ///
   /// The [defaultsTo] argument indicates the values this option will have if
   /// the user doesn't explicitly pass it in (or `[]` by default).

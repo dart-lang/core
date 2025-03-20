@@ -87,15 +87,13 @@ class _Usage {
     _write(0, _abbreviation(option));
     _write(1, '${_longOption(option)}${_mandatoryOption(option)}');
 
-    if (option.help != null) _write(2, option.help!);
+    if (option.help case final help?) _write(2, help);
 
-    if (option.allowedHelp != null) {
-      var allowedNames = option.allowedHelp!.keys.toList();
-      allowedNames.sort();
+    if (option.allowedHelp case final allowedHelp?) {
       _newline();
-      for (var name in allowedNames) {
+      for (var MapEntry(key: name, value: content) in allowedHelp.entries) {
         _write(1, _allowedTitle(option, name));
-        _write(2, option.allowedHelp![name]!);
+        _write(2, content);
       }
       _newline();
     } else if (option.allowed != null) {
