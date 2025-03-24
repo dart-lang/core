@@ -43,32 +43,89 @@ class UrlStyle extends InternalStyle {
     return path.endsWith('://') && rootLength(path) == path.length;
   }
 
+  /// Checks if [path] starts with `"file:"`, case insensitively.
+  static bool _startsWithFileColon(String path) {
+    if (path.length < 5) return false;
+    const f = 0x66;
+    const i = 0x69;
+    const l = 0x6c;
+    const e = 0x65;
+    return path.codeUnitAt(4) == chars.colon &&
+        (path.codeUnitAt(0) | 0x20) == f &&
+        (path.codeUnitAt(1) | 0x20) == i &&
+        (path.codeUnitAt(2) | 0x20) == l &&
+        (path.codeUnitAt(3) | 0x20) == e;
+  }
+
   @override
   int rootLength(String path, {bool withDrive = false}) {
     if (path.isEmpty) return 0;
-    if (isSeparator(path.codeUnitAt(0))) return 1;
+    if (withDrive && _startsWithFileColon(path)) {
+      return _rootAuthorityLength(path, 5, withDrive: true);
+    }
+    final firstChar = path.codeUnitAt(0);
+    if (chars.isLetter(firstChar)) {
+      // Check if starting with scheme or drive letter.
+      for (var i = 1; i < path.length; i++) {
+        final codeUnit = path.codeUnitAt(i);
+        if (chars.isLetter(codeUnit) ||
+            chars.isDigit(codeUnit) ||
+            codeUnit == chars.plus ||
+            codeUnit == chars.minus ||
+            codeUnit == chars.period) {
+          continue;
+        }
+        if (codeUnit == chars.colon) {
+          return _rootAuthorityLength(path, i + 1, withDrive: false);
+        }
+        break;
+      }
+      return 0;
+    }
+    return _rootAuthorityLength(path, 0, withDrive: false);
+  }
 
-    for (var i = 0; i < path.length; i++) {
-      final codeUnit = path.codeUnitAt(i);
-      if (isSeparator(codeUnit)) return 0;
-      if (codeUnit == chars.colon) {
-        if (i == 0) return 0;
-
-        // The root part is up until the next '/', or the full path. Skip ':'
-        // (and '//' if it exists) and search for '/' after that.
-        if (path.startsWith('//', i + 1)) i += 3;
-        final index = path.indexOf('/', i);
-        if (index <= 0) return path.length;
-
-        // file: URLs sometimes consider Windows drive letters part of the root.
-        // See https://url.spec.whatwg.org/#file-slash-state.
-        if (!withDrive || path.length < index + 3) return index;
-        if (!path.startsWith('file://')) return index;
-        return driveLetterEnd(path, index + 1) ?? index;
+  /// Checks for authority part at start or after scheme.
+  ///
+  /// If found, includes this in the root length.
+  ///
+  /// Includes an authority starting at `//` until the next `/`, `?` or `#`,
+  /// or the end of the path.
+  int _rootAuthorityLength(String path, int index, {required bool withDrive}) {
+    if (path.startsWith('//', index)) {
+      index += 2;
+      while (true) {
+        if (index == path.length) return index;
+        final codeUnit = path.codeUnitAt(index);
+        if (codeUnit == chars.question || codeUnit == chars.hash) return index;
+        index++;
+        if (isSeparator(codeUnit)) break;
       }
     }
+    if (withDrive) return _withDrive(path, index);
+    return index;
+  }
 
-    return 0;
+  /// Checks for `[a-z]:/`, or `[a-z]:` when followed by `?` or `#` or nothing.
+  /// 
+  /// If found, includes this in the root length.
+  int _withDrive(String path, int index) {
+    final afterDrive = index + 2;
+    if (path.length < afterDrive ||
+        !chars.isLetter(path.codeUnitAt(index)) ||
+        path.codeUnitAt(index + 1) != chars.colon) {
+      return index;
+    }
+    if (path.length == afterDrive) return afterDrive;
+    final nextChar = path.codeUnitAt(afterDrive);
+    if (nextChar == chars.slash) {
+      // Include following slash in root.
+      return afterDrive + 1;
+    }
+    if (nextChar == chars.question || nextChar == chars.hash) {
+      return afterDrive;
+    }
+    return index;
   }
 
   @override

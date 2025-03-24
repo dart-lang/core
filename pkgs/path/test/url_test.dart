@@ -167,6 +167,19 @@ void main() {
     expect(context.isRelative(r'package:foo/bar.dart'), false);
     expect(context.isRelative('foo/bar:baz/qux'), true);
     expect(context.isRelative(r'\\a'), true);
+    expect(context.isRelative('/c:/a'), false);
+    expect(context.isRelative('file:///c:/a'), false);
+    expect(context.isRelative('/c:/'), false);
+    expect(context.isRelative('file:///c:/'), false);
+    expect(context.isRelative('a2:a'), false);
+    expect(context.isRelative('a+:a'), false);
+    expect(context.isRelative('a-:a'), false);
+    expect(context.isRelative('a.:a'), false);
+    expect(context.isRelative('2:a'), true);
+    expect(context.isRelative('+:a'), true);
+    expect(context.isRelative('-:a'), true);
+    expect(context.isRelative('.:a'), true);
+    expect(context.isRelative(':a/'), true);
   });
 
   test('isRootRelative', () {
@@ -192,6 +205,11 @@ void main() {
     expect(context.isRootRelative(r'package:foo/bar.dart'), false);
     expect(context.isRootRelative('foo/bar:baz/qux'), false);
     expect(context.isRootRelative(r'\\a'), false);
+    expect(context.isRootRelative('/c:/a'), true);
+    expect(context.isRootRelative('file:///c:/a'), false);
+    expect(context.isRootRelative('/c:/'), true);
+    expect(context.isRootRelative('file:///c:/'), false);
+    expect(context.isRootRelative('//c:/'), false);
   });
 
   group('join', () {
@@ -232,6 +250,10 @@ void main() {
           context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
               'l', 'm', 'n', 'o', 'p'),
           'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p');
+
+      for (final absolute in ['a:/', '/a', '//a']) {
+        expect(context.join('a', absolute), absolute);
+      }
     });
 
     test('does not add separator if a part ends in one', () {
