@@ -372,18 +372,22 @@ class Context {
   /// Canonicalizes [path].
   ///
   /// This is guaranteed to return the same path for two different input paths
-  /// if and only if both input paths point to the same location. Unlike
+  /// only if both input paths point to the same location. Unlike
   /// [normalize], it returns absolute paths when possible and canonicalizes
-  /// ASCII case on Windows.
+  /// ASCII case on Windows, and scheme and authority case for URLs (but does
+  /// not normalize or canonicalize `%`-escapes.)
   ///
   /// Note that this does not resolve symlinks.
   ///
   /// If you want a map that uses path keys, it's probably more efficient to use
   /// a Map with [equals] and [hash] specified as the callbacks to use for keys
   /// than it is to canonicalize every key.
+  ///
   String canonicalize(String path) {
     path = absolute(path);
-    if (style != Style.windows && !_needsNormalization(path)) return path;
+    // Windows and URL styles need to case-canonicalize, even if it doesn't
+    // need to normalize anything.
+    if (style == Style.posix && !_needsNormalization(path)) return path;
 
     final parsed = _parse(path);
     parsed.normalize(canonicalize: true);
@@ -395,7 +399,7 @@ class Context {
   ///
   /// Note that this is *not* guaranteed to return the same result for two
   /// equivalent input paths. For that, see [canonicalize]. Or, if you're using
-  /// paths as map keys use [equals] and [hash] as the key callbacks.
+  /// paths as map keys, use [equals] and [hash] as the key callbacks.
   ///
   ///     context.normalize('path/./to/..//file.text'); // -> 'path/file.txt'
   String normalize(String path) {
@@ -408,68 +412,76 @@ class Context {
 
   /// Returns whether [path] needs to be normalized.
   bool _needsNormalization(String path) {
-    var start = 0;
-    final codeUnits = path.codeUnits;
-    int? previousPrevious;
-    int? previous;
+    // Empty paths are normalized to ".".
+    if (path.isEmpty) return true;
+
+    /// At start, no previous separator.
+    const stateStart = 0;
+
+    /// Previous character was a separator.
+    const stateSeparator = 1;
+
+    /// Added to state for each `.` seen.
+    const stateDotCount = 2;
+
+    /// Path segment that contains anything other than nothing, `.` or `..`.
+    ///
+    /// Includes any value at or above this one.
+    const stateNotDots = 6;
+
+    /// Current state of the last few characters.
+    ///
+    /// Seeing a separator resets to [stateSeparator].
+    /// Seeing a `.` adds [stateDotCount].
+    /// Seeing any non-separator or more than two dots will
+    /// bring the value above [stateNotDots].
+    /// (The separator may be optional at the start, seeing one is fine,
+    /// and seeing dots will start counting.)
+    /// (That is, `/` has value 1, `/.` value 3, ``/..` value 5, and anything
+    /// else is 6 or above, except at the very start where empty path, `.`
+    /// and `..` have values 0, 2 and 4.)
+    var state = stateStart;
 
     // Skip past the root before we start looking for snippets that need
     // normalization. We want to normalize "//", but not when it's part of
     // "http://".
-    final root = style.rootLength(path);
-    if (root != 0) {
-      start = root;
-      previous = chars.slash;
-
+    final start = style.rootLength(path);
+    if (start != 0) {
+      if (style.isSeparator(path.codeUnitAt(start - 1))) {
+        state = stateSeparator;
+      }
       // On Windows, the root still needs to be normalized if it contains a
       // forward slash.
       if (style == Style.windows) {
-        for (var i = 0; i < root; i++) {
-          if (codeUnits[i] == chars.slash) return true;
+        for (var i = 0; i < start; i++) {
+          if (path.codeUnitAt(i) == chars.slash) return true;
         }
       }
     }
 
-    for (var i = start; i < codeUnits.length; i++) {
-      final codeUnit = codeUnits[i];
+    for (var i = start; i < path.length; i++) {
+      final codeUnit = path.codeUnitAt(i);
       if (style.isSeparator(codeUnit)) {
+        // If ending empty, `.` or `..` path segment.
+        if (state >= stateSeparator && state < stateNotDots) return true;
         // Forward slashes in Windows paths are normalized to backslashes.
         if (style == Style.windows && codeUnit == chars.slash) return true;
-
-        // Multiple separators are normalized to single separators.
-        if (previous != null && style.isSeparator(previous)) return true;
-
-        // Single dots and double dots are normalized to directory traversals.
-        //
-        // This can return false positives for ".../", but that's unlikely
-        // enough that it's probably not going to cause performance issues.
-        if (previous == chars.period &&
-            (previousPrevious == null ||
-                previousPrevious == chars.period ||
-                style.isSeparator(previousPrevious))) {
+        state = stateSeparator;
+      } else if (codeUnit == chars.period) {
+        state += stateDotCount;
+      } else {
+        state = stateNotDots;
+        if (style == Style.url &&
+            (codeUnit == chars.question || codeUnit == chars.hash)) {
+          // Normalize away `?` query parts and `#` fragment parts in URL
+          // styled paths.
           return true;
         }
       }
-
-      previousPrevious = previous;
-      previous = codeUnit;
     }
 
-    // Empty paths are normalized to ".".
-    if (previous == null) return true;
-
-    // Trailing separators are removed.
-    if (style.isSeparator(previous)) return true;
-
-    // Single dots and double dots are normalized to directory traversals.
-    if (previous == chars.period &&
-        (previousPrevious == null ||
-            style.isSeparator(previousPrevious) ||
-            previousPrevious == chars.period)) {
-      return true;
-    }
-
-    return false;
+    // Otherwise only normalize if there are separators and single/double dots.
+    return state >= stateSeparator && state < stateNotDots;
   }
 
   /// Attempts to convert [path] to an equivalent relative path relative to
@@ -1020,7 +1032,9 @@ class Context {
   /// Returns the path represented by [uri], which may be a [String] or a [Uri].
   ///
   /// For POSIX and Windows styles, [uri] must be a `file:` URI. For the URL
-  /// style, this will just convert [uri] to a string.
+  /// style, this will just convert [uri] to a string, but if the input was
+  /// a string, it will be parsed and normalized as a [Uri] first.
+  ///
   ///
   ///     // POSIX
   ///     context.fromUri('file:///path/to/foo')
@@ -1036,7 +1050,11 @@ class Context {
   ///
   /// If [uri] is relative, a relative path will be returned.
   ///
+  ///     // POSIX
   ///     path.fromUri('path/to/foo'); // -> 'path/to/foo'
+  ///
+  ///     // Windows
+  ///     path.fromUri('/C:/foo'); // -> r'C:\foo`
   String fromUri(Object? uri) => style.pathFromUri(_parseUri(uri!));
 
   /// Returns the URI that represents [path].

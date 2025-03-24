@@ -43,94 +43,72 @@ class UrlStyle extends InternalStyle {
     return path.endsWith('://') && rootLength(path) == path.length;
   }
 
-  /// Checks if [path] starts with `"file:"`, case insensitively.
-  static bool _startsWithFileColon(String path) {
-    if (path.length < 5) return false;
-    const f = 0x66;
-    const i = 0x69;
-    const l = 0x6c;
-    const e = 0x65;
-    return path.codeUnitAt(4) == chars.colon &&
-        (path.codeUnitAt(0) | 0x20) == f &&
-        (path.codeUnitAt(1) | 0x20) == i &&
-        (path.codeUnitAt(2) | 0x20) == l &&
-        (path.codeUnitAt(3) | 0x20) == e;
-  }
-
   @override
   int rootLength(String path, {bool withDrive = false}) {
     if (path.isEmpty) return 0;
-    if (withDrive && _startsWithFileColon(path)) {
-      return _rootAuthorityLength(path, 5, withDrive: true);
+    // Find scheme. Recognize `file:` scheme specifically,
+    // since it is required for `withDrive` to apply.
+    final int afterScheme;
+    if (withDrive && startsWithFileColon(path)) {
+      // Check for authority, then drive letter.
+      const fileSchemeLength = 'file:'.length;
+      afterScheme = fileSchemeLength;
+    } else {
+      withDrive = false;
+      afterScheme = endOfScheme(path, 0);
     }
-    final firstChar = path.codeUnitAt(0);
-    if (chars.isLetter(firstChar)) {
-      // Check if starting with scheme or drive letter.
-      for (var i = 1; i < path.length; i++) {
-        final codeUnit = path.codeUnitAt(i);
-        if (chars.isLetter(codeUnit) ||
-            chars.isDigit(codeUnit) ||
-            codeUnit == chars.plus ||
-            codeUnit == chars.minus ||
-            codeUnit == chars.period) {
-          continue;
-        }
-        if (codeUnit == chars.colon) {
-          return _rootAuthorityLength(path, i + 1, withDrive: false);
-        }
-        break;
-      }
-      return 0;
-    }
-    return _rootAuthorityLength(path, 0, withDrive: false);
-  }
+    // If there is a scheme, include authority if any.
+    // If no scheme, a leading `//` is considered part of a path, unlike
+    // how a URI would parse it. (For backwards compatibility)
+    final afterAuthority =
+        afterScheme > 0 ? authorityEnd(path, afterScheme) : 0;
 
-  /// Checks for authority part at start or after scheme.
-  ///
-  /// If found, includes this in the root length.
-  ///
-  /// Includes an authority starting at `//` until the next `/`, `?` or `#`,
-  /// or the end of the path.
-  int _rootAuthorityLength(String path, int index, {required bool withDrive}) {
-    if (path.startsWith('//', index)) {
-      index += 2;
-      while (true) {
-        if (index == path.length) return index;
-        final codeUnit = path.codeUnitAt(index);
-        if (codeUnit == chars.question || codeUnit == chars.hash) return index;
-        index++;
-        if (isSeparator(codeUnit)) break;
-      }
-    }
-    if (withDrive) return _withDrive(path, index);
-    return index;
-  }
+    // If no scheme and no authority, include leading `/` in root.
+    // If scheme or authority, do not include a first `/` of the path in root.
+    // If scheme and no authority, include first segment of path in root,
+    //    but do not look for drive letters (even if scheme is `file:`).
+    // If `file:` scheme and authority (`//` or `//...`), and `withDrive`,
+    //    look for drive letter at start of path (after first slash).
 
-  /// Checks for `[a-z]:/`, or `[a-z]:` when followed by `?` or `#` or nothing.
-  /// 
-  /// If found, includes this in the root length.
-  int _withDrive(String path, int index) {
-    final afterDrive = index + 2;
-    if (path.length < afterDrive ||
-        !chars.isLetter(path.codeUnitAt(index)) ||
-        path.codeUnitAt(index + 1) != chars.colon) {
-      return index;
+    if (afterAuthority == path.length) return afterAuthority;
+    final nextChar = path.codeUnitAt(afterAuthority);
+    final int afterPathRoot;
+    if (isSeparator(nextChar)) {
+      afterPathRoot = afterAuthority + 1;
+      if (withDrive && afterAuthority > afterScheme) {
+        final afterDriveLetter = driveLetterEnd(path, afterPathRoot);
+        if (afterDriveLetter > afterPathRoot) return afterDriveLetter;
+      }
+      if (afterAuthority == 0) return afterPathRoot;
+      return afterAuthority;
     }
-    if (path.length == afterDrive) return afterDrive;
-    final nextChar = path.codeUnitAt(afterDrive);
-    if (nextChar == chars.slash) {
-      // Include following slash in root.
-      return afterDrive + 1;
+    if (afterAuthority > afterScheme) {
+      // Has authority, not followed by `/`, so empty path.
+      // Character after authority must be `#` or `?`, or end of path.
+      return afterAuthority;
     }
-    if (nextChar == chars.question || nextChar == chars.hash) {
-      return afterDrive;
+    if (afterScheme > 0) {
+      // If scheme, no authority, no leading `/` in path, include next segment
+      // in root (and not `/`).
+      var char = nextChar;
+      var i = afterAuthority;
+      while (
+          char != chars.hash && char != chars.question && char != chars.slash) {
+        i++;
+        if (i == path.length) break;
+        char = path.codeUnitAt(i);
+      }
+      return i; // Never checks for drive letter after non-authority.
     }
-    return index;
+    // No scheme, no authority, path does not start with `/`.
+    return 0;
   }
 
   @override
   bool isRootRelative(String path) =>
-      path.isNotEmpty && isSeparator(path.codeUnitAt(0));
+      path.isNotEmpty &&
+      isSeparator(path.codeUnitAt(0)) &&
+      (path.length < 2 || !isSeparator(path.codeUnitAt(1)));
 
   @override
   String? getRelativeRoot(String path) => isRootRelative(path) ? '/' : null;

@@ -32,12 +32,21 @@ abstract class InternalStyle extends Style {
   /// "usr", an additional "/" is needed (making "file:///usr").
   bool needsSeparator(String path);
 
-  /// Returns the number of characters of the root part.
+  /// The number of characters of the root part.
   ///
   /// Returns 0 if the path is relative and 1 if the path is root-relative.
   ///
   /// If [withDrive] is `true`, this should include the drive letter for `file:`
   /// URLs. Non-URL styles may ignore the parameter.
+  ///
+  /// For URL style, the root includes any URI scheme and host/authority part.
+  /// If either of those are included, a leading `/` of the path is not
+  /// included unless it's followed by a drive letter. A slash after a
+  /// drive letter is included. If a URL style path starts with a single `/`,
+  /// it is included in the root.
+  /// If a URL style path has a scheme, but not authority, and the path
+  /// does not start with a `/`, the first path segment of the path is 
+  /// considered part of the root.
   int rootLength(String path, {bool withDrive = false});
 
   /// Gets the root prefix of [path] if path is absolute. If [path] is relative,
