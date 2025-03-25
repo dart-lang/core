@@ -45,7 +45,7 @@ abstract class InternalStyle extends Style {
   /// drive letter is included. If a URL style path starts with a single `/`,
   /// it is included in the root.
   /// If a URL style path has a scheme, but not authority, and the path
-  /// does not start with a `/`, the first path segment of the path is 
+  /// does not start with a `/`, the first path segment of the path is
   /// considered part of the root.
   int rootLength(String path, {bool withDrive = false});
 
