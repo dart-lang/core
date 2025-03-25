@@ -1,5 +1,12 @@
 ## 1.9.2-wip
 
+- Make `Url` style better at recognizing schemes and authorities.
+  Only consider a path as being a schemed URL if it starts with a
+  valid scheme.
+  Recognize `#` and `?` as ending an authority or path. Remove
+  queries and fragments when when normalizing, include them 
+  in/as the last segment when splitting.
+
 ## 1.9.1
 
 - Require Dart 3.4

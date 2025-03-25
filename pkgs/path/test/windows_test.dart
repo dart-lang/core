@@ -880,9 +880,9 @@ void main() {
   });
 
   test('driveLetterEnd', () {
-    expect(driveLetterEnd('', 0), null);
-    expect(driveLetterEnd('foo.dart', 0), null);
-    expect(driveLetterEnd('@', 0), null);
+    expect(driveLetterEnd('', 0), 0);
+    expect(driveLetterEnd('foo.dart', 0), 0);
+    expect(driveLetterEnd('@', 0), 0);
 
     expect(driveLetterEnd('c:', 0), 2);
 
@@ -899,8 +899,8 @@ void main() {
     expect(driveLetterEnd('c%3A/a', 0), 5);
 
     // non-drive letter
-    expect(driveLetterEnd('ab:/c', 0), null);
-    expect(driveLetterEnd('ab%3a/c', 0), null);
-    expect(driveLetterEnd('ab%3A/c', 0), null);
+    expect(driveLetterEnd('ab:/c', 0), 0);
+    expect(driveLetterEnd('ab%3a/c', 0), 0);
+    expect(driveLetterEnd('ab%3A/c', 0), 0);
   });
 }

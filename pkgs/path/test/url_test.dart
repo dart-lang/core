@@ -30,17 +30,50 @@ void main() {
     expect(context.rootPrefix(''), '');
     expect(context.rootPrefix('a'), '');
     expect(context.rootPrefix('a/b'), '');
+    expect(context.rootPrefix('/'), '/');
+    expect(context.rootPrefix('//'), '/');
+    expect(context.rootPrefix('///'), '/');
+    expect(context.rootPrefix('/a'), '/');
+    expect(context.rootPrefix('?/a'), '');
+    expect(context.rootPrefix('#/a'), '');
     expect(context.rootPrefix('https://dart.dev/a/c'), 'https://dart.dev');
+    expect(context.rootPrefix('https://dart.dev?a/c'), 'https://dart.dev');
+    expect(context.rootPrefix('https://dart.dev#a/c'), 'https://dart.dev');
     expect(context.rootPrefix('file:///a/c'), 'file://');
     expect(context.rootPrefix('/a/c'), '/');
     expect(context.rootPrefix('https://dart.dev/'), 'https://dart.dev');
     expect(context.rootPrefix('file:///'), 'file://');
-    expect(context.rootPrefix('https://dart.dev'), 'https://dart.dev');
     expect(context.rootPrefix('file://'), 'file://');
-    expect(context.rootPrefix('/'), '/');
+    expect(context.rootPrefix('file:/'), 'file:');
+    expect(context.rootPrefix('file:'), 'file:');
+    expect(context.rootPrefix('file:foo'), 'file:foo');
+    expect(context.rootPrefix('file:foo/'), 'file:foo');
+    expect(context.rootPrefix('https://dart.dev'), 'https://dart.dev');
     expect(context.rootPrefix('foo/bar://'), '');
     expect(context.rootPrefix('package:foo/bar.dart'), 'package:foo');
-    expect(context.rootPrefix('foo/bar:baz/qux'), '');
+    expect(context.rootPrefix('a+-.09:baz/qux'), 'a+-.09:baz');
+    expect(context.rootPrefix('A+-.09:/baz/qux'), 'A+-.09:');
+    expect(context.rootPrefix('+a:baz/qux'), '');
+    expect(context.rootPrefix('-a:baz/qux'), '');
+    expect(context.rootPrefix('.a:baz/qux'), '');
+    expect(context.rootPrefix('0a:baz/qux'), '');
+    expect(context.rootPrefix('9a:baz/qux'), '');
+
+    // Do not include fragments or queries.
+    expect(context.rootPrefix('file:#a'), 'file:');
+    expect(context.rootPrefix('file:?a'), 'file:');
+    expect(context.rootPrefix('file:foo#a'), 'file:foo');
+    expect(context.rootPrefix('file:foo?a'), 'file:foo');
+    expect(context.rootPrefix('file:#///'), 'file:');
+    expect(context.rootPrefix('file:?///'), 'file:');
+    expect(context.rootPrefix('file:/#a'), 'file:');
+    expect(context.rootPrefix('file:/?a'), 'file:');
+    expect(context.rootPrefix('file://#a'), 'file://');
+    expect(context.rootPrefix('file://?a'), 'file://');
+    expect(context.rootPrefix('file://example.com#a'), 'file://example.com');
+    expect(context.rootPrefix('file://example.com?a'), 'file://example.com');
+    expect(context.rootPrefix('foo#bar:baz/qux'), '');
+    expect(context.rootPrefix('foo?bar:baz/qux'), '');
   });
 
   test('dirname', () {
@@ -167,6 +200,19 @@ void main() {
     expect(context.isRelative(r'package:foo/bar.dart'), false);
     expect(context.isRelative('foo/bar:baz/qux'), true);
     expect(context.isRelative(r'\\a'), true);
+    expect(context.isRelative('/c:/a'), false);
+    expect(context.isRelative('file:///c:/a'), false);
+    expect(context.isRelative('/c:/'), false);
+    expect(context.isRelative('file:///c:/'), false);
+    expect(context.isRelative('a2:a'), false);
+    expect(context.isRelative('a+:a'), false);
+    expect(context.isRelative('a-:a'), false);
+    expect(context.isRelative('a.:a'), false);
+    expect(context.isRelative('2:a'), true);
+    expect(context.isRelative('+:a'), true);
+    expect(context.isRelative('-:a'), true);
+    expect(context.isRelative('.:a'), true);
+    expect(context.isRelative(':a/'), true);
   });
 
   test('isRootRelative', () {
@@ -192,6 +238,11 @@ void main() {
     expect(context.isRootRelative(r'package:foo/bar.dart'), false);
     expect(context.isRootRelative('foo/bar:baz/qux'), false);
     expect(context.isRootRelative(r'\\a'), false);
+    expect(context.isRootRelative('/c:/a'), true);
+    expect(context.isRootRelative('file:///c:/a'), false);
+    expect(context.isRootRelative('/c:/'), true);
+    expect(context.isRootRelative('file:///c:/'), false);
+    expect(context.isRootRelative('//c:/'), false);
   });
 
   group('join', () {
@@ -232,6 +283,10 @@ void main() {
           context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
               'l', 'm', 'n', 'o', 'p'),
           'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p');
+
+      for (final absolute in ['a:/', '/a', '//a']) {
+        expect(context.join('a', absolute), absolute);
+      }
     });
 
     test('does not add separator if a part ends in one', () {
@@ -392,7 +447,6 @@ void main() {
       expect(context.split('foo/'), equals(['foo']));
       expect(context.split('https://dart.dev//'), equals(['https://dart.dev']));
       expect(context.split('file:////'), equals(['file://']));
-      expect(context.split('//'), equals(['/']));
     });
 
     test('includes the root for absolute paths', () {
@@ -406,7 +460,22 @@ void main() {
       expect(context.split('file:///'), equals(['file://']));
       expect(context.split('file://'), equals(['file://']));
       expect(context.split('/'), equals(['/']));
+      expect(context.split('//'), equals(['/']));
+      expect(context.split('//a'), equals(['/', 'a']));
+      expect(context.split('//a/'), equals(['/', 'a']));
+      expect(context.split('//a/b'), equals(['/', 'a', 'b']));
     });
+  });
+
+  test('includes all queries and fragments in last segment', () {
+    expect(context.split('https://dart.dev/foo/bar/baz#42/x'),
+        equals(['https://dart.dev', 'foo', 'bar', 'baz#42/x']));
+    expect(context.split('file:///foo/bar/baz?42/x'),
+        equals(['file://', 'foo', 'bar', 'baz?42/x']));
+    expect(context.split('https://dart.dev/foo/bar/baz/#42/x'),
+        equals(['https://dart.dev', 'foo', 'bar', 'baz', '#42/x']));
+    expect(context.split('file:///foo/bar/baz/?42/x'),
+        equals(['file://', 'foo', 'bar', 'baz', '?42/x']));
   });
 
   group('normalize', () {
@@ -426,6 +495,10 @@ void main() {
       expect(context.normalize(r'\\'), r'\\');
       expect(context.normalize('a/./\xc5\u0bf8-;\u{1f085}\u{00}/c/d/../'),
           'a/\xc5\u0bf8-;\u{1f085}\u{00}/c');
+      expect(context.normalize(r'a#b'), r'a');
+      expect(context.normalize(r'a/b#c/d'), r'a/b');
+      expect(context.normalize(r'a?b'), r'a');
+      expect(context.normalize(r'a/b?c/d#e/f'), r'a/b');
     });
 
     test('collapses redundant separators', () {
@@ -482,6 +555,21 @@ void main() {
       expect(context.normalize('a/bc/../d'), 'a/d');
     });
 
+    test('eliminates queries and fragments', () {
+      expect(context.normalize('r/a/../b?c/.././/d'), 'r/b');
+      expect(context.normalize('r/a/../b#c/.././/d'), 'r/b');
+      expect(context.normalize('scheme:r/a/../b?c/.././/d'), 'scheme:r/b');
+      expect(context.normalize('scheme:r/a/../b#c/.././/d'), 'scheme:r/b');
+      expect(context.normalize('scheme://auth/r/a/../b?c/.././/d'),
+          'scheme://auth/r/b');
+      expect(context.normalize('scheme://auth/r/a/../b#c/.././/d'),
+          'scheme://auth/r/b');
+      expect(
+          context.normalize('file:///c:/r/a/../b?c/.././/d'), 'file:///c:/r/b');
+      expect(
+          context.normalize('file:///c:/r/a/../b#c/.././/d'), 'file:///c:/r/b');
+    });
+
     test('does not walk before root on absolute paths', () {
       expect(context.normalize('..'), '..');
       expect(context.normalize('../'), '..');
@@ -514,14 +602,48 @@ void main() {
       expect(context.normalize('a/b///'), 'a/b');
     });
 
-    test('when canonicalizing', () {
-      expect(context.canonicalize('.'), 'https://dart.dev/root/path');
-      expect(context.canonicalize('foo/bar'),
-          'https://dart.dev/root/path/foo/bar');
-      expect(context.canonicalize('FoO'), 'https://dart.dev/root/path/FoO');
-      expect(context.canonicalize('/foo'), 'https://dart.dev/foo');
-      expect(context.canonicalize('http://google.com/foo'),
-          'http://google.com/foo');
+    group('when canonicalizing', () {
+      test('adds scheme', () {
+        expect(context.canonicalize('.'), 'https://dart.dev/root/path');
+        expect(context.canonicalize('foo/bar'),
+            'https://dart.dev/root/path/foo/bar');
+        expect(context.canonicalize('FoO'), 'https://dart.dev/root/path/FoO');
+        expect(context.canonicalize('/foo'), 'https://dart.dev/foo');
+        expect(context.canonicalize('http://google.com/foo'),
+            'http://google.com/foo');
+      });
+
+      test('eliminates queries and fragments', () {
+        // Adds scheme and path if relative.
+        expect(context.canonicalize('r/a/../b?c/.././/d'),
+            'https://dart.dev/root/path/r/b');
+        expect(context.canonicalize('r/a/../b#c/.././/d'),
+            'https://dart.dev/root/path/r/b');
+        // Adds scheme if root relative.
+        expect(context.canonicalize('/r/a/../b?c/.././/d'),
+            'https://dart.dev/r/b');
+        expect(context.canonicalize('/r/a/../b#c/.././/d'),
+            'https://dart.dev/r/b');
+        expect(context.canonicalize('scheme:r/a/../b?c/.././/d'), 'scheme:r/b');
+        expect(context.canonicalize('scheme:r/a/../b#c/.././/d'), 'scheme:r/b');
+        expect(context.canonicalize('scheme://auth/r/a/../b?c/.././/d'),
+            'scheme://auth/r/b');
+        expect(context.canonicalize('scheme://auth/r/a/../b#c/.././/d'),
+            'scheme://auth/r/b');
+        expect(context.canonicalize('file:///c:/r/a/../b?c/.././/d'),
+            'file:///c:/r/b');
+        expect(context.canonicalize('file:///c:/r/a/../b#c/.././/d'),
+            'file:///c:/r/b');
+      });
+
+      test('case-canonicalizes scheme and authority', () {
+        expect(context.canonicalize('HTTPS://EXAMPLE.COM/FILE.EXT'),
+            'https://example.com/FILE.EXT');
+        expect(
+            context.canonicalize('FILE:///C:/FILE.EXT'), 'file:///c:/FILE.EXT');
+        expect(context.canonicalize('PACKAGE:FOO//FILE.EXT'),
+            'package:foo/FILE.EXT');
+      });
     });
   });
 
