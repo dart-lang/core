@@ -16,7 +16,7 @@ bool isNumeric(int char) => char ^ chars.zero <= 9;
 bool isDriveLetter(String path, int index) =>
     driveLetterEnd(path, index) != index;
 
-/// Index after drive letter starting at [index], or [index] if none.path
+/// Index after drive letter starting at [index], or [index] if none.
 ///
 /// The [path] is a URI-formed path.
 /// A valid drive letter must be followed by a colon and then either a `/`,

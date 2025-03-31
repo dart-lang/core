@@ -415,31 +415,31 @@ class Context {
     // Empty paths are normalized to ".".
     if (path.isEmpty) return true;
 
-    /// At start, no previous separator.
+    // At start, no previous separator.
     const stateStart = 0;
 
-    /// Previous character was a separator.
+    // Previous character was a separator.
     const stateSeparator = 1;
 
-    /// Added to state for each `.` seen.
+    // Added to state for each `.` seen.
     const stateDotCount = 2;
 
-    /// Path segment that contains anything other than nothing, `.` or `..`.
-    ///
-    /// Includes any value at or above this one.
+    // Path segment that contains anything other than nothing, `.` or `..`.
+    //
+    // Includes any value at or above this one.
     const stateNotDots = 6;
 
-    /// Current state of the last few characters.
-    ///
-    /// Seeing a separator resets to [stateSeparator].
-    /// Seeing a `.` adds [stateDotCount].
-    /// Seeing any non-separator or more than two dots will
-    /// bring the value above [stateNotDots].
-    /// (The separator may be optional at the start, seeing one is fine,
-    /// and seeing dots will start counting.)
-    /// (That is, `/` has value 1, `/.` value 3, ``/..` value 5, and anything
-    /// else is 6 or above, except at the very start where empty path, `.`
-    /// and `..` have values 0, 2 and 4.)
+    // Current state of the last few characters.
+    //
+    // Seeing a separator resets to [stateSeparator].
+    // Seeing a `.` adds [stateDotCount].
+    // Seeing any non-separator or more than two dots will
+    // bring the value above [stateNotDots].
+    // (The separator may be optional at the start, seeing one is fine,
+    // and seeing dots will start counting.)
+    // (That is, `/` has value 1, `/.` value 3, ``/..` value 5, and anything
+    // else is 6 or above, except at the very start where empty path, `.`
+    // and `..` have values 0, 2 and 4.)
     var state = stateStart;
 
     // Skip past the root before we start looking for snippets that need

@@ -37,7 +37,7 @@ class ParsedPath {
   /// one.
   String extension([int level = 1]) => _splitExtension(level)[1];
 
-  /// `true` if this is an absolute path.
+  /// Whether this is an absolute path.
   bool get isAbsolute => root != null;
 
   factory ParsedPath.parse(String path, InternalStyle style) {
