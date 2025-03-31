@@ -13,7 +13,7 @@ import 'unmodifiable_wrappers.dart';
 /// If an element is in multiple sets and the outer set is ordered, the version
 /// in the earliest inner set is preferred. Component sets are assumed to use
 /// `==` and `hashCode` for equality.
-class UnionSet<E> extends SetBase<E> with UnmodifiableSetMixin<E> {
+final class UnionSet<E> extends SetBase<E> with UnmodifiableSetMixin<E> {
   /// The set of sets that this provides a view of.
   final Set<Set<E>> _sets;
 

@@ -16,7 +16,7 @@ import 'utils.dart';
 ///
 /// More specialized extension methods that only apply to
 /// iterables with specific element types include those of
-/// [IterableComparableExtension] and [IterableNullableExtension].
+/// [IterableComparableExtension].
 extension IterableExtension<T> on Iterable<T> {
   /// Selects [count] elements at random from this iterable.
   ///
@@ -604,6 +604,8 @@ extension IterableExtension<T> on Iterable<T> {
 }
 
 /// Extensions that apply to iterables with a nullable element type.
+/// @nodoc
+@Deprecated('Use .nonNulls instead.')
 extension IterableNullableExtension<T extends Object> on Iterable<T?> {
   /// The non-`null` elements of this `Iterable`.
   ///
@@ -611,6 +613,7 @@ extension IterableNullableExtension<T extends Object> on Iterable<T?> {
   /// of this iterable, in their original iteration order.
   ///
   /// For an `Iterable<X?>`, this method is equivalent to `.whereType<X>()`.
+  /// @nodoc
   @Deprecated('Use .nonNulls instead.')
   Iterable<T> whereNotNull() sync* {
     for (var element in this) {

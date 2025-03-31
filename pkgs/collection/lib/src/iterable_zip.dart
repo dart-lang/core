@@ -13,7 +13,9 @@ import 'dart:collection';
 /// combined into a single list, which becomes the next value of this
 /// [Iterable]'s [Iterator]. As soon as any of the iterators run out,
 /// the zipped iterator also stops.
-class IterableZip<T> extends IterableBase<List<T>> {
+/// @nodoc
+@Deprecated('Use [i1, i2].zip from dart:collection')
+final class IterableZip<T> extends IterableBase<List<T>> {
   final Iterable<Iterable<T>> _iterables;
 
   IterableZip(Iterable<Iterable<T>> iterables) : _iterables = iterables;
@@ -27,7 +29,7 @@ class IterableZip<T> extends IterableBase<List<T>> {
   }
 }
 
-class _IteratorZip<T> implements Iterator<List<T>> {
+final class _IteratorZip<T> implements Iterator<List<T>> {
   final List<Iterator<T>> _iterators;
   List<T>? _current;
 

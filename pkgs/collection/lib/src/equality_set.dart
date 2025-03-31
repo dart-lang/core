@@ -8,7 +8,7 @@ import 'equality.dart';
 import 'wrappers.dart';
 
 /// A [Set] whose key equality is determined by an [Equality] object.
-class EqualitySet<E> extends DelegatingSet<E> {
+final class EqualitySet<E> extends DelegatingSet<E> {
   /// Creates a set with equality based on [equality].
   EqualitySet(Equality<E> equality)
       : super(LinkedHashSet(
