@@ -1,3 +1,6 @@
+.github/            @dart-ecosystem-admins
+.gemini/            @dart-ecosystem-admins
+README.md           @dart-ecosystem-admins
 pkgs/args           @munificent
 pkgs/async          @dart-ecosystem-admins
 pkgs/characters     @lrhn
