@@ -289,7 +289,23 @@ class StreamGroup<T> implements Sink<Stream<T>> {
     if (_closed) return _controller.done;
 
     _closed = true;
-    if (_subscriptions.isEmpty) _controller.close();
+
+    if (_subscriptions.isEmpty) {
+      _onIdleController?.add(null);
+      _onIdleController?.close();
+      _controller.close();
+      return _controller.done;
+    }
+
+    if (_controller.stream.isBroadcast) {
+      for (var entry in _subscriptions.entries.where((e) => e.value == null)) {
+        try {
+          _subscriptions[entry.key] = _listenToStream(entry.key);
+        } catch (_) {
+          _subscriptions.remove(entry.key);
+        }
+      }
+    }
 
     return _controller.done;
   }
