@@ -5,11 +5,15 @@
 import 'dart:collection' show ListMixin;
 import 'dart:typed_data' show Uint32List;
 
+import 'package:meta/meta.dart';
+
 import 'unmodifiable_wrappers.dart' show NonGrowableListMixin;
 
 /// A space-efficient list of boolean values.
 ///
 /// Uses list of integers as internal storage to reduce memory usage.
+@sealed
+// TODO: replace `interface` with `final` in the next major release.
 abstract interface class BoolList with ListMixin<bool> {
   static const int _entryShift = 5;
 
@@ -119,9 +123,7 @@ abstract interface class BoolList with ListMixin<bool> {
   @override
   bool operator [](int index) {
     RangeError.checkValidIndex(index, this, 'index', _length);
-    return (_data[index >> _entryShift] &
-            (1 << (index & _entrySignBitIndex))) !=
-        0;
+    return _getBit(index);
   }
 
   @override
@@ -167,6 +169,7 @@ abstract interface class BoolList with ListMixin<bool> {
   @override
   Iterator<bool> get iterator => _BoolListIterator(this);
 
+  /// Note: [index] is NOT checked for validity.
   void _setBit(int index, bool value) {
     if (value) {
       _data[index >> _entryShift] |= 1 << (index & _entrySignBitIndex);
@@ -174,6 +177,10 @@ abstract interface class BoolList with ListMixin<bool> {
       _data[index >> _entryShift] &= ~(1 << (index & _entrySignBitIndex));
     }
   }
+
+  /// Note: [index] is NOT checked for validity.
+  bool _getBit(int index) =>
+      (_data[index >> _entryShift] & (1 << (index & _entrySignBitIndex))) != 0;
 
   static int _lengthInWords(int bitLength) {
     return (bitLength + (_bitsPerEntry - 1)) >> _entryShift;
@@ -263,9 +270,7 @@ class _BoolListIterator implements Iterator<bool> {
 
     if (_pos < _boolList.length) {
       var pos = _pos++;
-      _current = _boolList._data[pos >> BoolList._entryShift] &
-              (1 << (pos & BoolList._entrySignBitIndex)) !=
-          0;
+      _current = _boolList._getBit(pos);
       return true;
     }
     _current = false;
