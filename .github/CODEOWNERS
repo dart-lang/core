@@ -1,0 +1,13 @@
+pkgs/args           @munificent
+pkgs/async          @dart-ecosystem-admins
+pkgs/characters     @dart-ecosystem-admins
+pkgs/collection     @dart-ecosystem-admins
+pkgs/convert        @dart-ecosystem-admins
+pkgs/crypto         @dart-ecosystem-admins
+pkgs/fixnum         @lrhn
+pkgs/lints          @dart-ecosystem-admins
+pkgs/logging        @dart-ecosystem-admins
+pkgs/os_detect      @dart-ecosystem-admins
+pkgs/path           @munificent
+pkgs/platform       @lrhn
+pkgs/typed_data     @dart-ecosystem-admins
