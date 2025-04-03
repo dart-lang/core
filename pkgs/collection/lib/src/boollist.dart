@@ -179,6 +179,9 @@ abstract interface class BoolList with ListMixin<bool> {
   }
 
   // Note: [index] is NOT checked for validity.
+  @pragma('dart2js:prefer-inline')
+  @pragma('vm:prefer-inline')
+  @pragma('wasm:prefer-inline')
   bool _getBit(int index) =>
       (_data[index >> _entryShift] & (1 << (index & _entrySignBitIndex))) != 0;
 
