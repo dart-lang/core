@@ -169,7 +169,7 @@ abstract interface class BoolList with ListMixin<bool> {
   @override
   Iterator<bool> get iterator => _BoolListIterator(this);
 
-  /// Note: [index] is NOT checked for validity.
+  // Note: [index] is NOT checked for validity.
   void _setBit(int index, bool value) {
     if (value) {
       _data[index >> _entryShift] |= 1 << (index & _entrySignBitIndex);
@@ -178,7 +178,7 @@ abstract interface class BoolList with ListMixin<bool> {
     }
   }
 
-  /// Note: [index] is NOT checked for validity.
+  // Note: [index] is NOT checked for validity.
   bool _getBit(int index) =>
       (_data[index >> _entryShift] & (1 << (index & _entrySignBitIndex))) != 0;
 
