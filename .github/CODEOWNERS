@@ -1,16 +1,21 @@
-.github/            @dart-ecosystem-admins
-.gemini/            @dart-ecosystem-admins
-README.md           @dart-ecosystem-admins
+# Below are suggested reviewers for PRs to packages in this repository.
+#
+# These are suggestions; it is fine to have your changes reviewed by someone
+# else.
+
+.github/            @dart-ecosystem-team
+.gemini/            @dart-ecosystem-team
+README.md           @dart-ecosystem-team
 pkgs/args           @munificent
-pkgs/async          @dart-ecosystem-admins
+pkgs/async          @dart-core-packages-team
 pkgs/characters     @lrhn
-pkgs/collection     @dart-ecosystem-admins
-pkgs/convert        @dart-ecosystem-admins
-pkgs/crypto         @dart-ecosystem-admins
-pkgs/fixnum         @dart-ecosystem-admins #?
-pkgs/lints          @dart-ecosystem-admins
-pkgs/logging        @dart-ecosystem-admins
+pkgs/collection     @dart-core-packages-team
+pkgs/convert        @dart-core-packages-team
+pkgs/crypto         @dart-ecosystem-team
+pkgs/fixnum         @dart-core-packages-team
+pkgs/lints          @dart-ecosystem-team
+pkgs/logging        @dart-ecosystem-team
 pkgs/os_detect      @lrhn
-pkgs/path           @munificent
+pkgs/path           @dart-ecosystem-team
 pkgs/platform       @lrhn
-pkgs/typed_data     @dart-ecosystem-admins
+pkgs/typed_data     @dart-core-packages-team
