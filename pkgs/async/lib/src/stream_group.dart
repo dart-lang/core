@@ -291,7 +291,6 @@ class StreamGroup<T> implements Sink<Stream<T>> {
     _closed = true;
 
     if (_subscriptions.isEmpty) {
-      _onIdleController?.add(null);
       _onIdleController?.close();
       _controller.close();
       return _controller.done;
