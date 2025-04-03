@@ -3,19 +3,19 @@
 # These are suggestions; it is fine to have your changes reviewed by someone
 # else.
 
-.github/            @dart-ecosystem-team
-.gemini/            @dart-ecosystem-team
-README.md           @dart-ecosystem-team
+.github/            @dart-lang/dart-ecosystem-team
+.gemini/            @dart-lang/dart-ecosystem-team
+README.md           @dart-lang/dart-ecosystem-team
 pkgs/args           @munificent
-pkgs/async          @dart-core-packages-team
+pkgs/async          @dart-lang/dart-core-packages-team
 pkgs/characters     @lrhn
-pkgs/collection     @dart-core-packages-team
-pkgs/convert        @dart-core-packages-team
-pkgs/crypto         @dart-ecosystem-team
-pkgs/fixnum         @dart-core-packages-team
-pkgs/lints          @dart-ecosystem-team
-pkgs/logging        @dart-ecosystem-team
+pkgs/collection     @dart-lang/dart-core-packages-team
+pkgs/convert        @dart-lang/dart-core-packages-team
+pkgs/crypto         @dart-lang/dart-ecosystem-team
+pkgs/fixnum         @dart-lang/dart-core-packages-team
+pkgs/lints          @dart-lang/dart-ecosystem-team
+pkgs/logging        @dart-lang/dart-ecosystem-team
 pkgs/os_detect      @lrhn
-pkgs/path           @dart-ecosystem-team
+pkgs/path           @dart-lang/dart-ecosystem-team
 pkgs/platform       @lrhn
-pkgs/typed_data     @dart-core-packages-team
+pkgs/typed_data     @dart-lang/dart-core-packages-team
