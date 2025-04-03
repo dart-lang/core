@@ -3,6 +3,7 @@
 
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
   `Map.entries`.
+- Explicitly mark `BoolList` as `abstract interface`
 - Address diagnostics from `strict_top_level_inference`.
 
 ## 1.19.1
