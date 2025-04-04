@@ -177,8 +177,8 @@ abstract class PriorityQueue<E> {
 /// * The [clear] and [removeAll] methods also take constant time, O(1).
 /// * The [contains] and [remove] operations may need to search the entire
 ///   queue for the elements, taking O(*N*) time.
-/// * The [toList] operation effectively sorts the elements, taking O(n * log(*N*))
-///   time.
+/// * The [toList] operation effectively sorts the elements,
+///   taking O(n * log(*N*)) time.
 /// * The [toUnorderedList] operation copies, but does not sort, the elements,
 ///   and is linear, O(n).
 /// * The [toSet] operation effectively adds each element to the new
@@ -188,7 +188,7 @@ abstract class PriorityQueue<E> {
 /// having higher priority. That is, elements are extracted from the queue
 /// in ascending [comparison] order.
 /// If two elements have the same priority, their ordering is unspecified
-/// and may be arbitary.
+/// and may be arbitrary.
 class HeapPriorityQueue<E> implements PriorityQueue<E> {
   /// The comparison being used to compare the priority of elements.
   final int Function(E, E) comparison;
