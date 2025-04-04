@@ -23,6 +23,35 @@ void testDefault() {
   });
   testInt(PriorityQueue<int>.new);
   testCustom(PriorityQueue<C>.new);
+
+  group('(Heap)PriorityQueue.of returns functional priority queue', () {
+    List<int> extract(PriorityQueue<int> queue) {
+      var result = <int>[];
+      while (queue.isNotEmpty) {
+        result.add(queue.removeFirst());
+      }
+      return result;
+    }
+
+    for (var i = 0; i < 1024; i = i * 2 + 1) {
+      test('size $i', () {
+        var input = List<int>.generate(i, (x) => x);
+        for (var j = 0; j < 5; j++) {
+          var copy = (input.toList()..shuffle()).where((_) => true);
+          {
+            var queue = HeapPriorityQueue<int>.of(copy, (a, b) => a - b);
+            var elements = extract(queue);
+            expect(elements, input);
+          }
+          {
+            var queue = HeapPriorityQueue<int>.of(copy, (a, b) => a - b);
+            var elements = extract(queue);
+            expect(elements, input);
+          }
+        }
+      });
+    }
+  });
 }
 
 void testInt(PriorityQueue<int> Function() create) {
@@ -278,9 +307,9 @@ void testConcurrentModification() {
       var q = HeapPriorityQueue<int>((a, b) => a - b)
         ..addAll([6, 4, 2, 3, 5, 8]);
       var e = q.unorderedElements;
-      q.add(12); // Modifiation before creating iterator is not a problem.
+      q.add(12); // Modification before creating iterator is not a problem.
       var it = e.iterator;
-      q.add(7); // Modification after creatig iterator is a problem.
+      q.add(7); // Modification after creating iterator is a problem.
       expect(it.moveNext, throwsConcurrentModificationError);
 
       it = e.iterator; // New iterator is not affected.
@@ -294,9 +323,9 @@ void testConcurrentModification() {
       var q = HeapPriorityQueue<int>((a, b) => a - b)
         ..addAll([6, 4, 2, 3, 5, 8]);
       var e = q.unorderedElements;
-      q.addAll([12]); // Modifiation before creating iterator is not a problem.
+      q.addAll([12]); // Modification before creating iterator is not a problem.
       var it = e.iterator;
-      q.addAll([7]); // Modification after creatig iterator is a problem.
+      q.addAll([7]); // Modification after creating iterator is a problem.
       expect(it.moveNext, throwsConcurrentModificationError);
       it = e.iterator; // New iterator is not affected.
       expect(it.moveNext(), true);
@@ -311,10 +340,10 @@ void testConcurrentModification() {
         ..addAll([6, 4, 2, 3, 5, 8]);
       var e = q.unorderedElements;
       expect(q.removeFirst(),
-          2); // Modifiation before creating iterator is not a problem.
+          2); // Modification before creating iterator is not a problem.
       var it = e.iterator;
       expect(q.removeFirst(),
-          3); // Modification after creatig iterator is a problem.
+          3); // Modification after creating iterator is a problem.
       expect(it.moveNext, throwsConcurrentModificationError);
 
       it = e.iterator; // New iterator is not affected.
