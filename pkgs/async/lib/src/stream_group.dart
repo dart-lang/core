@@ -300,7 +300,7 @@ class StreamGroup<T> implements Sink<Stream<T>> {
       // For a broadcast group that's closed, we must listen to streams with
       // null subscriptions to detect when they complete. This ensures the
       // group itself can close once all its streams have closed.
-      final streamsToRemove = <Stream<T>>[];
+      List<Stream<T>>? streamsToRemove;
 
       _subscriptions.updateAll((stream, subscription) {
         if (subscription != null) return subscription;
@@ -308,14 +308,12 @@ class StreamGroup<T> implements Sink<Stream<T>> {
         try {
           return _listenToStream(stream);
         } on Object {
-          streamsToRemove.add(stream);
+          (streamsToRemove ??= []).add(stream);
           return null;
         }
       });
 
-      for (final stream in streamsToRemove) {
-        _subscriptions.remove(stream);
-      }
+      streamsToRemove?.forEach(_subscriptions.remove);
     }
 
     return _controller.done;
