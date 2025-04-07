@@ -1,3 +1,16 @@
+## 3.2.0-wip
+
+* New non-backwards compatible API.
+  Use `Platform.current` to access the current platform,
+  and `Platform.current.native` to either get access to native
+  platform information, or get a `null` on non-native platforms.
+  Similarly `Platform.current.web` is only non-`null` on the web.
+
+  Mocking APIs are moved to a separate library to ensure they are
+  only used for testing, and to allow better performance in production.
+
+  Legacy APIs are deprecated, but retained and emulated using the new API.
+
 ## 3.1.6
 
 * Move to `dart-lang/core` monorepo.
