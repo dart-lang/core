@@ -1,4 +1,4 @@
-## 6.0.0-wip
+## 6.0.0
 
 - `core`:
   - added [strict_top_level_inference] (https://github.com/dart-lang/core/issues/836)
