@@ -26,7 +26,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        sdk: [dev, beta, stable]
+        # TODO: Re-add stable to the matrix once 3.8 is out.
+        sdk: [dev, beta]
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
