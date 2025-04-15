@@ -28,8 +28,8 @@ Additionally, a third lint set -
 recommended set with additional recommended Flutter-specific lints.
 
 The Dart team will likely not provide recommendations past the `core` and
-`recommended` sets (e.g., a `strict` rule set). However, there are many such rule
-sets in the ecosystem (available at [pub.dev](https://pub.dev/)).
+`recommended` sets (e.g., a `strict` rule set). However, there are many such
+rule sets in the ecosystem (available at [pub.dev](https://pub.dev/)).
 
 Rule set authors: consider adding the `lints` topic to your pubspec to allow
 easier discovery (e.g.,
