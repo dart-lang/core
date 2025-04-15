@@ -1,10 +1,10 @@
-## 6.0.0-wip
+## 6.0.0
 
 - `core`:
   - added [strict_top_level_inference] (https://github.com/dart-lang/core/issues/836)
 - `recommended`:
   - added [unnecessary_underscores] (https://github.com/dart-lang/core/issues/856)
-- Require Dart 3.7.
+- Require Dart 3.8.
 
 [strict_top_level_inference]: https://dart.dev/lints/strict_top_level_inference
 [unnecessary_underscores]: https://dart.dev/lints/unnecessary_underscores
