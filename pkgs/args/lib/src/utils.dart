@@ -3,9 +3,38 @@
 // BSD-style license that can be found in the LICENSE file.
 import 'dart:math' as math;
 
+
+/// A utility class for finding and stripping ANSI codes from strings.
+class _AnsiUtils {
+  static final String ansiCodePattern = [
+      '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
+      '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))'
+    ].join('|');
+
+  static final RegExp ansiRegex = RegExp(ansiCodePattern);
+
+  static String stripAnsi(String source) {
+    return source.replaceAll(ansiRegex, '');
+  }
+
+  static bool hasAnsi(String source) {
+    return ansiRegex.hasMatch(source);
+  }
+}
+
+/// A utility extension on [String] to provide ANSI code stripping and length
+/// calculation without ANSI codes.
+extension StringUtils on String {
+  /// Returns the length of the string without ANSI codes.
+  int get lengthWithoutAnsi {
+    if (!_AnsiUtils.hasAnsi(this)) return length;
+    return _AnsiUtils.stripAnsi(this).length;
+  }
+}
+
 /// Pads [source] to [length] by adding spaces at the end.
 String padRight(String source, int length) =>
-    source + ' ' * (length - source.length);
+    source + ' ' * (length - source.lengthWithoutAnsi);
 
 /// Wraps a block of text into lines no longer than [length].
 ///
