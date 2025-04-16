@@ -16,6 +16,12 @@ final _indentedLongLineWithNewlines =
 const _shortLine = 'Short line.';
 const _indentedLongLine = '    This is an indented long line that needs to be '
     'wrapped and indentation preserved.';
+const _ansiReset = 'This is normal text. \x1B[0m<- Reset point.';
+const _ansiBoldTextSpecificReset = 'This is normal, \x1B[1mthis is bold\x1B[22m, and this uses specific reset.';
+const _ansiMixedStyles = 'Normal, \x1B[31mRed\x1B[0m, \x1B[1mBold\x1B[0m, \x1B[4mUnderline\x1B[0m, \x1B[1;34mBold Blue\x1B[0m, Normal again.';
+const _ansiLongSequence = 'Start \x1B[1;3;4;5;7;9;31;42;38;5;196;48;5;226m Beaucoup formatting! \x1B[0m End';
+const _ansiCombined256 = '\x1B[1;38;5;27;48;5;220mBold Bright Blue FG (27) on Gold BG (220)\x1B[0m';
+const _ansiCombinedTrueColor = '\x1B[4;48;2;50;50;50;38;2;150;250;150mUnderlined Light Green FG on Dark Grey BG\x1B[0m';
 
 void main() {
   group('padding', () {
@@ -211,6 +217,57 @@ needs to be wrapped.
     test('preserves trailing whitespace when not wrapping', () {
       expect(
           wrapTextAsLines('$_longLine     \t'), equals(['$_longLine     \t']));
+    });
+  });
+
+  group('text lengthWithoutAnsi is correct with no ANSI sequences', () {
+    test('lengthWithoutAnsi returns correct length on lines without ansi', () {
+      expect(_longLine.lengthWithoutAnsi, equals(_longLine.length));
+    });
+    test('lengthWithoutAnsi returns correct length on lines newlines and without ansi', () {
+      expect(_longLineWithNewlines.lengthWithoutAnsi, equals(_longLineWithNewlines.length));
+    });
+    test('lengthWithoutAnsi returns correct length on lines indented/newlines and without ansi', () {
+      expect(_indentedLongLineWithNewlines.lengthWithoutAnsi, equals(_indentedLongLineWithNewlines.length));
+    });    
+    test('lengthWithoutAnsi returns correct length on short line without ansi', () {
+      expect(_shortLine.lengthWithoutAnsi, equals(_shortLine.length));
+    });      
+  });
+
+  group('lengthWithoutAnsi is correct with no ANSI sequences', () {
+    test('lengthWithoutAnsi returns correct length on lines without ansi', () {
+      expect(_longLine.lengthWithoutAnsi, equals(_longLine.length));
+    });
+    test('lengthWithoutAnsi returns correct length on lines newlines and without ansi', () {
+      expect(_longLineWithNewlines.lengthWithoutAnsi, equals(_longLineWithNewlines.length));
+    });
+    test('lengthWithoutAnsi returns correct length on lines indented/newlines and without ansi', () {
+      expect(_indentedLongLineWithNewlines.lengthWithoutAnsi, equals(_indentedLongLineWithNewlines.length));
+    });    
+    test('lengthWithoutAnsi returns correct length on short line without ansi', () {
+      expect(_shortLine.lengthWithoutAnsi, equals(_shortLine.length));
+    });      
+  });
+
+  group('lengthWithoutAnsi is correct with variety of ANSI sequences', () {
+    test('lengthWithoutAnsi returns correct length - ansi reset', () {
+      expect(_ansiReset.lengthWithoutAnsi, equals(36));
+    });
+    test('lengthWithoutAnsi returns correct length - ansi bold, bold specific reset', () {
+      expect(_ansiBoldTextSpecificReset.lengthWithoutAnsi, equals(59));
+    });
+    test('lengthWithoutAnsi returns correct length - ansi mixed styles', () {
+      expect(_ansiMixedStyles.lengthWithoutAnsi, equals(54));
+    });    
+    test('lengthWithoutAnsi returns correct length- ansi long sequence', () {
+      expect(_ansiLongSequence.lengthWithoutAnsi, equals(32));
+    });      
+    test('lengthWithoutAnsi returns correct length - ansi 256 color sequence', () {
+      expect(_ansiCombined256.lengthWithoutAnsi, equals(41));
+    });    
+    test('lengthWithoutAnsi returns correct length - ansi true color sequences', () {
+      expect(_ansiCombinedTrueColor.lengthWithoutAnsi, equals(41));
     });
   });
 }

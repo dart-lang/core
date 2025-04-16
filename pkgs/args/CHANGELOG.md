@@ -1,3 +1,8 @@
+## 2.7.0+1
+
+* Fix usage column formatting to calculate correct string lengths when there are ANSI
+  coloring/styling escape sequences present
+  
 ## 2.7.0
 
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will
