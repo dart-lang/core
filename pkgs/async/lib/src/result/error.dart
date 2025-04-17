@@ -47,10 +47,15 @@ class ErrorResult implements Result<Never> {
   /// has to be a function expecting only one argument, which will be called
   /// with only the error.
   void handle(Function errorHandler) {
-    if (errorHandler is ZoneBinaryCallback) {
+    if (errorHandler is dynamic Function(Object, StackTrace)) {
       errorHandler(error, stackTrace);
+    } else if (errorHandler is dynamic Function(Object)) {
+      errorHandler(error);
     } else {
-      (errorHandler as ZoneUnaryCallback)(error);
+      throw ArgumentError(
+        'is neither Function(Object, StackTrace) nor Function(Object)',
+        'errorHandler',
+      );
     }
   }
 

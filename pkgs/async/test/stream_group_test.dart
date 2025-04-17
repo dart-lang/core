@@ -491,6 +491,22 @@ void main() {
       controller.add('first');
       expect(streamGroup.close(), completes);
     });
+
+    test('completes close() when streams close without being removed',
+        () async {
+      var controller = StreamController.broadcast();
+      var group = StreamGroup.broadcast();
+      group.add(controller.stream);
+      var closeCompleted = false;
+      group.close().then((_) => closeCompleted = true);
+
+      await flushMicrotasks();
+      expect(closeCompleted, isFalse);
+
+      await controller.close();
+      await flushMicrotasks();
+      expect(closeCompleted, isTrue);
+    });
   });
 
   group('regardless of type', () {
