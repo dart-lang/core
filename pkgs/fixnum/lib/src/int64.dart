@@ -13,7 +13,7 @@ import 'int32.dart';
 import 'intx.dart';
 import 'utilities.dart' as u;
 
-/// An immutable 64-bit signed integer, in the range [-2^63, 2^63 - 1].
+/// An immutable 64-bit signed integer, in the range `[-2^63, 2^63 - 1]`.
 /// Arithmetic operations may overflow in order to maintain this range.
 class Int64 implements IntX {
   // A 64-bit integer is represented internally as three non-negative

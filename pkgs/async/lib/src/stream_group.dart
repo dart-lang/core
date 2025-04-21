@@ -124,9 +124,9 @@ class StreamGroup<T> implements Sink<Stream<T>> {
 
   /// Adds [stream] as a member of this group.
   ///
-  /// Any events from [stream] will be emitted through [this.stream]. If this
-  /// group has a listener, [stream] will be listened to immediately; otherwise
-  /// it will only be listened to once this group gets a listener.
+  /// Any events from [stream] will be emitted through [StreamGroup.stream]. If
+  /// this group has a listener, [stream] will be listened to immediately;
+  /// otherwise it will only be listened to once this group gets a listener.
   ///
   /// If this is a single-subscription group and its subscription has been
   /// canceled, [stream] will be canceled as soon as its added. If this returns
