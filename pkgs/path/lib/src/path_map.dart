@@ -27,12 +27,13 @@ class PathMap<V> extends MapView<String?, V> {
   static Map<String?, V> _create<V>(p.Context? context) {
     context ??= p.context;
     return LinkedHashMap(
-        equals: (path1, path2) {
-          if (path1 == null) return path2 == null;
-          if (path2 == null) return false;
-          return context!.equals(path1, path2);
-        },
-        hashCode: (path) => path == null ? 0 : context!.hash(path),
-        isValidKey: (path) => path is String || path == null);
+      equals: (path1, path2) {
+        if (path1 == null) return path2 == null;
+        if (path2 == null) return false;
+        return context!.equals(path1, path2);
+      },
+      hashCode: (path) => path == null ? 0 : context!.hash(path),
+      isValidKey: (path) => path is String || path == null,
+    );
   }
 }

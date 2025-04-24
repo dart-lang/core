@@ -1,6 +1,7 @@
 ## 2.13.1-wip
 
 - Fix `StreamGroup.broadcast().close()` to properly complete when all streams in the group close without being explicitly removed.
+- Run `dart format` with the new style.
 
 ## 2.13.0
 

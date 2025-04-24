@@ -77,10 +77,14 @@ abstract class StreamSinkBase<T> extends EventSinkBase<T>
 
     _addingStream = true;
     var completer = Completer<void>.sync();
-    stream.listen(onAdd, onError: onError, onDone: () {
-      _addingStream = false;
-      completer.complete();
-    });
+    stream.listen(
+      onAdd,
+      onError: onError,
+      onDone: () {
+        _addingStream = false;
+        completer.complete();
+      },
+    );
     return completer.future;
   }
 

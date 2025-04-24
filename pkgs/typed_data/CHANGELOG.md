@@ -1,3 +1,7 @@
+## 1.4.1-wip
+
+- Run `dart format` with the new style.
+
 ## 1.4.0
 
 * The type of the `buffer` constructor argument to `TypedDataBuffer` is now

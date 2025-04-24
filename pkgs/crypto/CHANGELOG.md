@@ -1,3 +1,7 @@
+## 3.0.7-wip
+
+- Run `dart format` with the new style.
+
 ## 3.0.6
 
 * Move to `dart-lang/core` monorepo.

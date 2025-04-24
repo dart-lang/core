@@ -47,8 +47,9 @@ abstract class PriorityQueue<E> {
   /// as the comparison function, or use a more specialized function
   /// if one is available.
   factory PriorityQueue.of(
-          Iterable<E> elements, int Function(E, E) comparison) =
-      HeapPriorityQueue<E>.of;
+    Iterable<E> elements,
+    int Function(E, E) comparison,
+  ) = HeapPriorityQueue<E>.of;
 
   /// Number of elements in the queue.
   int get length;

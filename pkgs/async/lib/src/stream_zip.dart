@@ -18,8 +18,12 @@ class StreamZip<T> extends Stream<List<T>> {
   StreamZip(Iterable<Stream<T>> streams) : _streams = streams;
 
   @override
-  StreamSubscription<List<T>> listen(void Function(List<T>)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<List<T>> listen(
+    void Function(List<T>)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     cancelOnError = identical(true, cancelOnError);
     var subscriptions = <StreamSubscription<T>>[];
     late StreamController<List<T>> controller;
@@ -71,12 +75,16 @@ class StreamZip<T> extends Stream<List<T>> {
     try {
       for (var stream in _streams) {
         var index = subscriptions.length;
-        subscriptions.add(stream.listen((data) {
-          handleData(index, data);
-        },
+        subscriptions.add(
+          stream.listen(
+            (data) {
+              handleData(index, data);
+            },
             onError: cancelOnError ? handleError : handleErrorCancel,
             onDone: handleDone,
-            cancelOnError: cancelOnError));
+            cancelOnError: cancelOnError,
+          ),
+        );
       }
     } catch (e) {
       for (var i = subscriptions.length - 1; i >= 0; i--) {
@@ -87,28 +95,36 @@ class StreamZip<T> extends Stream<List<T>> {
 
     current = List<T?>.filled(subscriptions.length, null);
 
-    controller = StreamController<List<T>>(onPause: () {
-      for (var i = 0; i < subscriptions.length; i++) {
-        // This may pause some subscriptions more than once.
-        // These will not be resumed by onResume below, but must wait for the
-        // next round.
-        subscriptions[i].pause();
-      }
-    }, onResume: () {
-      for (var i = 0; i < subscriptions.length; i++) {
-        subscriptions[i].resume();
-      }
-    }, onCancel: () {
-      for (var i = 0; i < subscriptions.length; i++) {
-        // Canceling more than once is safe.
-        subscriptions[i].cancel();
-      }
-    });
+    controller = StreamController<List<T>>(
+      onPause: () {
+        for (var i = 0; i < subscriptions.length; i++) {
+          // This may pause some subscriptions more than once.
+          // These will not be resumed by onResume below, but must wait for the
+          // next round.
+          subscriptions[i].pause();
+        }
+      },
+      onResume: () {
+        for (var i = 0; i < subscriptions.length; i++) {
+          subscriptions[i].resume();
+        }
+      },
+      onCancel: () {
+        for (var i = 0; i < subscriptions.length; i++) {
+          // Canceling more than once is safe.
+          subscriptions[i].cancel();
+        }
+      },
+    );
 
     if (subscriptions.isEmpty) {
       controller.close();
     }
-    return controller.stream.listen(onData,
-        onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+    return controller.stream.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 }

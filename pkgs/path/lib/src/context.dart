@@ -37,8 +37,10 @@ class Context {
     if (style == null) {
       style = Style.platform;
     } else if (style is! InternalStyle) {
-      throw ArgumentError('Only styles defined by the path package are '
-          'allowed.');
+      throw ArgumentError(
+        'Only styles defined by the path package are '
+        'allowed.',
+      );
     }
 
     return Context._(style as InternalStyle, current);
@@ -74,21 +76,23 @@ class Context {
   ///
   /// If [current] isn't absolute, this won't return an absolute path. Does not
   /// [normalize] or [canonicalize] paths.
-  String absolute(String part1,
-      [String? part2,
-      String? part3,
-      String? part4,
-      String? part5,
-      String? part6,
-      String? part7,
-      String? part8,
-      String? part9,
-      String? part10,
-      String? part11,
-      String? part12,
-      String? part13,
-      String? part14,
-      String? part15]) {
+  String absolute(
+    String part1, [
+    String? part2,
+    String? part3,
+    String? part4,
+    String? part5,
+    String? part6,
+    String? part7,
+    String? part8,
+    String? part9,
+    String? part10,
+    String? part11,
+    String? part12,
+    String? part13,
+    String? part14,
+    String? part15,
+  ]) {
     _validateArgList('absolute', [
       part1,
       part2,
@@ -104,7 +108,7 @@ class Context {
       part12,
       part13,
       part14,
-      part15
+      part15,
     ]);
 
     // If there's a single absolute path, just return it. This is a lot faster
@@ -113,8 +117,24 @@ class Context {
       return part1;
     }
 
-    return join(current, part1, part2, part3, part4, part5, part6, part7, part8,
-        part9, part10, part11, part12, part13, part14, part15);
+    return join(
+      current,
+      part1,
+      part2,
+      part3,
+      part4,
+      part5,
+      part6,
+      part7,
+      part8,
+      part9,
+      part10,
+      part11,
+      part12,
+      part13,
+      part14,
+      part15,
+    );
   }
 
   /// Gets the part of [path] after the last separator on the context's
@@ -245,22 +265,24 @@ class Context {
   ///
   ///     context.join('path', '/to', 'foo'); // -> '/to/foo'
   ///
-  String join(String part1,
-      [String? part2,
-      String? part3,
-      String? part4,
-      String? part5,
-      String? part6,
-      String? part7,
-      String? part8,
-      String? part9,
-      String? part10,
-      String? part11,
-      String? part12,
-      String? part13,
-      String? part14,
-      String? part15,
-      String? part16]) {
+  String join(
+    String part1, [
+    String? part2,
+    String? part3,
+    String? part4,
+    String? part5,
+    String? part6,
+    String? part7,
+    String? part8,
+    String? part9,
+    String? part10,
+    String? part11,
+    String? part12,
+    String? part13,
+    String? part14,
+    String? part15,
+    String? part16,
+  ]) {
     final parts = <String?>[
       part1,
       part2,
@@ -308,8 +330,10 @@ class Context {
         // replaces the path after it.
         final parsed = _parse(part);
         final path = buffer.toString();
-        parsed.root =
-            path.substring(0, style.rootLength(path, withDrive: true));
+        parsed.root = path.substring(
+          0,
+          style.rootLength(path, withDrive: true),
+        );
         if (style.needsSeparator(parsed.root!)) {
           parsed.separators[0] = style.separator;
         }
@@ -574,8 +598,10 @@ class Context {
     }
     pathParsed.parts.insertAll(0, List.filled(fromParsed.parts.length, '..'));
     pathParsed.separators[0] = '';
-    pathParsed.separators
-        .insertAll(1, List.filled(fromParsed.parts.length, style.separator));
+    pathParsed.separators.insertAll(
+      1,
+      List.filled(fromParsed.parts.length, style.separator),
+    );
 
     // Corner case: the paths completely collapsed.
     if (pathParsed.parts.isEmpty) return '.';
@@ -1152,10 +1178,12 @@ void _validateArgList(String method, List<String?> args) {
     // Show the arguments.
     final message = StringBuffer();
     message.write('$method(');
-    message.write(args
-        .take(numArgs)
-        .map((arg) => arg == null ? 'null' : '"$arg"')
-        .join(', '));
+    message.write(
+      args
+          .take(numArgs)
+          .map((arg) => arg == null ? 'null' : '"$arg"')
+          .join(', '),
+    );
     message.write('): part ${i - 1} was null, but part $i was not.');
     throw ArgumentError(message.toString());
   }

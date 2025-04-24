@@ -79,9 +79,11 @@ void main() {
       completer.setDestinationSink(sink);
 
       var closeCompleted = false;
-      completer.sink.close().then(expectAsync1((_) {
-        closeCompleted = true;
-      }));
+      completer.sink.close().then(
+        expectAsync1((_) {
+          closeCompleted = true;
+        }),
+      );
 
       await flushMicrotasks();
       expect(closeCompleted, isFalse);
@@ -186,9 +188,11 @@ void main() {
 
     test('the future from the inner close() is returned', () async {
       var closeCompleted = false;
-      completer.sink.close().then(expectAsync1((_) {
-        closeCompleted = true;
-      }));
+      completer.sink.close().then(
+        expectAsync1((_) {
+          closeCompleted = true;
+        }),
+      );
       await flushMicrotasks();
 
       var closeCompleter = Completer<void>();
@@ -235,27 +239,31 @@ void main() {
     });
   });
 
-  test('the sink is closed, the destination is set, then done is read',
-      () async {
-    expect(completer.sink.close(), completes);
-    await flushMicrotasks();
+  test(
+    'the sink is closed, the destination is set, then done is read',
+    () async {
+      expect(completer.sink.close(), completes);
+      await flushMicrotasks();
 
-    completer.setDestinationSink(TestSink());
-    await flushMicrotasks();
+      completer.setDestinationSink(TestSink());
+      await flushMicrotasks();
 
-    expect(completer.sink.done, completes);
-  });
+      expect(completer.sink.done, completes);
+    },
+  );
 
-  test('done is read, the destination is set, then the sink is closed',
-      () async {
-    expect(completer.sink.done, completes);
-    await flushMicrotasks();
+  test(
+    'done is read, the destination is set, then the sink is closed',
+    () async {
+      expect(completer.sink.done, completes);
+      await flushMicrotasks();
 
-    completer.setDestinationSink(TestSink());
-    await flushMicrotasks();
+      completer.setDestinationSink(TestSink());
+      await flushMicrotasks();
 
-    expect(completer.sink.close(), completes);
-  });
+      expect(completer.sink.close(), completes);
+    },
+  );
 
   group('fromFuture()', () {
     test('with a successful completion', () async {

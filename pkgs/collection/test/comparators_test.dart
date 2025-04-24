@@ -54,7 +54,7 @@ void main() {
     'ab',
     'z',
     '{',
-    '~'
+    '~',
   ];
 
   List<String> sortedBy(int Function(String, String)? compare) =>
@@ -67,21 +67,27 @@ void main() {
   });
 
   test('compareAsciiLowerCase', () {
-    expect(sortedBy(compareAsciiLowerCase), sortedBy((a, b) {
-      var delta = a.toLowerCase().compareTo(b.toLowerCase());
-      if (delta != 0) return delta;
-      if (a == b) return 0;
-      return a.compareTo(b);
-    }));
+    expect(
+      sortedBy(compareAsciiLowerCase),
+      sortedBy((a, b) {
+        var delta = a.toLowerCase().compareTo(b.toLowerCase());
+        if (delta != 0) return delta;
+        if (a == b) return 0;
+        return a.compareTo(b);
+      }),
+    );
   });
 
   test('compareAsciiUpperCase', () {
-    expect(sortedBy(compareAsciiUpperCase), sortedBy((a, b) {
-      var delta = a.toUpperCase().compareTo(b.toUpperCase());
-      if (delta != 0) return delta;
-      if (a == b) return 0;
-      return a.compareTo(b);
-    }));
+    expect(
+      sortedBy(compareAsciiUpperCase),
+      sortedBy((a, b) {
+        var delta = a.toUpperCase().compareTo(b.toUpperCase());
+        if (delta != 0) return delta;
+        if (a == b) return 0;
+        return a.compareTo(b);
+      }),
+    );
   });
 
   // Replace any digit sequence by ("0", value, length) as char codes.
@@ -95,27 +101,37 @@ void main() {
       });
 
   test('compareNatural', () {
-    expect(sortedBy(compareNatural),
-        sortedBy((a, b) => replaceNumbers(a).compareTo(replaceNumbers(b))));
+    expect(
+      sortedBy(compareNatural),
+      sortedBy((a, b) => replaceNumbers(a).compareTo(replaceNumbers(b))),
+    );
   });
 
   test('compareAsciiLowerCaseNatural', () {
-    expect(sortedBy(compareAsciiLowerCaseNatural), sortedBy((a, b) {
-      var delta = replaceNumbers(a.toLowerCase())
-          .compareTo(replaceNumbers(b.toLowerCase()));
-      if (delta != 0) return delta;
-      if (a == b) return 0;
-      return a.compareTo(b);
-    }));
+    expect(
+      sortedBy(compareAsciiLowerCaseNatural),
+      sortedBy((a, b) {
+        var delta = replaceNumbers(
+          a.toLowerCase(),
+        ).compareTo(replaceNumbers(b.toLowerCase()));
+        if (delta != 0) return delta;
+        if (a == b) return 0;
+        return a.compareTo(b);
+      }),
+    );
   });
 
   test('compareAsciiUpperCaseNatural', () {
-    expect(sortedBy(compareAsciiUpperCaseNatural), sortedBy((a, b) {
-      var delta = replaceNumbers(a.toUpperCase())
-          .compareTo(replaceNumbers(b.toUpperCase()));
-      if (delta != 0) return delta;
-      if (a == b) return 0;
-      return a.compareTo(b);
-    }));
+    expect(
+      sortedBy(compareAsciiUpperCaseNatural),
+      sortedBy((a, b) {
+        var delta = replaceNumbers(
+          a.toUpperCase(),
+        ).compareTo(replaceNumbers(b.toUpperCase()));
+        if (delta != 0) return delta;
+        if (a == b) return 0;
+        return a.compareTo(b);
+      }),
+    );
   });
 }

@@ -140,7 +140,10 @@ class ChunkedStreamReader<T> {
             List<T> output;
             if (_buffer is Uint8List) {
               output = Uint8List.sublistView(
-                  _buffer as Uint8List, _offset, _offset + size) as List<T>;
+                _buffer as Uint8List,
+                _offset,
+                _offset + size,
+              ) as List<T>;
             } else {
               output = _buffer.sublist(_offset, _offset + size);
             }

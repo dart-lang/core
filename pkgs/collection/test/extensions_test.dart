@@ -18,12 +18,16 @@ void main() {
           expect(iterable([1, 3, 5]).whereNot((e) => e.isOdd), isEmpty);
         });
         test('all', () {
-          expect(iterable([1, 3, 5]).whereNot((e) => e.isEven),
-              iterable([1, 3, 5]));
+          expect(
+            iterable([1, 3, 5]).whereNot((e) => e.isEven),
+            iterable([1, 3, 5]),
+          );
         });
         test('some', () {
-          expect(iterable([1, 2, 3, 4]).whereNot((e) => e.isEven),
-              iterable([1, 3]));
+          expect(
+            iterable([1, 2, 3, 4]).whereNot((e) => e.isEven),
+            iterable([1, 3]),
+          );
         });
       });
       group('.sorted', () {
@@ -48,8 +52,10 @@ void main() {
           var input = iterable([1, 2, 3, 4, 5]);
           var copy = [...input];
           var shuffled = input.shuffled();
-          expect(const UnorderedIterableEquality().equals(input, shuffled),
-              isTrue);
+          expect(
+            const UnorderedIterableEquality().equals(input, shuffled),
+            isTrue,
+          );
           // Check that the original list isn't touched
           expect(input, copy);
         });
@@ -68,17 +74,24 @@ void main() {
       group('.sortedByCompare', () {
         test('empty', () {
           expect(
-              iterable(<int>[]).sortedByCompare(unreachable, unreachable), []);
+            iterable(<int>[]).sortedByCompare(unreachable, unreachable),
+            [],
+          );
         });
         test('singleton', () {
-          expect(iterable(<int>[2]).sortedByCompare(unreachable, unreachable),
-              [2]);
+          expect(iterable(<int>[2]).sortedByCompare(unreachable, unreachable), [
+            2,
+          ]);
         });
         test('multiple', () {
           expect(
-              iterable(<int>[30, 2, 100])
-                  .sortedByCompare(toString, cmpParseInverse),
-              [100, 30, 2]);
+            iterable(<int>[
+              30,
+              2,
+              100,
+            ]).sortedByCompare(toString, cmpParseInverse),
+            [100, 30, 2],
+          );
         });
       });
       group('isSorted', () {
@@ -121,33 +134,45 @@ void main() {
       });
       group('.isSortedByCompare', () {
         test('empty', () {
-          expect(iterable(<int>[]).isSortedByCompare(unreachable, unreachable),
-              true);
+          expect(
+            iterable(<int>[]).isSortedByCompare(unreachable, unreachable),
+            true,
+          );
         });
         test('single', () {
           expect(iterable([1]).isSortedByCompare(toString, unreachable), true);
         });
         test('same', () {
-          expect(iterable([1, 1, 1, 1]).isSortedByCompare(toString, cmpParse),
-              true);
+          expect(
+            iterable([1, 1, 1, 1]).isSortedByCompare(toString, cmpParse),
+            true,
+          );
         });
         test('multiple', () {
-          expect(iterable([1, 2, 3, 4]).isSortedByCompare(toString, cmpParse),
-              true);
           expect(
-              iterable([4, 3, 2, 1])
-                  .isSortedByCompare(toString, cmpParseInverse),
-              true);
+            iterable([1, 2, 3, 4]).isSortedByCompare(toString, cmpParse),
+            true,
+          );
           expect(
-              iterable([1000, 200, 30, 4])
-                  .isSortedByCompare(toString, cmpString),
-              true);
-          expect(iterable([1, 2, 3, 0]).isSortedByCompare(toString, cmpParse),
-              false);
-          expect(iterable([4, 1, 2, 3]).isSortedByCompare(toString, cmpParse),
-              false);
-          expect(iterable([4, 3, 2, 1]).isSortedByCompare(toString, cmpParse),
-              false);
+            iterable([4, 3, 2, 1]).isSortedByCompare(toString, cmpParseInverse),
+            true,
+          );
+          expect(
+            iterable([1000, 200, 30, 4]).isSortedByCompare(toString, cmpString),
+            true,
+          );
+          expect(
+            iterable([1, 2, 3, 0]).isSortedByCompare(toString, cmpParse),
+            false,
+          );
+          expect(
+            iterable([4, 1, 2, 3]).isSortedByCompare(toString, cmpParse),
+            false,
+          );
+          expect(
+            iterable([4, 3, 2, 1]).isSortedByCompare(toString, cmpParse),
+            false,
+          );
         });
       });
       group('.forEachIndexed', () {
@@ -280,7 +305,7 @@ void main() {
         test('multiple', () {
           expect(iterable(<String>['a', 'b']).mapIndexed((i, s) => [i, s]), [
             [0, 'a'],
-            [1, 'b']
+            [1, 'b'],
           ]);
         });
       });
@@ -298,18 +323,29 @@ void main() {
           }
 
           expect(
-              iterable(<int>[1, 3, 5, 7])
-                  .whereIndexed((i, x) => log(i, x).isEven),
-              isEmpty);
+            iterable(<int>[
+              1,
+              3,
+              5,
+              7,
+            ]).whereIndexed((i, x) => log(i, x).isEven),
+            isEmpty,
+          );
           expect(trace, [0, 1, 1, 3, 2, 5, 3, 7]);
         });
         test('all', () {
-          expect(iterable(<int>[1, 3, 5, 7]).whereIndexed((i, x) => x.isOdd),
-              [1, 3, 5, 7]);
+          expect(iterable(<int>[1, 3, 5, 7]).whereIndexed((i, x) => x.isOdd), [
+            1,
+            3,
+            5,
+            7,
+          ]);
         });
         test('some', () {
-          expect(iterable(<int>[1, 3, 5, 7]).whereIndexed((i, x) => i.isOdd),
-              [3, 7]);
+          expect(iterable(<int>[1, 3, 5, 7]).whereIndexed((i, x) => i.isOdd), [
+            3,
+            7,
+          ]);
         });
       });
       group('.whereNotIndexed', () {
@@ -326,19 +362,27 @@ void main() {
           }
 
           expect(
-              iterable(<int>[1, 3, 5, 7])
-                  .whereNotIndexed((i, x) => log(i, x).isOdd),
-              isEmpty);
+            iterable(<int>[
+              1,
+              3,
+              5,
+              7,
+            ]).whereNotIndexed((i, x) => log(i, x).isOdd),
+            isEmpty,
+          );
           expect(trace, [0, 1, 1, 3, 2, 5, 3, 7]);
         });
         test('all', () {
           expect(
-              iterable(<int>[1, 3, 5, 7]).whereNotIndexed((i, x) => x.isEven),
-              [1, 3, 5, 7]);
+            iterable(<int>[1, 3, 5, 7]).whereNotIndexed((i, x) => x.isEven),
+            [1, 3, 5, 7],
+          );
         });
         test('some', () {
-          expect(iterable(<int>[1, 3, 5, 7]).whereNotIndexed((i, x) => i.isOdd),
-              [1, 5]);
+          expect(
+            iterable(<int>[1, 3, 5, 7]).whereNotIndexed((i, x) => i.isOdd),
+            [1, 5],
+          );
         });
       });
       group('.expandIndexed', () {
@@ -349,29 +393,42 @@ void main() {
           expect(iterable(['a', 'b']).expandIndexed((i, v) => []), isEmpty);
         });
         test('larger result', () {
-          expect(iterable(['a', 'b']).expandIndexed((i, v) => ['$i', v]),
-              ['0', 'a', '1', 'b']);
+          expect(iterable(['a', 'b']).expandIndexed((i, v) => ['$i', v]), [
+            '0',
+            'a',
+            '1',
+            'b',
+          ]);
         });
         test('varying result', () {
           expect(
-              iterable(['a', 'b'])
-                  .expandIndexed((i, v) => i.isOdd ? ['$i', v] : []),
-              ['1', 'b']);
+            iterable([
+              'a',
+              'b',
+            ]).expandIndexed((i, v) => i.isOdd ? ['$i', v] : []),
+            ['1', 'b'],
+          );
         });
       });
       group('.reduceIndexed', () {
         test('empty', () {
-          expect(() => iterable([]).reduceIndexed((i, a, b) => a),
-              throwsStateError);
+          expect(
+            () => iterable([]).reduceIndexed((i, a, b) => a),
+            throwsStateError,
+          );
         });
         test('single', () {
           expect(iterable([1]).reduceIndexed(unreachable), 1);
         });
         test('multiple', () {
           expect(
-              iterable([1, 4, 2])
-                  .reduceIndexed((i, p, v) => p + (pow(i + 1, v) as int)),
-              1 + 16 + 9);
+            iterable([
+              1,
+              4,
+              2,
+            ]).reduceIndexed((i, p, v) => p + (pow(i + 1, v) as int)),
+            1 + 16 + 9,
+          );
         });
       });
       group('.foldIndexed', () {
@@ -380,11 +437,15 @@ void main() {
         });
         test('single', () {
           expect(
-              iterable([1]).foldIndexed('x', (i, a, b) => '$a:$i:$b'), 'x:0:1');
+            iterable([1]).foldIndexed('x', (i, a, b) => '$a:$i:$b'),
+            'x:0:1',
+          );
         });
         test('mulitple', () {
-          expect(iterable([1, 3, 9]).foldIndexed('x', (i, a, b) => '$a:$i:$b'),
-              'x:0:1:1:3:2:9');
+          expect(
+            iterable([1, 3, 9]).foldIndexed('x', (i, a, b) => '$a:$i:$b'),
+            'x:0:1:1:3:2:9',
+          );
         });
       });
       group('.firstWhereOrNull', () {
@@ -407,23 +468,33 @@ void main() {
         });
         test('none', () {
           expect(
-              iterable([1, 3, 7]).firstWhereIndexedOrNull((i, x) => x.isEven),
-              null);
-          expect(iterable([1, 3, 7]).firstWhereIndexedOrNull((i, x) => i < 0),
-              null);
+            iterable([1, 3, 7]).firstWhereIndexedOrNull((i, x) => x.isEven),
+            null,
+          );
+          expect(
+            iterable([1, 3, 7]).firstWhereIndexedOrNull((i, x) => i < 0),
+            null,
+          );
         });
         test('single', () {
-          expect(iterable([0, 3, 6]).firstWhereIndexedOrNull((i, x) => x.isOdd),
-              3);
           expect(
-              iterable([0, 3, 6]).firstWhereIndexedOrNull((i, x) => i == 1), 3);
+            iterable([0, 3, 6]).firstWhereIndexedOrNull((i, x) => x.isOdd),
+            3,
+          );
+          expect(
+            iterable([0, 3, 6]).firstWhereIndexedOrNull((i, x) => i == 1),
+            3,
+          );
         });
         test('first of multiple', () {
-          expect(iterable([0, 3, 7]).firstWhereIndexedOrNull((i, x) => x.isOdd),
-              3);
           expect(
-              iterable([0, 3, 7]).firstWhereIndexedOrNull((i, x) => i.isEven),
-              0);
+            iterable([0, 3, 7]).firstWhereIndexedOrNull((i, x) => x.isOdd),
+            3,
+          );
+          expect(
+            iterable([0, 3, 7]).firstWhereIndexedOrNull((i, x) => i.isEven),
+            0,
+          );
         });
       });
       group('.firstOrNull', () {
@@ -456,22 +527,34 @@ void main() {
           expect(iterable([]).lastWhereIndexedOrNull(unreachable), null);
         });
         test('none', () {
-          expect(iterable([1, 3, 7]).lastWhereIndexedOrNull((i, x) => x.isEven),
-              null);
-          expect(iterable([1, 3, 7]).lastWhereIndexedOrNull((i, x) => i < 0),
-              null);
+          expect(
+            iterable([1, 3, 7]).lastWhereIndexedOrNull((i, x) => x.isEven),
+            null,
+          );
+          expect(
+            iterable([1, 3, 7]).lastWhereIndexedOrNull((i, x) => i < 0),
+            null,
+          );
         });
         test('single', () {
           expect(
-              iterable([0, 3, 6]).lastWhereIndexedOrNull((i, x) => x.isOdd), 3);
+            iterable([0, 3, 6]).lastWhereIndexedOrNull((i, x) => x.isOdd),
+            3,
+          );
           expect(
-              iterable([0, 3, 6]).lastWhereIndexedOrNull((i, x) => i == 1), 3);
+            iterable([0, 3, 6]).lastWhereIndexedOrNull((i, x) => i == 1),
+            3,
+          );
         });
         test('last of multiple', () {
           expect(
-              iterable([0, 3, 7]).lastWhereIndexedOrNull((i, x) => x.isOdd), 7);
-          expect(iterable([0, 3, 7]).lastWhereIndexedOrNull((i, x) => i.isEven),
-              7);
+            iterable([0, 3, 7]).lastWhereIndexedOrNull((i, x) => x.isOdd),
+            7,
+          );
+          expect(
+            iterable([0, 3, 7]).lastWhereIndexedOrNull((i, x) => i.isEven),
+            7,
+          );
         });
       });
       group('.lastOrNull', () {
@@ -505,25 +588,33 @@ void main() {
         });
         test('none', () {
           expect(
-              iterable([1, 3, 7]).singleWhereIndexedOrNull((i, x) => x.isEven),
-              null);
-          expect(iterable([1, 3, 7]).singleWhereIndexedOrNull((i, x) => i < 0),
-              null);
+            iterable([1, 3, 7]).singleWhereIndexedOrNull((i, x) => x.isEven),
+            null,
+          );
+          expect(
+            iterable([1, 3, 7]).singleWhereIndexedOrNull((i, x) => i < 0),
+            null,
+          );
         });
         test('single', () {
           expect(
-              iterable([0, 3, 6]).singleWhereIndexedOrNull((i, x) => x.isOdd),
-              3);
-          expect(iterable([0, 3, 6]).singleWhereIndexedOrNull((i, x) => i == 1),
-              3);
+            iterable([0, 3, 6]).singleWhereIndexedOrNull((i, x) => x.isOdd),
+            3,
+          );
+          expect(
+            iterable([0, 3, 6]).singleWhereIndexedOrNull((i, x) => i == 1),
+            3,
+          );
         });
         test('multiple', () {
           expect(
-              iterable([0, 3, 7]).singleWhereIndexedOrNull((i, x) => x.isOdd),
-              null);
+            iterable([0, 3, 7]).singleWhereIndexedOrNull((i, x) => x.isOdd),
+            null,
+          );
           expect(
-              iterable([0, 3, 7]).singleWhereIndexedOrNull((i, x) => i.isEven),
-              null);
+            iterable([0, 3, 7]).singleWhereIndexedOrNull((i, x) => i.isEven),
+            null,
+          );
         });
       });
       group('.singleOrNull', () {
@@ -542,18 +633,13 @@ void main() {
           expect(iterable([]).lastBy((dynamic _) {}), {});
         });
         test('single', () {
-          expect(iterable([1]).lastBy(toString), {
-            '1': 1,
-          });
+          expect(iterable([1]).lastBy(toString), {'1': 1});
         });
         test('multiple', () {
-          expect(
-            iterable([1, 2, 3, 4, 5]).lastBy((x) => x.isEven),
-            {
-              false: 5,
-              true: 4,
-            },
-          );
+          expect(iterable([1, 2, 3, 4, 5]).lastBy((x) => x.isEven), {
+            false: 5,
+            true: 4,
+          });
         });
       });
       group('.groupFoldBy', () {
@@ -562,14 +648,17 @@ void main() {
         });
         test('single', () {
           expect(iterable([1]).groupFoldBy(toString, (p, v) => [p, v]), {
-            '1': [null, 1]
+            '1': [null, 1],
           });
         });
         test('multiple', () {
           expect(
-              iterable([1, 2, 3, 4, 5]).groupFoldBy<bool, String>(
-                  (x) => x.isEven, (p, v) => p == null ? '$v' : '$p:$v'),
-              {true: '2:4', false: '1:3:5'});
+            iterable([1, 2, 3, 4, 5]).groupFoldBy<bool, String>(
+              (x) => x.isEven,
+              (p, v) => p == null ? '$v' : '$p:$v',
+            ),
+            {true: '2:4', false: '1:3:5'},
+          );
         });
       });
       group('.groupSetsBy', () {
@@ -578,14 +667,14 @@ void main() {
         });
         test('multiple same', () {
           expect(iterable([1, 1]).groupSetsBy(toString), {
-            '1': {1}
+            '1': {1},
           });
         });
         test('multiple', () {
           expect(iterable([1, 2, 3, 4, 5, 1]).groupSetsBy((x) => x % 3), {
             1: {1, 4},
             2: {2, 5},
-            0: {3}
+            0: {3},
           });
         });
       });
@@ -595,14 +684,14 @@ void main() {
         });
         test('multiple saame', () {
           expect(iterable([1, 1]).groupListsBy(toString), {
-            '1': [1, 1]
+            '1': [1, 1],
           });
         });
         test('multiple', () {
           expect(iterable([1, 2, 3, 4, 5, 1]).groupListsBy((x) => x % 3), {
             1: [1, 4, 1],
             2: [2, 5],
-            0: [3]
+            0: [3],
           });
         });
       });
@@ -612,7 +701,7 @@ void main() {
         });
         test('single', () {
           expect(iterable([1]).splitBefore(unreachable), [
-            [1]
+            [1],
           ]);
         });
         test('no split', () {
@@ -623,7 +712,7 @@ void main() {
           }
 
           expect(iterable([1, 2, 3]).splitBefore(log), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
           expect(trace, [2, 3]);
         });
@@ -631,13 +720,13 @@ void main() {
           expect(iterable([1, 2, 3]).splitBefore((x) => true), [
             [1],
             [2],
-            [3]
+            [3],
           ]);
         });
         test('some splits', () {
           expect(iterable([1, 2, 3]).splitBefore((x) => x.isEven), [
             [1],
-            [2, 3]
+            [2, 3],
           ]);
         });
       });
@@ -647,7 +736,7 @@ void main() {
         });
         test('single', () {
           expect(iterable([1]).splitBeforeIndexed(unreachable), [
-            [1]
+            [1],
           ]);
         });
         test('no split', () {
@@ -660,7 +749,7 @@ void main() {
           }
 
           expect(iterable([1, 2, 3]).splitBeforeIndexed(log), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
           expect(trace, ['1', 2, '2', 3]);
         });
@@ -668,17 +757,17 @@ void main() {
           expect(iterable([1, 2, 3]).splitBeforeIndexed((i, x) => true), [
             [1],
             [2],
-            [3]
+            [3],
           ]);
         });
         test('some splits', () {
           expect(iterable([1, 2, 3]).splitBeforeIndexed((i, x) => x.isEven), [
             [1],
-            [2, 3]
+            [2, 3],
           ]);
           expect(iterable([1, 2, 3]).splitBeforeIndexed((i, x) => i.isEven), [
             [1, 2],
-            [3]
+            [3],
           ]);
         });
       });
@@ -688,10 +777,10 @@ void main() {
         });
         test('single', () {
           expect(iterable([1]).splitAfter((x) => false), [
-            [1]
+            [1],
           ]);
           expect(iterable([1]).splitAfter((x) => true), [
-            [1]
+            [1],
           ]);
         });
         test('no split', () {
@@ -702,7 +791,7 @@ void main() {
           }
 
           expect(iterable([1, 2, 3]).splitAfter(log), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
           expect(trace, [1, 2, 3]);
         });
@@ -710,13 +799,13 @@ void main() {
           expect(iterable([1, 2, 3]).splitAfter((x) => true), [
             [1],
             [2],
-            [3]
+            [3],
           ]);
         });
         test('some splits', () {
           expect(iterable([1, 2, 3]).splitAfter((x) => x.isEven), [
             [1, 2],
-            [3]
+            [3],
           ]);
         });
       });
@@ -726,10 +815,10 @@ void main() {
         });
         test('single', () {
           expect(iterable([1]).splitAfterIndexed((i, x) => true), [
-            [1]
+            [1],
           ]);
           expect(iterable([1]).splitAfterIndexed((i, x) => false), [
-            [1]
+            [1],
           ]);
         });
         test('no split', () {
@@ -742,7 +831,7 @@ void main() {
           }
 
           expect(iterable([1, 2, 3]).splitAfterIndexed(log), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
           expect(trace, ['0', 1, '1', 2, '2', 3]);
         });
@@ -750,17 +839,17 @@ void main() {
           expect(iterable([1, 2, 3]).splitAfterIndexed((i, x) => true), [
             [1],
             [2],
-            [3]
+            [3],
           ]);
         });
         test('some splits', () {
           expect(iterable([1, 2, 3]).splitAfterIndexed((i, x) => x.isEven), [
             [1, 2],
-            [3]
+            [3],
           ]);
           expect(iterable([1, 2, 3]).splitAfterIndexed((i, x) => i.isEven), [
             [1],
-            [2, 3]
+            [2, 3],
           ]);
         });
       });
@@ -770,7 +859,7 @@ void main() {
         });
         test('single', () {
           expect(iterable([1]).splitBetween(unreachable), [
-            [1]
+            [1],
           ]);
         });
         test('no split', () {
@@ -781,24 +870,24 @@ void main() {
           }
 
           expect(iterable([1, 2, 3]).splitBetween(log), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
           expect(trace, [
             [1, 2],
-            [2, 3]
+            [2, 3],
           ]);
         });
         test('all splits', () {
           expect(iterable([1, 2, 3]).splitBetween((x, y) => true), [
             [1],
             [2],
-            [3]
+            [3],
           ]);
         });
         test('some splits', () {
           expect(iterable([1, 2, 4]).splitBetween((x, y) => (x ^ y).isEven), [
             [1, 2],
-            [4]
+            [4],
           ]);
         });
       });
@@ -808,7 +897,7 @@ void main() {
         });
         test('single', () {
           expect(iterable([1]).splitBetweenIndexed(unreachable), [
-            [1]
+            [1],
           ]);
         });
         test('no split', () {
@@ -819,35 +908,43 @@ void main() {
           }
 
           expect(iterable([1, 2, 3]).splitBetweenIndexed(log), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
           expect(trace, [
             [1, 1, 2],
-            [2, 2, 3]
+            [2, 2, 3],
           ]);
         });
         test('all splits', () {
           expect(iterable([1, 2, 3]).splitBetweenIndexed((i, x, y) => true), [
             [1],
             [2],
-            [3]
+            [3],
           ]);
         });
         test('some splits', () {
           expect(
-              iterable([1, 2, 4])
-                  .splitBetweenIndexed((i, x, y) => (x ^ y).isEven),
-              [
-                [1, 2],
-                [4]
-              ]);
+            iterable([
+              1,
+              2,
+              4,
+            ]).splitBetweenIndexed((i, x, y) => (x ^ y).isEven),
+            [
+              [1, 2],
+              [4],
+            ],
+          );
           expect(
-              iterable([1, 2, 4])
-                  .splitBetweenIndexed((i, x, y) => (i ^ y).isEven),
-              [
-                [1, 2],
-                [4]
-              ]);
+            iterable([
+              1,
+              2,
+              4,
+            ]).splitBetweenIndexed((i, x, y) => (i ^ y).isEven),
+            [
+              [1, 2],
+              [4],
+            ],
+          );
         });
       });
       group('none', () {
@@ -870,46 +967,45 @@ void main() {
       group('.whereNotNull', () {
         test('empty', () {
           expect(
-              iterable(<int?>[])
-                  .whereNotNull(), // ignore: deprecated_member_use_from_same_package
-              isEmpty);
+            iterable(
+              <int?>[],
+            ).whereNotNull(), // ignore: deprecated_member_use_from_same_package
+            isEmpty,
+          );
         });
         test('single', () {
           expect(
-              iterable(<int?>[
-                null
-              ]).whereNotNull(), // ignore: deprecated_member_use_from_same_package
-              isEmpty);
+            iterable(
+              <int?>[null],
+            ).whereNotNull(), // ignore: deprecated_member_use_from_same_package
+            isEmpty,
+          );
           expect(
-              iterable(<int?>[
-                1
-              ]).whereNotNull(), // ignore: deprecated_member_use_from_same_package
-              [1]);
+            iterable(
+              <int?>[1],
+            ).whereNotNull(), // ignore: deprecated_member_use_from_same_package
+            [1],
+          );
         });
         test('multiple', () {
           expect(
-              iterable(<int?>[
-                1,
-                3,
-                5
-              ]).whereNotNull(), // ignore: deprecated_member_use_from_same_package
-              [1, 3, 5]);
+            iterable(
+              <int?>[1, 3, 5],
+            ).whereNotNull(), // ignore: deprecated_member_use_from_same_package
+            [1, 3, 5],
+          );
           expect(
-              iterable(<int?>[
-                null,
-                null,
-                null
-              ]).whereNotNull(), // ignore: deprecated_member_use_from_same_package
-              isEmpty);
+            iterable(
+              <int?>[null, null, null],
+            ).whereNotNull(), // ignore: deprecated_member_use_from_same_package
+            isEmpty,
+          );
           expect(
-              iterable(<int?>[
-                1,
-                null,
-                3,
-                null,
-                5
-              ]).whereNotNull(), // ignore: deprecated_member_use_from_same_package
-              [1, 3, 5]);
+            iterable(
+              <int?>[1, null, 3, null, 5],
+            ).whereNotNull(), // ignore: deprecated_member_use_from_same_package
+            [1, 3, 5],
+          );
         });
       });
     });
@@ -1049,19 +1145,21 @@ void main() {
         });
         test('single value', () {
           expect(
-              iterable(<Iterable>[
-                iterable([1])
-              ]).flattened,
-              [1]);
+            iterable(<Iterable>[
+              iterable([1]),
+            ]).flattened,
+            [1],
+          );
         });
         test('multiple', () {
           expect(
-              iterable(<Iterable>[
-                iterable([1, 2]),
-                empty,
-                iterable([3, 4])
-              ]).flattened,
-              [1, 2, 3, 4]);
+            iterable(<Iterable>[
+              iterable([1, 2]),
+              empty,
+              iterable([3, 4]),
+            ]).flattened,
+            [1, 2, 3, 4],
+          );
         });
       });
       group('.flattenedToList', () {
@@ -1074,19 +1172,21 @@ void main() {
         });
         test('single value', () {
           expect(
-              iterable(<Iterable>[
-                iterable([1])
-              ]).flattenedToList,
-              [1]);
+            iterable(<Iterable>[
+              iterable([1]),
+            ]).flattenedToList,
+            [1],
+          );
         });
         test('multiple', () {
           expect(
-              iterable(<Iterable>[
-                iterable([1, 2]),
-                empty,
-                iterable([3, 4])
-              ]).flattenedToList,
-              [1, 2, 3, 4]);
+            iterable(<Iterable>[
+              iterable([1, 2]),
+              empty,
+              iterable([3, 4]),
+            ]).flattenedToList,
+            [1, 2, 3, 4],
+          );
         });
       });
       group('.flattenedToSet', () {
@@ -1099,26 +1199,29 @@ void main() {
         });
         test('single value', () {
           expect(
-              iterable(<Iterable>[
-                iterable([1])
-              ]).flattenedToSet,
-              {1});
+            iterable(<Iterable>[
+              iterable([1]),
+            ]).flattenedToSet,
+            {1},
+          );
         });
         test('multiple', () {
           expect(
-              iterable(<Iterable>[
-                iterable([1, 2]),
-                empty,
-                iterable([3, 4])
-              ]).flattenedToSet,
-              {1, 2, 3, 4});
+            iterable(<Iterable>[
+              iterable([1, 2]),
+              empty,
+              iterable([3, 4]),
+            ]).flattenedToSet,
+            {1, 2, 3, 4},
+          );
           expect(
-              iterable(<Iterable>[
-                iterable([1, 2, 3]),
-                empty,
-                iterable([2, 3, 4])
-              ]).flattenedToSet,
-              {1, 2, 3, 4});
+            iterable(<Iterable>[
+              iterable([1, 2, 3]),
+              empty,
+              iterable([2, 3, 4]),
+            ]).flattenedToSet,
+            {1, 2, 3, 4},
+          );
         });
       });
     });
@@ -1131,10 +1234,9 @@ void main() {
           );
         });
         test('single', () {
-          expect(
-            iterable([const MapEntry('a', 1)]).whereKey((k) => k == 'a'),
-            [const MapEntry('a', 1)],
-          );
+          expect(iterable([const MapEntry('a', 1)]).whereKey((k) => k == 'a'), [
+            const MapEntry('a', 1),
+          ]);
           expect(
             iterable([const MapEntry('a', 1)]).whereKey((k) => k == 'b'),
             isEmpty,
@@ -1180,10 +1282,9 @@ void main() {
           );
         });
         test('single', () {
-          expect(
-            iterable([const MapEntry('a', 1)]).whereValue((v) => v == 1),
-            [const MapEntry('a', 1)],
-          );
+          expect(iterable([const MapEntry('a', 1)]).whereValue((v) => v == 1), [
+            const MapEntry('a', 1),
+          ]);
           expect(
             iterable([const MapEntry('a', 1)]).whereValue((v) => v == 2),
             isEmpty,
@@ -1352,13 +1453,24 @@ void main() {
         expect(iterable(['a']).sorted(), ['a']);
       });
       test('multiple', () {
-        expect(iterable(<String>['5', '2', '4', '3', '1']).sorted(cmpParse),
-            ['1', '2', '3', '4', '5']);
+        expect(iterable(<String>['5', '2', '4', '3', '1']).sorted(cmpParse), [
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+        ]);
         expect(
-            iterable(<String>['5', '2', '4', '3', '1']).sorted(cmpParseInverse),
-            ['5', '4', '3', '2', '1']);
-        expect(iterable(<String>['5', '2', '4', '3', '1']).sorted(),
-            ['1', '2', '3', '4', '5']);
+          iterable(<String>['5', '2', '4', '3', '1']).sorted(cmpParseInverse),
+          ['5', '4', '3', '2', '1'],
+        );
+        expect(iterable(<String>['5', '2', '4', '3', '1']).sorted(), [
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+        ]);
         // Large enough to trigger quicksort.
         var i256 = Iterable<int>.generate(256, (i) => i ^ 0x55);
         var sorted256 = [...i256]..sort();
@@ -1454,14 +1566,18 @@ void main() {
           expect(result.length, 10);
           expect(result.isSorted(cmpInt), isFalse);
           expect(
-              const UnorderedIterableEquality().equals(input, result), isTrue);
+            const UnorderedIterableEquality().equals(input, result),
+            isTrue,
+          );
         });
         test('for overlengthed samples of input', () {
           var result = input.sample(20, random);
           expect(result.length, 10);
           expect(result.isSorted(cmpInt), isFalse);
           expect(
-              const UnorderedIterableEquality().equals(input, result), isTrue);
+            const UnorderedIterableEquality().equals(input, result),
+            isTrue,
+          );
         });
       });
     });
@@ -1470,8 +1586,10 @@ void main() {
         expect(iterable([]).elementAtOrNull(0), isNull);
       });
       test('negative index', () async {
-        expect(() => iterable([1]).elementAtOrNull(-1),
-            throwsA(isA<RangeError>()));
+        expect(
+          () => iterable([1]).elementAtOrNull(-1),
+          throwsA(isA<RangeError>()),
+        );
       });
       test('index within range', () async {
         expect(iterable([1]).elementAtOrNull(0), 1);
@@ -1486,24 +1604,24 @@ void main() {
       });
       test('with the same length as the iterable', () {
         expect(iterable([1, 2, 3]).slices(3), [
-          [1, 2, 3]
+          [1, 2, 3],
         ]);
       });
       test('with a longer length than the iterable', () {
         expect(iterable([1, 2, 3]).slices(5), [
-          [1, 2, 3]
+          [1, 2, 3],
         ]);
       });
       test('with a shorter length than the iterable', () {
         expect(iterable([1, 2, 3]).slices(2), [
           [1, 2],
-          [3]
+          [3],
         ]);
       });
       test('with length divisible by the iterable\'s', () {
         expect(iterable([1, 2, 3, 4]).slices(2), [
           [1, 2],
-          [3, 4]
+          [3, 4],
         ]);
       });
       test('refuses negative length', () {
@@ -1596,12 +1714,20 @@ void main() {
         });
         test('multiple', () {
           expect(
-              [1, 2, 3, 4, 5, 6].binarySearchByCompare(3, toString, cmpParse),
-              2);
+            [1, 2, 3, 4, 5, 6].binarySearchByCompare(3, toString, cmpParse),
+            2,
+          );
           expect(
-              [6, 5, 4, 3, 2, 1]
-                  .binarySearchByCompare(3, toString, cmpParseInverse),
-              3);
+            [
+              6,
+              5,
+              4,
+              3,
+              2,
+              1,
+            ].binarySearchByCompare(3, toString, cmpParseInverse),
+            3,
+          );
         });
       });
       group('.binarySearchBy', () {
@@ -1645,15 +1771,25 @@ void main() {
         });
         test('multiple', () {
           expect(
-              [1, 2, 3, 4, 5, 6].lowerBoundByCompare(3, toString, cmpParse), 2);
+            [1, 2, 3, 4, 5, 6].lowerBoundByCompare(3, toString, cmpParse),
+            2,
+          );
           expect(
-              [6, 5, 4, 3, 2, 1]
-                  .lowerBoundByCompare(3, toString, cmpParseInverse),
-              3);
+            [
+              6,
+              5,
+              4,
+              3,
+              2,
+              1,
+            ].lowerBoundByCompare(3, toString, cmpParseInverse),
+            3,
+          );
           expect([1, 2, 4, 5, 6].lowerBoundByCompare(3, toString, cmpParse), 2);
           expect(
-              [6, 5, 4, 2, 1].lowerBoundByCompare(3, toString, cmpParseInverse),
-              3);
+            [6, 5, 4, 2, 1].lowerBoundByCompare(3, toString, cmpParseInverse),
+            3,
+          );
         });
       });
       group('.lowerBoundBy', () {
@@ -1723,8 +1859,13 @@ void main() {
             expect([5, 7, 4, 2, 3]..sortBy(unreachable, 2, 3), [5, 7, 4, 2, 3]);
           });
           test('multiple', () {
-            expect(
-                [5, 7, 40, 2, 3]..sortBy((a) => '$a', 1, 4), [5, 2, 40, 7, 3]);
+            expect([5, 7, 40, 2, 3]..sortBy((a) => '$a', 1, 4), [
+              5,
+              2,
+              40,
+              7,
+              3,
+            ]);
           });
         });
       });
@@ -1736,33 +1877,44 @@ void main() {
           expect([2]..sortByCompare(unreachable, unreachable), [2]);
         });
         test('multiple', () {
-          expect([30, 2, 100]..sortByCompare(toString, cmpParseInverse),
-              [100, 30, 2]);
+          expect([30, 2, 100]..sortByCompare(toString, cmpParseInverse), [
+            100,
+            30,
+            2,
+          ]);
         });
         group('range', () {
           test('errors', () {
-            expect(() => [1].sortByCompare(toString, cmpParse, -1, 1),
-                throwsArgumentError);
-            expect(() => [1].sortByCompare(toString, cmpParse, 0, 2),
-                throwsArgumentError);
-            expect(() => [1].sortByCompare(toString, cmpParse, 1, 0),
-                throwsArgumentError);
+            expect(
+              () => [1].sortByCompare(toString, cmpParse, -1, 1),
+              throwsArgumentError,
+            );
+            expect(
+              () => [1].sortByCompare(toString, cmpParse, 0, 2),
+              throwsArgumentError,
+            );
+            expect(
+              () => [1].sortByCompare(toString, cmpParse, 1, 0),
+              throwsArgumentError,
+            );
           });
           test('empty', () {
             expect(
-                [3, 5, 7, 3, 1]..sortByCompare(unreachable, unreachable, 2, 2),
-                [3, 5, 7, 3, 1]);
+              [3, 5, 7, 3, 1]..sortByCompare(unreachable, unreachable, 2, 2),
+              [3, 5, 7, 3, 1],
+            );
           });
           test('singleton', () {
             expect(
-                [3, 5, 7, 3, 1]..sortByCompare(unreachable, unreachable, 2, 3),
-                [3, 5, 7, 3, 1]);
+              [3, 5, 7, 3, 1]..sortByCompare(unreachable, unreachable, 2, 3),
+              [3, 5, 7, 3, 1],
+            );
           });
           test('multiple', () {
             expect(
-                [3, 5, 7, 30, 1]
-                  ..sortByCompare(toString, cmpParseInverse, 1, 4),
-                [3, 30, 7, 5, 1]);
+              [3, 5, 7, 30, 1]..sortByCompare(toString, cmpParseInverse, 1, 4),
+              [3, 30, 7, 5, 1],
+            );
           });
         });
       });
@@ -1866,19 +2018,21 @@ void main() {
           expect([1, 2.5, 'a'].equals([1.0, 2.5, 'a']), true);
           expect([1, 2.5, 'a'].equals([1.0, 2.5, 'b']), false);
           expect(
-              [
-                [1]
-              ].equals([
-                [1]
-              ]),
-              false);
+            [
+              [1],
+            ].equals([
+              [1],
+            ]),
+            false,
+          );
           expect(
-              [
-                [1]
-              ].equals([
-                [1]
-              ], const ListEquality()),
-              true);
+            [
+              [1],
+            ].equals([
+              [1],
+            ], const ListEquality()),
+            true,
+          );
         });
       });
       group('.forEachIndexed', () {
@@ -2011,7 +2165,7 @@ void main() {
         test('multiple', () {
           expect(<String>['a', 'b'].mapIndexed((i, s) => [i, s]), [
             [0, 'a'],
-            [1, 'b']
+            [1, 'b'],
           ]);
         });
       });
@@ -2028,13 +2182,19 @@ void main() {
             return b;
           }
 
-          expect(<int>[1, 3, 5, 7].whereIndexed((i, x) => log(i, x).isEven),
-              isEmpty);
+          expect(
+            <int>[1, 3, 5, 7].whereIndexed((i, x) => log(i, x).isEven),
+            isEmpty,
+          );
           expect(trace, [0, 1, 1, 3, 2, 5, 3, 7]);
         });
         test('all', () {
-          expect(
-              <int>[1, 3, 5, 7].whereIndexed((i, x) => x.isOdd), [1, 3, 5, 7]);
+          expect(<int>[1, 3, 5, 7].whereIndexed((i, x) => x.isOdd), [
+            1,
+            3,
+            5,
+            7,
+          ]);
         });
         test('some', () {
           expect(<int>[1, 3, 5, 7].whereIndexed((i, x) => i.isOdd), [3, 7]);
@@ -2053,13 +2213,19 @@ void main() {
             return b;
           }
 
-          expect(<int>[1, 3, 5, 7].whereNotIndexed((i, x) => log(i, x).isOdd),
-              isEmpty);
+          expect(
+            <int>[1, 3, 5, 7].whereNotIndexed((i, x) => log(i, x).isOdd),
+            isEmpty,
+          );
           expect(trace, [0, 1, 1, 3, 2, 5, 3, 7]);
         });
         test('all', () {
-          expect(<int>[1, 3, 5, 7].whereNotIndexed((i, x) => x.isEven),
-              [1, 3, 5, 7]);
+          expect(<int>[1, 3, 5, 7].whereNotIndexed((i, x) => x.isEven), [
+            1,
+            3,
+            5,
+            7,
+          ]);
         });
         test('some', () {
           expect(<int>[1, 3, 5, 7].whereNotIndexed((i, x) => i.isOdd), [1, 5]);
@@ -2073,12 +2239,18 @@ void main() {
           expect(['a', 'b'].expandIndexed((i, v) => []), isEmpty);
         });
         test('larger result', () {
-          expect(['a', 'b'].expandIndexed((i, v) => ['$i', v]),
-              ['0', 'a', '1', 'b']);
+          expect(['a', 'b'].expandIndexed((i, v) => ['$i', v]), [
+            '0',
+            'a',
+            '1',
+            'b',
+          ]);
         });
         test('varying result', () {
-          expect(['a', 'b'].expandIndexed((i, v) => i.isOdd ? ['$i', v] : []),
-              ['1', 'b']);
+          expect(['a', 'b'].expandIndexed((i, v) => i.isOdd ? ['$i', v] : []), [
+            '1',
+            'b',
+          ]);
         });
       });
       group('.elementAtOrNull', () {
@@ -2101,24 +2273,24 @@ void main() {
         });
         test('with the same length as the iterable', () {
           expect([1, 2, 3].slices(3), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
         });
         test('with a longer length than the iterable', () {
           expect([1, 2, 3].slices(5), [
-            [1, 2, 3]
+            [1, 2, 3],
           ]);
         });
         test('with a shorter length than the iterable', () {
           expect([1, 2, 3].slices(2), [
             [1, 2],
-            [3]
+            [3],
           ]);
         });
         test('with length divisible by the iterable\'s', () {
           expect([1, 2, 3, 4].slices(2), [
             [1, 2],
-            [3, 4]
+            [3, 4],
           ]);
         });
         test('refuses negative length', () {
@@ -2139,29 +2311,20 @@ void main() {
           expect(['0'].binarySearch('1', cmpString), -1);
           expect(['1'].binarySearch('1', cmpString), 0);
           expect(['2'].binarySearch('1', cmpString), -1);
-          expect(
-              ['0'].binarySearch(
-                '1',
-              ),
-              -1);
-          expect(
-              ['1'].binarySearch(
-                '1',
-              ),
-              0);
-          expect(
-              ['2'].binarySearch(
-                '1',
-              ),
-              -1);
+          expect(['0'].binarySearch('1'), -1);
+          expect(['1'].binarySearch('1'), 0);
+          expect(['2'].binarySearch('1'), -1);
         });
         test('multiple', () {
           expect(
-              ['1', '2', '3', '4', '5', '6'].binarySearch('3', cmpString), 2);
+            ['1', '2', '3', '4', '5', '6'].binarySearch('3', cmpString),
+            2,
+          );
           expect(['1', '2', '3', '4', '5', '6'].binarySearch('3'), 2);
           expect(
-              ['6', '5', '4', '3', '2', '1'].binarySearch('3', cmpParseInverse),
-              3);
+            ['6', '5', '4', '3', '2', '1'].binarySearch('3', cmpParseInverse),
+            3,
+          );
         });
       });
     });
@@ -2181,7 +2344,9 @@ void main() {
         expect(['1', '2', '3', '4', '5', '6'].lowerBound('3', cmpParse), 2);
         expect(['1', '2', '3', '4', '5', '6'].lowerBound('3'), 2);
         expect(
-            ['6', '5', '4', '3', '2', '1'].lowerBound('3', cmpParseInverse), 3);
+          ['6', '5', '4', '3', '2', '1'].lowerBound('3', cmpParseInverse),
+          3,
+        );
         expect(['1', '2', '4', '5', '6'].lowerBound('3', cmpParse), 2);
         expect(['1', '2', '4', '5', '6'].lowerBound('3'), 2);
         expect(['6', '5', '4', '2', '1'].lowerBound('3', cmpParseInverse), 3);

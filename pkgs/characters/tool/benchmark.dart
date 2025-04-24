@@ -34,8 +34,10 @@ void main(List<String> args) {
   }
   print('gc: Grapheme Clusters, cp: Code Points, cu: Code Units.');
   if (gcsf != gcsb) {
-    print('ERROR: Did not count the same number of grapheme clusters: '
-        '$gcsf forward vs. $gcsb backward.');
+    print(
+      'ERROR: Did not count the same number of grapheme clusters: '
+      '$gcsf forward vs. $gcsb backward.',
+    );
   } else {
     print('Total: $gcsf gc, $codePoints cp, $codeUnits cu');
     print('Avg ${(codePoints / gcsf).toStringAsFixed(3)} cp/gc');
@@ -59,10 +61,12 @@ int benchForward(String text, int i, int cp, int cu) {
     e = sw.elapsedMilliseconds;
     n++;
   } while (e < 2000);
-  print('Forward  #$i: ${(gc / e).round()} gc/ms, '
-      '${(n * cp / e).round()} cp/ms, '
-      '${(n * cu / e).round()} cu/ms, '
-      '$n rounds');
+  print(
+    'Forward  #$i: ${(gc / e).round()} gc/ms, '
+    '${(n * cp / e).round()} cp/ms, '
+    '${(n * cu / e).round()} cu/ms, '
+    '$n rounds',
+  );
   return gc ~/ n;
 }
 
@@ -79,9 +83,11 @@ int benchBackward(String text, int i, int cp, int cu) {
     e = sw.elapsedMilliseconds;
     n++;
   } while (e < 2000);
-  print('Backward #$i: ${(gc / e).round()} gc/ms, '
-      '${(n * cp / e).round()} cp/ms, '
-      '${(n * cu / e).round()} cu/ms, '
-      '$n rounds');
+  print(
+    'Backward #$i: ${(gc / e).round()} gc/ms, '
+    '${(n * cp / e).round()} cp/ms, '
+    '${(n * cu / e).round()} cu/ms, '
+    '$n rounds',
+  );
   return gc ~/ n;
 }

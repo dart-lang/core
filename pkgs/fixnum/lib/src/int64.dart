@@ -801,7 +801,12 @@ class Int64 implements IntX {
   }
 
   static String _toRadixStringUnsigned(
-      int radix, int d0, int d1, int d2, String sign) {
+    int radix,
+    int d0,
+    int d1,
+    int d2,
+    String sign,
+  ) {
     if (d0 == 0 && d1 == 0 && d2 == 0) return '0';
 
     // Rearrange components into five components where all but the most
@@ -934,7 +939,7 @@ class Int64 implements IntX {
     33 * 33 * 33,
     34 * 34 * 34,
     35 * 35 * 35,
-    36 * 36 * 36
+    36 * 36 * 36,
   ];
 
   String toDebugString() => 'Int64[_l=$_l, _m=$_m, _h=$_h]';
@@ -995,16 +1000,17 @@ class Int64 implements IntX {
   static const _RETURN_MOD = 3;
 
   static Int64 _divideHelper(
-      // up to 64 bits unsigned in a2/a1/a0 and b2/b1/b0
-      int a0,
-      int a1,
-      int a2,
-      bool aNeg, // input A.
-      int b0,
-      int b1,
-      int b2,
-      bool bNeg, // input B.
-      int what) {
+    // up to 64 bits unsigned in a2/a1/a0 and b2/b1/b0
+    int a0,
+    int a1,
+    int a2,
+    bool aNeg, // input A.
+    int b0,
+    int b1,
+    int b2,
+    bool bNeg, // input B.
+    int what,
+  ) {
     int q0 = 0, q1 = 0, q2 = 0; // result Q.
     int r0 = 0, r1 = 0, r2 = 0; // result R.
 
@@ -1102,8 +1108,10 @@ class Int64 implements IntX {
 
     // 0 <= R < B
     assert(Int64.ZERO <= Int64._bits(r0, r1, r2));
-    assert(r2 < b2 || // Handles case where B = -(MIN_VALUE)
-        Int64._bits(r0, r1, r2) < Int64._bits(b0, b1, b2));
+    assert(
+      r2 < b2 || // Handles case where B = -(MIN_VALUE)
+          Int64._bits(r0, r1, r2) < Int64._bits(b0, b1, b2),
+    );
 
     assert(what == _RETURN_DIV || what == _RETURN_MOD || what == _RETURN_REM);
     if (what == _RETURN_DIV) {

@@ -6,60 +6,88 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 /// The ISO-8859-2/Latin-2 (Eastern European) code page.
-final CodePage latin2 =
-    CodePage._bmp('latin-2', '$_ascii$_noControls$_top8859_2');
+final CodePage latin2 = CodePage._bmp(
+  'latin-2',
+  '$_ascii$_noControls$_top8859_2',
+);
 
 /// The ISO-8859-3/Latin-3 (South European) code page.
-final CodePage latin3 =
-    CodePage._bmp('latin-3', '$_ascii$_noControls$_top8859_3');
+final CodePage latin3 = CodePage._bmp(
+  'latin-3',
+  '$_ascii$_noControls$_top8859_3',
+);
 
 /// The ISO-8859-4/Latin-4 (North European) code page.
-final CodePage latin4 =
-    CodePage._bmp('latin-4', '$_ascii$_noControls$_top8859_4');
+final CodePage latin4 = CodePage._bmp(
+  'latin-4',
+  '$_ascii$_noControls$_top8859_4',
+);
 
 /// The ISO-8859-5/Latin-Cyrillic code page.
-final CodePage latinCyrillic =
-    CodePage._bmp('cyrillic', '$_ascii$_noControls$_top8859_5');
+final CodePage latinCyrillic = CodePage._bmp(
+  'cyrillic',
+  '$_ascii$_noControls$_top8859_5',
+);
 
 /// The ISO-8859-6/Latin-Arabic code page.
-final CodePage latinArabic =
-    CodePage._bmp('arabic', '$_ascii$_noControls$_top8859_6');
+final CodePage latinArabic = CodePage._bmp(
+  'arabic',
+  '$_ascii$_noControls$_top8859_6',
+);
 
 /// The ISO-8859-7/Latin-Greek code page.
-final CodePage latinGreek =
-    CodePage._bmp('greek', '$_ascii$_noControls$_top8859_7');
+final CodePage latinGreek = CodePage._bmp(
+  'greek',
+  '$_ascii$_noControls$_top8859_7',
+);
 
 /// The ISO-8859-7/Latin-Hebrew code page.
-final CodePage latinHebrew =
-    CodePage._bmp('hebrew', '$_ascii$_noControls$_top8859_8');
+final CodePage latinHebrew = CodePage._bmp(
+  'hebrew',
+  '$_ascii$_noControls$_top8859_8',
+);
 
 /// The ISO-8859-9/Latin-5 (Turkish) code page.
-final CodePage latin5 =
-    CodePage._bmp('latin-5', '$_ascii$_noControls$_top8859_9');
+final CodePage latin5 = CodePage._bmp(
+  'latin-5',
+  '$_ascii$_noControls$_top8859_9',
+);
 
 /// The ISO-8859-10/Latin-6 (Nordic) code page.
-final CodePage latin6 =
-    CodePage._bmp('latin-6', '$_ascii$_noControls$_top8859_10');
+final CodePage latin6 = CodePage._bmp(
+  'latin-6',
+  '$_ascii$_noControls$_top8859_10',
+);
 
 /// The ISO-8859-11/Latin-Thai code page.
-final CodePage latinThai =
-    CodePage._bmp('tis620', '$_ascii$_noControls$_top8859_11');
+final CodePage latinThai = CodePage._bmp(
+  'tis620',
+  '$_ascii$_noControls$_top8859_11',
+);
 
 /// The ISO-8859-13/Latin-6 (Baltic Rim) code page.
-final CodePage latin7 =
-    CodePage._bmp('latin-7', '$_ascii$_noControls$_top8859_13');
+final CodePage latin7 = CodePage._bmp(
+  'latin-7',
+  '$_ascii$_noControls$_top8859_13',
+);
 
 /// The ISO-8859-14/Latin-8 (Celtic) code page.
-final CodePage latin8 =
-    CodePage._bmp('latin-8', '$_ascii$_noControls$_top8859_14');
+final CodePage latin8 = CodePage._bmp(
+  'latin-8',
+  '$_ascii$_noControls$_top8859_14',
+);
 
 /// The ISO-8859-15/Latin-9 (Western European revised) code page.
-final CodePage latin9 =
-    CodePage._bmp('latin-9', '$_ascii$_noControls$_top8859_15');
+final CodePage latin9 = CodePage._bmp(
+  'latin-9',
+  '$_ascii$_noControls$_top8859_15',
+);
 
 /// The ISO-8859-16/Latin-10 (South Eastern European) code page.
-final CodePage latin10 =
-    CodePage._bmp('latin-10', '$_ascii$_noControls$_top8859_16');
+final CodePage latin10 = CodePage._bmp(
+  'latin-10',
+  '$_ascii$_noControls$_top8859_16',
+);
 
 /// Characters in ISO-8859-2 above the ASCII and top control characters.
 const _top8859_2 = '\xa0Ą˘Ł¤ĽŚ§¨ŠŞŤŹ\xadŽŻ°ą˛ł´ľśˇ¸šşťź˝žż'
@@ -261,14 +289,20 @@ CodePageDecoder _createDecoder(String characters) {
   for (var char in characters.runes) {
     if (i >= 256) {
       throw ArgumentError.value(
-          characters, 'characters', 'Must contain 256 characters');
+        characters,
+        'characters',
+        'Must contain 256 characters',
+      );
     }
     result[i++] = char;
     allChars |= char;
   }
   if (i < 256) {
     throw ArgumentError.value(
-        characters, 'characters', 'Must contain 256 characters');
+      characters,
+      'characters',
+      'Must contain 256 characters',
+    );
   }
   if (allChars <= 0xFFFF) {
     // It's in the BMP.
@@ -312,13 +346,19 @@ class _NonBmpCodePageDecoder extends Converter<List<int>, String>
     for (var char in characters.runes) {
       if (i >= 256) {
         throw ArgumentError.value(
-            characters, 'characters', 'Must contain 256 characters');
+          characters,
+          'characters',
+          'Must contain 256 characters',
+        );
       }
       result[i++] = char;
     }
     if (i < 256) {
       throw ArgumentError.value(
-          characters, 'characters', 'Must contain 256 characters');
+        characters,
+        'characters',
+        'Must contain 256 characters',
+      );
     }
     return result;
   }
@@ -356,8 +396,11 @@ class _BmpCodePageDecoder extends Converter<List<int>, String>
   final String _characters;
   _BmpCodePageDecoder(String characters) : _characters = characters {
     if (characters.length != 256) {
-      throw ArgumentError.value(characters, 'characters',
-          'Must contain 256 characters. Was ${characters.length}');
+      throw ArgumentError.value(
+        characters,
+        'characters',
+        'Must contain 256 characters. Was ${characters.length}',
+      );
     }
   }
 
@@ -440,7 +483,11 @@ class CodePageEncoder extends Converter<String, List<int>> {
   Uint8List convert(String input, {int? invalidCharacter}) {
     if (invalidCharacter != null) {
       RangeError.checkValueInInterval(
-          invalidCharacter, 0, 255, 'invalidCharacter');
+        invalidCharacter,
+        0,
+        255,
+        'invalidCharacter',
+      );
     }
     var count = input.length;
     var result = Uint8List(count);
@@ -463,7 +510,10 @@ class CodePageEncoder extends Converter<String, List<int>> {
         }
         byte = invalidCharacter ??
             (throw FormatException(
-                'Not a character in this code page', input, offset));
+              'Not a character in this code page',
+              input,
+              offset,
+            ));
       }
       result[j++] = byte;
     }

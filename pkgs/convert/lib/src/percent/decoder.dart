@@ -33,7 +33,10 @@ class PercentDecoder extends Converter<String, List<int>> {
 
     if (lastDigit != null) {
       throw FormatException(
-          'Input ended with incomplete encoded byte.', input, input.length);
+        'Input ended with incomplete encoded byte.',
+        input,
+        input.length,
+      );
     }
 
     return buffer.buffer.asUint8List(0, buffer.length);
@@ -104,7 +107,10 @@ class _PercentDecoderSink extends StringConversionSinkBase {
   void _close([String? string, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          'Input ended with incomplete encoded byte.', string, index);
+        'Input ended with incomplete encoded byte.',
+        string,
+        index,
+      );
     }
 
     _sink.close();
@@ -169,7 +175,10 @@ class _PercentDecoderByteSink extends ByteConversionSinkBase {
   void _close([List<int>? chunk, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          'Input ended with incomplete encoded byte.', chunk, index);
+        'Input ended with incomplete encoded byte.',
+        chunk,
+        index,
+      );
     }
 
     _sink.close();
@@ -235,16 +244,21 @@ int? _decode(List<int> codeUnits, int start, int end, Uint8Buffer buffer) {
 }
 
 void _checkForInvalidCodeUnit(
-    int codeUnitOr, List<int> codeUnits, int start, int end) {
+  int codeUnitOr,
+  List<int> codeUnits,
+  int start,
+  int end,
+) {
   if (codeUnitOr >= 0 && codeUnitOr <= 0x7f) return;
 
   for (var i = start; i < end; i++) {
     var codeUnit = codeUnits[i];
     if (codeUnit >= 0 && codeUnit <= 0x7f) continue;
     throw FormatException(
-        'Non-ASCII code unit '
-        "U+${codeUnit.toRadixString(16).padLeft(4, '0')}",
-        codeUnits,
-        i);
+      'Non-ASCII code unit '
+      "U+${codeUnit.toRadixString(16).padLeft(4, '0')}",
+      codeUnits,
+      i,
+    );
   }
 }

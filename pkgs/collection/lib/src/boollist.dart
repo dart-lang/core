@@ -194,10 +194,7 @@ final class _GrowableBoolList extends BoolList {
   static const int _growthFactor = 2;
 
   _GrowableBoolList._withCapacity(int length, int capacity)
-      : super._(
-          Uint32List(BoolList._lengthInWords(capacity)),
-          length,
-        );
+      : super._(Uint32List(BoolList._lengthInWords(capacity)), length);
 
   _GrowableBoolList(int length)
       : super._(
@@ -217,9 +214,8 @@ final class _GrowableBoolList extends BoolList {
 
   void _expand(int length) {
     if (length > _data.length * BoolList._bitsPerEntry) {
-      _data = Uint32List(
-        BoolList._lengthInWords(length * _growthFactor),
-      )..setRange(0, _data.length, _data);
+      _data = Uint32List(BoolList._lengthInWords(length * _growthFactor))
+        ..setRange(0, _data.length, _data);
     }
     _length = length;
   }
@@ -241,16 +237,10 @@ final class _GrowableBoolList extends BoolList {
 final class _NonGrowableBoolList extends BoolList
     with NonGrowableListMixin<bool> {
   _NonGrowableBoolList._withCapacity(int length, int capacity)
-      : super._(
-          Uint32List(BoolList._lengthInWords(capacity)),
-          length,
-        );
+      : super._(Uint32List(BoolList._lengthInWords(capacity)), length);
 
   _NonGrowableBoolList(int length)
-      : super._(
-          Uint32List(BoolList._lengthInWords(length)),
-          length,
-        );
+      : super._(Uint32List(BoolList._lengthInWords(length)), length);
 }
 
 class _BoolListIterator implements Iterator<bool> {

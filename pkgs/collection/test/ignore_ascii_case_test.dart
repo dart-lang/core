@@ -34,8 +34,11 @@ void main() {
       for (var s2 in strings) {
         var reason = '$s1 =?= $s2';
         expect(equalsIgnoreAsciiCase(s1, s2), true, reason: reason);
-        expect(hashIgnoreAsciiCase(s1), hashIgnoreAsciiCase(s2),
-            reason: reason);
+        expect(
+          hashIgnoreAsciiCase(s1),
+          hashIgnoreAsciiCase(s2),
+          reason: reason,
+        );
       }
     }
 
@@ -44,8 +47,11 @@ void main() {
     expect(equalsIgnoreAsciiCase(upperCaseLetters, lowerCaseLetters), true);
 
     void testChars(String char1, String char2, bool areEqual) {
-      expect(equalsIgnoreAsciiCase(char1, char2), areEqual,
-          reason: "$char1 ${areEqual ? "=" : "!"}= $char2");
+      expect(
+        equalsIgnoreAsciiCase(char1, char2),
+        areEqual,
+        reason: "$char1 ${areEqual ? "=" : "!"}= $char2",
+      );
     }
 
     for (var i = 0; i < upperCaseLetters.length; i++) {

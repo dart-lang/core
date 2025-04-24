@@ -18,12 +18,16 @@ void main() {
   group('when the closer is never closed', () {
     test('forwards data and done events', () {
       expect(
-          createStream().transform(closer).toList(), completion([1, 2, 3, 4]));
+        createStream().transform(closer).toList(),
+        completion([1, 2, 3, 4]),
+      );
     });
 
     test('forwards error events', () {
-      expect(Stream<int>.error('oh no').transform(closer).toList(),
-          throwsA('oh no'));
+      expect(
+        Stream<int>.error('oh no').transform(closer).toList(),
+        throwsA('oh no'),
+      );
     });
 
     test('transforms a broadcast stream into a broadcast stream', () {
@@ -53,8 +57,9 @@ void main() {
 
     test('forwards cancel', () {
       var isCancelled = false;
-      var controller =
-          StreamController<int>(onCancel: () => isCancelled = true);
+      var controller = StreamController<int>(
+        onCancel: () => isCancelled = true,
+      );
       var transformed = controller.stream.transform(closer);
 
       expect(isCancelled, isFalse);
@@ -67,8 +72,10 @@ void main() {
     test('forwards errors from cancel', () {
       var controller = StreamController<int>(onCancel: () => throw 'oh no');
 
-      expect(controller.stream.transform(closer).listen(null).cancel(),
-          throwsA('oh no'));
+      expect(
+        controller.stream.transform(closer).listen(null).cancel(),
+        throwsA('oh no'),
+      );
     });
   });
 
@@ -83,8 +90,9 @@ void main() {
 
     test('the inner subscription is canceled once the closer is closed', () {
       var isCancelled = false;
-      var controller =
-          StreamController<int>(onCancel: () => isCancelled = true);
+      var controller = StreamController<int>(
+        onCancel: () => isCancelled = true,
+      );
 
       expect(controller.stream.transform(closer), emitsDone);
       expect(closer.close(), completes);
@@ -98,18 +106,24 @@ void main() {
       expect(closer.close(), throwsA('oh no'));
     });
 
-    test('closer.close() works even if a stream has already completed',
-        () async {
-      expect(await createStream().transform(closer).toList(),
-          equals([1, 2, 3, 4]));
-      expect(closer.close(), completes);
-    });
+    test(
+      'closer.close() works even if a stream has already completed',
+      () async {
+        expect(
+          await createStream().transform(closer).toList(),
+          equals([1, 2, 3, 4]),
+        );
+        expect(closer.close(), completes);
+      },
+    );
 
-    test('closer.close() works even if a stream has already been canceled',
-        () async {
-      createStream().transform(closer).listen(null).cancel();
-      expect(closer.close(), completes);
-    });
+    test(
+      'closer.close() works even if a stream has already been canceled',
+      () async {
+        createStream().transform(closer).listen(null).cancel();
+        expect(closer.close(), completes);
+      },
+    );
 
     group('but listened afterwards', () {
       test('the output stream immediately emits done', () {
@@ -121,8 +135,9 @@ void main() {
       test(
           'the underlying subscription is never listened if the stream is '
           'never listened', () async {
-        var controller =
-            StreamController<int>(onListen: expectAsync0(() {}, count: 0));
+        var controller = StreamController<int>(
+          onListen: expectAsync0(() {}, count: 0),
+        );
         controller.stream.transform(closer);
 
         expect(closer.close(), completes);
@@ -134,7 +149,9 @@ void main() {
           'the underlying subscription is listened and then canceled once the '
           'stream is listened', () {
         var controller = StreamController<int>(
-            onListen: expectAsync0(() {}), onCancel: expectAsync0(() {}));
+          onListen: expectAsync0(() {}),
+          onCancel: expectAsync0(() {}),
+        );
         var stream = controller.stream.transform(closer);
 
         expect(closer.close(), completes);
@@ -143,8 +160,9 @@ void main() {
       });
 
       test('Subscription.cancel() errors are silently ignored', () async {
-        var controller =
-            StreamController<int>(onCancel: expectAsync0(() => throw 'oh no'));
+        var controller = StreamController<int>(
+          onCancel: expectAsync0(() => throw 'oh no'),
+        );
         var stream = controller.stream.transform(closer);
 
         expect(closer.close(), completes);
@@ -166,8 +184,9 @@ void main() {
         'listened', () async {
       expect(closer.close(), completes);
 
-      var controller =
-          StreamController<int>(onListen: expectAsync0(() {}, count: 0));
+      var controller = StreamController<int>(
+        onListen: expectAsync0(() {}, count: 0),
+      );
       controller.stream.transform(closer);
 
       await pumpEventQueue();
@@ -179,7 +198,9 @@ void main() {
       expect(closer.close(), completes);
 
       var controller = StreamController<int>(
-          onListen: expectAsync0(() {}), onCancel: expectAsync0(() {}));
+        onListen: expectAsync0(() {}),
+        onCancel: expectAsync0(() {}),
+      );
 
       controller.stream.transform(closer).listen(null);
     });
@@ -187,8 +208,9 @@ void main() {
     test('Subscription.cancel() errors are silently ignored', () async {
       expect(closer.close(), completes);
 
-      var controller =
-          StreamController<int>(onCancel: expectAsync0(() => throw 'oh no'));
+      var controller = StreamController<int>(
+        onCancel: expectAsync0(() => throw 'oh no'),
+      );
 
       controller.stream.transform(closer).listen(null);
 

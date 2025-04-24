@@ -79,16 +79,22 @@ void main() {
           var cancelCompleter = Completer<void>();
           var source = createErrorStream(cancelCompleter);
           onCancel = cancelCompleter.future;
-          var sourceSubscription =
-              source.listen(null, cancelOnError: sourceCancels);
+          var sourceSubscription = source.listen(
+            null,
+            cancelOnError: sourceCancels,
+          );
           subscriptionStream = SubscriptionStream<int>(sourceSubscription);
         });
 
         test('- subscriptionStream: no', () async {
           var done = Completer<void>();
           var events = [];
-          subscriptionStream.listen(events.add,
-              onError: events.add, onDone: done.complete, cancelOnError: false);
+          subscriptionStream.listen(
+            events.add,
+            onError: events.add,
+            onDone: done.complete,
+            cancelOnError: false,
+          );
           var expected = [1, 2, 'To err is divine!'];
           if (sourceCancels) {
             await onCancel;
@@ -109,13 +115,15 @@ void main() {
         test('- subscriptionStream: yes', () async {
           var completer = Completer<void>();
           var events = <Object?>[];
-          subscriptionStream.listen(events.add,
-              onError: (Object? value) {
-                events.add(value);
-                completer.complete();
-              },
-              onDone: () => throw 'should not happen',
-              cancelOnError: true);
+          subscriptionStream.listen(
+            events.add,
+            onError: (Object? value) {
+              events.add(value);
+              completer.complete();
+            },
+            onDone: () => throw 'should not happen',
+            cancelOnError: true,
+          );
           await completer.future;
           await flushMicrotasks();
           expect(events, [1, 2, 'To err is divine!']);
@@ -127,22 +135,30 @@ void main() {
       group(cancelOnError ? 'yes' : 'no', () {
         test('- no error, value goes to asFuture', () async {
           var stream = createStream();
-          var sourceSubscription =
-              stream.listen(null, cancelOnError: cancelOnError);
+          var sourceSubscription = stream.listen(
+            null,
+            cancelOnError: cancelOnError,
+          );
           var subscriptionStream = SubscriptionStream(sourceSubscription);
-          var subscription =
-              subscriptionStream.listen(null, cancelOnError: cancelOnError);
+          var subscription = subscriptionStream.listen(
+            null,
+            cancelOnError: cancelOnError,
+          );
           expect(subscription.asFuture(42), completion(42));
         });
 
         test('- error goes to asFuture', () async {
           var stream = createErrorStream();
-          var sourceSubscription =
-              stream.listen(null, cancelOnError: cancelOnError);
+          var sourceSubscription = stream.listen(
+            null,
+            cancelOnError: cancelOnError,
+          );
           var subscriptionStream = SubscriptionStream(sourceSubscription);
 
-          var subscription =
-              subscriptionStream.listen(null, cancelOnError: cancelOnError);
+          var subscription = subscriptionStream.listen(
+            null,
+            cancelOnError: cancelOnError,
+          );
           expect(subscription.asFuture(), throwsA(anything));
         });
       });
@@ -160,10 +176,12 @@ void main() {
         completer.complete();
       }
 
-      subscriptionStream.listen((_) {},
-          onError: f,
-          onDone: () => throw 'should not happen',
-          cancelOnError: true);
+      subscriptionStream.listen(
+        (_) {},
+        onError: f,
+        onDone: () => throw 'should not happen',
+        cancelOnError: true,
+      );
       await completer.future;
       await flushMicrotasks();
     });
@@ -174,12 +192,14 @@ void main() {
       var sourceSubscription = stream.listen(null, cancelOnError: true);
       var subscriptionStream = SubscriptionStream(sourceSubscription);
 
-      subscriptionStream.listen((_) {},
-          onError: (error, stackTrace) {
-            completer.complete();
-          },
-          onDone: () => throw 'should not happen',
-          cancelOnError: true);
+      subscriptionStream.listen(
+        (_) {},
+        onError: (error, stackTrace) {
+          completer.complete();
+        },
+        onDone: () => throw 'should not happen',
+        cancelOnError: true,
+      );
       await completer.future;
       await flushMicrotasks();
     });
@@ -194,10 +214,12 @@ void main() {
         completer.complete();
       }
 
-      subscriptionStream.listen((_) {},
-          onError: f,
-          onDone: () => throw 'should not happen',
-          cancelOnError: true);
+      subscriptionStream.listen(
+        (_) {},
+        onError: f,
+        onDone: () => throw 'should not happen',
+        cancelOnError: true,
+      );
       await completer.future;
       await flushMicrotasks();
     });
@@ -208,12 +230,14 @@ void main() {
       var sourceSubscription = stream.listen(null, cancelOnError: true);
       var subscriptionStream = SubscriptionStream(sourceSubscription);
 
-      subscriptionStream.listen((_) {},
-          onError: (error) {
-            completer.complete();
-          },
-          onDone: () => throw 'should not happen',
-          cancelOnError: true);
+      subscriptionStream.listen(
+        (_) {},
+        onError: (error) {
+          completer.complete();
+        },
+        onDone: () => throw 'should not happen',
+        cancelOnError: true,
+      );
       await completer.future;
       await flushMicrotasks();
     });

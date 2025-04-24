@@ -18,15 +18,21 @@ void main() {
   group('fromStreamTransformer', () {
     test('transforms data events', () {
       var transformer = StreamSinkTransformer.fromStreamTransformer(
-          StreamTransformer.fromHandlers(handleData: (int i, sink) {
-        sink.add(i * 2);
-      }));
+        StreamTransformer.fromHandlers(
+          handleData: (int i, sink) {
+            sink.add(i * 2);
+          },
+        ),
+      );
       var sink = transformer.bind(controller.sink);
 
       var results = [];
-      controller.stream.listen(results.add, onDone: expectAsync0(() {
-        expect(results, equals([2, 4, 6]));
-      }));
+      controller.stream.listen(
+        results.add,
+        onDone: expectAsync0(() {
+          expect(results, equals([2, 4, 6]));
+        }),
+      );
 
       sink.add(1);
       sink.add(2);
@@ -36,18 +42,24 @@ void main() {
 
     test('transforms error events', () {
       var transformer = StreamSinkTransformer.fromStreamTransformer(
-          StreamTransformer.fromHandlers(handleError: (i, stackTrace, sink) {
-        sink.addError((i as num) * 2, stackTrace);
-      }));
+        StreamTransformer.fromHandlers(
+          handleError: (i, stackTrace, sink) {
+            sink.addError((i as num) * 2, stackTrace);
+          },
+        ),
+      );
       var sink = transformer.bind(controller.sink);
 
       var results = [];
-      controller.stream.listen(expectAsync1((_) {}, count: 0),
-          onError: (Object error, stackTrace) {
-        results.add(error);
-      }, onDone: expectAsync0(() {
-        expect(results, equals([2, 4, 6]));
-      }));
+      controller.stream.listen(
+        expectAsync1((_) {}, count: 0),
+        onError: (Object error, stackTrace) {
+          results.add(error);
+        },
+        onDone: expectAsync0(() {
+          expect(results, equals([2, 4, 6]));
+        }),
+      );
 
       sink.addError(1);
       sink.addError(2);
@@ -57,23 +69,30 @@ void main() {
 
     test('transforms done events', () {
       var transformer = StreamSinkTransformer.fromStreamTransformer(
-          StreamTransformer.fromHandlers(handleDone: (sink) {
-        sink.add(1);
-        sink.close();
-      }));
+        StreamTransformer.fromHandlers(
+          handleDone: (sink) {
+            sink.add(1);
+            sink.close();
+          },
+        ),
+      );
       var sink = transformer.bind(controller.sink);
 
       var results = [];
-      controller.stream.listen(results.add, onDone: expectAsync0(() {
-        expect(results, equals([1]));
-      }));
+      controller.stream.listen(
+        results.add,
+        onDone: expectAsync0(() {
+          expect(results, equals([1]));
+        }),
+      );
 
       sink.close();
     });
 
     test('forwards the future from inner.close', () async {
       var transformer = StreamSinkTransformer.fromStreamTransformer(
-          StreamTransformer.fromHandlers());
+        StreamTransformer.fromHandlers(),
+      );
       var innerSink = CompleterStreamSink();
       var sink = transformer.bind(innerSink);
 
@@ -96,9 +115,12 @@ void main() {
 
     test("doesn't top-level the future from inner.close", () async {
       var transformer = StreamSinkTransformer.fromStreamTransformer(
-          StreamTransformer.fromHandlers(handleData: (_, sink) {
-        sink.close();
-      }));
+        StreamTransformer.fromHandlers(
+          handleData: (_, sink) {
+            sink.close();
+          },
+        ),
+      );
       var innerSink = CompleterStreamSink();
       var sink = transformer.bind(innerSink);
 
@@ -116,16 +138,20 @@ void main() {
 
   group('fromHandlers', () {
     test('transforms data events', () {
-      var transformer =
-          StreamSinkTransformer.fromHandlers(handleData: (int i, sink) {
-        sink.add(i * 2);
-      });
+      var transformer = StreamSinkTransformer.fromHandlers(
+        handleData: (int i, sink) {
+          sink.add(i * 2);
+        },
+      );
       var sink = transformer.bind(controller.sink);
 
       var results = [];
-      controller.stream.listen(results.add, onDone: expectAsync0(() {
-        expect(results, equals([2, 4, 6]));
-      }));
+      controller.stream.listen(
+        results.add,
+        onDone: expectAsync0(() {
+          expect(results, equals([2, 4, 6]));
+        }),
+      );
 
       sink.add(1);
       sink.add(2);
@@ -135,18 +161,22 @@ void main() {
 
     test('transforms error events', () {
       var transformer = StreamSinkTransformer.fromHandlers(
-          handleError: (i, stackTrace, sink) {
-        sink.addError((i as num) * 2, stackTrace);
-      });
+        handleError: (i, stackTrace, sink) {
+          sink.addError((i as num) * 2, stackTrace);
+        },
+      );
       var sink = transformer.bind(controller.sink);
 
       var results = [];
-      controller.stream.listen(expectAsync1((_) {}, count: 0),
-          onError: (Object error, stackTrace) {
-        results.add(error);
-      }, onDone: expectAsync0(() {
-        expect(results, equals([2, 4, 6]));
-      }));
+      controller.stream.listen(
+        expectAsync1((_) {}, count: 0),
+        onError: (Object error, stackTrace) {
+          results.add(error);
+        },
+        onDone: expectAsync0(() {
+          expect(results, equals([2, 4, 6]));
+        }),
+      );
 
       sink.addError(1);
       sink.addError(2);
@@ -155,16 +185,21 @@ void main() {
     });
 
     test('transforms done events', () {
-      var transformer = StreamSinkTransformer.fromHandlers(handleDone: (sink) {
-        sink.add(1);
-        sink.close();
-      });
+      var transformer = StreamSinkTransformer.fromHandlers(
+        handleDone: (sink) {
+          sink.add(1);
+          sink.close();
+        },
+      );
       var sink = transformer.bind(controller.sink);
 
       var results = [];
-      controller.stream.listen(results.add, onDone: expectAsync0(() {
-        expect(results, equals([1]));
-      }));
+      controller.stream.listen(
+        results.add,
+        onDone: expectAsync0(() {
+          expect(results, equals([1]));
+        }),
+      );
 
       sink.close();
     });
@@ -192,10 +227,11 @@ void main() {
     });
 
     test("doesn't top-level the future from inner.close", () async {
-      var transformer =
-          StreamSinkTransformer.fromHandlers(handleData: (_, sink) {
-        sink.close();
-      });
+      var transformer = StreamSinkTransformer.fromHandlers(
+        handleData: (_, sink) {
+          sink.close();
+        },
+      );
       var innerSink = CompleterStreamSink();
       var sink = transformer.bind(innerSink);
 

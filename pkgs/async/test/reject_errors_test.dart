@@ -74,8 +74,9 @@ void main() {
 
     test('cancels the current subscription', () async {
       var inputCanceled = false;
-      var inputController =
-          StreamController(onCancel: () => inputCanceled = true);
+      var inputController = StreamController(
+        onCancel: () => inputCanceled = true,
+      );
 
       var transformed = controller.sink.rejectErrors()
         ..addStream(inputController.stream);
@@ -124,7 +125,8 @@ void main() {
 
       var addStreamCancelled = false;
       transformed.addStream(
-          StreamController(onCancel: () => addStreamCancelled = true).stream);
+        StreamController(onCancel: () => addStreamCancelled = true).stream,
+      );
       await pumpEventQueue();
       expect(addStreamCancelled, isFalse);
 
@@ -138,22 +140,27 @@ void main() {
       var transformed = NullStreamSink(done: completer.future).rejectErrors();
 
       expect(
-          transformed.addStream(
-              StreamController(onCancel: () => throw 'oh no').stream),
-          throwsA('oh no'));
+        transformed.addStream(
+          StreamController(onCancel: () => throw 'oh no').stream,
+        ),
+        throwsA('oh no'),
+      );
       completer.complete();
     });
 
     group('forwards its error', () {
       test('through done', () async {
-        expect(NullStreamSink(done: Future.error('oh no')).rejectErrors().done,
-            throwsA('oh no'));
+        expect(
+          NullStreamSink(done: Future.error('oh no')).rejectErrors().done,
+          throwsA('oh no'),
+        );
       });
 
       test('through close', () async {
         expect(
-            NullStreamSink(done: Future.error('oh no')).rejectErrors().close(),
-            throwsA('oh no'));
+          NullStreamSink(done: Future.error('oh no')).rejectErrors().close(),
+          throwsA('oh no'),
+        );
       });
     });
   });

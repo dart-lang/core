@@ -117,13 +117,21 @@ void testCase({
     final keyBytes = bytesFromHexString(key);
     final dataBytes = bytesFromHexString(data);
 
-    expect(Hmac(sha224, keyBytes).convert(dataBytes).toString(),
-        truncation ? startsWith(hmacSha224) : hmacSha224);
-    expect(Hmac(sha256, keyBytes).convert(dataBytes).toString(),
-        truncation ? startsWith(hmacSha256) : hmacSha256);
-    expect(Hmac(sha384, keyBytes).convert(dataBytes).toString(),
-        truncation ? startsWith(hmacSha384) : hmacSha384);
-    expect(Hmac(sha512, keyBytes).convert(dataBytes).toString(),
-        truncation ? startsWith(hmacSha512) : hmacSha512);
+    expect(
+      Hmac(sha224, keyBytes).convert(dataBytes).toString(),
+      truncation ? startsWith(hmacSha224) : hmacSha224,
+    );
+    expect(
+      Hmac(sha256, keyBytes).convert(dataBytes).toString(),
+      truncation ? startsWith(hmacSha256) : hmacSha256,
+    );
+    expect(
+      Hmac(sha384, keyBytes).convert(dataBytes).toString(),
+      truncation ? startsWith(hmacSha384) : hmacSha384,
+    );
+    expect(
+      Hmac(sha512, keyBytes).convert(dataBytes).toString(),
+      truncation ? startsWith(hmacSha512) : hmacSha512,
+    );
   });
 }

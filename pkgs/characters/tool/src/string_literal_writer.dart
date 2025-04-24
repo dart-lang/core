@@ -16,9 +16,12 @@ class StringLiteralWriter {
 
   static final Map<int, String> _escapeCache = {};
 
-  StringLiteralWriter(this.buffer,
-      {int padding = 0, int lineLength = 80, bool Function(int)? escape})
-      : _padding = ' ' * padding,
+  StringLiteralWriter(
+    this.buffer, {
+    int padding = 0,
+    int lineLength = 80,
+    bool Function(int)? escape,
+  })  : _padding = ' ' * padding,
         _lineLength = lineLength,
         _escape = escape ?? _defaultEscape;
 

@@ -12,8 +12,11 @@ import 'utils.dart';
 /// The return values of [key] are used as the keys and the return values of
 /// [value] are used as the values for the new map.
 @Deprecated('Use Map.map or a for loop in a Map literal.')
-Map<K2, V2> mapMap<K1, V1, K2, V2>(Map<K1, V1> map,
-    {K2 Function(K1, V1)? key, V2 Function(K1, V1)? value}) {
+Map<K2, V2> mapMap<K1, V1, K2, V2>(
+  Map<K1, V1> map, {
+  K2 Function(K1, V1)? key,
+  V2 Function(K1, V1)? value,
+}) {
   var keyFn = key ?? (mapKey, _) => mapKey as K2;
   var valueFn = value ?? (_, mapValue) => mapValue as V2;
 
@@ -29,8 +32,11 @@ Map<K2, V2> mapMap<K1, V1, K2, V2>(Map<K1, V1> map,
 /// If there are keys that occur in both maps, the [value] function is used to
 /// select the value that goes into the resulting map based on the two original
 /// values. If [value] is omitted, the value from [map2] is used.
-Map<K, V> mergeMaps<K, V>(Map<K, V> map1, Map<K, V> map2,
-    {V Function(V, V)? value}) {
+Map<K, V> mergeMaps<K, V>(
+  Map<K, V> map1,
+  Map<K, V> map2, {
+  V Function(V, V)? value,
+}) {
   var result = Map<K, V>.of(map1);
   if (value == null) return result..addAll(map2);
 
@@ -45,8 +51,9 @@ Map<K, V> mergeMaps<K, V>(Map<K, V> map1, Map<K, V> map2,
 ///
 /// Returns a map from keys computed by [key] to the last value for which [key]
 /// returns that key.
-Map<T, S> lastBy<S, T>(Iterable<S> values, T Function(S) key) =>
-    {for (var element in values) key(element): element};
+Map<T, S> lastBy<S, T>(Iterable<S> values, T Function(S) key) => {
+      for (var element in values) key(element): element,
+    };
 
 /// Groups the elements in [values] by the value returned by [key].
 ///
@@ -69,8 +76,11 @@ Map<T, List<S>> groupBy<S, T>(Iterable<S> values, T Function(S) key) {
 /// are compared using their [Comparable.compareTo].
 ///
 /// Returns `null` if [values] is empty.
-S? minBy<S, T>(Iterable<S> values, T Function(S) orderBy,
-    {int Function(T, T)? compare}) {
+S? minBy<S, T>(
+  Iterable<S> values,
+  T Function(S) orderBy, {
+  int Function(T, T)? compare,
+}) {
   compare ??= defaultCompare;
 
   S? minValue;
@@ -93,8 +103,11 @@ S? minBy<S, T>(Iterable<S> values, T Function(S) orderBy,
 /// are compared using their [Comparable.compareTo].
 ///
 /// Returns `null` if [values] is empty.
-S? maxBy<S, T>(Iterable<S> values, T Function(S) orderBy,
-    {int Function(T, T)? compare}) {
+S? maxBy<S, T>(
+  Iterable<S> values,
+  T Function(S) orderBy, {
+  int Function(T, T)? compare,
+}) {
   compare ??= defaultCompare;
 
   S? maxValue;
