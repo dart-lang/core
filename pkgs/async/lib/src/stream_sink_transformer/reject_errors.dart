@@ -95,8 +95,11 @@ class RejectErrorsSink<T> implements StreamSink<T> {
     if (_canceled) return Future.value();
 
     var addStreamCompleter = _addStreamCompleter = Completer.sync();
-    _addStreamSubscription = stream.listen(_inner.add,
-        onError: _addError, onDone: addStreamCompleter.complete);
+    _addStreamSubscription = stream.listen(
+      _inner.add,
+      onError: _addError,
+      onDone: addStreamCompleter.complete,
+    );
     return addStreamCompleter.future.then((_) {
       _addStreamCompleter = null;
       _addStreamSubscription = null;

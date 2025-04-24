@@ -17,27 +17,29 @@ void main() {
     splitter = StreamSplitter<int>(controller.stream);
   });
 
-  test("a branch that's created before the stream starts to replay it",
-      () async {
-    var events = [];
-    var branch = splitter.split();
-    splitter.close();
-    branch.listen(events.add);
+  test(
+    "a branch that's created before the stream starts to replay it",
+    () async {
+      var events = [];
+      var branch = splitter.split();
+      splitter.close();
+      branch.listen(events.add);
 
-    controller.add(1);
-    await flushMicrotasks();
-    expect(events, equals([1]));
+      controller.add(1);
+      await flushMicrotasks();
+      expect(events, equals([1]));
 
-    controller.add(2);
-    await flushMicrotasks();
-    expect(events, equals([1, 2]));
+      controller.add(2);
+      await flushMicrotasks();
+      expect(events, equals([1, 2]));
 
-    controller.add(3);
-    await flushMicrotasks();
-    expect(events, equals([1, 2, 3]));
+      controller.add(3);
+      await flushMicrotasks();
+      expect(events, equals([1, 2, 3]));
 
-    controller.close();
-  });
+      controller.close();
+    },
+  );
 
   test('a branch replays error events as well as data events', () {
     var branch = splitter.split();
@@ -50,46 +52,53 @@ void main() {
 
     var count = 0;
     branch.listen(
-        expectAsync1((value) {
-          expect(count, anyOf(0, 2));
-          expect(value, equals(count + 1));
-          count++;
-        }, count: 2), onError: expectAsync1((error) {
-      expect(count, equals(1));
-      expect(error, equals('error'));
-      count++;
-    }), onDone: expectAsync0(() {
-      expect(count, equals(3));
-    }));
+      expectAsync1((value) {
+        expect(count, anyOf(0, 2));
+        expect(value, equals(count + 1));
+        count++;
+      }, count: 2),
+      onError: expectAsync1((error) {
+        expect(count, equals(1));
+        expect(error, equals('error'));
+        count++;
+      }),
+      onDone: expectAsync0(() {
+        expect(count, equals(3));
+      }),
+    );
   });
 
-  test("a branch that's created in the middle of a stream replays it",
-      () async {
-    controller.add(1);
-    controller.add(2);
-    await flushMicrotasks();
+  test(
+    "a branch that's created in the middle of a stream replays it",
+    () async {
+      controller.add(1);
+      controller.add(2);
+      await flushMicrotasks();
 
-    var branch = splitter.split();
-    splitter.close();
+      var branch = splitter.split();
+      splitter.close();
 
-    controller.add(3);
-    controller.add(4);
-    controller.close();
+      controller.add(3);
+      controller.add(4);
+      controller.close();
 
-    expect(branch.toList(), completion(equals([1, 2, 3, 4])));
-  });
+      expect(branch.toList(), completion(equals([1, 2, 3, 4])));
+    },
+  );
 
-  test("a branch that's created after the stream is finished replays it",
-      () async {
-    controller.add(1);
-    controller.add(2);
-    controller.add(3);
-    controller.close();
-    await flushMicrotasks();
+  test(
+    "a branch that's created after the stream is finished replays it",
+    () async {
+      controller.add(1);
+      controller.add(2);
+      controller.add(3);
+      controller.close();
+      await flushMicrotasks();
 
-    expect(splitter.split().toList(), completion(equals([1, 2, 3])));
-    splitter.close();
-  });
+      expect(splitter.split().toList(), completion(equals([1, 2, 3])));
+      splitter.close();
+    },
+  );
 
   test('creates single-subscription branches', () async {
     var branch = splitter.split();

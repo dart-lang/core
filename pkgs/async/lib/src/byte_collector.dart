@@ -28,11 +28,13 @@ Future<Uint8List> collectBytes(Stream<List<int>> source) {
 /// If any of the input data are not valid bytes, they will be truncated to
 /// an eight-bit unsigned value in the resulting list.
 CancelableOperation<Uint8List> collectBytesCancelable(
-    Stream<List<int>> source) {
+  Stream<List<int>> source,
+) {
   return _collectBytes(
-      source,
-      (subscription, result) => CancelableOperation.fromFuture(result,
-          onCancel: subscription.cancel));
+    source,
+    (subscription, result) =>
+        CancelableOperation.fromFuture(result, onCancel: subscription.cancel),
+  );
 }
 
 /// Generalization over [collectBytes] and [collectBytesCancelable].
@@ -40,13 +42,19 @@ CancelableOperation<Uint8List> collectBytesCancelable(
 /// Performs all the same operations, but the final result is created
 /// by the [result] function, which has access to the stream subscription
 /// so it can cancel the operation.
-T _collectBytes<T>(Stream<List<int>> source,
-    T Function(StreamSubscription<List<int>>, Future<Uint8List>) result) {
+T _collectBytes<T>(
+  Stream<List<int>> source,
+  T Function(StreamSubscription<List<int>>, Future<Uint8List>) result,
+) {
   var bytes = BytesBuilder(copy: false);
   var completer = Completer<Uint8List>.sync();
-  var subscription =
-      source.listen(bytes.add, onError: completer.completeError, onDone: () {
-    completer.complete(bytes.takeBytes());
-  }, cancelOnError: true);
+  var subscription = source.listen(
+    bytes.add,
+    onError: completer.completeError,
+    onDone: () {
+      completer.complete(bytes.takeBytes());
+    },
+    cancelOnError: true,
+  );
   return result(subscription, completer.future);
 }

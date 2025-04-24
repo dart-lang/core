@@ -324,10 +324,9 @@ void main() {
   });
 
   test('readChunk() until exact end of stream', () async {
-    final stream = Stream.fromIterable(Iterable.generate(
-      10,
-      (_) => Uint8List(512),
-    ));
+    final stream = Stream.fromIterable(
+      Iterable.generate(10, (_) => Uint8List(512)),
+    );
 
     final r = ChunkedStreamReader(stream);
     while (true) {

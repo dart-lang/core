@@ -23,7 +23,8 @@ class DelegatingEventSink<T> implements EventSink<T> {
   /// [add] may throw a [TypeError] if the argument type doesn't match the
   /// reified type of [sink].
   @Deprecated(
-      'Use StreamController<T>(sync: true)..stream.cast<S>().pipe(sink)')
+    'Use StreamController<T>(sync: true)..stream.cast<S>().pipe(sink)',
+  )
   static EventSink<T> typed<T>(EventSink sink) =>
       sink is EventSink<T> ? sink : DelegatingEventSink._(sink);
 

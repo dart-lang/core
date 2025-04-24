@@ -21,7 +21,8 @@ class DelegatingSink<T> implements Sink<T> {
   /// throw a [TypeError] if the argument type doesn't match the reified type of
   /// [sink].
   @Deprecated(
-      'Use StreamController<T>(sync: true)..stream.cast<S>().pipe(sink)')
+    'Use StreamController<T>(sync: true)..stream.cast<S>().pipe(sink)',
+  )
   static Sink<T> typed<T>(Sink sink) =>
       sink is Sink<T> ? sink : DelegatingSink._(sink);
 

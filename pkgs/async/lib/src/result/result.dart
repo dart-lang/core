@@ -44,7 +44,8 @@ abstract class Result<T> {
   static const StreamSinkTransformer<Object, Result<Object>>
       captureSinkTransformer =
       StreamSinkTransformer<Object, Result<Object>>.fromStreamTransformer(
-          CaptureStreamTransformer<Object>());
+    CaptureStreamTransformer<Object>(),
+  );
 
   /// A sink transformer that releases result events.
   ///
@@ -53,7 +54,8 @@ abstract class Result<T> {
   static const StreamSinkTransformer<Result<Object>, Object>
       releaseSinkTransformer =
       StreamSinkTransformer<Result<Object>, Object>.fromStreamTransformer(
-          ReleaseStreamTransformer<Object>());
+    ReleaseStreamTransformer<Object>(),
+  );
 
   /// Creates a `Result` with the result of calling [computation].
   ///

@@ -29,8 +29,10 @@ class CancelableOperation<T> {
   ///
   /// Calling this constructor is equivalent to creating a
   /// [CancelableCompleter] and completing it with [result].
-  factory CancelableOperation.fromFuture(Future<T> result,
-          {FutureOr Function()? onCancel}) =>
+  factory CancelableOperation.fromFuture(
+    Future<T> result, {
+    FutureOr Function()? onCancel,
+  }) =>
       (CancelableCompleter<T>(onCancel: onCancel)..complete(result)).operation;
 
   /// Creates a [CancelableOperation] which completes to [value].
@@ -51,7 +53,8 @@ class CancelableOperation<T> {
   /// subscription will be canceled (unlike
   /// `CancelableOperation.fromFuture(subscription.asFuture())`).
   static CancelableOperation<void> fromSubscription(
-      StreamSubscription<void> subscription) {
+    StreamSubscription<void> subscription,
+  ) {
     var completer = CancelableCompleter<void>(onCancel: subscription.cancel);
     subscription.onDone(completer.complete);
     subscription.onError((Object error, StackTrace stackTrace) {
@@ -70,7 +73,8 @@ class CancelableOperation<T> {
   /// new operation is cancelled, all the [operations] are cancelled as
   /// well.
   static CancelableOperation<T> race<T>(
-      Iterable<CancelableOperation<T>> operations) {
+    Iterable<CancelableOperation<T>> operations,
+  ) {
     operations = operations.toList();
     if (operations.isEmpty) {
       throw ArgumentError('May not be empty', 'operations');
@@ -83,20 +87,25 @@ class CancelableOperation<T> {
       done = true;
       return Future.wait([
         for (var operation in operations)
-          if (!operation.isCanceled) operation.cancel()
+          if (!operation.isCanceled) operation.cancel(),
       ]);
     }
 
     var completer = CancelableCompleter<T>(onCancel: cancelAll);
     for (var operation in operations) {
-      operation.then((value) {
-        if (!done) cancelAll().whenComplete(() => completer.complete(value));
-      }, onError: (error, stackTrace) {
-        if (!done) {
-          cancelAll()
-              .whenComplete(() => completer.completeError(error, stackTrace));
-        }
-      }, propagateCancel: false);
+      operation.then(
+        (value) {
+          if (!done) cancelAll().whenComplete(() => completer.complete(value));
+        },
+        onError: (error, stackTrace) {
+          if (!done) {
+            cancelAll().whenComplete(
+              () => completer.completeError(error, stackTrace),
+            );
+          }
+        },
+        propagateCancel: false,
+      );
     }
 
     return completer.operation;
@@ -114,16 +123,21 @@ class CancelableOperation<T> {
   /// This is like `value.asStream()`, but if a subscription to the stream is
   /// canceled, this operation is as well.
   Stream<T> asStream() {
-    var controller =
-        StreamController<T>(sync: true, onCancel: _completer._cancel);
+    var controller = StreamController<T>(
+      sync: true,
+      onCancel: _completer._cancel,
+    );
 
-    _completer._inner?.future.then((value) {
-      controller.add(value);
-      controller.close();
-    }, onError: (Object error, StackTrace stackTrace) {
-      controller.addError(error, stackTrace);
-      controller.close();
-    });
+    _completer._inner?.future.then(
+      (value) {
+        controller.add(value);
+        controller.close();
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        controller.addError(error, stackTrace);
+        controller.close();
+      },
+    );
     return controller.stream;
   }
 
@@ -172,24 +186,28 @@ class CancelableOperation<T> {
   /// operation is canceled as well. Pass `false` if there are multiple
   /// listeners on this operation and canceling the [onValue], [onError], and
   /// [onCancel] callbacks should not cancel the other listeners.
-  CancelableOperation<R> then<R>(FutureOr<R> Function(T) onValue,
-          {FutureOr<R> Function(Object, StackTrace)? onError,
-          FutureOr<R> Function()? onCancel,
-          bool propagateCancel = true}) =>
-      thenOperation<R>((value, completer) {
-        completer.complete(onValue(value));
-      },
-          onError: onError == null
-              ? null
-              : (error, stackTrace, completer) {
-                  completer.complete(onError(error, stackTrace));
-                },
-          onCancel: onCancel == null
-              ? null
-              : (completer) {
-                  completer.complete(onCancel());
-                },
-          propagateCancel: propagateCancel);
+  CancelableOperation<R> then<R>(
+    FutureOr<R> Function(T) onValue, {
+    FutureOr<R> Function(Object, StackTrace)? onError,
+    FutureOr<R> Function()? onCancel,
+    bool propagateCancel = true,
+  }) =>
+      thenOperation<R>(
+        (value, completer) {
+          completer.complete(onValue(value));
+        },
+        onError: onError == null
+            ? null
+            : (error, stackTrace, completer) {
+                completer.complete(onError(error, stackTrace));
+              },
+        onCancel: onCancel == null
+            ? null
+            : (completer) {
+                completer.complete(onCancel());
+              },
+        propagateCancel: propagateCancel,
+      );
 
   /// Creates a new cancelable operation to be completed when this operation
   /// completes normally or as an error, or is cancelled.
@@ -222,13 +240,15 @@ class CancelableOperation<T> {
   /// listeners on this operation and canceling the [onValue], [onError], and
   /// [onCancel] callbacks should not cancel the other listeners.
   CancelableOperation<R> thenOperation<R>(
-      FutureOr<void> Function(T, CancelableCompleter<R>) onValue,
-      {FutureOr<void> Function(Object, StackTrace, CancelableCompleter<R>)?
-          onError,
-      FutureOr<void> Function(CancelableCompleter<R>)? onCancel,
-      bool propagateCancel = true}) {
+    FutureOr<void> Function(T, CancelableCompleter<R>) onValue, {
+    FutureOr<void> Function(Object, StackTrace, CancelableCompleter<R>)?
+        onError,
+    FutureOr<void> Function(CancelableCompleter<R>)? onCancel,
+    bool propagateCancel = true,
+  }) {
     final completer = CancelableCompleter<R>(
-        onCancel: propagateCancel ? _cancelIfNotCanceled : null);
+      onCancel: propagateCancel ? _cancelIfNotCanceled : null,
+    );
 
     // if `_completer._inner` completes before `completer` is cancelled
     // call `onValue` or `onError` with the result, and complete `completer`
@@ -246,25 +266,29 @@ class CancelableOperation<T> {
     // completes before `completer` is cancelled,
     // then cancel `cancelCompleter`. (Cancelling twice is safe.)
 
-    _completer._inner?.future.then<void>((value) async {
-      if (completer.isCanceled) return;
-      try {
-        await onValue(value, completer);
-      } catch (error, stack) {
-        completer.completeError(error, stack);
-      }
-    },
-        onError: onError == null
-            ? completer.completeError // Is ignored if already cancelled.
-            : (Object error, StackTrace stack) async {
-                if (completer.isCanceled) return;
-                try {
-                  await onError(error, stack, completer);
-                } catch (error2, stack2) {
-                  completer.completeErrorIfPending(
-                      error2, identical(error, error2) ? stack : stack2);
-                }
-              });
+    _completer._inner?.future.then<void>(
+      (value) async {
+        if (completer.isCanceled) return;
+        try {
+          await onValue(value, completer);
+        } catch (error, stack) {
+          completer.completeError(error, stack);
+        }
+      },
+      onError: onError == null
+          ? completer.completeError // Is ignored if already cancelled.
+          : (Object error, StackTrace stack) async {
+              if (completer.isCanceled) return;
+              try {
+                await onError(error, stack, completer);
+              } catch (error2, stack2) {
+                completer.completeErrorIfPending(
+                  error2,
+                  identical(error, error2) ? stack : stack2,
+                );
+              }
+            },
+    );
     final cancelForwarder = _CancelForwarder<R>(completer, onCancel);
     if (_completer.isCanceled) {
       cancelForwarder._forward();
@@ -430,11 +454,14 @@ class CancelableCompleter<T> {
       return;
     }
 
-    value.then((result) {
-      _completeNow()?.complete(result);
-    }, onError: (Object error, StackTrace stackTrace) {
-      _completeNow()?.completeError(error, stackTrace);
-    });
+    value.then(
+      (result) {
+        _completeNow()?.complete(result);
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        _completeNow()?.completeError(error, stackTrace);
+      },
+    );
   }
 
   /// Makes this [CancelableCompleter.operation] complete with the same result
@@ -443,8 +470,10 @@ class CancelableCompleter<T> {
   /// If [propagateCancel] is `true` (the default), and the [operation] of this
   /// completer is canceled before [result] completes, then [result] is also
   /// canceled.
-  void completeOperation(CancelableOperation<T> result,
-      {bool propagateCancel = true}) {
+  void completeOperation(
+    CancelableOperation<T> result, {
+    bool propagateCancel = true,
+  }) {
     if (!_mayComplete) throw StateError('Already completed');
     _mayComplete = false;
     if (isCanceled) {
@@ -452,14 +481,19 @@ class CancelableCompleter<T> {
       result.value.ignore();
       return;
     }
-    result.then<void>((value) {
-      _inner?.complete(
-          value); // _inner is set to null if this.operation is cancelled.
-    }, onError: (error, stack) {
-      _inner?.completeError(error, stack);
-    }, onCancel: () {
-      operation.cancel();
-    });
+    result.then<void>(
+      (value) {
+        _inner?.complete(
+          value,
+        ); // _inner is set to null if this.operation is cancelled.
+      },
+      onError: (error, stack) {
+        _inner?.completeError(error, stack);
+      },
+      onCancel: () {
+        operation.cancel();
+      },
+    );
     if (propagateCancel) {
       _cancelCompleter?.future.whenComplete(result.cancel);
     }
@@ -519,7 +553,7 @@ class CancelableCompleter<T> {
     final isFuture = toReturn is Future;
     final cancelFutures = <Future<Object?>>[
       if (isFuture) toReturn,
-      ...?_cancelForwarders?.map(_forward).nonNulls
+      ...?_cancelForwarders?.map(_forward).nonNulls,
     ];
     final results = (isFuture && cancelFutures.length == 1)
         ? [await toReturn]

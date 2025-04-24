@@ -12,8 +12,10 @@ Result<T> res<T>(T n) => Result<T>.value(n);
 Result<T> err<T>(int n) => ErrorResult('$n', someStack);
 
 /// Helper function creating an iterable of results.
-Iterable<Result<int>> results(int count,
-    {bool Function(int index)? throwWhen}) sync* {
+Iterable<Result<int>> results(
+  int count, {
+  bool Function(int index)? throwWhen,
+}) sync* {
   for (var i = 0; i < count; i++) {
     if (throwWhen != null && throwWhen(i)) {
       yield err(i);
@@ -41,17 +43,23 @@ void main() {
   });
   test('single error', () {
     expectAll(
-        Result.flattenAll<int>(results(1, throwWhen: (_) => true)), err(0));
+      Result.flattenAll<int>(results(1, throwWhen: (_) => true)),
+      err(0),
+    );
   });
   test('multiple values', () {
     expectAll(Result.flattenAll<int>(results(5)), res([0, 1, 2, 3, 4]));
   });
   test('multiple errors', () {
-    expectAll(Result.flattenAll<int>(results(5, throwWhen: (x) => x.isOdd)),
-        err(1)); // First error is result.
+    expectAll(
+      Result.flattenAll<int>(results(5, throwWhen: (x) => x.isOdd)),
+      err(1),
+    ); // First error is result.
   });
   test('error last', () {
     expectAll(
-        Result.flattenAll<int>(results(5, throwWhen: (x) => x == 4)), err(4));
+      Result.flattenAll<int>(results(5, throwWhen: (x) => x == 4)),
+      err(4),
+    );
   });
 }

@@ -15,36 +15,48 @@ void main() {
 
     test('with the same length as the iterable', () {
       expect(
-          Stream.fromIterable([1, 2, 3]).slices(3).toList(),
-          completion(equals([
-            [1, 2, 3]
-          ])));
+        Stream.fromIterable([1, 2, 3]).slices(3).toList(),
+        completion(
+          equals([
+            [1, 2, 3],
+          ]),
+        ),
+      );
     });
 
     test('with a longer length than the iterable', () {
       expect(
-          Stream.fromIterable([1, 2, 3]).slices(5).toList(),
-          completion(equals([
-            [1, 2, 3]
-          ])));
+        Stream.fromIterable([1, 2, 3]).slices(5).toList(),
+        completion(
+          equals([
+            [1, 2, 3],
+          ]),
+        ),
+      );
     });
 
     test('with a shorter length than the iterable', () {
       expect(
-          Stream.fromIterable([1, 2, 3]).slices(2).toList(),
-          completion(equals([
+        Stream.fromIterable([1, 2, 3]).slices(2).toList(),
+        completion(
+          equals([
             [1, 2],
-            [3]
-          ])));
+            [3],
+          ]),
+        ),
+      );
     });
 
     test('with length divisible by the iterable\'s', () {
       expect(
-          Stream.fromIterable([1, 2, 3, 4]).slices(2).toList(),
-          completion(equals([
+        Stream.fromIterable([1, 2, 3, 4]).slices(2).toList(),
+        completion(
+          equals([
             [1, 2],
-            [3, 4]
-          ])));
+            [3, 4],
+          ]),
+        ),
+      );
     });
 
     test('refuses negative length', () {
@@ -59,7 +71,9 @@ void main() {
   group('.firstOrNull', () {
     test('returns the first data event', () {
       expect(
-          Stream.fromIterable([1, 2, 3, 4]).firstOrNull, completion(equals(1)));
+        Stream.fromIterable([1, 2, 3, 4]).firstOrNull,
+        completion(equals(1)),
+      );
     });
 
     test('returns the first error event', () {
@@ -72,9 +86,11 @@ void main() {
 
     test('cancels the subscription after an event', () async {
       var isCancelled = false;
-      var controller = StreamController<int>(onCancel: () {
-        isCancelled = true;
-      });
+      var controller = StreamController<int>(
+        onCancel: () {
+          isCancelled = true;
+        },
+      );
       controller.add(1);
 
       await expectLater(controller.stream.firstOrNull, completion(equals(1)));
@@ -83,9 +99,11 @@ void main() {
 
     test('cancels the subscription after an error', () async {
       var isCancelled = false;
-      var controller = StreamController<int>(onCancel: () {
-        isCancelled = true;
-      });
+      var controller = StreamController<int>(
+        onCancel: () {
+          isCancelled = true;
+        },
+      );
       controller.addError('oh no');
 
       await expectLater(controller.stream.firstOrNull, throwsA('oh no'));
@@ -119,28 +137,32 @@ void main() {
         ..close();
     });
 
-    test('emits events added before and after the listenAndBuffer is listened',
-        () async {
-      var controller = StreamController<int>()
-        ..add(1)
-        ..add(2)
-        ..add(3);
-      var stream = controller.stream.listenAndBuffer();
-      expectLater(stream, emitsInOrder([1, 2, 3, 4, 5, 6, emitsDone]));
-      await pumpEventQueue();
+    test(
+      'emits events added before and after the listenAndBuffer is listened',
+      () async {
+        var controller = StreamController<int>()
+          ..add(1)
+          ..add(2)
+          ..add(3);
+        var stream = controller.stream.listenAndBuffer();
+        expectLater(stream, emitsInOrder([1, 2, 3, 4, 5, 6, emitsDone]));
+        await pumpEventQueue();
 
-      controller
-        ..add(4)
-        ..add(5)
-        ..add(6)
-        ..close();
-    });
+        controller
+          ..add(4)
+          ..add(5)
+          ..add(6)
+          ..close();
+      },
+    );
 
     test('listens as soon as listenAndBuffer() is called', () async {
       var listened = false;
-      var controller = StreamController<int>(onListen: () {
-        listened = true;
-      });
+      var controller = StreamController<int>(
+        onListen: () {
+          listened = true;
+        },
+      );
       controller.stream.listenAndBuffer();
       expect(listened, isTrue);
     });
@@ -160,10 +182,12 @@ void main() {
     test('forwards cancel', () async {
       var completer = Completer<void>();
       var canceled = false;
-      var controller = StreamController<int>(onCancel: () {
-        canceled = true;
-        return completer.future;
-      });
+      var controller = StreamController<int>(
+        onCancel: () {
+          canceled = true;
+          return completer.future;
+        },
+      );
       var stream = controller.stream.listenAndBuffer();
       expect(canceled, isFalse);
       var subscription = stream.listen(null);
