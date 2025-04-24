@@ -1,3 +1,7 @@
+## 1.4.1-wip
+
+* Run `dart format` with the new style.
+
 ## 1.4.0
 
 * Updated to use Unicode 16.0.0.

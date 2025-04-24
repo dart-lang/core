@@ -1,3 +1,7 @@
+## 6.0.1-wip
+
+- Run `dart format` with the new style.
+
 ## 6.0.0
 
 - `core`:
