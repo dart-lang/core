@@ -1,6 +1,6 @@
 ## 1.4.1-wip
 
-* Run `dart format` with the new style.
+- Run `dart format` with the new style.
 
 ## 1.4.0
 
