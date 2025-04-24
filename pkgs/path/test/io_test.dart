@@ -41,26 +41,29 @@ void main() {
       expect(path.current, io.Directory.current.path);
     });
 
-    test('uses the previous working directory if deleted', () {
-      final dir = io.Directory.current.path;
-      try {
-        final temp = io.Directory.systemTemp.createTempSync('path_test');
-        final tempPath = temp.resolveSymbolicLinksSync();
-        io.Directory.current = temp;
+    test(
+      'uses the previous working directory if deleted',
+      () {
+        final dir = io.Directory.current.path;
+        try {
+          final temp = io.Directory.systemTemp.createTempSync('path_test');
+          final tempPath = temp.resolveSymbolicLinksSync();
+          io.Directory.current = temp;
 
-        // Call "current" once so that it can be cached.
-        expect(path.normalize(path.absolute(path.current)), equals(tempPath));
+          // Call "current" once so that it can be cached.
+          expect(path.normalize(path.absolute(path.current)), equals(tempPath));
 
-        temp.deleteSync();
+          temp.deleteSync();
 
-        // Even though the directory no longer exists, no exception is thrown.
-        expect(path.normalize(path.absolute(path.current)), equals(tempPath));
-      } finally {
-        io.Directory.current = dir;
-      }
-    },
-        //TODO: Figure out why this is failing on windows and fix!
-        skip: io.Platform.isWindows ? 'Untriaged failure on Windows' : false);
+          // Even though the directory no longer exists, no exception is thrown.
+          expect(path.normalize(path.absolute(path.current)), equals(tempPath));
+        } finally {
+          io.Directory.current = dir;
+        }
+      },
+      //TODO: Figure out why this is failing on windows and fix!
+      skip: io.Platform.isWindows ? 'Untriaged failure on Windows' : false,
+    );
   });
 
   test('registers changes to the working directory', () {
@@ -68,13 +71,19 @@ void main() {
     try {
       expect(path.absolute('foo/bar'), equals(path.join(dir, 'foo/bar')));
       expect(
-          path.absolute('foo/bar'), equals(path.context.join(dir, 'foo/bar')));
+        path.absolute('foo/bar'),
+        equals(path.context.join(dir, 'foo/bar')),
+      );
 
       io.Directory.current = path.dirname(dir);
-      expect(path.normalize(path.absolute('foo/bar')),
-          equals(path.normalize(path.join(dir, '../foo/bar'))));
-      expect(path.normalize(path.absolute('foo/bar')),
-          equals(path.normalize(path.context.join(dir, '../foo/bar'))));
+      expect(
+        path.normalize(path.absolute('foo/bar')),
+        equals(path.normalize(path.join(dir, '../foo/bar'))),
+      );
+      expect(
+        path.normalize(path.absolute('foo/bar')),
+        equals(path.normalize(path.context.join(dir, '../foo/bar'))),
+      );
     } finally {
       io.Directory.current = dir;
     }
@@ -83,23 +92,32 @@ void main() {
   // Regression test for #35. This tests against the *actual* working directory
   // rather than just a custom context because we do some processing in
   // [path.current] that has clobbered the root in the past.
-  test('absolute works on root working directory', () {
-    final dir = path.current;
-    try {
-      io.Directory.current = path.rootPrefix(path.current);
+  test(
+    'absolute works on root working directory',
+    () {
+      final dir = path.current;
+      try {
+        io.Directory.current = path.rootPrefix(path.current);
 
-      expect(path.relative(path.absolute('foo/bar'), from: path.current),
-          path.relative(path.absolute('foo/bar')));
+        expect(
+          path.relative(path.absolute('foo/bar'), from: path.current),
+          path.relative(path.absolute('foo/bar')),
+        );
 
-      expect(path.normalize(path.absolute('foo/bar')),
-          equals(path.normalize(path.join(path.current, '../foo/bar'))));
+        expect(
+          path.normalize(path.absolute('foo/bar')),
+          equals(path.normalize(path.join(path.current, '../foo/bar'))),
+        );
 
-      expect(path.normalize(path.absolute('foo/bar')),
-          equals(path.normalize(path.join(path.current, '../foo/bar'))));
-    } finally {
-      io.Directory.current = dir;
-    }
-  },
-      //TODO(kevmoo): figure out why this is failing on windows and fix!
-      skip: io.Platform.isWindows ? 'Untriaged failure on Windows' : null);
+        expect(
+          path.normalize(path.absolute('foo/bar')),
+          equals(path.normalize(path.join(path.current, '../foo/bar'))),
+        );
+      } finally {
+        io.Directory.current = dir;
+      }
+    },
+    //TODO(kevmoo): figure out why this is failing on windows and fix!
+    skip: io.Platform.isWindows ? 'Untriaged failure on Windows' : null,
+  );
 }

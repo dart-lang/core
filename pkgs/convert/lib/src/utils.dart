@@ -30,8 +30,9 @@ int digitForCodeUnit(List<int> codeUnits, int index) {
   }
 
   throw FormatException(
-      'Invalid hexadecimal code unit '
-      "U+${codeUnit.toRadixString(16).padLeft(4, '0')}.",
-      codeUnits,
-      index);
+    'Invalid hexadecimal code unit '
+    "U+${codeUnit.toRadixString(16).padLeft(4, '0')}.",
+    codeUnits,
+    index,
+  );
 }

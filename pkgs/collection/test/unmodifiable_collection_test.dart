@@ -94,7 +94,9 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
 
   test('$name - expand', () {
     expect(
-        wrapped.expand((x) => [x, x]), equals(original.expand((x) => [x, x])));
+      wrapped.expand((x) => [x, x]),
+      equals(original.expand((x) => [x, x])),
+    );
   });
 
   test('$name - first', () {
@@ -109,15 +111,19 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
     if (original.isEmpty) {
       expect(() => wrapped.firstWhere((_) => true), throwsStateError);
     } else {
-      expect(wrapped.firstWhere((_) => true),
-          equals(original.firstWhere((_) => true)));
+      expect(
+        wrapped.firstWhere((_) => true),
+        equals(original.firstWhere((_) => true)),
+      );
     }
     expect(() => wrapped.firstWhere((_) => false), throwsStateError);
   });
 
   test('$name - fold', () {
-    expect(wrapped.fold(0, (dynamic x, y) => x + y),
-        equals(original.fold(0, (dynamic x, y) => x + y)));
+    expect(
+      wrapped.fold(0, (dynamic x, y) => x + y),
+      equals(original.fold(0, (dynamic x, y) => x + y)),
+    );
   });
 
   test('$name - forEach', () {
@@ -169,8 +175,10 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
     if (original.isEmpty) {
       expect(() => wrapped.lastWhere((_) => true), throwsStateError);
     } else {
-      expect(wrapped.lastWhere((_) => true),
-          equals(original.lastWhere((_) => true)));
+      expect(
+        wrapped.lastWhere((_) => true),
+        equals(original.lastWhere((_) => true)),
+      );
     }
     expect(() => wrapped.lastWhere((_) => false), throwsStateError);
   });
@@ -187,8 +195,10 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
     if (original.isEmpty) {
       expect(() => wrapped.reduce((x, y) => x + y), throwsStateError);
     } else {
-      expect(wrapped.reduce((x, y) => x + y),
-          equals(original.reduce((x, y) => x + y)));
+      expect(
+        wrapped.reduce((x, y) => x + y),
+        equals(original.reduce((x, y) => x + y)),
+      );
     }
   });
 
@@ -204,8 +214,10 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
     if (original.length != 1) {
       expect(() => wrapped.singleWhere((_) => true), throwsStateError);
     } else {
-      expect(wrapped.singleWhere((_) => true),
-          equals(original.singleWhere((_) => true)));
+      expect(
+        wrapped.singleWhere((_) => true),
+        equals(original.singleWhere((_) => true)),
+      );
     }
     expect(() => wrapped.singleWhere((_) => false), throwsStateError);
   });
@@ -217,12 +229,18 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
   });
 
   test('$name - skipWhile', () {
-    expect(wrapped.skipWhile((x) => true),
-        orderedEquals(original.skipWhile((x) => true)));
-    expect(wrapped.skipWhile((x) => false),
-        orderedEquals(original.skipWhile((x) => false)));
-    expect(wrapped.skipWhile((x) => x != 42),
-        orderedEquals(original.skipWhile((x) => x != 42)));
+    expect(
+      wrapped.skipWhile((x) => true),
+      orderedEquals(original.skipWhile((x) => true)),
+    );
+    expect(
+      wrapped.skipWhile((x) => false),
+      orderedEquals(original.skipWhile((x) => false)),
+    );
+    expect(
+      wrapped.skipWhile((x) => x != 42),
+      orderedEquals(original.skipWhile((x) => x != 42)),
+    );
   });
 
   test('$name - take', () {
@@ -232,18 +250,26 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
   });
 
   test('$name - takeWhile', () {
-    expect(wrapped.takeWhile((x) => true),
-        orderedEquals(original.takeWhile((x) => true)));
-    expect(wrapped.takeWhile((x) => false),
-        orderedEquals(original.takeWhile((x) => false)));
-    expect(wrapped.takeWhile((x) => x != 42),
-        orderedEquals(original.takeWhile((x) => x != 42)));
+    expect(
+      wrapped.takeWhile((x) => true),
+      orderedEquals(original.takeWhile((x) => true)),
+    );
+    expect(
+      wrapped.takeWhile((x) => false),
+      orderedEquals(original.takeWhile((x) => false)),
+    );
+    expect(
+      wrapped.takeWhile((x) => x != 42),
+      orderedEquals(original.takeWhile((x) => x != 42)),
+    );
   });
 
   test('$name - toList', () {
     expect(wrapped.toList(), orderedEquals(original.toList()));
-    expect(wrapped.toList(growable: false),
-        orderedEquals(original.toList(growable: false)));
+    expect(
+      wrapped.toList(growable: false),
+      orderedEquals(original.toList(growable: false)),
+    );
   });
 
   test('$name - toSet', () {
@@ -252,11 +278,17 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
 
   test('$name - where', () {
     expect(
-        wrapped.where((x) => true), orderedEquals(original.where((x) => true)));
-    expect(wrapped.where((x) => false),
-        orderedEquals(original.where((x) => false)));
-    expect(wrapped.where((x) => x != 42),
-        orderedEquals(original.where((x) => x != 42)));
+      wrapped.where((x) => true),
+      orderedEquals(original.where((x) => true)),
+    );
+    expect(
+      wrapped.where((x) => false),
+      orderedEquals(original.where((x) => false)),
+    );
+    expect(
+      wrapped.where((x) => x != 42),
+      orderedEquals(original.where((x) => x != 42)),
+    );
   });
 }
 
@@ -295,10 +327,14 @@ void testReadList(List original, List wrapped, String name) {
   test('$name - getRange', () {
     var len = original.length;
     expect(wrapped.getRange(0, len), equals(original.getRange(0, len)));
-    expect(wrapped.getRange(len ~/ 2, len),
-        equals(original.getRange(len ~/ 2, len)));
     expect(
-        wrapped.getRange(0, len ~/ 2), equals(original.getRange(0, len ~/ 2)));
+      wrapped.getRange(len ~/ 2, len),
+      equals(original.getRange(len ~/ 2, len)),
+    );
+    expect(
+      wrapped.getRange(0, len ~/ 2),
+      equals(original.getRange(0, len ~/ 2)),
+    );
   });
 
   test('$name - sublist', () {
@@ -338,7 +374,10 @@ void testNoWriteList(List<int> original, List<int> wrapped, String name) {
 
   testThrows('$name - setRange throws', () {
     wrapped.setRange(
-        0, wrapped.length, Iterable.generate(wrapped.length, (i) => i));
+      0,
+      wrapped.length,
+      Iterable.generate(wrapped.length, (i) => i),
+    );
   });
 
   testThrows('$name - setAll throws', () {
@@ -394,7 +433,10 @@ void testWriteList(List<int> original, List wrapped, String name) {
 }
 
 void testNoChangeLengthList(
-    List<int> original, List<int> wrapped, String name) {
+  List<int> original,
+  List<int> wrapped,
+  String name,
+) {
   var copy = List.of(original);
 
   void testThrows(String name, void Function() thunk) {
@@ -472,7 +514,9 @@ void testReadSet(Set<int> original, Set<int> wrapped, String name) {
     expect(wrapped.intersection({}), isEmpty);
     expect(wrapped.intersection(copy), unorderedEquals(original));
     expect(
-        wrapped.intersection({42}), Set.of(original.contains(42) ? [42] : []));
+      wrapped.intersection({42}),
+      Set.of(original.contains(42) ? [42] : []),
+    );
   });
 
   test('$name - union', () {

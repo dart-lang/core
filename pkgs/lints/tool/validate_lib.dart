@@ -9,12 +9,11 @@ import 'package:path/path.dart' as p;
 void main(List<String> args) {
   print('Validating that there are no .dart source files in lib/ ...');
 
-  final dartSourceFiles =
-      Directory('lib')
-          .listSync(recursive: true)
-          .whereType<File>()
-          .where((file) => p.extension(file.path) == '.dart')
-          .toList();
+  final dartSourceFiles = Directory('lib')
+      .listSync(recursive: true)
+      .whereType<File>()
+      .where((file) => p.extension(file.path) == '.dart')
+      .toList();
 
   if (dartSourceFiles.isEmpty) {
     print('No Dart files found.');

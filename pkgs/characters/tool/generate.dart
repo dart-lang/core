@@ -16,8 +16,12 @@ import 'src/shared.dart';
 /// Use this tool for updates, and only access `bin/generate_tables.dart` and
 /// `bin/generate_tests.dart` directly during development of those files.
 void main(List<String> args) async {
-  var flags =
-      parseArgs(args, 'generate', allowOptimize: true, allowFile: false);
+  var flags = parseArgs(
+    args,
+    'generate',
+    allowOptimize: true,
+    allowFile: false,
+  );
   if (flags.update && !await checkLicense(flags.acceptLicenseChange)) {
     stderr.writeln('EXITING');
     exit(1);
@@ -29,12 +33,21 @@ void main(List<String> args) async {
     emojiData.load(checkForUpdate: flags.update),
   ).wait;
 
-  generateTables(File(path(packageRoot, tableFile)), categories,
-      optimize: flags.optimize, dryrun: flags.dryrun, verbose: flags.verbose);
+  generateTables(
+    File(path(packageRoot, tableFile)),
+    categories,
+    optimize: flags.optimize,
+    dryrun: flags.dryrun,
+    verbose: flags.verbose,
+  );
 
-  generateTests(File(path(packageRoot, testFile)), [graphemeTests, emojiTests],
-      categories,
-      dryrun: flags.dryrun, verbose: flags.verbose);
+  generateTests(
+    File(path(packageRoot, testFile)),
+    [graphemeTests, emojiTests],
+    categories,
+    dryrun: flags.dryrun,
+    verbose: flags.verbose,
+  );
 
   if (flags.update && !flags.dryrun) {
     var version = guessVersion(await graphemeBreakPropertyData.contents);

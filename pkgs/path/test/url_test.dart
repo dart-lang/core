@@ -9,7 +9,9 @@ import 'utils.dart';
 
 void main() {
   final context = path.Context(
-      style: path.Style.url, current: 'https://dart.dev/root/path');
+    style: path.Style.url,
+    current: 'https://dart.dev/root/path',
+  );
 
   test('separator', () {
     expect(context.separator, '/');
@@ -254,35 +256,117 @@ void main() {
       expect(context.join('a', 'b', 'c', 'd', 'e'), 'a/b/c/d/e');
       expect(context.join('a', 'b', 'c', 'd', 'e', 'f'), 'a/b/c/d/e/f');
       expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g'), 'a/b/c/d/e/f/g');
-      expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
-          'a/b/c/d/e/f/g/h');
-      expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
-          'a/b/c/d/e/f/g/h/i');
-      expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
-          'a/b/c/d/e/f/g/h/i/j');
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
-          'a/b/c/d/e/f/g/h/i/j/k');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
+        'a/b/c/d/e/f/g/h',
+      );
       expect(
-          context.join(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'),
-          'a/b/c/d/e/f/g/h/i/j/k/l');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
+        'a/b/c/d/e/f/g/h/i',
+      );
       expect(
-          context.join(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
+        'a/b/c/d/e/f/g/h/i/j',
+      );
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-              'l', 'm', 'n'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
+        'a/b/c/d/e/f/g/h/i/j/k',
+      );
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-              'l', 'm', 'n', 'o'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o');
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l',
+      );
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-              'l', 'm', 'n', 'o', 'p'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p');
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m',
+      );
+      expect(
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n',
+      );
+      expect(
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o',
+      );
+      expect(
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+          'p',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p',
+      );
 
       for (final absolute in ['a:/', '/a', '//a']) {
         expect(context.join('a', absolute), absolute);
@@ -295,29 +379,40 @@ void main() {
     });
 
     test('ignores parts before an absolute path', () {
-      expect(context.join('a', 'https://dart.dev', 'b', 'c'),
-          'https://dart.dev/b/c');
+      expect(
+        context.join('a', 'https://dart.dev', 'b', 'c'),
+        'https://dart.dev/b/c',
+      );
       expect(context.join('a', 'file://', 'b', 'c'), 'file:///b/c');
       expect(context.join('a', '/', 'b', 'c'), '/b/c');
-      expect(context.join('a', '/b', 'https://dart.dev/c', 'd'),
-          'https://dart.dev/c/d');
       expect(
-          context.join('a', 'http://google.com/b', 'https://dart.dev/c', 'd'),
-          'https://dart.dev/c/d');
+        context.join('a', '/b', 'https://dart.dev/c', 'd'),
+        'https://dart.dev/c/d',
+      );
+      expect(
+        context.join('a', 'http://google.com/b', 'https://dart.dev/c', 'd'),
+        'https://dart.dev/c/d',
+      );
       expect(context.join('a', '/b', '/c', 'd'), '/c/d');
       expect(context.join('a', r'c:\b', 'c', 'd'), r'c:\b/c/d');
-      expect(context.join('a', 'package:foo/bar', 'c', 'd'),
-          r'package:foo/bar/c/d');
+      expect(
+        context.join('a', 'package:foo/bar', 'c', 'd'),
+        r'package:foo/bar/c/d',
+      );
       expect(context.join('a', r'\\b', 'c', 'd'), r'a/\\b/c/d');
     });
 
     test('preserves roots before a root-relative path', () {
-      expect(context.join('https://dart.dev', 'a', '/b', 'c'),
-          'https://dart.dev/b/c');
+      expect(
+        context.join('https://dart.dev', 'a', '/b', 'c'),
+        'https://dart.dev/b/c',
+      );
       expect(context.join('file://', 'a', '/b', 'c'), 'file:///b/c');
       expect(context.join('file://', 'a', '/b', 'c', '/d'), 'file:///d');
-      expect(context.join('package:foo/bar.dart', '/baz.dart'),
-          'package:foo/baz.dart');
+      expect(
+        context.join('package:foo/bar.dart', '/baz.dart'),
+        'package:foo/baz.dart',
+      );
     });
 
     test('ignores trailing nulls', () {
@@ -339,92 +434,126 @@ void main() {
 
     test('does not modify internal ., .., or trailing separators', () {
       expect(context.join('a/', 'b/c/'), 'a/b/c/');
-      expect(context.join('a/b/./c/..//', 'd/.././..//e/f//'),
-          'a/b/./c/..//d/.././..//e/f//');
+      expect(
+        context.join('a/b/./c/..//', 'd/.././..//e/f//'),
+        'a/b/./c/..//d/.././..//e/f//',
+      );
       expect(context.join('a/b', 'c/../../../..'), 'a/b/c/../../../..');
       expect(context.join('a', 'b${context.separator}'), 'a/b/');
     });
 
     test('treats drive letters as part of the root for file: URLs', () {
       expect(
-          context.join('file:///c:/foo/bar', '/baz/qux'), 'file:///c:/baz/qux');
+        context.join('file:///c:/foo/bar', '/baz/qux'),
+        'file:///c:/baz/qux',
+      );
       expect(
-          context.join('file:///D:/foo/bar', '/baz/qux'), 'file:///D:/baz/qux');
+        context.join('file:///D:/foo/bar', '/baz/qux'),
+        'file:///D:/baz/qux',
+      );
       expect(context.join('file:///c:/', '/baz/qux'), 'file:///c:/baz/qux');
       expect(context.join('file:///c:', '/baz/qux'), 'file:///c:/baz/qux');
-      expect(context.join('file://host/c:/foo/bar', '/baz/qux'),
-          'file://host/c:/baz/qux');
+      expect(
+        context.join('file://host/c:/foo/bar', '/baz/qux'),
+        'file://host/c:/baz/qux',
+      );
     });
 
     test(
         'treats drive letters as part of the root for file: URLs '
         'with encoded colons', () {
-      expect(context.join('file:///c%3A/foo/bar', '/baz/qux'),
-          'file:///c%3A/baz/qux');
-      expect(context.join('file:///D%3A/foo/bar', '/baz/qux'),
-          'file:///D%3A/baz/qux');
+      expect(
+        context.join('file:///c%3A/foo/bar', '/baz/qux'),
+        'file:///c%3A/baz/qux',
+      );
+      expect(
+        context.join('file:///D%3A/foo/bar', '/baz/qux'),
+        'file:///D%3A/baz/qux',
+      );
       expect(context.join('file:///c%3A/', '/baz/qux'), 'file:///c%3A/baz/qux');
       expect(context.join('file:///c%3A', '/baz/qux'), 'file:///c%3A/baz/qux');
-      expect(context.join('file://host/c%3A/foo/bar', '/baz/qux'),
-          'file://host/c%3A/baz/qux');
+      expect(
+        context.join('file://host/c%3A/foo/bar', '/baz/qux'),
+        'file://host/c%3A/baz/qux',
+      );
     });
 
     test('treats drive letters as normal components for non-file: URLs', () {
-      expect(context.join('http://foo.com/c:/foo/bar', '/baz/qux'),
-          'http://foo.com/baz/qux');
-      expect(context.join('misfile:///c:/foo/bar', '/baz/qux'),
-          'misfile:///baz/qux');
       expect(
-          context.join('filer:///c:/foo/bar', '/baz/qux'), 'filer:///baz/qux');
+        context.join('http://foo.com/c:/foo/bar', '/baz/qux'),
+        'http://foo.com/baz/qux',
+      );
+      expect(
+        context.join('misfile:///c:/foo/bar', '/baz/qux'),
+        'misfile:///baz/qux',
+      );
+      expect(
+        context.join('filer:///c:/foo/bar', '/baz/qux'),
+        'filer:///baz/qux',
+      );
     });
   });
 
   group('joinAll', () {
     test('allows more than sixteen parts', () {
       expect(
-          context.joinAll([
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f',
-            'g',
-            'h',
-            'i',
-            'j',
-            'k',
-            'l',
-            'm',
-            'n',
-            'o',
-            'p',
-            'q'
-          ]),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q');
+        context.joinAll([
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+          'p',
+          'q',
+        ]),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q',
+      );
     });
 
     test('ignores parts before an absolute path', () {
-      expect(context.joinAll(['a', 'https://dart.dev', 'b', 'c']),
-          'https://dart.dev/b/c');
+      expect(
+        context.joinAll(['a', 'https://dart.dev', 'b', 'c']),
+        'https://dart.dev/b/c',
+      );
       expect(context.joinAll(['a', 'file://', 'b', 'c']), 'file:///b/c');
       expect(context.joinAll(['a', '/', 'b', 'c']), '/b/c');
-      expect(context.joinAll(['a', '/b', 'https://dart.dev/c', 'd']),
-          'https://dart.dev/c/d');
       expect(
-          context
-              .joinAll(['a', 'http://google.com/b', 'https://dart.dev/c', 'd']),
-          'https://dart.dev/c/d');
+        context.joinAll(['a', '/b', 'https://dart.dev/c', 'd']),
+        'https://dart.dev/c/d',
+      );
+      expect(
+        context.joinAll([
+          'a',
+          'http://google.com/b',
+          'https://dart.dev/c',
+          'd',
+        ]),
+        'https://dart.dev/c/d',
+      );
       expect(context.joinAll(['a', '/b', '/c', 'd']), '/c/d');
       expect(context.joinAll(['a', r'c:\b', 'c', 'd']), r'c:\b/c/d');
-      expect(context.joinAll(['a', 'package:foo/bar', 'c', 'd']),
-          r'package:foo/bar/c/d');
+      expect(
+        context.joinAll(['a', 'package:foo/bar', 'c', 'd']),
+        r'package:foo/bar/c/d',
+      );
       expect(context.joinAll(['a', r'\\b', 'c', 'd']), r'a/\\b/c/d');
     });
 
     test('preserves roots before a root-relative path', () {
-      expect(context.joinAll(['https://dart.dev', 'a', '/b', 'c']),
-          'https://dart.dev/b/c');
+      expect(
+        context.joinAll(['https://dart.dev', 'a', '/b', 'c']),
+        'https://dart.dev/b/c',
+      );
       expect(context.joinAll(['file://', 'a', '/b', 'c']), 'file:///b/c');
       expect(context.joinAll(['file://', 'a', '/b', 'c', '/d']), 'file:///d');
     });
@@ -438,8 +567,10 @@ void main() {
       expect(context.split('foo'), equals(['foo']));
       expect(context.split('foo/bar.txt'), equals(['foo', 'bar.txt']));
       expect(context.split('foo/bar/baz'), equals(['foo', 'bar', 'baz']));
-      expect(context.split('foo/../bar/./baz'),
-          equals(['foo', '..', 'bar', '.', 'baz']));
+      expect(
+        context.split('foo/../bar/./baz'),
+        equals(['foo', '..', 'bar', '.', 'baz']),
+      );
       expect(context.split('foo//bar///baz'), equals(['foo', 'bar', 'baz']));
       expect(context.split('foo/\\/baz'), equals(['foo', '\\', 'baz']));
       expect(context.split('.'), equals(['.']));
@@ -450,10 +581,14 @@ void main() {
     });
 
     test('includes the root for absolute paths', () {
-      expect(context.split('https://dart.dev/foo/bar/baz'),
-          equals(['https://dart.dev', 'foo', 'bar', 'baz']));
-      expect(context.split('file:///foo/bar/baz'),
-          equals(['file://', 'foo', 'bar', 'baz']));
+      expect(
+        context.split('https://dart.dev/foo/bar/baz'),
+        equals(['https://dart.dev', 'foo', 'bar', 'baz']),
+      );
+      expect(
+        context.split('file:///foo/bar/baz'),
+        equals(['file://', 'foo', 'bar', 'baz']),
+      );
       expect(context.split('/foo/bar/baz'), equals(['/', 'foo', 'bar', 'baz']));
       expect(context.split('https://dart.dev/'), equals(['https://dart.dev']));
       expect(context.split('https://dart.dev'), equals(['https://dart.dev']));
@@ -468,14 +603,22 @@ void main() {
   });
 
   test('includes all queries and fragments in last segment', () {
-    expect(context.split('https://dart.dev/foo/bar/baz#42/x'),
-        equals(['https://dart.dev', 'foo', 'bar', 'baz#42/x']));
-    expect(context.split('file:///foo/bar/baz?42/x'),
-        equals(['file://', 'foo', 'bar', 'baz?42/x']));
-    expect(context.split('https://dart.dev/foo/bar/baz/#42/x'),
-        equals(['https://dart.dev', 'foo', 'bar', 'baz', '#42/x']));
-    expect(context.split('file:///foo/bar/baz/?42/x'),
-        equals(['file://', 'foo', 'bar', 'baz', '?42/x']));
+    expect(
+      context.split('https://dart.dev/foo/bar/baz#42/x'),
+      equals(['https://dart.dev', 'foo', 'bar', 'baz#42/x']),
+    );
+    expect(
+      context.split('file:///foo/bar/baz?42/x'),
+      equals(['file://', 'foo', 'bar', 'baz?42/x']),
+    );
+    expect(
+      context.split('https://dart.dev/foo/bar/baz/#42/x'),
+      equals(['https://dart.dev', 'foo', 'bar', 'baz', '#42/x']),
+    );
+    expect(
+      context.split('file:///foo/bar/baz/?42/x'),
+      equals(['file://', 'foo', 'bar', 'baz', '?42/x']),
+    );
   });
 
   group('normalize', () {
@@ -493,8 +636,10 @@ void main() {
       expect(context.normalize('C:/'), 'C:');
       expect(context.normalize(r'C:\'), r'C:\');
       expect(context.normalize(r'\\'), r'\\');
-      expect(context.normalize('a/./\xc5\u0bf8-;\u{1f085}\u{00}/c/d/../'),
-          'a/\xc5\u0bf8-;\u{1f085}\u{00}/c');
+      expect(
+        context.normalize('a/./\xc5\u0bf8-;\u{1f085}\u{00}/c/d/../'),
+        'a/\xc5\u0bf8-;\u{1f085}\u{00}/c',
+      );
       expect(context.normalize(r'a#b'), r'a');
       expect(context.normalize(r'a/b#c/d'), r'a/b');
       expect(context.normalize(r'a?b'), r'a');
@@ -535,11 +680,15 @@ void main() {
       expect(context.normalize('file:///..'), 'file://');
       expect(context.normalize('/..'), '/');
       expect(
-          context.normalize('https://dart.dev/../../..'), 'https://dart.dev');
+        context.normalize('https://dart.dev/../../..'),
+        'https://dart.dev',
+      );
       expect(context.normalize('file:///../../..'), 'file://');
       expect(context.normalize('/../../..'), '/');
-      expect(context.normalize('https://dart.dev/../../../a'),
-          'https://dart.dev/a');
+      expect(
+        context.normalize('https://dart.dev/../../../a'),
+        'https://dart.dev/a',
+      );
       expect(context.normalize('file:///../../../a'), 'file:///a');
       expect(context.normalize('/../../../a'), '/a');
       expect(context.normalize('c:/..'), 'c:');
@@ -560,14 +709,22 @@ void main() {
       expect(context.normalize('r/a/../b#c/.././/d'), 'r/b');
       expect(context.normalize('scheme:r/a/../b?c/.././/d'), 'scheme:r/b');
       expect(context.normalize('scheme:r/a/../b#c/.././/d'), 'scheme:r/b');
-      expect(context.normalize('scheme://auth/r/a/../b?c/.././/d'),
-          'scheme://auth/r/b');
-      expect(context.normalize('scheme://auth/r/a/../b#c/.././/d'),
-          'scheme://auth/r/b');
       expect(
-          context.normalize('file:///c:/r/a/../b?c/.././/d'), 'file:///c:/r/b');
+        context.normalize('scheme://auth/r/a/../b?c/.././/d'),
+        'scheme://auth/r/b',
+      );
       expect(
-          context.normalize('file:///c:/r/a/../b#c/.././/d'), 'file:///c:/r/b');
+        context.normalize('scheme://auth/r/a/../b#c/.././/d'),
+        'scheme://auth/r/b',
+      );
+      expect(
+        context.normalize('file:///c:/r/a/../b?c/.././/d'),
+        'file:///c:/r/b',
+      );
+      expect(
+        context.normalize('file:///c:/r/a/../b#c/.././/d'),
+        'file:///c:/r/b',
+      );
     });
 
     test('does not walk before root on absolute paths', () {
@@ -605,44 +762,70 @@ void main() {
     group('when canonicalizing', () {
       test('adds scheme', () {
         expect(context.canonicalize('.'), 'https://dart.dev/root/path');
-        expect(context.canonicalize('foo/bar'),
-            'https://dart.dev/root/path/foo/bar');
+        expect(
+          context.canonicalize('foo/bar'),
+          'https://dart.dev/root/path/foo/bar',
+        );
         expect(context.canonicalize('FoO'), 'https://dart.dev/root/path/FoO');
         expect(context.canonicalize('/foo'), 'https://dart.dev/foo');
-        expect(context.canonicalize('http://google.com/foo'),
-            'http://google.com/foo');
+        expect(
+          context.canonicalize('http://google.com/foo'),
+          'http://google.com/foo',
+        );
       });
 
       test('eliminates queries and fragments', () {
         // Adds scheme and path if relative.
-        expect(context.canonicalize('r/a/../b?c/.././/d'),
-            'https://dart.dev/root/path/r/b');
-        expect(context.canonicalize('r/a/../b#c/.././/d'),
-            'https://dart.dev/root/path/r/b');
+        expect(
+          context.canonicalize('r/a/../b?c/.././/d'),
+          'https://dart.dev/root/path/r/b',
+        );
+        expect(
+          context.canonicalize('r/a/../b#c/.././/d'),
+          'https://dart.dev/root/path/r/b',
+        );
         // Adds scheme if root relative.
-        expect(context.canonicalize('/r/a/../b?c/.././/d'),
-            'https://dart.dev/r/b');
-        expect(context.canonicalize('/r/a/../b#c/.././/d'),
-            'https://dart.dev/r/b');
+        expect(
+          context.canonicalize('/r/a/../b?c/.././/d'),
+          'https://dart.dev/r/b',
+        );
+        expect(
+          context.canonicalize('/r/a/../b#c/.././/d'),
+          'https://dart.dev/r/b',
+        );
         expect(context.canonicalize('scheme:r/a/../b?c/.././/d'), 'scheme:r/b');
         expect(context.canonicalize('scheme:r/a/../b#c/.././/d'), 'scheme:r/b');
-        expect(context.canonicalize('scheme://auth/r/a/../b?c/.././/d'),
-            'scheme://auth/r/b');
-        expect(context.canonicalize('scheme://auth/r/a/../b#c/.././/d'),
-            'scheme://auth/r/b');
-        expect(context.canonicalize('file:///c:/r/a/../b?c/.././/d'),
-            'file:///c:/r/b');
-        expect(context.canonicalize('file:///c:/r/a/../b#c/.././/d'),
-            'file:///c:/r/b');
+        expect(
+          context.canonicalize('scheme://auth/r/a/../b?c/.././/d'),
+          'scheme://auth/r/b',
+        );
+        expect(
+          context.canonicalize('scheme://auth/r/a/../b#c/.././/d'),
+          'scheme://auth/r/b',
+        );
+        expect(
+          context.canonicalize('file:///c:/r/a/../b?c/.././/d'),
+          'file:///c:/r/b',
+        );
+        expect(
+          context.canonicalize('file:///c:/r/a/../b#c/.././/d'),
+          'file:///c:/r/b',
+        );
       });
 
       test('case-canonicalizes scheme and authority', () {
-        expect(context.canonicalize('HTTPS://EXAMPLE.COM/FILE.EXT'),
-            'https://example.com/FILE.EXT');
         expect(
-            context.canonicalize('FILE:///C:/FILE.EXT'), 'file:///c:/FILE.EXT');
-        expect(context.canonicalize('PACKAGE:FOO//FILE.EXT'),
-            'package:foo/FILE.EXT');
+          context.canonicalize('HTTPS://EXAMPLE.COM/FILE.EXT'),
+          'https://example.com/FILE.EXT',
+        );
+        expect(
+          context.canonicalize('FILE:///C:/FILE.EXT'),
+          'file:///c:/FILE.EXT',
+        );
+        expect(
+          context.canonicalize('PACKAGE:FOO//FILE.EXT'),
+          'package:foo/FILE.EXT',
+        );
       });
     });
   });
@@ -660,7 +843,9 @@ void main() {
         expect(context.relative('https://dart.dev/root/path/a'), 'a');
         expect(context.relative('/root/path/a'), 'a');
         expect(
-            context.relative('https://dart.dev/root/path/a/b.txt'), 'a/b.txt');
+          context.relative('https://dart.dev/root/path/a/b.txt'),
+          'a/b.txt',
+        );
         expect(context.relative('/root/path/a/b.txt'), 'a/b.txt');
         expect(context.relative('https://dart.dev/root/a/b.txt'), '../a/b.txt');
         expect(context.relative('/root/a/b.txt'), '../a/b.txt');
@@ -672,15 +857,21 @@ void main() {
         expect(context.relative('https://dart.dev/root/path/a'), 'a');
         expect(context.relative('/root/path/a'), 'a');
         expect(
-            context.relative('https://dart.dev/root/path/a/b.txt'), 'a/b.txt');
+          context.relative('https://dart.dev/root/path/a/b.txt'),
+          'a/b.txt',
+        );
         expect(
-            context.relative('https://dart.dev/root/path/a/b.txt'), 'a/b.txt');
+          context.relative('https://dart.dev/root/path/a/b.txt'),
+          'a/b.txt',
+        );
         expect(context.relative('https://dart.dev/root/a/b.txt'), '../a/b.txt');
       });
 
       test('given absolute path with different hostname/protocol', () {
-        expect(context.relative(r'http://google.com/a/b'),
-            r'http://google.com/a/b');
+        expect(
+          context.relative(r'http://google.com/a/b'),
+          r'http://google.com/a/b',
+        );
         expect(context.relative(r'file:///a/b'), r'file:///a/b');
       });
 
@@ -697,21 +888,30 @@ void main() {
 
       test('is case-sensitive', () {
         expect(
-            context.relative('HtTps://dart.dev/root'), 'HtTps://dart.dev/root');
+          context.relative('HtTps://dart.dev/root'),
+          'HtTps://dart.dev/root',
+        );
         expect(
-            context.relative('https://DaRt.DeV/root'), 'https://DaRt.DeV/root');
+          context.relative('https://DaRt.DeV/root'),
+          'https://DaRt.DeV/root',
+        );
         expect(context.relative('/RoOt'), '../../RoOt');
         expect(context.relative('/rOoT/pAtH/a'), '../../rOoT/pAtH/a');
       });
 
       // Regression
       test('from root-only path', () {
-        expect(context.relative('https://dart.dev', from: 'https://dart.dev'),
-            '.');
         expect(
-            context.relative('https://dart.dev/root/path',
-                from: 'https://dart.dev'),
-            'root/path');
+          context.relative('https://dart.dev', from: 'https://dart.dev'),
+          '.',
+        );
+        expect(
+          context.relative(
+            'https://dart.dev/root/path',
+            from: 'https://dart.dev',
+          ),
+          'root/path',
+        );
       });
     });
 
@@ -772,36 +972,60 @@ void main() {
 
     test('with a root parameter', () {
       expect(context.relative('/foo/bar/baz', from: '/foo/bar'), equals('baz'));
-      expect(context.relative('/foo/bar/baz', from: 'https://dart.dev/foo/bar'),
-          equals('baz'));
-      expect(context.relative('https://dart.dev/foo/bar/baz', from: '/foo/bar'),
-          equals('baz'));
       expect(
-          context.relative('https://dart.dev/foo/bar/baz',
-              from: 'file:///foo/bar'),
-          equals('https://dart.dev/foo/bar/baz'));
+        context.relative('/foo/bar/baz', from: 'https://dart.dev/foo/bar'),
+        equals('baz'),
+      );
       expect(
-          context.relative('https://dart.dev/foo/bar/baz',
-              from: 'https://dart.dev/foo/bar'),
-          equals('baz'));
-      expect(context.relative('/foo/bar/baz', from: 'file:///foo/bar'),
-          equals('https://dart.dev/foo/bar/baz'));
-      expect(context.relative('file:///foo/bar/baz', from: '/foo/bar'),
-          equals('file:///foo/bar/baz'));
+        context.relative('https://dart.dev/foo/bar/baz', from: '/foo/bar'),
+        equals('baz'),
+      );
+      expect(
+        context.relative(
+          'https://dart.dev/foo/bar/baz',
+          from: 'file:///foo/bar',
+        ),
+        equals('https://dart.dev/foo/bar/baz'),
+      );
+      expect(
+        context.relative(
+          'https://dart.dev/foo/bar/baz',
+          from: 'https://dart.dev/foo/bar',
+        ),
+        equals('baz'),
+      );
+      expect(
+        context.relative('/foo/bar/baz', from: 'file:///foo/bar'),
+        equals('https://dart.dev/foo/bar/baz'),
+      );
+      expect(
+        context.relative('file:///foo/bar/baz', from: '/foo/bar'),
+        equals('file:///foo/bar/baz'),
+      );
 
       expect(context.relative('..', from: '/foo/bar'), equals('../../root'));
-      expect(context.relative('..', from: 'https://dart.dev/foo/bar'),
-          equals('../../root'));
-      expect(context.relative('..', from: 'file:///foo/bar'),
-          equals('https://dart.dev/root'));
+      expect(
+        context.relative('..', from: 'https://dart.dev/foo/bar'),
+        equals('../../root'),
+      );
+      expect(
+        context.relative('..', from: 'file:///foo/bar'),
+        equals('https://dart.dev/root'),
+      );
       expect(context.relative('..', from: '/foo/bar'), equals('../../root'));
 
-      expect(context.relative('https://dart.dev/foo/bar/baz', from: 'foo/bar'),
-          equals('../../../../foo/bar/baz'));
-      expect(context.relative('file:///foo/bar/baz', from: 'foo/bar'),
-          equals('file:///foo/bar/baz'));
-      expect(context.relative('/foo/bar/baz', from: 'foo/bar'),
-          equals('../../../../foo/bar/baz'));
+      expect(
+        context.relative('https://dart.dev/foo/bar/baz', from: 'foo/bar'),
+        equals('../../../../foo/bar/baz'),
+      );
+      expect(
+        context.relative('file:///foo/bar/baz', from: 'foo/bar'),
+        equals('file:///foo/bar/baz'),
+      );
+      expect(
+        context.relative('/foo/bar/baz', from: 'foo/bar'),
+        equals('../../../../foo/bar/baz'),
+      );
 
       expect(context.relative('..', from: 'foo/bar'), equals('../../..'));
     });
@@ -809,32 +1033,48 @@ void main() {
     test('with a root parameter and a relative root', () {
       final r = path.Context(style: path.Style.url, current: 'relative/root');
       expect(r.relative('/foo/bar/baz', from: '/foo/bar'), equals('baz'));
-      expect(r.relative('/foo/bar/baz', from: 'https://dart.dev/foo/bar'),
-          equals('/foo/bar/baz'));
-      expect(r.relative('https://dart.dev/foo/bar/baz', from: '/foo/bar'),
-          equals('https://dart.dev/foo/bar/baz'));
       expect(
-          r.relative('https://dart.dev/foo/bar/baz', from: 'file:///foo/bar'),
-          equals('https://dart.dev/foo/bar/baz'));
+        r.relative('/foo/bar/baz', from: 'https://dart.dev/foo/bar'),
+        equals('/foo/bar/baz'),
+      );
       expect(
-          r.relative('https://dart.dev/foo/bar/baz',
-              from: 'https://dart.dev/foo/bar'),
-          equals('baz'));
+        r.relative('https://dart.dev/foo/bar/baz', from: '/foo/bar'),
+        equals('https://dart.dev/foo/bar/baz'),
+      );
+      expect(
+        r.relative('https://dart.dev/foo/bar/baz', from: 'file:///foo/bar'),
+        equals('https://dart.dev/foo/bar/baz'),
+      );
+      expect(
+        r.relative(
+          'https://dart.dev/foo/bar/baz',
+          from: 'https://dart.dev/foo/bar',
+        ),
+        equals('baz'),
+      );
 
-      expect(r.relative('https://dart.dev/foo/bar/baz', from: 'foo/bar'),
-          equals('https://dart.dev/foo/bar/baz'));
-      expect(r.relative('file:///foo/bar/baz', from: 'foo/bar'),
-          equals('file:///foo/bar/baz'));
       expect(
-          r.relative('/foo/bar/baz', from: 'foo/bar'), equals('/foo/bar/baz'));
+        r.relative('https://dart.dev/foo/bar/baz', from: 'foo/bar'),
+        equals('https://dart.dev/foo/bar/baz'),
+      );
+      expect(
+        r.relative('file:///foo/bar/baz', from: 'foo/bar'),
+        equals('file:///foo/bar/baz'),
+      );
+      expect(
+        r.relative('/foo/bar/baz', from: 'foo/bar'),
+        equals('/foo/bar/baz'),
+      );
 
       expect(r.relative('..', from: 'foo/bar'), equals('../../..'));
     });
 
     test('from a . root', () {
       final r = path.Context(style: path.Style.url, current: '.');
-      expect(r.relative('https://dart.dev/foo/bar/baz'),
-          equals('https://dart.dev/foo/bar/baz'));
+      expect(
+        r.relative('https://dart.dev/foo/bar/baz'),
+        equals('https://dart.dev/foo/bar/baz'),
+      );
       expect(r.relative('file:///foo/bar/baz'), equals('file:///foo/bar/baz'));
       expect(r.relative('/foo/bar/baz'), equals('/foo/bar/baz'));
       expect(r.relative('foo/bar/baz'), equals('foo/bar/baz'));
@@ -847,18 +1087,25 @@ void main() {
       expect(context.isWithin('foo/bar', 'foo/bar/baz'), isTrue);
       expect(context.isWithin('foo/bar', 'foo/baz'), isFalse);
       expect(context.isWithin('foo/bar', '../path/foo/bar/baz'), isTrue);
-      expect(context.isWithin('https://dart.dev', 'https://dart.dev/foo/bar'),
-          isTrue);
       expect(
-          context.isWithin('https://dart.dev', 'http://psub.dart.dev/foo/bar'),
-          isFalse);
+        context.isWithin('https://dart.dev', 'https://dart.dev/foo/bar'),
+        isTrue,
+      );
+      expect(
+        context.isWithin('https://dart.dev', 'http://psub.dart.dev/foo/bar'),
+        isFalse,
+      );
       expect(context.isWithin('https://dart.dev', '/foo/bar'), isTrue);
       expect(context.isWithin('https://dart.dev/foo', '/foo/bar'), isTrue);
       expect(context.isWithin('https://dart.dev/foo', '/bar/baz'), isFalse);
-      expect(context.isWithin('baz', 'https://dart.dev/root/path/baz/bang'),
-          isTrue);
-      expect(context.isWithin('baz', 'https://dart.dev/root/path/bang/baz'),
-          isFalse);
+      expect(
+        context.isWithin('baz', 'https://dart.dev/root/path/baz/bang'),
+        isTrue,
+      );
+      expect(
+        context.isWithin('baz', 'https://dart.dev/root/path/bang/baz'),
+        isFalse,
+      );
     });
 
     test('complex cases', () {
@@ -872,10 +1119,14 @@ void main() {
       expect(context.isWithin('foo/..bar', 'foo/..bar/baz'), isTrue);
       expect(context.isWithin('foo/bar', 'foo/bar/baz/..'), isFalse);
       expect(context.isWithin('foo/bar', 'foo/bar/baz/../qux'), isTrue);
-      expect(context.isWithin('http://example.org/', 'http://example.com/foo'),
-          isFalse);
-      expect(context.isWithin('http://example.org/', 'https://dart.dev/foo'),
-          isFalse);
+      expect(
+        context.isWithin('http://example.org/', 'http://example.com/foo'),
+        isFalse,
+      );
+      expect(
+        context.isWithin('http://example.org/', 'https://dart.dev/foo'),
+        isFalse,
+      );
     });
 
     test('with root-relative paths', () {
@@ -892,7 +1143,9 @@ void main() {
       expect(r.isWithin('.', '../a/b/c'), isFalse);
       expect(r.isWithin('.', '../../a/foo/b/c'), isFalse);
       expect(
-          r.isWithin('https://dart.dev/', 'https://dart.dev/baz/bang'), isTrue);
+        r.isWithin('https://dart.dev/', 'https://dart.dev/baz/bang'),
+        isTrue,
+      );
       expect(r.isWithin('.', 'https://dart.dev/baz/bang'), isFalse);
     });
   });
@@ -948,46 +1201,122 @@ void main() {
       expect(context.absolute('a'), 'https://dart.dev/root/path/a');
       expect(context.absolute('a', 'b'), 'https://dart.dev/root/path/a/b');
       expect(
-          context.absolute('a', 'b', 'c'), 'https://dart.dev/root/path/a/b/c');
-      expect(context.absolute('a', 'b', 'c', 'd'),
-          'https://dart.dev/root/path/a/b/c/d');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e'),
-          'https://dart.dev/root/path/a/b/c/d/e');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f'),
-          'https://dart.dev/root/path/a/b/c/d/e/f');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j');
+        context.absolute('a', 'b', 'c'),
+        'https://dart.dev/root/path/a/b/c',
+      );
       expect(
-          context.absolute(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k');
+        context.absolute('a', 'b', 'c', 'd'),
+        'https://dart.dev/root/path/a/b/c/d',
+      );
       expect(
-          context.absolute(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l');
+        context.absolute('a', 'b', 'c', 'd', 'e'),
+        'https://dart.dev/root/path/a/b/c/d/e',
+      );
       expect(
-          context.absolute(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f'),
+        'https://dart.dev/root/path/a/b/c/d/e/f',
+      );
       expect(
-          context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-              'k', 'l', 'm', 'n'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g'),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g',
+      );
       expect(
-          context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-              'k', 'l', 'm', 'n', 'o'),
-          'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h',
+      );
+      expect(
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i',
+      );
+      expect(
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j',
+      );
+      expect(
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+        ),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+        ),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+        ),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+        ),
+        'https://dart.dev/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o',
+      );
     });
 
     test('does not add separator if a part ends in one', () {
-      expect(context.absolute('a/', 'b', 'c/', 'd'),
-          'https://dart.dev/root/path/a/b/c/d');
+      expect(
+        context.absolute('a/', 'b', 'c/', 'd'),
+        'https://dart.dev/root/path/a/b/c/d',
+      );
       expect(context.absolute(r'a\', 'b'), r'https://dart.dev/root/path/a\/b');
     });
 
@@ -995,8 +1324,10 @@ void main() {
       expect(context.absolute('a', '/b', '/c', 'd'), 'https://dart.dev/c/d');
       expect(context.absolute('a', '/b', 'file:///c', 'd'), 'file:///c/d');
       expect(context.absolute('a', r'c:\b', 'c', 'd'), r'c:\b/c/d');
-      expect(context.absolute('a', r'\\b', 'c', 'd'),
-          r'https://dart.dev/root/path/a/\\b/c/d');
+      expect(
+        context.absolute('a', r'\\b', 'c', 'd'),
+        r'https://dart.dev/root/path/a/\\b/c/d',
+      );
     });
   });
 
@@ -1040,60 +1371,90 @@ void main() {
 
   group('fromUri', () {
     test('with a URI', () {
-      expect(context.fromUri(Uri.parse('https://dart.dev/path/to/foo')),
-          'https://dart.dev/path/to/foo');
-      expect(context.fromUri(Uri.parse('https://dart.dev/path/to/foo/')),
-          'https://dart.dev/path/to/foo/');
-      expect(context.fromUri(Uri.parse('file:///path/to/foo')),
-          'file:///path/to/foo');
+      expect(
+        context.fromUri(Uri.parse('https://dart.dev/path/to/foo')),
+        'https://dart.dev/path/to/foo',
+      );
+      expect(
+        context.fromUri(Uri.parse('https://dart.dev/path/to/foo/')),
+        'https://dart.dev/path/to/foo/',
+      );
+      expect(
+        context.fromUri(Uri.parse('file:///path/to/foo')),
+        'file:///path/to/foo',
+      );
       expect(context.fromUri(Uri.parse('foo/bar')), 'foo/bar');
-      expect(context.fromUri(Uri.parse('https://dart.dev/path/to/foo%23bar')),
-          'https://dart.dev/path/to/foo%23bar');
+      expect(
+        context.fromUri(Uri.parse('https://dart.dev/path/to/foo%23bar')),
+        'https://dart.dev/path/to/foo%23bar',
+      );
       // Since the resulting "path" is also a URL, special characters should
       // remain percent-encoded in the result.
-      expect(context.fromUri(Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_')),
-          r'_%7B_%7D_%60_%5E_%20_%22_%25_');
+      expect(
+        context.fromUri(Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_')),
+        r'_%7B_%7D_%60_%5E_%20_%22_%25_',
+      );
     });
 
     test('with a string', () {
-      expect(context.fromUri('https://dart.dev/path/to/foo'),
-          'https://dart.dev/path/to/foo');
+      expect(
+        context.fromUri('https://dart.dev/path/to/foo'),
+        'https://dart.dev/path/to/foo',
+      );
     });
   });
 
   test('toUri', () {
-    expect(context.toUri('https://dart.dev/path/to/foo'),
-        Uri.parse('https://dart.dev/path/to/foo'));
-    expect(context.toUri('https://dart.dev/path/to/foo/'),
-        Uri.parse('https://dart.dev/path/to/foo/'));
+    expect(
+      context.toUri('https://dart.dev/path/to/foo'),
+      Uri.parse('https://dart.dev/path/to/foo'),
+    );
+    expect(
+      context.toUri('https://dart.dev/path/to/foo/'),
+      Uri.parse('https://dart.dev/path/to/foo/'),
+    );
     expect(context.toUri('path/to/foo/'), Uri.parse('path/to/foo/'));
     expect(
-        context.toUri('file:///path/to/foo'), Uri.parse('file:///path/to/foo'));
+      context.toUri('file:///path/to/foo'),
+      Uri.parse('file:///path/to/foo'),
+    );
     expect(context.toUri('foo/bar'), Uri.parse('foo/bar'));
-    expect(context.toUri('https://dart.dev/path/to/foo%23bar'),
-        Uri.parse('https://dart.dev/path/to/foo%23bar'));
+    expect(
+      context.toUri('https://dart.dev/path/to/foo%23bar'),
+      Uri.parse('https://dart.dev/path/to/foo%23bar'),
+    );
     // Since the input path is also a URI, special characters should already
     // be percent encoded there too.
-    expect(context.toUri(r'http://foo.com/_%7B_%7D_%60_%5E_%20_%22_%25_'),
-        Uri.parse('http://foo.com/_%7B_%7D_%60_%5E_%20_%22_%25_'));
-    expect(context.toUri(r'_%7B_%7D_%60_%5E_%20_%22_%25_'),
-        Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_'));
+    expect(
+      context.toUri(r'http://foo.com/_%7B_%7D_%60_%5E_%20_%22_%25_'),
+      Uri.parse('http://foo.com/_%7B_%7D_%60_%5E_%20_%22_%25_'),
+    );
+    expect(
+      context.toUri(r'_%7B_%7D_%60_%5E_%20_%22_%25_'),
+      Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_'),
+    );
     expect(context.toUri(''), Uri.parse(''));
   });
 
   group('prettyUri', () {
     test('with a file: URI', () {
-      expect(context.prettyUri(Uri.parse('file:///root/path/a/b')),
-          'file:///root/path/a/b');
+      expect(
+        context.prettyUri(Uri.parse('file:///root/path/a/b')),
+        'file:///root/path/a/b',
+      );
     });
 
     test('with an http: URI', () {
       expect(context.prettyUri('https://dart.dev/root/path/a/b'), 'a/b');
       expect(context.prettyUri('https://dart.dev/root/path/a/../b'), 'b');
-      expect(context.prettyUri('https://dart.dev/other/path/a/b'),
-          'https://dart.dev/other/path/a/b');
-      expect(context.prettyUri('http://psub.dart.dev/root/path'),
-          'http://psub.dart.dev/root/path');
+      expect(
+        context.prettyUri('https://dart.dev/other/path/a/b'),
+        'https://dart.dev/other/path/a/b',
+      );
+      expect(
+        context.prettyUri('http://psub.dart.dev/root/path'),
+        'http://psub.dart.dev/root/path',
+      );
       expect(context.prettyUri('https://dart.dev/root/other'), '../other');
     });
 

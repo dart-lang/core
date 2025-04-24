@@ -15,8 +15,12 @@ typedef Flags = ({
   File? targetFile,
 });
 
-Flags parseArgs(List<String> args, String toolName,
-    {bool allowOptimize = false, bool allowFile = true}) {
+Flags parseArgs(
+  List<String> args,
+  String toolName, {
+  bool allowOptimize = false,
+  bool allowFile = true,
+}) {
   var update = false;
   var dryrun = false;
   var verbose = false;
@@ -27,16 +31,19 @@ Flags parseArgs(List<String> args, String toolName,
     if (arg == '-h' || arg == '--help') {
       stderr
         ..writeln(
-            "Usage: $toolName.dart [-u] ${allowOptimize ? "[-i|-o] " : ""}[-n]"
-            "${allowFile ? " <targetFile>" : ""}")
+          "Usage: $toolName.dart [-u] ${allowOptimize ? "[-i|-o] " : ""}[-n]"
+          "${allowFile ? " <targetFile>" : ""}",
+        )
         ..writeln('-h | --help          : Print this help and exit')
         ..writeln('-u | --update        : Fetch new data files')
         ..writeln('--accept-license     : Accept a changed license')
         ..writeln(
-            '-n | --dryrun        : Write to stdout instead of target file');
+          '-n | --dryrun        : Write to stdout instead of target file',
+        );
       if (allowOptimize) {
         stderr.writeln(
-            '-o | -i | --optimize : Optimize size parameters for tables');
+          '-o | -i | --optimize : Optimize size parameters for tables',
+        );
       }
       stderr.writeln('-v | --verbose       : Print more information');
       if (allowFile) {

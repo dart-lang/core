@@ -188,8 +188,12 @@ abstract class _TypedQueue<E, L extends TypedDataList<E>> with ListMixin<E> {
           //       [  |===========| sourceEnd                      ]
           // sourceStart
           _table.setRange(targetStart, _table.length, _table, sourceStart);
-          _table.setRange(0, targetEnd, _table,
-              sourceStart + (_table.length - targetStart));
+          _table.setRange(
+            0,
+            targetEnd,
+            _table,
+            sourceStart + (_table.length - targetStart),
+          );
         } else {
           //                                               targetEnd
           // [                         targetStart |===========|  ]
@@ -206,8 +210,12 @@ abstract class _TypedQueue<E, L extends TypedDataList<E>> with ListMixin<E> {
           // [=====| targetEnd                 targetStart |======]
           // [                         sourceStart |===========|  ]
           //                                             sourceEnd
-          _table.setRange(0, targetEnd, _table,
-              sourceStart + (_table.length - targetStart));
+          _table.setRange(
+            0,
+            targetEnd,
+            _table,
+            sourceStart + (_table.length - targetStart),
+          );
           _table.setRange(targetStart, _table.length, _table, sourceStart);
         } else {
           // targetStart
@@ -227,7 +235,11 @@ abstract class _TypedQueue<E, L extends TypedDataList<E>> with ListMixin<E> {
       // not this queue), set it with two underlying [setRange] calls.
       _table.setRange(targetStart, _table.length, iterable, skipCount);
       _table.setRange(
-          0, targetEnd, iterable, skipCount + (_table.length - targetStart));
+        0,
+        targetEnd,
+        iterable,
+        skipCount + (_table.length - targetStart),
+      );
     } else {
       // If [iterable] isn't a [List], we don't want to make two different
       // [setRange] calls because it could materialize a lazy iterable twice.

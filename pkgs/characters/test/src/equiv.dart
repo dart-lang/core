@@ -35,9 +35,10 @@ class Equivalence<T> {
   /// if [allowCollapse] is `false` an error is raised, and
   /// If [allowCollapse] is `true` the equivalence classes are
   /// collapsed.
-  Equivalence(Iterable<Iterable<T>> equivalenceClasses,
-      {bool allowCollapse = false})
-      : _equivalences = [],
+  Equivalence(
+    Iterable<Iterable<T>> equivalenceClasses, {
+    bool allowCollapse = false,
+  })  : _equivalences = [],
         _class = {} {
     for (var eqClass in equivalenceClasses) {
       var newClass = _equivalences.length;
@@ -49,8 +50,11 @@ class Equivalence<T> {
         } else if (existing != newClass) {
           if (!allowCollapse) {
             // Wasn't in the *same* iterable.
-            throw ArgumentError.value(equivalenceClasses, 'equivalenceClasses',
-                "Contains element '$element' more than once");
+            throw ArgumentError.value(
+              equivalenceClasses,
+              'equivalenceClasses',
+              "Contains element '$element' more than once",
+            );
           }
           var c1 = _canonicalizeId(existing);
           var c2 = _canonicalizeId(newClass);

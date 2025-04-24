@@ -31,11 +31,14 @@ void main() {
 
     test('close closes the underlying sink', () {
       var inner = ChunkedConversionSink<Digest>.withCallback(
-          expectAsync1((accumulated) {
-        expect(accumulated.length, equals(1));
-        expect(accumulated.first.toString(),
-            equals('da39a3ee5e6b4b0d3255bfef95601890afd80709'));
-      }));
+        expectAsync1((accumulated) {
+          expect(accumulated.length, equals(1));
+          expect(
+            accumulated.first.toString(),
+            equals('da39a3ee5e6b4b0d3255bfef95601890afd80709'),
+          );
+        }),
+      );
 
       var outer = sha1.startChunkedConversion(inner);
       outer.close();
@@ -45,8 +48,10 @@ void main() {
   group('standard vector', () {
     for (var i = 0; i < _inputs.length; i++) {
       test(_digests[i], () {
-        expect(sha1.convert(bytesFromHexString(_inputs[i])).toString(),
-            equals(_digests[i]));
+        expect(
+          sha1.convert(bytesFromHexString(_inputs[i])).toString(),
+          equals(_digests[i]),
+        );
       });
     }
   });
@@ -60,8 +65,10 @@ void main() {
         hash.add(chunk);
       }
       hash.close();
-      expect(sink.events.single.toString(),
-          '5b088492c9f4778f409b7ae61477dec124c99033');
+      expect(
+        sink.events.single.toString(),
+        '5b088492c9f4778f409b7ae61477dec124c99033',
+      );
     });
   });
 }

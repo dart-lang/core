@@ -77,7 +77,12 @@ abstract class _Sha64BitSink extends HashSink {
   // http://tools.ietf.org/html/rfc6234.
 
   void _shr(
-      int bits, Uint32List word, int offset, Uint32List ret, int offsetR) {
+    int bits,
+    Uint32List word,
+    int offset,
+    Uint32List ret,
+    int offsetR,
+  ) {
     ret[0 + offsetR] =
         ((bits < 32) && (bits >= 0)) ? (word[0 + offset] >> bits) : 0;
     ret[1 + offsetR] = (bits > 32)
@@ -91,7 +96,12 @@ abstract class _Sha64BitSink extends HashSink {
   }
 
   void _shl(
-      int bits, Uint32List word, int offset, Uint32List ret, int offsetR) {
+    int bits,
+    Uint32List word,
+    int offset,
+    Uint32List ret,
+    int offsetR,
+  ) {
     ret[0 + offsetR] = (bits > 32)
         ? (word[1 + offset] << (bits - 32))
         : (bits == 32)
@@ -104,20 +114,38 @@ abstract class _Sha64BitSink extends HashSink {
         ((bits < 32) && (bits >= 0)) ? (word[1 + offset] << bits) : 0;
   }
 
-  void _or(Uint32List word1, int offset1, Uint32List word2, int offset2,
-      Uint32List ret, int offsetR) {
+  void _or(
+    Uint32List word1,
+    int offset1,
+    Uint32List word2,
+    int offset2,
+    Uint32List ret,
+    int offsetR,
+  ) {
     ret[0 + offsetR] = word1[0 + offset1] | word2[0 + offset2];
     ret[1 + offsetR] = word1[1 + offset1] | word2[1 + offset2];
   }
 
-  void _xor(Uint32List word1, int offset1, Uint32List word2, int offset2,
-      Uint32List ret, int offsetR) {
+  void _xor(
+    Uint32List word1,
+    int offset1,
+    Uint32List word2,
+    int offset2,
+    Uint32List ret,
+    int offsetR,
+  ) {
     ret[0 + offsetR] = word1[0 + offset1] ^ word2[0 + offset2];
     ret[1 + offsetR] = word1[1 + offset1] ^ word2[1 + offset2];
   }
 
-  void _add(Uint32List word1, int offset1, Uint32List word2, int offset2,
-      Uint32List ret, int offsetR) {
+  void _add(
+    Uint32List word1,
+    int offset1,
+    Uint32List word2,
+    int offset2,
+    Uint32List ret,
+    int offsetR,
+  ) {
     ret[1 + offsetR] = word1[1 + offset1] + word2[1 + offset2];
     ret[0 + offsetR] = word1[0 + offset1] +
         word2[0 + offset2] +
@@ -154,7 +182,12 @@ abstract class _Sha64BitSink extends HashSink {
 
   // SHA rotate   ((word >> bits) | (word << (64-bits)))
   void _rotr(
-      int bits, Uint32List word, int offset, Uint32List ret, int offsetR) {
+    int bits,
+    Uint32List word,
+    int offset,
+    Uint32List ret,
+    int offsetR,
+  ) {
     _shr(bits, word, offset, _nums, _rotrIndex1);
     _shl(64 - bits, word, offset, _nums, _rotrIndex2);
     _or(_nums, _rotrIndex1, _nums, _rotrIndex2, ret, offsetR);
@@ -192,16 +225,32 @@ abstract class _Sha64BitSink extends HashSink {
     _xor(_nums, _sigIndex1, _nums, _sigIndex4, ret, offsetR);
   }
 
-  void _ch(Uint32List x, int offsetX, Uint32List y, int offsetY, Uint32List z,
-      int offsetZ, Uint32List ret, int offsetR) {
+  void _ch(
+    Uint32List x,
+    int offsetX,
+    Uint32List y,
+    int offsetY,
+    Uint32List z,
+    int offsetZ,
+    Uint32List ret,
+    int offsetR,
+  ) {
     ret[0 + offsetR] =
         (x[0 + offsetX] & (y[0 + offsetY] ^ z[0 + offsetZ])) ^ z[0 + offsetZ];
     ret[1 + offsetR] =
         (x[1 + offsetX] & (y[1 + offsetY] ^ z[1 + offsetZ])) ^ z[1 + offsetZ];
   }
 
-  void _maj(Uint32List x, int offsetX, Uint32List y, int offsetY, Uint32List z,
-      int offsetZ, Uint32List ret, int offsetR) {
+  void _maj(
+    Uint32List x,
+    int offsetX,
+    Uint32List y,
+    int offsetY,
+    Uint32List z,
+    int offsetZ,
+    Uint32List ret,
+    int offsetR,
+  ) {
     ret[0 + offsetR] = (x[0 + offsetX] & (y[0 + offsetY] | z[0 + offsetZ])) |
         (y[0 + offsetY] & z[0 + offsetZ]);
     ret[1 + offsetR] = (x[1 + offsetX] & (y[1 + offsetY] | z[1 + offsetZ])) |
@@ -281,25 +330,26 @@ class Sha384Sink extends _Sha64BitSink {
 
   Sha384Sink(Sink<Digest> sink)
       : super(
-            sink,
-            Uint32List.fromList([
-              0xcbbb9d5d,
-              0xc1059ed8,
-              0x629a292a,
-              0x367cd507,
-              0x9159015a,
-              0x3070dd17,
-              0x152fecd8,
-              0xf70e5939,
-              0x67332667,
-              0xffc00b31,
-              0x8eb44a87,
-              0x68581511,
-              0xdb0c2e0d,
-              0x64f98fa7,
-              0x47b5481d,
-              0xbefa4fa4,
-            ]));
+          sink,
+          Uint32List.fromList([
+            0xcbbb9d5d,
+            0xc1059ed8,
+            0x629a292a,
+            0x367cd507,
+            0x9159015a,
+            0x3070dd17,
+            0x152fecd8,
+            0xf70e5939,
+            0x67332667,
+            0xffc00b31,
+            0x8eb44a87,
+            0x68581511,
+            0xdb0c2e0d,
+            0x64f98fa7,
+            0x47b5481d,
+            0xbefa4fa4,
+          ]),
+        );
 }
 
 /// The concrete implementation of `Sha512`.
@@ -338,18 +388,19 @@ class Sha512224Sink extends _Sha64BitSink {
 
   Sha512224Sink(Sink<Digest> sink)
       : super(
-            sink,
-            Uint32List.fromList([
-              // FIPS 180-4, Section 5.3.6.1
-              0x8c3d37c8, 0x19544da2,
-              0x73e19966, 0x89dcd4d6,
-              0x1dfab7ae, 0x32ff9c82,
-              0x679dd514, 0x582f9fcf,
-              0x0f6d2b69, 0x7bd44da8,
-              0x77e36f73, 0x04c48942,
-              0x3f9d85a8, 0x6a1d36c8,
-              0x1112e6ad, 0x91d692a1,
-            ]));
+          sink,
+          Uint32List.fromList([
+            // FIPS 180-4, Section 5.3.6.1
+            0x8c3d37c8, 0x19544da2,
+            0x73e19966, 0x89dcd4d6,
+            0x1dfab7ae, 0x32ff9c82,
+            0x679dd514, 0x582f9fcf,
+            0x0f6d2b69, 0x7bd44da8,
+            0x77e36f73, 0x04c48942,
+            0x3f9d85a8, 0x6a1d36c8,
+            0x1112e6ad, 0x91d692a1,
+          ]),
+        );
 }
 
 /// The concrete implementation of [Sha512/256].
@@ -362,16 +413,17 @@ class Sha512256Sink extends _Sha64BitSink {
 
   Sha512256Sink(Sink<Digest> sink)
       : super(
-            sink,
-            Uint32List.fromList([
-              // FIPS 180-4, Section 5.3.6.2
-              0x22312194, 0xfc2bf72c,
-              0x9f555fa3, 0xc84c64c2,
-              0x2393b86b, 0x6f53b151,
-              0x96387719, 0x5940eabd,
-              0x96283ee2, 0xa88effe3,
-              0xbe5e1e25, 0x53863992,
-              0x2b0199fc, 0x2c85b8aa,
-              0x0eb72ddc, 0x81c52ca2,
-            ]));
+          sink,
+          Uint32List.fromList([
+            // FIPS 180-4, Section 5.3.6.2
+            0x22312194, 0xfc2bf72c,
+            0x9f555fa3, 0xc84c64c2,
+            0x2393b86b, 0x6f53b151,
+            0x96387719, 0x5940eabd,
+            0x96283ee2, 0xa88effe3,
+            0xbe5e1e25, 0x53863992,
+            0x2b0199fc, 0x2c85b8aa,
+            0x0eb72ddc, 0x81c52ca2,
+          ]),
+        );
 }

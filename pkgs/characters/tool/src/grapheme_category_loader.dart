@@ -15,11 +15,13 @@ import 'debug_names.dart';
 
 /// Loads all categories by combining the categories of the
 /// grapheme break property with the categories of the InCB property.
-Future<Uint8List> loadCategories(
-    {bool update = false, bool verbose = false}) async {
+Future<Uint8List> loadCategories({
+  bool update = false,
+  bool verbose = false,
+}) async {
   var (graphemeTable, incbTable) = await (
     loadGraphemeCategories(update: update, verbose: verbose),
-    loadInCBCategories(update: update, verbose: verbose)
+    loadInCBCategories(update: update, verbose: verbose),
   ).wait;
   if (verbose) {
     _logIntersection(graphemeTable, incbTable);
@@ -32,10 +34,12 @@ Future<Uint8List> loadCategories(
         assert(incb == categoryExtendIndicExtend);
         continue;
       }
-      assert(incb == categoryOtherIndicConsonant && grapheme == categoryOther ||
-          (incb == categoryExtendIndicExtend ||
-                  incb == categoryExtendIndicLinked) &&
-              grapheme == categoryExtend);
+      assert(
+        incb == categoryOtherIndicConsonant && grapheme == categoryOther ||
+            (incb == categoryExtendIndicExtend ||
+                    incb == categoryExtendIndicLinked) &&
+                grapheme == categoryExtend,
+      );
       graphemeTable[i] = incb;
     }
   }
@@ -44,8 +48,10 @@ Future<Uint8List> loadCategories(
 
 /// Loads and parses the grapheme break categories from the grapheme break data,
 /// emoji data, and adds unpaired surrogates as controls.
-Future<Uint8List> loadGraphemeCategories(
-    {bool update = false, bool verbose = false}) async {
+Future<Uint8List> loadGraphemeCategories({
+  bool update = false,
+  bool verbose = false,
+}) async {
   var dataFiles = await Future.wait([
     graphemeBreakPropertyData.load(checkForUpdate: update),
     emojiData.load(checkForUpdate: update),
@@ -53,15 +59,18 @@ Future<Uint8List> loadGraphemeCategories(
     // https://www.unicode.org/Public/12.0.0/ucd/auxiliary/GraphemeBreakProperty-12.0.0d16.txt
     // Make sure it's included.
     Future.value(
-        'D800..DFFF    ; Control # Cc       <control-D800>..<control-DFFF>\n'),
+      'D800..DFFF    ; Control # Cc       <control-D800>..<control-DFFF>\n',
+    ),
   ]);
   var table = _parseCategories(dataFiles, verbose: verbose);
   return table;
 }
 
 /// Loads and parses the InCB categories from the derived properties data.
-Future<Uint8List> loadInCBCategories(
-    {bool update = false, bool verbose = false}) async {
+Future<Uint8List> loadInCBCategories({
+  bool update = false,
+  bool verbose = false,
+}) async {
   var data = await derivedData.load(checkForUpdate: update);
   var table = _parseInCBCategories(data, verbose: verbose);
   return table;
@@ -84,31 +93,38 @@ void _logIntersection(Uint8List table, Uint8List incbTable) {
     counts[table[i] * incbNames.length + incbOffset]++;
   }
   print(
-      "GC/InCB             ${incbNames.map((s) => s.padLeft(10)).join("  ")}");
+    "GC/InCB             ${incbNames.map((s) => s.padLeft(10)).join("  ")}",
+  );
   for (var i = 0; i < categoryCount; i++) {
     if (i == categoryOtherIndicConsonant ||
         i == categoryExtendIndicExtend ||
         i == categoryExtendIndicLinked) {
-      assert(counts
-          .sublist(i * incbNames.length, (i + 1) * incbNames.length)
-          .every((c) => c == 0));
+      assert(
+        counts
+            .sublist(i * incbNames.length, (i + 1) * incbNames.length)
+            .every((c) => c == 0),
+      );
       continue;
     }
-    print("${categoryNames[i].padRight(20)}${[
-      for (var j = 0; j < incbNames.length; j++)
-        switch (counts[i * incbNames.length + j]) {
-          0 => "",
-          var v => v.toString()
-        }
-            .padLeft(10)
-    ].join("  ")}");
+    print(
+      "${categoryNames[i].padRight(20)}${[
+        for (var j = 0; j < incbNames.length; j++)
+          switch (counts[i * incbNames.length + j]) {
+            0 => "",
+            var v => v.toString(),
+          }
+              .padLeft(10)
+      ].join("  ")}",
+    );
   }
 }
 
 // -----------------------------------------------------------------------------
 // Unicode table parser.
-final _tableRE = RegExp(r'^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*(\w+)\s*#',
-    multiLine: true);
+final _tableRE = RegExp(
+  r'^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*(\w+)\s*#',
+  multiLine: true,
+);
 
 // The relevant names that occur in the Unicode tables.
 final categoryByName = {
@@ -134,7 +150,7 @@ Uint8List _parseCategories(List<String> files, {required bool verbose}) {
   var count = 0;
   var categoryCount = <String, int>{};
   var categoryMin = <String, int>{
-    for (var category in categoryByName.keys) category: 0x10FFFF
+    for (var category in categoryByName.keys) category: 0x10FFFF,
   };
   int min(int a, int b) => a < b ? a : b;
   for (var file in files) {
@@ -158,16 +174,20 @@ Uint8List _parseCategories(List<String> files, {required bool verbose}) {
   if (verbose) {
     stderr.writeln('Loaded $count entries');
     categoryCount.forEach((category, count) {
-      stderr.writeln('  $category: $count, min: U+'
-          "${categoryMin[category]!.toRadixString(16).padLeft(4, "0")}");
+      stderr.writeln(
+        '  $category: $count, min: U+'
+        "${categoryMin[category]!.toRadixString(16).padLeft(4, "0")}",
+      );
     });
   }
   if (result[0xD800] != categoryControl) {
     stderr.writeln('WARNING: Surrogates are not controls. Check inputs.');
   }
   if (categoryMin['Regional_Indicator']! < 0x10000) {
-    stderr.writeln('WARNING: Regional Indicator in BMP. '
-        'Code assuming all RIs are non-BMP will fail');
+    stderr.writeln(
+      'WARNING: Regional Indicator in BMP. '
+      'Code assuming all RIs are non-BMP will fail',
+    );
   }
   return result;
 }
@@ -193,16 +213,17 @@ Uint8List _parseCategories(List<String> files, {required bool verbose}) {
 // Luckily it is precomputed in a file of its own.
 
 final _derivedPropertyTableRE = RegExp(
-    r'^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*InCB\s*;\s*(\w+)\s*#'
-    r'|'
-    r'^# Total code points: (\d+)',
-    multiLine: true);
+  r'^([\dA-F]{4,5})(?:..([\dA-F]{4,5}))?\s*;\s*InCB\s*;\s*(\w+)\s*#'
+  r'|'
+  r'^# Total code points: (\d+)',
+  multiLine: true,
+);
 
 Uint8List _parseInCBCategories(String file, {required bool verbose}) {
   const categoryByName = {
     'Consonant': categoryOtherIndicConsonant,
     'Extend': categoryExtendIndicExtend,
-    'Linker': categoryExtendIndicLinked
+    'Linker': categoryExtendIndicLinked,
   };
   var result = Uint8List(0x110000);
   var lines = 0;
@@ -215,7 +236,9 @@ Uint8List _parseInCBCategories(String file, {required bool verbose}) {
       if (currentInCBCategory.isNotEmpty) {
         if (totalCounts[currentInCBCategory] != 0) {
           throw FormatException(
-              'More than one total count per category', match[0]!);
+            'More than one total count per category',
+            match[0]!,
+          );
         }
         totalCounts[currentInCBCategory] = int.parse(totalCountText);
         currentInCBCategory = '';
@@ -249,15 +272,19 @@ Uint8List _parseInCBCategories(String file, {required bool verbose}) {
   }
   for (var name in categoryByName.keys) {
     if (counts[name] != totalCounts[name]) {
-      stderr.writeln('${categoryByName[name]}: '
-          'Parsed: ${counts[name]}, expected: ${totalCounts[name]}');
+      stderr.writeln(
+        '${categoryByName[name]}: '
+        'Parsed: ${counts[name]}, expected: ${totalCounts[name]}',
+      );
     }
   }
   if (verbose) {
     stderr.writeln('InCB categories: Loaded $count entries from $lines lines');
     for (var name in categoryByName.keys) {
-      stderr.writeln('  ${name.padRight(9)}: '
-          '${counts[name].toString().padLeft(6)}');
+      stderr.writeln(
+        '  ${name.padRight(9)}: '
+        '${counts[name].toString().padLeft(6)}',
+      );
     }
   }
   return result;
@@ -274,8 +301,10 @@ class UnicodePropertyTable {
   static const int _entryMask = _entrySize - 1;
   static const int _entryShift = 8;
   static const int _entryCount = _unicodeCodePoints >> _entryShift;
-  final List<_TableEntry> _entries =
-      List.filled(_entryCount, const _ValueEntry(0));
+  final List<_TableEntry> _entries = List.filled(
+    _entryCount,
+    const _ValueEntry(0),
+  );
 
   int operator [](int index) =>
       _entries[index >> _entryShift][index & _entryMask];
@@ -296,14 +325,22 @@ class UnicodePropertyTable {
       fullEntry = _ValueEntry(value); // TODO: Cache these per value.
     }
     while (startEntry < endEntry) {
-      _entries[startEntry] = _entries[startEntry]
-          .fillRange(startOffset, _entrySize, value, fullEntry);
+      _entries[startEntry] = _entries[startEntry].fillRange(
+        startOffset,
+        _entrySize,
+        value,
+        fullEntry,
+      );
       startOffset = 0;
     }
     var endOffset = end & _entryMask;
     if (endOffset > 0) {
-      _entries[endEntry] = _entries[endEntry]
-          .fillRange(startOffset, endOffset, value, fullEntry);
+      _entries[endEntry] = _entries[endEntry].fillRange(
+        startOffset,
+        endOffset,
+        value,
+        fullEntry,
+      );
     }
   }
 }
@@ -338,7 +375,11 @@ final class _ValueEntry extends _TableEntry {
 
   @override
   _TableEntry _fillRange(
-      int start, int end, int value, _ValueEntry? fullEntry) {
+    int start,
+    int end,
+    int value,
+    _ValueEntry? fullEntry,
+  ) {
     if (value == this.value) return fullEntry ?? this;
     return _toListEntry()._fillRange(start, end, value, fullEntry);
   }
@@ -365,7 +406,11 @@ final class _ListEntry extends _TableEntry {
 
   @override
   _TableEntry _fillRange(
-      int start, int end, int value, _ValueEntry? fullEntry) {
+    int start,
+    int end,
+    int value,
+    _ValueEntry? fullEntry,
+  ) {
     values.fillRange(start, end, value);
     return this;
   }

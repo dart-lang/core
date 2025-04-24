@@ -66,8 +66,10 @@ int replaceStrings() {
     const language = '한글';
     assert(language.length == 6);
     var chars = Characters(hangul);
-    var replaced =
-        chars.replaceAll(Characters(language), Characters('Hangul!'));
+    var replaced = chars.replaceAll(
+      Characters(language),
+      Characters('Hangul!'),
+    );
     count += replaced.string.length - hangul.length;
   }
   {

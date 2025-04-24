@@ -192,7 +192,8 @@ class FakePlatform extends Platform {
   T _throwIfNull<T>(T? value) {
     if (value == null) {
       throw StateError(
-          'Tried to read property of FakePlatform but it was unset.');
+        'Tried to read property of FakePlatform but it was unset.',
+      );
     }
     return value;
   }

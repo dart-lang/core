@@ -76,6 +76,7 @@ class InvocationChecker {
     testInvocations(_expected, toStringInvocation);
     return '';
   }
+
   // Could also handle runtimeType, hashCode and == the same way as
   // toString, but we are not testing them since collections generally
   // don't override those and so the wrappers don't forward those.
@@ -182,9 +183,10 @@ void main() {
     // expectation (which doesn't have the interface implemented or
     // its default values).
     (expect..firstWhere(boolFunc, orElse: null)).equals.firstWhere(boolFunc);
-    (expect..firstWhere(boolFunc, orElse: func0))
-        .equals
-        .firstWhere(boolFunc, orElse: func0);
+    (expect..firstWhere(boolFunc, orElse: func0)).equals.firstWhere(
+          boolFunc,
+          orElse: func0,
+        );
     (expect..fold(42, foldFunc)).equals.fold(42, foldFunc);
     (expect..forEach(boolFunc)).equals.forEach(boolFunc);
     (expect..isEmpty).equals.isEmpty;
@@ -194,9 +196,10 @@ void main() {
     (expect..join('X')).equals.join('X');
     (expect..last).equals.last;
     (expect..lastWhere(boolFunc, orElse: null)).equals.lastWhere(boolFunc);
-    (expect..lastWhere(boolFunc, orElse: func0))
-        .equals
-        .lastWhere(boolFunc, orElse: func0);
+    (expect..lastWhere(boolFunc, orElse: func0)).equals.lastWhere(
+          boolFunc,
+          orElse: func0,
+        );
     (expect..length).equals.length;
     (expect..map(func1)).equals.map(func1);
     (expect..reduce(func2)).equals.reduce(func2);
@@ -238,9 +241,14 @@ void main() {
     (expect..reversed).equals.reversed;
     (expect..setAll(4, [val])).equals.setAll(4, [val]);
     (expect..setRange(4, 5, [val], 0)).equals.setRange(4, 5, [val]);
-    (expect..setRange(4, 5, [val, val], 1))
-        .equals
-        .setRange(4, 5, [val, val], 1);
+    (expect..setRange(4, 5, [val, val], 1)).equals.setRange(
+        4,
+        5,
+        [
+          val,
+          val,
+        ],
+        1);
     (expect..sort()).equals.sort();
     (expect..sort(compareFunc)).equals.sort(compareFunc);
     (expect..sublist(4, null)).equals.sublist(4);
@@ -329,9 +337,12 @@ void main() {
       });
 
       test('.expand', () {
-        expect(set.expand((element) {
-          return [element.substring(0, 1), element.substring(1)];
-        }), equals(['f', 'oo', 'b', 'ar']));
+        expect(
+          set.expand((element) {
+            return [element.substring(0, 1), element.substring(1)];
+          }),
+          equals(['f', 'oo', 'b', 'ar']),
+        );
       });
 
       test('.first', () {
@@ -340,19 +351,25 @@ void main() {
 
       test('.firstWhere', () {
         expect(set.firstWhere((element) => true), equals('foo'));
-        expect(set.firstWhere((element) => element.startsWith('b')),
-            equals('bar'));
-        expect(() => set.firstWhere((element) => element is int),
-            throwsStateError);
-        expect(set.firstWhere((element) => element is int, orElse: () => 'baz'),
-            equals('baz'));
+        expect(
+          set.firstWhere((element) => element.startsWith('b')),
+          equals('bar'),
+        );
+        expect(
+          () => set.firstWhere((element) => element is int),
+          throwsStateError,
+        );
+        expect(
+          set.firstWhere((element) => element is int, orElse: () => 'baz'),
+          equals('baz'),
+        );
       });
 
       test('.fold', () {
         expect(
-            set.fold(
-                'start', (dynamic previous, element) => previous + element),
-            equals('startfoobar'));
+          set.fold('start', (dynamic previous, element) => previous + element),
+          equals('startfoobar'),
+        );
       });
 
       test('.forEach', () {
@@ -380,26 +397,38 @@ void main() {
       test('.lastWhere', () {
         expect(set.lastWhere((element) => true), equals('bar'));
         expect(
-            set.lastWhere((element) => element.startsWith('f')), equals('foo'));
+          set.lastWhere((element) => element.startsWith('f')),
+          equals('foo'),
+        );
         expect(
-            () => set.lastWhere((element) => element is int), throwsStateError);
-        expect(set.lastWhere((element) => element is int, orElse: () => 'baz'),
-            equals('baz'));
+          () => set.lastWhere((element) => element is int),
+          throwsStateError,
+        );
+        expect(
+          set.lastWhere((element) => element is int, orElse: () => 'baz'),
+          equals('baz'),
+        );
       });
 
       test('.map', () {
         expect(
-            set.map((element) => element.substring(1)), equals(['oo', 'ar']));
+          set.map((element) => element.substring(1)),
+          equals(['oo', 'ar']),
+        );
       });
 
       test('.reduce', () {
-        expect(set.reduce((previous, element) => previous + element),
-            equals('foobar'));
+        expect(
+          set.reduce((previous, element) => previous + element),
+          equals('foobar'),
+        );
       });
 
       test('.singleWhere', () {
-        expect(() => set.singleWhere((element) => element == 'baz'),
-            throwsStateError);
+        expect(
+          () => set.singleWhere((element) => element == 'baz'),
+          throwsStateError,
+        );
         expect(set.singleWhere((element) => element == 'foo'), 'foo');
         expect(() => set.singleWhere((element) => true), throwsStateError);
       });
@@ -411,10 +440,14 @@ void main() {
       });
 
       test('.skipWhile', () {
-        expect(set.skipWhile((element) => element.startsWith('f')),
-            equals(['bar']));
-        expect(set.skipWhile((element) => element.startsWith('z')),
-            equals(['foo', 'bar']));
+        expect(
+          set.skipWhile((element) => element.startsWith('f')),
+          equals(['bar']),
+        );
+        expect(
+          set.skipWhile((element) => element.startsWith('z')),
+          equals(['foo', 'bar']),
+        );
         expect(set.skipWhile((element) => true), equals([]));
       });
 
@@ -425,16 +458,20 @@ void main() {
       });
 
       test('.takeWhile', () {
-        expect(set.takeWhile((element) => element.startsWith('f')),
-            equals(['foo']));
+        expect(
+          set.takeWhile((element) => element.startsWith('f')),
+          equals(['foo']),
+        );
         expect(set.takeWhile((element) => element.startsWith('z')), equals([]));
         expect(set.takeWhile((element) => true), equals(['foo', 'bar']));
       });
 
       test('.toList', () {
         expect(set.toList(), equals(['foo', 'bar']));
-        expect(() => set.toList(growable: false).add('baz'),
-            throwsUnsupportedError);
+        expect(
+          () => set.toList(growable: false).add('baz'),
+          throwsUnsupportedError,
+        );
         expect(set.toList()..add('baz'), equals(['foo', 'bar', 'baz']));
       });
 
@@ -444,7 +481,9 @@ void main() {
 
       test('.where', () {
         expect(
-            set.where((element) => element.startsWith('f')), equals(['foo']));
+          set.where((element) => element.startsWith('f')),
+          equals(['foo']),
+        );
         expect(set.where((element) => element.startsWith('z')), equals([]));
         expect(set.whereType<String>(), equals(['foo', 'bar']));
       });
@@ -563,8 +602,10 @@ void main() {
 
     setUp(() {
       map = <String, String>{};
-      set =
-          MapValueSet<String, String>(map, (string) => string.substring(0, 1));
+      set = MapValueSet<String, String>(
+        map,
+        (string) => string.substring(0, 1),
+      );
     });
 
     testTwoElementSet(() {
@@ -672,11 +713,14 @@ void main() {
 
     test('.retainAll respects an unusual notion of equality', () {
       map = HashMap<String, String>(
-          equals: (value1, value2) =>
-              value1.toLowerCase() == value2.toLowerCase(),
-          hashCode: (value) => value.toLowerCase().hashCode);
-      set =
-          MapValueSet<String, String>(map, (string) => string.substring(0, 1));
+        equals: (value1, value2) =>
+            value1.toLowerCase() == value2.toLowerCase(),
+        hashCode: (value) => value.toLowerCase().hashCode,
+      );
+      set = MapValueSet<String, String>(
+        map,
+        (string) => string.substring(0, 1),
+      );
 
       map['f'] = 'foo';
       map['B'] = 'bar';

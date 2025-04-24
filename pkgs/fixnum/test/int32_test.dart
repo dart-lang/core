@@ -84,8 +84,10 @@ void main() {
       expect(n3 * n2, Int32(-12186984));
       expect(Int32(0x12345678) * Int32(0x22222222), Int32(-899716112));
       expect(Int32(123456789) * Int32(987654321), Int32(-67153019));
-      expect(Int32(0x12345678) * Int64(0x22222222),
-          Int64.fromInts(0x026D60DC, 0xCA5F6BF0));
+      expect(
+        Int32(0x12345678) * Int64(0x22222222),
+        Int64.fromInts(0x026D60DC, 0xCA5F6BF0),
+      );
       expect(Int32(123456789) * 987654321, Int32(-67153019));
     });
 
@@ -104,16 +106,26 @@ void main() {
     });
 
     test('remainder', () {
-      expect(Int32(0x12345678).remainder(Int32(0x22)),
-          Int32(0x12345678.remainder(0x22)));
-      expect(Int32(0x12345678).remainder(Int32(-0x22)),
-          Int32(0x12345678.remainder(-0x22)));
-      expect(Int32(-0x12345678).remainder(Int32(-0x22)),
-          Int32(-0x12345678.remainder(-0x22)));
-      expect(Int32(-0x12345678).remainder(Int32(0x22)),
-          Int32(-0x12345678.remainder(0x22)));
-      expect(Int32(0x12345678).remainder(Int64(0x22)),
-          Int32(0x12345678.remainder(0x22)));
+      expect(
+        Int32(0x12345678).remainder(Int32(0x22)),
+        Int32(0x12345678.remainder(0x22)),
+      );
+      expect(
+        Int32(0x12345678).remainder(Int32(-0x22)),
+        Int32(0x12345678.remainder(-0x22)),
+      );
+      expect(
+        Int32(-0x12345678).remainder(Int32(-0x22)),
+        Int32(-0x12345678.remainder(-0x22)),
+      );
+      expect(
+        Int32(-0x12345678).remainder(Int32(0x22)),
+        Int32(-0x12345678.remainder(0x22)),
+      );
+      expect(
+        Int32(0x12345678).remainder(Int64(0x22)),
+        Int32(0x12345678.remainder(0x22)),
+      );
     });
 
     test('abs', () {
@@ -239,24 +251,36 @@ void main() {
 
   group('bitwise operators', () {
     test('&', () {
-      expect(Int32(0x12345678) & Int32(0x22222222),
-          Int32(0x12345678 & 0x22222222));
-      expect(Int32(0x12345678) & Int64(0x22222222),
-          Int64(0x12345678 & 0x22222222));
+      expect(
+        Int32(0x12345678) & Int32(0x22222222),
+        Int32(0x12345678 & 0x22222222),
+      );
+      expect(
+        Int32(0x12345678) & Int64(0x22222222),
+        Int64(0x12345678 & 0x22222222),
+      );
     });
 
     test('|', () {
-      expect(Int32(0x12345678) | Int32(0x22222222),
-          Int32(0x12345678 | 0x22222222));
-      expect(Int32(0x12345678) | Int64(0x22222222),
-          Int64(0x12345678 | 0x22222222));
+      expect(
+        Int32(0x12345678) | Int32(0x22222222),
+        Int32(0x12345678 | 0x22222222),
+      );
+      expect(
+        Int32(0x12345678) | Int64(0x22222222),
+        Int64(0x12345678 | 0x22222222),
+      );
     });
 
     test('^', () {
-      expect(Int32(0x12345678) ^ Int32(0x22222222),
-          Int32(0x12345678 ^ 0x22222222));
-      expect(Int32(0x12345678) ^ Int64(0x22222222),
-          Int64(0x12345678 ^ 0x22222222));
+      expect(
+        Int32(0x12345678) ^ Int32(0x22222222),
+        Int32(0x12345678 ^ 0x22222222),
+      );
+      expect(
+        Int32(0x12345678) ^ Int64(0x22222222),
+        Int64(0x12345678 ^ 0x22222222),
+      );
     });
 
     test('~', () {

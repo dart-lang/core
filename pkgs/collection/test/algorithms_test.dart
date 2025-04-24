@@ -50,15 +50,21 @@ void main() {
     var l = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     var c = l.toList();
     shuffle(l, 4, 12);
-    expect(const IterableEquality().equals(l.getRange(0, 4), c.getRange(0, 4)),
-        isTrue);
     expect(
-        const IterableEquality().equals(l.getRange(12, 16), c.getRange(12, 16)),
-        isTrue);
+      const IterableEquality().equals(l.getRange(0, 4), c.getRange(0, 4)),
+      isTrue,
+    );
     expect(
-        const UnorderedIterableEquality()
-            .equals(l.getRange(4, 12), c.getRange(4, 12)),
-        isTrue);
+      const IterableEquality().equals(l.getRange(12, 16), c.getRange(12, 16)),
+      isTrue,
+    );
+    expect(
+      const UnorderedIterableEquality().equals(
+        l.getRange(4, 12),
+        c.getRange(4, 12),
+      ),
+      isTrue,
+    );
   });
 
   test('binsearch0', () {
@@ -157,14 +163,16 @@ void main() {
     expect(lowerBound(l2, C(5), compare: compareC), equals(1));
   });
 
-  void testSort(String name,
-      void Function(List<int> elements, [int? start, int? end]) sort) {
+  void testSort(
+    String name,
+    void Function(List<int> elements, [int? start, int? end]) sort,
+  ) {
     test('${name}Random', () {
       var random = Random();
       for (var i = 0; i < 250; i += 10) {
         var list = [
           for (var j = 0; j < i; j++)
-            random.nextInt(25) // Expect some equal elements.
+            random.nextInt(25), // Expect some equal elements.
         ];
         sort(list);
         for (var j = 1; j < i; j++) {
@@ -204,8 +212,12 @@ void main() {
     insertionSortBy(list, intId, intCompare, start ?? 0, end ?? list.length);
   });
   testSort('mergeSort compare', (list, [start, end]) {
-    mergeSort(list,
-        start: start ?? 0, end: end ?? list.length, compare: intCompare);
+    mergeSort(
+      list,
+      start: start ?? 0,
+      end: end ?? list.length,
+      compare: intCompare,
+    );
   });
   testSort('mergeSort comparable', (list, [start, end]) {
     mergeSort(list, start: start ?? 0, end: end ?? list.length);
@@ -262,11 +274,15 @@ void main() {
   });
 
   void testSortBy(
-      String name,
-      void Function<T, K>(List<T> elements, K Function(T element) keyOf,
-              int Function(K a, K b) compare,
-              [int start, int end])
-          sort) {
+    String name,
+    void Function<T, K>(
+      List<T> elements,
+      K Function(T element) keyOf,
+      int Function(K a, K b) compare, [
+      int start,
+      int end,
+    ]) sort,
+  ) {
     for (var n in [0, 1, 2, 10, 75, 250]) {
       var name2 = name;
       test('$name2: Same #$n', () {
@@ -321,7 +337,7 @@ void main() {
       // collisions are guaranteed. These should be sorted so that the 'order'
       // part of the objects are still in order.
       var list = [
-        for (var i = 0; i < size; i++) OC(random.nextInt(size >> 2), i)
+        for (var i = 0; i < size; i++) OC(random.nextInt(size >> 2), i),
       ];
       mergeSort(list);
       var prev = list[0];
@@ -337,8 +353,12 @@ void main() {
       List copy = list.toList();
       var min = size >> 2;
       var max = size - min;
-      mergeSort<OC>(list,
-          start: min, end: max, compare: (a, b) => b.compareTo(a));
+      mergeSort<OC>(
+        list,
+        start: min,
+        end: max,
+        compare: (a, b) => b.compareTo(a),
+      );
       prev = list[min];
       for (var i = min + 1; i < max; i++) {
         var next = list[i];
@@ -369,18 +389,20 @@ void main() {
     expect(l, equals([2, 1, 4, 3, 6, 5]));
   });
 
-  test('mergeSort works when runtime generic is a subtype of the static type',
-      () {
-    // Regression test for https://github.com/dart-lang/collection/issues/317
-    final length = 1000; // Larger than _mergeSortLimit
-    // Out of order list, with first half guaranteed to empty first during
-    // merge.
-    final list = [
-      for (var i = 0; i < length / 2; i++) -i,
-      for (var i = 0; i < length / 2; i++) i + length,
-    ];
-    expect(() => mergeSort<num>(list), returnsNormally);
-  });
+  test(
+    'mergeSort works when runtime generic is a subtype of the static type',
+    () {
+      // Regression test for https://github.com/dart-lang/collection/issues/317
+      final length = 1000; // Larger than _mergeSortLimit
+      // Out of order list, with first half guaranteed to empty first during
+      // merge.
+      final list = [
+        for (var i = 0; i < length / 2; i++) -i,
+        for (var i = 0; i < length / 2; i++) i + length,
+      ];
+      expect(() => mergeSort<num>(list), returnsNormally);
+    },
+  );
 }
 
 class C {
@@ -409,8 +431,12 @@ int _compareInt(int a, int b) => a - b;
 
 /// Check that a list is sorted according to [compare] of [keyOf] of elements.
 void expectSorted<T, K>(
-    List<T> list, K Function(T element) keyOf, int Function(K a, K b) compare,
-    [int start = 0, int? end]) {
+  List<T> list,
+  K Function(T element) keyOf,
+  int Function(K a, K b) compare, [
+  int start = 0,
+  int? end,
+]) {
   end ??= list.length;
   if (start == end) return;
   var prev = keyOf(list[start]);

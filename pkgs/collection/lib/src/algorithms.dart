@@ -18,8 +18,11 @@ import 'utils.dart';
 /// the objects. In this case, the objects must be [Comparable].
 ///
 /// Returns -1 if [value] is not in the list.
-int binarySearch<E>(List<E> sortedList, E value,
-    {int Function(E, E)? compare}) {
+int binarySearch<E>(
+  List<E> sortedList,
+  E value, {
+  int Function(E, E)? compare,
+}) {
   compare ??= defaultCompare;
   return binarySearchBy<E, E>(sortedList, identity, compare, value);
 }
@@ -33,9 +36,14 @@ int binarySearch<E>(List<E> sortedList, E value,
 ///
 /// If [start] and [end] are supplied, only that range is searched,
 /// and only that range need to be sorted.
-int binarySearchBy<E, K>(List<E> sortedList, K Function(E element) keyOf,
-    int Function(K, K) compare, E value,
-    [int start = 0, int? end]) {
+int binarySearchBy<E, K>(
+  List<E> sortedList,
+  K Function(E element) keyOf,
+  int Function(K, K) compare,
+  E value, [
+  int start = 0,
+  int? end,
+]) {
   end = RangeError.checkValidRange(start, end, sortedList.length);
   var min = start;
   var max = end;
@@ -86,9 +94,14 @@ int lowerBound<E>(List<E> sortedList, E value, {int Function(E, E)? compare}) {
 ///
 /// If [start] and [end] are supplied, only that range is searched,
 /// and only that range need to be sorted.
-int lowerBoundBy<E, K>(List<E> sortedList, K Function(E element) keyOf,
-    int Function(K, K) compare, E value,
-    [int start = 0, int? end]) {
+int lowerBoundBy<E, K>(
+  List<E> sortedList,
+  K Function(E element) keyOf,
+  int Function(K, K) compare,
+  E value, [
+  int start = 0,
+  int? end,
+]) {
   end = RangeError.checkValidRange(start, end, sortedList.length);
   var min = start;
   var max = end;
@@ -157,8 +170,12 @@ void _reverse<E>(List<E> elements, int start, int end) {
 ///
 /// This insertion sort is stable: Equal elements end up in the same order
 /// as they started in.
-void insertionSort<E>(List<E> elements,
-    {int Function(E, E)? compare, int start = 0, int? end}) {
+void insertionSort<E>(
+  List<E> elements, {
+  int Function(E, E)? compare,
+  int start = 0,
+  int? end,
+}) {
   // If the same method could have both positional and named optional
   // parameters, this should be (list, [start, end], {compare}).
   compare ??= defaultCompare;
@@ -186,9 +203,13 @@ void insertionSort<E>(List<E> elements,
 ///
 /// Performs insertion sort on the [elements] range from [start] to [end].
 /// Ordering is the [compare] of the [keyOf] of the elements.
-void insertionSortBy<E, K>(List<E> elements, K Function(E element) keyOf,
-    int Function(K a, K b) compare,
-    [int start = 0, int? end]) {
+void insertionSortBy<E, K>(
+  List<E> elements,
+  K Function(E element) keyOf,
+  int Function(K a, K b) compare, [
+  int start = 0,
+  int? end,
+]) {
   end = RangeError.checkValidRange(start, end, elements.length);
   _movingInsertionSort(elements, keyOf, compare, start, end, elements, start);
 }
@@ -211,8 +232,12 @@ const int _mergeSortLimit = 32;
 ///
 /// This merge sort is stable: Equal elements end up in the same order
 /// as they started in.
-void mergeSort<E>(List<E> elements,
-    {int start = 0, int? end, int Function(E, E)? compare}) {
+void mergeSort<E>(
+  List<E> elements, {
+  int start = 0,
+  int? end,
+  int Function(E, E)? compare,
+}) {
   end = RangeError.checkValidRange(start, end, elements.length);
   compare ??= defaultCompare;
 
@@ -236,9 +261,26 @@ void mergeSort<E>(List<E> elements,
   _mergeSort(elements, identity<E>, compare, middle, end, scratchSpace, 0);
   var firstTarget = end - firstLength;
   _mergeSort(
-      elements, identity<E>, compare, start, middle, elements, firstTarget);
-  _merge(identity<E>, compare, elements, firstTarget, end, scratchSpace, 0,
-      secondLength, elements, start);
+    elements,
+    identity<E>,
+    compare,
+    start,
+    middle,
+    elements,
+    firstTarget,
+  );
+  _merge(
+    identity<E>,
+    compare,
+    elements,
+    firstTarget,
+    end,
+    scratchSpace,
+    0,
+    secondLength,
+    elements,
+    start,
+  );
 }
 
 /// Sort [elements] using a merge-sort algorithm.
@@ -248,9 +290,13 @@ void mergeSort<E>(List<E> elements,
 /// If [start] and [end] are provided, only that range is sorted.
 ///
 /// Uses insertion sort for smaller sublists.
-void mergeSortBy<E, K>(List<E> elements, K Function(E element) keyOf,
-    int Function(K a, K b) compare,
-    [int start = 0, int? end]) {
+void mergeSortBy<E, K>(
+  List<E> elements,
+  K Function(E element) keyOf,
+  int Function(K a, K b) compare, [
+  int start = 0,
+  int? end,
+]) {
   end = RangeError.checkValidRange(start, end, elements.length);
   var length = end - start;
   if (length < 2) return;
@@ -272,8 +318,18 @@ void mergeSortBy<E, K>(List<E> elements, K Function(E element) keyOf,
   _mergeSort(elements, keyOf, compare, middle, end, scratchSpace, 0);
   var firstTarget = end - firstLength;
   _mergeSort(elements, keyOf, compare, start, middle, elements, firstTarget);
-  _merge(keyOf, compare, elements, firstTarget, end, scratchSpace, 0,
-      secondLength, elements, start);
+  _merge(
+    keyOf,
+    compare,
+    elements,
+    firstTarget,
+    end,
+    scratchSpace,
+    0,
+    secondLength,
+    elements,
+    start,
+  );
 }
 
 /// Performs an insertion sort into a potentially different list than the
@@ -281,13 +337,14 @@ void mergeSortBy<E, K>(List<E> elements, K Function(E element) keyOf,
 ///
 /// It will work in-place as well.
 void _movingInsertionSort<E, K>(
-    List<E> list,
-    K Function(E element) keyOf,
-    int Function(K, K) compare,
-    int start,
-    int end,
-    List<E> target,
-    int targetOffset) {
+  List<E> list,
+  K Function(E element) keyOf,
+  int Function(K, K) compare,
+  int start,
+  int end,
+  List<E> target,
+  int targetOffset,
+) {
   var length = end - start;
   if (length == 0) return;
   target[targetOffset] = list[start];
@@ -317,17 +374,25 @@ void _movingInsertionSort<E, K>(
 /// Allows target to be the same list as [elements], as long as it's not
 /// overlapping the `start..end` range.
 void _mergeSort<E, K>(
-    List<E> elements,
-    K Function(E element) keyOf,
-    int Function(K, K) compare,
-    int start,
-    int end,
-    List<E> target,
-    int targetOffset) {
+  List<E> elements,
+  K Function(E element) keyOf,
+  int Function(K, K) compare,
+  int start,
+  int end,
+  List<E> target,
+  int targetOffset,
+) {
   var length = end - start;
   if (length < _mergeSortLimit) {
     _movingInsertionSort<E, K>(
-        elements, keyOf, compare, start, end, target, targetOffset);
+      elements,
+      keyOf,
+      compare,
+      start,
+      end,
+      target,
+      targetOffset,
+    );
     return;
   }
   var middle = start + (length >> 1);
@@ -340,8 +405,18 @@ void _mergeSort<E, K>(
   // Sort the first half into the end of the source area.
   _mergeSort(elements, keyOf, compare, start, middle, elements, middle);
   // Merge the two parts into the target area.
-  _merge(keyOf, compare, elements, middle, middle + firstLength, target,
-      targetMiddle, targetMiddle + secondLength, target, targetOffset);
+  _merge(
+    keyOf,
+    compare,
+    elements,
+    middle,
+    middle + firstLength,
+    target,
+    targetMiddle,
+    targetMiddle + secondLength,
+    target,
+    targetOffset,
+  );
 }
 
 /// Merges two lists into a target list.
@@ -353,16 +428,17 @@ void _mergeSort<E, K>(
 /// This allows the merge to be stable if the first list contains elements
 /// that started out earlier than the ones in [secondList]
 void _merge<E, K>(
-    K Function(E element) keyOf,
-    int Function(K, K) compare,
-    List<E> firstList,
-    int firstStart,
-    int firstEnd,
-    List<E> secondList,
-    int secondStart,
-    int secondEnd,
-    List<E> target,
-    int targetOffset) {
+  K Function(E element) keyOf,
+  int Function(K, K) compare,
+  List<E> firstList,
+  int firstStart,
+  int firstEnd,
+  List<E> secondList,
+  int secondStart,
+  int secondEnd,
+  List<E> target,
+  int targetOffset,
+) {
   // No empty lists reaches here.
   assert(firstStart < firstEnd);
   assert(secondStart < secondEnd);
@@ -387,15 +463,23 @@ void _merge<E, K>(
       }
       // Second list empties first. Flushing first list here.
       target[targetOffset++] = firstElement;
-      target.setRange(targetOffset, targetOffset + (firstEnd - cursor1),
-          firstList, cursor1);
+      target.setRange(
+        targetOffset,
+        targetOffset + (firstEnd - cursor1),
+        firstList,
+        cursor1,
+      );
       return;
     }
   }
   // First list empties first. Reached by break above.
   target[targetOffset++] = secondElement;
   target.setRange(
-      targetOffset, targetOffset + (secondEnd - cursor2), secondList, cursor2);
+    targetOffset,
+    targetOffset + (secondEnd - cursor2),
+    secondList,
+    cursor2,
+  );
 }
 
 /// Sort [elements] using a quick-sort algorithm.
@@ -404,8 +488,12 @@ void _merge<E, K>(
 /// If [start] and [end] are provided, only that range is sorted.
 ///
 /// Uses insertion sort for smaller sublists.
-void quickSort<E>(List<E> elements, int Function(E a, E b) compare,
-    [int start = 0, int? end]) {
+void quickSort<E>(
+  List<E> elements,
+  int Function(E a, E b) compare, [
+  int start = 0,
+  int? end,
+]) {
   end = RangeError.checkValidRange(start, end, elements.length);
   _quickSort<E, E>(elements, identity, compare, Random(), start, end);
 }
@@ -418,14 +506,24 @@ void quickSort<E>(List<E> elements, int Function(E a, E b) compare,
 ///
 /// Uses insertion sort for smaller sublists.
 void quickSortBy<E, K>(
-    List<E> list, K Function(E element) keyOf, int Function(K a, K b) compare,
-    [int start = 0, int? end]) {
+  List<E> list,
+  K Function(E element) keyOf,
+  int Function(K a, K b) compare, [
+  int start = 0,
+  int? end,
+]) {
   end = RangeError.checkValidRange(start, end, list.length);
   _quickSort(list, keyOf, compare, Random(), start, end);
 }
 
-void _quickSort<E, K>(List<E> list, K Function(E element) keyOf,
-    int Function(K a, K b) compare, Random random, int start, int end) {
+void _quickSort<E, K>(
+  List<E> list,
+  K Function(E element) keyOf,
+  int Function(K a, K b) compare,
+  Random random,
+  int start,
+  int end,
+) {
   const minQuickSortLength = 24;
   var length = end - start;
   while (length >= minQuickSortLength) {

@@ -50,7 +50,9 @@ void main() {
         expect(fake.environment[key], 'FAKE');
 
         expect(
-            fake.executableArguments.length, local.executableArguments.length);
+          fake.executableArguments.length,
+          local.executableArguments.length,
+        );
         fake.executableArguments.add('ARG');
         expect(fake.executableArguments.last, 'ARG');
       });
@@ -62,9 +64,7 @@ void main() {
       });
 
       test('overrides a value, but leaves others intact', () {
-        final copy = fake.copyWith(
-          numberOfProcessors: -1,
-        );
+        final copy = fake.copyWith(numberOfProcessors: -1);
         expect(copy.numberOfProcessors, equals(-1));
         expect(copy.pathSeparator, local.pathSeparator);
         expect(copy.operatingSystem, local.operatingSystem);

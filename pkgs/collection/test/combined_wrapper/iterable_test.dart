@@ -16,8 +16,14 @@ void main() {
   });
 
   test('should combine multiple iterables with some empty ones', () {
-    var combined =
-        CombinedIterableView([iterable1, [], iterable2, [], iterable3, []]);
+    var combined = CombinedIterableView([
+      iterable1,
+      [],
+      iterable2,
+      [],
+      iterable3,
+      [],
+    ]);
     expect(combined, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
   });
 

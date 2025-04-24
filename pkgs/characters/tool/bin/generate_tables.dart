@@ -84,11 +84,18 @@ void main(List<String> args) async {
     }
   }
 
-  var categories =
-      await loadCategories(update: flags.update, verbose: flags.verbose);
+  var categories = await loadCategories(
+    update: flags.update,
+    verbose: flags.verbose,
+  );
 
-  generateTables(output, categories,
-      dryrun: flags.dryrun, verbose: flags.verbose, optimize: flags.optimize);
+  generateTables(
+    output,
+    categories,
+    dryrun: flags.dryrun,
+    verbose: flags.verbose,
+    optimize: flags.optimize,
+  );
 }
 
 void generateTables(
@@ -103,7 +110,10 @@ void generateTables(
   var highChunkSize = defaultHighChunkSize;
 
   int optimizeTable(
-      IndirectTable chunkTable, int lowChunkSize, int highChunkSize) {
+    IndirectTable chunkTable,
+    int lowChunkSize,
+    int highChunkSize,
+  ) {
     var index = 0;
     do {
       chunkTable.entries.add(TableEntry(0, index, lowChunkSize));
@@ -115,22 +125,26 @@ void generateTables(
       index += highChunkSize;
     } while (index < 0x110000);
     var highChunkCount = chunkTable.entries.length - lowChunkCount;
-    assert(lowChunkCount * lowChunkSize + highChunkCount * highChunkSize ==
-        0x110000);
+    assert(
+      lowChunkCount * lowChunkSize + highChunkCount * highChunkSize == 0x110000,
+    );
     assert(chunkTable.chunks.length == 1);
-    assert(_validate(table, chunkTable, lowChunkSize, highChunkSize,
-        verbose: false));
+    assert(
+      _validate(table, chunkTable, lowChunkSize, highChunkSize, verbose: false),
+    );
 
     chunkifyTable(chunkTable);
     assert(chunkTable.entries.length == lowChunkCount + highChunkCount);
-    assert(_validate(table, chunkTable, lowChunkSize, highChunkSize,
-        verbose: false));
+    assert(
+      _validate(table, chunkTable, lowChunkSize, highChunkSize, verbose: false),
+    );
 
     combineChunkedTable(chunkTable);
     assert(chunkTable.entries.length == lowChunkCount + highChunkCount);
     assert(chunkTable.chunks.length == 1);
-    assert(_validate(table, chunkTable, lowChunkSize, highChunkSize,
-        verbose: false));
+    assert(
+      _validate(table, chunkTable, lowChunkSize, highChunkSize, verbose: false),
+    );
 
     var size = chunkTable.chunks[0].length + chunkTable.entries.length * 2;
     return size;
@@ -153,9 +167,11 @@ void generateTables(
         var newSize = optimizeTable(newChunk, low, high);
         if (verbose) {
           var delta = newSize - size;
-          stderr.writeln("${size < newSize ? "Worse" : "Better"}"
-              ' chunk size: $low/$high: $newSize '
-              "(${delta > 0 ? "+$delta" : delta})");
+          stderr.writeln(
+            "${size < newSize ? "Worse" : "Better"}"
+            ' chunk size: $low/$high: $newSize '
+            "(${delta > 0 ? "+$delta" : delta})",
+          );
         }
         if (newSize < size) {
           lowChunkSize = low;
@@ -173,12 +189,20 @@ void generateTables(
   }
 
   var buffer = StringBuffer();
-  writeHeader(
-      buffer, [graphemeTestData, emojiTestData, graphemeBreakPropertyData]);
+  writeHeader(buffer, [
+    graphemeTestData,
+    emojiTestData,
+    graphemeBreakPropertyData,
+  ]);
   buffer.writeln();
 
-  writeTables(buffer, chunkTable, lowChunkSize, highChunkSize,
-      verbose: verbose);
+  writeTables(
+    buffer,
+    chunkTable,
+    lowChunkSize,
+    highChunkSize,
+    verbose: verbose,
+  );
 
   writeForwardAutomaton(buffer, verbose: verbose);
   buffer.writeln();
@@ -195,21 +219,38 @@ void generateTables(
 // -----------------------------------------------------------------------------
 // Combined table writing.
 void writeTables(
-    StringSink out, IndirectTable table, int lowChunkSize, int highChunkSize,
-    {required bool verbose}) {
+  StringSink out,
+  IndirectTable table,
+  int lowChunkSize,
+  int highChunkSize, {
+  required bool verbose,
+}) {
   assert(table.chunks.length == 1);
   _writeStringLiteral(out, '_data', table.chunks[0], verbose: verbose);
-  _writeStringLiteral(out, '_start', table.entries.map((e) => e.start).toList(),
-      verbose: verbose);
+  _writeStringLiteral(
+    out,
+    '_start',
+    table.entries.map((e) => e.start).toList(),
+    verbose: verbose,
+  );
   _writeLookupFunction(out, '_data', '_start', lowChunkSize);
   out.writeln();
   _writeSurrogateLookupFunction(
-      out, '_data', '_start', 65536 ~/ lowChunkSize, highChunkSize);
+    out,
+    '_data',
+    '_start',
+    65536 ~/ lowChunkSize,
+    highChunkSize,
+  );
   out.writeln();
 }
 
-void _writeStringLiteral(StringSink out, String name, List<int> data,
-    {required bool verbose}) {
+void _writeStringLiteral(
+  StringSink out,
+  String name,
+  List<int> data, {
+  required bool verbose,
+}) {
   var prefix = 'const String $name = ';
   out.write(prefix);
   var writer = StringLiteralWriter(out, padding: 4, escape: _needsEscape);
@@ -231,18 +272,38 @@ bool _needsEscape(int codeUnit) =>
     codeUnit > 0xff || codeUnit == 0x7f || codeUnit & 0x60 == 0;
 
 void _writeLookupFunction(
-    StringSink out, String dataName, String startName, int chunkSize) {
+  StringSink out,
+  String dataName,
+  String startName,
+  int chunkSize,
+) {
   out.write(_lookupMethod('low', dataName, startName, chunkSize));
 }
 
-void _writeSurrogateLookupFunction(StringSink out, String dataName,
-    String startName, int startOffset, int chunkSize) {
-  out.write(_lookupSurrogatesMethod(
-      'high', dataName, startName, startOffset, chunkSize));
+void _writeSurrogateLookupFunction(
+  StringSink out,
+  String dataName,
+  String startName,
+  int startOffset,
+  int chunkSize,
+) {
+  out.write(
+    _lookupSurrogatesMethod(
+      'high',
+      dataName,
+      startName,
+      startOffset,
+      chunkSize,
+    ),
+  );
 }
 
 String _lookupMethod(
-        String name, String dataName, String startName, int chunkSize) =>
+  String name,
+  String dataName,
+  String startName,
+  int chunkSize,
+) =>
     '''
 $preferInline
 int $name(int codeUnit) {
@@ -252,8 +313,13 @@ int $name(int codeUnit) {
 }
 ''';
 
-String _lookupSurrogatesMethod(String name, String dataName, String startName,
-    int startOffset, int chunkSize) {
+String _lookupSurrogatesMethod(
+  String name,
+  String dataName,
+  String startName,
+  int startOffset,
+  int chunkSize,
+) {
   if (chunkSize == 1024) {
     return '''
 $preferInline
@@ -278,9 +344,13 @@ int $name(int lead, int tail) {
 }
 
 // -----------------------------------------------------------------------------
-bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
-    int highChunkSize,
-    {required bool verbose}) {
+bool _validate(
+  Uint8List table,
+  IndirectTable indirectTable,
+  int lowChunkSize,
+  int highChunkSize, {
+  required bool verbose,
+}) {
   var lowChunkCount = 65536 ~/ lowChunkSize;
   var lowChunkShift = lowChunkSize.bitLength - 1;
   var lowChunkMask = lowChunkSize - 1;
@@ -292,8 +362,10 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
         [entry.start + (i & lowChunkMask)];
     if (value != indirectValue) {
       stderr.writeln('$entryIndex: $entry');
-      stderr.writeln('Error: ${i.toRadixString(16)} -> Expected $value,'
-          ' was $indirectValue');
+      stderr.writeln(
+        'Error: ${i.toRadixString(16)} -> Expected $value,'
+        ' was $indirectValue',
+      );
       printIndirectTable(indirectTable);
       return false;
     }
@@ -309,8 +381,10 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
         [entry.start + (j & highChunkMask)];
     if (value != indirectValue) {
       stderr.writeln('$entryIndex: $entry');
-      stderr.writeln('Error: ${i.toRadixString(16)} -> Expected $value,'
-          ' was $indirectValue');
+      stderr.writeln(
+        'Error: ${i.toRadixString(16)} -> Expected $value,'
+        ' was $indirectValue',
+      );
       printIndirectTable(indirectTable);
       return false;
     }
@@ -322,6 +396,8 @@ bool _validate(Uint8List table, IndirectTable indirectTable, int lowChunkSize,
 }
 
 void printIndirectTable(IndirectTable table) {
-  stderr.writeln("IT(chunks: ${table.chunks.map((x) => "#${x.length}")},"
-      ' entries: ${table.entries}');
+  stderr.writeln(
+    "IT(chunks: ${table.chunks.map((x) => "#${x.length}")},"
+    ' entries: ${table.entries}',
+  );
 }

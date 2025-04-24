@@ -150,35 +150,117 @@ void main() {
       expect(context.join('a', 'b', 'c', 'd', 'e'), 'a/b/c/d/e');
       expect(context.join('a', 'b', 'c', 'd', 'e', 'f'), 'a/b/c/d/e/f');
       expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g'), 'a/b/c/d/e/f/g');
-      expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
-          'a/b/c/d/e/f/g/h');
-      expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
-          'a/b/c/d/e/f/g/h/i');
-      expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
-          'a/b/c/d/e/f/g/h/i/j');
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
-          'a/b/c/d/e/f/g/h/i/j/k');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
+        'a/b/c/d/e/f/g/h',
+      );
       expect(
-          context.join(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'),
-          'a/b/c/d/e/f/g/h/i/j/k/l');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
+        'a/b/c/d/e/f/g/h/i',
+      );
       expect(
-          context.join(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
+        'a/b/c/d/e/f/g/h/i/j',
+      );
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-              'l', 'm', 'n'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n');
+        context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
+        'a/b/c/d/e/f/g/h/i/j/k',
+      );
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-              'l', 'm', 'n', 'o'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o');
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l',
+      );
       expect(
-          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-              'l', 'm', 'n', 'o', 'p'),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p');
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m',
+      );
+      expect(
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n',
+      );
+      expect(
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o',
+      );
+      expect(
+        context.join(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+          'p',
+        ),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p',
+      );
     });
 
     test('does not add separator if a part ends in one', () {
@@ -212,8 +294,10 @@ void main() {
 
     test('join does not modify internal ., .., or trailing separators', () {
       expect(context.join('a/', 'b/c/'), 'a/b/c/');
-      expect(context.join('a/b/./c/..//', 'd/.././..//e/f//'),
-          'a/b/./c/..//d/.././..//e/f//');
+      expect(
+        context.join('a/b/./c/..//', 'd/.././..//e/f//'),
+        'a/b/./c/..//d/.././..//e/f//',
+      );
       expect(context.join('a/b', 'c/../../../..'), 'a/b/c/../../../..');
       expect(context.join('a', 'b${context.separator}'), 'a/b/');
     });
@@ -222,26 +306,27 @@ void main() {
   group('joinAll', () {
     test('allows more than sixteen parts', () {
       expect(
-          context.joinAll([
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f',
-            'g',
-            'h',
-            'i',
-            'j',
-            'k',
-            'l',
-            'm',
-            'n',
-            'o',
-            'p',
-            'q'
-          ]),
-          'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q');
+        context.joinAll([
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+          'p',
+          'q',
+        ]),
+        'a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q',
+      );
     });
 
     test('does not add separator if a part ends in one', () {
@@ -265,8 +350,10 @@ void main() {
       expect(context.split('foo'), equals(['foo']));
       expect(context.split('foo/bar.txt'), equals(['foo', 'bar.txt']));
       expect(context.split('foo/bar/baz'), equals(['foo', 'bar', 'baz']));
-      expect(context.split('foo/../bar/./baz'),
-          equals(['foo', '..', 'bar', '.', 'baz']));
+      expect(
+        context.split('foo/../bar/./baz'),
+        equals(['foo', '..', 'bar', '.', 'baz']),
+      );
       expect(context.split('foo//bar///baz'), equals(['foo', 'bar', 'baz']));
       expect(context.split('foo/\\/baz'), equals(['foo', '\\', 'baz']));
       expect(context.split('.'), equals(['.']));
@@ -292,8 +379,10 @@ void main() {
       expect(context.normalize('C:/'), 'C:');
       expect(context.normalize(r'C:\'), r'C:\');
       expect(context.normalize(r'\\'), r'\\');
-      expect(context.normalize('a/./\xc5\u0bf8-;\u{1f085}\u{00}/c/d/../'),
-          'a/\xc5\u0bf8-;\u{1f085}\u{00}/c');
+      expect(
+        context.normalize('a/./\xc5\u0bf8-;\u{1f085}\u{00}/c/d/../'),
+        'a/\xc5\u0bf8-;\u{1f085}\u{00}/c',
+      );
     });
 
     test('collapses redundant separators', () {
@@ -445,8 +534,10 @@ void main() {
     test('with a root parameter', () {
       expect(context.relative('/foo/bar/baz', from: '/foo/bar'), equals('baz'));
       expect(context.relative('..', from: '/foo/bar'), equals('../../root'));
-      expect(context.relative('/foo/bar/baz', from: 'foo/bar'),
-          equals('../../../../foo/bar/baz'));
+      expect(
+        context.relative('/foo/bar/baz', from: 'foo/bar'),
+        equals('../../../../foo/bar/baz'),
+      );
       expect(context.relative('..', from: 'foo/bar'), equals('../../..'));
     });
 
@@ -455,7 +546,9 @@ void main() {
       expect(r.relative('/foo/bar/baz', from: '/foo/bar'), equals('baz'));
       expect(() => r.relative('..', from: '/foo/bar'), throwsPathException);
       expect(
-          r.relative('/foo/bar/baz', from: 'foo/bar'), equals('/foo/bar/baz'));
+        r.relative('/foo/bar/baz', from: 'foo/bar'),
+        equals('/foo/bar/baz'),
+      );
       expect(r.relative('..', from: 'foo/bar'), equals('../../..'));
     });
 
@@ -545,36 +638,104 @@ void main() {
       expect(context.absolute('a', 'b', 'c'), '/root/path/a/b/c');
       expect(context.absolute('a', 'b', 'c', 'd'), '/root/path/a/b/c/d');
       expect(context.absolute('a', 'b', 'c', 'd', 'e'), '/root/path/a/b/c/d/e');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f'),
-          '/root/path/a/b/c/d/e/f');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g'),
-          '/root/path/a/b/c/d/e/f/g');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
-          '/root/path/a/b/c/d/e/f/g/h');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
-          '/root/path/a/b/c/d/e/f/g/h/i');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
-          '/root/path/a/b/c/d/e/f/g/h/i/j');
       expect(
-          context.absolute(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
-          '/root/path/a/b/c/d/e/f/g/h/i/j/k');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f'),
+        '/root/path/a/b/c/d/e/f',
+      );
       expect(
-          context.absolute(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l'),
-          '/root/path/a/b/c/d/e/f/g/h/i/j/k/l');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g'),
+        '/root/path/a/b/c/d/e/f/g',
+      );
       expect(
-          context.absolute(
-              'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'),
-          '/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
+        '/root/path/a/b/c/d/e/f/g/h',
+      );
       expect(
-          context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-              'k', 'l', 'm', 'n'),
-          '/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'),
+        '/root/path/a/b/c/d/e/f/g/h/i',
+      );
       expect(
-          context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-              'k', 'l', 'm', 'n', 'o'),
-          '/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o');
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'),
+        '/root/path/a/b/c/d/e/f/g/h/i/j',
+      );
+      expect(
+        context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'),
+        '/root/path/a/b/c/d/e/f/g/h/i/j/k',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+        ),
+        '/root/path/a/b/c/d/e/f/g/h/i/j/k/l',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+        ),
+        '/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+        ),
+        '/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n',
+      );
+      expect(
+        context.absolute(
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+          'f',
+          'g',
+          'h',
+          'i',
+          'j',
+          'k',
+          'l',
+          'm',
+          'n',
+          'o',
+        ),
+        '/root/path/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o',
+      );
     });
 
     test('does not add separator if a part ends in one', () {
@@ -585,7 +746,9 @@ void main() {
     test('ignores parts before an absolute path', () {
       expect(context.absolute('a', '/b', '/c', 'd'), '/c/d');
       expect(
-          context.absolute('a', r'c:\b', 'c', 'd'), r'/root/path/a/c:\b/c/d');
+        context.absolute('a', r'c:\b', 'c', 'd'),
+        r'/root/path/a/c:\b/c/d',
+      );
       expect(context.absolute('a', r'\\b', 'c', 'd'), r'/root/path/a/\\b/c/d');
     });
   });
@@ -632,17 +795,25 @@ void main() {
     test('with a URI', () {
       expect(context.fromUri(Uri.parse('file:///path/to/foo')), '/path/to/foo');
       expect(
-          context.fromUri(Uri.parse('file:///path/to/foo/')), '/path/to/foo/');
+        context.fromUri(Uri.parse('file:///path/to/foo/')),
+        '/path/to/foo/',
+      );
       expect(context.fromUri(Uri.parse('file:///')), '/');
       expect(context.fromUri(Uri.parse('foo/bar')), 'foo/bar');
       expect(context.fromUri(Uri.parse('/path/to/foo')), '/path/to/foo');
       expect(context.fromUri(Uri.parse('///path/to/foo')), '/path/to/foo');
-      expect(context.fromUri(Uri.parse('file:///path/to/foo%23bar')),
-          '/path/to/foo#bar');
-      expect(context.fromUri(Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_')),
-          r'_{_}_`_^_ _"_%_');
-      expect(() => context.fromUri(Uri.parse('https://dart.dev')),
-          throwsArgumentError);
+      expect(
+        context.fromUri(Uri.parse('file:///path/to/foo%23bar')),
+        '/path/to/foo#bar',
+      );
+      expect(
+        context.fromUri(Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_')),
+        r'_{_}_`_^_ _"_%_',
+      );
+      expect(
+        () => context.fromUri(Uri.parse('https://dart.dev')),
+        throwsArgumentError,
+      );
     });
 
     test('with a string', () {
@@ -656,12 +827,18 @@ void main() {
     expect(context.toUri('path/to/foo/'), Uri.parse('path/to/foo/'));
     expect(context.toUri('/'), Uri.parse('file:///'));
     expect(context.toUri('foo/bar'), Uri.parse('foo/bar'));
-    expect(context.toUri('/path/to/foo#bar'),
-        Uri.parse('file:///path/to/foo%23bar'));
-    expect(context.toUri(r'/_{_}_`_^_ _"_%_'),
-        Uri.parse('file:///_%7B_%7D_%60_%5E_%20_%22_%25_'));
-    expect(context.toUri(r'_{_}_`_^_ _"_%_'),
-        Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_'));
+    expect(
+      context.toUri('/path/to/foo#bar'),
+      Uri.parse('file:///path/to/foo%23bar'),
+    );
+    expect(
+      context.toUri(r'/_{_}_`_^_ _"_%_'),
+      Uri.parse('file:///_%7B_%7D_%60_%5E_%20_%22_%25_'),
+    );
+    expect(
+      context.toUri(r'_{_}_`_^_ _"_%_'),
+      Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_'),
+    );
     expect(context.toUri(''), Uri.parse(''));
   });
 

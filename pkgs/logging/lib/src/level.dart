@@ -63,7 +63,7 @@ class Level implements Comparable<Level> {
     WARNING,
     SEVERE,
     SHOUT,
-    OFF
+    OFF,
   ];
 
   @override

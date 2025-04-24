@@ -20,8 +20,10 @@ export 'unicode_grapheme_tests.dart';
 /// can be compared to the original tests.)
 String testDescription(List<String> expected) {
   var expectedString = expected
-      .map((s) =>
-          s.runes.map((x) => x.toRadixString(16).padLeft(4, '0')).join(' × '))
+      .map(
+        (s) =>
+            s.runes.map((x) => x.toRadixString(16).padLeft(4, '0')).join(' × '),
+      )
       .join(' ÷ ');
   return '÷ $expectedString ÷';
 }

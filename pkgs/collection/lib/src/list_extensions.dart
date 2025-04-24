@@ -36,10 +36,20 @@ extension ListExtensions<E> on List<E> {
   /// If [start] and [end] are supplied, only the list range from [start] to
   /// [end] is searched, and only that range needs to be sorted.
   int binarySearchByCompare<K>(
-          E element, K Function(E element) keyOf, int Function(K, K) compare,
-          [int start = 0, int? end]) =>
+    E element,
+    K Function(E element) keyOf,
+    int Function(K, K) compare, [
+    int start = 0,
+    int? end,
+  ]) =>
       algorithms.binarySearchBy<E, K>(
-          this, keyOf, compare, element, start, end);
+        this,
+        keyOf,
+        compare,
+        element,
+        start,
+        end,
+      );
 
   /// Returns the index of [element] in this sorted list.
   ///
@@ -53,9 +63,19 @@ extension ListExtensions<E> on List<E> {
   /// If [start] and [end] are supplied, only the list range from [start] to
   /// [end] is searched, and only that range needs to be sorted.
   int binarySearchBy<K extends Comparable<K>>(
-          E element, K Function(E element) keyOf, [int start = 0, int? end]) =>
+    E element,
+    K Function(E element) keyOf, [
+    int start = 0,
+    int? end,
+  ]) =>
       algorithms.binarySearchBy<E, K>(
-          this, keyOf, (a, b) => a.compareTo(b), element, start, end);
+        this,
+        keyOf,
+        (a, b) => a.compareTo(b),
+        element,
+        start,
+        end,
+      );
 
   /// Returns the index where [element] should be in this sorted list.
   ///
@@ -88,8 +108,12 @@ extension ListExtensions<E> on List<E> {
   /// If [start] and [end] are supplied, only that range is searched,
   /// and only that range need to be sorted.
   int lowerBoundByCompare<K>(
-          E element, K Function(E) keyOf, int Function(K, K) compare,
-          [int start = 0, int? end]) =>
+    E element,
+    K Function(E) keyOf,
+    int Function(K, K) compare, [
+    int start = 0,
+    int? end,
+  ]) =>
       algorithms.lowerBoundBy(this, keyOf, compare, element, start, end);
 
   /// Returns the index where [element] should be in this sorted list.
@@ -108,10 +132,20 @@ extension ListExtensions<E> on List<E> {
   ///
   /// If [start] and [end] are supplied, only that range is searched,
   /// and only that range need to be sorted.
-  int lowerBoundBy<K extends Comparable<K>>(E element, K Function(E) keyOf,
-          [int start = 0, int? end]) =>
+  int lowerBoundBy<K extends Comparable<K>>(
+    E element,
+    K Function(E) keyOf, [
+    int start = 0,
+    int? end,
+  ]) =>
       algorithms.lowerBoundBy<E, K>(
-          this, keyOf, compareComparable, element, start, end);
+        this,
+        keyOf,
+        compareComparable,
+        element,
+        start,
+        end,
+      );
 
   /// Takes an action for each element.
   ///
@@ -172,7 +206,8 @@ extension ListExtensions<E> on List<E> {
   /// Like [Iterable.expand] except that the callback function is supplied with
   /// both the index and the element.
   Iterable<R> expandIndexed<R>(
-      Iterable<R> Function(int index, E element) expand) sync* {
+    Iterable<R> Function(int index, E element) expand,
+  ) sync* {
     for (var index = 0; index < length; index++) {
       yield* expand(index, this[index]);
     }
@@ -187,16 +222,22 @@ extension ListExtensions<E> on List<E> {
   ///
   /// Sorts elements from [start] to [end], defaulting to the entire list.
   void sortByCompare<K>(
-      K Function(E element) keyOf, int Function(K a, K b) compare,
-      [int start = 0, int? end]) {
+    K Function(E element) keyOf,
+    int Function(K a, K b) compare, [
+    int start = 0,
+    int? end,
+  ]) {
     quickSortBy(this, keyOf, compare, start, end);
   }
 
   /// Sorts elements by the natural order of their [keyOf] property.
   ///
   /// Sorts elements from [start] to [end], defaulting to the entire list.
-  void sortBy<K extends Comparable<K>>(K Function(E element) keyOf,
-      [int start = 0, int? end]) {
+  void sortBy<K extends Comparable<K>>(
+    K Function(E element) keyOf, [
+    int start = 0,
+    int? end,
+  ]) {
     quickSortBy<E, K>(this, keyOf, compareComparable, start, end);
   }
 
@@ -301,7 +342,11 @@ extension ListComparableExtensions<E extends Comparable<E>> on List<E> {
   /// Returns -1 if [element] does not occur in this list.
   int binarySearch(E element, [int Function(E, E)? compare]) =>
       algorithms.binarySearchBy<E, E>(
-          this, identity, compare ?? compareComparable, element);
+        this,
+        identity,
+        compare ?? compareComparable,
+        element,
+      );
 
   /// Returns the index where [element] should be in this sorted list.
   ///
@@ -316,7 +361,11 @@ extension ListComparableExtensions<E extends Comparable<E>> on List<E> {
   /// sorted.
   int lowerBound(E element, [int Function(E, E)? compare]) =>
       algorithms.lowerBoundBy<E, E>(
-          this, identity, compare ?? compareComparable, element);
+        this,
+        identity,
+        compare ?? compareComparable,
+        element,
+      );
 
   /// Sort a range of elements by [compare].
   ///
@@ -325,7 +374,12 @@ extension ListComparableExtensions<E extends Comparable<E>> on List<E> {
   void sortRange(int start, int end, [int Function(E a, E b)? compare]) {
     RangeError.checkValidRange(start, end, length);
     algorithms.quickSortBy<E, E>(
-        this, identity, compare ?? compareComparable, start, end);
+      this,
+      identity,
+      compare ?? compareComparable,
+      start,
+      end,
+    );
   }
 }
 
