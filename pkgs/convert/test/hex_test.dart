@@ -49,8 +49,9 @@ void main() {
     test('rejects non-bytes', () {
       expect(() => hex.encode([0x100]), throwsFormatException);
 
-      var sink =
-          hex.encoder.startChunkedConversion(StreamController(sync: true));
+      var sink = hex.encoder.startChunkedConversion(
+        StreamController(sync: true),
+      );
       expect(() => sink.add([0x100]), throwsFormatException);
     });
   });
@@ -63,20 +64,21 @@ void main() {
 
     test('supports uppercase letters', () {
       expect(
-          hex.decode('0123456789ABCDEFabcdef'),
-          equals([
-            0x01,
-            0x23,
-            0x45,
-            0x67,
-            0x89,
-            0xab,
-            0xcd,
-            0xef,
-            0xab,
-            0xcd,
-            0xef
-          ]));
+        hex.decode('0123456789ABCDEFabcdef'),
+        equals([
+          0x01,
+          0x23,
+          0x45,
+          0x67,
+          0x89,
+          0xab,
+          0xcd,
+          0xef,
+          0xab,
+          0xcd,
+          0xef,
+        ]),
+      );
     });
 
     group('with chunked conversion', () {
@@ -92,54 +94,60 @@ void main() {
       test('converts hex to byte arrays', () {
         sink.add('1ab23cd4');
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2, 0x3c, 0xd4]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2, 0x3c, 0xd4],
+          ]),
+        );
 
         sink.add('0001feff');
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2, 0x3c, 0xd4],
-              [0x00, 0x01, 0xfe, 0xff]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2, 0x3c, 0xd4],
+            [0x00, 0x01, 0xfe, 0xff],
+          ]),
+        );
       });
 
       test('supports trailing digits split across chunks', () {
         sink.add('1ab23');
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2],
+          ]),
+        );
 
         sink.add('cd');
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2],
-              [0x3c]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2],
+            [0x3c],
+          ]),
+        );
 
         sink.add('40001');
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2],
-              [0x3c],
-              [0xd4, 0x00, 0x01]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2],
+            [0x3c],
+            [0xd4, 0x00, 0x01],
+          ]),
+        );
 
         sink.add('feff');
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2],
-              [0x3c],
-              [0xd4, 0x00, 0x01],
-              [0xfe, 0xff]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2],
+            [0x3c],
+            [0xd4, 0x00, 0x01],
+            [0xfe, 0xff],
+          ]),
+        );
       });
 
       test('supports empty strings', () {
@@ -154,41 +162,47 @@ void main() {
 
         sink.add('0');
         expect(
-            results,
-            equals([
-              <Never>[],
-              [0x00]
-            ]));
+          results,
+          equals([
+            <Never>[],
+            [0x00],
+          ]),
+        );
 
         sink.add('');
         expect(
-            results,
-            equals([
-              <Never>[],
-              [0x00]
-            ]));
+          results,
+          equals([
+            <Never>[],
+            [0x00],
+          ]),
+        );
       });
 
       test('rejects odd length detected in close()', () {
         sink.add('1ab23');
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2],
+          ]),
+        );
         expect(() => sink.close(), throwsFormatException);
       });
 
       test('rejects odd length detected in addSlice()', () {
         sink.addSlice('1ab23cd', 0, 5, false);
         expect(
-            results,
-            equals([
-              [0x1a, 0xb2]
-            ]));
+          results,
+          equals([
+            [0x1a, 0xb2],
+          ]),
+        );
 
         expect(
-            () => sink.addSlice('1ab23cd', 5, 7, true), throwsFormatException);
+          () => sink.addSlice('1ab23cd', 5, 7, true),
+          throwsFormatException,
+        );
       });
     });
 
@@ -202,14 +216,15 @@ void main() {
         '`',
         '\x00',
         '\u0141',
-        '\u{10041}'
+        '\u{10041}',
       ]) {
         test('"$char"', () {
           expect(() => hex.decode('a$char'), throwsFormatException);
           expect(() => hex.decode('${char}a'), throwsFormatException);
 
-          var sink =
-              hex.decoder.startChunkedConversion(StreamController(sync: true));
+          var sink = hex.decoder.startChunkedConversion(
+            StreamController(sync: true),
+          );
           expect(() => sink.add(char), throwsFormatException);
         });
       }

@@ -28,10 +28,7 @@ void main() {
   });
 
   test('BoolList.generate()', () {
-    expect(
-      BoolList.generate(1024, generator),
-      List.generate(1024, generator),
-    );
+    expect(BoolList.generate(1024, generator), List.generate(1024, generator));
   });
 
   test('BoolList.of()', () {

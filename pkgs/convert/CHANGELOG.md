@@ -1,3 +1,7 @@
+## 3.1.3-wip
+
+- Run `dart format` with the new style.
+
 ## 3.1.2
 
 - Require Dart 3.4

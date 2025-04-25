@@ -1,3 +1,7 @@
+## 2.0.4-wip
+
+- Run `dart format` with the new style.
+
 ## 2.0.3
 
 - Move to `package:web`.

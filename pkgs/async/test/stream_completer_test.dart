@@ -82,16 +82,18 @@ void main() {
     var lastEvent = -1;
     var controller = StreamController<int>();
     late StreamSubscription subscription;
-    subscription = completer.stream.listen((value) {
-      expect(value, lessThan(3));
-      lastEvent = value;
-      if (value == 2) {
-        subscription.cancel();
-      }
-    },
-        onError: unreachable('error'),
-        onDone: unreachable('done'),
-        cancelOnError: true);
+    subscription = completer.stream.listen(
+      (value) {
+        expect(value, lessThan(3));
+        lastEvent = value;
+        if (value == 2) {
+          subscription.cancel();
+        }
+      },
+      onError: unreachable('error'),
+      onDone: unreachable('done'),
+      cancelOnError: true,
+    );
     completer.setSourceStream(controller.stream);
     expect(controller.hasListener, isTrue);
 
@@ -113,16 +115,22 @@ void main() {
     var completer = StreamCompleter<void>();
     completer.setEmpty();
     var done = Completer<void>();
-    completer.stream.listen(unreachable('data'),
-        onError: unreachable('error'), onDone: done.complete);
+    completer.stream.listen(
+      unreachable('data'),
+      onError: unreachable('error'),
+      onDone: done.complete,
+    );
     await done.future;
   });
 
   test('complete with setEmpty after listening', () async {
     var completer = StreamCompleter<void>();
     var done = Completer<void>();
-    completer.stream.listen(unreachable('data'),
-        onError: unreachable('error'), onDone: done.complete);
+    completer.stream.listen(
+      unreachable('data'),
+      onError: unreachable('error'),
+      onDone: done.complete,
+    );
     completer.setEmpty();
     await done.future;
   });
@@ -130,9 +138,11 @@ void main() {
   test("source stream isn't listened to until completer stream is", () async {
     var completer = StreamCompleter<void>();
     late StreamController controller;
-    controller = StreamController(onListen: () {
-      scheduleMicrotask(controller.close);
-    });
+    controller = StreamController(
+      onListen: () {
+        scheduleMicrotask(controller.close);
+      },
+    );
 
     completer.setSourceStream(controller.stream);
     await flushMicrotasks();
@@ -146,13 +156,18 @@ void main() {
     var completer = StreamCompleter<Object>();
     Object lastEvent = -1;
     var controller = StreamController<Object>();
-    completer.stream.listen((value) {
-      expect(value, lessThan(3));
-      lastEvent = value;
-    }, onError: (Object value) {
-      expect(value, '3');
-      lastEvent = value;
-    }, onDone: unreachable('done'), cancelOnError: true);
+    completer.stream.listen(
+      (value) {
+        expect(value, lessThan(3));
+        lastEvent = value;
+      },
+      onError: (Object value) {
+        expect(value, '3');
+        lastEvent = value;
+      },
+      onDone: unreachable('done'),
+      cancelOnError: true,
+    );
     completer.setSourceStream(controller.stream);
     expect(controller.hasListener, isTrue);
 
@@ -183,13 +198,18 @@ void main() {
     controller.add(1);
     expect(controller.hasListener, isFalse);
 
-    completer.stream.listen((value) {
-      expect(value, lessThan(3));
-      lastEvent = value;
-    }, onError: (Object value) {
-      expect(value, '3');
-      lastEvent = value;
-    }, onDone: unreachable('done'), cancelOnError: true);
+    completer.stream.listen(
+      (value) {
+        expect(value, lessThan(3));
+        lastEvent = value;
+      },
+      onError: (Object value) {
+        expect(value, '3');
+        lastEvent = value;
+      },
+      onDone: unreachable('done'),
+      cancelOnError: true,
+    );
 
     expect(controller.hasListener, isTrue);
 
@@ -315,42 +335,55 @@ void main() {
   test('asFuture with error accross setting stream', () async {
     var completer = StreamCompleter<void>();
     var controller = StreamController<void>();
-    var subscription =
-        completer.stream.listen(unreachable('data'), cancelOnError: false);
+    var subscription = completer.stream.listen(
+      unreachable('data'),
+      cancelOnError: false,
+    );
     var done = subscription.asFuture();
     expect(controller.hasListener, isFalse);
     completer.setSourceStream(controller.stream);
     await flushMicrotasks();
     expect(controller.hasListener, isTrue);
     controller.addError(42);
-    await done.then(unreachable('data'), onError: (Object error) {
-      expect(error, 42);
-    });
+    await done.then(
+      unreachable('data'),
+      onError: (Object error) {
+        expect(error, 42);
+      },
+    );
     expect(controller.hasListener, isFalse);
   });
 
   group('setError()', () {
     test('produces a stream that emits a single error', () {
       var completer = StreamCompleter<void>();
-      completer.stream.listen(unreachable('data'),
-          onError: expectAsync2((error, stackTrace) {
-        expect(error, equals('oh no'));
-      }), onDone: expectAsync0(() {}));
+      completer.stream.listen(
+        unreachable('data'),
+        onError: expectAsync2((error, stackTrace) {
+          expect(error, equals('oh no'));
+        }),
+        onDone: expectAsync0(() {}),
+      );
 
       completer.setError('oh no');
     });
 
-    test('produces a stream that emits a single error on a later listen',
-        () async {
-      var completer = StreamCompleter<void>();
-      completer.setError('oh no');
-      await flushMicrotasks();
+    test(
+      'produces a stream that emits a single error on a later listen',
+      () async {
+        var completer = StreamCompleter<void>();
+        completer.setError('oh no');
+        await flushMicrotasks();
 
-      completer.stream.listen(unreachable('data'),
+        completer.stream.listen(
+          unreachable('data'),
           onError: expectAsync2((error, stackTrace) {
-        expect(error, equals('oh no'));
-      }), onDone: expectAsync0(() {}));
-    });
+            expect(error, equals('oh no'));
+          }),
+          onDone: expectAsync0(() {}),
+        );
+      },
+    );
   });
 }
 

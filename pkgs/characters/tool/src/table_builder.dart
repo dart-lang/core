@@ -22,8 +22,10 @@ void chunkifyTable(IndirectTable table) {
   var entries = table.entries.toList();
   entries.sort((a, b) => b.length - a.length);
   var uniqueChunks = <Uint8List>[];
-  var duplicateDetector =
-      HashMap<Uint8List, TableEntry>(equals: _equals, hashCode: _hash);
+  var duplicateDetector = HashMap<Uint8List, TableEntry>(
+    equals: _equals,
+    hashCode: _hash,
+  );
   for (var entry in entries) {
     var chunk = data.sublist(entry.start, entry.end);
     var existingEntry = duplicateDetector[chunk];

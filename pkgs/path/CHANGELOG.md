@@ -6,6 +6,7 @@
   Recognize `#` and `?` as ending an authority or path. Remove
   queries and fragments when when normalizing, include them 
   in/as the last segment when splitting.
+- Run `dart format` with the new style.
 
 ## 1.9.1
 

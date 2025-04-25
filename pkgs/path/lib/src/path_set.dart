@@ -30,13 +30,14 @@ class PathSet extends IterableBase<String?> implements Set<String?> {
   static Set<String?> _create(p.Context? context) {
     context ??= p.context;
     return LinkedHashSet(
-        equals: (path1, path2) {
-          if (path1 == null) return path2 == null;
-          if (path2 == null) return false;
-          return context!.equals(path1, path2);
-        },
-        hashCode: (path) => path == null ? 0 : context!.hash(path),
-        isValidKey: (path) => path is String || path == null);
+      equals: (path1, path2) {
+        if (path1 == null) return path2 == null;
+        if (path2 == null) return false;
+        return context!.equals(path1, path2);
+      },
+      hashCode: (path) => path == null ? 0 : context!.hash(path),
+      isValidKey: (path) => path is String || path == null,
+    );
   }
 
   // Normally we'd use DelegatingSetView from the collection package to

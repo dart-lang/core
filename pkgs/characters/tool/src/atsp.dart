@@ -113,7 +113,7 @@ bool opt3(Graph graph, List<int> cycle) {
           wFDEBCA,
           wFDECBA,
           wFEDBCA,
-          wFEDCBA
+          wFEDCBA,
         ]);
         if (best < wABCDEF) {
           // Reorder and reverse to match the (or a) best solution.

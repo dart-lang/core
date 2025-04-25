@@ -17,8 +17,11 @@ import 'data_files.dart';
 ///
 /// If [targetFile] is omitted, a file in the system temporary directory
 /// is used instead.
-Future<String> fetch(String location,
-    {File? targetFile, bool forceLoad = false}) async {
+Future<String> fetch(
+  String location, {
+  File? targetFile,
+  bool forceLoad = false,
+}) async {
   if (targetFile == null) {
     var safeLocation = safePath(location);
     targetFile = File(path(Directory.systemTemp.path, safeLocation));
@@ -69,7 +72,8 @@ Future<bool> checkLicense(bool acceptLicenseChange) async {
   if (await licenseFile.checkChange() case var changedLicensePath?) {
     if (!acceptLicenseChange) {
       stderr.writeln(
-          licenseChangeWarning(licenseFile.targetLocation, changedLicensePath));
+        licenseChangeWarning(licenseFile.targetLocation, changedLicensePath),
+      );
       return false;
     }
     stderr.writeln('LICENSE CHANGE ACCEPTED!');
@@ -113,8 +117,10 @@ void writeHeader(StringSink output, List<DataFile> dependencies) {
   }
   output
     ..writeln('// Licensed under the Unicode Inc. License Agreement')
-    ..writeln('// (${licenseFile.sourceLocation}, '
-        '../../third_party/${licenseFile.targetLocation})');
+    ..writeln(
+      '// (${licenseFile.sourceLocation}, '
+      '../../third_party/${licenseFile.targetLocation})',
+    );
 }
 
 /// Temporary directory. Created once and for all.
@@ -177,7 +183,8 @@ Directory _findRootDir() {
     var parent = dir.parent;
     if (dir.path == parent.path) {
       throw UnsupportedError(
-          'Cannot find package root directory. Run tools from inside package!');
+        'Cannot find package root directory. Run tools from inside package!',
+      );
     }
   }
 }

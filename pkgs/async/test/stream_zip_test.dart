@@ -39,76 +39,94 @@ void main() {
   void testZip(Iterable<Stream> streams, Iterable expectedData) {
     var data = [];
     Stream zip = StreamZip(streams);
-    zip.listen(data.add, onDone: expectAsync0(() {
-      expect(data, equals(expectedData));
-    }));
+    zip.listen(
+      data.add,
+      onDone: expectAsync0(() {
+        expect(data, equals(expectedData));
+      }),
+    );
   }
 
   test('Basic', () {
-    testZip([
-      mks([1, 2, 3]),
-      mks([4, 5, 6]),
-      mks([7, 8, 9])
-    ], [
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9]
-    ]);
+    testZip(
+      [
+        mks([1, 2, 3]),
+        mks([4, 5, 6]),
+        mks([7, 8, 9]),
+      ],
+      [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ],
+    );
   });
 
   test('Uneven length 1', () {
-    testZip([
-      mks([1, 2, 3, 99, 100]),
-      mks([4, 5, 6]),
-      mks([7, 8, 9])
-    ], [
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9]
-    ]);
+    testZip(
+      [
+        mks([1, 2, 3, 99, 100]),
+        mks([4, 5, 6]),
+        mks([7, 8, 9]),
+      ],
+      [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ],
+    );
   });
 
   test('Uneven length 2', () {
-    testZip([
-      mks([1, 2, 3]),
-      mks([4, 5, 6, 99, 100]),
-      mks([7, 8, 9])
-    ], [
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9]
-    ]);
+    testZip(
+      [
+        mks([1, 2, 3]),
+        mks([4, 5, 6, 99, 100]),
+        mks([7, 8, 9]),
+      ],
+      [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ],
+    );
   });
 
   test('Uneven length 3', () {
-    testZip([
-      mks([1, 2, 3]),
-      mks([4, 5, 6]),
-      mks([7, 8, 9, 99, 100])
-    ], [
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9]
-    ]);
+    testZip(
+      [
+        mks([1, 2, 3]),
+        mks([4, 5, 6]),
+        mks([7, 8, 9, 99, 100]),
+      ],
+      [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ],
+    );
   });
 
   test('Uneven length 4', () {
-    testZip([
-      mks([1, 2, 3, 98]),
-      mks([4, 5, 6]),
-      mks([7, 8, 9, 99, 100])
-    ], [
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9]
-    ]);
+    testZip(
+      [
+        mks([1, 2, 3, 98]),
+        mks([4, 5, 6]),
+        mks([7, 8, 9, 99, 100]),
+      ],
+      [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ],
+    );
   });
 
   test('Empty 1', () {
     testZip([
       mks([]),
       mks([4, 5, 6]),
-      mks([7, 8, 9])
+      mks([7, 8, 9]),
     ], []);
   });
 
@@ -116,7 +134,7 @@ void main() {
     testZip([
       mks([1, 2, 3]),
       mks([]),
-      mks([7, 8, 9])
+      mks([7, 8, 9]),
     ], []);
   });
 
@@ -124,7 +142,7 @@ void main() {
     testZip([
       mks([1, 2, 3]),
       mks([4, 5, 6]),
-      mks([])
+      mks([]),
     ], []);
   });
 
@@ -133,30 +151,34 @@ void main() {
   });
 
   test('Single Source', () {
-    testZip([
-      mks([1, 2, 3])
-    ], [
-      [1],
-      [2],
-      [3]
-    ]);
+    testZip(
+      [
+        mks([1, 2, 3]),
+      ],
+      [
+        [1],
+        [2],
+        [3],
+      ],
+    );
   });
 
   test('Other-streams', () {
     var st1 = mks([1, 2, 3, 4, 5, 6]).where((x) => x < 4);
-    Stream st2 =
-        Stream.periodic(const Duration(milliseconds: 5), (x) => x + 4).take(3);
+    Stream st2 = Stream.periodic(
+      const Duration(milliseconds: 5),
+      (x) => x + 4,
+    ).take(3);
     var c = StreamController.broadcast();
     var st3 = c.stream;
-    testZip([
-      st1,
-      st2,
-      st3
-    ], [
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9]
-    ]);
+    testZip(
+      [st1, st2, st3],
+      [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ],
+    );
     c
       ..add(7)
       ..add(8)
@@ -166,62 +188,67 @@ void main() {
 
   test('Error 1', () {
     expect(
-        StreamZip([
-          streamError(mks([1, 2, 3]), 2, 'BAD-1'),
-          mks([4, 5, 6]),
-          mks([7, 8, 9])
-        ]).toList(),
-        throwsA(equals('BAD-1')));
+      StreamZip([
+        streamError(mks([1, 2, 3]), 2, 'BAD-1'),
+        mks([4, 5, 6]),
+        mks([7, 8, 9]),
+      ]).toList(),
+      throwsA(equals('BAD-1')),
+    );
   });
 
   test('Error 2', () {
     expect(
-        StreamZip([
-          mks([1, 2, 3]),
-          streamError(mks([4, 5, 6]), 5, 'BAD-2'),
-          mks([7, 8, 9])
-        ]).toList(),
-        throwsA(equals('BAD-2')));
+      StreamZip([
+        mks([1, 2, 3]),
+        streamError(mks([4, 5, 6]), 5, 'BAD-2'),
+        mks([7, 8, 9]),
+      ]).toList(),
+      throwsA(equals('BAD-2')),
+    );
   });
 
   test('Error 3', () {
     expect(
-        StreamZip([
-          mks([1, 2, 3]),
-          mks([4, 5, 6]),
-          streamError(mks([7, 8, 9]), 8, 'BAD-3')
-        ]).toList(),
-        throwsA(equals('BAD-3')));
+      StreamZip([
+        mks([1, 2, 3]),
+        mks([4, 5, 6]),
+        streamError(mks([7, 8, 9]), 8, 'BAD-3'),
+      ]).toList(),
+      throwsA(equals('BAD-3')),
+    );
   });
 
   test('Error at end', () {
     expect(
-        StreamZip([
-          mks([1, 2, 3]),
-          streamError(mks([4, 5, 6]), 6, 'BAD-4'),
-          mks([7, 8, 9])
-        ]).toList(),
-        throwsA(equals('BAD-4')));
+      StreamZip([
+        mks([1, 2, 3]),
+        streamError(mks([4, 5, 6]), 6, 'BAD-4'),
+        mks([7, 8, 9]),
+      ]).toList(),
+      throwsA(equals('BAD-4')),
+    );
   });
 
   test('Error before first end', () {
     // StreamControllers' streams with no "close" called will never be done,
     // so the fourth event of the first stream is guaranteed to come first.
     expect(
-        StreamZip([
-          streamError(mks([1, 2, 3, 4]), 4, 'BAD-5'),
-          (StreamController()
-                ..add(4)
-                ..add(5)
-                ..add(6))
-              .stream,
-          (StreamController()
-                ..add(7)
-                ..add(8)
-                ..add(9))
-              .stream
-        ]).toList(),
-        throwsA(equals('BAD-5')));
+      StreamZip([
+        streamError(mks([1, 2, 3, 4]), 4, 'BAD-5'),
+        (StreamController()
+              ..add(4)
+              ..add(5)
+              ..add(6))
+            .stream,
+        (StreamController()
+              ..add(7)
+              ..add(8)
+              ..add(9))
+            .stream,
+      ]).toList(),
+      throwsA(equals('BAD-5')),
+    );
   });
 
   test('Error after first end', () {
@@ -232,38 +259,48 @@ void main() {
       ..add(9);
     // Transformer that puts error into controller when one of the first two
     // streams have sent a done event.
-    var trans =
-        StreamTransformer<int, int>.fromHandlers(handleDone: (EventSink s) {
-      Timer.run(() {
-        controller.addError('BAD-6');
-      });
-      s.close();
-    });
-    testZip([
-      mks([1, 2, 3]).transform(trans),
-      mks([4, 5, 6]).transform(trans),
-      controller.stream
-    ], [
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9]
-    ]);
+    var trans = StreamTransformer<int, int>.fromHandlers(
+      handleDone: (EventSink s) {
+        Timer.run(() {
+          controller.addError('BAD-6');
+        });
+        s.close();
+      },
+    );
+    testZip(
+      [
+        mks([1, 2, 3]).transform(trans),
+        mks([4, 5, 6]).transform(trans),
+        controller.stream,
+      ],
+      [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ],
+    );
   });
 
   test('Pause/Resume', () {
     var sc1p = 0;
-    var c1 = StreamController(onPause: () {
-      sc1p++;
-    }, onResume: () {
-      sc1p--;
-    });
+    var c1 = StreamController(
+      onPause: () {
+        sc1p++;
+      },
+      onResume: () {
+        sc1p--;
+      },
+    );
 
     var sc2p = 0;
-    var c2 = StreamController(onPause: () {
-      sc2p++;
-    }, onResume: () {
-      sc2p--;
-    });
+    var c2 = StreamController(
+      onPause: () {
+        sc2p++;
+      },
+      onResume: () {
+        sc2p--;
+      },
+    );
 
     var done = expectAsync0(() {
       expect(sc1p, equals(1));
@@ -320,17 +357,19 @@ void main() {
     var sz = StreamZip([s1, s2]);
     var ctr = 0;
     late StreamSubscription sub;
-    sub = sz.listen(expectAsync1((v) {
-      expect(v, equals([ctr * 2, ctr * 2 + 1]));
-      if (ctr == 1) {
-        sub.pause(Future<void>.delayed(const Duration(milliseconds: 25)));
-      } else if (ctr == 2) {
-        sub.pause();
-        Future<void>.delayed(const Duration(milliseconds: 25)).then((_) {
-          sub.resume();
-        });
-      }
-      ctr++;
-    }, count: 4));
+    sub = sz.listen(
+      expectAsync1((v) {
+        expect(v, equals([ctr * 2, ctr * 2 + 1]));
+        if (ctr == 1) {
+          sub.pause(Future<void>.delayed(const Duration(milliseconds: 25)));
+        } else if (ctr == 2) {
+          sub.pause();
+          Future<void>.delayed(const Duration(milliseconds: 25)).then((_) {
+            sub.resume();
+          });
+        }
+        ctr++;
+      }, count: 4),
+    );
   });
 }

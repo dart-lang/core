@@ -35,8 +35,14 @@ void main() {
     var list5 = [1, 2, 3];
     var list6 = [1, 2, 3];
 
-    var set = EqualitySet.from(
-        const IterableEquality(), [list1, list2, list3, list4, list5, list6]);
+    var set = EqualitySet.from(const IterableEquality(), [
+      list1,
+      list2,
+      list3,
+      list4,
+      list5,
+      list6,
+    ]);
 
     expect(set, contains(same(list1)));
     expect(set, contains(same(list2)));

@@ -46,22 +46,32 @@ void main(List<String> args) async {
   var (categories, graphemeTests, emojiTests) = await (
     loadCategories(update: flags.update, verbose: flags.verbose),
     graphemeTestData.load(checkForUpdate: flags.update),
-    emojiTestData.load(checkForUpdate: flags.update)
+    emojiTestData.load(checkForUpdate: flags.update),
   ).wait;
 
-  generateTests(output, [graphemeTests, emojiTests], categories,
-      verbose: flags.verbose, dryrun: flags.dryrun);
+  generateTests(
+    output,
+    [graphemeTests, emojiTests],
+    categories,
+    verbose: flags.verbose,
+    dryrun: flags.dryrun,
+  );
 }
 
-void generateTests(File? output, List<String> texts, Uint8List categories,
-    {bool verbose = false, bool dryrun = false}) {
+void generateTests(
+  File? output,
+  List<String> texts,
+  Uint8List categories, {
+  bool verbose = false,
+  bool dryrun = false,
+}) {
   var buffer = StringBuffer();
   writeHeader(buffer, [
     graphemeTestData,
     emojiTestData,
     graphemeBreakPropertyData,
     emojiData,
-    derivedData
+    derivedData,
   ]);
   buffer.writeln('// ignore_for_file: lines_longer_than_80_chars');
   buffer.writeln('// dart format off');
@@ -72,8 +82,15 @@ void generateTests(File? output, List<String> texts, Uint8List categories,
   // Example character of a category which is in the lower planes.
   var lowerChars = List<int>.filled(inputCategoryCount, -1);
 
-  writeTests(buffer, texts, categories, lowerChars, upperChars,
-      verbose: verbose, dryrun: dryrun);
+  writeTests(
+    buffer,
+    texts,
+    categories,
+    lowerChars,
+    upperChars,
+    verbose: verbose,
+    dryrun: dryrun,
+  );
 
   buffer.writeln('// dart format on');
 
@@ -86,9 +103,15 @@ void generateTests(File? output, List<String> texts, Uint8List categories,
   }
 }
 
-void writeTests(StringSink buffer, List<String> texts, Uint8List categories,
-    List<int> lowerChars, List<int> upperChars,
-    {bool dryrun = false, bool verbose = defaultVerbose}) async {
+void writeTests(
+  StringSink buffer,
+  List<String> texts,
+  Uint8List categories,
+  List<int> lowerChars,
+  List<int> upperChars, {
+  bool dryrun = false,
+  bool verbose = defaultVerbose,
+}) async {
   var writer = StringLiteralWriter(buffer, lineLength: 9999, escape: _escape);
   void writeParts(List<List<int>> parts, String description) {
     buffer.writeln('  [');
@@ -167,8 +190,12 @@ void writeTestHeader(StringSink buffer, String testName) {
     ..writeln(' = [');
 }
 
-void writeOtherCategories(StringSink output, Uint8List categories,
-    List<int> lowerChars, List<int> upperChars) {
+void writeOtherCategories(
+  StringSink output,
+  Uint8List categories,
+  List<int> lowerChars,
+  List<int> upperChars,
+) {
   var otherCategories = lowerChars;
   for (var i = 0; i < 0x110000; i++) {
     if (i == 0x10000) otherCategories = upperChars;

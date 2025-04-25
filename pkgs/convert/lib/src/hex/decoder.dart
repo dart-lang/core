@@ -93,7 +93,10 @@ class _HexDecoderSink extends StringConversionSinkBase {
   void _close([String? string, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          'Input ended with incomplete encoded byte.', string, index);
+        'Input ended with incomplete encoded byte.',
+        string,
+        index,
+      );
     }
 
     _sink.close();
@@ -153,7 +156,10 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
   void _close([List<int>? chunk, int? index]) {
     if (_lastDigit != null) {
       throw FormatException(
-          'Input ended with incomplete encoded byte.', chunk, index);
+        'Input ended with incomplete encoded byte.',
+        chunk,
+        index,
+      );
     }
 
     _sink.close();
@@ -167,8 +173,13 @@ class _HexDecoderByteSink extends ByteConversionSinkBase {
 ///
 /// If there's a leftover digit at the end of the decoding, this returns that
 /// digit. Otherwise it returns `null`.
-int? _decode(List<int> codeUnits, int sourceStart, int sourceEnd,
-    List<int> destination, int destinationStart) {
+int? _decode(
+  List<int> codeUnits,
+  int sourceStart,
+  int sourceEnd,
+  List<int> destination,
+  int destinationStart,
+) {
   var destinationIndex = destinationStart;
   for (var i = sourceStart; i < sourceEnd - 1; i += 2) {
     var firstDigit = digitForCodeUnit(codeUnits, i);

@@ -58,9 +58,12 @@ abstract class HashSink implements Sink<List<int>> {
   ///
   /// [chunkSizeInWords] represents the size of the input chunks processed by
   /// the algorithm, in terms of 32-bit words.
-  HashSink(this._sink, int chunkSizeInWords,
-      {Endian endian = Endian.big, int signatureBytes = 8})
-      : _endian = endian,
+  HashSink(
+    this._sink,
+    int chunkSizeInWords, {
+    Endian endian = Endian.big,
+    int signatureBytes = 8,
+  })  : _endian = endian,
         assert(signatureBytes >= 8),
         _signatureBytes = signatureBytes,
         _currentChunk = Uint32List(chunkSizeInWords);
@@ -114,7 +117,9 @@ abstract class HashSink implements Sink<List<int>> {
       // Copy words from the pending data buffer into the current chunk buffer.
       for (var j = 0; j < _currentChunk.length; j++) {
         _currentChunk[j] = pendingDataBytes.getUint32(
-            i * _currentChunk.lengthInBytes + j * bytesPerWord, _endian);
+          i * _currentChunk.lengthInBytes + j * bytesPerWord,
+          _endian,
+        );
       }
 
       // Run the hash function on the current chunk.
@@ -123,7 +128,9 @@ abstract class HashSink implements Sink<List<int>> {
 
     // Remove all pending data up to the last clean chunk break.
     _pendingData.removeRange(
-        0, pendingDataChunks * _currentChunk.lengthInBytes);
+      0,
+      pendingDataChunks * _currentChunk.lengthInBytes,
+    );
   }
 
   /// Finalizes [_pendingData].
@@ -136,8 +143,10 @@ abstract class HashSink implements Sink<List<int>> {
     _pendingData.add(0x80);
 
     final contentsLength = _lengthInBytes + 1 /* 0x80 */ + _signatureBytes;
-    final finalizedLength =
-        _roundUp(contentsLength, _currentChunk.lengthInBytes);
+    final finalizedLength = _roundUp(
+      contentsLength,
+      _currentChunk.lengthInBytes,
+    );
 
     for (var i = 0; i < finalizedLength - contentsLength; i++) {
       _pendingData.add(0);
@@ -145,7 +154,8 @@ abstract class HashSink implements Sink<List<int>> {
 
     if (_lengthInBytes > _maxMessageLengthInBytes) {
       throw UnsupportedError(
-          'Hashing is unsupported for messages with more than 2^53 bits.');
+        'Hashing is unsupported for messages with more than 2^53 bits.',
+      );
     }
 
     var lengthInBits = _lengthInBytes * bitsPerByte;

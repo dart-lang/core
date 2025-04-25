@@ -13,8 +13,12 @@ void main() {
   group('standard vector', () {
     for (var i = 0; i < _inputs.length; i++) {
       test(_macs[i], () {
-        expectHmacEquals(sha256, bytesFromHexString(_inputs[i]),
-            bytesFromHexString(_keys[i]), _macs[i]);
+        expectHmacEquals(
+          sha256,
+          bytesFromHexString(_inputs[i]),
+          bytesFromHexString(_keys[i]),
+          _macs[i],
+        );
       });
     }
   });

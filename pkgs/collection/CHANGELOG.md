@@ -1,4 +1,3 @@
-
 ## 1.20.0-wip
 
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
@@ -9,6 +8,7 @@
   iterator to avoid extra lookups.
 - Add `PriorityQueue.of` constructor and optimize adding many elements.
 - Address diagnostics from `strict_top_level_inference`.
+- Run `dart format` with the new style.
 
 ## 1.19.1
 

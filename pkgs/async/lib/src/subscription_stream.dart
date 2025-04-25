@@ -40,8 +40,12 @@ class SubscriptionStream<T> extends Stream<T> {
   }
 
   @override
-  StreamSubscription<T> listen(void Function(T)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<T> listen(
+    void Function(T)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     var subscription = _source;
     if (subscription == null) {
       throw StateError('Stream has already been listened to.');

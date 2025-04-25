@@ -446,6 +446,7 @@ The resulting string looks something like this:
 [ArgParser]: https://pub.dev/documentation/args/latest/args/ArgParser/ArgParser.html
 [ArgParserException]: https://pub.dev/documentation/args/latest/args/ArgParserException-class.html
 [ArgResults]: https://pub.dev/documentation/args/latest/args/ArgResults-class.html
+[ArgumentError]: https://api.dart.dev/dart-core/ArgumentError-class.html
 [CommandRunner]: https://pub.dev/documentation/args/latest/command_runner/CommandRunner-class.html
 [Command]: https://pub.dev/documentation/args/latest/command_runner/Command-class.html
 [UsageException]: https://pub.dev/documentation/args/latest/command_runner/UsageException-class.html

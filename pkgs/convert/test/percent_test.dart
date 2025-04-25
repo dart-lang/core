@@ -18,8 +18,10 @@ void main() {
     });
 
     test('percent-encodes reserved ASCII characters', () {
-      expect(percent.encode([...' `{@[,/^}\x7f\x00%'.codeUnits]),
-          equals('%20%60%7B%40%5B%2C%2F%5E%7D%7F%00%25'));
+      expect(
+        percent.encode([...' `{@[,/^}\x7f\x00%'.codeUnits]),
+        equals('%20%60%7B%40%5B%2C%2F%5E%7D%7F%00%25'),
+      );
     });
 
     test('percent-encodes non-ASCII characters', () {
@@ -64,8 +66,9 @@ void main() {
     test('rejects non-bytes', () {
       expect(() => percent.encode([0x100]), throwsFormatException);
 
-      var sink =
-          percent.encoder.startChunkedConversion(StreamController(sync: true));
+      var sink = percent.encoder.startChunkedConversion(
+        StreamController(sync: true),
+      );
       expect(() => sink.add([0x100]), throwsFormatException);
     });
   });
@@ -73,7 +76,9 @@ void main() {
   group('decoder', () {
     test('converts percent-encoded strings to byte arrays', () {
       expect(
-          percent.decode('a%2Bb%3D%801'), equals([...'a+b=\x801'.codeUnits]));
+        percent.decode('a%2Bb%3D%801'),
+        equals([...'a+b=\x801'.codeUnits]),
+      );
     });
 
     test('supports lowercase letters', () {
@@ -102,51 +107,57 @@ void main() {
       test('converts percent to byte arrays', () {
         sink.add('a%2Bb%3D%801');
         expect(
-            results,
-            equals([
-              [...'a+b=\x801'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'a+b=\x801'.codeUnits],
+          ]),
+        );
 
         sink.add('%00%01%FE%FF');
         expect(
-            results,
-            equals([
-              [...'a+b=\x801'.codeUnits],
-              [0x00, 0x01, 0xfe, 0xff]
-            ]));
+          results,
+          equals([
+            [...'a+b=\x801'.codeUnits],
+            [0x00, 0x01, 0xfe, 0xff],
+          ]),
+        );
       });
 
       test('supports trailing percents and digits split across chunks', () {
         sink.add('ab%');
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+          ]),
+        );
 
         sink.add('2');
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+          ]),
+        );
 
         sink.add('0cd%2');
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits],
-              [...' cd'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+            [...' cd'.codeUnits],
+          ]),
+        );
 
         sink.add('0');
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits],
-              [...' cd'.codeUnits],
-              [...' '.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+            [...' cd'.codeUnits],
+            [...' '.codeUnits],
+          ]),
+        );
       });
 
       test('supports empty strings', () {
@@ -167,40 +178,44 @@ void main() {
 
         sink.add('0');
         expect(
-            results,
-            equals([
-              <Never>[],
-              [0x20]
-            ]));
+          results,
+          equals([
+            <Never>[],
+            [0x20],
+          ]),
+        );
       });
 
       test('rejects dangling % detected in close()', () {
         sink.add('ab%');
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+          ]),
+        );
         expect(() => sink.close(), throwsFormatException);
       });
 
       test('rejects dangling digit detected in close()', () {
         sink.add('ab%2');
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+          ]),
+        );
         expect(() => sink.close(), throwsFormatException);
       });
 
       test('rejects danging % detected in addSlice()', () {
         sink.addSlice('ab%', 0, 3, false);
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+          ]),
+        );
 
         expect(() => sink.addSlice('ab%', 0, 3, true), throwsFormatException);
       });
@@ -208,10 +223,11 @@ void main() {
       test('rejects danging digit detected in addSlice()', () {
         sink.addSlice('ab%2', 0, 3, false);
         expect(
-            results,
-            equals([
-              [...'ab'.codeUnits]
-            ]));
+          results,
+          equals([
+            [...'ab'.codeUnits],
+          ]),
+        );
 
         expect(() => sink.addSlice('ab%2', 0, 3, true), throwsFormatException);
       });
@@ -223,8 +239,9 @@ void main() {
           expect(() => percent.decode('a$char'), throwsFormatException);
           expect(() => percent.decode('${char}a'), throwsFormatException);
 
-          var sink = percent.decoder
-              .startChunkedConversion(StreamController(sync: true));
+          var sink = percent.decoder.startChunkedConversion(
+            StreamController(sync: true),
+          );
           expect(() => sink.add(char), throwsFormatException);
         });
       }

@@ -12,7 +12,8 @@ import 'dart:async';
 /// provided. If they're not, the stream throws a [TypeError].
 @Deprecated('Use Stream.cast after binding a transformer instead')
 StreamTransformer<S, T> typedStreamTransformer<S, T>(
-        StreamTransformer transformer) =>
+  StreamTransformer transformer,
+) =>
     transformer is StreamTransformer<S, T>
         ? transformer
         : _TypeSafeStreamTransformer(transformer);

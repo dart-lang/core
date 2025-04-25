@@ -24,8 +24,12 @@ class LazyStream<T> extends Stream<T> {
   }
 
   @override
-  StreamSubscription<T> listen(void Function(T)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<T> listen(
+    void Function(T)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     var callback = _callback;
     if (callback == null) {
       throw StateError('Stream has already been listened to.');
@@ -43,7 +47,11 @@ class LazyStream<T> extends Stream<T> {
       stream = result;
     }
 
-    return stream.listen(onData,
-        onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+    return stream.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 }

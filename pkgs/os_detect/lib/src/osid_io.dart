@@ -29,5 +29,6 @@ final RecognizedOS? _osType = Platform.operatingSystem == RecognizedOS.linuxId
                             : null;
 
 final OperatingSystem platformOS = OperatingSystemInternal(
-    _osType ?? UnknownOS(Platform.operatingSystem),
-    Platform.operatingSystemVersion);
+  _osType ?? UnknownOS(Platform.operatingSystem),
+  Platform.operatingSystemVersion,
+);

@@ -225,33 +225,45 @@ void main() {
     });
 
     test('add', () {
-      expect(() => queue.forEach((_) => queue.add(4)),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.add(4)),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('addAll', () {
-      expect(() => queue.forEach((_) => queue.addAll([4, 5, 6])),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.addAll([4, 5, 6])),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('addFirst', () {
-      expect(() => queue.forEach((_) => queue.addFirst(0)),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.addFirst(0)),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('removeFirst', () {
-      expect(() => queue.forEach((_) => queue.removeFirst()),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.removeFirst()),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('removeLast', () {
-      expect(() => queue.forEach((_) => queue.removeLast()),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.removeLast()),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('length=', () {
-      expect(() => queue.forEach((_) => queue.length = 1),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.length = 1),
+        throwsConcurrentModificationError,
+      );
     });
   });
 
@@ -259,8 +271,11 @@ void main() {
     var patternQueue = QueueList<Pattern>()..addAll(['a', 'b']);
     var stringQueue = patternQueue.cast<String>();
     stringQueue.addAll(['c', 'd']);
-    expect(stringQueue, const TypeMatcher<QueueList<String>>(),
-        reason: 'Expected QueueList<String>, got ${stringQueue.runtimeType}');
+    expect(
+      stringQueue,
+      const TypeMatcher<QueueList<String>>(),
+      reason: 'Expected QueueList<String>, got ${stringQueue.runtimeType}',
+    );
 
     expect(stringQueue, ['a', 'b', 'c', 'd']);
 
@@ -270,8 +285,11 @@ void main() {
   test('cast throws on mutation when the type is not valid', () {
     QueueList<Object> stringQueue = QueueList<String>();
     var numQueue = stringQueue.cast<num>();
-    expect(numQueue, const TypeMatcher<QueueList<num>>(),
-        reason: 'Expected QueueList<num>, got ${numQueue.runtimeType}');
+    expect(
+      numQueue,
+      const TypeMatcher<QueueList<num>>(),
+      reason: 'Expected QueueList<num>, got ${numQueue.runtimeType}',
+    );
     expect(() => numQueue.add(1), throwsA(isA<TypeError>()));
   });
 
@@ -303,5 +321,6 @@ QueueList withInternalGap() {
 
 /// Returns a matcher that expects that a closure throws a
 /// [ConcurrentModificationError].
-final throwsConcurrentModificationError =
-    throwsA(const TypeMatcher<ConcurrentModificationError>());
+final throwsConcurrentModificationError = throwsA(
+  const TypeMatcher<ConcurrentModificationError>(),
+);

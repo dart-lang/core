@@ -93,22 +93,23 @@ final class OperatingSystem {
   @pragma('vm:prefer-inline')
   OperatingSystem(String id, String version)
       : this._(
-            id == linuxId
-                ? const LinuxOS()
-                : id == macOSId
-                    ? const MacOS()
-                    : id == windowsId
-                        ? const WindowsOS()
-                        : id == androidId
-                            ? const AndroidOS()
-                            : id == iOSId
-                                ? const IOS()
-                                : id == fuchsiaId
-                                    ? const FuchsiaOS()
-                                    : id == browserId
-                                        ? const BrowserOS()
-                                        : UnknownOS(id),
-            version);
+          id == linuxId
+              ? const LinuxOS()
+              : id == macOSId
+                  ? const MacOS()
+                  : id == windowsId
+                      ? const WindowsOS()
+                      : id == androidId
+                          ? const AndroidOS()
+                          : id == iOSId
+                              ? const IOS()
+                              : id == fuchsiaId
+                                  ? const FuchsiaOS()
+                                  : id == browserId
+                                      ? const BrowserOS()
+                                      : UnknownOS(id),
+          version,
+        );
 
   /// Used by platforms which know the ID object.
   const OperatingSystem._(this._osId, this.version);
@@ -170,7 +171,9 @@ final class OperatingSystem {
 /// This override affects the `operatingSystem` and `version`
 /// exported by `package:osid/osid.dart`.
 R overrideOperatingSystem<R>(
-        OperatingSystem operatingSystem, R Function() body) =>
+  OperatingSystem operatingSystem,
+  R Function() body,
+) =>
     runZoned(body, zoneValues: {#_os: operatingSystem});
 
 // Exposes the `OperatingSystem._` constructor to the conditionally imported

@@ -42,14 +42,18 @@ void main() {
     var list4 = [o(1), o(2), o(3), o(4), o(5), o(6)];
     expect(const ListEquality().equals(list1, list4), isFalse);
     expect(
-        const ListEquality(IdentityEquality()).equals(list1, list4), isFalse);
+      const ListEquality(IdentityEquality()).equals(list1, list4),
+      isFalse,
+    );
   });
 
   test('ListInequality value', () {
     var list5 = [o(1), o(2), o(3), o(4), o(6)];
     expect(const ListEquality().equals(list1, list5), isFalse);
     expect(
-        const ListEquality(IdentityEquality()).equals(list1, list5), isFalse);
+      const ListEquality(IdentityEquality()).equals(list1, list5),
+      isFalse,
+    );
   });
 
   test('UnorderedIterableEquality', () {
@@ -62,18 +66,18 @@ void main() {
     var list6 = [o(1), o(3), o(5), o(4), o(2), o(1)];
     expect(const UnorderedIterableEquality().equals(list1, list6), isFalse);
     expect(
-        const UnorderedIterableEquality(IdentityEquality())
-            .equals(list1, list6),
-        isFalse);
+      const UnorderedIterableEquality(IdentityEquality()).equals(list1, list6),
+      isFalse,
+    );
   });
 
   test('UnorderedIterableInequality values', () {
     var list7 = [o(1), o(3), o(5), o(4), o(6)];
     expect(const UnorderedIterableEquality().equals(list1, list7), isFalse);
     expect(
-        const UnorderedIterableEquality(IdentityEquality())
-            .equals(list1, list7),
-        isFalse);
+      const UnorderedIterableEquality(IdentityEquality()).equals(list1, list7),
+      isFalse,
+    );
   });
 
   test('SetEquality', () {
@@ -102,19 +106,19 @@ void main() {
 
   var map1a = {
     'x': [o(1), o(2), o(3)],
-    'y': [true, false, null]
+    'y': [true, false, null],
   };
   var map1b = {
     'x': [o(4), o(5), o(6)],
-    'y': [false, true, null]
+    'y': [false, true, null],
   };
   var map2a = {
     'x': [o(3), o(2), o(1)],
-    'y': [false, true, null]
+    'y': [false, true, null],
   };
   var map2b = {
     'x': [o(6), o(5), o(4)],
-    'y': [null, false, true]
+    'y': [null, false, true],
   };
   var l1 = [map1a, map1b];
   var l2 = [map2a, map2b];
@@ -204,9 +208,13 @@ void main() {
   group('EqualityBy should use a derived value for ', () {
     var firstEquality = EqualityBy<List<String>, String>((e) => e.first);
     var firstInsensitiveEquality = EqualityBy<List<String>, String>(
-        (e) => e.first, const CaseInsensitiveEquality());
+      (e) => e.first,
+      const CaseInsensitiveEquality(),
+    );
     var firstObjectEquality = EqualityBy<List<Object>, Object>(
-        (e) => e.first, const IterableEquality());
+      (e) => e.first,
+      const IterableEquality(),
+    );
 
     test('equality', () {
       expect(firstEquality.equals(['foo', 'foo'], ['foo', 'bar']), isTrue);
@@ -223,8 +231,10 @@ void main() {
     });
 
     test('hash with an inner equality', () {
-      expect(firstInsensitiveEquality.hash(['fOo']),
-          const CaseInsensitiveEquality().hash('foo'));
+      expect(
+        firstInsensitiveEquality.hash(['fOo']),
+        const CaseInsensitiveEquality().hash('foo'),
+      );
     });
 
     test('isValidKey', () {

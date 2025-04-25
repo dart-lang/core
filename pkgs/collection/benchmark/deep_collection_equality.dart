@@ -49,17 +49,13 @@ class DeepCollectionEqualityEqualsBenchmark extends DeepCollectionEqualityBase {
 final mapA = {
   for (var i = 0; i < 100; i++)
     {
-      [
-        for (var j = i; j < i + 10; j++) j,
-      ]: i.isEven ? i : '$i',
-    }
+      [for (var j = i; j < i + 10; j++) j]: i.isEven ? i : '$i',
+    },
 };
 
 final mapB = {
   for (var i = 0; i < 100; i++)
     {
-      [
-        for (var j = i; j < i + 10; j++) j,
-      ]: i.isEven ? i : '$i',
-    }
+      [for (var j = i; j < i + 10; j++) j]: i.isEven ? i : '$i',
+    },
 };

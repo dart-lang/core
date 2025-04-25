@@ -42,8 +42,11 @@ class _IteratorZip<T> implements Iterator<List<T>> {
         return false;
       }
     }
-    _current = List.generate(_iterators.length, (i) => _iterators[i].current,
-        growable: false);
+    _current = List.generate(
+      _iterators.length,
+      (i) => _iterators[i].current,
+      growable: false,
+    );
     return true;
   }
 

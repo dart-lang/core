@@ -79,9 +79,10 @@ String _convert(List<int> bytes, int start, int end) {
     var byte = bytes[i];
     if (byte >= 0 && byte <= 0xff) continue;
     throw FormatException(
-        "Invalid byte ${byte < 0 ? "-" : ""}0x${byte.abs().toRadixString(16)}.",
-        bytes,
-        i);
+      "Invalid byte ${byte < 0 ? "-" : ""}0x${byte.abs().toRadixString(16)}.",
+      bytes,
+      i,
+    );
   }
 
   throw StateError('unreachable');

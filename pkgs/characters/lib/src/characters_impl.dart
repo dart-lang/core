@@ -30,19 +30,26 @@ final class StringCharacters extends Iterable<String> implements Characters {
   String get first => string.isEmpty
       ? throw StateError('No element')
       : string.substring(
-          0, Breaks(string, 0, string.length, stateSoTNoBreak).nextBreak());
+          0,
+          Breaks(string, 0, string.length, stateSoTNoBreak).nextBreak(),
+        );
 
   @override
   String get last => string.isEmpty
       ? throw StateError('No element')
       : string.substring(
-          BackBreaks(string, string.length, 0, stateEoTNoBreak).nextBreak());
+          BackBreaks(string, string.length, 0, stateEoTNoBreak).nextBreak(),
+        );
 
   @override
   String get single {
     if (string.isEmpty) throw StateError('No element');
-    var firstEnd =
-        Breaks(string, 0, string.length, stateSoTNoBreak).nextBreak();
+    var firstEnd = Breaks(
+      string,
+      0,
+      string.length,
+      stateSoTNoBreak,
+    ).nextBreak();
     if (firstEnd == string.length) return string;
     throw StateError('Too many elements');
   }
@@ -80,8 +87,10 @@ final class StringCharacters extends Iterable<String> implements Characters {
   }
 
   @override
-  String lastWhere(bool Function(String element) test,
-      {String Function()? orElse}) {
+  String lastWhere(
+    bool Function(String element) test, {
+    String Function()? orElse,
+  }) {
     var cursor = string.length;
     var brk = BackBreaks(string, cursor, 0, stateEoTNoBreak);
     var next = 0;
@@ -116,9 +125,12 @@ final class StringCharacters extends Iterable<String> implements Characters {
   bool contains(Object? singleCharacterString) {
     if (singleCharacterString is! String) return false;
     if (singleCharacterString.isEmpty) return false;
-    var next = Breaks(singleCharacterString, 0, singleCharacterString.length,
-            stateSoTNoBreak)
-        .nextBreak();
+    var next = Breaks(
+      singleCharacterString,
+      0,
+      singleCharacterString.length,
+      stateSoTNoBreak,
+    ).nextBreak();
     if (next != singleCharacterString.length) return false;
     // [singleCharacterString] is single grapheme cluster.
     return _indexOf(string, singleCharacterString, 0, string.length) >= 0;
@@ -443,10 +455,18 @@ class StringCharacterRange implements CharacterRange {
 
   StringCharacterRange(String string) : this._(string, 0, 0);
 
-  factory StringCharacterRange.at(String string, int startIndex,
-      [int? endIndex]) {
+  factory StringCharacterRange.at(
+    String string,
+    int startIndex, [
+    int? endIndex,
+  ]) {
     RangeError.checkValidRange(
-        startIndex, endIndex, string.length, 'startIndex', 'endIndex');
+      startIndex,
+      endIndex,
+      string.length,
+      'startIndex',
+      'endIndex',
+    );
     return _expandRange(string, startIndex, endIndex ?? startIndex);
   }
 
@@ -827,7 +847,10 @@ class StringCharacterRange implements CharacterRange {
       var index = _indexOf(_string, patternString, _start, _end);
       if (index >= 0) {
         replaced = _string.replaceRange(
-            index, index + patternString.length, replacementString);
+          index,
+          index + patternString.length,
+          replacementString,
+        );
       } else {
         return null;
       }
@@ -842,7 +865,12 @@ class StringCharacterRange implements CharacterRange {
     var replacementString = replacement.string;
     if (patternString.isEmpty) {
       var replaced = _explodeReplace(
-          _string, _start, _end, replacementString, replacementString);
+        _string,
+        _start,
+        _end,
+        replacementString,
+        replacementString,
+      );
       var newEnd = replaced.length - (_string.length - _end);
       return _expandRange(replaced, _start, newEnd);
     }
@@ -869,7 +897,10 @@ class StringCharacterRange implements CharacterRange {
     var replacementString = replacement.string;
     var resultString = _string.replaceRange(_start, _end, replacementString);
     return _expandRange(
-        resultString, _start, _start + replacementString.length);
+      resultString,
+      _start,
+      _start + replacementString.length,
+    );
   }
 
   /// Expands a range if its start or end are not grapheme cluster boundaries.
@@ -1011,8 +1042,13 @@ class StringCharacterRange implements CharacterRange {
   }
 }
 
-String _explodeReplace(String string, int start, int end,
-    String internalReplacement, String outerReplacement) {
+String _explodeReplace(
+  String string,
+  int start,
+  int end,
+  String internalReplacement,
+  String outerReplacement,
+) {
   if (start == end) {
     return string.replaceRange(start, start, outerReplacement);
   }
@@ -1052,7 +1088,11 @@ int _indexOf(String source, String pattern, int start, int end) {
       if (index > realEnd) return -1;
       if (isGraphemeClusterBoundary(source, start, end, index) &&
           isGraphemeClusterBoundary(
-              source, start, end, index + patternLength)) {
+            source,
+            start,
+            end,
+            index + patternLength,
+          )) {
         return index;
       }
       start = index + 1;
@@ -1094,7 +1134,11 @@ int _lastIndexOf(String source, String pattern, int start, int end) {
       if (index < start) return -1;
       if (isGraphemeClusterBoundary(source, start, end, index) &&
           isGraphemeClusterBoundary(
-              source, start, end, index + patternLength)) {
+            source,
+            start,
+            end,
+            index + patternLength,
+          )) {
         return index;
       }
       realEnd = index - 1;

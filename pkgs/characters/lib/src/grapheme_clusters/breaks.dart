@@ -260,11 +260,14 @@ class BackBreaks {
     if (preState >= stateLookaheadRegionalEven) {
       // Result is always one of one of flagBreak or flagNoBreak.
       assert(
-          preState == (stateLookaheadRegionalOdd | flagLookahead) ||
-              preState == (stateLookaheadRegionalEven | flagLookahead),
-          preState);
-      assert(state == (stateRegionalEven | flagNoBreak) ||
-          state == (stateRegionalOdd | flagBreak));
+        preState == (stateLookaheadRegionalOdd | flagLookahead) ||
+            preState == (stateLookaheadRegionalEven | flagLookahead),
+        preState,
+      );
+      assert(
+        state == (stateRegionalEven | flagNoBreak) ||
+            state == (stateRegionalOdd | flagBreak),
+      );
       // Always reset cursor for regional lookahead.
       // (Could detect stateRegionalOdd, decrease cursor two positions and
       // switch to stateRegionalEven. Not worth the extra code.)
@@ -358,8 +361,11 @@ int previousBreak(String text, int start, int end, int index) {
       }
     }
     return BackBreaks(
-            text, cursorBefore, start, moveBack(stateEoTNoBreak, category))
-        .nextBreak();
+      text,
+      cursorBefore,
+      start,
+      moveBack(stateEoTNoBreak, category),
+    ).nextBreak();
   }
   return index;
 }
@@ -399,18 +405,24 @@ int nextBreak(String text, int start, int end, int index) {
     breaks.state = stateRegionalEven;
   } else {
     // Was triggered by ZWJ+Pic or InCB={Extend|Linked}+InCB=Consonant.
-    assert(lookbehindState == (stateLookaheadZWJPictographic | flagLookahead) ||
-        lookbehindState == (stateLookaheadInC | flagLookahead) ||
-        lookbehindState == (stateLookaheadInCL | flagLookahead));
+    assert(
+      lookbehindState == (stateLookaheadZWJPictographic | flagLookahead) ||
+          lookbehindState == (stateLookaheadInC | flagLookahead) ||
+          lookbehindState == (stateLookaheadInCL | flagLookahead),
+    );
     // If starting in lookahead state ZWJ+Pic, and not breaking,
     // final backwards state is Pic.
-    assert(lookbehindState != (stateLookaheadZWJPictographic | flagLookahead) ||
-        backBreaks.state == statePictographic);
+    assert(
+      lookbehindState != (stateLookaheadZWJPictographic | flagLookahead) ||
+          backBreaks.state == statePictographic,
+    );
     // If starting in lookahead state InC or InCL, and not breaking,
     // final backwards state is Inc.
-    assert(lookbehindState != (stateLookaheadInC | flagLookahead) &&
-            lookbehindState != (stateLookaheadInCL | flagLookahead) ||
-        backBreaks.state == stateInC);
+    assert(
+      lookbehindState != (stateLookaheadInC | flagLookahead) &&
+              lookbehindState != (stateLookaheadInCL | flagLookahead) ||
+          backBreaks.state == stateInC,
+    );
     // In both cases, that's the same as the forward state
     // at the point that triggered the look-behind.
     breaks.state = backBreaks.state;

@@ -17,8 +17,10 @@ Result<int> res(int n) => Result<int>.value(n);
 Result err(int n) => ErrorResult('$n', someStack);
 
 /// Helper function creating an iterable of futures.
-Iterable<Future<int>> futures(int count,
-    {bool Function(int index)? throwWhen}) sync* {
+Iterable<Future<int>> futures(
+  int count, {
+  bool Function(int index)? throwWhen,
+}) sync* {
   for (var i = 0; i < count; i++) {
     if (throwWhen != null && throwWhen(i)) {
       yield Future<int>.error('$i', someStack);
@@ -46,20 +48,23 @@ void main() {
     });
 
     test('error only', () async {
-      var all =
-          await Result.captureAll<int>(futures(1, throwWhen: (_) => true));
+      var all = await Result.captureAll<int>(
+        futures(1, throwWhen: (_) => true),
+      );
       expect(all, [err(0)]);
     });
 
     test('multiple error only', () async {
-      var all =
-          await Result.captureAll<int>(futures(3, throwWhen: (_) => true));
+      var all = await Result.captureAll<int>(
+        futures(3, throwWhen: (_) => true),
+      );
       expect(all, [err(0), err(1), err(2)]);
     });
 
     test('mixed error and value', () async {
-      var all =
-          await Result.captureAll<int>(futures(4, throwWhen: (x) => x.isOdd));
+      var all = await Result.captureAll<int>(
+        futures(4, throwWhen: (x) => x.isOdd),
+      );
       expect(all, [res(0), err(1), res(2), err(3)]);
     });
 
@@ -185,7 +190,7 @@ void main() {
         Future<int>(() => 2),
         3,
         Future<int>(() async => await Future.error('4', someStack)),
-        Future<int>.value(5)
+        Future<int>.value(5),
       ]);
       expect(all, [res(1), res(2), res(3), err(4), res(5)]);
     });

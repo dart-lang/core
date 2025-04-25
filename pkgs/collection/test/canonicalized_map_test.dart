@@ -61,8 +61,10 @@ void main() {
 
     test('canonicalizes keys for putIfAbsent', () {
       map['1'] = 'value';
-      expect(map.putIfAbsent('01', () => throw Exception("shouldn't run")),
-          equals('value'));
+      expect(
+        map.putIfAbsent('01', () => throw Exception("shouldn't run")),
+        equals('value'),
+      );
       expect(map.putIfAbsent('2', () => 'new value'), equals('new value'));
     });
 
@@ -125,18 +127,18 @@ void main() {
     });
 
     test('values returns all values in the map', () {
-      map.addAll(
-          {'1': 'value 1', '01': 'value 01', '2': 'value 2', '03': 'value 03'});
+      map.addAll({
+        '1': 'value 1',
+        '01': 'value 01',
+        '2': 'value 2',
+        '03': 'value 03',
+      });
 
       expect(map.values, equals(['value 01', 'value 2', 'value 03']));
     });
 
     test('entries returns all key-value pairs in the map', () {
-      map.addAll({
-        '1': 'value 1',
-        '01': 'value 01',
-        '2': 'value 2',
-      });
+      map.addAll({'1': 'value 1', '01': 'value 01', '2': 'value 2'});
 
       var entries = map.entries.toList();
       expect(entries[0].key, '01');
@@ -162,8 +164,10 @@ void main() {
   group('CanonicalizedMap builds an informative string representation', () {
     dynamic map;
     setUp(() {
-      map = CanonicalizedMap<int, String, dynamic>(int.parse,
-          isValidKey: RegExp(r'^\d+$').hasMatch);
+      map = CanonicalizedMap<int, String, dynamic>(
+        int.parse,
+        isValidKey: RegExp(r'^\d+$').hasMatch,
+      );
     });
 
     test('for an empty map', () {
@@ -176,10 +180,16 @@ void main() {
     });
 
     test('for a map with multiple values', () {
-      map.addAll(
-          {'1': 'value 1', '01': 'value 01', '2': 'value 2', '03': 'value 03'});
+      map.addAll({
+        '1': 'value 1',
+        '01': 'value 01',
+        '2': 'value 2',
+        '03': 'value 03',
+      });
       expect(
-          map.toString(), equals('{01: value 01, 2: value 2, 03: value 03}'));
+        map.toString(),
+        equals('{01: value 01, 2: value 2, 03: value 03}'),
+      );
     });
 
     test('for a map with a loop', () {
@@ -190,16 +200,22 @@ void main() {
 
   group('CanonicalizedMap.from', () {
     test('canonicalizes its keys', () {
-      var map = CanonicalizedMap.from(
-          {'1': 'value 1', '2': 'value 2', '3': 'value 3'}, int.parse);
+      var map = CanonicalizedMap.from({
+        '1': 'value 1',
+        '2': 'value 2',
+        '3': 'value 3',
+      }, int.parse);
       expect(map['01'], equals('value 1'));
       expect(map['02'], equals('value 2'));
       expect(map['03'], equals('value 3'));
     });
 
     test('uses the final value for collisions', () {
-      var map = CanonicalizedMap.from(
-          {'1': 'value 1', '01': 'value 2', '001': 'value 3'}, int.parse);
+      var map = CanonicalizedMap.from({
+        '1': 'value 1',
+        '01': 'value 2',
+        '001': 'value 3',
+      }, int.parse);
       expect(map.length, equals(1));
       expect(map['0001'], equals('value 3'));
     });
@@ -208,7 +224,9 @@ void main() {
   group('CanonicalizedMap.fromEntries', () {
     test('canonicalizes its keys', () {
       var map = CanonicalizedMap.fromEntries(
-          {'1': 'value 1', '2': 'value 2', '3': 'value 3'}.entries, int.parse);
+        {'1': 'value 1', '2': 'value 2', '3': 'value 3'}.entries,
+        int.parse,
+      );
       expect(map['01'], equals('value 1'));
       expect(map['02'], equals('value 2'));
       expect(map['03'], equals('value 3'));
@@ -216,8 +234,9 @@ void main() {
 
     test('uses the final value for collisions', () {
       var map = CanonicalizedMap.fromEntries(
-          {'1': 'value 1', '01': 'value 2', '001': 'value 3'}.entries,
-          int.parse);
+        {'1': 'value 1', '01': 'value 2', '001': 'value 3'}.entries,
+        int.parse,
+      );
       expect(map.length, equals(1));
       expect(map['0001'], equals('value 3'));
     });
@@ -225,8 +244,11 @@ void main() {
 
   group('CanonicalizedMap.toMapOfCanonicalKeys', () {
     test('convert to a `Map<C,V>`', () {
-      var map = CanonicalizedMap.from(
-          {'1': 'value 1', '2': 'value 2', '3': 'value 3'}, int.parse);
+      var map = CanonicalizedMap.from({
+        '1': 'value 1',
+        '2': 'value 2',
+        '3': 'value 3',
+      }, int.parse);
 
       var map2 = map.toMapOfCanonicalKeys();
 
@@ -242,8 +264,11 @@ void main() {
 
   group('CanonicalizedMap.toMap', () {
     test('convert to a `Map<K,V>`', () {
-      var map = CanonicalizedMap.from(
-          {'1': 'value 1', '2': 'value 2', '3': 'value 3'}, int.parse);
+      var map = CanonicalizedMap.from({
+        '1': 'value 1',
+        '2': 'value 2',
+        '3': 'value 3',
+      }, int.parse);
 
       var map2 = map.toMap();
 
@@ -259,8 +284,11 @@ void main() {
 
   group('CanonicalizedMap.copy', () {
     test('copy instance', () {
-      var map = CanonicalizedMap.from(
-          {'1': 'value 1', '2': 'value 2', '3': 'value 3'}, int.parse);
+      var map = CanonicalizedMap.from({
+        '1': 'value 1',
+        '2': 'value 2',
+        '3': 'value 3',
+      }, int.parse);
 
       var map2 = map.copy();
 

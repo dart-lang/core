@@ -65,7 +65,7 @@ const List<int> _noise = [
   0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
   0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a,
   0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
-  0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+  0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
 ];
 
 abstract class _Sha32BitSink extends HashSink {
@@ -99,8 +99,10 @@ abstract class _Sha32BitSink extends HashSink {
       _extended[i] = chunk[i];
     }
     for (var i = 16; i < 64; i++) {
-      _extended[i] = add32(add32(_ssig1(_extended[i - 2]), _extended[i - 7]),
-          add32(_ssig0(_extended[i - 15]), _extended[i - 16]));
+      _extended[i] = add32(
+        add32(_ssig1(_extended[i - 2]), _extended[i - 7]),
+        add32(_ssig0(_extended[i - 15]), _extended[i - 16]),
+      );
     }
 
     // Shuffle around the bits.
@@ -114,8 +116,10 @@ abstract class _Sha32BitSink extends HashSink {
     var h = _digest[7];
 
     for (var i = 0; i < 64; i++) {
-      var temp1 = add32(add32(h, _bsig1(e)),
-          add32(_ch(e, f, g), add32(_noise[i], _extended[i])));
+      var temp1 = add32(
+        add32(h, _bsig1(e)),
+        add32(_ch(e, f, g), add32(_noise[i], _extended[i])),
+      );
       var temp2 = add32(_bsig0(a), _maj(a, b, c));
       h = g;
       g = f;
@@ -151,17 +155,18 @@ class _Sha256Sink extends _Sha32BitSink {
   // of the square roots of the first 8 prime numbers.
   _Sha256Sink(Sink<Digest> sink)
       : super(
-            sink,
-            Uint32List.fromList([
-              0x6a09e667,
-              0xbb67ae85,
-              0x3c6ef372,
-              0xa54ff53a,
-              0x510e527f,
-              0x9b05688c,
-              0x1f83d9ab,
-              0x5be0cd19,
-            ]));
+          sink,
+          Uint32List.fromList([
+            0x6a09e667,
+            0xbb67ae85,
+            0x3c6ef372,
+            0xa54ff53a,
+            0x510e527f,
+            0x9b05688c,
+            0x1f83d9ab,
+            0x5be0cd19,
+          ]),
+        );
 }
 
 /// The concrete implementation of `Sha224`.
@@ -174,15 +179,16 @@ class _Sha224Sink extends _Sha32BitSink {
 
   _Sha224Sink(Sink<Digest> sink)
       : super(
-            sink,
-            Uint32List.fromList([
-              0xc1059ed8,
-              0x367cd507,
-              0x3070dd17,
-              0xf70e5939,
-              0xffc00b31,
-              0x68581511,
-              0x64f98fa7,
-              0xbefa4fa4,
-            ]));
+          sink,
+          Uint32List.fromList([
+            0xc1059ed8,
+            0x367cd507,
+            0x3070dd17,
+            0xf70e5939,
+            0xffc00b31,
+            0x68581511,
+            0x64f98fa7,
+            0xbefa4fa4,
+          ]),
+        );
 }

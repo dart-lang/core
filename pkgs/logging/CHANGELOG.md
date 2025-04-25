@@ -1,3 +1,7 @@
+## 1.3.1-wip
+
+- Run `dart format` with the new style.
+
 ## 1.3.0
 
 * Override empty stack traces for trace level events.
