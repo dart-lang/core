@@ -9,5 +9,5 @@ labels: "package:lints"
 - suggest adding an _existing_ lint to the core or recommended lint sets, or
 - file a bug or enhancement against `package:lints`
 
-To instead propose an entirely new lint, see instead
-https://github.com/dart-lang/sdk; thanks!
+To propose an entirely new lint, see instead https://github.com/dart-lang/sdk;
+thanks!
