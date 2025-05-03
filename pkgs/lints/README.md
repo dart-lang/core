@@ -110,6 +110,6 @@ for a list of rules that make up the core and recommended rule sets.
 [customizing static analysis]: https://dart.dev/tools/analysis
 [rules]: https://dart.dev/tools/linter-rules
 [pub.dev]: https://pub.dev
-[issue]: https://github.com/dart-lang/core/issues
+[issue]: https://github.com/dart-lang/core/issues/new?template=lints.md
 [sdk repo]: https://github.com/dart-lang/sdk
 [`package:flutter_lints`]: https://pub.dev/packages/flutter_lints
