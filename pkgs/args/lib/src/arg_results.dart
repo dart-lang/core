@@ -5,6 +5,7 @@
 import 'dart:collection';
 
 import 'arg_parser.dart';
+import 'arg_parser_exception.dart';
 
 /// Creates a new [ArgResults].
 ///
@@ -71,7 +72,7 @@ class ArgResults {
 
     final option = _parser.options[name]!;
     if (option.mandatory && !_parsed.containsKey(name)) {
-      throw ArgumentError('Option $name is mandatory.');
+      throw ArgParserException('Option $name is mandatory.');
     }
 
     return option.valueOrDefault(_parsed[name]);
@@ -103,7 +104,7 @@ class ArgResults {
       throw ArgumentError('"$name" is a multi-option.');
     }
     if (option.mandatory && !_parsed.containsKey(name)) {
-      throw ArgumentError('Option $name is mandatory.');
+      throw ArgParserException('Option $name is mandatory.');
     }
     return option.valueOrDefault(_parsed[name]) as String?;
   }
