@@ -1,3 +1,8 @@
+## 3.0.0
+
+* Breaking: ArgResults.operator[] and ArgResults.option now correctly throw
+  Exceptions rather than Errors when defined arguments are missing values.
+
 ## 2.7.0
 
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will
