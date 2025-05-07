@@ -43,7 +43,7 @@ void main() {
 
     test(
       'uses the previous working directory if deleted',
-      currentDirHelper(() {
+      withLocalCurrentDirectory(() {
         final temp = io.Directory.systemTemp.createTempSync('path_test');
         final tempPath = temp.resolveSymbolicLinksSync();
         io.Directory.current = temp;
@@ -61,7 +61,8 @@ void main() {
     );
   });
 
-  test('registers changes to the working directory', currentDirHelper(() {
+  test('registers changes to the working directory',
+      withLocalCurrentDirectory(() {
     final dir = io.Directory.current.path;
     expect(path.absolute('foo/bar'), equals(path.join(dir, 'foo/bar')));
     expect(
@@ -85,10 +86,8 @@ void main() {
   // [path.current] that has clobbered the root in the past.
   test(
     'absolute works on root working directory',
-    currentDirHelper(() {
-      io.sleep(const Duration(seconds: 2));
+    withLocalCurrentDirectory(() {
       io.Directory.current = path.rootPrefix(path.current);
-      io.sleep(const Duration(seconds: 2));
 
       expect(
         path.relative(path.absolute('foo/bar'), from: path.current),
@@ -110,7 +109,11 @@ void main() {
   );
 }
 
-dynamic Function() currentDirHelper(dynamic Function() body) {
+/// Runs [body] in a zone with a local current working directory.
+///
+/// Avoids clobbering the current working directory of the entire process
+/// when writing to it and reading it back through `dart:io` functions.
+R Function() withLocalCurrentDirectory<R>(R Function() body) {
   var savedCurrentDirectory = io.Directory.current;
   return () => io.IOOverrides.runZoned(body,
       getCurrentDirectory: () => savedCurrentDirectory,
