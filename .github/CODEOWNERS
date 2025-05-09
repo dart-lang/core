@@ -6,7 +6,7 @@
 .github/            @dart-lang/dart-ecosystem-team
 .gemini/            @dart-lang/dart-ecosystem-team
 README.md           @dart-lang/dart-ecosystem-team
-pkgs/args           @munificent
+pkgs/args           @dart-lang/dart-ecosystem-team
 pkgs/async          @dart-lang/dart-core-packages-team
 pkgs/characters     @lrhn
 pkgs/collection     @dart-lang/dart-core-packages-team
