@@ -85,24 +85,11 @@ class _MD5Sink extends HashSink {
     var c = digest[2];
     var d = digest[3];
 
-    int e;
-    int f;
+    var e = -1;
+    var f = -1;
 
-    for (var i = 0; i < 64; i++) {
-      if (i < 16) {
-        e = (b & c) | ((~b & mask32) & d);
-        f = i;
-      } else if (i < 32) {
-        e = (d & b) | ((~d & mask32) & c);
-        f = ((5 * i) + 1) % 16;
-      } else if (i < 48) {
-        e = b ^ c ^ d;
-        f = ((3 * i) + 5) % 16;
-      } else {
-        e = c ^ (b | (~d & mask32));
-        f = (7 * i) % 16;
-      }
-
+    @pragma('vm:prefer-inline')
+    void round(int i) {
       var temp = d;
       d = c;
       c = b;
@@ -114,6 +101,30 @@ class _MD5Sink extends HashSink {
         ),
       );
       a = temp;
+    }
+
+    for (var i = 0; i < 16; i++) {
+      e = (b & c) | ((~b & mask32) & d);
+      f = i;
+      round(i);
+    }
+
+    for (var i = 16; i < 32; i++) {
+      e = (d & b) | ((~d & mask32) & c);
+      f = ((5 * i) + 1) % 16;
+      round(i);
+    }
+
+    for (var i = 32; i < 48; i++) {
+      e = b ^ c ^ d;
+      f = ((3 * i) + 5) % 16;
+      round(i);
+    }
+
+    for (var i = 48; i < 64; i++) {
+      e = c ^ (b | (~d & mask32));
+      f = (7 * i) % 16;
+      round(i);
     }
 
     digest[0] = add32(a, digest[0]);
