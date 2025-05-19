@@ -88,24 +88,26 @@ abstract class HashSink implements Sink<List<int>> {
     final size = _currentChunk.length;
     _byteDataView ??= _currentChunk.buffer.asByteData();
     while (true) {
-      // Is there enough data left for (a) full chunk(s)?
+      // Is there enough data left in [data] for a full chunk?
       var restEnd = currentChunkNextIndex + data.length - dataIdx;
       if (restEnd < size) {
-        // No. Just add into saved data.
+        // No. Just add into [_currentChunk].
         _currentChunk.setRange(currentChunkNextIndex, restEnd, data, dataIdx);
         _currentChunkNextIndex = restEnd;
         return;
       }
 
-      // Yes. Fill out the chunk and process it.
+      // Yes. Fill out [_currentChunk] and process it.
       _currentChunk.setRange(currentChunkNextIndex, size, data, dataIdx);
       dataIdx += size - currentChunkNextIndex;
 
       // Now do endian conversion to words.
-      for (var j = 0; j < _currentChunk32.length; j++) {
+      var j = 0;
+      do {
         _currentChunk32[j] =
             _byteDataView!.getUint32(j * bytesPerWord, _endian);
-      }
+        j++;
+      } while (j < _currentChunk32.length);
 
       updateHash(_currentChunk32);
       currentChunkNextIndex = 0;
