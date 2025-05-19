@@ -4,8 +4,6 @@
 
 import 'dart:typed_data';
 
-import 'package:typed_data/typed_data.dart';
-
 import 'digest.dart';
 import 'utils.dart';
 
@@ -23,7 +21,10 @@ abstract class HashSink implements Sink<List<int>> {
   ///
   /// This is an instance variable to avoid re-allocating, but its data isn't
   /// used across invocations of [_iterate].
-  final Uint32List _currentChunk;
+  ByteData? _byteDataView;
+  final Uint8List _currentChunk;
+  int _currentChunkNextIndex;
+  final Uint32List _currentChunk32;
 
   /// Messages with more than 2^53-1 bits are not supported.
   ///
@@ -34,9 +35,6 @@ abstract class HashSink implements Sink<List<int>> {
 
   /// The length of the input data so far, in bytes.
   int _lengthInBytes = 0;
-
-  /// Data that has yet to be processed by the hash function.
-  final _pendingData = Uint8Buffer();
 
   /// Whether [close] has been called.
   bool _isClosed = false;
@@ -66,7 +64,9 @@ abstract class HashSink implements Sink<List<int>> {
   })  : _endian = endian,
         assert(signatureBytes >= 8),
         _signatureBytes = signatureBytes,
-        _currentChunk = Uint32List(chunkSizeInWords);
+        _currentChunk = Uint8List(chunkSizeInWords * bytesPerWord),
+        _currentChunkNextIndex = 0,
+        _currentChunk32 = Uint32List(chunkSizeInWords);
 
   /// Runs a single iteration of the hash computation, updating [digest] with
   /// the result.
@@ -79,8 +79,37 @@ abstract class HashSink implements Sink<List<int>> {
   void add(List<int> data) {
     if (_isClosed) throw StateError('Hash.add() called after close().');
     _lengthInBytes += data.length;
-    _pendingData.addAll(data);
-    _iterate();
+    _addData(data);
+  }
+
+  void _addData(List<int> data) {
+    var dataIdx = 0;
+    var currentChunkNextIndex = _currentChunkNextIndex;
+    final size = _currentChunk.length;
+    _byteDataView ??= _currentChunk.buffer.asByteData();
+    while (true) {
+      // Is there enough data left for (a) full chunk(s)?
+      var restEnd = currentChunkNextIndex + data.length - dataIdx;
+      if (restEnd < size) {
+        // No. Just add into saved data.
+        _currentChunk.setRange(currentChunkNextIndex, restEnd, data, dataIdx);
+        _currentChunkNextIndex = restEnd;
+        return;
+      }
+
+      // Yes. Fill out the chunk and process it.
+      _currentChunk.setRange(currentChunkNextIndex, size, data, dataIdx);
+      dataIdx += size - currentChunkNextIndex;
+
+      // Now do endian conversion to words.
+      for (var j = 0; j < _currentChunk32.length; j++) {
+        _currentChunk32[j] =
+            _byteDataView!.getUint32(j * bytesPerWord, _endian);
+      }
+
+      updateHash(_currentChunk32);
+      currentChunkNextIndex = 0;
+    }
   }
 
   @override
@@ -88,9 +117,8 @@ abstract class HashSink implements Sink<List<int>> {
     if (_isClosed) return;
     _isClosed = true;
 
-    _finalizeData();
-    _iterate();
-    assert(_pendingData.isEmpty);
+    _finalizeAndProcessData();
+    assert(_currentChunkNextIndex == 0);
     _sink.add(Digest(_byteDigest()));
     _sink.close();
   }
@@ -108,39 +136,16 @@ abstract class HashSink implements Sink<List<int>> {
     return byteDigest;
   }
 
-  /// Iterates through [_pendingData], updating the hash computation for each
-  /// chunk.
-  void _iterate() {
-    var pendingDataBytes = _pendingData.buffer.asByteData();
-    var pendingDataChunks = _pendingData.length ~/ _currentChunk.lengthInBytes;
-    for (var i = 0; i < pendingDataChunks; i++) {
-      // Copy words from the pending data buffer into the current chunk buffer.
-      for (var j = 0; j < _currentChunk.length; j++) {
-        _currentChunk[j] = pendingDataBytes.getUint32(
-          i * _currentChunk.lengthInBytes + j * bytesPerWord,
-          _endian,
-        );
-      }
-
-      // Run the hash function on the current chunk.
-      updateHash(_currentChunk);
-    }
-
-    // Remove all pending data up to the last clean chunk break.
-    _pendingData.removeRange(
-      0,
-      pendingDataChunks * _currentChunk.lengthInBytes,
-    );
-  }
-
   /// Finalizes [_pendingData].
   ///
   /// This adds a 1 bit to the end of the message, and expands it with 0 bits to
   /// pad it out.
-  void _finalizeData() {
-    // Pad out the data with 0x80, eight or sixteen 0s, and as many more 0s
-    // as we need to land cleanly on a chunk boundary.
-    _pendingData.add(0x80);
+  void _finalizeAndProcessData() {
+    if (_lengthInBytes > _maxMessageLengthInBytes) {
+      throw UnsupportedError(
+        'Hashing is unsupported for messages with more than 2^53 bits.',
+      );
+    }
 
     final contentsLength = _lengthInBytes + 1 /* 0x80 */ + _signatureBytes;
     final finalizedLength = _roundUp(
@@ -148,25 +153,21 @@ abstract class HashSink implements Sink<List<int>> {
       _currentChunk.lengthInBytes,
     );
 
-    for (var i = 0; i < finalizedLength - contentsLength; i++) {
-      _pendingData.add(0);
-    }
+    // Prepare the finalization data.
+    var padding = Uint8List(finalizedLength - _lengthInBytes);
+    // Pad out the data with 0x80, eight or sixteen 0s, and as many more 0s
+    // as we need to land cleanly on a chunk boundary.
+    padding[0] = 0x80;
 
-    if (_lengthInBytes > _maxMessageLengthInBytes) {
-      throw UnsupportedError(
-        'Hashing is unsupported for messages with more than 2^53 bits.',
-      );
-    }
+    // The rest is already 0-bytes.
 
     var lengthInBits = _lengthInBytes * bitsPerByte;
 
     // Add the full length of the input data as a 64-bit value at the end of the
     // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
     // signature is 128-bit.
-    final offset = _pendingData.length + (_signatureBytes - 8);
-
-    _pendingData.addAll(Uint8List(_signatureBytes));
-    var byteData = _pendingData.buffer.asByteData();
+    final offset = padding.length - 8;
+    var byteData = padding.buffer.asByteData();
 
     // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
     // here, but that method isn't supported on dart2js so we implement it
@@ -180,6 +181,8 @@ abstract class HashSink implements Sink<List<int>> {
       byteData.setUint32(offset, lowBits, _endian);
       byteData.setUint32(offset + bytesPerWord, highBits, _endian);
     }
+
+    _addData(padding);
   }
 
   /// Rounds [val] up to the next multiple of [n], as long as [n] is a power of
