@@ -19,8 +19,7 @@ abstract class HashSink implements Sink<List<int>> {
 
   /// The words in the current chunk.
   ///
-  /// This is an instance variable to avoid re-allocating, but its data isn't
-  /// used across invocations of [_iterate].
+  /// This is an instance variable to avoid re-allocating.
   ByteData? _byteDataView;
   final Uint8List _currentChunk;
   int _currentChunkNextIndex;
@@ -138,7 +137,7 @@ abstract class HashSink implements Sink<List<int>> {
     return byteDigest;
   }
 
-  /// Finalizes [_pendingData].
+  /// Finalizes the data and finishes the hash.
   ///
   /// This adds a 1 bit to the end of the message, and expands it with 0 bits to
   /// pad it out.
