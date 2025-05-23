@@ -17,13 +17,24 @@ abstract class HashSink implements Sink<List<int>> {
   /// Whether the hash function operates on big-endian words.
   final Endian _endian;
 
-  /// The words in the current chunk.
+  /// A [ByteData] view of the current chunk of data.
   ///
   /// This is an instance variable to avoid re-allocating.
   ByteData? _byteDataView;
-  final Uint8List _currentChunk;
-  int _currentChunkNextIndex;
-  final Uint32List _currentChunk32;
+
+  /// The actual chunk of bytes currently accumulating.
+  ///
+  /// The same allocation will be reused over and over again; once full it is
+  /// passed to the underlying hashing algorithm for processing.
+  final Uint8List _chunk;
+
+  /// The index of the next insertion into the chunk.
+  int _chunkNextIndex;
+
+  /// A [Uint32List] (in specified endian) copy of the chunk.
+  ///
+  /// This is an instance variable to avoid re-allocating.
+  final Uint32List _chunk32;
 
   /// Messages with more than 2^53-1 bits are not supported.
   ///
@@ -63,9 +74,9 @@ abstract class HashSink implements Sink<List<int>> {
   })  : _endian = endian,
         assert(signatureBytes >= 8),
         _signatureBytes = signatureBytes,
-        _currentChunk = Uint8List(chunkSizeInWords * bytesPerWord),
-        _currentChunkNextIndex = 0,
-        _currentChunk32 = Uint32List(chunkSizeInWords);
+        _chunk = Uint8List(chunkSizeInWords * bytesPerWord),
+        _chunkNextIndex = 0,
+        _chunk32 = Uint32List(chunkSizeInWords);
 
   /// Runs a single iteration of the hash computation, updating [digest] with
   /// the result.
@@ -83,33 +94,32 @@ abstract class HashSink implements Sink<List<int>> {
 
   void _addData(List<int> data) {
     var dataIdx = 0;
-    var currentChunkNextIndex = _currentChunkNextIndex;
-    final size = _currentChunk.length;
-    _byteDataView ??= _currentChunk.buffer.asByteData();
+    var chunkNextIndex = _chunkNextIndex;
+    final size = _chunk.length;
+    _byteDataView ??= _chunk.buffer.asByteData();
     while (true) {
       // Is there enough data left in [data] for a full chunk?
-      var restEnd = currentChunkNextIndex + data.length - dataIdx;
+      var restEnd = chunkNextIndex + data.length - dataIdx;
       if (restEnd < size) {
-        // No. Just add into [_currentChunk].
-        _currentChunk.setRange(currentChunkNextIndex, restEnd, data, dataIdx);
-        _currentChunkNextIndex = restEnd;
+        // No. Just add into [_chunk].
+        _chunk.setRange(chunkNextIndex, restEnd, data, dataIdx);
+        _chunkNextIndex = restEnd;
         return;
       }
 
-      // Yes. Fill out [_currentChunk] and process it.
-      _currentChunk.setRange(currentChunkNextIndex, size, data, dataIdx);
-      dataIdx += size - currentChunkNextIndex;
+      // Yes. Fill out [_chunk] and process it.
+      _chunk.setRange(chunkNextIndex, size, data, dataIdx);
+      dataIdx += size - chunkNextIndex;
 
       // Now do endian conversion to words.
       var j = 0;
       do {
-        _currentChunk32[j] =
-            _byteDataView!.getUint32(j * bytesPerWord, _endian);
+        _chunk32[j] = _byteDataView!.getUint32(j * bytesPerWord, _endian);
         j++;
-      } while (j < _currentChunk32.length);
+      } while (j < _chunk32.length);
 
-      updateHash(_currentChunk32);
-      currentChunkNextIndex = 0;
+      updateHash(_chunk32);
+      chunkNextIndex = 0;
     }
   }
 
@@ -119,7 +129,7 @@ abstract class HashSink implements Sink<List<int>> {
     _isClosed = true;
 
     _finalizeAndProcessData();
-    assert(_currentChunkNextIndex == 0);
+    assert(_chunkNextIndex == 0);
     _sink.add(Digest(_byteDigest()));
     _sink.close();
   }
@@ -151,7 +161,7 @@ abstract class HashSink implements Sink<List<int>> {
     final contentsLength = _lengthInBytes + 1 /* 0x80 */ + _signatureBytes;
     final finalizedLength = _roundUp(
       contentsLength,
-      _currentChunk.lengthInBytes,
+      _chunk.lengthInBytes,
     );
 
     // Prepare the finalization data.
