@@ -78,34 +78,26 @@ class _MD5Sink extends HashSink {
 
   @override
   void updateHash(Uint32List chunk) {
-    assert(chunk.length == 16);
+    // This makes the VM get rid of some "GenericCheckBound" calls.
+    // See also https://github.com/dart-lang/sdk/issues/60753.
+    // ignore: unnecessary_statements
+    chunk[15];
 
-    var a = digest[0];
-    var b = digest[1];
-    var c = digest[2];
+    // Access [3] first to get rid of some "GenericCheckBound" calls.
     var d = digest[3];
+    var c = digest[2];
+    var b = digest[1];
+    var a = digest[0];
 
-    int e;
-    int f;
+    var e = 0;
+    var f = 0;
 
-    for (var i = 0; i < 64; i++) {
-      if (i < 16) {
-        e = (b & c) | ((~b & mask32) & d);
-        f = i;
-      } else if (i < 32) {
-        e = (d & b) | ((~d & mask32) & c);
-        f = ((5 * i) + 1) % 16;
-      } else if (i < 48) {
-        e = b ^ c ^ d;
-        f = ((3 * i) + 5) % 16;
-      } else {
-        e = c ^ (b | (~d & mask32));
-        f = (7 * i) % 16;
-      }
-
+    @pragma('vm:prefer-inline')
+    void round(int i) {
       var temp = d;
       d = c;
       c = b;
+
       b = add32(
         b,
         rotl32(
@@ -113,7 +105,35 @@ class _MD5Sink extends HashSink {
           _shiftAmounts[i],
         ),
       );
+
       a = temp;
+    }
+
+    for (var i = 0; i < 16; i++) {
+      e = (b & c) | ((~b & mask32) & d);
+      // Doing `i % 16` would get rid of a "GenericCheckBound" call in the VM,
+      // but is slightly slower anyway.
+      // See also https://github.com/dart-lang/sdk/issues/60753.
+      f = i;
+      round(i);
+    }
+
+    for (var i = 16; i < 32; i++) {
+      e = (d & b) | ((~d & mask32) & c);
+      f = ((5 * i) + 1) % 16;
+      round(i);
+    }
+
+    for (var i = 32; i < 48; i++) {
+      e = b ^ c ^ d;
+      f = ((3 * i) + 5) % 16;
+      round(i);
+    }
+
+    for (var i = 48; i < 64; i++) {
+      e = c ^ (b | (~d & mask32));
+      f = (7 * i) % 16;
+      round(i);
     }
 
     digest[0] = add32(a, digest[0]);
