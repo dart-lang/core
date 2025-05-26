@@ -331,16 +331,28 @@ int $name(int lead, int tail) {
 ''';
   }
   var shift = chunkSize.bitLength - 1;
-  var indexVar = chunkSize < 1024 ? 'tail' : 'offset';
-  return '''
+  assert(shift <= 10);
+  if (shift < 10) {
+    return '''
 $preferInline
 int $name(int lead, int tail) {
-  var offset = (((0x3ff & lead) << 10) + (0x3ff & tail)) + ($startOffset << $shift);
-  var chunkStart = $startName.codeUnitAt(offset >> $shift);
-  var index = chunkStart + ($indexVar & ${chunkSize - 1});
-  return $dataName.codeUnitAt(index);
+  var offset = (tail >> $shift) + (lead << ${10 - shift});
+  tail &= ${chunkSize - 1};
+  var chunkStart = $startName.codeUnitAt($startOffset + offset);
+  return $dataName.codeUnitAt(chunkStart + tail);
 }
 ''';
+  } else {
+    assert(shift == 10);
+    return '''
+$preferInline
+int $name(int lead, int tail) {
+  var chunkStart = $startName.codeUnitAt($startOffset + lead);
+  return $dataName.codeUnitAt(chunkStart + tail);
+}
+''';
+  }
+  // Add code if shift > 10 ever becomes optimal for table size.
 }
 
 // -----------------------------------------------------------------------------

@@ -1139,10 +1139,10 @@ int low(int codeUnit) {
 @pragma('vm:prefer-inline')
 @pragma('wasm:prefer-inline')
 int high(int lead, int tail) {
-  var offset = (((0x3ff & lead) << 10) + (0x3ff & tail)) + (2048 << 8);
-  var chunkStart = _start.codeUnitAt(offset >> 8);
-  var index = chunkStart + (tail & 255);
-  return _data.codeUnitAt(index);
+  var offset = (tail >> 8) + (lead << 2);
+  tail &= 255;
+  var chunkStart = _start.codeUnitAt(2048 + offset);
+  return _data.codeUnitAt(chunkStart + tail);
 }
 
 const _stateMachine = '\x15\x01)))µ\x8d\x01=QeyeyÉ)))ñð\x15\x01)))µ\x8d\x00=Qey'
