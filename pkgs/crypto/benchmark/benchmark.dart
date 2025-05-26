@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:io' show exit, stderr;
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
@@ -9,9 +10,13 @@ import 'package:crypto/crypto.dart';
 
 void main(List<String> args) {
   Hash? function;
+  int? customSize;
 
   void setFunction(Hash newFunction, String message) {
-    if (function != null) throw ArgumentError('Hash function already set.');
+    if (function != null) {
+      stderr.writeln('Hash function already set.');
+      exit(1);
+    }
     function = newFunction;
     print('Using hash function $message');
   }
@@ -33,12 +38,20 @@ void main(List<String> args) {
       setFunction(sha512224, 'sha512/224');
     } else if (arg == 'sha512256') {
       setFunction(sha512256, 'sha512/256');
+    } else if (arg.startsWith('--custom=')) {
+      customSize = int.parse(arg.substring('--custom='.length));
     } else {
-      throw ArgumentError('Unknown argument: $arg');
+      stderr.writeln('Unknown argument: $arg');
+      exit(1);
     }
   }
   if (function == null) {
     setFunction(md5, 'md5');
+  }
+
+  if (customSize != null) {
+    doIterationsChunk(function!, mb: customSize, iterations: 1, doPrint: true);
+    return;
   }
 
   // Warmup.
