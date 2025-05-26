@@ -1,6 +1,7 @@
 ## 3.0.7-wip
 
 - Run `dart format` with the new style.
+- Performance improvements.
 
 ## 3.0.6
 
