@@ -1,6 +1,7 @@
-## 1.4.1-wip
+## 1.4.1
 
-- Run `dart format` with the new style.
+* Run `dart format` with the new style.
+* Performance improvement for non-BMP characters.
 
 ## 1.4.0
 

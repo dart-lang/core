@@ -31,7 +31,7 @@ String testDescription(List<String> expected) {
 int categoryOf(int codePoint) {
   if (codePoint < 0x10000) return low(codePoint);
   var nonBmpOffset = codePoint - 0x10000;
-  return high(0xD800 + (nonBmpOffset >> 10), 0xDC00 + (nonBmpOffset & 0x3ff));
+  return high(nonBmpOffset >> 10, nonBmpOffset & 0x3ff);
 }
 
 String partCategories(List<String> parts) {
