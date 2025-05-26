@@ -509,16 +509,16 @@ class StringCharacterRange implements CharacterRange {
       var index = _end;
       while (index < _string.length) {
         var char = _string.codeUnitAt(index);
-        var surrogateBits = char ^ 0xD800;
+        var surrogate = char ^ 0xD800;
         var category = categoryControl;
         var nextIndex = index + 1;
-        if (surrogateBits >= 0x3FF) {
+        if (surrogate > 0x3FF) {
           category = low(char);
         } else if (nextIndex < _string.length) {
-          var nextChar = _string.codeUnitAt(nextIndex) ^ 0xDC00;
-          if (nextChar <= 0x3FF) {
+          var nextSurrogate = _string.codeUnitAt(nextIndex) ^ 0xDC00;
+          if (nextSurrogate <= 0x3FF) {
             nextIndex += 1;
-            category = high(char, nextChar);
+            category = high(surrogate, nextSurrogate);
           }
         }
         state = move(state, category);

@@ -320,18 +320,17 @@ String _lookupSurrogatesMethod(
   int startOffset,
   int chunkSize,
 ) {
-  if (chunkSize == 1024) {
+  var shift = chunkSize.bitLength - 1;
+  assert(shift <= 10);
+  if (shift == 10) {
     return '''
 $preferInline
 int $name(int lead, int tail) {
-  var chunkStart = $startName.codeUnitAt($startOffset + (0x3ff & lead));
-  var index = chunkStart + (0x3ff & tail);
-  return $dataName.codeUnitAt(index);
+  var chunkStart = $startName.codeUnitAt($startOffset + lead);
+  return $dataName.codeUnitAt(chunkStart + tail);
 }
 ''';
   }
-  var shift = chunkSize.bitLength - 1;
-  assert(shift <= 10);
   if (shift < 10) {
     return '''
 $preferInline
@@ -342,17 +341,10 @@ int $name(int lead, int tail) {
   return $dataName.codeUnitAt(chunkStart + tail);
 }
 ''';
-  } else {
-    assert(shift == 10);
-    return '''
-$preferInline
-int $name(int lead, int tail) {
-  var chunkStart = $startName.codeUnitAt($startOffset + lead);
-  return $dataName.codeUnitAt(chunkStart + tail);
-}
-''';
   }
   // Add code if shift > 10 ever becomes optimal for table size.
+  // Example code:
+  throw UnimplementedError('No code for chunk sizes > 10 bits');
 }
 
 // -----------------------------------------------------------------------------

@@ -77,7 +77,7 @@ class Breaks {
     assert(cursor < end);
     var char = base.codeUnitAt(cursor++);
     var surrogate = char ^ 0xD800;
-    if (surrogate >= 0x3FF) {
+    if (surrogate > 0x3FF) {
       state = move(state, low(char));
       return;
     }
@@ -114,28 +114,32 @@ class Breaks {
     var cursorBefore = cursor - 1;
     var prevChar = base.codeUnitAt(cursorBefore);
     var prevSurrogate = prevChar ^ 0xD800;
-    int prevCategory;
     if (prevSurrogate > 0x7FF) {
       // Not surrogate.
-      prevCategory = low(prevChar);
-    } else if (prevSurrogate <= 0x3FF) {
+      var prevCategory = low(prevChar);
+      state = move(stateCAny, prevCategory);
+      return cursorBefore;
+    }
+    int prevCategory;
+    if (prevSurrogate > 0x3FF) {
+      // Tail surrogate, check for prior lead surrogate.
+      int leadSurrogate;
+      var leadIndex = cursorBefore - 1;
+      prevSurrogate &= 0x3FF;
+      if (leadIndex >= start &&
+          (leadSurrogate = base.codeUnitAt(leadIndex) ^ 0xD800) <= 0x3FF) {
+        prevCategory = high(leadSurrogate, prevSurrogate);
+        cursorBefore = leadIndex;
+      } else {
+        prevCategory = categoryControl;
+      }
+    } else {
       // Lead surrogate. Check for a following tail surrogate.
       int tailSurrogate;
       if (cursor < end &&
           (tailSurrogate = base.codeUnitAt(cursor) ^ 0xDC00) <= 0x3FF) {
         cursor += 1;
         prevCategory = high(prevSurrogate, tailSurrogate);
-      } else {
-        prevCategory = categoryControl;
-      }
-    } else {
-      // Tail surrogate, check for prior lead surrogate.
-      int leadSurrogate;
-      var leadIndex = cursorBefore - 1;
-      if (leadIndex >= start &&
-          (leadSurrogate = base.codeUnitAt(leadIndex) ^ 0xD800) <= 0x3FF) {
-        prevCategory = high(leadSurrogate, prevSurrogate);
-        cursorBefore = leadIndex;
       } else {
         prevCategory = categoryControl;
       }
@@ -354,7 +358,7 @@ int previousBreak(String text, int start, int end, int index) {
       if (indexAfter < end) {
         var secondSurrogate = text.codeUnitAt(indexAfter) ^ 0xDC00;
         if (secondSurrogate <= 0x3FF) {
-          category = high(nextChar, secondSurrogate);
+          category = high(nextSurrogate, secondSurrogate);
         }
       }
     } else {
