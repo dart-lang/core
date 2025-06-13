@@ -23,6 +23,10 @@ class AllowAnythingParser implements ArgParser {
   int? get usageLineLength => null;
 
   @override
+  Map<String, Object?> get jsonSchema =>
+      const {'type': 'object', 'properties': {}};
+
+  @override
   ArgParser addCommand(String name, [ArgParser? parser]) {
     throw UnsupportedError(
         "ArgParser.allowAnything().addCommands() isn't supported.");
