@@ -43,12 +43,12 @@ class StringLiteralWriter {
   /// Adds a single UTF-16 code unit.
   void add(int codeUnit) {
     // Always escape: `\n`, `\r`, `'`, `$` and `\`, plus anything the user wants.
-    if (_escape(codeUnit) ||
-        codeUnit == 0x24 ||
-        codeUnit == 0x27 ||
-        codeUnit == 0x5c ||
-        codeUnit == 0x0a ||
-        codeUnit == 0x0d) {
+    if (_escape(codeUnit) || // Anything the user wants encoded.
+        codeUnit == 0x24 /* $ */ ||
+        codeUnit == 0x27 /* ' */ ||
+        codeUnit == 0x5c /* \ */ ||
+        codeUnit == 0x0a /* \n */ ||
+        codeUnit == 0x0d /* \r */) {
       _writeEscape(codeUnit);
       return;
     }
@@ -59,6 +59,9 @@ class StringLiteralWriter {
     buffer.writeCharCode(codeUnit);
   }
 
+  /// Writes an escape for the [codeUnit].
+  ///
+  /// Is only called for characters that need escaping.
   void _writeEscape(int codeUnit) {
     var replacement = _escapeCache[codeUnit];
     if (replacement == null) {
@@ -83,9 +86,8 @@ class StringLiteralWriter {
           replacement = r'\$';
         } else if (codeUnit == "'".codeUnitAt(0)) {
           replacement = r"\'";
-        }
-        if (codeUnit == r''.codeUnitAt(0)) {
-          replacement = r'\';
+        } else if (codeUnit == r'\'.codeUnitAt(0)) {
+          replacement = r'\\';
         } else {
           replacement = r'\x' + codeUnit.toRadixString(16);
         }

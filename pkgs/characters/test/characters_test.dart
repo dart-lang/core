@@ -115,28 +115,29 @@ void main([List<String>? args]) {
         var zwj = '\u200d'; // U+200D, ZWJ
         var rainbow = '\u{1f308}'; // U+1F308, Rainbow. Category Pictogram
 
-        var rbflag = '$flag$white$zwj$rainbow';
-        var string = '-$rbflag-';
+        var rainbowFlag = '$flag$white$zwj$rainbow';
+        var string = '-$rainbowFlag-';
         var range = CharacterRange.at(string, 1);
         expect(range.isEmpty, true);
         expect(range.moveNext(), true);
-        expect(range.current, rbflag);
+        expect(range.current, rainbowFlag);
 
         range = range = CharacterRange.at(string, 2);
         expect(range.isEmpty, false);
-        expect(range.current, rbflag);
+        expect(range.current, rainbowFlag);
 
         range = range = CharacterRange.at(string, 0, 2);
         expect(range.isEmpty, false);
-        expect(range.current, '-$rbflag');
+        expect(range.current, '-$rainbowFlag');
 
         range = range = CharacterRange.at(string, 0, 2);
         expect(range.isEmpty, false);
-        expect(range.current, '-$rbflag');
+        expect(range.current, '-$rainbowFlag');
 
-        range = range = CharacterRange.at(string, 2, '-$rbflag'.length - 1);
+        range =
+            range = CharacterRange.at(string, 2, '-$rainbowFlag'.length - 1);
         expect(range.isEmpty, false);
-        expect(range.current, rbflag);
+        expect(range.current, rainbowFlag);
         expect(range.stringBeforeLength, 1);
 
         range = range = CharacterRange.at(string, 0, string.length);
