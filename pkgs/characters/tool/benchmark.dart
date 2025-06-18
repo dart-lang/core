@@ -18,8 +18,7 @@ void main(List<String> args) {
   if (args.isNotEmpty) {
     count = int.parse(args[0]);
   }
-  var text =
-      genesis +
+  var text = genesis +
       hangul +
       genesis +
       diacretics +
