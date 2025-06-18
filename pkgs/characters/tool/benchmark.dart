@@ -16,8 +16,8 @@ void main(List<String> args) {
   if (args.isNotEmpty) {
     count = int.parse(args[0]);
   }
-  var gcsf = 0;
-  var gcsb = 0;
+  var gcSumForward = 0;
+  var gcSumBackwards = 0;
 
   var text = genesis +
       hangul +
@@ -29,19 +29,19 @@ void main(List<String> args) {
   var codeUnits = text.length;
   var codePoints = text.runes.length;
   for (var i = 0; i < count; i++) {
-    gcsf = benchForward(text, i, codePoints, codeUnits);
-    gcsb = benchBackward(text, i, codePoints, codeUnits);
+    gcSumForward = benchForward(text, i, codePoints, codeUnits);
+    gcSumBackwards = benchBackward(text, i, codePoints, codeUnits);
   }
   print('gc: Grapheme Clusters, cp: Code Points, cu: Code Units.');
-  if (gcsf != gcsb) {
+  if (gcSumForward != gcSumBackwards) {
     print(
       'ERROR: Did not count the same number of grapheme clusters: '
-      '$gcsf forward vs. $gcsb backward.',
+      '$gcSumForward forward vs. $gcSumBackwards backward.',
     );
   } else {
-    print('Total: $gcsf gc, $codePoints cp, $codeUnits cu');
-    print('Avg ${(codePoints / gcsf).toStringAsFixed(3)} cp/gc');
-    print('Avg ${(codeUnits / gcsf).toStringAsFixed(3)} cu/gc');
+    print('Total: $gcSumForward gc, $codePoints cp, $codeUnits cu');
+    print('Avg ${(codePoints / gcSumForward).toStringAsFixed(3)} cp/gc');
+    print('Avg ${(codeUnits / gcSumForward).toStringAsFixed(3)} cu/gc');
   }
 }
 

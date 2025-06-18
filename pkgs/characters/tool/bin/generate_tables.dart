@@ -307,6 +307,7 @@ String _lookupMethod(
     '''
 $preferInline
 int $name(int codeUnit) {
+  assert(codeUnit <= 0xFFFF);
   var chunkStart = $startName.codeUnitAt(codeUnit >> ${chunkSize.bitLength - 1});
   var index = chunkStart + (codeUnit & ${chunkSize - 1});
   return $dataName.codeUnitAt(index);
@@ -326,6 +327,7 @@ String _lookupSurrogatesMethod(
     return '''
 $preferInline
 int $name(int lead, int tail) {
+  assert(lead <= 0x3FF && tail <= 0x3FF);
   var chunkStart = $startName.codeUnitAt($startOffset + lead);
   return $dataName.codeUnitAt(chunkStart + tail);
 }
@@ -335,15 +337,17 @@ int $name(int lead, int tail) {
     return '''
 $preferInline
 int $name(int lead, int tail) {
-  var offset = (tail >> $shift) + (lead << ${10 - shift});
-  tail &= ${chunkSize - 1};
-  var chunkStart = $startName.codeUnitAt($startOffset + offset);
-  return $dataName.codeUnitAt(chunkStart + tail);
+  assert(lead <= 0x3FF && tail <= 0x3FF);
+  var chunkIndex = (tail >> $shift) + (lead << ${10 - shift});
+  var byteIndex = tail & ${chunkSize - 1};
+  var chunkStart = $startName.codeUnitAt($startOffset + chunkIndex);
+  return $dataName.codeUnitAt(chunkStart + byteIndex);
 }
 ''';
   }
   // Add code if shift > 10 ever becomes optimal for table size.
-  // Example code:
+  // Fx: chunkIndex = lead >> ${20 - shift};
+  //     byteIndex = tail + ((lead & ${(chunkSize >> 10) - 1}) << 10);
   throw UnimplementedError('No code for chunk sizes > 10 bits');
 }
 

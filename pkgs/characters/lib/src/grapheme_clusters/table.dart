@@ -1130,6 +1130,7 @@ const String _start = '\u1132\u166c\u166c\u206f\u11c0\u13fb\u166c\u166c\u166c'
 @pragma('vm:prefer-inline')
 @pragma('wasm:prefer-inline')
 int low(int codeUnit) {
+  assert(codeUnit <= 0xFFFF);
   var chunkStart = _start.codeUnitAt(codeUnit >> 5);
   var index = chunkStart + (codeUnit & 31);
   return _data.codeUnitAt(index);
@@ -1139,10 +1140,11 @@ int low(int codeUnit) {
 @pragma('vm:prefer-inline')
 @pragma('wasm:prefer-inline')
 int high(int lead, int tail) {
-  var offset = (tail >> 8) + (lead << 2);
-  tail &= 255;
-  var chunkStart = _start.codeUnitAt(2048 + offset);
-  return _data.codeUnitAt(chunkStart + tail);
+  assert(lead <= 0x3FF && tail <= 0x3FF);
+  var chunkIndex = (tail >> 8) + (lead << 2);
+  var byteIndex = tail & 255;
+  var chunkStart = _start.codeUnitAt(2048 + chunkIndex);
+  return _data.codeUnitAt(chunkStart + byteIndex);
 }
 
 const _stateMachine = '\x15\x01)))µ\x8d\x01=QeyeyÉ)))ñð\x15\x01)))µ\x8d\x00=Qey'
