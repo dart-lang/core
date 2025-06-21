@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:test/test.dart';
 
@@ -736,7 +737,7 @@ Run "test help" to see global options.'''));
     runner.addCommand(subcommand);
     expect(
         () => runner.run([subcommand.name]),
-        throwsA(isA<ArgumentError>().having((e) => e.message, 'message',
+        throwsA(isA<ArgParserException>().having((e) => e.message, 'message',
             contains('Option mandatory-option is mandatory'))));
     expect(await runner.run([subcommand.name, '--mandatory-option', 'foo']),
         'foo');
