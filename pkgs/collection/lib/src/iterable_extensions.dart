@@ -613,6 +613,33 @@ extension IterableExtension<T> on Iterable<T> {
       yield slice;
     }
   }
+
+  /// Lazily returns a new iterable where a [separator] is placed between each
+  /// element of this iterable.
+  ///
+  /// This is the most performant way to implement this functionality because
+  /// it uses a generator (`sync*`) and does not create a new list upfront,
+  /// making it memory-efficient for iterables of any size.
+  ///
+  /// Example:
+  /// ```dart
+  /// final numbers = [1, 2, 3];
+  /// final withSeparators = numbers.intersperse(0);
+  /// print(withSeparators.toList()); // Output: [1, 0, 2, 0, 3]
+  /// ```
+  ///
+  /// The resulting iterable is lazy. It only computes the next value when
+  /// it's requested.
+  Iterable<T> intersperse(T separator) sync* {
+    final iterator = this.iterator;
+    if (iterator.moveNext()) {
+      yield iterator.current;
+      while (iterator.moveNext()) {
+        yield separator;
+        yield iterator.current;
+      }
+    }
+  }
 }
 
 /// Extensions that apply to iterables with a nullable element type.
