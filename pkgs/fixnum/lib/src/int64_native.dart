@@ -142,8 +142,8 @@ class Int64 implements IntX {
   static Int64? tryParseHex(String source) => _parseRadix(source, 16, false);
 
   static Int64? _parseRadix(String s, int radix, bool throwOnError) {
-    int charIdx = 0;
-    bool negative = false;
+    var charIdx = 0;
+    var negative = false;
     if (s.startsWith('-')) {
       negative = true;
       charIdx++;
@@ -154,10 +154,10 @@ class Int64 implements IntX {
       throw FormatException('No digits', s, charIdx);
     }
 
-    int i = 0;
+    var i = 0;
     for (; charIdx < s.length; charIdx++) {
-      int c = s.codeUnitAt(charIdx);
-      int digit = u.decodeDigit(c);
+      final c = s.codeUnitAt(charIdx);
+      final digit = u.decodeDigit(c);
       if (digit < radix) {
         i = (i * radix) + digit;
       } else {
@@ -353,15 +353,15 @@ class Int64 implements IntX {
       return '0';
     }
     // Split value into two 32-bit unsigned digits (v1, v0).
-    int v1 = value >>> 32;
-    int v0 = value.toUnsigned(32);
+    final v1 = value >>> 32;
+    var v0 = value.toUnsigned(32);
     // Long division by a single digit: (q1, q0) = (v1, v0) ~/ radix, remainder r0.
-    int q1 = v1 ~/ radix;
-    int r1 = v1.remainder(radix);
+    final q1 = v1 ~/ radix;
+    final r1 = v1.remainder(radix);
     v0 += r1 << 32;
-    int q0 = v0 ~/ radix;
-    int r0 = v0.remainder(radix); // lowest digit.
-    int otherDigits = (q1 << 32) + q0;
+    final q0 = v0 ~/ radix;
+    final r0 = v0.remainder(radix); // lowest digit.
+    final otherDigits = (q1 << 32) + q0;
     return '${otherDigits.toRadixString(radix)}${r0.toRadixString(radix)}';
   }
 }
