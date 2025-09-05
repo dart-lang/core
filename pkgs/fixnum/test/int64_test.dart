@@ -6,9 +6,6 @@
 // that the operations have an expected type.
 //
 // ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_const_constructors
-
-library int64test;
 
 import 'package:fixnum/fixnum.dart';
 import 'package:test/test.dart';
@@ -23,10 +20,16 @@ void main() {
       checkBytes([0, 0, 0, 0, 0, 0, 0, 0], 0, 0);
       checkBytes([1, 0, 0, 0, 0, 0, 0, 0], 0, 1);
       checkBytes([1, 2, 3, 4, 5, 6, 7, 8], 0x08070605, 0x04030201);
-      checkBytes([0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff], 0xffffffff,
-          0xfffffffe);
-      checkBytes([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff], 0xffffffff,
-          0xffffffff);
+      checkBytes(
+        [0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
+        0xffffffff,
+        0xfffffffe,
+      );
+      checkBytes(
+        [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
+        0xffffffff,
+        0xffffffff,
+      );
     });
     test('fromBytesBigEndian', () {
       void checkBytes(List<int> bytes, int h, int l) {
@@ -36,10 +39,16 @@ void main() {
       checkBytes([0, 0, 0, 0, 0, 0, 0, 0], 0, 0);
       checkBytes([0, 0, 0, 0, 0, 0, 0, 1], 0, 1);
       checkBytes([8, 7, 6, 5, 4, 3, 2, 1], 0x08070605, 0x04030201);
-      checkBytes([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe], 0xffffffff,
-          0xfffffffe);
-      checkBytes([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff], 0xffffffff,
-          0xffffffff);
+      checkBytes(
+        [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe],
+        0xffffffff,
+        0xfffffffe,
+      );
+      checkBytes(
+        [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff],
+        0xffffffff,
+        0xffffffff,
+      );
     });
   });
 
@@ -50,8 +59,11 @@ void main() {
     expect(
       () => op(receiver, 'foo'),
       throwsA(
-        isA<ArgumentError>()
-            .having((p0) => p0.toString(), 'toString', contains('"foo"')),
+        isA<ArgumentError>().having(
+          (p0) => p0.toString(),
+          'toString',
+          contains('"foo"'),
+        ),
       ),
     );
   }
@@ -142,27 +154,36 @@ void main() {
       expect(Int64(100) * Int64.ZERO, Int64.ZERO);
 
       expect(
-          Int64.fromInts(0x12345678, 0x12345678) *
-              Int64.fromInts(0x1234, 0x12345678),
-          Int64.fromInts(0x7ff63f7c, 0x1df4d840));
+        Int64.fromInts(0x12345678, 0x12345678) *
+            Int64.fromInts(0x1234, 0x12345678),
+        Int64.fromInts(0x7ff63f7c, 0x1df4d840),
+      );
       expect(
-          Int64.fromInts(0xf2345678, 0x12345678) *
-              Int64.fromInts(0x1234, 0x12345678),
-          Int64.fromInts(0x7ff63f7c, 0x1df4d840));
+        Int64.fromInts(0xf2345678, 0x12345678) *
+            Int64.fromInts(0x1234, 0x12345678),
+        Int64.fromInts(0x7ff63f7c, 0x1df4d840),
+      );
       expect(
-          Int64.fromInts(0xf2345678, 0x12345678) *
-              Int64.fromInts(0xffff1234, 0x12345678),
-          Int64.fromInts(0x297e3f7c, 0x1df4d840));
+        Int64.fromInts(0xf2345678, 0x12345678) *
+            Int64.fromInts(0xffff1234, 0x12345678),
+        Int64.fromInts(0x297e3f7c, 0x1df4d840),
+      );
 
       // RHS Int32
-      expect(Int64(123456789) * Int32(987654321),
-          Int64.fromInts(0x1b13114, 0xfbff5385));
-      expect(Int64(123456789) * Int32(987654321),
-          Int64.fromInts(0x1b13114, 0xfbff5385));
+      expect(
+        Int64(123456789) * Int32(987654321),
+        Int64.fromInts(0x1b13114, 0xfbff5385),
+      );
+      expect(
+        Int64(123456789) * Int32(987654321),
+        Int64.fromInts(0x1b13114, 0xfbff5385),
+      );
 
       // Wraparound
-      expect(Int64(123456789) * Int64(987654321),
-          Int64.fromInts(0x1b13114, 0xfbff5385));
+      expect(
+        Int64(123456789) * Int64(987654321),
+        Int64.fromInts(0x1b13114, 0xfbff5385),
+      );
 
       expect(Int64.MIN_VALUE * Int64(2), Int64.ZERO);
       expect(Int64.MIN_VALUE * Int64(1), Int64.MIN_VALUE);
@@ -177,7 +198,9 @@ void main() {
       expect(deadBeef ~/ ten, Int64.fromInts(0xfcaaf97e, 0x63115fe5));
       expect(Int64.ONE ~/ Int64.TWO, Int64.ZERO);
       expect(
-          Int64.MAX_VALUE ~/ Int64.TWO, Int64.fromInts(0x3fffffff, 0xffffffff));
+        Int64.MAX_VALUE ~/ Int64.TWO,
+        Int64.fromInts(0x3fffffff, 0xffffffff),
+      );
       expect(Int64.ZERO ~/ Int64(1000), Int64.ZERO);
       expect(Int64.MIN_VALUE ~/ Int64.MIN_VALUE, Int64.ONE);
       expect(Int64(1000) ~/ Int64.MIN_VALUE, Int64.ZERO);
@@ -189,28 +212,50 @@ void main() {
       expect(Int64(-1000000000) ~/ Int64(8193), Int64(-122055));
       expect(Int64(1000000000) ~/ Int64(8192), Int64(122070));
       expect(Int64(1000000000) ~/ Int64(8193), Int64(122055));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x00000400),
-          Int64.fromInts(0x1fffff, 0xffffffff));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x00040000),
-          Int64.fromInts(0x1fff, 0xffffffff));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x04000000),
-          Int64.fromInts(0x1f, 0xffffffff));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00000004, 0x00000000),
-          Int64(536870911));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00000400, 0x00000000),
-          Int64(2097151));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00040000, 0x00000000),
-          Int64(8191));
       expect(
-          Int64.MAX_VALUE ~/ Int64.fromInts(0x04000000, 0x00000000), Int64(31));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x00000300),
-          Int64.fromInts(0x2AAAAA, 0xAAAAAAAA));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x30000000),
-          Int64.fromInts(0x2, 0xAAAAAAAA));
-      expect(Int64.MAX_VALUE ~/ Int64.fromInts(0x00300000, 0x00000000),
-          Int64(0x2AA));
-      expect(Int64.MAX_VALUE ~/ Int64(0x123456),
-          Int64.fromInts(0x708, 0x002E9501));
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x00000400),
+        Int64.fromInts(0x1fffff, 0xffffffff),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x00040000),
+        Int64.fromInts(0x1fff, 0xffffffff),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x04000000),
+        Int64.fromInts(0x1f, 0xffffffff),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00000004, 0x00000000),
+        Int64(536870911),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00000400, 0x00000000),
+        Int64(2097151),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00040000, 0x00000000),
+        Int64(8191),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x04000000, 0x00000000),
+        Int64(31),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x00000300),
+        Int64.fromInts(0x2AAAAA, 0xAAAAAAAA),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00000000, 0x30000000),
+        Int64.fromInts(0x2, 0xAAAAAAAA),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64.fromInts(0x00300000, 0x00000000),
+        Int64(0x2AA),
+      );
+      expect(
+        Int64.MAX_VALUE ~/ Int64(0x123456),
+        Int64.fromInts(0x708, 0x002E9501),
+      );
       expect(Int64.MAX_VALUE % Int64(0x123456), Int64(0x3BDA9));
       expect(Int64(5) ~/ Int64(5), Int64.ONE);
       expect(Int64(1000) ~/ Int64(3), Int64(333));
@@ -219,26 +264,32 @@ void main() {
       expect(Int64(-1000) ~/ Int64(-3), Int64(333));
       expect(Int64(3) ~/ Int64(1000), Int64.ZERO);
       expect(
-          Int64.fromInts(0x12345678, 0x12345678) ~/ Int64.fromInts(0x0, 0x123),
-          Int64.fromInts(0x1003d0, 0xe84f5ae8));
+        Int64.fromInts(0x12345678, 0x12345678) ~/ Int64.fromInts(0x0, 0x123),
+        Int64.fromInts(0x1003d0, 0xe84f5ae8),
+      );
       expect(
-          Int64.fromInts(0x12345678, 0x12345678) ~/
-              Int64.fromInts(0x1234, 0x12345678),
-          Int64.fromInts(0x0, 0x10003));
+        Int64.fromInts(0x12345678, 0x12345678) ~/
+            Int64.fromInts(0x1234, 0x12345678),
+        Int64.fromInts(0x0, 0x10003),
+      );
       expect(
-          Int64.fromInts(0xf2345678, 0x12345678) ~/
-              Int64.fromInts(0x1234, 0x12345678),
-          Int64.fromInts(0xffffffff, 0xffff3dfe));
+        Int64.fromInts(0xf2345678, 0x12345678) ~/
+            Int64.fromInts(0x1234, 0x12345678),
+        Int64.fromInts(0xffffffff, 0xffff3dfe),
+      );
       expect(
-          Int64.fromInts(0xf2345678, 0x12345678) ~/
-              Int64.fromInts(0xffff1234, 0x12345678),
-          Int64.fromInts(0x0, 0xeda));
+        Int64.fromInts(0xf2345678, 0x12345678) ~/
+            Int64.fromInts(0xffff1234, 0x12345678),
+        Int64.fromInts(0x0, 0xeda),
+      );
       expect(Int64(829893893) ~/ Int32(1919), Int32(432461));
       expect(Int64(829893893) ~/ Int64(1919), Int32(432461));
       expect(Int64(829893893) ~/ 1919, Int32(432461));
       expect(() => Int64(1) ~/ Int64.ZERO, throwsA(isUnsupportedError));
       expect(
-          Int64.MIN_VALUE ~/ Int64(2), Int64.fromInts(0xc0000000, 0x00000000));
+        Int64.MIN_VALUE ~/ Int64(2),
+        Int64.fromInts(0xc0000000, 0x00000000),
+      );
       expect(Int64.MIN_VALUE ~/ Int64(1), Int64.MIN_VALUE);
       expect(Int64.MIN_VALUE ~/ Int64(-1), Int64.MIN_VALUE);
       expect(() => Int64(17) ~/ Int64.ZERO, throwsA(isUnsupportedError));
@@ -258,30 +309,54 @@ void main() {
       expect(Int64(-1000000000) % Int64(8193), Int64(4808));
       expect(Int64(1000000000) % Int64(8192), Int64(2560));
       expect(Int64(1000000000) % Int64(8193), Int64(3385));
-      expect(Int64.MAX_VALUE % Int64.fromInts(0x00000000, 0x00000400),
-          Int64.fromInts(0x0, 0x3ff));
-      expect(Int64.MAX_VALUE % Int64.fromInts(0x00000000, 0x00040000),
-          Int64.fromInts(0x0, 0x3ffff));
-      expect(Int64.MAX_VALUE % Int64.fromInts(0x00000000, 0x04000000),
-          Int64.fromInts(0x0, 0x3ffffff));
-      expect(Int64.MAX_VALUE % Int64.fromInts(0x00000004, 0x00000000),
-          Int64.fromInts(0x3, 0xffffffff));
-      expect(Int64.MAX_VALUE % Int64.fromInts(0x00000400, 0x00000000),
-          Int64.fromInts(0x3ff, 0xffffffff));
-      expect(Int64.MAX_VALUE % Int64.fromInts(0x00040000, 0x00000000),
-          Int64.fromInts(0x3ffff, 0xffffffff));
-      expect(Int64.MAX_VALUE % Int64.fromInts(0x04000000, 0x00000000),
-          Int64.fromInts(0x3ffffff, 0xffffffff));
-      expect(Int64(0x12345678).remainder(Int64(0x22)),
-          Int64(0x12345678.remainder(0x22)));
-      expect(Int64(0x12345678).remainder(Int64(-0x22)),
-          Int64(0x12345678.remainder(-0x22)));
-      expect(Int64(-0x12345678).remainder(Int64(-0x22)),
-          Int64(-0x12345678.remainder(-0x22)));
-      expect(Int64(-0x12345678).remainder(Int64(0x22)),
-          Int64(-0x12345678.remainder(0x22)));
-      expect(Int32(0x12345678).remainder(Int64(0x22)),
-          Int64(0x12345678.remainder(0x22)));
+      expect(
+        Int64.MAX_VALUE % Int64.fromInts(0x00000000, 0x00000400),
+        Int64.fromInts(0x0, 0x3ff),
+      );
+      expect(
+        Int64.MAX_VALUE % Int64.fromInts(0x00000000, 0x00040000),
+        Int64.fromInts(0x0, 0x3ffff),
+      );
+      expect(
+        Int64.MAX_VALUE % Int64.fromInts(0x00000000, 0x04000000),
+        Int64.fromInts(0x0, 0x3ffffff),
+      );
+      expect(
+        Int64.MAX_VALUE % Int64.fromInts(0x00000004, 0x00000000),
+        Int64.fromInts(0x3, 0xffffffff),
+      );
+      expect(
+        Int64.MAX_VALUE % Int64.fromInts(0x00000400, 0x00000000),
+        Int64.fromInts(0x3ff, 0xffffffff),
+      );
+      expect(
+        Int64.MAX_VALUE % Int64.fromInts(0x00040000, 0x00000000),
+        Int64.fromInts(0x3ffff, 0xffffffff),
+      );
+      expect(
+        Int64.MAX_VALUE % Int64.fromInts(0x04000000, 0x00000000),
+        Int64.fromInts(0x3ffffff, 0xffffffff),
+      );
+      expect(
+        Int64(0x12345678).remainder(Int64(0x22)),
+        Int64(0x12345678.remainder(0x22)),
+      );
+      expect(
+        Int64(0x12345678).remainder(Int64(-0x22)),
+        Int64(0x12345678.remainder(-0x22)),
+      );
+      expect(
+        Int64(-0x12345678).remainder(Int64(-0x22)),
+        Int64(-0x12345678.remainder(-0x22)),
+      );
+      expect(
+        Int64(-0x12345678).remainder(Int64(0x22)),
+        Int64(-0x12345678.remainder(0x22)),
+      );
+      expect(
+        Int32(0x12345678).remainder(Int64(0x22)),
+        Int64(0x12345678.remainder(0x22)),
+      );
       argumentErrorTest((a, b) => a % b);
     });
 
@@ -400,7 +475,9 @@ void main() {
       expect(Int64(-10), equals(Int64(-10)));
       expect(Int64(-10) != Int64(-10), false);
       expect(
-          Int64(-10) == -10, isTrue); // ignore: unrelated_type_equality_checks
+        Int64(-10) == -10,
+        isTrue,
+      ); // ignore: unrelated_type_equality_checks
       expect(Int64(-10), isNot(equals(-9)));
       expect(largePos, equals(largePos));
       expect(largePos, isNot(equals(largePosPlusOne)));
@@ -494,10 +571,14 @@ void main() {
 
   group('bitshift operators', () {
     test('<<', () {
-      expect(Int64.fromInts(0x12341234, 0x45674567) << 10,
-          Int64.fromInts(0xd048d115, 0x9d159c00));
-      expect(Int64.fromInts(0x92341234, 0x45674567) << 10,
-          Int64.fromInts(0xd048d115, 0x9d159c00));
+      expect(
+        Int64.fromInts(0x12341234, 0x45674567) << 10,
+        Int64.fromInts(0xd048d115, 0x9d159c00),
+      );
+      expect(
+        Int64.fromInts(0x92341234, 0x45674567) << 10,
+        Int64.fromInts(0xd048d115, 0x9d159c00),
+      );
       expect(Int64(-1) << 5, Int64(-32));
       expect(Int64(-1) << 0, Int64(-1));
       expect(Int64(42) << 64, Int64.ZERO);
@@ -507,96 +588,176 @@ void main() {
 
     test('>>', () {
       expect((Int64.MIN_VALUE >> 13).toString(), '-1125899906842624');
-      expect(Int64.fromInts(0x12341234, 0x45674567) >> 10,
-          Int64.fromInts(0x48d04, 0x8d1159d1));
-      expect(Int64.fromInts(0x92341234, 0x45674567) >> 10,
-          Int64.fromInts(0xffe48d04, 0x8d1159d1));
+      expect(
+        Int64.fromInts(0x12341234, 0x45674567) >> 10,
+        Int64.fromInts(0x48d04, 0x8d1159d1),
+      );
+      expect(
+        Int64.fromInts(0x92341234, 0x45674567) >> 10,
+        Int64.fromInts(0xffe48d04, 0x8d1159d1),
+      );
       expect(Int64.fromInts(0xFFFFFFF, 0xFFFFFFFF) >> 34, Int64(67108863));
       expect(Int64(42) >> 64, Int64.ZERO);
       expect(Int64(42) >> 65, Int64.ZERO);
       for (int n = 0; n <= 66; n++) {
         expect(Int64(-1) >> n, Int64(-1));
       }
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 8,
-          Int64.fromInts(0x00723456, 0x789abcde));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 16,
-          Int64.fromInts(0x00007234, 0x56789abc));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 24,
-          Int64.fromInts(0x00000072, 0x3456789a));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 28,
-          Int64.fromInts(0x00000007, 0x23456789));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 32,
-          Int64.fromInts(0x00000000, 0x72345678));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 36,
-          Int64.fromInts(0x00000000, 0x07234567));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 40,
-          Int64.fromInts(0x00000000, 0x00723456));
-      expect(Int64.fromInts(0x72345678, 0x9abcde00) >> 44,
-          Int64.fromInts(0x00000000, 0x00072345));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0) >> 48,
-          Int64.fromInts(0x00000000, 0x00007234));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 8,
-          Int64.fromInts(0xff923456, 0x789abcde));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 16,
-          Int64.fromInts(0xffff9234, 0x56789abc));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 24,
-          Int64.fromInts(0xffffff92, 0x3456789a));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 28,
-          Int64.fromInts(0xfffffff9, 0x23456789));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 32,
-          Int64.fromInts(0xffffffff, 0x92345678));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 36,
-          Int64.fromInts(0xffffffff, 0xf9234567));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 40,
-          Int64.fromInts(0xffffffff, 0xff923456));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 44,
-          Int64.fromInts(0xffffffff, 0xfff92345));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0) >> 48,
-          Int64.fromInts(0xffffffff, 0xffff9234));
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 8,
+        Int64.fromInts(0x00723456, 0x789abcde),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 16,
+        Int64.fromInts(0x00007234, 0x56789abc),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 24,
+        Int64.fromInts(0x00000072, 0x3456789a),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 28,
+        Int64.fromInts(0x00000007, 0x23456789),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 32,
+        Int64.fromInts(0x00000000, 0x72345678),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 36,
+        Int64.fromInts(0x00000000, 0x07234567),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 40,
+        Int64.fromInts(0x00000000, 0x00723456),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcde00) >> 44,
+        Int64.fromInts(0x00000000, 0x00072345),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0) >> 48,
+        Int64.fromInts(0x00000000, 0x00007234),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 8,
+        Int64.fromInts(0xff923456, 0x789abcde),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 16,
+        Int64.fromInts(0xffff9234, 0x56789abc),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 24,
+        Int64.fromInts(0xffffff92, 0x3456789a),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 28,
+        Int64.fromInts(0xfffffff9, 0x23456789),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 32,
+        Int64.fromInts(0xffffffff, 0x92345678),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 36,
+        Int64.fromInts(0xffffffff, 0xf9234567),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 40,
+        Int64.fromInts(0xffffffff, 0xff923456),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 44,
+        Int64.fromInts(0xffffffff, 0xfff92345),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0) >> 48,
+        Int64.fromInts(0xffffffff, 0xffff9234),
+      );
       expect(() => Int64(17) >> -1, throwsArgumentError);
     });
 
     test('shiftRightUnsigned', () {
-      expect(Int64.fromInts(0x12341234, 0x45674567).shiftRightUnsigned(10),
-          Int64.fromInts(0x48d04, 0x8d1159d1));
-      expect(Int64.fromInts(0x92341234, 0x45674567).shiftRightUnsigned(10),
-          Int64.fromInts(0x248d04, 0x8d1159d1));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(8),
-          Int64.fromInts(0x00723456, 0x789abcde));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(16),
-          Int64.fromInts(0x00007234, 0x56789abc));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(24),
-          Int64.fromInts(0x00000072, 0x3456789a));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(28),
-          Int64.fromInts(0x00000007, 0x23456789));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(32),
-          Int64.fromInts(0x00000000, 0x72345678));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(36),
-          Int64.fromInts(0x00000000, 0x07234567));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(40),
-          Int64.fromInts(0x00000000, 0x00723456));
-      expect(Int64.fromInts(0x72345678, 0x9abcde00).shiftRightUnsigned(44),
-          Int64.fromInts(0x00000000, 0x00072345));
-      expect(Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(48),
-          Int64.fromInts(0x00000000, 0x00007234));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(8),
-          Int64.fromInts(0x00923456, 0x789abcde));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(16),
-          Int64.fromInts(0x00009234, 0x56789abc));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(24),
-          Int64.fromInts(0x00000092, 0x3456789a));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(28),
-          Int64.fromInts(0x00000009, 0x23456789));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(32),
-          Int64.fromInts(0x00000000, 0x92345678));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(36),
-          Int64.fromInts(0x00000000, 0x09234567));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(40),
-          Int64.fromInts(0x00000000, 0x00923456));
-      expect(Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(44),
-          Int64.fromInts(0x00000000, 0x00092345));
-      expect(Int64.fromInts(0x00000000, 0x00009234),
-          Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(48));
+      expect(
+        Int64.fromInts(0x12341234, 0x45674567).shiftRightUnsigned(10),
+        Int64.fromInts(0x48d04, 0x8d1159d1),
+      );
+      expect(
+        Int64.fromInts(0x92341234, 0x45674567).shiftRightUnsigned(10),
+        Int64.fromInts(0x248d04, 0x8d1159d1),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(8),
+        Int64.fromInts(0x00723456, 0x789abcde),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(16),
+        Int64.fromInts(0x00007234, 0x56789abc),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(24),
+        Int64.fromInts(0x00000072, 0x3456789a),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(28),
+        Int64.fromInts(0x00000007, 0x23456789),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(32),
+        Int64.fromInts(0x00000000, 0x72345678),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(36),
+        Int64.fromInts(0x00000000, 0x07234567),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(40),
+        Int64.fromInts(0x00000000, 0x00723456),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcde00).shiftRightUnsigned(44),
+        Int64.fromInts(0x00000000, 0x00072345),
+      );
+      expect(
+        Int64.fromInts(0x72345678, 0x9abcdef0).shiftRightUnsigned(48),
+        Int64.fromInts(0x00000000, 0x00007234),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(8),
+        Int64.fromInts(0x00923456, 0x789abcde),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(16),
+        Int64.fromInts(0x00009234, 0x56789abc),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(24),
+        Int64.fromInts(0x00000092, 0x3456789a),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(28),
+        Int64.fromInts(0x00000009, 0x23456789),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(32),
+        Int64.fromInts(0x00000000, 0x92345678),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(36),
+        Int64.fromInts(0x00000000, 0x09234567),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(40),
+        Int64.fromInts(0x00000000, 0x00923456),
+      );
+      expect(
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(44),
+        Int64.fromInts(0x00000000, 0x00092345),
+      );
+      expect(
+        Int64.fromInts(0x00000000, 0x00009234),
+        Int64.fromInts(0x92345678, 0x9abcdef0).shiftRightUnsigned(48),
+      );
       expect(Int64(-1).shiftRightUnsigned(64), Int64.ZERO);
       expect(Int64(1).shiftRightUnsigned(64), Int64.ZERO);
       expect(() => Int64(17).shiftRightUnsigned(-1), throwsArgumentError);
@@ -608,9 +769,13 @@ void main() {
       expect(Int64.MIN_VALUE << 0, Int64.MIN_VALUE);
       expect(Int64.MIN_VALUE << 1, Int64(0));
       expect(
-          (-Int64.fromInts(8, 0)) >> 1, Int64.fromInts(0xfffffffc, 0x00000000));
-      expect((-Int64.fromInts(8, 0)).shiftRightUnsigned(1),
-          Int64.fromInts(0x7ffffffc, 0x0));
+        (-Int64.fromInts(8, 0)) >> 1,
+        Int64.fromInts(0xfffffffc, 0x00000000),
+      );
+      expect(
+        (-Int64.fromInts(8, 0)).shiftRightUnsigned(1),
+        Int64.fromInts(0x7ffffffc, 0x0),
+      );
     });
   });
 
@@ -655,24 +820,42 @@ void main() {
       expect(Int64(4503599627370496).toDouble(), same(4503599627370496.0));
       expect(Int64(-4503599627370495).toDouble(), same(-4503599627370495.0));
       expect(Int64(-4503599627370496).toDouble(), same(-4503599627370496.0));
-      expect(Int64.parseInt('-10000000000000000').toDouble().toStringAsFixed(1),
-          '-10000000000000000.0');
-      expect(Int64.parseInt('-10000000000000001').toDouble().toStringAsFixed(1),
-          '-10000000000000000.0');
-      expect(Int64.parseInt('-10000000000000002').toDouble().toStringAsFixed(1),
-          '-10000000000000002.0');
-      expect(Int64.parseInt('-10000000000000003').toDouble().toStringAsFixed(1),
-          '-10000000000000004.0');
-      expect(Int64.parseInt('-10000000000000004').toDouble().toStringAsFixed(1),
-          '-10000000000000004.0');
-      expect(Int64.parseInt('-10000000000000005').toDouble().toStringAsFixed(1),
-          '-10000000000000004.0');
-      expect(Int64.parseInt('-10000000000000006').toDouble().toStringAsFixed(1),
-          '-10000000000000006.0');
-      expect(Int64.parseInt('-10000000000000007').toDouble().toStringAsFixed(1),
-          '-10000000000000008.0');
-      expect(Int64.parseInt('-10000000000000008').toDouble().toStringAsFixed(1),
-          '-10000000000000008.0');
+      expect(
+        Int64.parseInt('-10000000000000000').toDouble().toStringAsFixed(1),
+        '-10000000000000000.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000001').toDouble().toStringAsFixed(1),
+        '-10000000000000000.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000002').toDouble().toStringAsFixed(1),
+        '-10000000000000002.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000003').toDouble().toStringAsFixed(1),
+        '-10000000000000004.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000004').toDouble().toStringAsFixed(1),
+        '-10000000000000004.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000005').toDouble().toStringAsFixed(1),
+        '-10000000000000004.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000006').toDouble().toStringAsFixed(1),
+        '-10000000000000006.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000007').toDouble().toStringAsFixed(1),
+        '-10000000000000008.0',
+      );
+      expect(
+        Int64.parseInt('-10000000000000008').toDouble().toStringAsFixed(1),
+        '-10000000000000008.0',
+      );
     });
 
     test('toInt', () {
@@ -705,12 +888,36 @@ void main() {
 
     test('toBytes', () {
       expect(Int64(0).toBytes(), [0, 0, 0, 0, 0, 0, 0, 0]);
-      expect(Int64.fromInts(0x08070605, 0x04030201).toBytes(),
-          [1, 2, 3, 4, 5, 6, 7, 8]);
-      expect(Int64.fromInts(0x01020304, 0x05060708).toBytes(),
-          [8, 7, 6, 5, 4, 3, 2, 1]);
-      expect(Int64(-1).toBytes(),
-          [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+      expect(Int64.fromInts(0x08070605, 0x04030201).toBytes(), [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+      ]);
+      expect(Int64.fromInts(0x01020304, 0x05060708).toBytes(), [
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+      ]);
+      expect(Int64(-1).toBytes(), [
+        0xff,
+        0xff,
+        0xff,
+        0xff,
+        0xff,
+        0xff,
+        0xff,
+        0xff,
+      ]);
     });
   });
 
@@ -862,19 +1069,27 @@ void main() {
       Int64 deadbeef12341234 = Int64.fromInts(0xDEADBEEF, 0x12341234);
       expect(Int64.ZERO.toHexString(), '0');
       expect(deadbeef12341234.toHexString(), 'DEADBEEF12341234');
-      expect(Int64.fromInts(0x17678A7, 0xDEF01234).toHexString(),
-          '17678A7DEF01234');
+      expect(
+        Int64.fromInts(0x17678A7, 0xDEF01234).toHexString(),
+        '17678A7DEF01234',
+      );
       expect(Int64(123456789).toHexString(), '75BCD15');
     });
 
     test('toRadixString', () {
       expect(Int64(123456789).toRadixString(5), '223101104124');
-      expect(Int64.MIN_VALUE.toRadixString(2),
-          '-1000000000000000000000000000000000000000000000000000000000000000');
-      expect(Int64.MIN_VALUE.toRadixString(3),
-          '-2021110011022210012102010021220101220222');
-      expect(Int64.MIN_VALUE.toRadixString(4),
-          '-20000000000000000000000000000000');
+      expect(
+        Int64.MIN_VALUE.toRadixString(2),
+        '-1000000000000000000000000000000000000000000000000000000000000000',
+      );
+      expect(
+        Int64.MIN_VALUE.toRadixString(3),
+        '-2021110011022210012102010021220101220222',
+      );
+      expect(
+        Int64.MIN_VALUE.toRadixString(4),
+        '-20000000000000000000000000000000',
+      );
       expect(Int64.MIN_VALUE.toRadixString(5), '-1104332401304422434310311213');
       expect(Int64.MIN_VALUE.toRadixString(6), '-1540241003031030222122212');
       expect(Int64.MIN_VALUE.toRadixString(7), '-22341010611245052052301');
@@ -887,12 +1102,18 @@ void main() {
       expect(Int64.MIN_VALUE.toRadixString(14), '-4340724c6c71dc7a8');
       expect(Int64.MIN_VALUE.toRadixString(15), '-160e2ad3246366808');
       expect(Int64.MIN_VALUE.toRadixString(16), '-8000000000000000');
-      expect(Int64.MAX_VALUE.toRadixString(2),
-          '111111111111111111111111111111111111111111111111111111111111111');
-      expect(Int64.MAX_VALUE.toRadixString(3),
-          '2021110011022210012102010021220101220221');
       expect(
-          Int64.MAX_VALUE.toRadixString(4), '13333333333333333333333333333333');
+        Int64.MAX_VALUE.toRadixString(2),
+        '111111111111111111111111111111111111111111111111111111111111111',
+      );
+      expect(
+        Int64.MAX_VALUE.toRadixString(3),
+        '2021110011022210012102010021220101220221',
+      );
+      expect(
+        Int64.MAX_VALUE.toRadixString(4),
+        '13333333333333333333333333333333',
+      );
       expect(Int64.MAX_VALUE.toRadixString(5), '1104332401304422434310311212');
       expect(Int64.MAX_VALUE.toRadixString(6), '1540241003031030222122211');
       expect(Int64.MAX_VALUE.toRadixString(7), '22341010611245052052300');
