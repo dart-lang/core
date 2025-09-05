@@ -6,7 +6,7 @@ import 'int32.dart';
 import 'int64.dart';
 
 /// A fixed-precision integer.
-abstract class IntX implements Comparable<IntX> {
+abstract class IntX implements Comparable<Object> {
   /// Addition operator.
   IntX operator +(Object other);
 

@@ -16,12 +16,12 @@ int validateRadix(int radix) =>
 /// not a valid digit in any radix in the range 2 through 36.
 int decodeDigit(int c) {
   // Hex digit char codes
-  const c0 = 48; // '0'.codeUnitAt(0)
-  const ca = 97; // 'a'.codeUnitAt(0)
+  const int c0 = 48; // '0'.codeUnitAt(0)
+  const int ca = 97; // 'a'.codeUnitAt(0)
 
-  var digit = c ^ c0;
+  int digit = c ^ c0;
   if (digit < 10) return digit;
-  var letter = (c | 0x20) - ca;
+  int letter = (c | 0x20) - ca;
   if (letter >= 0) {
     // Returns values above 36 for invalid digits.
     // The value is checked against the actual radix where the return
