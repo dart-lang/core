@@ -37,6 +37,7 @@ class Int64 implements IntX {
   factory Int64.fromInts(int high, int low) =>
       Int64((high << 32) | (low & 0xFFFFFFFF));
 
+  /// Constructs an [Int64] from the first 8 bytes in [bytes], as little endian.
   factory Int64.fromBytes(List<int> bytes) => Int64(((bytes[7] & 0xFF) << 56) |
       ((bytes[6] & 0xFF) << 48) |
       ((bytes[5] & 0xFF) << 40) |
@@ -46,6 +47,7 @@ class Int64 implements IntX {
       ((bytes[1] & 0xFF) << 8) |
       (bytes[0] & 0xFF));
 
+  /// Constructs an [Int64] from the first 8 bytes in [bytes], as big endian.
   factory Int64.fromBytesBigEndian(List<int> bytes) =>
       Int64(((bytes[0] & 0xFF) << 56) |
           ((bytes[1] & 0xFF) << 48) |
