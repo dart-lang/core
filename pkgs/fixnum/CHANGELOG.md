@@ -4,6 +4,7 @@
   possible for `IntX` (and in turn `Int64` and `Int32`) be used with methods
   like `sortedBy` in the platform libraries.
 - Run `dart format` with the new style.
+- Improve `Int64` representation when compiling to native or Wasm.
 
 ## 1.1.1
 
