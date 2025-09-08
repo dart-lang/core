@@ -7,7 +7,7 @@ repository: https://github.com/dart-lang/core/tree/main/pkgs/fixnum
 issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Afixnum
 
 environment:
-  sdk: ^3.1.0
+  sdk: ^3.4.0
 
 dev_dependencies:
   dart_flutter_team_lints: ^3.0.0
