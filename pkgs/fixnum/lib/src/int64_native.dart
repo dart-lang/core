@@ -48,15 +48,14 @@ class Int64 implements IntX {
       (bytes[0] & 0xFF));
 
   /// Constructs an [Int64] from the first 8 bytes in [bytes], as big endian.
-  factory Int64.fromBytesBigEndian(List<int> bytes) =>
-      Int64(((bytes[0] & 0xFF) << 56) |
-          ((bytes[1] & 0xFF) << 48) |
-          ((bytes[2] & 0xFF) << 40) |
-          ((bytes[3] & 0xFF) << 32) |
-          ((bytes[4] & 0xFF) << 24) |
-          ((bytes[5] & 0xFF) << 16) |
-          ((bytes[6] & 0xFF) << 8) |
-          (bytes[7] & 0xFF));
+  factory Int64.fromBytesBigEndian(List<int> bytes) => Int64((bytes[7] & 0xFF) |
+      ((bytes[6] & 0xFF) << 8) |
+      ((bytes[5] & 0xFF) << 16) |
+      ((bytes[4] & 0xFF) << 24) |
+      ((bytes[3] & 0xFF) << 32) |
+      ((bytes[2] & 0xFF) << 40) |
+      ((bytes[1] & 0xFF) << 48) |
+      ((bytes[0] & 0xFF) << 56));
 
   /// Parses [source] as a decimal numeral.
   ///
@@ -310,14 +309,14 @@ class Int64 implements IntX {
   @override
   List<int> toBytes() {
     final result = List<int>.filled(8, 0);
-    result[0] = _i & 0xff;
-    result[1] = (_i >> 8) & 0xff;
-    result[2] = (_i >> 16) & 0xff;
-    result[3] = (_i >> 24) & 0xff;
-    result[4] = (_i >> 32) & 0xff;
-    result[5] = (_i >> 40) & 0xff;
-    result[6] = (_i >> 48) & 0xff;
     result[7] = (_i >> 56) & 0xff;
+    result[6] = (_i >> 48) & 0xff;
+    result[5] = (_i >> 40) & 0xff;
+    result[4] = (_i >> 32) & 0xff;
+    result[3] = (_i >> 24) & 0xff;
+    result[2] = (_i >> 16) & 0xff;
+    result[1] = (_i >> 8) & 0xff;
+    result[0] = _i & 0xff;
     return result;
   }
 
