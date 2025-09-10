@@ -207,6 +207,11 @@ class Parser {
       // The first character is a non-flag option, so the rest must be the
       // value.
       var value = '${lettersAndDigits.substring(1)}$rest';
+      // If the value starts with '=' (like in -o=value), strip it to match
+      // the behavior of long options (--option=value).
+      if (value.startsWith('=')) {
+        value = value.substring(1);
+      }
       _setOption(_results, first, value, '-$c');
     } else {
       // If we got some non-flag characters, then it must be a value, but
