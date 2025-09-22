@@ -270,7 +270,17 @@ class Int64 implements IntX {
   /// Returns whether this [Int64] has the same numeric value as the given
   /// object. The argument may be an [int] or an [IntX].
   @override
-  bool operator ==(Object other) => _i == _promote(other);
+  bool operator ==(Object other) {
+    if (other is Int64) {
+      return _i == other._i;
+    } else if (other is int) {
+      return _i == other;
+    } else if (other is Int32) {
+      return _i == other.toInt();
+    } else {
+      return false;
+    }
+  }
 
   @override
   Int64 abs() => Int64(_i.abs());
