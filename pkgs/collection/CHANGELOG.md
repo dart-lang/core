@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Add `intersperse` method to `IterableExtension` for efficient element separation.
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
   `Map.entries`.
 - Explicitly mark `BoolList` as `abstract interface`
