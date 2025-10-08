@@ -15,22 +15,24 @@ class Int64 implements IntX {
 
   /// The maximum positive value attainable by an [Int64], namely
   /// 9,223,372,036,854,775,807.
-  static const Int64 MAX_VALUE = Int64(9223372036854775807);
+  static const Int64 MAX_VALUE = Int64._(9223372036854775807);
 
   /// The minimum positive value attainable by an [Int64], namely
   /// -9,223,372,036,854,775,808.
-  static const Int64 MIN_VALUE = Int64(-9223372036854775808);
+  static const Int64 MIN_VALUE = Int64._(-9223372036854775808);
 
   /// An [Int64] constant equal to 0.
-  static const Int64 ZERO = Int64(0);
+  static const Int64 ZERO = Int64._(0);
 
   /// An [Int64] constant equal to 1.
-  static const Int64 ONE = Int64(1);
+  static const Int64 ONE = Int64._(1);
 
   /// An [Int64] constant equal to 2.
-  static const Int64 TWO = Int64(2);
+  static const Int64 TWO = Int64._(2);
 
-  const Int64([int value = 0]) : _i = value;
+  const Int64._(this._i);
+
+  Int64([int value = 0]) : _i = value;
 
   /// Constructs an [Int64] from a pair of 32-bit integers having the value
   /// [:((high & 0xffffffff) << 32) | (low & 0xffffffff):].
