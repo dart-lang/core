@@ -2,7 +2,7 @@
 
 - Run `dart format` with the new style.
 - Performance improvements.
-- Updated web conditional import to use `js_interop` to support WebAssembly
+- Updated web conditional import to use `js_interop` to support WebAssembly.
 
 ## 3.0.6
 
