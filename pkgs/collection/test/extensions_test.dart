@@ -1224,6 +1224,33 @@ void main() {
           );
         });
       });
+      group('.intersperse', () {
+        test('empty', () {
+          expect(iterable(<int>[]).intersperse(0), []);
+        });
+        test('single element', () {
+          expect(iterable([1]).intersperse(0), [1]);
+        });
+        test('two elements', () {
+          expect(iterable([1, 2]).intersperse(0), [1, 0, 2]);
+        });
+        test('multiple elements', () {
+          expect(iterable([1, 2, 3, 4]).intersperse(0), [1, 0, 2, 0, 3, 0, 4]);
+        });
+        test('with different separator types', () {
+          expect(iterable(['a', 'b', 'c']).intersperse('-'),
+              ['a', '-', 'b', '-', 'c']);
+          expect(iterable([1.5, 2.5, 3.5]).intersperse(0.0),
+              [1.5, 0.0, 2.5, 0.0, 3.5]);
+        });
+        test('with nullable int separator', () {
+          expect(iterable([1, 2, 3]).intersperse(0), [1, 0, 2, 0, 3]);
+        });
+        test('with empty string separator', () {
+          expect(iterable(['a', 'b', 'c']).intersperse(''),
+              ['a', '', 'b', '', 'c']);
+        });
+      });
     });
     group('of MapEntry', () {
       group('.whereKey', () {
