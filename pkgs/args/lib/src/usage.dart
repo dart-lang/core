@@ -149,16 +149,16 @@ class _Usage {
       if (option.hide) continue;
 
       // Make room in the first column if there are abbreviations.
-      abbr = math.max(abbr, _abbreviation(option).length);
+      abbr = math.max(abbr, _abbreviation(option).lengthWithoutAnsi);
 
       // Make room for the option.
       title = math.max(
-          title, _longOption(option).length + _mandatoryOption(option).length);
+          title, _longOption(option).lengthWithoutAnsi + _mandatoryOption(option).lengthWithoutAnsi);
 
       // Make room for the allowed help.
       if (option.allowedHelp != null) {
         for (var allowed in option.allowedHelp!.keys) {
-          title = math.max(title, _allowedTitle(option, allowed).length);
+          title = math.max(title, _allowedTitle(option, allowed).lengthWithoutAnsi);
         }
       }
     }
@@ -218,7 +218,7 @@ class _Usage {
 
     if (column < _columnWidths.length) {
       // Fixed-size column, so pad it.
-      _buffer.write(text.padRight(_columnWidths[column]));
+      _buffer.write(padRight(text, _columnWidths[column]));
     } else {
       // The last column, so just write it.
       _buffer.write(text);
