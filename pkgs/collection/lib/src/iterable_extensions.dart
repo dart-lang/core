@@ -56,6 +56,102 @@ extension IterableExtension<T> on Iterable<T> {
     return chosen;
   }
 
+  /// The elements of this iterable separated by [separator].
+  ///
+  /// Emits the same elements as this iterable, and also emits
+  /// a [separator] between any two of those elements.
+  ///
+  /// If [before] is set to `true`, a [separator] is also
+  /// emitted before the first element.
+  /// If [after] is set to `true`, a [separator] is also
+  /// emitted after the last element.
+  ///
+  /// If this iterable is empty, [before] and [after] have no effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// print([1, 2, 3].separated(-1)); // (1, -1, 2, -1, 3)
+  /// print([1].separated(-1)); // (1)
+  /// print([].separated(-1)); // ()
+  ///
+  /// print([1, 2, 3].separated(
+  ///   -1
+  ///   before: true,
+  /// )); // (-1, 1, -1, 2, -1, 3)
+  ///
+  /// print([1].separated(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // (-1, 1, -1)
+  ///
+  /// print([].separated(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // ()
+  /// ```
+  Iterable<T> separated(T separator,
+      {bool before = false, bool after = false}) sync* {
+    const emitBefore = 1;
+    const emitAfter = 2;
+    var state = before ? emitBefore : 0;
+    final afterState = emitBefore | (after ? emitAfter : 0);
+    for (var element in this) {
+      if (state & emitBefore != 0) yield separator;
+      state = afterState;
+      yield element;
+    }
+    if (state & emitAfter != 0) yield separator;
+  }
+
+  /// Creates new list with the elements of this list separated by [separator].
+  ///
+  /// Returns a new list which contains the same elements as this list,
+  /// with a [separator] between any two of those elements.
+  ///
+  /// If [before] is set to `true`, a [separator] is also
+  /// added before the first element.
+  /// If [after] is set to `true`, a [separator] is also
+  /// added after the last element.
+  ///
+  /// If this list is empty, [before] and [after] have no effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// print([1, 2, 3].separatedList(-1)); // [1, -1, 2, -1, 3]
+  /// print([1].separatedList(-1)); // [1]
+  /// print([].separatedList(-1)); // []
+  ///
+  /// print([1, 2, 3].separatedList(
+  ///   -1
+  ///   before: true,
+  /// )); // [-1, 1, -1, 2, -1, 3]
+  ///
+  /// print([1].separatedList(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // [-1, 1, -1]
+  ///
+  /// print([].separatedList(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // []
+  /// ```
+  List<T> separatedList(T separator,
+      {bool before = false, bool after = false}) {
+    var hasElement = false;
+    return [
+      for (var element in this) ...[
+        if (hasElement || (hasElement = true) && before) separator,
+        element,
+      ],
+      if (hasElement && after) separator
+    ];
+  }
+
   /// The elements that do not satisfy [test].
   Iterable<T> whereNot(bool Function(T element) test) =>
       where((element) => !test(element));

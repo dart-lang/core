@@ -327,6 +327,114 @@ extension ListExtensions<E> on List<E> {
       yield slice(i, min(i + length, this.length));
     }
   }
+
+  /// Creates new list with the elements of this list separated by [separator].
+  ///
+  /// Returns a new list which contains the same elements as this list,
+  /// with a [separator] between any two of those elements.
+  ///
+  /// If [before] is set to `true`, a [separator] is also
+  /// added before the first element.
+  /// If [after] is set to `true`, a [separator] is also
+  /// added after the last element.
+  ///
+  /// If this list is empty, [before] and [after] have no effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// print([1, 2, 3].separatedList(-1)); // [1, -1, 2, -1, 3]
+  /// print([1].separatedList(-1)); // [1]
+  /// print([].separatedList(-1)); // []
+  ///
+  /// print([1, 2, 3].separatedList(
+  ///   -1
+  ///   before: true,
+  /// )); // [-1, 1, -1, 2, -1, 3]
+  ///
+  /// print([1].separatedList(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // [-1, 1, -1]
+  ///
+  /// print([].separatedList(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // []
+  /// ```
+  List<E> separatedList(E separator,
+          {bool before = false, bool after = false}) =>
+      isEmpty
+          ? []
+          : [
+              if (!before) this[0],
+              for (var i = before ? 0 : 1; i < length; i++) ...[
+                separator,
+                this[i],
+              ],
+              if (after) separator
+            ];
+
+  /// Inserts [separator] between elements of this list.
+  ///
+  /// Afterwards, the list will contains all the original elements,
+  /// with a [separator] between any two of those elements.
+  ///
+  /// If [before] is set to `true`, a [separator] is also
+  /// inserted before the first element.
+  /// If [after] is set to `true`, a [separator] is also
+  /// added after the last element.
+  ///
+  /// If this list is empty, [before] and [after] have no effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// print([1, 2, 3]..insertSeparator(-1)); // [1, -1, 2, -1, 3]
+  /// print([1]..insertSeparator(-1)); // [1]
+  /// print([]..insertSeparator(-1)); // []
+  ///
+  /// print([1, 2, 3]..insertSeparator(
+  ///   -1
+  ///   before: true,
+  /// )); // [-1, 1, -1, 2, -1, 3]
+  ///
+  /// print([1]..insertSeparator(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // [-1, 1, -1]
+  ///
+  /// print([]..insertSeparator(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // []
+  /// ```
+  void separate(E separator, {bool before = false, bool after = false}) {
+    var length = this.length;
+    if (length == 0) return;
+    var newLength = length * 2 - 1;
+    var offset = 0;
+    if (before) {
+      newLength++;
+      offset = 1;
+    }
+    if (after) newLength++;
+    E newElementAt(int index) {
+      index -= offset;
+      if (index.isOdd) return separator;
+      return this[index >> 1];
+    }
+
+    for (var i = length; i < newLength; i++) {
+      add(newElementAt(i));
+    }
+    for (var i = length, firstChanged = offset ^ 1; i > firstChanged;) {
+      --i;
+      this[i] = newElementAt(i);
+    }
+  }
 }
 
 /// Various extensions on lists of comparable elements.
