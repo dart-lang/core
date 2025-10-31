@@ -1,5 +1,7 @@
 ## 1.20.0-wip
 
+- Adds `separated` and `separatedList` extension methods to `Iterable`.
+- Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
   `Map.entries`.
 - Explicitly mark `BoolList` as `abstract interface`
