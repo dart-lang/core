@@ -5,7 +5,7 @@
 /// A selection of data manipulation algorithms.
 library;
 
-import 'dart:math' show Random;
+import 'dart:math' show Random, ln2, log;
 
 import 'utils.dart';
 
@@ -482,29 +482,42 @@ void _merge<E, K>(
   );
 }
 
-/// Sort [elements] using a quick-sort algorithm.
+// ---------------------------------------------------------------------------
+// QuickSort based on Pattern-defeating Quicksort (pdqsort).
+// ---------------------------------------------------------------------------
+
+/// Sorts a list between [start] (inclusive) and [end] (exclusive).
 ///
-/// The elements are compared using [compare] on the elements.
-/// If [start] and [end] are provided, only that range is sorted.
+/// The sorting algorithm is a Pattern-defeating Quicksort (pdqsort), a
+/// hybrid of Quicksort, Heapsort, and Insertion Sort.
+/// It is not stable, but is typically very fast.
 ///
-/// Uses insertion sort for smaller sublists.
+/// This implementation is highly efficient for common data patterns
+/// (such as sorted, reverse-sorted, or with few unique values) and has a
+/// guaranteed worst-case time complexity of O(n*log(n)).
+///
+/// For a stable sort, use [mergeSort].
 void quickSort<E>(
   List<E> elements,
   int Function(E a, E b) compare, [
   int start = 0,
   int? end,
 ]) {
-  end = RangeError.checkValidRange(start, end, elements.length);
-  _quickSort<E, E>(elements, identity, compare, Random(), start, end);
+  quickSortBy<E, E>(elements, identity<E>, compare, start, end);
 }
 
-/// Sort [list] using a quick-sort algorithm.
+/// Sorts a list between [start] (inclusive) and [end] (exclusive) by key.
 ///
-/// The elements are compared using [compare] on the value provided by [keyOf]
-/// on the element.
-/// If [start] and [end] are provided, only that range is sorted.
+/// The sorting algorithm is a Pattern-defeating Quicksort (pdqsort), a
+/// hybrid of Quicksort, Heapsort, and Insertion Sort.
+/// It is not stable, but is typically very fast.
 ///
-/// Uses insertion sort for smaller sublists.
+/// This implementation is highly efficient for common data patterns
+/// (such as sorted, reverse-sorted, or with few unique values) and has a
+/// guaranteed worst-case time complexity of O(n*log(n)).
+///
+/// Elements are ordered by the [compare] function applied to the result of
+/// the [keyOf] function. For a stable sort, use [mergeSortBy].
 void quickSortBy<E, K>(
   List<E> list,
   K Function(E element) keyOf,
@@ -513,53 +526,162 @@ void quickSortBy<E, K>(
   int? end,
 ]) {
   end = RangeError.checkValidRange(start, end, list.length);
-  _quickSort(list, keyOf, compare, Random(), start, end);
+  final length = end - start;
+  if (length < 2) return;
+  _pdqSortByImpl(list, keyOf, compare, start, end, _log2(length));
 }
 
-void _quickSort<E, K>(
-  List<E> list,
-  K Function(E element) keyOf,
-  int Function(K a, K b) compare,
-  Random random,
-  int start,
-  int end,
-) {
-  const minQuickSortLength = 24;
-  var length = end - start;
-  while (length >= minQuickSortLength) {
-    var pivotIndex = random.nextInt(length) + start;
-    var pivot = list[pivotIndex];
-    var pivotKey = keyOf(pivot);
-    var endSmaller = start;
-    var startGreater = end;
-    var startPivots = end - 1;
-    list[pivotIndex] = list[startPivots];
-    list[startPivots] = pivot;
-    while (endSmaller < startPivots) {
-      var current = list[endSmaller];
-      var relation = compare(keyOf(current), pivotKey);
-      if (relation < 0) {
-        endSmaller++;
+/// Minimum list size below which pdqsort uses insertion sort.
+const int _pdqInsertionSortThreshold = 24;
+
+/// Computes the base-2 logarithm of [n].
+int _log2(int n) => n == 0 ? 0 : (log(n) / ln2).floor();
+
+/// Swaps the elements at positions [i] and [j] in [elements].
+void _pdqSwap<E>(List<E> elements, int i, int j) {
+  final temp = elements[i];
+  elements[i] = elements[j];
+  elements[j] = temp;
+}
+
+/// A simple, non-binary insertion sort for the base case of pdqsort.
+void _pdqInsertionSort<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int start, int end) {
+  for (var i = start + 1; i < end; i++) {
+    final current = elements[i];
+    final key = keyOf(current);
+    var j = i - 1;
+    while (j >= start && compare(keyOf(elements[j]), key) > 0) {
+      elements[j + 1] = elements[j];
+      j--;
+    }
+    elements[j + 1] = current;
+  }
+}
+
+/// Heapsort implementation for the fallback case of pdqsort.
+void _pdqHeapSort<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int start, int end) {
+  final n = end - start;
+  for (var i = n ~/ 2 - 1; i >= 0; i--) {
+    _pdqSiftDown(elements, keyOf, compare, i, n, start);
+  }
+  for (var i = n - 1; i > 0; i--) {
+    _pdqSwap(elements, start, start + i);
+    _pdqSiftDown(elements, keyOf, compare, 0, i, start);
+  }
+}
+
+/// Sift-down operation for the heapsort fallback.
+void _pdqSiftDown<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int i, int n, int start) {
+  var root = i;
+  while (true) {
+    final left = 2 * root + 1;
+    final right = 2 * root + 2;
+    var largest = root;
+
+    if (left < n &&
+        compare(keyOf(elements[start + largest]),
+                keyOf(elements[start + left])) <
+            0) {
+      largest = left;
+    }
+    if (right < n &&
+        compare(keyOf(elements[start + largest]),
+                keyOf(elements[start + right])) <
+            0) {
+      largest = right;
+    }
+    if (largest == root) {
+      break;
+    }
+    _pdqSwap(elements, start + root, start + largest);
+    root = largest;
+  }
+}
+
+/// Sorts three elements at indices [a], [b], and [c].
+void _pdqSort3<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int a, int b, int c) {
+  if (compare(keyOf(elements[a]), keyOf(elements[b])) > 0) {
+    _pdqSwap(elements, a, b);
+  }
+  if (compare(keyOf(elements[b]), keyOf(elements[c])) > 0) {
+    _pdqSwap(elements, b, c);
+    if (compare(keyOf(elements[a]), keyOf(elements[b])) > 0) {
+      _pdqSwap(elements, a, b);
+    }
+  }
+}
+
+/// The core implementation of Pattern-defeating Quicksort.
+///
+/// [badAllowed] tracks how many bad pivot selections are allowed before
+/// falling back to heap sort.
+void _pdqSortByImpl<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int start, int end, int badAllowed) {
+  while (true) {
+    final size = end - start;
+    if (size < _pdqInsertionSortThreshold) {
+      _pdqInsertionSort(elements, keyOf, compare, start, end);
+      return;
+    }
+
+    if (badAllowed == 0) {
+      _pdqHeapSort(elements, keyOf, compare, start, end);
+      return;
+    }
+
+    final mid = start + size ~/ 2;
+    if (size > 80) {
+      // Ninther pivot selection for large arrays.
+      final s = size ~/ 8;
+      _pdqSort3(elements, keyOf, compare, start, start + s, start + 2 * s);
+      _pdqSort3(elements, keyOf, compare, mid - s, mid, mid + s);
+      _pdqSort3(
+          elements, keyOf, compare, end - 1 - 2 * s, end - 1 - s, end - 1);
+      _pdqSort3(elements, keyOf, compare, start + s, mid, end - 1 - s);
+    } else {
+      // Median-of-three for smaller arrays.
+      _pdqSort3(elements, keyOf, compare, start, mid, end - 1);
+    }
+
+    // 3-Way Partitioning (Dutch National Flag).
+    _pdqSwap(elements, start, mid);
+    final pivotKey = keyOf(elements[start]);
+
+    var less = start;
+    var equal = start;
+    var greater = end;
+
+    while (equal < greater) {
+      var comparison = compare(keyOf(elements[equal]), pivotKey);
+      if (comparison < 0) {
+        _pdqSwap(elements, less++, equal++);
+      } else if (comparison > 0) {
+        greater--;
+        _pdqSwap(elements, equal, greater);
       } else {
-        startPivots--;
-        var currentTarget = startPivots;
-        list[endSmaller] = list[startPivots];
-        if (relation > 0) {
-          startGreater--;
-          currentTarget = startGreater;
-          list[startPivots] = list[startGreater];
-        }
-        list[currentTarget] = current;
+        equal++;
       }
     }
-    if (endSmaller - start < end - startGreater) {
-      _quickSort(list, keyOf, compare, random, start, endSmaller);
-      start = startGreater;
-    } else {
-      _quickSort(list, keyOf, compare, random, startGreater, end);
-      end = endSmaller;
+
+    final leftSize = less - start;
+    final rightSize = end - greater;
+
+    // Detect highly unbalanced partitions and decrement badAllowed.
+    if (leftSize < size ~/ 8 || rightSize < size ~/ 8) {
+      badAllowed--;
     }
-    length = end - start;
+
+    // Recurse on the smaller partition first to keep stack depth low.
+    if (leftSize < rightSize) {
+      _pdqSortByImpl(elements, keyOf, compare, start, less, badAllowed);
+      start = greater; // Tail-call optimization on the larger partition
+    } else {
+      _pdqSortByImpl(elements, keyOf, compare, greater, end, badAllowed);
+      end = less; // Tail-call optimization on the larger partition
+    }
   }
-  _movingInsertionSort<E, K>(list, keyOf, compare, start, end, list, start);
 }
