@@ -1,4 +1,4 @@
-## 3.0.7-wip
+## 3.0.7
 
 - Run `dart format` with the new style.
 - Performance improvements.
