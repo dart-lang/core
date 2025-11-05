@@ -9,6 +9,8 @@
 - Add `PriorityQueue.of` constructor and optimize adding many elements.
 - Address diagnostics from `strict_top_level_inference`.
 - Run `dart format` with the new style.
+- Replace `quickSort` implementation with a more performant and robust
+  Pattern-defeating Quicksort (pdqsort) algorithm.
 
 ## 1.19.1
 
