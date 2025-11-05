@@ -578,24 +578,31 @@ void _pdqSiftDown<E, K>(List<E> elements, K Function(E) keyOf,
   var root = i;
   while (true) {
     final left = 2 * root + 1;
-    final right = 2 * root + 2;
-    var largest = root;
+    if (left >= n) break; // Root is a leaf.
 
-    if (left < n &&
-        compare(keyOf(elements[start + largest]),
-                keyOf(elements[start + left])) <
-            0) {
-      largest = left;
+    var largest = root;
+    var largestKey = keyOf(elements[start + largest]);
+
+    // Compare with left child.
+    var child = left;
+    var childKey = keyOf(elements[start + child]);
+    if (compare(largestKey, childKey) < 0) {
+      largest = child;
+      largestKey = childKey;
     }
-    if (right < n &&
-        compare(keyOf(elements[start + largest]),
-                keyOf(elements[start + right])) <
-            0) {
-      largest = right;
+
+    // Compare with right child if it exists.
+    child = left + 1;
+    if (child < n) {
+      childKey = keyOf(elements[start + child]);
+      if (compare(largestKey, childKey) < 0) {
+        largest = child;
+        largestKey = childKey;
+      }
     }
-    if (largest == root) {
-      break;
-    }
+
+    if (largest == root) break;
+
     _pdqSwap(elements, start + root, start + largest);
     root = largest;
   }
