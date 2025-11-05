@@ -8,57 +8,10 @@ import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:collection/src/algorithms.dart' show quickSort;
 import 'package:collection/src/utils.dart';
 
+import 'dataset_generator.dart' as dataset_generator;
+
 // Sink variable to prevent the compiler from optimizing away benchmark code.
 int sink = 0;
-
-/// Centralized generation of datasets for all benchmarks.
-///
-/// Ensures all algorithms are tested on the exact same data.
-class DatasetGenerator {
-  static const size = 50000;
-  static const count = 128; // Number of lists to cycle through.
-
-  static final List<List<int>> random = _generateRandom();
-  static final List<List<int>> sorted = _generateSorted();
-  static final List<List<int>> reverse = _generateReverse();
-  static final List<List<int>> fewUnique = _generateFewUnique();
-  static final List<List<int>> pathological = _generatePathological();
-
-  static List<List<int>> _generateRandom() {
-    final r = Random(12345);
-    return List.generate(
-        count, (_) => List.generate(size, (_) => r.nextInt(2000)));
-  }
-
-  static List<List<int>> _generateSorted() {
-    final base = List.generate(size, (i) => i);
-    return List.generate(count, (_) => List<int>.from(base));
-  }
-
-  static List<List<int>> _generateReverse() {
-    final base = List.generate(size, (i) => size - 1 - i);
-    return List.generate(count, (_) => List<int>.from(base));
-  }
-
-  static List<List<int>> _generateFewUnique() {
-    final r = Random(67890);
-    return List.generate(
-        count, (_) => List.generate(size, (_) => r.nextInt(7)));
-  }
-
-  static List<List<int>> _generatePathological() {
-    final base = List.generate(size, (i) => i);
-    // Creates a "V-shape" or "organ pipe" array that can be challenging
-    // for quicksort implementations by promoting unbalanced partitions.
-    final pathological = <int>[
-      for (int i = 0; i < size; i++)
-        if (i.isEven) base[i],
-      for (int i = size - 1; i > 0; i--)
-        if (i.isOdd) base[i],
-    ];
-    return List.generate(count, (_) => List<int>.from(pathological));
-  }
-}
 
 /// The final aggregated result of a benchmark.
 class BenchmarkResult {
@@ -99,7 +52,7 @@ abstract class SortBenchmarkBase extends BenchmarkBase {
 // Baseline (Old SDK quickSort)
 class QuickSortBaselineRandomBenchmark extends SortBenchmarkBase {
   QuickSortBaselineRandomBenchmark()
-      : super('Baseline.Random', DatasetGenerator.random);
+      : super('Baseline.Random', dataset_generator.random);
   @override
   void performSort() {
     final list = getNextList();
@@ -110,7 +63,7 @@ class QuickSortBaselineRandomBenchmark extends SortBenchmarkBase {
 
 class QuickSortBaselineSortedBenchmark extends SortBenchmarkBase {
   QuickSortBaselineSortedBenchmark()
-      : super('Baseline.Sorted', DatasetGenerator.sorted);
+      : super('Baseline.Sorted', dataset_generator.sorted);
   @override
   void performSort() {
     final list = getNextList();
@@ -121,7 +74,7 @@ class QuickSortBaselineSortedBenchmark extends SortBenchmarkBase {
 
 class QuickSortBaselineReverseBenchmark extends SortBenchmarkBase {
   QuickSortBaselineReverseBenchmark()
-      : super('Baseline.Reverse', DatasetGenerator.reverse);
+      : super('Baseline.Reverse', dataset_generator.reverse);
   @override
   void performSort() {
     final list = getNextList();
@@ -132,7 +85,7 @@ class QuickSortBaselineReverseBenchmark extends SortBenchmarkBase {
 
 class QuickSortBaselineFewUniqueBenchmark extends SortBenchmarkBase {
   QuickSortBaselineFewUniqueBenchmark()
-      : super('Baseline.FewUnique', DatasetGenerator.fewUnique);
+      : super('Baseline.FewUnique', dataset_generator.fewUnique);
   @override
   void performSort() {
     final list = getNextList();
@@ -143,7 +96,7 @@ class QuickSortBaselineFewUniqueBenchmark extends SortBenchmarkBase {
 
 class QuickSortBaselinePathologicalBenchmark extends SortBenchmarkBase {
   QuickSortBaselinePathologicalBenchmark()
-      : super('Baseline.Pathological', DatasetGenerator.pathological);
+      : super('Baseline.Pathological', dataset_generator.pathological);
   @override
   void performSort() {
     final list = getNextList();
@@ -155,7 +108,7 @@ class QuickSortBaselinePathologicalBenchmark extends SortBenchmarkBase {
 // Enhancement (New pdqsort)
 class PdqSortEnhancementRandomBenchmark extends SortBenchmarkBase {
   PdqSortEnhancementRandomBenchmark()
-      : super('Enhancement.Random', DatasetGenerator.random);
+      : super('Enhancement.Random', dataset_generator.random);
   @override
   void performSort() {
     final list = getNextList();
@@ -166,7 +119,7 @@ class PdqSortEnhancementRandomBenchmark extends SortBenchmarkBase {
 
 class PdqSortEnhancementSortedBenchmark extends SortBenchmarkBase {
   PdqSortEnhancementSortedBenchmark()
-      : super('Enhancement.Sorted', DatasetGenerator.sorted);
+      : super('Enhancement.Sorted', dataset_generator.sorted);
   @override
   void performSort() {
     final list = getNextList();
@@ -177,7 +130,7 @@ class PdqSortEnhancementSortedBenchmark extends SortBenchmarkBase {
 
 class PdqSortEnhancementReverseBenchmark extends SortBenchmarkBase {
   PdqSortEnhancementReverseBenchmark()
-      : super('Enhancement.Reverse', DatasetGenerator.reverse);
+      : super('Enhancement.Reverse', dataset_generator.reverse);
   @override
   void performSort() {
     final list = getNextList();
@@ -188,7 +141,7 @@ class PdqSortEnhancementReverseBenchmark extends SortBenchmarkBase {
 
 class PdqSortEnhancementFewUniqueBenchmark extends SortBenchmarkBase {
   PdqSortEnhancementFewUniqueBenchmark()
-      : super('Enhancement.FewUnique', DatasetGenerator.fewUnique);
+      : super('Enhancement.FewUnique', dataset_generator.fewUnique);
   @override
   void performSort() {
     final list = getNextList();
@@ -199,7 +152,7 @@ class PdqSortEnhancementFewUniqueBenchmark extends SortBenchmarkBase {
 
 class PdqSortEnhancementPathologicalBenchmark extends SortBenchmarkBase {
   PdqSortEnhancementPathologicalBenchmark()
-      : super('Enhancement.Pathological', DatasetGenerator.pathological);
+      : super('Enhancement.Pathological', dataset_generator.pathological);
   @override
   void performSort() {
     final list = getNextList();
