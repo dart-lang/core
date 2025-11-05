@@ -27,7 +27,7 @@ const rulesMarkdownFilePath = 'rules.md';
 
 /// Fetches the [rulesUrl] JSON description of all lints, saves a cached
 /// summary of the relevant fields in [rulesCacheFilePath], and
-/// updates [rulesMarkdownFilePath] to
+/// updates [rulesMarkdownFilePath].
 ///
 /// Passing any command line argument disables generating documentation,
 /// and makes this tool just verify that the doc is up-to-date with the
