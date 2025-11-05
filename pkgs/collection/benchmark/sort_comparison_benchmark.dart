@@ -60,7 +60,7 @@ class DatasetGenerator {
   }
 }
 
-/// Represents the final aggregated result of a benchmark.
+/// The final aggregated result of a benchmark.
 class BenchmarkResult {
   final double mean;
   final int median;
