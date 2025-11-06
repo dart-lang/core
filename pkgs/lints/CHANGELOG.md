@@ -1,6 +1,10 @@
-## 6.0.1-wip
+## 6.1.0-wip
 
+- `recommended`:
+  - added [use_null_aware_elements] (https://github.com/dart-lang/core/issues/899)
 - Run `dart format` with the new style.
+
+[use_null_aware_elements]: https://dart.dev/lints/use_null_aware_elements
 
 ## 6.0.0
 

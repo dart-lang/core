@@ -52,7 +52,7 @@
   {
     "name": "avoid_bool_literals_in_conditional_expressions",
     "description": "Avoid `bool` literals in conditional expressions.",
-    "fixStatus": "needsFix"
+    "fixStatus": "hasFix"
   },
   {
     "name": "avoid_catches_without_on_clauses",
@@ -222,7 +222,7 @@
   {
     "name": "avoid_types_as_parameter_names",
     "description": "Avoid types as parameter names.",
-    "fixStatus": "hasFix"
+    "fixStatus": "noFix"
   },
   {
     "name": "avoid_types_on_closure_parameters",
@@ -356,7 +356,7 @@
   },
   {
     "name": "discarded_futures",
-    "description": "Don't invoke asynchronous functions in non-`async` blocks.",
+    "description": "There should be no `Future`-returning calls in synchronous functions unless they are assigned or returned.",
     "fixStatus": "hasFix"
   },
   {
@@ -732,7 +732,7 @@
   {
     "name": "prefer_foreach",
     "description": "Use `forEach` to only apply a function to all the elements.",
-    "fixStatus": "needsFix"
+    "fixStatus": "hasFix"
   },
   {
     "name": "prefer_function_declarations_over_variables",
@@ -850,6 +850,11 @@
     "fixStatus": "noFix"
   },
   {
+    "name": "remove_deprecations_in_breaking_versions",
+    "description": "Deprecation in major version.",
+    "fixStatus": "needsFix"
+  },
+  {
     "name": "require_trailing_commas",
     "description": "Use trailing commas for all parameter lists and argument lists.",
     "fixStatus": "hasFix"
@@ -915,6 +920,11 @@
     "fixStatus": "noFix"
   },
   {
+    "name": "switch_on_type",
+    "description": "Avoid switch statements on a 'Type'.",
+    "fixStatus": "noFix"
+  },
+  {
     "name": "test_types_in_equals",
     "description": "Test type of argument in `operator ==(Object other)`.",
     "fixStatus": "noFix"
@@ -957,7 +967,7 @@
   {
     "name": "unnecessary_async",
     "description": "No await no async.",
-    "fixStatus": "needsFix"
+    "fixStatus": "hasFix"
   },
   {
     "name": "unnecessary_await_in_return",
@@ -1090,6 +1100,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "unnecessary_unawaited",
+    "description": "Unnecessary use of 'unawaited'.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "unnecessary_underscores",
     "description": "Unnecessary underscores can be removed.",
     "fixStatus": "hasFix"
@@ -1147,7 +1162,7 @@
   {
     "name": "use_if_null_to_convert_nulls_to_bools",
     "description": "Use `??` operators to convert `null`s to `bool`s.",
-    "fixStatus": "needsFix"
+    "fixStatus": "hasFix"
   },
   {
     "name": "use_is_even_rather_than_modulo",
@@ -1167,6 +1182,11 @@
   {
     "name": "use_named_constants",
     "description": "Use predefined named constants.",
+    "fixStatus": "hasFix"
+  },
+  {
+    "name": "use_null_aware_elements",
+    "description": "If-elements testing for null can be replaced with null-aware elements.",
     "fixStatus": "hasFix"
   },
   {

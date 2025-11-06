@@ -65,5 +65,6 @@ linter:
     - unnecessary_to_list_in_spreads
     - unnecessary_underscores
     - use_function_type_syntax_for_parameters
+    - use_null_aware_elements
     - use_rethrow_when_possible
     - use_super_parameters
