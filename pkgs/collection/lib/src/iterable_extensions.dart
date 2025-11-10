@@ -76,7 +76,8 @@ extension IterableExtension<T> on Iterable<T> {
     K Function(T element) keyOf, {
     bool ascending = true,
   }) {
-    int compare(K a, K b) => ascending ? a.compareTo(b) : b.compareTo(a);
+    final compare =
+        ascending ? (K a, K b) => a.compareTo(b) : (K a, K b) => b.compareTo(a);
     var elements = [...this];
     mergeSortBy<T, K>(elements, keyOf, compare);
     return elements;
