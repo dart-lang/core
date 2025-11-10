@@ -75,34 +75,37 @@ extension IterableExtension<T> on Iterable<T> {
   /// print([].separated(-1)); // ()
   ///
   /// print([1, 2, 3].separated(
-  ///   -1
+  ///   -1,
   ///   before: true,
   /// )); // (-1, 1, -1, 2, -1, 3)
   ///
   /// print([1].separated(
-  ///   -1
+  ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // (-1, 1, -1)
   ///
   /// print([].separated(
-  ///   -1
+  ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // ()
   /// ```
   Iterable<T> separated(T separator,
       {bool before = false, bool after = false}) sync* {
-    const emitBefore = 1;
-    const emitAfter = 2;
-    var state = before ? emitBefore : 0;
-    final afterState = emitBefore | (after ? emitAfter : 0);
-    for (var element in this) {
-      if (state & emitBefore != 0) yield separator;
-      state = afterState;
-      yield element;
+    var iterator = this.iterator;
+    if (iterator.moveNext()) {
+      if (before) yield separator;
+      while (true) {
+        yield iterator.current;
+        if (iterator.moveNext()) {
+          yield separator;
+        } else {
+          break;
+        }
+      }
+      if (after) yield separator;
     }
-    if (state & emitAfter != 0) yield separator;
   }
 
   /// Creates new list with the elements of this list separated by [separator].
@@ -124,32 +127,39 @@ extension IterableExtension<T> on Iterable<T> {
   /// print([].separatedList(-1)); // []
   ///
   /// print([1, 2, 3].separatedList(
-  ///   -1
+  ///   -1,
   ///   before: true,
   /// )); // [-1, 1, -1, 2, -1, 3]
   ///
   /// print([1].separatedList(
-  ///   -1
+  ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // [-1, 1, -1]
   ///
   /// print([].separatedList(
-  ///   -1
+  ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // []
   /// ```
   List<T> separatedList(T separator,
       {bool before = false, bool after = false}) {
-    var hasElement = false;
-    return [
-      for (var element in this) ...[
-        if (hasElement || (hasElement = true) && before) separator,
-        element,
-      ],
-      if (hasElement && after) separator
-    ];
+    var result = <T>[];
+    var iterator = this.iterator;
+    if (iterator.moveNext()) {
+      if (before) result.add(separator);
+      while (true) {
+        result.add(iterator.current);
+        if (iterator.moveNext()) {
+          result.add(separator);
+        } else {
+          break;
+        }
+      }
+      if (after) result.add(separator);
+    }
+    return result;
   }
 
   /// The elements that do not satisfy [test].

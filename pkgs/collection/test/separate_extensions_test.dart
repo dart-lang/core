@@ -229,20 +229,39 @@ void main() {
       });
     });
     group('Multiple', () {
-      test('', () {
-        expect(<int>[1, 2, 3]..separate(42), [1, 42, 2, 42, 3]);
+      group('odd length', () {
+        test('', () {
+          expect(<int>[1, 2, 3]..separate(42), [1, 42, 2, 42, 3]);
+        });
+        test('before', () {
+          expect(<int>[1, 2, 3]..separate(42, before: true),
+              [42, 1, 42, 2, 42, 3]);
+        });
+        test('after', () {
+          expect(
+              <int>[1, 2, 3]..separate(42, after: true), [1, 42, 2, 42, 3, 42]);
+        });
+        test('before and after', () {
+          expect(<int>[1, 2, 3]..separate(42, before: true, after: true),
+              [42, 1, 42, 2, 42, 3, 42]);
+        });
       });
-      test('before', () {
-        expect(
-            <int>[1, 2, 3]..separate(42, before: true), [42, 1, 42, 2, 42, 3]);
-      });
-      test('after', () {
-        expect(
-            <int>[1, 2, 3]..separate(42, after: true), [1, 42, 2, 42, 3, 42]);
-      });
-      test('before and after', () {
-        expect(<int>[1, 2, 3]..separate(42, before: true, after: true),
-            [42, 1, 42, 2, 42, 3, 42]);
+      group('even length', () {
+        test('', () {
+          expect(<int>[1, 2, 3, 4]..separate(42), [1, 42, 2, 42, 3, 42, 4]);
+        });
+        test('before', () {
+          expect(<int>[1, 2, 3, 4]..separate(42, before: true),
+              [42, 1, 42, 2, 42, 3, 42, 4]);
+        });
+        test('after', () {
+          expect(<int>[1, 2, 3, 4]..separate(42, after: true),
+              [1, 42, 2, 42, 3, 42, 4, 42]);
+        });
+        test('before and after', () {
+          expect(<int>[1, 2, 3, 4]..separate(42, before: true, after: true),
+              [42, 1, 42, 2, 42, 3, 42, 4, 42]);
+        });
       });
     });
     test('nulls', () {

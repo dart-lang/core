@@ -390,23 +390,23 @@ extension ListExtensions<E> on List<E> {
   ///
   /// Example:
   /// ```dart
-  /// print([1, 2, 3]..insertSeparator(-1)); // [1, -1, 2, -1, 3]
-  /// print([1]..insertSeparator(-1)); // [1]
-  /// print([]..insertSeparator(-1)); // []
+  /// print([1, 2, 3]..separate(-1)); // [1, -1, 2, -1, 3]
+  /// print([1]..separate(-1)); // [1]
+  /// print([]..separate(-1)); // []
   ///
-  /// print([1, 2, 3]..insertSeparator(
-  ///   -1
+  /// print([1, 2, 3]..separate(
+  ///   -1,
   ///   before: true,
   /// )); // [-1, 1, -1, 2, -1, 3]
   ///
-  /// print([1]..insertSeparator(
-  ///   -1
+  /// print([1]..separate(
+  ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // [-1, 1, -1]
   ///
-  /// print([]..insertSeparator(
-  ///   -1
+  /// print([]..separate(
+  ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // []
@@ -414,26 +414,34 @@ extension ListExtensions<E> on List<E> {
   void separate(E separator, {bool before = false, bool after = false}) {
     var length = this.length;
     if (length == 0) return;
-    var newLength = length * 2 - 1;
-    var offset = 0;
-    if (before) {
-      newLength++;
-      offset = 1;
-    }
-    if (after) newLength++;
-    E newElementAt(int index) {
-      index -= offset;
-      if (index.isOdd) return separator;
-      return this[index >> 1];
-    }
+    // New position of first element.
+    var newFirst = before ? 1 : 0;
+    // New position of last element.
+    var newLast = length * 2 - (newFirst ^ 1);
 
-    for (var i = length; i < newLength; i++) {
-      add(newElementAt(i));
+    var splitIndex = length - newFirst;
+    var cursor = splitIndex >> 1;
+    if (splitIndex.isEven) {
+      add(this[cursor]);
     }
-    for (var i = length, firstChanged = offset ^ 1; i > firstChanged;) {
-      --i;
-      this[i] = newElementAt(i);
+    cursor++;
+    while (this.length < newLast) {
+      add(separator);
+      add(this[cursor++]);
     }
+    assert(cursor == length);
+    if (after) add(separator);
+
+    cursor = splitIndex >> 1;
+    if (splitIndex.isOdd) {
+      this[--length] = this[cursor];
+    }
+    cursor--;
+    for (var i = length; i > 1;) {
+      this[--i] = separator;
+      this[--i] = this[cursor--];
+    }
+    if (newFirst != 0) this[0] = separator;
   }
 }
 
