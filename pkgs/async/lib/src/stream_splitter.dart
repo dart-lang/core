@@ -76,7 +76,10 @@ class StreamSplitter<T> {
     }
 
     var controller = StreamController<T>(
-        onListen: _onListen, onPause: _onPause, onResume: _onResume);
+      onListen: _onListen,
+      onPause: _onPause,
+      onResume: _onResume,
+    );
     controller.onCancel = () => _onCancel(controller);
 
     for (var result in _buffer) {
@@ -144,8 +147,11 @@ class StreamSplitter<T> {
       // wasn't paused, this will be a no-op.
       _subscription!.resume();
     } else {
-      _subscription =
-          _stream.listen(_onData, onError: _onError, onDone: _onDone);
+      _subscription = _stream.listen(
+        _onData,
+        onError: _onError,
+        onDone: _onDone,
+      );
     }
   }
 

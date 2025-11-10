@@ -135,12 +135,14 @@ class Logger {
   set level(Level? value) {
     if (!hierarchicalLoggingEnabled && parent != null) {
       throw UnsupportedError(
-          'Please set "hierarchicalLoggingEnabled" to true if you want to '
-          'change the level on a non-root logger.');
+        'Please set "hierarchicalLoggingEnabled" to true if you want to '
+        'change the level on a non-root logger.',
+      );
     }
     if (parent == null && value == null) {
       throw UnsupportedError(
-          'Cannot set the level to `null` on a logger with no parent.');
+        'Cannot set the level to `null` on a logger with no parent.',
+      );
     }
     final isLevelChanged = _level != value;
     _level = value;
@@ -206,8 +208,13 @@ class Logger {
   /// If this record is logged at a level equal to or higher than
   /// [recordStackTraceAtLevel] and [stackTrace] is `null` or [StackTrace.empty]
   /// it will be defaulted to the current stack trace for this call.
-  void log(Level logLevel, Object? message,
-      [Object? error, StackTrace? stackTrace, Zone? zone]) {
+  void log(
+    Level logLevel,
+    Object? message, [
+    Object? error,
+    StackTrace? stackTrace,
+    Zone? zone,
+  ]) {
     Object? object;
     if (isLoggable(logLevel)) {
       if (message is Function) {
@@ -229,8 +236,15 @@ class Logger {
       }
       zone ??= Zone.current;
 
-      final record =
-          LogRecord(logLevel, msg, fullName, error, stackTrace, zone, object);
+      final record = LogRecord(
+        logLevel,
+        msg,
+        fullName,
+        error,
+        stackTrace,
+        zone,
+        object,
+      );
 
       if (parent == null) {
         _publish(record);
@@ -304,7 +318,9 @@ class Logger {
 
   Stream<LogRecord> _getStream() {
     if (hierarchicalLoggingEnabled || parent == null) {
-      return (_controller ??= StreamController<LogRecord>.broadcast(sync: true))
+      return (_controller ??= StreamController<LogRecord>.broadcast(
+        sync: true,
+      ))
           .stream;
     } else {
       return root._getStream();

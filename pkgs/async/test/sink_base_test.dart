@@ -18,29 +18,34 @@ void main() {
   // implementation with [StreamSinkBase].
   group('StreamSinkBase', () {
     test('forwards add() to onAdd()', () {
-      var sink = _StreamSink(onAdd: expectAsync1((value) {
-        expect(value, equals(123));
-      }));
+      var sink = _StreamSink(
+        onAdd: expectAsync1((value) {
+          expect(value, equals(123));
+        }),
+      );
       sink.add(123);
     });
 
     test('forwards addError() to onError()', () {
-      var sink = _StreamSink(onError: expectAsync2((error, [stackTrace]) {
-        expect(error, equals('oh no'));
-        expect(stackTrace, isA<StackTrace>());
-      }));
+      var sink = _StreamSink(
+        onError: expectAsync2((error, [stackTrace]) {
+          expect(error, equals('oh no'));
+          expect(stackTrace, isA<StackTrace>());
+        }),
+      );
       sink.addError('oh no', StackTrace.current);
     });
 
     test('forwards addStream() to onAdd() and onError()', () {
       var sink = _StreamSink(
-          onAdd: expectAsync1((value) {
-            expect(value, equals(123));
-          }, count: 1),
-          onError: expectAsync2((error, [stackTrace]) {
-            expect(error, equals('oh no'));
-            expect(stackTrace, isA<StackTrace>());
-          }));
+        onAdd: expectAsync1((value) {
+          expect(value, equals(123));
+        }, count: 1),
+        onError: expectAsync2((error, [stackTrace]) {
+          expect(error, equals('oh no'));
+          expect(stackTrace, isA<StackTrace>());
+        }),
+      );
 
       var controller = StreamController<int>();
       sink.addStream(controller.stream);
@@ -104,25 +109,27 @@ void main() {
       expect(doneCompleted, isTrue);
     });
 
-    test('done returns a future that completes once close() completes',
-        () async {
-      var completer = Completer<void>();
-      var sink = _StreamSink(onClose: expectAsync0(() => completer.future));
+    test(
+      'done returns a future that completes once close() completes',
+      () async {
+        var completer = Completer<void>();
+        var sink = _StreamSink(onClose: expectAsync0(() => completer.future));
 
-      var doneCompleted = false;
-      sink.done.then((_) => doneCompleted = true);
+        var doneCompleted = false;
+        sink.done.then((_) => doneCompleted = true);
 
-      await pumpEventQueue();
-      expect(doneCompleted, isFalse);
+        await pumpEventQueue();
+        expect(doneCompleted, isFalse);
 
-      expect(sink.close(), completes);
-      await pumpEventQueue();
-      expect(doneCompleted, isFalse);
+        expect(sink.close(), completes);
+        await pumpEventQueue();
+        expect(doneCompleted, isFalse);
 
-      completer.complete();
-      await pumpEventQueue();
-      expect(doneCompleted, isTrue);
-    });
+        completer.complete();
+        await pumpEventQueue();
+        expect(doneCompleted, isTrue);
+      },
+    );
 
     group('during addStream()', () {
       test('add() throws an error', () {
@@ -179,25 +186,30 @@ void main() {
       });
 
       test('converts the text to data and passes it to add', () async {
-        var sink = _IOSink(onAdd: expectAsync1((data) {
-          expect(data, equals(utf8.encode('hello')));
-        }));
+        var sink = _IOSink(
+          onAdd: expectAsync1((data) {
+            expect(data, equals(utf8.encode('hello')));
+          }),
+        );
         sink.write('hello');
       });
 
       test('calls Object.toString()', () async {
-        var sink = _IOSink(onAdd: expectAsync1((data) {
-          expect(data, equals(utf8.encode('123')));
-        }));
+        var sink = _IOSink(
+          onAdd: expectAsync1((data) {
+            expect(data, equals(utf8.encode('123')));
+          }),
+        );
         sink.write(123);
       });
 
       test('respects the encoding', () async {
         var sink = _IOSink(
-            onAdd: expectAsync1((data) {
-              expect(data, equals(latin1.encode('Æ')));
-            }),
-            encoding: latin1);
+          onAdd: expectAsync1((data) {
+            expect(data, equals(latin1.encode('Æ')));
+          }),
+          encoding: latin1,
+        );
         sink.write('Æ');
       });
 
@@ -217,9 +229,10 @@ void main() {
       test('writes each object in the iterable', () async {
         var chunks = <List<int>>[];
         var sink = _IOSink(
-            onAdd: expectAsync1((data) {
-          chunks.add(data);
-        }, count: 3));
+          onAdd: expectAsync1((data) {
+            chunks.add(data);
+          }, count: 3),
+        );
 
         sink.writeAll(['hello', null, 123]);
         expect(chunks, equals(['hello', 'null', '123'].map(utf8.encode)));
@@ -228,13 +241,16 @@ void main() {
       test('writes separators between each object', () async {
         var chunks = <List<int>>[];
         var sink = _IOSink(
-            onAdd: expectAsync1((data) {
-          chunks.add(data);
-        }, count: 5));
+          onAdd: expectAsync1((data) {
+            chunks.add(data);
+          }, count: 5),
+        );
 
         sink.writeAll(['hello', null, 123], '/');
-        expect(chunks,
-            equals(['hello', '/', 'null', '/', '123'].map(utf8.encode)));
+        expect(
+          chunks,
+          equals(['hello', '/', 'null', '/', '123'].map(utf8.encode)),
+        );
       });
 
       test('throws if the sink is closed', () async {
@@ -247,18 +263,20 @@ void main() {
     group('writeln()', () {
       test('only writes a newline by default', () async {
         var sink = _IOSink(
-            onAdd: expectAsync1((data) {
-          expect(data, equals(utf8.encode('\n')));
-        }, count: 1));
+          onAdd: expectAsync1((data) {
+            expect(data, equals(utf8.encode('\n')));
+          }, count: 1),
+        );
         sink.writeln();
       });
 
       test('writes the object followed by a newline', () async {
         var chunks = <List<int>>[];
         var sink = _IOSink(
-            onAdd: expectAsync1((data) {
-          chunks.add(data);
-        }, count: 2));
+          onAdd: expectAsync1((data) {
+            chunks.add(data);
+          }, count: 2),
+        );
         sink.writeln(123);
 
         expect(chunks, equals(['123', '\n'].map(utf8.encode)));
@@ -273,18 +291,21 @@ void main() {
 
     group('writeCharCode()', () {
       test('writes the character code', () async {
-        var sink = _IOSink(onAdd: expectAsync1((data) {
-          expect(data, equals(utf8.encode('A')));
-        }));
+        var sink = _IOSink(
+          onAdd: expectAsync1((data) {
+            expect(data, equals(utf8.encode('A')));
+          }),
+        );
         sink.writeCharCode(letterA);
       });
 
       test('respects the encoding', () async {
         var sink = _IOSink(
-            onAdd: expectAsync1((data) {
-              expect(data, equals(latin1.encode('Æ')));
-            }),
-            encoding: latin1);
+          onAdd: expectAsync1((data) {
+            expect(data, equals(latin1.encode('Æ')));
+          }),
+          encoding: latin1,
+        );
         sink.writeCharCode('Æ'.runes.first);
       });
 
@@ -324,8 +345,9 @@ void main() {
       });
 
       test('locks the sink as though a stream was being added', () {
-        var sink =
-            _IOSink(onFlush: expectAsync0(() => Completer<void>().future));
+        var sink = _IOSink(
+          onFlush: expectAsync0(() => Completer<void>().future),
+        );
         sink.flush();
         expect(() => sink.add([0]), throwsStateError);
         expect(() => sink.addError('oh no'), throwsStateError);
@@ -344,11 +366,11 @@ class _StreamSink extends StreamSinkBase<int> {
   final void Function(Object error, [StackTrace? stackTrace]) _onError;
   final FutureOr<void> Function() _onClose;
 
-  _StreamSink(
-      {void Function(int value)? onAdd,
-      void Function(Object error, [StackTrace? stackTrace])? onError,
-      FutureOr<void> Function()? onClose})
-      : _onAdd = onAdd ?? ((_) {}),
+  _StreamSink({
+    void Function(int value)? onAdd,
+    void Function(Object error, [StackTrace? stackTrace])? onError,
+    FutureOr<void> Function()? onClose,
+  })  : _onAdd = onAdd ?? ((_) {}),
         _onError = onError ?? ((_, [__]) {}),
         _onClose = onClose ?? (() {});
 
@@ -374,13 +396,13 @@ class _IOSink extends IOSinkBase {
   final FutureOr<void> Function() _onClose;
   final Future<void> Function() _onFlush;
 
-  _IOSink(
-      {void Function(List<int> value)? onAdd,
-      void Function(Object error, [StackTrace? stackTrace])? onError,
-      FutureOr<void> Function()? onClose,
-      Future<void> Function()? onFlush,
-      Encoding encoding = utf8})
-      : _onAdd = onAdd ?? ((_) {}),
+  _IOSink({
+    void Function(List<int> value)? onAdd,
+    void Function(Object error, [StackTrace? stackTrace])? onError,
+    FutureOr<void> Function()? onClose,
+    Future<void> Function()? onFlush,
+    Encoding encoding = utf8,
+  })  : _onAdd = onAdd ?? ((_) {}),
         _onError = onError ?? ((_, [__]) {}),
         _onClose = onClose ?? (() {}),
         _onFlush = onFlush ?? Future.value,

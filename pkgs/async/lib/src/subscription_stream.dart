@@ -40,8 +40,12 @@ class SubscriptionStream<T> extends Stream<T> {
   }
 
   @override
-  StreamSubscription<T> listen(void Function(T)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<T> listen(
+    void Function(T)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     var subscription = _source;
     if (subscription == null) {
       throw StateError('Stream has already been listened to.');
@@ -76,10 +80,10 @@ class _CancelOnErrorSubscriptionWrapper<T>
     super.onError((Object error, StackTrace stackTrace) {
       // Wait for the cancel to complete before sending the error event.
       super.cancel().whenComplete(() {
-        if (handleError is ZoneBinaryCallback) {
+        if (handleError is dynamic Function(Object, StackTrace)) {
           handleError(error, stackTrace);
-        } else if (handleError != null) {
-          (handleError as ZoneUnaryCallback)(error);
+        } else if (handleError is dynamic Function(Object)) {
+          handleError(error);
         }
       });
     });

@@ -61,22 +61,28 @@ CReg:!CR  !Brk !Otr  Otr  Otr $LARe!Pic !Brk !Pre !L   !V   !T   !V   !T   !InC 
 
 void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
   assert(categories.length == categoryCount);
-  assert(automatonRowLength & maskFlags == 0 &&
-      automatonRowLength >= categoryCount);
+  assert(
+    automatonRowLength & maskFlags == 0 && automatonRowLength >= categoryCount,
+  );
   var table = Uint16List(stateLimit);
   void transitionLA(int state, int category, int targetState, int flags) {
     assert(flags <= maskFlags);
     assert(
-        flags != flagLookahead || targetState >= stateLookaheadMin,
-        '${stateShortName(state)} x ${categoryNames[category]} -> '
-        '${_targetStateName(targetState, flags)} | $flags');
+      flags != flagLookahead || targetState >= stateLookaheadMin,
+      '${stateShortName(state)} x ${categoryNames[category]} -> '
+      '${_targetStateName(targetState, flags)} | $flags',
+    );
     table[state + category] = targetState + flags;
   }
 
   void transition(int state, int category, int targetState, bool breakBefore) {
     assert(targetState < stateLimit, '$state + $category -> $targetState');
     transitionLA(
-        state, category, targetState, breakBefore ? flagBreak : flagNoBreak);
+      state,
+      category,
+      targetState,
+      breakBefore ? flagBreak : flagNoBreak,
+    );
   }
 
   for (var state = 0; state < stateLimit; state += automatonRowLength) {
@@ -102,13 +108,25 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
 
     if (state == stateCZWJ || state == stateCIE || state == stateCZIE) {
       transitionLA(
-          state, categoryOtherIndicConsonant, stateLookaheadInC, flagLookahead);
+        state,
+        categoryOtherIndicConsonant,
+        stateLookaheadInC,
+        flagLookahead,
+      );
     } else if (state == stateCIL || state == stateCILZ || state == stateCZIL) {
-      transitionLA(state, categoryOtherIndicConsonant, stateLookaheadInCL,
-          flagLookahead);
+      transitionLA(
+        state,
+        categoryOtherIndicConsonant,
+        stateLookaheadInCL,
+        flagLookahead,
+      );
     } else {
-      transition(state, categoryOtherIndicConsonant, stateInC,
-          !(neverBreakBefore || state == stateInCL || state == stateCAny));
+      transition(
+        state,
+        categoryOtherIndicConsonant,
+        stateInC,
+        !(neverBreakBefore || state == stateInCL || state == stateCAny),
+      );
     }
     // CR.
     // GB4 + GB5. Always break, after unless followed by LF, so remember
@@ -117,8 +135,12 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
 
     // LF.
     // GB3 + GB4 + GB5. Always break after. Break before unless following CR.
-    transition(state, categoryLF, stateBreak,
-        state != stateCR && state != stateSoTNoBreak);
+    transition(
+      state,
+      categoryLF,
+      stateBreak,
+      state != stateCR && state != stateSoTNoBreak,
+    );
 
     // Control. (Like CR+LF, without their mutual exception.)
     // GB4 + GB5. Always break before, even after Prepend,
@@ -155,9 +177,17 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
       // break before only if required by GB1-GB5.
       transition(state, categoryExtend, stateOther, alwaysBreakBefore);
       transition(
-          state, categoryExtendIndicExtend, stateOther, alwaysBreakBefore);
+        state,
+        categoryExtendIndicExtend,
+        stateOther,
+        alwaysBreakBefore,
+      );
       transition(
-          state, categoryExtendIndicLinked, stateOther, alwaysBreakBefore);
+        state,
+        categoryExtendIndicLinked,
+        stateOther,
+        alwaysBreakBefore,
+      );
       transition(state, categoryZWJ, stateOther, alwaysBreakBefore);
     } else {
       transition(
@@ -177,15 +207,16 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
           },
           false);
       transition(
-          state,
-          categoryExtend,
-          (state == stateCAny ||
-                  state == stateCIE ||
-                  state == stateCIL ||
-                  state == stateCExt)
-              ? stateCExt
-              : stateOther,
-          false);
+        state,
+        categoryExtend,
+        (state == stateCAny ||
+                state == stateCIE ||
+                state == stateCIL ||
+                state == stateCExt)
+            ? stateCExt
+            : stateOther,
+        false,
+      );
       transition(
           state,
           categoryExtendIndicExtend,
@@ -228,12 +259,20 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
     } else if (state == stateCAny) {
       transition(state, categoryRegionalIndicator, stateCReg, false);
     } else if (state == stateCReg) {
-      transitionLA(state, categoryRegionalIndicator, stateLookaheadRegionalEven,
-          flagLookahead);
+      transitionLA(
+        state,
+        categoryRegionalIndicator,
+        stateLookaheadRegionalEven,
+        flagLookahead,
+      );
     } else {
       // Break unless prior state says not to.
-      transition(state, categoryRegionalIndicator, stateRegionalSingle,
-          !neverBreakBefore);
+      transition(
+        state,
+        categoryRegionalIndicator,
+        stateRegionalSingle,
+        !neverBreakBefore,
+      );
     }
 
     // Prepend.
@@ -248,36 +287,65 @@ void writeForwardAutomaton(StringSink buffer, {required bool verbose}) {
     // GB6+GB7+GB8.
     // Don't break if T follows V and V follows L.
     transition(
-        state, categoryL, stateL, !(neverBreakBefore || state == stateL));
+      state,
+      categoryL,
+      stateL,
+      !(neverBreakBefore || state == stateL),
+    );
     transition(
-        state, categoryLV, stateV, !(neverBreakBefore || state == stateL));
+      state,
+      categoryLV,
+      stateV,
+      !(neverBreakBefore || state == stateL),
+    );
     transition(
-        state, categoryLVT, stateT, !(neverBreakBefore || state == stateL));
-    transition(state, categoryV, stateV,
-        !(neverBreakBefore || state == stateL || state == stateV));
-    transition(state, categoryT, stateT,
-        !(neverBreakBefore || state == stateV || state == stateT));
+      state,
+      categoryLVT,
+      stateT,
+      !(neverBreakBefore || state == stateL),
+    );
+    transition(
+      state,
+      categoryV,
+      stateV,
+      !(neverBreakBefore || state == stateL || state == stateV),
+    );
+    transition(
+      state,
+      categoryT,
+      stateT,
+      !(neverBreakBefore || state == stateV || state == stateT),
+    );
     // Emoji
     // GB11.
     if (state == stateCZWJ ||
         state == stateCExZ ||
         state == stateCIEZ ||
         state == stateCILZ) {
-      transitionLA(state, categoryPictographic, stateLookaheadZWJPictographic,
-          flagLookahead);
+      transitionLA(
+        state,
+        categoryPictographic,
+        stateLookaheadZWJPictographic,
+        flagLookahead,
+      );
     } else {
       transition(
-          state,
-          categoryPictographic,
-          statePictographic,
-          state != statePrepend &&
-              state != statePictographicZWJ &&
-              state != stateSoTNoBreak);
+        state,
+        categoryPictographic,
+        statePictographic,
+        state != statePrepend &&
+            state != statePictographicZWJ &&
+            state != stateSoTNoBreak,
+      );
     }
     // End of input.
     // GB2.
-    transition(state, categoryEoT, stateSoTNoBreak,
-        state != stateSoT && state != stateSoTNoBreak && state != stateCAny);
+    transition(
+      state,
+      categoryEoT,
+      stateSoTNoBreak,
+      state != stateSoT && state != stateSoTNoBreak && state != stateCAny,
+    );
 
     // Pad table if necessary.
     for (var c = categoryCount; c < automatonRowLength; c++) {
@@ -428,8 +496,10 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
   assert(categories.length <= automatonRowLength);
   var table = Uint16List(backStateLimit);
   void transitionLA(int state, int category, int targetState, int flags) {
-    assert(state < backStateLimit && targetState < backStateLimit,
-        '$state + $category -> $targetState');
+    assert(
+      state < backStateLimit && targetState < backStateLimit,
+      '$state + $category -> $targetState',
+    );
     assert(
         switch ((state, targetState)) {
           (< stateLookaheadMin, < stateLookaheadMin) => flags < flagLookahead,
@@ -447,7 +517,11 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
   void transition(int state, int category, int targetState, bool breakBefore) {
     assert(state < stateLookaheadMin && targetState < stateLookaheadMin);
     transitionLA(
-        state, category, targetState, (breakBefore ? flagBreak : flagNoBreak));
+      state,
+      category,
+      targetState,
+      (breakBefore ? flagBreak : flagNoBreak),
+    );
   }
 
   for (var state in backStates) {
@@ -463,13 +537,25 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
         // Remaining inputs are unreachable.
         continue;
       }
-      transition(state, categoryOther, stateOther,
-          state != stateExtend && state != stateEoTNoBreak);
-      transition(state, categoryOtherIndicConsonant, stateInC,
-          state != stateExtend && state != stateEoTNoBreak);
+      transition(
+        state,
+        categoryOther,
+        stateOther,
+        state != stateExtend && state != stateEoTNoBreak,
+      );
+      transition(
+        state,
+        categoryOtherIndicConsonant,
+        stateInC,
+        state != stateExtend && state != stateEoTNoBreak,
+      );
       transition(state, categoryLF, stateLF, state != stateEoTNoBreak);
-      transition(state, categoryCR, stateBreak,
-          state != stateLF && state != stateEoTNoBreak);
+      transition(
+        state,
+        categoryCR,
+        stateBreak,
+        state != stateLF && state != stateEoTNoBreak,
+      );
       transition(state, categoryControl, stateBreak, state != stateEoTNoBreak);
 
       var breakBeforeExtend = state != stateExtend &&
@@ -478,81 +564,141 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
       transition(state, categoryExtend, stateExtend, breakBeforeExtend);
       if (state != stateInC) {
         transition(
-            state, categoryExtendIndicExtend, stateExtend, breakBeforeExtend);
+          state,
+          categoryExtendIndicExtend,
+          stateExtend,
+          breakBeforeExtend,
+        );
         transition(
-            state, categoryExtendIndicLinked, stateExtend, breakBeforeExtend);
+          state,
+          categoryExtendIndicLinked,
+          stateExtend,
+          breakBeforeExtend,
+        );
       } else {
         // If these come just before an InCB Consonant, look ahead.
         transitionLA(
-            state, categoryExtendIndicExtend, stateLookaheadInC, flagLookahead);
-        transitionLA(state, categoryExtendIndicLinked, stateLookaheadInCL,
-            flagLookahead);
+          state,
+          categoryExtendIndicExtend,
+          stateLookaheadInC,
+          flagLookahead,
+        );
+        transitionLA(
+          state,
+          categoryExtendIndicLinked,
+          stateLookaheadInCL,
+          flagLookahead,
+        );
       }
-      transition(state, categorySpacingMark, stateExtend,
-          state != stateExtend && state != stateEoTNoBreak);
+      transition(
+        state,
+        categorySpacingMark,
+        stateExtend,
+        state != stateExtend && state != stateEoTNoBreak,
+      );
       if (state == statePictographic) {
         // Break-before value has no effect on lookahead states.
         transitionLA(
-            state, categoryZWJ, stateLookaheadZWJPictographic, flagLookahead);
+          state,
+          categoryZWJ,
+          stateLookaheadZWJPictographic,
+          flagLookahead,
+        );
       } else if (state == stateInC) {
         transitionLA(state, categoryZWJ, stateLookaheadInC, flagLookahead);
       } else {
-        transition(state, categoryZWJ, stateExtend,
-            state != stateExtend && state != stateEoTNoBreak);
+        transition(
+          state,
+          categoryZWJ,
+          stateExtend,
+          state != stateExtend && state != stateEoTNoBreak,
+        );
       }
       if (state == stateRegionalEven) {
         transition(state, categoryRegionalIndicator, stateRegionalOdd, true);
       } else if (state == stateRegionalSingle) {
-        transitionLA(state, categoryRegionalIndicator,
-            stateLookaheadRegionalEven, flagLookahead);
+        transitionLA(
+          state,
+          categoryRegionalIndicator,
+          stateLookaheadRegionalEven,
+          flagLookahead,
+        );
       } else {
-        transition(state, categoryRegionalIndicator, stateRegionalSingle,
-            state != stateExtend && state != stateEoTNoBreak);
+        transition(
+          state,
+          categoryRegionalIndicator,
+          stateRegionalSingle,
+          state != stateExtend && state != stateEoTNoBreak,
+        );
       }
-      transition(state, categoryPrepend, stateOther,
-          state == stateBreak || state == stateCR || state == stateEoT);
       transition(
-          state,
-          categoryL,
-          stateL,
-          state != stateExtend &&
-              state != stateL &&
-              state != stateV &&
-              state != stateEoTNoBreak);
+        state,
+        categoryPrepend,
+        stateOther,
+        state == stateBreak || state == stateCR || state == stateEoT,
+      );
       transition(
-          state,
-          categoryLV,
-          stateL,
-          state != stateExtend &&
-              state != stateV &&
-              state != stateT &&
-              state != stateEoTNoBreak);
-      transition(state, categoryLVT, stateL,
-          state != stateExtend && state != stateT && state != stateEoTNoBreak);
+        state,
+        categoryL,
+        stateL,
+        state != stateExtend &&
+            state != stateL &&
+            state != stateV &&
+            state != stateEoTNoBreak,
+      );
       transition(
-          state,
-          categoryV,
-          stateV,
-          state != stateExtend &&
-              state != stateT &&
-              state != stateV &&
-              state != stateEoTNoBreak);
-      transition(state, categoryT, stateT,
-          state != stateExtend && state != stateT && state != stateEoTNoBreak);
+        state,
+        categoryLV,
+        stateL,
+        state != stateExtend &&
+            state != stateV &&
+            state != stateT &&
+            state != stateEoTNoBreak,
+      );
       transition(
-          state,
-          categoryPictographic,
-          statePictographic,
-          state != stateExtend &&
-              state != stateRegionalOdd &&
-              state != stateEoTNoBreak);
+        state,
+        categoryLVT,
+        stateL,
+        state != stateExtend && state != stateT && state != stateEoTNoBreak,
+      );
+      transition(
+        state,
+        categoryV,
+        stateV,
+        state != stateExtend &&
+            state != stateT &&
+            state != stateV &&
+            state != stateEoTNoBreak,
+      );
+      transition(
+        state,
+        categoryT,
+        stateT,
+        state != stateExtend && state != stateT && state != stateEoTNoBreak,
+      );
+      transition(
+        state,
+        categoryPictographic,
+        statePictographic,
+        state != stateExtend &&
+            state != stateRegionalOdd &&
+            state != stateEoTNoBreak,
+      );
       // Use EoT-NoBreak as marker for unreachable.
-      transition(state, categorySoT, stateEoTNoBreak,
-          state != stateEoT && state != stateEoTNoBreak);
+      transition(
+        state,
+        categorySoT,
+        stateEoTNoBreak,
+        state != stateEoT && state != stateEoTNoBreak,
+      );
     } else {
       if (state == stateLookaheadRegionalEven) {
         transitionLA(
-            state, categoryRegionalIndicator, stateLookaheadRegionalOdd, 0);
+          state,
+          categoryRegionalIndicator,
+          stateLookaheadRegionalOdd,
+          0,
+        );
         for (var c = 0; c < categoryCount; c++) {
           if (c != categoryRegionalIndicator) {
             transitionLA(state, c, stateRegionalEven, 0);
@@ -562,7 +708,11 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
       }
       if (state == stateLookaheadRegionalOdd) {
         transitionLA(
-            state, categoryRegionalIndicator, stateLookaheadRegionalEven, 0);
+          state,
+          categoryRegionalIndicator,
+          stateLookaheadRegionalEven,
+          0,
+        );
         for (var c = 0; c < categoryCount; c++) {
           if (c != categoryRegionalIndicator) {
             transitionLA(state, c, stateRegionalOdd, flagBreak);
@@ -575,17 +725,26 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
       transitionLA(state, categoryLF, stateExtend, flagLookaheadBreakBoth);
       transitionLA(state, categoryOther, stateOther, flagLookaheadBreakEarly);
       transitionLA(
-          state, categorySpacingMark, stateExtend, flagLookaheadBreakEarly);
+        state,
+        categorySpacingMark,
+        stateExtend,
+        flagLookaheadBreakEarly,
+      );
       transitionLA(state, categoryOther, stateOther, flagLookaheadBreakEarly);
-      transitionLA(state, categoryRegionalIndicator, stateRegionalSingle,
-          flagLookaheadBreakEarly);
       transitionLA(
-          state,
-          categoryPictographic,
-          statePictographic,
-          state == stateLookaheadZWJPictographic
-              ? flagLookaheadBreakNone
-              : flagLookaheadBreakEarly);
+        state,
+        categoryRegionalIndicator,
+        stateRegionalSingle,
+        flagLookaheadBreakEarly,
+      );
+      transitionLA(
+        state,
+        categoryPictographic,
+        statePictographic,
+        state == stateLookaheadZWJPictographic
+            ? flagLookaheadBreakNone
+            : flagLookaheadBreakEarly,
+      );
       transitionLA(state, categoryPrepend, stateOther, flagLookaheadBreakEarly);
       transitionLA(state, categoryL, stateL, flagLookaheadBreakEarly);
       transitionLA(state, categoryLV, stateL, flagLookaheadBreakEarly);
@@ -593,19 +752,24 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
       transitionLA(state, categoryV, stateV, flagLookaheadBreakEarly);
       transitionLA(state, categoryT, stateT, flagLookaheadBreakEarly);
       transitionLA(
-          state,
-          categoryOtherIndicConsonant,
-          stateInC,
-          state == stateLookaheadInCL
-              ? flagLookaheadBreakNone
-              : flagLookaheadBreakEarly);
+        state,
+        categoryOtherIndicConsonant,
+        stateInC,
+        state == stateLookaheadInCL
+            ? flagLookaheadBreakNone
+            : flagLookaheadBreakEarly,
+      );
       if (state == stateLookaheadZWJPictographic) {
         transitionLA(state, categoryExtend, state, 0);
         transitionLA(state, categoryZWJ, stateExtend, flagLookaheadBreakEarly);
         transitionLA(state, categoryExtendIndicLinked, state, 0);
       } else {
         transitionLA(
-            state, categoryExtend, stateExtend, flagLookaheadBreakEarly);
+          state,
+          categoryExtend,
+          stateExtend,
+          flagLookaheadBreakEarly,
+        );
         transitionLA(state, categoryZWJ, state, 0);
         transitionLA(state, categoryExtendIndicLinked, stateLookaheadInCL, 0);
       }
@@ -629,8 +793,15 @@ void writeBackwardAutomaton(StringSink buffer, {required bool verbose}) {
 }
 
 void _writeForwardTable(Uint16List table, int automatonRowLength) {
-  var automaton = _generateTable(table, automatonRowLength, stateLimit,
-      stateShortName, backStateShortName, categoryShortNames, stateSoTNoBreak);
+  var automaton = _generateTable(
+    table,
+    automatonRowLength,
+    stateLimit,
+    stateShortName,
+    backStateShortName,
+    categoryShortNames,
+    stateSoTNoBreak,
+  );
   stdout.write(automaton);
   if (automaton != expectedAutomatonDescription) {
     stderr
@@ -672,13 +843,14 @@ void _writeBackTable(Uint16List table, int automatonRowLength) {
 /// automaton based scanning.
 /// The [ignoreState] is a single state that is not displayed.
 String _generateTable(
-    Uint16List table,
-    int automatonRowLength,
-    int stateLimit, // A multiple of automatonRowLength
-    String Function(int) stateNames,
-    String Function(int) lookaheadStateNames,
-    List<String> categoryNames,
-    int ignoreState) {
+  Uint16List table,
+  int automatonRowLength,
+  int stateLimit, // A multiple of automatonRowLength
+  String Function(int) stateNames,
+  String Function(int) lookaheadStateNames,
+  List<String> categoryNames,
+  int ignoreState,
+) {
   assert(automatonRowLength >= categoryCount);
   assert(table.length == stateLimit);
   var buf = StringBuffer();

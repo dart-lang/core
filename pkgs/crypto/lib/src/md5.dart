@@ -50,7 +50,7 @@ const _noise = [
   0xd4ef3085, 0x04881d05, 0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
   0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039, 0x655b59c3, 0x8f0ccc92,
   0xffeff47d, 0x85845dd1, 0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
-  0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
+  0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391,
 ];
 
 /// Per-round shift amounts.
@@ -58,7 +58,7 @@ const _shiftAmounts = [
   07, 12, 17, 22, 07, 12, 17, 22, 07, 12, 17, 22, 07, 12, 17, 22, 05, 09, 14, //
   20, 05, 09, 14, 20, 05, 09, 14, 20, 05, 09, 14, 20, 04, 11, 16, 23, 04, 11,
   16, 23, 04, 11, 16, 23, 04, 11, 16, 23, 06, 10, 15, 21, 06, 10, 15, 21, 06,
-  10, 15, 21, 06, 10, 15, 21
+  10, 15, 21, 06, 10, 15, 21,
 ];
 
 /// The concrete implementation of `MD5`.
@@ -78,39 +78,62 @@ class _MD5Sink extends HashSink {
 
   @override
   void updateHash(Uint32List chunk) {
-    assert(chunk.length == 16);
+    // This makes the VM get rid of some "GenericCheckBound" calls.
+    // See also https://github.com/dart-lang/sdk/issues/60753.
+    // ignore: unnecessary_statements
+    chunk[15];
 
-    var a = digest[0];
-    var b = digest[1];
-    var c = digest[2];
+    // Access [3] first to get rid of some "GenericCheckBound" calls.
     var d = digest[3];
+    var c = digest[2];
+    var b = digest[1];
+    var a = digest[0];
 
-    int e;
-    int f;
+    var e = 0;
+    var f = 0;
 
-    for (var i = 0; i < 64; i++) {
-      if (i < 16) {
-        e = (b & c) | ((~b & mask32) & d);
-        f = i;
-      } else if (i < 32) {
-        e = (d & b) | ((~d & mask32) & c);
-        f = ((5 * i) + 1) % 16;
-      } else if (i < 48) {
-        e = b ^ c ^ d;
-        f = ((3 * i) + 5) % 16;
-      } else {
-        e = c ^ (b | (~d & mask32));
-        f = (7 * i) % 16;
-      }
-
+    @pragma('vm:prefer-inline')
+    void round(int i) {
       var temp = d;
       d = c;
       c = b;
+
       b = add32(
-          b,
-          rotl32(add32(add32(a, e), add32(_noise[i], chunk[f])),
-              _shiftAmounts[i]));
+        b,
+        rotl32(
+          add32(add32(a, e), add32(_noise[i], chunk[f])),
+          _shiftAmounts[i],
+        ),
+      );
+
       a = temp;
+    }
+
+    for (var i = 0; i < 16; i++) {
+      e = (b & c) | ((~b & mask32) & d);
+      // Doing `i % 16` would get rid of a "GenericCheckBound" call in the VM,
+      // but is slightly slower anyway.
+      // See also https://github.com/dart-lang/sdk/issues/60753.
+      f = i;
+      round(i);
+    }
+
+    for (var i = 16; i < 32; i++) {
+      e = (d & b) | ((~d & mask32) & c);
+      f = ((5 * i) + 1) % 16;
+      round(i);
+    }
+
+    for (var i = 32; i < 48; i++) {
+      e = b ^ c ^ d;
+      f = ((3 * i) + 5) % 16;
+      round(i);
+    }
+
+    for (var i = 48; i < 64; i++) {
+      e = c ^ (b | (~d & mask32));
+      f = (7 * i) % 16;
+      round(i);
     }
 
     digest[0] = add32(a, digest[0]);

@@ -88,7 +88,9 @@ extension IterableExtension<T> on Iterable<T> {
   /// The elements are ordered by the [compare] [Comparator] of the
   /// property [keyOf] of the element.
   List<T> sortedByCompare<K>(
-      K Function(T element) keyOf, Comparator<K> compare) {
+    K Function(T element) keyOf,
+    Comparator<K> compare,
+  ) {
     var elements = [...this];
     mergeSortBy<T, K>(elements, keyOf, compare);
     return elements;
@@ -136,7 +138,9 @@ extension IterableExtension<T> on Iterable<T> {
   /// then checks whether the results are in non-decreasing order
   /// using the [compare] [Comparator]..
   bool isSortedByCompare<K>(
-      K Function(T element) keyOf, Comparator<K> compare) {
+    K Function(T element) keyOf,
+    Comparator<K> compare,
+  ) {
     var iterator = this.iterator;
     if (!iterator.moveNext()) return true;
     var previousKey = keyOf(iterator.current);
@@ -207,7 +211,8 @@ extension IterableExtension<T> on Iterable<T> {
 
   /// Expands each element and index to a number of elements in a new iterable.
   Iterable<R> expandIndexed<R>(
-      Iterable<R> Function(int index, T element) expand) sync* {
+    Iterable<R> Function(int index, T element) expand,
+  ) sync* {
     var index = 0;
     for (var element in this) {
       yield* expand(index++, element);
@@ -246,7 +251,9 @@ extension IterableExtension<T> on Iterable<T> {
   /// Returns the result of the last call to [combine],
   /// or [initialValue] if there are no elements.
   R foldIndexed<R>(
-      R initialValue, R Function(int index, R previous, T element) combine) {
+    R initialValue,
+    R Function(int index, R previous, T element) combine,
+  ) {
     var result = initialValue;
     var index = 0;
     for (var element in this) {
@@ -400,7 +407,9 @@ extension IterableExtension<T> on Iterable<T> {
   ///     (Set<T>? previous, T element) => (previous ?? <T>{})..add(element));
   /// ````
   Map<K, G> groupFoldBy<K, G>(
-      K Function(T element) keyOf, G Function(G? previous, T element) combine) {
+    K Function(T element) keyOf,
+    G Function(G? previous, T element) combine,
+  ) {
     var result = <K, G>{};
     for (var element in this) {
       var key = keyOf(element);
@@ -492,7 +501,8 @@ extension IterableExtension<T> on Iterable<T> {
   /// print(parts); // ([1], [0, 2], [1, 5, 7], [6, 8, 9])
   /// ```
   Iterable<List<T>> splitBeforeIndexed(
-      bool Function(int index, T element) test) sync* {
+    bool Function(int index, T element) test,
+  ) sync* {
     var iterator = this.iterator;
     if (!iterator.moveNext()) {
       return;
@@ -527,7 +537,8 @@ extension IterableExtension<T> on Iterable<T> {
   /// print(parts); // ([1, 0], [2, 1], [5, 7, 6], [8, 9])
   /// ```
   Iterable<List<T>> splitAfterIndexed(
-      bool Function(int index, T element) test) sync* {
+    bool Function(int index, T element) test,
+  ) sync* {
     var index = 0;
     List<T>? chunk;
     for (var element in this) {
@@ -555,7 +566,8 @@ extension IterableExtension<T> on Iterable<T> {
   /// print(parts); // ([1], [0, 2], [1, 5, 7], [6, 8, 9])
   /// ```
   Iterable<List<T>> splitBetweenIndexed(
-      bool Function(int index, T first, T second) test) sync* {
+    bool Function(int index, T first, T second) test,
+  ) sync* {
     var iterator = this.iterator;
     if (!iterator.moveNext()) return;
     var previous = iterator.current;
@@ -904,9 +916,7 @@ extension IterableIterableExtension<T> on Iterable<Iterable<T>> {
   /// For each one, which is itself an iterable,
   /// all the elements of that are added
   /// to the returned list, before moving on to the next element.
-  List<T> get flattenedToList => [
-        for (final elements in this) ...elements,
-      ];
+  List<T> get flattenedToList => [for (final elements in this) ...elements];
 
   /// The unique sequential elements of each iterable in this iterable.
   ///
@@ -914,9 +924,7 @@ extension IterableIterableExtension<T> on Iterable<Iterable<T>> {
   /// For each one, which is itself an iterable,
   /// all the elements of that are added
   /// to the returned set, before moving on to the next element.
-  Set<T> get flattenedToSet => {
-        for (final elements in this) ...elements,
-      };
+  Set<T> get flattenedToSet => {for (final elements in this) ...elements};
 }
 
 /// Extension on iterables of [MapEntry].

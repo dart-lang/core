@@ -9,8 +9,10 @@ import 'package:os_detect/os_detect.dart' as os_detect;
 
 void main() {
   final knownName = knownOSName();
-  print('OS name    : ${os_detect.operatingSystem} '
-      '${knownName != null ? '($knownName)' : ''}');
+  print(
+    'OS name    : ${os_detect.operatingSystem} '
+    '${knownName != null ? '($knownName)' : ''}',
+  );
   print('OS version : ${os_detect.operatingSystemVersion}');
 }
 

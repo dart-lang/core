@@ -95,16 +95,46 @@ void main() {
     group('sets a range to the contents of an iterable', () {
       forEachInternalRepresentation((queue) {
         queue.setRange(5, 10, oneThrough(10).map((n) => 100 + n), 2);
-        expect(queue,
-            [1, 2, 3, 4, 5, 103, 104, 105, 106, 107, 11, 12, 13, 14, 15]);
+        expect(queue, [
+          1,
+          2,
+          3,
+          4,
+          5,
+          103,
+          104,
+          105,
+          106,
+          107,
+          11,
+          12,
+          13,
+          14,
+          15,
+        ]);
       });
     });
 
     group('sets a range to the contents of a list', () {
       forEachInternalRepresentation((queue) {
         queue.setRange(5, 10, oneThrough(10).map((n) => 100 + n).toList(), 2);
-        expect(queue,
-            [1, 2, 3, 4, 5, 103, 104, 105, 106, 107, 11, 12, 13, 14, 15]);
+        expect(queue, [
+          1,
+          2,
+          3,
+          4,
+          5,
+          103,
+          104,
+          105,
+          106,
+          107,
+          11,
+          12,
+          13,
+          14,
+          15,
+        ]);
       });
     });
 
@@ -117,13 +147,15 @@ void main() {
       });
     });
 
-    group('sets a range to a section of the same queue overlapping at the end',
-        () {
-      forEachInternalRepresentation((queue) {
-        queue.setRange(5, 10, queue, 6);
-        expect(queue, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 11, 12, 13, 14, 15]);
-      });
-    });
+    group(
+      'sets a range to a section of the same queue overlapping at the end',
+      () {
+        forEachInternalRepresentation((queue) {
+          queue.setRange(5, 10, queue, 6);
+          expect(queue, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 11, 12, 13, 14, 15]);
+        });
+      },
+    );
 
     test('throws a RangeError for an invalid range', () {
       expect(() => Uint8Queue().setRange(0, 1, [1]), throwsRangeError);
@@ -155,9 +187,11 @@ void main() {
       forEachInternalRepresentation((queue) {
         queue.length = 20;
         expect(
-            queue,
-            equals(oneThrough(capacity - 1) +
-                List.filled(20 - (capacity - 1), 0)));
+          queue,
+          equals(
+            oneThrough(capacity - 1) + List.filled(20 - (capacity - 1), 0),
+          ),
+        );
       });
     });
 
@@ -230,33 +264,45 @@ void main() {
     });
 
     test('add', () {
-      expect(() => queue.forEach((_) => queue.add(4)),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.add(4)),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('addAll', () {
-      expect(() => queue.forEach((_) => queue.addAll([4, 5, 6])),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.addAll([4, 5, 6])),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('addFirst', () {
-      expect(() => queue.forEach((_) => queue.addFirst(0)),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.addFirst(0)),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('removeFirst', () {
-      expect(() => queue.forEach((_) => queue.removeFirst()),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.removeFirst()),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('removeLast', () {
-      expect(() => queue.forEach((_) => queue.removeLast()),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.removeLast()),
+        throwsConcurrentModificationError,
+      );
     });
 
     test('length=', () {
-      expect(() => queue.forEach((_) => queue.length = 1),
-          throwsConcurrentModificationError);
+      expect(
+        () => queue.forEach((_) => queue.length = 1),
+        throwsConcurrentModificationError,
+      );
     });
   });
 }
@@ -311,5 +357,6 @@ List<int> oneThrough(int n) => List.generate(n, (i) => i + 1);
 
 /// Returns a matcher that expects that a closure throws a
 /// [ConcurrentModificationError].
-final throwsConcurrentModificationError =
-    throwsA(const TypeMatcher<ConcurrentModificationError>());
+final throwsConcurrentModificationError = throwsA(
+  const TypeMatcher<ConcurrentModificationError>(),
+);

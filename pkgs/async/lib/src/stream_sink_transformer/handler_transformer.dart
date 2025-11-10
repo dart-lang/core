@@ -68,18 +68,25 @@ class _HandlerSink<S, T> implements StreamSink<S> {
     if (handleError == null) {
       _inner.addError(error, stackTrace);
     } else {
-      handleError(error, stackTrace ?? AsyncError.defaultStackTrace(error),
-          _safeCloseInner);
+      handleError(
+        error,
+        stackTrace ?? AsyncError.defaultStackTrace(error),
+        _safeCloseInner,
+      );
     }
   }
 
   @override
   Future addStream(Stream<S> stream) {
-    return _inner.addStream(stream.transform(
+    return _inner.addStream(
+      stream.transform(
         StreamTransformer<S, T>.fromHandlers(
-            handleData: _transformer._handleData,
-            handleError: _transformer._handleError,
-            handleDone: _closeSink)));
+          handleData: _transformer._handleData,
+          handleError: _transformer._handleError,
+          handleDone: _closeSink,
+        ),
+      ),
+    );
   }
 
   @override

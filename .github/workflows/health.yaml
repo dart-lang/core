@@ -10,5 +10,6 @@ jobs:
     with:
       ignore_coverage: "**.mock.dart,**.g.dart"
       ignore_license: "**.mock.dart,**.g.dart,**.mocks.dart,pkgs/platform/*"
+      sdk: beta
     permissions:
       pull-requests: write

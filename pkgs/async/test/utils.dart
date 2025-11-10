@@ -26,15 +26,16 @@ OptionalArgAction unreachable(String name) =>
 Matcher throwsZoned(Matcher matcher) => predicate((void Function() callback) {
       var firstError = true;
       runZonedGuarded(
-          callback,
-          expectAsync2((error, stackTrace) {
-            if (firstError) {
-              expect(error, matcher);
-              firstError = false;
-            } else {
-              registerException(error, stackTrace);
-            }
-          }, max: -1));
+        callback,
+        expectAsync2((error, stackTrace) {
+          if (firstError) {
+            expect(error, matcher);
+            firstError = false;
+          } else {
+            registerException(error, stackTrace);
+          }
+        }, max: -1),
+      );
       return true;
     });
 
@@ -50,8 +51,12 @@ final throwsTypeError = throwsA(isA<TypeError>());
 /// Can be used to test cases where a stream should not be used.
 class UnusableStream<T> extends Stream<T> {
   @override
-  StreamSubscription<T> listen(void Function(T event)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<T> listen(
+    void Function(T event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     throw UnimplementedError('Gotcha!');
   }
 }

@@ -20,8 +20,10 @@ export 'unicode_grapheme_tests.dart';
 /// can be compared to the original tests.)
 String testDescription(List<String> expected) {
   var expectedString = expected
-      .map((s) =>
-          s.runes.map((x) => x.toRadixString(16).padLeft(4, '0')).join(' × '))
+      .map(
+        (s) =>
+            s.runes.map((x) => x.toRadixString(16).padLeft(4, '0')).join(' × '),
+      )
       .join(' ÷ ');
   return '÷ $expectedString ÷';
 }
@@ -29,7 +31,7 @@ String testDescription(List<String> expected) {
 int categoryOf(int codePoint) {
   if (codePoint < 0x10000) return low(codePoint);
   var nonBmpOffset = codePoint - 0x10000;
-  return high(0xD800 + (nonBmpOffset >> 10), 0xDC00 + (nonBmpOffset & 0x3ff));
+  return high(nonBmpOffset >> 10, nonBmpOffset & 0x3ff);
 }
 
 String partCategories(List<String> parts) {

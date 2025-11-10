@@ -1,5 +1,5 @@
 name: logging
-version: 1.3.0
+version: 1.3.1-wip
 description: >-
   Provides APIs for debugging and error logging, similar to loggers in other
   languages, such as the Closure JS Logger and java.util.logging.Logger.
@@ -7,8 +7,8 @@ repository: https://github.com/dart-lang/core/tree/main/pkgs/logging
 issue_tracker: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Alogging
 
 topics:
- - logging
- - debugging
+  - debugging
+  - logging
 
 environment:
   sdk: ^3.4.0

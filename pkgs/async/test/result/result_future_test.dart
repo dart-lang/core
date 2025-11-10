@@ -25,8 +25,10 @@ void main() {
 
     // The completer calls its listeners asynchronously. We have to wait
     // before we can access the result.
-    expect(future.then((_) => future.result!.asValue!.value),
-        completion(equals(12)));
+    expect(
+      future.then((_) => future.result!.asValue!.value),
+      completion(equals(12)),
+    );
   });
 
   test("after an error completion, result is the future's error", () {

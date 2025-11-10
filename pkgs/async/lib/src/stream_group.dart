@@ -109,24 +109,28 @@ class StreamGroup<T> implements Sink<Stream<T>> {
   /// Creates a new stream group where [stream] is single-subscriber.
   StreamGroup() {
     _controller = StreamController<T>(
-        onListen: _onListen,
-        onPause: _onPause,
-        onResume: _onResume,
-        onCancel: _onCancel,
-        sync: true);
+      onListen: _onListen,
+      onPause: _onPause,
+      onResume: _onResume,
+      onCancel: _onCancel,
+      sync: true,
+    );
   }
 
   /// Creates a new stream group where [stream] is a broadcast stream.
   StreamGroup.broadcast() {
     _controller = StreamController<T>.broadcast(
-        onListen: _onListen, onCancel: _onCancelBroadcast, sync: true);
+      onListen: _onListen,
+      onCancel: _onCancelBroadcast,
+      sync: true,
+    );
   }
 
   /// Adds [stream] as a member of this group.
   ///
-  /// Any events from [stream] will be emitted through [this.stream]. If this
-  /// group has a listener, [stream] will be listened to immediately; otherwise
-  /// it will only be listened to once this group gets a listener.
+  /// Any events from [stream] will be emitted through [StreamGroup.stream]. If
+  /// this group has a listener, [stream] will be listened to immediately;
+  /// otherwise it will only be listened to once this group gets a listener.
   ///
   /// If this is a single-subscription group and its subscription has been
   /// canceled, [stream] will be canceled as soon as its added. If this returns
@@ -272,8 +276,11 @@ class StreamGroup<T> implements Sink<Stream<T>> {
   ///
   /// This will pause the resulting subscription if `this` is paused.
   StreamSubscription<T> _listenToStream(Stream<T> stream) {
-    var subscription = stream.listen(_controller.add,
-        onError: _controller.addError, onDone: () => remove(stream));
+    var subscription = stream.listen(
+      _controller.add,
+      onError: _controller.addError,
+      onDone: () => remove(stream),
+    );
     if (_state == _StreamGroupState.paused) subscription.pause();
     return subscription;
   }
@@ -289,7 +296,32 @@ class StreamGroup<T> implements Sink<Stream<T>> {
     if (_closed) return _controller.done;
 
     _closed = true;
-    if (_subscriptions.isEmpty) _controller.close();
+
+    if (_subscriptions.isEmpty) {
+      _onIdleController?.close();
+      _controller.close();
+      return _controller.done;
+    }
+
+    if (_controller.stream.isBroadcast) {
+      // For a broadcast group that's closed, we must listen to streams with
+      // null subscriptions to detect when they complete. This ensures the
+      // group itself can close once all its streams have closed.
+      List<Stream<T>>? streamsToRemove;
+
+      _subscriptions.updateAll((stream, subscription) {
+        if (subscription != null) return subscription;
+
+        try {
+          return _listenToStream(stream);
+        } on Object {
+          (streamsToRemove ??= []).add(stream);
+          return null;
+        }
+      });
+
+      streamsToRemove?.forEach(_subscriptions.remove);
+    }
 
     return _controller.done;
   }

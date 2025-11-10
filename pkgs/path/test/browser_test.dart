@@ -5,17 +5,18 @@
 @TestOn('browser')
 library;
 
-import 'dart:html';
-
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
+import 'package:web/web.dart';
 
 void main() {
   group('new Context()', () {
     test('uses the window location if root and style are omitted', () {
       final context = path.Context();
-      expect(context.current,
-          Uri.parse(window.location.href).resolve('.').toString());
+      expect(
+        context.current,
+        Uri.parse(window.location.href).resolve('.').toString(),
+      );
     });
 
     test('uses "." if root is omitted', () {
@@ -35,6 +36,8 @@ void main() {
 
   test('current', () {
     expect(
-        path.current, Uri.parse(window.location.href).resolve('.').toString());
+      path.current,
+      Uri.parse(window.location.href).resolve('.').toString(),
+    );
   });
 }

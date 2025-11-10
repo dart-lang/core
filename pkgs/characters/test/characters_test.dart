@@ -70,8 +70,13 @@ void main([List<String>? args]) {
     var zwj = '\u200d'; // U+200D, ZWJ
     var rainbow = '\u{1f308}'; // U+1F308, Rainbow. Category Pictogram
 
-    testParts(gc('$flag$white$zwj$rainbow'), gc('$flag$white'), gc(rainbow),
-        gc('$flag$zwj$rainbow'), gc('!'));
+    testParts(
+      gc('$flag$white$zwj$rainbow'),
+      gc('$flag$white'),
+      gc(rainbow),
+      gc('$flag$zwj$rainbow'),
+      gc('!'),
+    );
   });
 
   group('CharacterRange', () {
@@ -110,28 +115,29 @@ void main([List<String>? args]) {
         var zwj = '\u200d'; // U+200D, ZWJ
         var rainbow = '\u{1f308}'; // U+1F308, Rainbow. Category Pictogram
 
-        var rbflag = '$flag$white$zwj$rainbow';
-        var string = '-$rbflag-';
+        var rainbowFlag = '$flag$white$zwj$rainbow';
+        var string = '-$rainbowFlag-';
         var range = CharacterRange.at(string, 1);
         expect(range.isEmpty, true);
         expect(range.moveNext(), true);
-        expect(range.current, rbflag);
+        expect(range.current, rainbowFlag);
 
         range = range = CharacterRange.at(string, 2);
         expect(range.isEmpty, false);
-        expect(range.current, rbflag);
+        expect(range.current, rainbowFlag);
 
         range = range = CharacterRange.at(string, 0, 2);
         expect(range.isEmpty, false);
-        expect(range.current, '-$rbflag');
+        expect(range.current, '-$rainbowFlag');
 
         range = range = CharacterRange.at(string, 0, 2);
         expect(range.isEmpty, false);
-        expect(range.current, '-$rbflag');
+        expect(range.current, '-$rainbowFlag');
 
-        range = range = CharacterRange.at(string, 2, '-$rbflag'.length - 1);
+        range =
+            range = CharacterRange.at(string, 2, '-$rainbowFlag'.length - 1);
         expect(range.isEmpty, false);
-        expect(range.current, rbflag);
+        expect(range.current, rainbowFlag);
         expect(range.stringBeforeLength, 1);
 
         range = range = CharacterRange.at(string, 0, string.length);
@@ -147,11 +153,7 @@ void tests() {
     expectGC(gc(''), []);
   });
   group('gc-ASCII', () {
-    for (var text in [
-      '',
-      'A',
-      '123456abcdefab',
-    ]) {
+    for (var text in ['', 'A', '123456abcdefab']) {
       test('"$text"', () {
         expectGC(gc(text), charsOf(text));
       });
@@ -162,10 +164,7 @@ void tests() {
     });
   });
   group('Non-ASCII single-code point', () {
-    for (var text in [
-      'à la mode',
-      'rødgrød-æble-ål',
-    ]) {
+    for (var text in ['à la mode', 'rødgrød-æble-ål']) {
       test('"$text"', () {
         expectGC(gc(text), charsOf(text));
       });
@@ -274,30 +273,50 @@ void expectGC(Characters actual, List<String> expected) {
   expect(actual.getRange(1, 2).toString(), expected.take(2).skip(1).join());
 
   if (expected.isNotEmpty) {
-    expect(actual.skipLast(1).toList(),
-        expected.take(expected.length - 1).toList());
-    expect(actual.takeLast(1).toList(),
-        expected.skip(expected.length - 1).toList());
-    expect(actual.skipLast(1).toString(),
-        expected.take(expected.length - 1).join());
-    expect(actual.takeLast(1).toString(),
-        expected.skip(expected.length - 1).join());
+    expect(
+      actual.skipLast(1).toList(),
+      expected.take(expected.length - 1).toList(),
+    );
+    expect(
+      actual.takeLast(1).toList(),
+      expected.skip(expected.length - 1).toList(),
+    );
+    expect(
+      actual.skipLast(1).toString(),
+      expected.take(expected.length - 1).join(),
+    );
+    expect(
+      actual.takeLast(1).toString(),
+      expected.skip(expected.length - 1).join(),
+    );
   }
   bool isEven(String s) => s.length.isEven;
 
   expect(
-      actual.skipWhile(isEven).toList(), expected.skipWhile(isEven).toList());
+    actual.skipWhile(isEven).toList(),
+    expected.skipWhile(isEven).toList(),
+  );
   expect(
-      actual.takeWhile(isEven).toList(), expected.takeWhile(isEven).toList());
+    actual.takeWhile(isEven).toList(),
+    expected.takeWhile(isEven).toList(),
+  );
   expect(
-      actual.skipWhile(isEven).toString(), expected.skipWhile(isEven).join());
+    actual.skipWhile(isEven).toString(),
+    expected.skipWhile(isEven).join(),
+  );
   expect(
-      actual.takeWhile(isEven).toString(), expected.takeWhile(isEven).join());
+    actual.takeWhile(isEven).toString(),
+    expected.takeWhile(isEven).join(),
+  );
 
-  expect(actual.skipLastWhile(isEven).toString(),
-      expected.toList().reversed.skipWhile(isEven).toList().reversed.join());
-  expect(actual.takeLastWhile(isEven).toString(),
-      expected.toList().reversed.takeWhile(isEven).toList().reversed.join());
+  expect(
+    actual.skipLastWhile(isEven).toString(),
+    expected.toList().reversed.skipWhile(isEven).toList().reversed.join(),
+  );
+  expect(
+    actual.takeLastWhile(isEven).toString(),
+    expected.toList().reversed.takeWhile(isEven).toList().reversed.join(),
+  );
 
   expect(actual.where(isEven).toString(), expected.where(isEven).join());
 
@@ -385,7 +404,12 @@ void expectGC(Characters actual, List<String> expected) {
 Characters gc(String string) => Characters(string);
 
 void testParts(
-    Characters a, Characters b, Characters c, Characters d, Characters e) {
+  Characters a,
+  Characters b,
+  Characters c,
+  Characters d,
+  Characters e,
+) {
   var cs = gc('$a$b$c$d$e');
   test('$cs', () {
     var it = cs.iterator;
@@ -624,8 +648,12 @@ void testParts(
       expect(range.current, '$a');
     }
 
-    expect(it.split(gc('')).map((range) => range.current),
-        ['$a', '$b', '$a', '$b']);
+    expect(it.split(gc('')).map((range) => range.current), [
+      '$a',
+      '$b',
+      '$a',
+      '$b',
+    ]);
 
     expect(gc('').iterator.split(gc('')).map((range) => range.current), ['']);
 
@@ -757,9 +785,12 @@ final Characters hanv = gc('\u1160'); // Hangul V, Jungseong Filler.
 final Characters hant = gc('\u11a8'); // Hangul T, Jongseong Kiyeok.
 final Characters hanlv = gc('\uac00'); // Hangul LV, Syllable Ga.
 final Characters hanlvt = gc('\uac01'); // Hangul LVT, Syllable Gag.
-final Characters inc =
-    gc('\u0915'); // Other{InCL=Consonant}, Devanagari letter Ka.
-final Characters ine =
-    gc('\u0300'); // Extend{InCL=Extend}, Combining Grave Accent.
-final Characters inl =
-    gc('\u094d'); // Extend{InCL=Linker}, Devanagari Sign Virama.
+final Characters inc = gc(
+  '\u0915',
+); // Other{InCL=Consonant}, Devanagari letter Ka.
+final Characters ine = gc(
+  '\u0300',
+); // Extend{InCL=Extend}, Combining Grave Accent.
+final Characters inl = gc(
+  '\u094d',
+); // Extend{InCL=Linker}, Devanagari Sign Virama.

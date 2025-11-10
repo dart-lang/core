@@ -1,3 +1,12 @@
+## 1.2.0-wip
+
+* Change `IntX` such that it implements `Comparable<IntX>`. This makes it
+  possible for `IntX` (and in turn `Int64` and `Int32`) be used with methods
+  like `sortedBy` in the platform libraries.
+* Run `dart format` with the new style.
+* Require Dart 3.4
+* Improve `Int64` representation when compiling to native or Wasm.
+
 ## 1.1.1
 
 * Require Dart `^3.1.0`

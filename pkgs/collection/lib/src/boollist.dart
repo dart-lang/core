@@ -5,12 +5,16 @@
 import 'dart:collection' show ListMixin;
 import 'dart:typed_data' show Uint32List;
 
+import 'package:meta/meta.dart';
+
 import 'unmodifiable_wrappers.dart' show NonGrowableListMixin;
 
 /// A space-efficient list of boolean values.
 ///
 /// Uses list of integers as internal storage to reduce memory usage.
-abstract /*mixin*/ class BoolList with ListMixin<bool> {
+@sealed
+// TODO: replace `interface` with `final` in the next major release.
+abstract interface class BoolList with ListMixin<bool> {
   static const int _entryShift = 5;
 
   static const int _bitsPerEntry = 32;
@@ -119,9 +123,7 @@ abstract /*mixin*/ class BoolList with ListMixin<bool> {
   @override
   bool operator [](int index) {
     RangeError.checkValidIndex(index, this, 'index', _length);
-    return (_data[index >> _entryShift] &
-            (1 << (index & _entrySignBitIndex))) !=
-        0;
+    return _getBit(index);
   }
 
   @override
@@ -167,6 +169,7 @@ abstract /*mixin*/ class BoolList with ListMixin<bool> {
   @override
   Iterator<bool> get iterator => _BoolListIterator(this);
 
+  // Note: [index] is NOT checked for validity.
   void _setBit(int index, bool value) {
     if (value) {
       _data[index >> _entryShift] |= 1 << (index & _entrySignBitIndex);
@@ -175,19 +178,23 @@ abstract /*mixin*/ class BoolList with ListMixin<bool> {
     }
   }
 
+  // Note: [index] is NOT checked for validity.
+  @pragma('dart2js:prefer-inline')
+  @pragma('vm:prefer-inline')
+  @pragma('wasm:prefer-inline')
+  bool _getBit(int index) =>
+      (_data[index >> _entryShift] & (1 << (index & _entrySignBitIndex))) != 0;
+
   static int _lengthInWords(int bitLength) {
     return (bitLength + (_bitsPerEntry - 1)) >> _entryShift;
   }
 }
 
-class _GrowableBoolList extends BoolList {
+final class _GrowableBoolList extends BoolList {
   static const int _growthFactor = 2;
 
   _GrowableBoolList._withCapacity(int length, int capacity)
-      : super._(
-          Uint32List(BoolList._lengthInWords(capacity)),
-          length,
-        );
+      : super._(Uint32List(BoolList._lengthInWords(capacity)), length);
 
   _GrowableBoolList(int length)
       : super._(
@@ -207,9 +214,8 @@ class _GrowableBoolList extends BoolList {
 
   void _expand(int length) {
     if (length > _data.length * BoolList._bitsPerEntry) {
-      _data = Uint32List(
-        BoolList._lengthInWords(length * _growthFactor),
-      )..setRange(0, _data.length, _data);
+      _data = Uint32List(BoolList._lengthInWords(length * _growthFactor))
+        ..setRange(0, _data.length, _data);
     }
     _length = length;
   }
@@ -228,18 +234,13 @@ class _GrowableBoolList extends BoolList {
   }
 }
 
-class _NonGrowableBoolList extends BoolList with NonGrowableListMixin<bool> {
+final class _NonGrowableBoolList extends BoolList
+    with NonGrowableListMixin<bool> {
   _NonGrowableBoolList._withCapacity(int length, int capacity)
-      : super._(
-          Uint32List(BoolList._lengthInWords(capacity)),
-          length,
-        );
+      : super._(Uint32List(BoolList._lengthInWords(capacity)), length);
 
   _NonGrowableBoolList(int length)
-      : super._(
-          Uint32List(BoolList._lengthInWords(length)),
-          length,
-        );
+      : super._(Uint32List(BoolList._lengthInWords(length)), length);
 }
 
 class _BoolListIterator implements Iterator<bool> {
@@ -262,9 +263,7 @@ class _BoolListIterator implements Iterator<bool> {
 
     if (_pos < _boolList.length) {
       var pos = _pos++;
-      _current = _boolList._data[pos >> BoolList._entryShift] &
-              (1 << (pos & BoolList._entrySignBitIndex)) !=
-          0;
+      _current = _boolList._getBit(pos);
       return true;
     }
     _current = false;

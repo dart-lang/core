@@ -153,8 +153,12 @@ void main() {
 
     test('multiple requests at the same time', () async {
       var events = StreamQueue<int>(createStream());
-      var result = await Future.wait(
-          [events.next, events.next, events.next, events.next]);
+      var result = await Future.wait([
+        events.next,
+        events.next,
+        events.next,
+        events.next,
+      ]);
       expect(result, [1, 2, 3, 4]);
       await events.cancel();
     });
@@ -261,7 +265,7 @@ void main() {
         skip1.then(sequence(0, 0)),
         skip2.then(sequence(0, 1)),
         skip3.then(sequence(1, 2)),
-        skip4.then(sequence(1, 3))
+        skip4.then(sequence(1, 3)),
       ]);
       await events.cancel();
     });
@@ -452,8 +456,13 @@ void main() {
     });
     test('multiple requests at the same time', () async {
       var events = StreamQueue<int>(createStream());
-      var result = await Future.wait(
-          [events.peek, events.peek, events.next, events.peek, events.peek]);
+      var result = await Future.wait([
+        events.peek,
+        events.peek,
+        events.next,
+        events.peek,
+        events.peek,
+      ]);
       expect(result, [1, 1, 1, 2, 2]);
       await events.cancel();
     });
@@ -483,13 +492,15 @@ void main() {
       expect(() => events.cancel(), throwsStateError);
     });
 
-    test('cancels underlying subscription when called before any event',
-        () async {
-      var cancelFuture = Future.value(42);
-      var controller = StreamController<int>(onCancel: () => cancelFuture);
-      var events = StreamQueue<int>(controller.stream);
-      expect(await events.cancel(), 42);
-    });
+    test(
+      'cancels underlying subscription when called before any event',
+      () async {
+        var cancelFuture = Future.value(42);
+        var controller = StreamController<int>(onCancel: () => cancelFuture);
+        var events = StreamQueue<int>(controller.stream);
+        expect(await events.cancel(), 42);
+      },
+    );
 
     test('cancels underlying subscription, returns result', () async {
       var cancelFuture = Future.value(42);
@@ -523,14 +534,16 @@ void main() {
         expect(controller.hasListener, isFalse);
       });
 
-      test('cancels the underlying subscription when called before any event',
-          () async {
-        var cancelFuture = Future.value(42);
-        var controller = StreamController<int>(onCancel: () => cancelFuture);
+      test(
+        'cancels the underlying subscription when called before any event',
+        () async {
+          var cancelFuture = Future.value(42);
+          var controller = StreamController<int>(onCancel: () => cancelFuture);
 
-        var events = StreamQueue<int>(controller.stream);
-        expect(await events.cancel(immediate: true), 42);
-      });
+          var events = StreamQueue<int>(controller.stream);
+          expect(await events.cancel(immediate: true), 42);
+        },
+      );
 
       test('closes pending requests', () async {
         var events = StreamQueue<int>(createStream());
@@ -541,27 +554,33 @@ void main() {
         await events.cancel(immediate: true);
       });
 
-      test('returns the result of closing the underlying subscription',
-          () async {
-        var controller =
-            StreamController<int>(onCancel: () => Future<int>.value(42));
-        var events = StreamQueue<int>(controller.stream);
-        expect(await events.cancel(immediate: true), 42);
-      });
+      test(
+        'returns the result of closing the underlying subscription',
+        () async {
+          var controller = StreamController<int>(
+            onCancel: () => Future<int>.value(42),
+          );
+          var events = StreamQueue<int>(controller.stream);
+          expect(await events.cancel(immediate: true), 42);
+        },
+      );
 
-      test("listens and then cancels a stream that hasn't been listened to yet",
-          () async {
-        var wasListened = false;
-        var controller =
-            StreamController<int>(onListen: () => wasListened = true);
-        var events = StreamQueue<int>(controller.stream);
-        expect(wasListened, isFalse);
-        expect(controller.hasListener, isFalse);
+      test(
+        "listens and then cancels a stream that hasn't been listened to yet",
+        () async {
+          var wasListened = false;
+          var controller = StreamController<int>(
+            onListen: () => wasListened = true,
+          );
+          var events = StreamQueue<int>(controller.stream);
+          expect(wasListened, isFalse);
+          expect(controller.hasListener, isFalse);
 
-        await events.cancel(immediate: true);
-        expect(wasListened, isTrue);
-        expect(controller.hasListener, isFalse);
-      });
+          await events.cancel(immediate: true);
+          expect(wasListened, isTrue);
+          expect(controller.hasListener, isFalse);
+        },
+      );
     });
   });
 
@@ -854,22 +873,26 @@ void main() {
         transaction.reject();
       });
 
-      test('further child requests act as though the stream was closed',
-          () async {
-        expect(await queue1.next, 2);
-        transaction.reject();
+      test(
+        'further child requests act as though the stream was closed',
+        () async {
+          expect(await queue1.next, 2);
+          transaction.reject();
 
-        expect(await queue1.hasNext, isFalse);
-        expect(queue1.next, throwsStateError);
-      });
+          expect(await queue1.hasNext, isFalse);
+          expect(queue1.next, throwsStateError);
+        },
+      );
 
-      test('pending child requests act as though the stream was closed',
-          () async {
-        expect(await queue1.next, 2);
-        expect(queue1.hasNext, completion(isFalse));
-        expect(queue1.next, throwsStateError);
-        transaction.reject();
-      });
+      test(
+        'pending child requests act as though the stream was closed',
+        () async {
+          expect(await queue1.next, 2);
+          expect(queue1.hasNext, completion(isFalse));
+          expect(queue1.next, throwsStateError);
+          transaction.reject();
+        },
+      );
 
       // Regression test.
       test('pending child rest requests emit no more events', () async {
@@ -879,8 +902,10 @@ void main() {
         var queue = transaction.newQueue();
 
         // This should emit no more events after the transaction is rejected.
-        queue.rest.listen(expectAsync1((_) {}, count: 3),
-            onDone: expectAsync0(() {}, count: 0));
+        queue.rest.listen(
+          expectAsync1((_) {}, count: 3),
+          onDone: expectAsync0(() {}, count: 0),
+        );
 
         controller.add(1);
         controller.add(2);
@@ -959,22 +984,26 @@ void main() {
         transaction.commit(queue1);
       });
 
-      test('further child requests act as though the stream was closed',
-          () async {
-        expect(await queue2.next, 2);
-        transaction.commit(queue2);
+      test(
+        'further child requests act as though the stream was closed',
+        () async {
+          expect(await queue2.next, 2);
+          transaction.commit(queue2);
 
-        expect(await queue1.hasNext, isFalse);
-        expect(queue1.next, throwsStateError);
-      });
+          expect(await queue1.hasNext, isFalse);
+          expect(queue1.next, throwsStateError);
+        },
+      );
 
-      test('pending child requests act as though the stream was closed',
-          () async {
-        expect(await queue2.next, 2);
-        expect(queue1.hasNext, completion(isFalse));
-        expect(queue1.next, throwsStateError);
-        transaction.commit(queue2);
-      });
+      test(
+        'pending child requests act as though the stream was closed',
+        () async {
+          expect(await queue2.next, 2);
+          expect(queue1.hasNext, completion(isFalse));
+          expect(queue1.next, throwsStateError);
+          transaction.commit(queue2);
+        },
+      );
 
       test('further requests act as though the stream was closed', () async {
         expect(await queue1.next, 2);
@@ -1031,22 +1060,26 @@ void main() {
     });
 
     test('passes a copy of the parent queue', () async {
-      await events.withTransaction(expectAsync1((queue) async {
-        expect(await queue.next, 2);
-        expect(await queue.next, 3);
-        expect(await queue.next, 4);
-        expect(await queue.hasNext, isFalse);
-        return true;
-      }));
+      await events.withTransaction(
+        expectAsync1((queue) async {
+          expect(await queue.next, 2);
+          expect(await queue.next, 3);
+          expect(await queue.next, 4);
+          expect(await queue.hasNext, isFalse);
+          return true;
+        }),
+      );
     });
 
     test(
         'the parent queue continues from the child position if it returns '
         'true', () async {
-      await events.withTransaction(expectAsync1((queue) async {
-        expect(await queue.next, 2);
-        return true;
-      }));
+      await events.withTransaction(
+        expectAsync1((queue) async {
+          expect(await queue.next, 2);
+          return true;
+        }),
+      );
 
       expect(await events.next, 3);
     });
@@ -1054,19 +1087,26 @@ void main() {
     test(
         'the parent queue continues from its original position if it returns '
         'false', () async {
-      await events.withTransaction(expectAsync1((queue) async {
-        expect(await queue.next, 2);
-        return false;
-      }));
+      await events.withTransaction(
+        expectAsync1((queue) async {
+          expect(await queue.next, 2);
+          return false;
+        }),
+      );
 
       expect(await events.next, 2);
     });
 
     test('the parent queue continues from the child position if it throws', () {
-      expect(events.withTransaction(expectAsync1((queue) async {
-        expect(await queue.next, 2);
-        throw 'oh no';
-      })), throwsA('oh no'));
+      expect(
+        events.withTransaction(
+          expectAsync1((queue) async {
+            expect(await queue.next, 2);
+            throw 'oh no';
+          }),
+        ),
+        throwsA('oh no'),
+      );
 
       expect(events.next, completion(3));
     });
@@ -1085,53 +1125,69 @@ void main() {
     });
 
     test('passes a copy of the parent queue', () async {
-      await events.cancelable(expectAsync1((queue) async {
-        expect(await queue.next, 2);
-        expect(await queue.next, 3);
-        expect(await queue.next, 4);
-        expect(await queue.hasNext, isFalse);
-      })).value;
+      await events.cancelable(
+        expectAsync1((queue) async {
+          expect(await queue.next, 2);
+          expect(await queue.next, 3);
+          expect(await queue.next, 4);
+          expect(await queue.hasNext, isFalse);
+        }),
+      ).value;
     });
 
-    test('the parent queue continues from the child position by default',
-        () async {
-      await events.cancelable(expectAsync1((queue) async {
-        expect(await queue.next, 2);
-      })).value;
+    test(
+      'the parent queue continues from the child position by default',
+      () async {
+        await events.cancelable(
+          expectAsync1((queue) async {
+            expect(await queue.next, 2);
+          }),
+        ).value;
 
-      expect(await events.next, 3);
-    });
+        expect(await events.next, 3);
+      },
+    );
 
     test(
         'the parent queue continues from the child position if an error is '
         'thrown', () async {
       expect(
-          events.cancelable(expectAsync1((queue) async {
+        events.cancelable(
+          expectAsync1((queue) async {
             expect(await queue.next, 2);
             throw 'oh no';
-          })).value,
-          throwsA('oh no'));
+          }),
+        ).value,
+        throwsA('oh no'),
+      );
 
       expect(events.next, completion(3));
     });
 
-    test('the parent queue continues from the original position if canceled',
-        () async {
-      var operation = events.cancelable(expectAsync1((queue) async {
-        expect(await queue.next, 2);
-      }));
-      operation.cancel();
+    test(
+      'the parent queue continues from the original position if canceled',
+      () async {
+        var operation = events.cancelable(
+          expectAsync1((queue) async {
+            expect(await queue.next, 2);
+          }),
+        );
+        operation.cancel();
 
-      expect(await events.next, 2);
-    });
+        expect(await events.next, 2);
+      },
+    );
 
     test('forwards the value from the callback', () async {
       expect(
-          await events.cancelable(expectAsync1((queue) async {
+        await events.cancelable(
+          expectAsync1((queue) async {
             expect(await queue.next, 2);
             return 'value';
-          })).value,
-          'value');
+          }),
+        ).value,
+        'value',
+      );
     });
   });
 
@@ -1158,8 +1214,10 @@ void main() {
     // Test expecting [startIndex .. startIndex + 9] as events using
     // `take(10)`.
     void takeTest(int startIndex) {
-      expect(events.take(10),
-          completion(List.generate(10, (i) => startIndex + i)));
+      expect(
+        events.take(10),
+        completion(List.generate(10, (i) => startIndex + i)),
+      );
     }
 
     var tests = [nextTest, skipTest, takeTest];
@@ -1174,8 +1232,10 @@ void main() {
       }
     }
     // Then expect 20 more events as a `rest` call.
-    expect(events.rest.toList(),
-        completion(List.generate(20, (i) => counter + i)));
+    expect(
+      events.rest.toList(),
+      completion(List.generate(20, (i) => counter + i)),
+    );
   });
 }
 

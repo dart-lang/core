@@ -17,7 +17,10 @@ void main() {
   testStream('broadcast-async', controller, controller.stream);
   controller = StreamController<void>();
   testStream(
-      'asbroadcast-async', controller, controller.stream.asBroadcastStream());
+    'asbroadcast-async',
+    controller,
+    controller.stream.asBroadcastStream(),
+  );
 
   controller = StreamController(sync: true);
   testStream('singlesub-sync', controller, controller.stream);
@@ -25,7 +28,10 @@ void main() {
   testStream('broadcast-sync', controller, controller.stream);
   controller = StreamController(sync: true);
   testStream(
-      'asbroadcast-sync', controller, controller.stream.asBroadcastStream());
+    'asbroadcast-sync',
+    controller,
+    controller.stream.asBroadcastStream(),
+  );
 }
 
 void testStream(String name, StreamController controller, Stream stream) {
@@ -34,32 +40,38 @@ void testStream(String name, StreamController controller, Stream stream) {
     runZoned(() {
       var newZone1 = Zone.current;
       late StreamSubscription sub;
-      sub = stream.listen(expectAsync1((v) {
-        expect(v, 42);
-        expect(Zone.current, newZone1);
-        outer.run(() {
-          sub.onData(expectAsync1((v) {
-            expect(v, 37);
-            expect(Zone.current, newZone1);
-            runZoned(() {
-              sub.onData(expectAsync1((v) {
-                expect(v, 87);
+      sub = stream.listen(
+        expectAsync1((v) {
+          expect(v, 42);
+          expect(Zone.current, newZone1);
+          outer.run(() {
+            sub.onData(
+              expectAsync1((v) {
+                expect(v, 37);
                 expect(Zone.current, newZone1);
-              }));
-            });
-            if (controller is SynchronousStreamController) {
-              scheduleMicrotask(() => controller.add(87));
-            } else {
-              controller.add(87);
-            }
-          }));
-        });
-        if (controller is SynchronousStreamController) {
-          scheduleMicrotask(() => controller.add(37));
-        } else {
-          controller.add(37);
-        }
-      }));
+                runZoned(() {
+                  sub.onData(
+                    expectAsync1((v) {
+                      expect(v, 87);
+                      expect(Zone.current, newZone1);
+                    }),
+                  );
+                });
+                if (controller is SynchronousStreamController) {
+                  scheduleMicrotask(() => controller.add(87));
+                } else {
+                  controller.add(87);
+                }
+              }),
+            );
+          });
+          if (controller is SynchronousStreamController) {
+            scheduleMicrotask(() => controller.add(37));
+          } else {
+            controller.add(37);
+          }
+        }),
+      );
     });
     controller.add(42);
   });

@@ -115,7 +115,7 @@ void main() {
 
       var set = UnionSet.from([
         {duration1},
-        {duration2}
+        {duration2},
       ]);
 
       expect(set.lookup(const Duration(seconds: 0)), same(duration1));
@@ -138,7 +138,7 @@ void main() {
       set = UnionSet.from([
         {1, 2},
         {5},
-        innerSet
+        innerSet,
       ]);
 
       innerSet.add(4);
@@ -182,7 +182,7 @@ void main() {
       var outerSet = {
         {1, 2},
         {5},
-        innerSet
+        innerSet,
       };
 
       set = UnionSet<int>(outerSet);

@@ -110,20 +110,22 @@ void main() {
     expect(futureGroup.future, completion(equals([1, 2, 3])));
   });
 
-  test("completes to the first error to be emitted, even if it's not closed",
-      () {
-    var completer1 = Completer<void>();
-    var completer2 = Completer<void>();
-    var completer3 = Completer<void>();
+  test(
+    "completes to the first error to be emitted, even if it's not closed",
+    () {
+      var completer1 = Completer<void>();
+      var completer2 = Completer<void>();
+      var completer3 = Completer<void>();
 
-    futureGroup.add(completer1.future);
-    futureGroup.add(completer2.future);
-    futureGroup.add(completer3.future);
+      futureGroup.add(completer1.future);
+      futureGroup.add(completer2.future);
+      futureGroup.add(completer3.future);
 
-    completer2.completeError('error 2');
-    completer1.completeError('error 1');
-    expect(futureGroup.future, throwsA('error 2'));
-  });
+      completer2.completeError('error 2');
+      completer1.completeError('error 1');
+      expect(futureGroup.future, throwsA('error 2'));
+    },
+  );
 
   group('onIdle:', () {
     test('emits an event when the last pending future completes', () async {
@@ -191,20 +193,25 @@ void main() {
       var onIdleDone = false;
       var futureFired = false;
 
-      futureGroup.onIdle.listen(expectAsync1((_) {
-        expect(futureFired, isFalse);
-        idle = true;
-      }), onDone: expectAsync0(() {
-        expect(idle, isTrue);
-        expect(futureFired, isFalse);
-        onIdleDone = true;
-      }));
+      futureGroup.onIdle.listen(
+        expectAsync1((_) {
+          expect(futureFired, isFalse);
+          idle = true;
+        }),
+        onDone: expectAsync0(() {
+          expect(idle, isTrue);
+          expect(futureFired, isFalse);
+          onIdleDone = true;
+        }),
+      );
 
-      futureGroup.future.then(expectAsync1((_) {
-        expect(idle, isTrue);
-        expect(onIdleDone, isTrue);
-        futureFired = true;
-      }));
+      futureGroup.future.then(
+        expectAsync1((_) {
+          expect(idle, isTrue);
+          expect(onIdleDone, isTrue);
+          futureFired = true;
+        }),
+      );
 
       var completer = Completer<void>();
       futureGroup.add(completer.future);

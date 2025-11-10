@@ -1,5 +1,10 @@
-## 2.0.3-wip
+## 2.0.4-wip
 
+- Run `dart format` with the new style.
+
+## 2.0.3
+
+- Move to `package:web`.
 - Require Dart 3.5
 
 ## 2.0.2

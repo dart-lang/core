@@ -22,16 +22,21 @@ extension StreamExtensions<T> on Stream<T> {
     if (length < 1) throw RangeError.range(length, 1, null, 'length');
 
     var slice = <T>[];
-    return transform(StreamTransformer.fromHandlers(handleData: (data, sink) {
-      slice.add(data);
-      if (slice.length == length) {
-        sink.add(slice);
-        slice = [];
-      }
-    }, handleDone: (sink) {
-      if (slice.isNotEmpty) sink.add(slice);
-      sink.close();
-    }));
+    return transform(
+      StreamTransformer.fromHandlers(
+        handleData: (data, sink) {
+          slice.add(data);
+          if (slice.length == length) {
+            sink.add(slice);
+            slice = [];
+          }
+        },
+        handleDone: (sink) {
+          if (slice.isNotEmpty) sink.add(slice);
+          sink.close();
+        },
+      ),
+    );
   }
 
   /// A future which completes with the first event of this stream, or with
@@ -43,10 +48,12 @@ extension StreamExtensions<T> on Stream<T> {
   /// completed with `null`.
   Future<T?> get firstOrNull {
     var completer = Completer<T?>.sync();
-    final subscription = listen(null,
-        onError: completer.completeError,
-        onDone: completer.complete,
-        cancelOnError: true);
+    final subscription = listen(
+      null,
+      onError: completer.completeError,
+      onDone: completer.complete,
+      cancelOnError: true,
+    );
     subscription.onData((event) {
       subscription.cancel().whenComplete(() {
         completer.complete(event);
@@ -70,8 +77,11 @@ extension StreamExtensions<T> on Stream<T> {
   /// clear that the data isn't not needed.
   Stream<T> listenAndBuffer() {
     var controller = StreamController<T>(sync: true);
-    var subscription = listen(controller.add,
-        onError: controller.addError, onDone: controller.close);
+    var subscription = listen(
+      controller.add,
+      onError: controller.addError,
+      onDone: controller.close,
+    );
     controller
       ..onPause = subscription.pause
       ..onResume = subscription.resume

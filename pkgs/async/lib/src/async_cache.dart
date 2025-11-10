@@ -85,10 +85,15 @@ class AsyncCache<T> {
       throw StateError('Previously used to cache via `fetch`');
     }
     var splitter = _cachedStreamSplitter ??= StreamSplitter(
-        callback().transform(StreamTransformer.fromHandlers(handleDone: (sink) {
-      _startStaleTimer();
-      sink.close();
-    })));
+      callback().transform(
+        StreamTransformer.fromHandlers(
+          handleDone: (sink) {
+            _startStaleTimer();
+            sink.close();
+          },
+        ),
+      ),
+    );
     return splitter.split();
   }
 

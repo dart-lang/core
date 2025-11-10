@@ -51,9 +51,10 @@ class EqualityBy<E, F> implements Equality<E> {
 
   final Equality<F> _inner;
 
-  EqualityBy(F Function(E) comparisonKey,
-      [Equality<F> inner = const DefaultEquality<Never>()])
-      : _comparisonKey = comparisonKey,
+  EqualityBy(
+    F Function(E) comparisonKey, [
+    Equality<F> inner = const DefaultEquality<Never>(),
+  ])  : _comparisonKey = comparisonKey,
         _inner = inner;
 
   @override
@@ -111,9 +112,9 @@ class IdentityEquality<E> implements Equality<E> {
 /// The [hash] of `null` is `null.hashCode`.
 class IterableEquality<E> implements Equality<Iterable<E>> {
   final Equality<E?> _elementEquality;
-  const IterableEquality(
-      [Equality<E> elementEquality = const DefaultEquality<Never>()])
-      : _elementEquality = elementEquality;
+  const IterableEquality([
+    Equality<E> elementEquality = const DefaultEquality<Never>(),
+  ]) : _elementEquality = elementEquality;
 
   @override
   bool equals(Iterable<E>? elements1, Iterable<E>? elements2) {
@@ -163,9 +164,9 @@ class IterableEquality<E> implements Equality<Iterable<E>> {
 /// The [hash] of `null` is `null.hashCode`.
 class ListEquality<E> implements Equality<List<E>> {
   final Equality<E> _elementEquality;
-  const ListEquality(
-      [Equality<E> elementEquality = const DefaultEquality<Never>()])
-      : _elementEquality = elementEquality;
+  const ListEquality([
+    Equality<E> elementEquality = const DefaultEquality<Never>(),
+  ]) : _elementEquality = elementEquality;
 
   @override
   bool equals(List<E>? list1, List<E>? list2) {
@@ -213,9 +214,10 @@ abstract class _UnorderedEquality<E, T extends Iterable<E>>
     if (identical(elements1, elements2)) return true;
     if (elements1 == null || elements2 == null) return false;
     var counts = HashMap<E, int>(
-        equals: _elementEquality.equals,
-        hashCode: _elementEquality.hash,
-        isValidKey: _elementEquality.isValidKey);
+      equals: _elementEquality.equals,
+      hashCode: _elementEquality.hash,
+      isValidKey: _elementEquality.isValidKey,
+    );
     var length = 0;
     for (var e in elements1) {
       var count = counts[e] ?? 0;
@@ -252,8 +254,9 @@ abstract class _UnorderedEquality<E, T extends Iterable<E>>
 /// and the elements of one set can be paired with the elements
 /// of the other iterable, so that each pair are equal.
 class UnorderedIterableEquality<E> extends _UnorderedEquality<E, Iterable<E>> {
-  const UnorderedIterableEquality(
-      [super.elementEquality = const DefaultEquality<Never>()]);
+  const UnorderedIterableEquality([
+    super.elementEquality = const DefaultEquality<Never>(),
+  ]);
 
   @override
   bool isValidKey(Object? o) => o is Iterable<E>;
@@ -312,10 +315,10 @@ class _MapEntry {
 class MapEquality<K, V> implements Equality<Map<K, V>> {
   final Equality<K> _keyEquality;
   final Equality<V> _valueEquality;
-  const MapEquality(
-      {Equality<K> keys = const DefaultEquality<Never>(),
-      Equality<V> values = const DefaultEquality<Never>()})
-      : _keyEquality = keys,
+  const MapEquality({
+    Equality<K> keys = const DefaultEquality<Never>(),
+    Equality<V> values = const DefaultEquality<Never>(),
+  })  : _keyEquality = keys,
         _valueEquality = values;
 
   @override
@@ -325,19 +328,16 @@ class MapEquality<K, V> implements Equality<Map<K, V>> {
     var length = map1.length;
     if (length != map2.length) return false;
     Map<_MapEntry, int> equalElementCounts = HashMap();
-    var values1 = map1.values.iterator;
     for (var key in map1.keys) {
-      var value = (values1..moveNext()).current;
-      var entry = _MapEntry(this, key, value);
-      equalElementCounts.update(entry, _addOne, ifAbsent: _one);
+      var entry = _MapEntry(this, key, map1[key]);
+      var count = equalElementCounts[entry] ?? 0;
+      equalElementCounts[entry] = count + 1;
     }
-    final values2 = map2.values.iterator;
     for (var key in map2.keys) {
-      var value = (values2..moveNext()).current;
-      var entry = _MapEntry(this, key, value);
-      var count = equalElementCounts.update(entry, _subtractOne,
-          ifAbsent: _negativeOne);
-      if (count < 0) return false;
+      var entry = _MapEntry(this, key, map2[key]);
+      var count = equalElementCounts[entry];
+      if (count == null || count == 0) return false;
+      equalElementCounts[entry] = count - 1;
     }
     return true;
   }
@@ -346,11 +346,9 @@ class MapEquality<K, V> implements Equality<Map<K, V>> {
   int hash(Map<K, V>? map) {
     if (map == null) return null.hashCode;
     var hash = 0;
-    var values = map.values.iterator;
     for (var key in map.keys) {
-      var value = (values..moveNext()).current;
       var keyHash = _keyEquality.hash(key);
-      var valueHash = _valueEquality.hash(value);
+      var valueHash = _valueEquality.hash(map[key] as V);
       hash = (hash + 3 * keyHash + 7 * valueHash) & _hashMask;
     }
     hash = (hash + (hash << 3)) & _hashMask;
@@ -433,9 +431,9 @@ class DeepCollectionEquality implements Equality {
   /// Creates a deep equality on collections where the order of lists and
   /// iterables are not considered important. That is, lists and iterables are
   /// treated as unordered iterables.
-  const DeepCollectionEquality.unordered(
-      [Equality base = const DefaultEquality<Never>()])
-      : _base = base,
+  const DeepCollectionEquality.unordered([
+    Equality base = const DefaultEquality<Never>(),
+  ])  : _base = base,
         _unordered = true;
 
   @override
@@ -494,8 +492,3 @@ class CaseInsensitiveEquality implements Equality<String> {
   @override
   bool isValidKey(Object? object) => object is String;
 }
-
-int _addOne(int i) => i + 1;
-int _subtractOne(int i) => i - 1;
-int _one() => 1;
-int _negativeOne() => -1;

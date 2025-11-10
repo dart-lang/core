@@ -81,9 +81,9 @@ class ArgResults {
   ///
   /// [name] must be a valid flag name in the parser.
   bool flag(String name) {
-    var option = _parser.options[name];
+    final option = _parser.options[name];
     if (option == null) {
-      throw ArgumentError('Could not find an option named "--$name".');
+      throw ArgumentError('Could not find a flag named "--$name".');
     }
     if (!option.isFlag) {
       throw ArgumentError('"$name" is not a flag.');
@@ -95,12 +95,15 @@ class ArgResults {
   ///
   /// [name] must be a valid option name in the parser.
   String? option(String name) {
-    var option = _parser.options[name];
+    final option = _parser.options[name];
     if (option == null) {
       throw ArgumentError('Could not find an option named "--$name".');
     }
     if (!option.isSingle) {
       throw ArgumentError('"$name" is a multi-option.');
+    }
+    if (option.mandatory && !_parsed.containsKey(name)) {
+      throw ArgumentError('Option $name is mandatory.');
     }
     return option.valueOrDefault(_parsed[name]) as String?;
   }

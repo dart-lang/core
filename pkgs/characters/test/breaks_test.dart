@@ -74,8 +74,11 @@ void main() {
 
           for (var i = 0; i <= input.length; i++) {
             var actualBreak = nextBreak(input, 0, input.length, i);
-            expect(actualBreak, nextExpectedBreak,
-                reason: 'at $i: $description$kind');
+            expect(
+              actualBreak,
+              nextExpectedBreak,
+              reason: 'at $i: $description$kind',
+            );
             if (i == nextExpectedBreak && i < input.length) {
               nextExpectedBreak += variantParts[partCursor].length;
               partCursor++;
@@ -107,8 +110,11 @@ void main() {
               }
             }
             var actualBreak = previousBreak(input, 0, input.length, i);
-            expect(actualBreak, expectedBreak,
-                reason: 'at $i: $description$kind');
+            expect(
+              actualBreak,
+              expectedBreak,
+              reason: 'at $i: $description$kind',
+            );
           }
         });
       }
@@ -128,9 +134,11 @@ void main() {
           var nextBreak = 0;
 
           for (var i = 0; i <= input.length; i++) {
-            expect(isGraphemeClusterBoundary(input, 0, input.length, i),
-                i == nextBreak,
-                reason: 'at $i: $description');
+            expect(
+              isGraphemeClusterBoundary(input, 0, input.length, i),
+              i == nextBreak,
+              reason: 'at $i: $description',
+            );
 
             if (i == nextBreak && i < input.length) {
               nextBreak += variantParts[partCursor++].length;
@@ -210,8 +218,11 @@ void main() {
             continue;
           }
           // No unexpected output states.
-          expect(states, contains(newState),
-              reason: '($state,$c): Unexpected output state');
+          expect(
+            states,
+            contains(newState),
+            reason: '($state,$c): Unexpected output state',
+          );
           // Add to fringe the first time a state is seen.
           if (unreachableStates.remove(newState)) {
             nextStepList.add(newState);
@@ -219,8 +230,11 @@ void main() {
         }
       }
       if (unreachableStates.isNotEmpty) {
-        expect(unreachableStates.map(stateShortName).toList(), isEmpty,
-            reason: 'Should be reachable');
+        expect(
+          unreachableStates.map(stateShortName).toList(),
+          isEmpty,
+          reason: 'Should be reachable',
+        );
       }
       if (verbose) print('Forward states reachable in $step steps');
     });
@@ -273,8 +287,11 @@ void main() {
           break;
         }
       }
-      expect(eqClasses, everyElement(hasLength(1)),
-          reason: 'Not distinguishable in $stateCount steps');
+      expect(
+        eqClasses,
+        everyElement(hasLength(1)),
+        reason: 'Not distinguishable in $stateCount steps',
+      );
     });
 
     test('States backward reachable', () {
@@ -330,8 +347,11 @@ void main() {
         }
       }
       if (unreachableStates.isNotEmpty) {
-        expect(unreachableStates.map(stateShortName).toList(), isEmpty,
-            reason: 'Should be reachable, not reached in $step steps');
+        expect(
+          unreachableStates.map(stateShortName).toList(),
+          isEmpty,
+          reason: 'Should be reachable, not reached in $step steps',
+        );
       }
     });
 
@@ -349,7 +369,7 @@ void main() {
       // Assume that any lookahead state can be distinguished from any other
       // state.
       var states = [
-        for (var i = 0; i < backStateLimit; i += automatonRowLength) i
+        for (var i = 0; i < backStateLimit; i += automatonRowLength) i,
       ];
       var eqClasses = [states];
       var eq = Equivalence(eqClasses);

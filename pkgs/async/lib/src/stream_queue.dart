@@ -317,7 +317,8 @@ class StreamQueue<T> {
   /// }
   /// ```
   Future<bool> withTransaction(
-      Future<bool> Function(StreamQueue<T>) callback) async {
+    Future<bool> Function(StreamQueue<T>) callback,
+  ) async {
     var transaction = startTransaction();
 
     var queue = transaction.newQueue();
@@ -356,16 +357,21 @@ class StreamQueue<T> {
   ///     _stdinQueue.cancelable((queue) => queue.next);
   /// ```
   CancelableOperation<S> cancelable<S>(
-      Future<S> Function(StreamQueue<T>) callback) {
+    Future<S> Function(StreamQueue<T>) callback,
+  ) {
     var transaction = startTransaction();
-    var completer = CancelableCompleter<S>(onCancel: () {
-      transaction.reject();
-    });
+    var completer = CancelableCompleter<S>(
+      onCancel: () {
+        transaction.reject();
+      },
+    );
 
     var queue = transaction.newQueue();
-    completer.complete(callback(queue).whenComplete(() {
-      if (!completer.isCanceled) transaction.commit(queue);
-    }));
+    completer.complete(
+      callback(queue).whenComplete(() {
+        if (!completer.isCanceled) transaction.commit(queue);
+      }),
+    );
 
     return completer.operation;
   }
@@ -472,14 +478,18 @@ class StreamQueue<T> {
   void _ensureListening() {
     if (_isDone) return;
     if (_subscription == null) {
-      _subscription = _source.listen((data) {
-        _addResult(Result.value(data));
-      }, onError: (Object error, StackTrace stackTrace) {
-        _addResult(Result.error(error, stackTrace));
-      }, onDone: () {
-        _subscription = null;
-        _close();
-      });
+      _subscription = _source.listen(
+        (data) {
+          _addResult(Result.value(data));
+        },
+        onError: (Object error, StackTrace stackTrace) {
+          _addResult(Result.error(error, stackTrace));
+        },
+        onDone: () {
+          _subscription = null;
+          _close();
+        },
+      );
     } else {
       _subscription!.resume();
     }
@@ -755,7 +765,9 @@ class _SkipRequest<T> implements _EventRequest<T> {
       var event = events.removeFirst();
       if (event.isError) {
         _completer.completeError(
-            event.asError!.error, event.asError!.stackTrace);
+          event.asError!.error,
+          event.asError!.stackTrace,
+        );
         return true;
       }
     }

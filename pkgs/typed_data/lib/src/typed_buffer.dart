@@ -203,7 +203,11 @@ abstract class TypedDataBuffer<E> extends ListBase<E> {
     _ensureCapacity(newLength);
 
     _buffer.setRange(
-        index + valuesLength, _length + valuesLength, _buffer, index);
+      index + valuesLength,
+      _length + valuesLength,
+      _buffer,
+      index,
+    );
     _buffer.setRange(index, index + valuesLength, values, start);
     _length = newLength;
   }

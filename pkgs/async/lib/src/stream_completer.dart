@@ -117,23 +117,35 @@ class _CompleterStream<T> extends Stream<T> {
   Stream<T>? _sourceStream;
 
   @override
-  StreamSubscription<T> listen(void Function(T)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<T> listen(
+    void Function(T)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     if (_controller == null) {
       var sourceStream = _sourceStream;
       if (sourceStream != null && !sourceStream.isBroadcast) {
         // If the source stream is itself single subscription,
         // just listen to it directly instead of creating a controller.
-        return sourceStream.listen(onData,
-            onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+        return sourceStream.listen(
+          onData,
+          onError: onError,
+          onDone: onDone,
+          cancelOnError: cancelOnError,
+        );
       }
       _ensureController();
       if (_sourceStream != null) {
         _linkStreamToController();
       }
     }
-    return _controller!.stream.listen(onData,
-        onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+    return _controller!.stream.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 
   /// Whether a source stream has been set.

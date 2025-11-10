@@ -10,12 +10,14 @@ import 'package:test/test.dart';
 void main() {
   group('collectBytes', () {
     test('simple list and overflow', () {
-      var result = collectBytes(Stream.fromIterable([
-        [0],
-        [1],
-        [2],
-        [256]
-      ]));
+      var result = collectBytes(
+        Stream.fromIterable([
+          [0],
+          [1],
+          [2],
+          [256],
+        ]),
+      );
       expect(result, completion([0, 1, 2, 0]));
     });
 
@@ -30,20 +32,25 @@ void main() {
     });
 
     test('error event', () {
-      var result = collectBytes(Stream.fromIterable(
-          Iterable.generate(3, (n) => n == 2 ? throw 'badness' : [n])));
+      var result = collectBytes(
+        Stream.fromIterable(
+          Iterable.generate(3, (n) => n == 2 ? throw 'badness' : [n]),
+        ),
+      );
       expect(result, throwsA('badness'));
     });
   });
 
   group('collectBytes', () {
     test('simple list and overflow', () {
-      var result = collectBytesCancelable(Stream.fromIterable([
-        [0],
-        [1],
-        [2],
-        [256]
-      ]));
+      var result = collectBytesCancelable(
+        Stream.fromIterable([
+          [0],
+          [1],
+          [2],
+          [256],
+        ]),
+      );
       expect(result.value, completion([0, 1, 2, 0]));
     });
 
@@ -58,8 +65,11 @@ void main() {
     });
 
     test('error event', () {
-      var result = collectBytesCancelable(Stream.fromIterable(
-          Iterable.generate(3, (n) => n == 2 ? throw 'badness' : [n])));
+      var result = collectBytesCancelable(
+        Stream.fromIterable(
+          Iterable.generate(3, (n) => n == 2 ? throw 'badness' : [n]),
+        ),
+      );
       expect(result.value, throwsA('badness'));
     });
 

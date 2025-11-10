@@ -25,7 +25,7 @@ void main() {
     latinGreek,
     latinHebrew,
     latinThai,
-    latinArabic
+    latinArabic,
   ]) {
     group('${cp.name} codepage', () {
       test('ascii compatible', () {
@@ -52,14 +52,17 @@ void main() {
 
       test('decode invalid characters allowed', () {
         // Decode works like operator[].
-        expect(cp.decode(bytes, allowInvalid: true),
-            String.fromCharCodes([for (var i = 0; i < 256; i++) cp[i]]));
+        expect(
+          cp.decode(bytes, allowInvalid: true),
+          String.fromCharCodes([for (var i = 0; i < 256; i++) cp[i]]),
+        );
       });
 
       test('chunked conversion', () {
         late final String decodedString;
         final outputSink = StringConversionSink.withCallback(
-            (accumulated) => decodedString = accumulated);
+          (accumulated) => decodedString = accumulated,
+        );
         final inputSink = cp.decoder.startChunkedConversion(outputSink);
         final expected = StringBuffer();
 
@@ -123,7 +126,8 @@ void main() {
     test('chunked conversion', () {
       late final String decodedString;
       final outputSink = StringConversionSink.withCallback(
-          (accumulated) => decodedString = accumulated);
+        (accumulated) => decodedString = accumulated,
+      );
       final inputSink = cp.decoder.startChunkedConversion(outputSink);
 
       inputSink
@@ -137,7 +141,8 @@ void main() {
     test('chunked conversion - byte conversion sink', () {
       late final String decodedString;
       final outputSink = StringConversionSink.withCallback(
-          (accumulated) => decodedString = accumulated);
+        (accumulated) => decodedString = accumulated,
+      );
       final bytes = [1, 0, 3, 2, 0, 5, 4];
 
       final inputSink = cp.decoder.startChunkedConversion(outputSink);

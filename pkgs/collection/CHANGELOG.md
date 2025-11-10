@@ -2,8 +2,13 @@
 
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
   `Map.entries`.
+- Explicitly mark `BoolList` as `abstract interface`
+- Address diagnostics from `strict_top_level_inference`.
 - Optimize equality and hash code for maps by using `update` and a `values`
   iterator to avoid extra lookups.
+- Add `PriorityQueue.of` constructor and optimize adding many elements.
+- Address diagnostics from `strict_top_level_inference`.
+- Run `dart format` with the new style.
 
 ## 1.19.1
 

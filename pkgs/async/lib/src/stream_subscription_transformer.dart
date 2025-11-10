@@ -27,22 +27,24 @@ typedef _VoidHandler<T> = void Function(StreamSubscription<T> inner);
 /// synchronously call the corresponding method** on the inner
 /// [StreamSubscription]: [handleCancel] must call `cancel()`, [handlePause]
 /// must call `pause()`, and [handleResume] must call `resume()`.
-StreamTransformer<T, T> subscriptionTransformer<T>(
-    {Future Function(StreamSubscription<T>)? handleCancel,
-    void Function(StreamSubscription<T>)? handlePause,
-    void Function(StreamSubscription<T>)? handleResume}) {
+StreamTransformer<T, T> subscriptionTransformer<T>({
+  Future Function(StreamSubscription<T>)? handleCancel,
+  void Function(StreamSubscription<T>)? handlePause,
+  void Function(StreamSubscription<T>)? handleResume,
+}) {
   return StreamTransformer((stream, cancelOnError) {
     return _TransformedSubscription(
-        stream.listen(null, cancelOnError: cancelOnError),
-        handleCancel ?? (inner) => inner.cancel(),
-        handlePause ??
-            (inner) {
-              inner.pause();
-            },
-        handleResume ??
-            (inner) {
-              inner.resume();
-            });
+      stream.listen(null, cancelOnError: cancelOnError),
+      handleCancel ?? (inner) => inner.cancel(),
+      handlePause ??
+          (inner) {
+            inner.pause();
+          },
+      handleResume ??
+          (inner) {
+            inner.resume();
+          },
+    );
   });
 }
 
@@ -65,7 +67,11 @@ class _TransformedSubscription<T> implements StreamSubscription<T> {
   bool get isPaused => _inner?.isPaused ?? false;
 
   _TransformedSubscription(
-      this._inner, this._handleCancel, this._handlePause, this._handleResume);
+    this._inner,
+    this._handleCancel,
+    this._handlePause,
+    this._handleResume,
+  );
 
   @override
   void onData(void Function(T)? handleData) {

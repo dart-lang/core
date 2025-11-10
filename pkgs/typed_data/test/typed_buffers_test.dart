@@ -38,7 +38,7 @@ const List<int> browserSafeIntSamples = [
   0x55,
   0x02,
   0x01,
-  0x00
+  0x00,
 ];
 
 void main() {
@@ -57,12 +57,20 @@ void initTests(List<int> intSamples) {
 
   testInt(intSamples, 32, Int32Buffer.new);
 
-  testUint(intSamples, 64, Uint64Buffer.new,
-      // JS doesn't support 64-bit ints, so only test this on the VM.
-      testOn: 'dart-vm');
-  testInt(intSamples, 64, Int64Buffer.new,
-      // JS doesn't support 64-bit ints, so only test this on the VM.
-      testOn: 'dart-vm');
+  testUint(
+    intSamples,
+    64,
+    Uint64Buffer.new,
+    // JS doesn't support 64-bit ints, so only test this on the VM.
+    testOn: 'dart-vm',
+  );
+  testInt(
+    intSamples,
+    64,
+    Int64Buffer.new,
+    // JS doesn't support 64-bit ints, so only test this on the VM.
+    testOn: 'dart-vm',
+  );
 
   testInt32x4Buffer(intSamples);
 
@@ -203,7 +211,7 @@ const doubleSamples = [
   0.0 / 0.0, //               NaN.
   0.49999999999999994, //     Round-traps 1-3 (adding 0.5 and rounding towards
   4503599627370497.0, //      minus infinity will not be the same as rounding
-  9007199254740991.0 //       to nearest with 0.5 rounding up).
+  9007199254740991.0, //       to nearest with 0.5 rounding up).
 ];
 
 const floatSamples = [
@@ -221,7 +229,7 @@ const floatSamples = [
   0.0 / 0.0, //      NaN.
   0.99999994, //     Round traps 1-3.
   8388609.0,
-  16777215.0
+  16777215.0,
 ];
 
 int clampUint8(int x) => x < 0
@@ -251,8 +259,14 @@ double roundToFloat(double value) {
 void testFloat32x4Buffer(List<double> floatSamples) {
   var float4Samples = <Float32x4>[];
   for (var i = 0; i < floatSamples.length - 3; i++) {
-    float4Samples.add(Float32x4(floatSamples[i], floatSamples[i + 1],
-        floatSamples[i + 2], floatSamples[i + 3]));
+    float4Samples.add(
+      Float32x4(
+        floatSamples[i],
+        floatSamples[i + 1],
+        floatSamples[i + 2],
+        floatSamples[i + 3],
+      ),
+    );
   }
 
   void floatEquals(num x, num y) {

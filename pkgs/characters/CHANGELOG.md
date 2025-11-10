@@ -1,3 +1,8 @@
+## 1.4.1
+
+* Run `dart format` with the new style.
+* Performance improvement for non-BMP characters.
+
 ## 1.4.0
 
 * Updated to use Unicode 16.0.0.

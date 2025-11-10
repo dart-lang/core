@@ -119,7 +119,10 @@ class WindowsStyle extends InternalStyle {
       }
 
       return Uri(
-          scheme: 'file', host: rootParts.first, pathSegments: parsed.parts);
+        scheme: 'file',
+        host: rootParts.first,
+        pathSegments: parsed.parts,
+      );
     } else {
       // Drive-letter paths become "file:///C:/path/to/file".
 
@@ -133,8 +136,10 @@ class WindowsStyle extends InternalStyle {
 
       // Get rid of the trailing "\" in "C:\" because the URI constructor will
       // add a separator on its own.
-      parsed.parts
-          .insert(0, parsed.root!.replaceAll('/', '').replaceAll('\\', ''));
+      parsed.parts.insert(
+        0,
+        parsed.root!.replaceAll('/', '').replaceAll('\\', ''),
+      );
 
       return Uri(scheme: 'file', pathSegments: parsed.parts);
     }

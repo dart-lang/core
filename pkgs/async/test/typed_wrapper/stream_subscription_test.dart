@@ -16,23 +16,29 @@ void main() {
     late bool isCanceled;
     setUp(() {
       isCanceled = false;
-      controller = StreamController<Object>(onCancel: () {
-        isCanceled = true;
-      });
+      controller = StreamController<Object>(
+        onCancel: () {
+          isCanceled = true;
+        },
+      );
       wrapper = TypeSafeStreamSubscription<int>(controller.stream.listen(null));
     });
 
     test('onData()', () {
-      wrapper.onData(expectAsync1((data) {
-        expect(data, equals(1));
-      }));
+      wrapper.onData(
+        expectAsync1((data) {
+          expect(data, equals(1));
+        }),
+      );
       controller.add(1);
     });
 
     test('onError()', () {
-      wrapper.onError(expectAsync1((error) {
-        expect(error, equals('oh no'));
-      }));
+      wrapper.onError(
+        expectAsync1((error) {
+          expect(error, equals('oh no'));
+        }),
+      );
       controller.addError('oh no');
     });
 
@@ -73,9 +79,11 @@ void main() {
     late bool isCanceled;
     setUp(() {
       isCanceled = false;
-      controller = StreamController<Object>(onCancel: () {
-        isCanceled = true;
-      });
+      controller = StreamController<Object>(
+        onCancel: () {
+          isCanceled = true;
+        },
+      );
       wrapper = TypeSafeStreamSubscription<int>(controller.stream.listen(null));
     });
 
@@ -85,8 +93,9 @@ void main() {
           // TODO(nweiz): Use the wrapper declared in setUp when sdk#26226 is
           // fixed.
           controller = StreamController<Object>();
-          wrapper =
-              TypeSafeStreamSubscription<int>(controller.stream.listen(null));
+          wrapper = TypeSafeStreamSubscription<int>(
+            controller.stream.listen(null),
+          );
 
           wrapper.onData(expectAsync1((_) {}, count: 0));
           controller.add('foo');
@@ -96,9 +105,11 @@ void main() {
 
     group("doesn't throw a TypeError for", () {
       test('onError()', () {
-        wrapper.onError(expectAsync1((error) {
-          expect(error, equals('oh no'));
-        }));
+        wrapper.onError(
+          expectAsync1((error) {
+            expect(error, equals('oh no'));
+          }),
+        );
         controller.add('foo');
         controller.addError('oh no');
       });

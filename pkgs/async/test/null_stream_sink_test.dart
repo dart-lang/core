@@ -58,9 +58,11 @@ void main() {
       test('listens to the stream then cancels immediately', () async {
         var sink = NullStreamSink();
         var canceled = false;
-        var controller = StreamController(onCancel: () {
-          canceled = true;
-        });
+        var controller = StreamController(
+          onCancel: () {
+            canceled = true;
+          },
+        );
 
         expect(sink.addStream(controller.stream), completes);
         await flushMicrotasks();
@@ -90,19 +92,21 @@ void main() {
         expect(sink.addStream(controller.stream), throwsA('oh no'));
       });
 
-      test('causes events to throw StateErrors until the future completes',
-          () async {
-        var sink = NullStreamSink();
-        var future = sink.addStream(const Stream.empty());
-        expect(() => sink.add(1), throwsStateError);
-        expect(() => sink.addError('oh no'), throwsStateError);
-        expect(() => sink.addStream(const Stream.empty()), throwsStateError);
+      test(
+        'causes events to throw StateErrors until the future completes',
+        () async {
+          var sink = NullStreamSink();
+          var future = sink.addStream(const Stream.empty());
+          expect(() => sink.add(1), throwsStateError);
+          expect(() => sink.addError('oh no'), throwsStateError);
+          expect(() => sink.addStream(const Stream.empty()), throwsStateError);
 
-        await future;
-        sink.add(1);
-        sink.addError('oh no');
-        expect(sink.addStream(const Stream.empty()), completes);
-      });
+          await future;
+          sink.add(1);
+          sink.addError('oh no');
+          expect(sink.addStream(const Stream.empty()), completes);
+        },
+      );
     });
   });
 

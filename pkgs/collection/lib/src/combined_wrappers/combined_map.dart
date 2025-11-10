@@ -56,7 +56,8 @@ class CombinedMapView<K, V> extends UnmodifiableMapBase<K, V> {
   /// the future.
   @override
   Iterable<K> get keys => _DeduplicatingIterableView(
-      CombinedIterableView(_maps.map((m) => m.keys)));
+        CombinedIterableView(_maps.map((m) => m.keys)),
+      );
 }
 
 /// A view of an iterable that skips any duplicate entries.

@@ -38,7 +38,7 @@ class StreamCloser<T> extends StreamTransformerBase<T, T> {
   /// ignored.
   Future<void> close() => _closeFuture ??= () {
         var futures = [
-          for (var subscription in _subscriptions) subscription.cancel()
+          for (var subscription in _subscriptions) subscription.cancel(),
         ];
         _subscriptions.clear();
 
@@ -71,8 +71,10 @@ class StreamCloser<T> extends StreamTransformerBase<T, T> {
         return;
       }
 
-      var subscription =
-          stream.listen(controller.add, onError: controller.addError);
+      var subscription = stream.listen(
+        controller.add,
+        onError: controller.addError,
+      );
       subscription.onDone(() {
         _subscriptions.remove(subscription);
         _controllers.remove(controller);

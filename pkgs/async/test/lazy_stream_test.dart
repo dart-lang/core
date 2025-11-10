@@ -12,10 +12,12 @@ import 'utils.dart';
 void main() {
   test('calls the callback when the stream is listened', () async {
     var callbackCalled = false;
-    var stream = LazyStream(expectAsync0(() {
-      callbackCalled = true;
-      return const Stream.empty();
-    }));
+    var stream = LazyStream(
+      expectAsync0(() {
+        callbackCalled = true;
+        return const Stream.empty();
+      }),
+    );
 
     await flushMicrotasks();
     expect(callbackCalled, isFalse);
@@ -26,10 +28,12 @@ void main() {
 
   test('calls the callback when the stream is listened', () async {
     var callbackCalled = false;
-    var stream = LazyStream(expectAsync0(() {
-      callbackCalled = true;
-      return const Stream.empty();
-    }));
+    var stream = LazyStream(
+      expectAsync0(() {
+        callbackCalled = true;
+        return const Stream.empty();
+      }),
+    );
 
     await flushMicrotasks();
     expect(callbackCalled, isFalse);
@@ -93,10 +97,12 @@ void main() {
 
   test("a lazy stream can't be listened to from within its callback", () {
     late LazyStream stream;
-    stream = LazyStream(expectAsync0(() {
-      expect(() => stream.listen(null), throwsStateError);
-      return const Stream.empty();
-    }));
+    stream = LazyStream(
+      expectAsync0(() {
+        expect(() => stream.listen(null), throwsStateError);
+        return const Stream.empty();
+      }),
+    );
     stream.listen(null);
   });
 }

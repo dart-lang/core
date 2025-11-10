@@ -2,8 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'characters.dart' as chars;
 import 'internal_style.dart';
 import 'style.dart';
+import 'utils.dart' show endOfScheme, removeQueryFragment;
 
 class ParsedPath {
   /// The [InternalStyle] that was used to parse this path.
@@ -35,7 +37,7 @@ class ParsedPath {
   /// one.
   String extension([int level = 1]) => _splitExtension(level)[1];
 
-  /// `true` if this is an absolute path.
+  /// Whether this is an absolute path.
   bool get isAbsolute => root != null;
 
   factory ParsedPath.parse(String path, InternalStyle style) {
@@ -58,10 +60,16 @@ class ParsedPath {
     }
 
     for (var i = start; i < path.length; i++) {
-      if (style.isSeparator(path.codeUnitAt(i))) {
+      final codeUnit = path.codeUnitAt(i);
+      if (style.isSeparator(codeUnit)) {
         parts.add(path.substring(start, i));
         separators.add(path[i]);
         start = i + 1;
+      }
+      if (style == Style.url &&
+          (codeUnit == chars.question || codeUnit == chars.hash)) {
+        // Include `?` and `#` in final path segment.
+        break;
       }
     }
 
@@ -75,7 +83,12 @@ class ParsedPath {
   }
 
   ParsedPath._(
-      this.style, this.root, this.isRootRelative, this.parts, this.separators);
+    this.style,
+    this.root,
+    this.isRootRelative,
+    this.parts,
+    this.separators,
+  );
 
   String get basename {
     final copy = clone();
@@ -101,6 +114,13 @@ class ParsedPath {
     // Handle '.', '..', and empty parts.
     var leadingDoubles = 0;
     final newParts = <String>[];
+    if (style == Style.url && parts.isNotEmpty) {
+      parts.last = removeQueryFragment(parts.last);
+      if (canonicalize && endOfScheme(parts.first, 0) > 0) {
+        // Normalize scheme and authority.
+        parts.first = parts.first.toLowerCase();
+      }
+    }
     for (var part in parts) {
       if (part == '.' || part == '') {
         // Do nothing. Ignore it.
@@ -129,16 +149,26 @@ class ParsedPath {
 
     // Canonicalize separators.
     parts = newParts;
-    separators =
-        List.filled(newParts.length + 1, style.separator, growable: true);
-    if (!isAbsolute || newParts.isEmpty || !style.needsSeparator(root!)) {
+    separators = List.filled(
+      newParts.length + 1,
+      style.separator,
+      growable: true,
+    );
+
+    final root = this.root;
+    if (root == null || newParts.isEmpty || !style.needsSeparator(root)) {
       separators[0] = '';
     }
 
-    // Normalize the Windows root if needed.
-    if (root != null && style == Style.windows) {
-      if (canonicalize) root = root!.toLowerCase();
-      root = root!.replaceAll('/', '\\');
+    if (root != null) {
+      if (style == Style.windows) {
+        // Normalize the Windows root if needed.
+        final canonRoot = canonicalize ? root.toLowerCase() : root;
+        this.root = canonRoot.replaceAll('/', r'\');
+      } else if (canonicalize && style == Style.url) {
+        // Canonicalize the URL scheme and authority.
+        this.root = root.toLowerCase();
+      }
     }
     removeTrailingSeparators();
   }
@@ -187,11 +217,16 @@ class ParsedPath {
   List<String> _splitExtension([int level = 1]) {
     if (level <= 0) {
       throw RangeError.value(
-          level, 'level', "level's value must be greater than 0");
+        level,
+        'level',
+        "level's value must be greater than 0",
+      );
     }
 
-    final file =
-        parts.cast<String?>().lastWhere((p) => p != '', orElse: () => null);
+    final file = parts.cast<String?>().lastWhere(
+          (p) => p != '',
+          orElse: () => null,
+        );
 
     if (file == null) return ['', ''];
     if (file == '..') return ['..', ''];
@@ -206,5 +241,10 @@ class ParsedPath {
   }
 
   ParsedPath clone() => ParsedPath._(
-      style, root, isRootRelative, List.from(parts), List.from(separators));
+        style,
+        root,
+        isRootRelative,
+        List.from(parts),
+        List.from(separators),
+      );
 }

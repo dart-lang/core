@@ -23,6 +23,35 @@ void testDefault() {
   });
   testInt(PriorityQueue<int>.new);
   testCustom(PriorityQueue<C>.new);
+
+  group('(Heap)PriorityQueue.of returns functional priority queue', () {
+    List<int> extract(PriorityQueue<int> queue) {
+      var result = <int>[];
+      while (queue.isNotEmpty) {
+        result.add(queue.removeFirst());
+      }
+      return result;
+    }
+
+    for (var i = 0; i < 1024; i = i * 2 + 1) {
+      test('size $i', () {
+        var input = List<int>.generate(i, (x) => x);
+        for (var j = 0; j < 5; j++) {
+          var copy = (input.toList()..shuffle()).where((_) => true);
+          {
+            var queue = HeapPriorityQueue<int>.of(copy, (a, b) => a - b);
+            var elements = extract(queue);
+            expect(elements, input);
+          }
+          {
+            var queue = HeapPriorityQueue<int>.of(copy, (a, b) => a - b);
+            var elements = extract(queue);
+            expect(elements, input);
+          }
+        }
+      });
+    }
+  });
 }
 
 void testInt(PriorityQueue<int> Function() create) {
@@ -32,14 +61,27 @@ void testInt(PriorityQueue<int> Function() create) {
 }
 
 void testCustom(
-    PriorityQueue<C> Function(int Function(C, C)? comparator) create) {
+  PriorityQueue<C> Function(int Function(C, C)? comparator) create,
+) {
   for (var count in [1, 5, 127, 128]) {
-    testQueue('Custom:$count/null', () => create(null),
-        List<C>.generate(count, C.new), C(count));
-    testQueue('Custom:$count/compare', () => create(compare),
-        List<C>.generate(count, C.new), C(count));
-    testQueue('Custom:$count/compareNeg', () => create(compareNeg),
-        List<C>.generate(count, (x) => C(count - x)), const C(0));
+    testQueue(
+      'Custom:$count/null',
+      () => create(null),
+      List<C>.generate(count, C.new),
+      C(count),
+    );
+    testQueue(
+      'Custom:$count/compare',
+      () => create(compare),
+      List<C>.generate(count, C.new),
+      C(count),
+    );
+    testQueue(
+      'Custom:$count/compareNeg',
+      () => create(compareNeg),
+      List<C>.generate(count, (x) => C(count - x)),
+      const C(0),
+    );
   }
 }
 
@@ -56,7 +98,10 @@ void testQueue<T>(
 }
 
 void testQueueBody<T>(
-    PriorityQueue<T> Function() create, List<T> elements, T notElement) {
+  PriorityQueue<T> Function() create,
+  List<T> elements,
+  T notElement,
+) {
   var q = create();
   expect(q.isEmpty, isTrue);
   expect(q, hasLength(0));
@@ -278,9 +323,9 @@ void testConcurrentModification() {
       var q = HeapPriorityQueue<int>((a, b) => a - b)
         ..addAll([6, 4, 2, 3, 5, 8]);
       var e = q.unorderedElements;
-      q.add(12); // Modifiation before creating iterator is not a problem.
+      q.add(12); // Modification before creating iterator is not a problem.
       var it = e.iterator;
-      q.add(7); // Modification after creatig iterator is a problem.
+      q.add(7); // Modification after creating iterator is a problem.
       expect(it.moveNext, throwsConcurrentModificationError);
 
       it = e.iterator; // New iterator is not affected.
@@ -294,9 +339,9 @@ void testConcurrentModification() {
       var q = HeapPriorityQueue<int>((a, b) => a - b)
         ..addAll([6, 4, 2, 3, 5, 8]);
       var e = q.unorderedElements;
-      q.addAll([12]); // Modifiation before creating iterator is not a problem.
+      q.addAll([12]); // Modification before creating iterator is not a problem.
       var it = e.iterator;
-      q.addAll([7]); // Modification after creatig iterator is a problem.
+      q.addAll([7]); // Modification after creating iterator is a problem.
       expect(it.moveNext, throwsConcurrentModificationError);
       it = e.iterator; // New iterator is not affected.
       expect(it.moveNext(), true);
@@ -310,11 +355,15 @@ void testConcurrentModification() {
       var q = HeapPriorityQueue<int>((a, b) => a - b)
         ..addAll([6, 4, 2, 3, 5, 8]);
       var e = q.unorderedElements;
-      expect(q.removeFirst(),
-          2); // Modifiation before creating iterator is not a problem.
+      expect(
+        q.removeFirst(),
+        2,
+      ); // Modification before creating iterator is not a problem.
       var it = e.iterator;
-      expect(q.removeFirst(),
-          3); // Modification after creatig iterator is a problem.
+      expect(
+        q.removeFirst(),
+        3,
+      ); // Modification after creating iterator is a problem.
       expect(it.moveNext, throwsConcurrentModificationError);
 
       it = e.iterator; // New iterator is not affected.

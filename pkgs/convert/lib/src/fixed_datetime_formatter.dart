@@ -87,10 +87,11 @@ class FixedDateTimeFormatter {
           var hasSeenBefore = _blocks.formatCharacters.indexOf(formatCharacter);
           if (hasSeenBefore > -1) {
             throw FormatException(
-                "Pattern contains more than one '$formatCharacter' block.\n"
-                'Previous occurrence at index ${_blocks.starts[hasSeenBefore]}',
-                pattern,
-                i);
+              "Pattern contains more than one '$formatCharacter' block.\n"
+              'Previous occurrence at index ${_blocks.starts[hasSeenBefore]}',
+              pattern,
+              i,
+            );
           } else {
             start = i;
             currentCharacter = formatCharacter;
@@ -199,12 +200,14 @@ class FixedDateTimeFormatter {
             break;
           default:
             throw AssertionError(
-                'Unreachable, length is restricted to 6 in the constructor');
+              'Unreachable, length is restricted to 6 in the constructor',
+            );
         }
         break;
       default:
         throw AssertionError(
-            'Unreachable, the key is checked in the constructor');
+          'Unreachable, the key is checked in the constructor',
+        );
     }
     return value.toString().padLeft(length, '0');
   }
@@ -229,11 +232,7 @@ class FixedDateTimeFormatter {
   DateTime? tryDecode(String formattedDateTime) =>
       _decode(formattedDateTime, isUtc, false);
 
-  DateTime? _decode(
-    String formattedDateTime,
-    bool isUtc,
-    bool throwOnError,
-  ) {
+  DateTime? _decode(String formattedDateTime, bool isUtc, bool throwOnError) {
     var year = 0;
     var month = 1;
     var day = 1;
@@ -295,16 +294,7 @@ class FixedDateTimeFormatter {
         microsecond,
       );
     } else {
-      return DateTime(
-        year,
-        month,
-        day,
-        hour,
-        minute,
-        second,
-        0,
-        microsecond,
-      );
+      return DateTime(year, month, day, hour, minute, second, 0, microsecond);
     }
   }
 
@@ -319,11 +309,10 @@ class FixedDateTimeFormatter {
       _blocks.ends[index],
     );
     if (parsed == null && throwOnError) {
+      var block = formattedDateTime.substring(
+          _blocks.starts[index], _blocks.ends[index]);
       throw FormatException(
-        'Expected digits at ${formattedDateTime.substring(
-          _blocks.starts[index],
-          _blocks.ends[index],
-        )}',
+        'Expected digits at $block',
         formattedDateTime,
         _blocks.starts[index],
       );
