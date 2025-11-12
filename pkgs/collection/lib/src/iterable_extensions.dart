@@ -4,6 +4,7 @@
 
 import 'dart:math' show Random;
 
+import '../collection.dart' show DelegatingIterable;
 import 'algorithms.dart';
 import 'functions.dart' as functions;
 import 'utils.dart';
@@ -70,43 +71,30 @@ extension IterableExtension<T> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// print([1, 2, 3].separated(-1)); // (1, -1, 2, -1, 3)
-  /// print([1].separated(-1)); // (1)
-  /// print([].separated(-1)); // ()
+  /// print(([1, 2, 3] as Iterable<int>).separated(-1)); // (1, -1, 2, -1, 3)
+  /// print(([1] as Iterable<int>).separated(-1)); // (1)
+  /// print(([] as Iterable<int>).separated(-1)); // ()
   ///
-  /// print([1, 2, 3].separated(
+  /// print(([1, 2, 3] as Iterable<int>).separated(
   ///   -1,
   ///   before: true,
   /// )); // (-1, 1, -1, 2, -1, 3)
   ///
-  /// print([1].separated(
+  /// print(([1] as Iterable<int>).separated(
   ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // (-1, 1, -1)
   ///
-  /// print([].separated(
+  /// print(([] as Iterable<int>).separated(
   ///   -1,
   ///   before: true,
   ///   after: true,
   /// )); // ()
   /// ```
   Iterable<T> separated(T separator,
-      {bool before = false, bool after = false}) sync* {
-    var iterator = this.iterator;
-    if (iterator.moveNext()) {
-      if (before) yield separator;
-      while (true) {
-        yield iterator.current;
-        if (iterator.moveNext()) {
-          yield separator;
-        } else {
-          break;
-        }
-      }
-      if (after) yield separator;
-    }
-  }
+          {bool before = false, bool after = false}) =>
+      _SeparatedIterable<T>(this, separator, before, after);
 
   /// Creates new list with the elements of this list separated by [separator].
   ///
@@ -1161,4 +1149,207 @@ extension ComparatorExtension<T> on Comparator<T> {
         if (result == 0) result = tieBreaker(a, b);
         return result;
       };
+}
+
+/// Implementation of [IterableExtension.separated].
+///
+/// Optimizes direct accesses.
+class _SeparatedIterable<T> extends Iterable<T> {
+  final T _separator;
+  final Iterable<T> _elements;
+
+  static const int _afterFlag = 1 << 0;
+  static const int _beforeFlag = 1 << 1;
+
+  /// Two bit-flags, for whether the `before` and `after` arguments were `true`.
+  final int _flags;
+
+  _SeparatedIterable(this._elements, this._separator, bool before, bool after)
+      : _flags = (before ? _beforeFlag : 0) + (after ? _afterFlag : 0);
+
+  @override
+  bool get isEmpty => _elements.isEmpty;
+  @override
+  bool get isNotEmpty => _elements.isNotEmpty;
+  @override
+  int get length {
+    var length = _elements.length;
+    if (length != 0) {
+      length = length * 2 - 1 + (_flags & 1) + (_flags >> 1);
+    }
+    return length;
+  }
+
+  @override
+  T elementAt(int index) {
+    RangeError.checkNotNegative(index, 'index');
+    // Figure out which element must exist in [_elements] for this index
+    // to exist in the separated output.
+    var indexWithoutBefore = index - (_flags >> 1);
+    var elementIndex = indexWithoutBefore ~/ 2; // Rounds both -1 and 1 to 0.
+    if (indexWithoutBefore.isEven) {
+      // It's an element.
+      return _elements.elementAt(elementIndex);
+    }
+    // It's a separator after that element (or before the first element).
+    // Check if that element exists, unless the `_afterFlag` is set,
+    // in which case to check if the next element exists by adding 1
+    // to elementIndex.
+    // (But if `index` is zero, it's the before separator, so it should
+    // check that a first element exists.)
+    if (index != 0) {
+      assert(_afterFlag == 1);
+      elementIndex += (_flags ^ _afterFlag) & _afterFlag;
+    }
+    _elements.elementAt(elementIndex); // If throws, not an element.
+    return _separator;
+  }
+
+  @override
+  T get first {
+    if (_flags & _beforeFlag == 0) return _elements.first;
+    if (_elements.isNotEmpty) return _separator;
+    throw StateError('No element');
+  }
+
+  @override
+  T get last {
+    if (_flags & _afterFlag == 0) return _elements.last;
+    if (_elements.isNotEmpty) return _separator;
+    throw StateError('No element');
+  }
+
+  @override
+  Iterable<T> take(int count) {
+    if (count == 0) return Iterable<T>.empty();
+    var beforeCount = _flags >> 1;
+    if (count == 1) {
+      if (beforeCount == 0) {
+        return _elements.take(1);
+      }
+      // return Iterable<T>.value(_separator); // Why you no exist?!
+      return DelegatingIterable<T>([_separator]);
+    }
+    var countWithoutBefore = count - beforeCount;
+    var elementCount = (countWithoutBefore + 1) >> 1;
+    return _SeparatedIterable<T>(
+      _elements.take(elementCount),
+      _separator,
+      beforeCount != 0,
+      countWithoutBefore.isEven,
+    );
+  }
+
+  @override
+  Iterable<T> skip(int count) {
+    if (count == 0) return this;
+    var beforeCount = _flags >> 1;
+    var countWithoutBefore = count - beforeCount;
+    var hasAfter = _flags & _afterFlag != 0;
+    if (countWithoutBefore.isOdd && hasAfter) {
+      // Remainder could be just the final separator, which cannot
+      // be created by a `_SeparatedIterable`.
+      // (Unlike `take`, cannot see that without iterating.)
+      return super.skip(count);
+    }
+    // Starts or ends on an element, not a separator,
+    // so remainder cannot be a single separator.
+    var elementCount = (countWithoutBefore + 1) >> 1;
+    return _SeparatedIterable<T>(
+      elementCount == 0 ? _elements : _elements.skip(elementCount),
+      _separator,
+      countWithoutBefore.isOdd,
+      hasAfter,
+    );
+  }
+
+  @override
+  Iterator<T> get iterator =>
+      _SeparatedIterator<T>(_elements.iterator, _separator, _flags);
+}
+
+/// Iterator for [_SeparatedIterable].
+class _SeparatedIterator<T> implements Iterator<T> {
+  final T _separator;
+  final Iterator<T> _elements;
+
+  // Flags set in [_state].
+
+  /// Set if adding a separator after the last element.
+  ///
+  /// State never changes, just storing a boolean as a bit.
+  static const _noAddAfterFlag = 1 << 0;
+
+  // Set when the next element to emit is a separator.
+  //
+  // Otherwise the element to emit is [_elements.current].
+  static const _separatorFlag = 1 << 1;
+
+  // Set when next step should check if there is a next element.
+  //
+  // If there is no next element, iteration ends.
+  static const _ifHasNextFlag = 1 << 2;
+
+  /// Current state.
+  ///
+  /// A combination of the [_noAddAfterFlag], [_separatorFlag]
+  /// and [_ifHasNextFlag].
+  ///
+  /// Transitions:
+  /// * If `_ifHasNextFlag`:
+  ///    - if `!_elements.moveNext()`, then end.
+  ///      (No state change, next call will do the same).
+  ///    - otherwise continue.
+  /// * If `_separatorFlag`:
+  ///    - emit `_separator`,
+  ///    - clear `_separatorFlag` (next is an element),
+  ///    - toggle `_ifHasNextFlag`.
+  /// * else:
+  ///    - emit `_elements.current`,
+  ///    - set `_separatorFlag` (next will be a separator),
+  ///    - set `_ifHasNextFlag` if `_noAddAfterFlag` is set.
+  ///
+  /// Starts with `ifHasNextFlag` set,
+  /// with `_separatorFlag` set if the `before` parameter of the iterable
+  /// was `true`, and with `noAddAfterFlag` set if the `after` parameter
+  /// of the iterable was `false`.
+  int _state;
+
+  T? _current;
+
+  _SeparatedIterator(this._elements, this._separator, int flags)
+      : assert(_noAddAfterFlag == _SeparatedIterable._afterFlag),
+        assert(_separatorFlag == _SeparatedIterable._beforeFlag),
+        // `_separatorFlag` set if `_beforeFlag` was set.
+        // `_noAddAfterFlag` set if `_afterFlag` was not.
+        // `_ifHasNextFlag` always set at the start.
+        _state = (flags ^ _noAddAfterFlag) | _ifHasNextFlag;
+
+  @override
+  T get current => _current as T;
+
+  @override
+  bool moveNext() {
+    var state = _state;
+    if (state & _ifHasNextFlag == 0 || _elements.moveNext()) {
+      if (state & _separatorFlag != 0) {
+        _current = _separator;
+        // Next is not separator.
+        // Check if there is a next if this call didn't.
+        state ^= _separatorFlag | _ifHasNextFlag;
+      } else {
+        _current = _elements.current;
+        // Next is separator.
+        // Check if there is a next if not adding separator after last element.
+        state = (state & _noAddAfterFlag) * (_noAddAfterFlag | _ifHasNextFlag) +
+            _separatorFlag;
+      }
+      _state = state;
+      return true;
+    }
+    // Next call will check `_elements.moveNext()` again.
+    assert(state & _ifHasNextFlag != 0);
+    _current = null;
+    return false;
+  }
 }
