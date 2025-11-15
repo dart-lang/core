@@ -615,15 +615,30 @@ void _pdqSiftDown<E, K>(List<E> elements, K Function(E) keyOf,
 /// Sorts three elements at indices [a], [b], and [c].
 void _pdqSort3<E, K>(List<E> elements, K Function(E) keyOf,
     int Function(K, K) compare, int a, int b, int c) {
-  if (compare(keyOf(elements[a]), keyOf(elements[b])) > 0) {
-    _pdqSwap(elements, a, b);
+  var elementA = elements[a];
+  var keyA = keyOf(elementA);
+  var elementB = elements[b];
+  var keyB = keyOf(elementB);
+  var elementC = elements[c];
+  var keyC = keyOf(elementC);
+
+  if (compare(keyA, keyB) > 0) {
+    (elementA, elementB) = (elementB, elementA);
+    (keyA, keyB) = (keyB, keyA);
   }
-  if (compare(keyOf(elements[b]), keyOf(elements[c])) > 0) {
-    _pdqSwap(elements, b, c);
-    if (compare(keyOf(elements[a]), keyOf(elements[b])) > 0) {
-      _pdqSwap(elements, a, b);
+
+  if (compare(keyB, keyC) > 0) {
+    (elementB, elementC) = (elementC, elementB);
+    (keyB, keyC) = (keyC, keyB);
+    if (compare(keyA, keyB) > 0) {
+      (elementA, elementB) = (elementB, elementA);
+      (keyA, keyB) = (keyB, keyA);
     }
   }
+
+  elements[a] = elementA;
+  elements[b] = elementB;
+  elements[c] = elementC;
 }
 
 /// The core implementation of Pattern-defeating Quicksort.
