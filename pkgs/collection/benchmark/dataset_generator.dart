@@ -7,7 +7,6 @@
 /// Ensures all algorithms are tested on the exact same data.
 library;
 
-
 import 'dart:math';
 
 const size = 50000;
