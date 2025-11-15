@@ -5,7 +5,7 @@
 /// A selection of data manipulation algorithms.
 library;
 
-import 'dart:math' show Random, ln2, log;
+import 'dart:math' show Random;
 
 import 'utils.dart';
 
@@ -535,7 +535,11 @@ void quickSortBy<E, K>(
 const int _pdqInsertionSortThreshold = 24;
 
 /// Computes the base-2 logarithm of [n].
-int _log2(int n) => n == 0 ? 0 : (log(n) / ln2).floor();
+/// Computes the base-2 logarithm of [n].
+///
+/// Uses bitLength to compute the floor(log2(n)) efficiently. For n == 0
+/// we return 0.
+int _log2(int n) => n > 0 ? n.bitLength - 1 : 0;
 
 /// Swaps the elements at positions [i] and [j] in [elements].
 void _pdqSwap<E>(List<E> elements, int i, int j) {
