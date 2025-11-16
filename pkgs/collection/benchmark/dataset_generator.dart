@@ -12,6 +12,16 @@ import 'dart:math';
 const size = 50000;
 const count = 128; // Number of lists to cycle through.
 
+final List<int> _sortedBase = List.generate(size, (i) => i, growable: false);
+final List<int> _reversedBase =
+    List.generate(size, (i) => size - 1 - i, growable: false);
+final List<int> _pathologicalBase = [
+  for (var i = 0; i < size; i++)
+    if (i.isEven) _sortedBase[i],
+  for (var i = size - 1; i > 0; i--)
+    if (i.isOdd) _sortedBase[i],
+];
+
 final List<List<int>> random = _generateRandom();
 final List<List<int>> sorted = _generateSorted();
 final List<List<int>> reverse = _generateReverse();
@@ -24,30 +34,16 @@ List<List<int>> _generateRandom() {
       count, (_) => List.generate(size, (_) => r.nextInt(size)));
 }
 
-List<List<int>> _generateSorted() {
-  final base = List.generate(size, (i) => i, growable: false);
-  return List.generate(count, (_) => List.of(base, growable: true));
-}
+List<List<int>> _generateSorted() =>
+    List.generate(count, (_) => List.of(_sortedBase, growable: true));
 
-List<List<int>> _generateReverse() {
-  final base = List.generate(size, (i) => size - 1 - i, growable: false);
-  return List.generate(count, (_) => List.of(base, growable: true));
-}
+List<List<int>> _generateReverse() =>
+    List.generate(count, (_) => List.of(_reversedBase, growable: true));
 
 List<List<int>> _generateFewUnique() {
   final r = Random(67890);
   return List.generate(count, (_) => List.generate(size, (_) => r.nextInt(7)));
 }
 
-List<List<int>> _generatePathological() {
-  final sortedBase = List.generate(size, (i) => i, growable: false);
-  // Creates a "V-shape" or "organ pipe" array that can be challenging
-  // for quicksort implementations by promoting unbalanced partitions.
-  final pathological = <int>[
-    for (var i = 0; i < size; i++)
-      if (i.isEven) sortedBase[i],
-    for (var i = size - 1; i > 0; i--)
-      if (i.isOdd) sortedBase[i],
-  ];
-  return List.generate(count, (_) => List.of(pathological, growable: true));
-}
+List<List<int>> _generatePathological() =>
+    List.generate(count, (_) => List.of(_pathologicalBase, growable: true));
