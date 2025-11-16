@@ -15,9 +15,15 @@ const count = 128; // Number of lists to cycle through.
 final List<int> _sortedBase = List.generate(size, (i) => i, growable: false);
 final List<int> _reversedBase = _sortedBase.reversed.toList(growable: false);
 
-final _pathologicalBase = <int>[
+// Ensure the reverse loop for the pathological list starts on the highest
+// odd index, regardless of whether `size` is even or odd.
+final int secondLoopStart = (size - 1).isOdd ? size - 1 : size - 2;
+
+/// It consists of all even-indexed elements followed by all odd-indexed
+/// elements in reverse order.
+final List<int> _pathologicalBase = [
   for (var i = 0; i < size; i += 2) _sortedBase[i],
-  for (var i = size - 1; i > 0; i -= 2) _sortedBase[i],
+  for (var i = secondLoopStart; i > -1; i -= 2) _sortedBase[i],
 ];
 
 final List<List<int>> random = _generateRandom();
