@@ -30,10 +30,8 @@ abstract class SortBenchmarkBase extends BenchmarkBase {
 
   SortBenchmarkBase(super.name, this.datasets);
 
-  List<int> getNextList() {
-    // Cloning the list is crucial so each run sorts an unsorted list.
-    return List<int>.from(datasets[_iteration++ % datasets.length]);
-  }
+  List<int> get nextList =>
+      List<int>.from(datasets[_iteration++ % datasets.length]);
 
   void updateChecksum(List<int> list) {
     // A simple checksum to ensure the list is used and not optimized away.
@@ -55,7 +53,7 @@ class QuickSortBaselineRandomBenchmark extends SortBenchmarkBase {
       : super('Baseline.Random', dataset_generator.random);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSortBaseline(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -66,7 +64,7 @@ class QuickSortBaselineSortedBenchmark extends SortBenchmarkBase {
       : super('Baseline.Sorted', dataset_generator.sorted);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSortBaseline(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -77,7 +75,7 @@ class QuickSortBaselineReverseBenchmark extends SortBenchmarkBase {
       : super('Baseline.Reverse', dataset_generator.reverse);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSortBaseline(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -88,7 +86,7 @@ class QuickSortBaselineFewUniqueBenchmark extends SortBenchmarkBase {
       : super('Baseline.FewUnique', dataset_generator.fewUnique);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSortBaseline(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -99,7 +97,7 @@ class QuickSortBaselinePathologicalBenchmark extends SortBenchmarkBase {
       : super('Baseline.Pathological', dataset_generator.pathological);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSortBaseline(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -111,7 +109,7 @@ class PdqSortEnhancementRandomBenchmark extends SortBenchmarkBase {
       : super('Enhancement.Random', dataset_generator.random);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSort(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -122,7 +120,7 @@ class PdqSortEnhancementSortedBenchmark extends SortBenchmarkBase {
       : super('Enhancement.Sorted', dataset_generator.sorted);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSort(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -133,7 +131,7 @@ class PdqSortEnhancementReverseBenchmark extends SortBenchmarkBase {
       : super('Enhancement.Reverse', dataset_generator.reverse);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSort(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -144,7 +142,7 @@ class PdqSortEnhancementFewUniqueBenchmark extends SortBenchmarkBase {
       : super('Enhancement.FewUnique', dataset_generator.fewUnique);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSort(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
@@ -155,7 +153,7 @@ class PdqSortEnhancementPathologicalBenchmark extends SortBenchmarkBase {
       : super('Enhancement.Pathological', dataset_generator.pathological);
   @override
   void performSort() {
-    final list = getNextList();
+    final list = nextList;
     quickSort(list, (a, b) => a.compareTo(b));
     updateChecksum(list);
   }
