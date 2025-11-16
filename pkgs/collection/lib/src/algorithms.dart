@@ -482,10 +482,6 @@ void _merge<E, K>(
   );
 }
 
-// ---------------------------------------------------------------------------
-// QuickSort based on Pattern-defeating Quicksort (pdqsort).
-// ---------------------------------------------------------------------------
-
 /// Sorts a list between [start] (inclusive) and [end] (exclusive).
 ///
 /// The sorting algorithm is a Pattern-defeating Quicksort (pdqsort), a
