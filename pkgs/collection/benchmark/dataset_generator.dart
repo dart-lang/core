@@ -40,14 +40,14 @@ List<List<int>> _generateFewUnique() {
 }
 
 List<List<int>> _generatePathological() {
-  final base = List.generate(size, (i) => i);
+  final sortedBase = List.generate(size, (i) => i, growable: false);
   // Creates a "V-shape" or "organ pipe" array that can be challenging
   // for quicksort implementations by promoting unbalanced partitions.
   final pathological = <int>[
-    for (int i = 0; i < size; i++)
-      if (i.isEven) base[i],
-    for (int i = size - 1; i > 0; i--)
-      if (i.isOdd) base[i],
+    for (var i = 0; i < size; i++)
+      if (i.isEven) sortedBase[i],
+    for (var i = size - 1; i > 0; i--)
+      if (i.isOdd) sortedBase[i],
   ];
-  return List.generate(count, (_) => List<int>.from(pathological));
+  return List.generate(count, (_) => List.of(pathological, growable: true));
 }
