@@ -21,7 +21,7 @@ final List<List<int>> pathological = _generatePathological();
 List<List<int>> _generateRandom() {
   final r = Random(12345);
   return List.generate(
-      count, (_) => List.generate(size, (_) => r.nextInt(2000)));
+      count, (_) => List.generate(size, (_) => r.nextInt(size)));
 }
 
 List<List<int>> _generateSorted() {
