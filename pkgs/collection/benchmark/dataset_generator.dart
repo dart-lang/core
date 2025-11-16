@@ -30,8 +30,8 @@ List<List<int>> _generateSorted() {
 }
 
 List<List<int>> _generateReverse() {
-  final base = List.generate(size, (i) => size - 1 - i);
-  return List.generate(count, (_) => List<int>.from(base));
+  final base = List.generate(size, (i) => size - 1 - i, growable: false);
+  return List.generate(count, (_) => List.of(base, growable: true));
 }
 
 List<List<int>> _generateFewUnique() {
