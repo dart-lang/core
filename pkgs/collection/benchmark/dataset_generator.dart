@@ -13,8 +13,8 @@ const size = 50000;
 const count = 128; // Number of lists to cycle through.
 
 final List<int> _sortedBase = List.generate(size, (i) => i, growable: false);
-final List<int> _reversedBase =
-    List.generate(size, (i) => size - 1 - i, growable: false);
+final List<int> _reversedBase = _sortedBase.reversed.toList(growable: false);
+
 final _pathologicalBase = <int>[
   for (var i = 0; i < size; i += 2) _sortedBase[i],
   for (var i = size - 1; i > 0; i -= 2) _sortedBase[i],
