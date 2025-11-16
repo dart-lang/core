@@ -25,8 +25,8 @@ List<List<int>> _generateRandom() {
 }
 
 List<List<int>> _generateSorted() {
-  final base = List.generate(size, (i) => i);
-  return List.generate(count, (_) => List<int>.from(base));
+  final base = List.generate(size, (i) => i, growable: false);
+  return List.generate(count, (_) => List.of(base, growable: true));
 }
 
 List<List<int>> _generateReverse() {
