@@ -486,13 +486,6 @@ void _merge<E, K>(
 ///
 /// The sorting algorithm is a Pattern-defeating Quicksort (pdqsort), a
 /// hybrid of Quicksort, Heapsort, and Insertion Sort.
-/// It is not stable, but is typically very fast.
-///
-/// This implementation is highly efficient for common data patterns
-/// (such as sorted, reverse-sorted, or with few unique values) and has a
-/// guaranteed worst-case time complexity of O(n*log(n)).
-///
-/// For a stable sort, use [mergeSort].
 void quickSort<E>(
   List<E> elements,
   int Function(E a, E b) compare, [
@@ -503,6 +496,36 @@ void quickSort<E>(
   if (end - start < 2) return;
   _pdqSortImpl(elements, compare, start, end, _log2(end - start));
 }
+
+/// Sorts a list between [start] (inclusive) and [end] (exclusive) by key.
+///
+/// Elements are ordered by the [compare] function applied to the result of
+/// the [keyOf] function.
+void quickSortBy<E, K>(
+  List<E> elements,
+  K Function(E element) keyOf,
+  int Function(K a, K b) compare, [
+  int start = 0,
+  int? end,
+]) {
+  end = RangeError.checkValidRange(start, end, elements.length);
+  if (end - start < 2) return;
+  _pdqSortByImpl(elements, keyOf, compare, start, end, _log2(end - start));
+}
+
+/// Minimum list size below which pdqsort uses insertion sort.
+const int _pdqInsertionSortThreshold = 32;
+
+/// Computes the base-2 logarithm of [n].
+/// Computes the base-2 logarithm of [n].
+///
+/// Uses bitLength to compute the floor(log2(n)) efficiently.
+/// For n == 0 we return 0.
+int _log2(int n) => n > 0 ? n.bitLength - 1 : 0;
+
+// ==========================================
+// Implementation: Direct Comparison
+// ==========================================
 
 void _pdqSortImpl<E>(List<E> elements, int Function(E, E) compare, int start,
     int end, int badAllowed) {
@@ -560,18 +583,6 @@ void _pdqSortImpl<E>(List<E> elements, int Function(E, E) compare, int start,
   }
 }
 
-void _reverseRange<E>(List<E> elements, int start, int end) {
-  var left = start;
-  var right = end - 1;
-  while (left < right) {
-    final temp = elements[left];
-    elements[left] = elements[right];
-    elements[right] = temp;
-    left++;
-    right--;
-  }
-}
-
 bool _handlePresorted<E>(
     List<E> elements, int Function(E, E) compare, int start, int end) {
   if (compare(elements[start], elements[start + 1]) > 0) {
@@ -593,6 +604,18 @@ bool _handlePresorted<E>(
     if (i == end) return true;
   }
   return false;
+}
+
+void _reverseRange<E>(List<E> elements, int start, int end) {
+  var left = start;
+  var right = end - 1;
+  while (left < right) {
+    final temp = elements[left];
+    elements[left] = elements[right];
+    elements[right] = temp;
+    left++;
+    right--;
+  }
 }
 
 void _insertionSort<E>(
@@ -680,42 +703,10 @@ void _sort3<E>(
   }
 }
 
-/// Sorts a list between [start] (inclusive) and [end] (exclusive) by key.
-///
-/// The sorting algorithm is a Pattern-defeating Quicksort (pdqsort), a
-/// hybrid of Quicksort, Heapsort, and Insertion Sort.
-/// It is not stable, but is typically very fast.
-///
-/// This implementation is highly efficient for common data patterns
-/// (such as sorted, reverse-sorted, or with few unique values) and has a
-/// guaranteed worst-case time complexity of O(n*log(n)).
-///
-/// Elements are ordered by the [compare] function applied to the result of
-/// the [keyOf] function. For a stable sort, use [mergeSortBy].
-void quickSortBy<E, K>(
-  List<E> elements,
-  K Function(E element) keyOf,
-  int Function(K a, K b) compare, [
-  int start = 0,
-  int? end,
-]) {
-  end = RangeError.checkValidRange(start, end, elements.length);
-  if (end - start < 2) return;
-  _pdqSortByImpl(elements, keyOf, compare, start, end, _log2(end - start));
-}
+// ==========================================
+// Implementation: Keyed Comparison (By)
+// ==========================================
 
-/// Minimum list size below which pdqsort uses insertion sort.
-const int _pdqInsertionSortThreshold = 24;
-
-/// Computes the base-2 logarithm of [n].
-/// Computes the base-2 logarithm of [n].
-///
-/// Uses bitLength to compute the floor(log2(n)) efficiently. For n == 0
-/// we return 0.
-int _log2(int n) => n > 0 ? n.bitLength - 1 : 0;
-
-/// The core implementation of Pattern-defeating Quicksort.
-///
 /// [badAllowed] tracks how many bad pivot selections are allowed before
 /// falling back to heap sort.
 void _pdqSortByImpl<E, K>(List<E> elements, K Function(E) keyOf,
