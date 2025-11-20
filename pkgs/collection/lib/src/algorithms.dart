@@ -656,16 +656,15 @@ void _sort3<E>(
 /// Elements are ordered by the [compare] function applied to the result of
 /// the [keyOf] function. For a stable sort, use [mergeSortBy].
 void quickSortBy<E, K>(
-  List<E> list,
+  List<E> elements,
   K Function(E element) keyOf,
   int Function(K a, K b) compare, [
   int start = 0,
   int? end,
 ]) {
-  end = RangeError.checkValidRange(start, end, list.length);
-  final length = end - start;
-  if (length < 2) return;
-  _pdqSortByImpl(list, keyOf, compare, start, end, _log2(length));
+  end = RangeError.checkValidRange(start, end, elements.length);
+  if (end - start < 2) return;
+  _pdqSortByImpl(elements, keyOf, compare, start, end, _log2(end - start));
 }
 
 /// Minimum list size below which pdqsort uses insertion sort.
@@ -678,106 +677,6 @@ const int _pdqInsertionSortThreshold = 24;
 /// we return 0.
 int _log2(int n) => n > 0 ? n.bitLength - 1 : 0;
 
-/// Swaps the elements at positions [i] and [j] in [elements].
-void _pdqSwap<E>(List<E> elements, int i, int j) {
-  final temp = elements[i];
-  elements[i] = elements[j];
-  elements[j] = temp;
-}
-
-/// A simple, non-binary insertion sort for the base case of pdqsort.
-void _pdqInsertionSort<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int start, int end) {
-  for (var i = start + 1; i < end; i++) {
-    final current = elements[i];
-    final key = keyOf(current);
-    var j = i - 1;
-    while (j >= start && compare(keyOf(elements[j]), key) > 0) {
-      elements[j + 1] = elements[j];
-      j--;
-    }
-    elements[j + 1] = current;
-  }
-}
-
-/// Heapsort implementation for the fallback case of pdqsort.
-void _pdqHeapSort<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int start, int end) {
-  final n = end - start;
-  for (var i = n ~/ 2 - 1; i >= 0; i--) {
-    _pdqSiftDown(elements, keyOf, compare, i, n, start);
-  }
-  for (var i = n - 1; i > 0; i--) {
-    _pdqSwap(elements, start, start + i);
-    _pdqSiftDown(elements, keyOf, compare, 0, i, start);
-  }
-}
-
-/// Sift-down operation for the heapsort fallback.
-void _pdqSiftDown<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int i, int n, int start) {
-  var root = i;
-  while (true) {
-    final left = 2 * root + 1;
-    if (left >= n) break; // Root is a leaf.
-
-    var largest = root;
-    var largestKey = keyOf(elements[start + largest]);
-
-    // Compare with left child.
-    var child = left;
-    var childKey = keyOf(elements[start + child]);
-    if (compare(largestKey, childKey) < 0) {
-      largest = child;
-      largestKey = childKey;
-    }
-
-    // Compare with right child if it exists.
-    child = left + 1;
-    if (child < n) {
-      childKey = keyOf(elements[start + child]);
-      if (compare(largestKey, childKey) < 0) {
-        largest = child;
-        largestKey = childKey;
-      }
-    }
-
-    if (largest == root) break;
-
-    _pdqSwap(elements, start + root, start + largest);
-    root = largest;
-  }
-}
-
-/// Sorts three elements at indices [a], [b], and [c].
-void _pdqSort3<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int a, int b, int c) {
-  var elementA = elements[a];
-  var keyA = keyOf(elementA);
-  var elementB = elements[b];
-  var keyB = keyOf(elementB);
-  var elementC = elements[c];
-  var keyC = keyOf(elementC);
-
-  if (compare(keyA, keyB) > 0) {
-    (elementA, elementB) = (elementB, elementA);
-    (keyA, keyB) = (keyB, keyA);
-  }
-
-  if (compare(keyB, keyC) > 0) {
-    (elementB, elementC) = (elementC, elementB);
-    (keyB, keyC) = (keyC, keyB);
-    if (compare(keyA, keyB) > 0) {
-      (elementA, elementB) = (elementB, elementA);
-      (keyA, keyB) = (keyB, keyA);
-    }
-  }
-
-  elements[a] = elementA;
-  elements[b] = elementB;
-  elements[c] = elementC;
-}
-
 /// The core implementation of Pattern-defeating Quicksort.
 ///
 /// [badAllowed] tracks how many bad pivot selections are allowed before
@@ -787,64 +686,147 @@ void _pdqSortByImpl<E, K>(List<E> elements, K Function(E) keyOf,
   while (true) {
     final size = end - start;
     if (size < _pdqInsertionSortThreshold) {
-      _pdqInsertionSort(elements, keyOf, compare, start, end);
+      _insertionSortBy(elements, keyOf, compare, start, end);
       return;
     }
 
     if (badAllowed == 0) {
-      _pdqHeapSort(elements, keyOf, compare, start, end);
+      _heapSortBy(elements, keyOf, compare, start, end);
       return;
     }
 
     final mid = start + size ~/ 2;
-    if (size > 80) {
-      // Ninther pivot selection for large arrays.
-      final s = size ~/ 8;
-      _pdqSort3(elements, keyOf, compare, start, start + s, start + 2 * s);
-      _pdqSort3(elements, keyOf, compare, mid - s, mid, mid + s);
-      _pdqSort3(
-          elements, keyOf, compare, end - 1 - 2 * s, end - 1 - s, end - 1);
-      _pdqSort3(elements, keyOf, compare, start + s, mid, end - 1 - s);
-    } else {
-      // Median-of-three for smaller arrays.
-      _pdqSort3(elements, keyOf, compare, start, mid, end - 1);
-    }
+    _selectPivotBy(elements, keyOf, compare, start, mid, end, size);
 
-    // 3-Way Partitioning (Dutch National Flag).
-    _pdqSwap(elements, start, mid);
-    final pivotKey = keyOf(elements[start]);
+    final pivotElement = elements[start];
+    final pivotKey = keyOf(pivotElement);
 
     var less = start;
-    var equal = start;
+    var equal = start + 1;
     var greater = end;
 
     while (equal < greater) {
-      var comparison = compare(keyOf(elements[equal]), pivotKey);
+      final element = elements[equal];
+      final elementKey = keyOf(element);
+      final comparison = compare(elementKey, pivotKey);
+
       if (comparison < 0) {
-        _pdqSwap(elements, less++, equal++);
+        elements[equal] = elements[less];
+        elements[less] = element;
+        less++;
+        equal++;
       } else if (comparison > 0) {
         greater--;
-        _pdqSwap(elements, equal, greater);
+        elements[equal] = elements[greater];
+        elements[greater] = element;
       } else {
         equal++;
       }
     }
 
-    final leftSize = less - start;
-    final rightSize = end - greater;
-
-    // Detect highly unbalanced partitions and decrement badAllowed.
-    if (leftSize < size ~/ 8 || rightSize < size ~/ 8) {
+    if ((less - start) < size ~/ 8 || (end - greater) < size ~/ 8) {
       badAllowed--;
     }
 
-    // Recurse on the smaller partition first to keep stack depth low.
-    if (leftSize < rightSize) {
+    if (less - start < end - greater) {
       _pdqSortByImpl(elements, keyOf, compare, start, less, badAllowed);
-      start = greater; // Tail-call optimization on the larger partition
+      start = greater;
     } else {
       _pdqSortByImpl(elements, keyOf, compare, greater, end, badAllowed);
-      end = less; // Tail-call optimization on the larger partition
+      end = less;
+    }
+  }
+}
+
+void _insertionSortBy<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int start, int end) {
+  for (var i = start + 1; i < end; i++) {
+    final current = elements[i];
+    final currentKey = keyOf(current);
+    var j = i - 1;
+    while (j >= start && compare(keyOf(elements[j]), currentKey) > 0) {
+      elements[j + 1] = elements[j];
+      j--;
+    }
+    elements[j + 1] = current;
+  }
+}
+
+void _heapSortBy<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int start, int end) {
+  final n = end - start;
+  for (var i = n ~/ 2 - 1; i >= 0; i--) {
+    _siftDownBy(elements, keyOf, compare, i, n, start);
+  }
+  for (var i = n - 1; i > 0; i--) {
+    final temp = elements[start];
+    elements[start] = elements[start + i];
+    elements[start + i] = temp;
+    _siftDownBy(elements, keyOf, compare, 0, i, start);
+  }
+}
+
+void _siftDownBy<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int i, int n, int start) {
+  var root = i;
+  while (true) {
+    final left = 2 * root + 1;
+    if (left >= n) break;
+    var largest = root;
+    var largestKey = keyOf(elements[start + largest]);
+
+    final leftKey = keyOf(elements[start + left]);
+    if (compare(leftKey, largestKey) > 0) {
+      largest = left;
+      largestKey = leftKey;
+    }
+
+    final right = left + 1;
+    if (right < n) {
+      final rightKey = keyOf(elements[start + right]);
+      if (compare(rightKey, largestKey) > 0) {
+        largest = right;
+      }
+    }
+    if (largest == root) break;
+    final temp = elements[start + root];
+    elements[start + root] = elements[start + largest];
+    elements[start + largest] = temp;
+    root = largest;
+  }
+}
+
+void _selectPivotBy<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int start, int mid, int end, int size) {
+  if (size > 80) {
+    final s = size ~/ 8;
+    _sort3By(elements, keyOf, compare, start, start + s, start + 2 * s);
+    _sort3By(elements, keyOf, compare, mid - s, mid, mid + s);
+    _sort3By(elements, keyOf, compare, end - 1 - 2 * s, end - 1 - s, end - 1);
+    _sort3By(elements, keyOf, compare, start + s, mid, end - 1 - s);
+  } else {
+    _sort3By(elements, keyOf, compare, start, mid, end - 1);
+  }
+  final temp = elements[start];
+  elements[start] = elements[mid];
+  elements[mid] = temp;
+}
+
+void _sort3By<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int a, int b, int c) {
+  if (compare(keyOf(elements[a]), keyOf(elements[b])) > 0) {
+    final t = elements[a];
+    elements[a] = elements[b];
+    elements[b] = t;
+  }
+  if (compare(keyOf(elements[b]), keyOf(elements[c])) > 0) {
+    final t = elements[b];
+    elements[b] = elements[c];
+    elements[c] = t;
+    if (compare(keyOf(elements[a]), keyOf(elements[b])) > 0) {
+      final t2 = elements[a];
+      elements[a] = elements[b];
+      elements[b] = t2;
     }
   }
 }
