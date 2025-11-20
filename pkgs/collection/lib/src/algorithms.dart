@@ -517,7 +517,6 @@ void quickSortBy<E, K>(
 const int _pdqInsertionSortThreshold = 32;
 
 /// Computes the base-2 logarithm of [n].
-/// Computes the base-2 logarithm of [n].
 ///
 /// Uses bitLength to compute the floor(log2(n)) efficiently.
 /// For n == 0 we return 0.
