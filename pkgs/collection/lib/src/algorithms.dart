@@ -513,6 +513,8 @@ void _pdqSortImpl<E>(List<E> elements, int Function(E, E) compare, int start,
       return;
     }
 
+    if (_handlePresorted(elements, compare, start, end)) return;
+
     if (badAllowed == 0) {
       _heapSort(elements, compare, start, end);
       return;
@@ -556,6 +558,41 @@ void _pdqSortImpl<E>(List<E> elements, int Function(E, E) compare, int start,
       end = less;
     }
   }
+}
+
+void _reverseRange<E>(List<E> elements, int start, int end) {
+  var left = start;
+  var right = end - 1;
+  while (left < right) {
+    final temp = elements[left];
+    elements[left] = elements[right];
+    elements[right] = temp;
+    left++;
+    right--;
+  }
+}
+
+bool _handlePresorted<E>(
+    List<E> elements, int Function(E, E) compare, int start, int end) {
+  if (compare(elements[start], elements[start + 1]) > 0) {
+    // Check strictly decreasing
+    var i = start + 1;
+    while (i < end && compare(elements[i - 1], elements[i]) > 0) {
+      i++;
+    }
+    if (i == end) {
+      _reverseRange(elements, start, end);
+      return true;
+    }
+  } else {
+    // Check non-decreasing
+    var i = start + 1;
+    while (i < end && compare(elements[i - 1], elements[i]) <= 0) {
+      i++;
+    }
+    if (i == end) return true;
+  }
+  return false;
 }
 
 void _insertionSort<E>(
@@ -690,6 +727,8 @@ void _pdqSortByImpl<E, K>(List<E> elements, K Function(E) keyOf,
       return;
     }
 
+    if (_handlePresortedBy(elements, keyOf, compare, start, end)) return;
+
     if (badAllowed == 0) {
       _heapSortBy(elements, keyOf, compare, start, end);
       return;
@@ -736,6 +775,28 @@ void _pdqSortByImpl<E, K>(List<E> elements, K Function(E) keyOf,
       end = less;
     }
   }
+}
+
+bool _handlePresortedBy<E, K>(List<E> elements, K Function(E) keyOf,
+    int Function(K, K) compare, int start, int end) {
+  if (compare(keyOf(elements[start]), keyOf(elements[start + 1])) > 0) {
+    var i = start + 1;
+    while (i < end && compare(keyOf(elements[i - 1]), keyOf(elements[i])) > 0) {
+      i++;
+    }
+    if (i == end) {
+      _reverseRange(elements, start, end);
+      return true;
+    }
+  } else {
+    var i = start + 1;
+    while (
+        i < end && compare(keyOf(elements[i - 1]), keyOf(elements[i])) <= 0) {
+      i++;
+    }
+    if (i == end) return true;
+  }
+  return false;
 }
 
 void _insertionSortBy<E, K>(List<E> elements, K Function(E) keyOf,
