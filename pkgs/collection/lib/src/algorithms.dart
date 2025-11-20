@@ -499,7 +499,148 @@ void quickSort<E>(
   int start = 0,
   int? end,
 ]) {
-  quickSortBy<E, E>(elements, identity<E>, compare, start, end);
+  end = RangeError.checkValidRange(start, end, elements.length);
+  if (end - start < 2) return;
+  _pdqSortImpl(elements, compare, start, end, _log2(end - start));
+}
+
+void _pdqSortImpl<E>(List<E> elements, int Function(E, E) compare, int start,
+    int end, int badAllowed) {
+  while (true) {
+    final size = end - start;
+    if (size < _pdqInsertionSortThreshold) {
+      _insertionSort(elements, compare, start, end);
+      return;
+    }
+
+    if (badAllowed == 0) {
+      _heapSort(elements, compare, start, end);
+      return;
+    }
+
+    final mid = start + size ~/ 2;
+    _selectPivot(elements, compare, start, mid, end, size);
+
+    final pivot = elements[start];
+    var less = start;
+    var equal = start + 1;
+    var greater = end;
+
+    while (equal < greater) {
+      final element = elements[equal];
+      final comparison = compare(element, pivot);
+
+      if (comparison < 0) {
+        elements[equal] = elements[less];
+        elements[less] = element;
+        less++;
+        equal++;
+      } else if (comparison > 0) {
+        greater--;
+        elements[equal] = elements[greater];
+        elements[greater] = element;
+      } else {
+        equal++;
+      }
+    }
+
+    if ((less - start) < size ~/ 8 || (end - greater) < size ~/ 8) {
+      badAllowed--;
+    }
+
+    if (less - start < end - greater) {
+      _pdqSortImpl(elements, compare, start, less, badAllowed);
+      start = greater;
+    } else {
+      _pdqSortImpl(elements, compare, greater, end, badAllowed);
+      end = less;
+    }
+  }
+}
+
+void _insertionSort<E>(
+    List<E> elements, int Function(E, E) compare, int start, int end) {
+  for (var i = start + 1; i < end; i++) {
+    var current = elements[i];
+    var j = i - 1;
+    while (j >= start && compare(elements[j], current) > 0) {
+      elements[j + 1] = elements[j];
+      j--;
+    }
+    elements[j + 1] = current;
+  }
+}
+
+void _heapSort<E>(
+    List<E> elements, int Function(E, E) compare, int start, int end) {
+  final n = end - start;
+  for (var i = n ~/ 2 - 1; i >= 0; i--) {
+    _siftDown(elements, compare, i, n, start);
+  }
+  for (var i = n - 1; i > 0; i--) {
+    final temp = elements[start];
+    elements[start] = elements[start + i];
+    elements[start + i] = temp;
+    _siftDown(elements, compare, 0, i, start);
+  }
+}
+
+void _siftDown<E>(
+    List<E> elements, int Function(E, E) compare, int i, int n, int start) {
+  var root = i;
+  while (true) {
+    final left = 2 * root + 1;
+    if (left >= n) break;
+    var largest = root;
+    if (compare(elements[start + left], elements[start + largest]) > 0) {
+      largest = left;
+    }
+    final right = left + 1;
+    if (right < n &&
+        compare(elements[start + right], elements[start + largest]) > 0) {
+      largest = right;
+    }
+    if (largest == root) break;
+    final temp = elements[start + root];
+    elements[start + root] = elements[start + largest];
+    elements[start + largest] = temp;
+    root = largest;
+  }
+}
+
+void _selectPivot<E>(List<E> elements, int Function(E, E) compare, int start,
+    int mid, int end, int size) {
+  if (size > 80) {
+    final s = size ~/ 8;
+    _sort3(elements, compare, start, start + s, start + 2 * s);
+    _sort3(elements, compare, mid - s, mid, mid + s);
+    _sort3(elements, compare, end - 1 - 2 * s, end - 1 - s, end - 1);
+    _sort3(elements, compare, start + s, mid, end - 1 - s);
+  } else {
+    _sort3(elements, compare, start, mid, end - 1);
+  }
+  final temp = elements[start];
+  elements[start] = elements[mid];
+  elements[mid] = temp;
+}
+
+void _sort3<E>(
+    List<E> elements, int Function(E, E) compare, int a, int b, int c) {
+  if (compare(elements[a], elements[b]) > 0) {
+    final t = elements[a];
+    elements[a] = elements[b];
+    elements[b] = t;
+  }
+  if (compare(elements[b], elements[c]) > 0) {
+    final t = elements[b];
+    elements[b] = elements[c];
+    elements[c] = t;
+    if (compare(elements[a], elements[b]) > 0) {
+      final t2 = elements[a];
+      elements[a] = elements[b];
+      elements[b] = t2;
+    }
+  }
 }
 
 /// Sorts a list between [start] (inclusive) and [end] (exclusive) by key.
