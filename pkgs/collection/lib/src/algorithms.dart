@@ -771,7 +771,8 @@ bool _handlePresortedBy<E, K>(List<E> elements, K Function(E) keyOf,
     int Function(K, K) compare, int start, int end) {
   if (compare(keyOf(elements[start]), keyOf(elements[start + 1])) > 0) {
     var i = start + 1;
-    while (i < end && compare(keyOf(elements[i - 1]), keyOf(elements[i])) >= 0) {
+    while (
+        i < end && compare(keyOf(elements[i - 1]), keyOf(elements[i])) >= 0) {
       i++;
     }
     if (i == end) {
