@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:async/src/cancelable_operation.dart';
 import 'package:async/src/future_group.dart';
 import 'package:test/test.dart';
 
@@ -90,6 +91,22 @@ void main() {
     completer3.complete();
     await flushMicrotasks();
     expect(completed, isTrue);
+  });
+
+  test('a canceled operation doesn\'t block completion', () {
+    var completer1 = Completer<int>();
+    var completer2 = CancelableCompleter<int>();
+    var completer3 = Completer<int>();
+
+    futureGroup.add(completer1.future);
+    futureGroup.addCancelable(completer2.operation);
+    futureGroup.add(completer3.future);
+    futureGroup.close();
+
+    completer3.complete(3);
+    completer2.operation.cancel();
+    completer1.complete(1);
+    expect(futureGroup.future, completion(equals([1, 3])));
   });
 
   test('completes to the values of the futures in order of addition', () {

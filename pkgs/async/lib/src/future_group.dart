@@ -4,6 +4,12 @@
 
 import 'dart:async';
 
+import 'cancelable_operation.dart';
+
+/// A sentinel object indicating that a member of a [FutureGroup] was canceled
+/// rather than completing normally.
+const _canceledResult = Object();
+
 /// A collection of futures waits until all added [Future]s complete.
 ///
 /// Futures are added to the group with [add]. Once you're finished adding
@@ -61,12 +67,21 @@ class FutureGroup<T> implements Sink<Future<T>> {
   /// The values emitted by the futures that have been added to the group, in
   /// the order they were added.
   ///
-  /// The slots for futures that haven't completed yet are `null`.
-  final _values = <T?>[];
+  /// This is type `Object?` rather than `T?` so it can contain
+  /// [_canceledResult]. The slots for futures that haven't completed yet are
+  /// `null`.
+  final _values = <Object?>[];
 
   /// Wait for [task] to complete.
   @override
-  void add(Future<T> task) {
+  void add(Future<T> task) =>
+      addCancelable(CancelableOperation.fromFuture(task));
+
+  /// Wait for [task] to complete.
+  ///
+  /// If [task] is canceled, it's removed from the group without adding a value
+  /// to [future].
+  void addCancelable(CancelableOperation<T> task) {
     if (_closed) throw StateError('The FutureGroup is closed.');
 
     // Ensure that future values are put into [values] in the same order they're
@@ -76,11 +91,11 @@ class FutureGroup<T> implements Sink<Future<T>> {
     _values.add(null);
 
     _pending++;
-    task.then((value) {
+    task.valueOrCancellation().then((value) {
       if (_completer.isCompleted) return null;
 
       _pending--;
-      _values[index] = value;
+      _values[index] = task.isCanceled ? _canceledResult : value;
 
       if (_pending != 0) return null;
       var onIdleController = _onIdleController;
@@ -88,7 +103,10 @@ class FutureGroup<T> implements Sink<Future<T>> {
 
       if (!_closed) return null;
       if (onIdleController != null) onIdleController.close();
-      _completer.complete(_values.whereType<T>().toList());
+      _completer.complete([
+        for (var value in _values)
+          if (value != _canceledResult && value is T) value
+      ]);
     }).catchError((Object error, StackTrace stackTrace) {
       if (_completer.isCompleted) return null;
       _completer.completeError(error, stackTrace);
