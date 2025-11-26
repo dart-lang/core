@@ -343,7 +343,11 @@ extension ListExtensions<E> on List<E> {
   ///
   /// If this iterable is empty, [before] and [after] have no effect.
   ///
-  /// Compared to [IterableExtension.separatedList],
+  /// Compared to [IterableExtension.separatedList], this function
+  /// doesn't copy the elements into a new list, it creates a view
+  /// of the existing list with separators between the original elements.
+  /// To do that efficiently, the source must be a list, not just
+  /// an iterable.
   ///
   /// Example:
   /// ```dart
@@ -368,6 +372,7 @@ extension ListExtensions<E> on List<E> {
   ///   after: true,
   /// )); // []
   /// ```
+  /// @docImport 'iterable_extensions.dart' show IterableExtension;
   List<E> separated(E separator, {bool before = false, bool after = false}) =>
       _SeparatedList<E>(this, separator, before, after);
 
