@@ -8,7 +8,7 @@ import 'cancelable_operation.dart';
 
 /// A sentinel object indicating that a member of a [FutureGroup] was canceled
 /// rather than completing normally.
-const _canceledResult = Object();
+final _canceledResult = Object();
 
 /// A collection of futures waits until all added [Future]s complete.
 ///
@@ -74,14 +74,19 @@ class FutureGroup<T> implements Sink<Future<T>> {
 
   /// Wait for [task] to complete.
   @override
-  void add(Future<T> task) =>
-      addCancelable(CancelableOperation.fromFuture(task));
+  void add(Future<T> task) => _add(task);
 
   /// Wait for [task] to complete.
   ///
   /// If [task] is canceled, it's removed from the group without adding a value
   /// to [future].
   void addCancelable(CancelableOperation<T> task) {
+    _add(task
+        .then((value) => value, onCancel: () => _canceledResult)
+        .valueOrCancellation());
+  }
+
+  void _add(Future<Object?> task) {
     if (_closed) throw StateError('The FutureGroup is closed.');
 
     // Ensure that future values are put into [values] in the same order they're
@@ -91,11 +96,11 @@ class FutureGroup<T> implements Sink<Future<T>> {
     _values.add(null);
 
     _pending++;
-    task.valueOrCancellation().then((value) {
+    task.then((value) {
       if (_completer.isCompleted) return null;
 
       _pending--;
-      _values[index] = task.isCanceled ? _canceledResult : value;
+      _values[index] = value;
 
       if (_pending != 0) return null;
       var onIdleController = _onIdleController;
@@ -104,9 +109,9 @@ class FutureGroup<T> implements Sink<Future<T>> {
       if (!_closed) return null;
       if (onIdleController != null) onIdleController.close();
       _completer.complete([
-        for (var value in _values)
-          if (value != _canceledResult && value is T) value
-      ]);
+      for (var value in _values)
+        if (value != _canceledResult) value as T
+    ]);
     }).catchError((Object error, StackTrace stackTrace) {
       if (_completer.isCompleted) return null;
       _completer.completeError(error, stackTrace);
@@ -120,6 +125,9 @@ class FutureGroup<T> implements Sink<Future<T>> {
     _closed = true;
     if (_pending != 0) return;
     if (_completer.isCompleted) return;
-    _completer.complete(_values.whereType<T>().toList());
+    _completer.complete([
+      for (var value in _values)
+        if (value != _canceledResult) value as T
+    ]);
   }
 }
