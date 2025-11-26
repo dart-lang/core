@@ -3,12 +3,15 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Extension methods on common collection types.
+
 import 'dart:collection';
 import 'dart:math';
 
 import 'algorithms.dart';
 import 'algorithms.dart' as algorithms;
 import 'equality.dart';
+// For documentation only. Use docImport when reaching language version 3.8.
+import 'iterable_extensions.dart';
 import 'utils.dart';
 
 /// Various extensions on lists of arbitrary elements.
@@ -372,7 +375,6 @@ extension ListExtensions<E> on List<E> {
   ///   after: true,
   /// )); // []
   /// ```
-  /// @docImport 'iterable_extensions.dart';
   List<E> separated(E separator, {bool before = false, bool after = false}) =>
       _SeparatedList<E>(this, separator, before, after);
 
