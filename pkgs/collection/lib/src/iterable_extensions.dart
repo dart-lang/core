@@ -96,9 +96,9 @@ extension IterableExtension<T> on Iterable<T> {
           {bool before = false, bool after = false}) =>
       _SeparatedIterable<T>(this, separator, before, after);
 
-  /// Creates new list with the elements of this list separated by [separator].
+  /// Creates new list with the elements of this iterable separated by [separator].
   ///
-  /// Returns a new list which contains the same elements as this list,
+  /// Returns a new list which contains the same elements as this iterable,
   /// with a [separator] between any two of those elements.
   ///
   /// If [before] is set to `true`, a [separator] is also
@@ -106,7 +106,7 @@ extension IterableExtension<T> on Iterable<T> {
   /// If [after] is set to `true`, a [separator] is also
   /// added after the last element.
   ///
-  /// If this list is empty, [before] and [after] have no effect.
+  /// If this iterable is empty, [before] and [after] have no effect.
   ///
   /// Example:
   /// ```dart
