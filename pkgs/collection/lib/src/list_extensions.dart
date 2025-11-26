@@ -372,7 +372,7 @@ extension ListExtensions<E> on List<E> {
   ///   after: true,
   /// )); // []
   /// ```
-  /// @docImport 'iterable_extensions.dart' show IterableExtension;
+  /// @docImport 'iterable_extensions.dart';
   List<E> separated(E separator, {bool before = false, bool after = false}) =>
       _SeparatedList<E>(this, separator, before, after);
 
