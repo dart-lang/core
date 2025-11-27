@@ -109,9 +109,9 @@ class FutureGroup<T> implements Sink<Future<T>> {
       if (!_closed) return null;
       if (onIdleController != null) onIdleController.close();
       _completer.complete([
-      for (var value in _values)
-        if (value != _canceledResult) value as T
-    ]);
+        for (var value in _values)
+          if (value != _canceledResult) value as T
+      ]);
     }).catchError((Object error, StackTrace stackTrace) {
       if (_completer.isCompleted) return null;
       _completer.completeError(error, stackTrace);
