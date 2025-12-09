@@ -25,6 +25,9 @@ class ArgParser {
   /// The commands that have been defined for this parser.
   final Map<String, ArgParser> commands;
 
+  /// Command which will be executed by default if no command is specified.
+  String? defaultCommand;
+
   /// A list of the [Option]s in [options] intermingled with [String]
   /// separators.
   final _optionsAndSeparators = <Object>[];
