@@ -16,7 +16,7 @@ void main() {
     CommandRunner<void>('test', 'A test command runner.').addCommand(foo);
   });
 
-  group('.invocation has a sane default', () {
+  group('.invocation has a sensible default', () {
     test('without subcommands', () {
       expect(foo.invocation, equals('test foo [arguments]'));
     });

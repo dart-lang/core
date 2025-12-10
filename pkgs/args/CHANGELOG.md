@@ -1,4 +1,4 @@
-## 2.8.0-dev
+## 2.8.0
 
 * Allow designating a top-level command or a subcommand as a default one by
   passing `isDefault: true` to `addCommand` or `addSubcommand`.

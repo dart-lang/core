@@ -24,8 +24,8 @@ void main() {
     runner = CommandRunner('test', 'A test command runner.');
   });
 
-  group('.invocation', () {
-    test('has a sane default', () {
+  group('.invocation has a sensible default', () {
+    test('without default command', () {
       expect(runner.invocation, equals('test <command> [arguments]'));
     });
 

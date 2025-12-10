@@ -26,6 +26,8 @@ class ArgParser {
   final Map<String, ArgParser> commands;
 
   /// Command which will be executed by default if no command is specified.
+  ///
+  /// When `null` it is a usage error to omit the command name.
   String? defaultCommand;
 
   /// A list of the [Option]s in [options] intermingled with [String]
