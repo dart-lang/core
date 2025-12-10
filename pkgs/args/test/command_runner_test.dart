@@ -825,7 +825,7 @@ Run "test help" to see global options.'''));
         completes);
   });
 
-  test('named subcommand has precedence over unnamed', () {
+  test('named subcommand has precedence over default', () {
     final defaultSubcommand = BarCommand();
     final asyncCommand = AsyncCommand();
     final command = FooCommand()
@@ -864,6 +864,60 @@ Run "test help" to see global options.'''));
         runner.run(['foo', 'baz']),
         throwsUsageException(
             '''Command "bar" does not take any arguments.''', anything));
+  });
+
+  test('help flag has precedence over default command', () {
+    final defaultCommand = BarCommand();
+    runner.addCommand(defaultCommand, isDefault: true);
+
+    expect(
+        () => runner.run(['-h']).then((_) {
+              expect(defaultCommand.hasRun, isFalse);
+            }),
+        prints('''
+A test command runner.
+
+Usage: test [<command>] [arguments]
+
+Global options:
+-h, --help    Print this usage information.
+
+Available commands:
+  bar   (default) Set another value.
+
+Default command (bar) will be selected if no command is explicitly specified.
+
+Run "test help <command>" for more information about a command.
+'''));
+  });
+
+  test('help flag has precedence over default subcommand', () {
+    final defaultSubcommand = BarCommand();
+    final asyncCommand = AsyncCommand();
+    final command = FooCommand()
+      ..addSubcommand(asyncCommand)
+      ..addSubcommand(defaultSubcommand, isDefault: true);
+    runner.addCommand(command);
+
+    expect(
+        () => runner.run(['foo', '-h']).then((_) {
+              expect(defaultSubcommand.hasRun, isFalse);
+              expect(asyncCommand.hasRun, isFalse);
+            }),
+        prints('''
+Set a value.
+
+Usage: test foo [<subcommand>] [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  async   Set a value asynchronously.
+  bar     (default) Set another value.
+
+Default command (bar) will be selected if no command is explicitly specified.
+
+Run "test help" to see global options.
+'''));
   });
 }
 

@@ -49,7 +49,6 @@ class Parser {
           _grammar, const {}, _commandName, null, arguments, arguments);
     }
 
-    ArgResults? commandResults;
     ({String name, ArgParser parser})? command;
 
     // Parse the args.
@@ -64,11 +63,15 @@ class Parser {
       // options so that commands can have option-like names.
       //
       // Otherwise, if there is a default command then select it before parsing
-      // any arguments.
+      // any arguments. We make exception for situations when help flag is
+      // passed because we want `program command -h` to display help for
+      // `command` rather than display help for the default subcommand of the
+      // `command`.
       if (_grammar.commands[_current] case final parser?) {
         command = (name: _args.removeFirst(), parser: parser);
         break;
-      } else if (_grammar.defaultCommand case final defaultCommand?) {
+      } else if (_grammar.defaultCommand case final defaultCommand?
+          when !(_current == '-h' || _current == '--help')) {
         command =
             (name: defaultCommand, parser: _grammar.commands[defaultCommand]!);
         break;
@@ -88,14 +91,15 @@ class Parser {
 
     // If there is a default command and we did not select any other commands
     // and we don't have any trailing arguments then select the default
-    // command.
-    if (command == null && _rest.isEmpty) {
+    // command unless user requested help.
+    if (command == null && _rest.isEmpty && !_results.containsKey('help')) {
       if (_grammar.defaultCommand case final defaultCommand?) {
         command =
             (name: defaultCommand, parser: _grammar.commands[defaultCommand]!);
       }
     }
 
+    ArgResults? commandResults;
     if (command != null) {
       _validate(_rest.isEmpty, 'Cannot specify arguments before a command.',
           command.name);
