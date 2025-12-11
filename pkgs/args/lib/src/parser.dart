@@ -49,7 +49,7 @@ class Parser {
           _grammar, const {}, _commandName, null, arguments, arguments);
     }
 
-    ArgResults? commandResults;
+    ({String name, ArgParser parser})? command;
 
     // Parse the args.
     while (_args.isNotEmpty) {
@@ -61,26 +61,19 @@ class Parser {
 
       // Try to parse the current argument as a command. This happens before
       // options so that commands can have option-like names.
-      var command = _grammar.commands[_current];
-      if (command != null) {
-        _validate(_rest.isEmpty, 'Cannot specify arguments before a command.',
-            _current);
-        var commandName = _args.removeFirst();
-        var commandParser = Parser(commandName, command, _args, this, _rest);
-
-        try {
-          commandResults = commandParser.parse();
-        } on ArgParserException catch (error) {
-          throw ArgParserException(
-              error.message,
-              [commandName, ...error.commands],
-              error.argumentName,
-              error.source,
-              error.offset);
-        }
-
-        // All remaining arguments were passed to command so clear them here.
-        _rest.clear();
+      //
+      // Otherwise, if there is a default command then select it before parsing
+      // any arguments. We make exception for situations when help flag is
+      // passed because we want `program command -h` to display help for
+      // `command` rather than display help for the default subcommand of the
+      // `command`.
+      if (_grammar.commands[_current] case final parser?) {
+        command = (name: _args.removeFirst(), parser: parser);
+        break;
+      } else if (_grammar.defaultCommand case final defaultCommand?
+          when !(_current == '-h' || _current == '--help')) {
+        command =
+            (name: defaultCommand, parser: _grammar.commands[defaultCommand]!);
         break;
       }
 
@@ -94,6 +87,38 @@ class Parser {
       // the [allowTrailingOptions] option is set.
       if (!_grammar.allowTrailingOptions) break;
       _rest.add(_args.removeFirst());
+    }
+
+    // If there is a default command and we did not select any other commands
+    // and we don't have any trailing arguments then select the default
+    // command unless user requested help.
+    if (command == null && _rest.isEmpty && !_results.containsKey('help')) {
+      if (_grammar.defaultCommand case final defaultCommand?) {
+        command =
+            (name: defaultCommand, parser: _grammar.commands[defaultCommand]!);
+      }
+    }
+
+    ArgResults? commandResults;
+    if (command != null) {
+      _validate(_rest.isEmpty, 'Cannot specify arguments before a command.',
+          command.name);
+      var commandParser =
+          Parser(command.name, command.parser, _args, this, _rest);
+
+      try {
+        commandResults = commandParser.parse();
+      } on ArgParserException catch (error) {
+        throw ArgParserException(
+            error.message,
+            [command.name, ...error.commands],
+            error.argumentName,
+            error.source,
+            error.offset);
+      }
+
+      // All remaining arguments were passed to command so clear them here.
+      _rest.clear();
     }
 
     // Check if mandatory and invoke existing callbacks.
