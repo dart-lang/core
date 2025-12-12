@@ -357,6 +357,8 @@ class Int64 implements IntX {
 
   String toStringUnsigned() => _toRadixStringUnsigned(_i, 10);
 
+  String toDebugString() => 'Int64[_i=$_i]';
+
   static String _toRadixStringUnsigned(int value, int radix) {
     if (radix < 2 || radix > 36) {
       throw ArgumentError('toStringRadixUnsigned radix must be >= 2 and <= 36'
