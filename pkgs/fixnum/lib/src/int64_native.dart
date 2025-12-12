@@ -362,11 +362,11 @@ class Int64 implements IntX {
       throw ArgumentError('toStringRadixUnsigned radix must be >= 2 and <= 36'
           ' (found $radix)');
     }
-    // Split value into two 32-bit unsigned digits (v1, v0).
-    final v1 = value >>> 32;
-    if (v1 == 0) {
+    if (value >= 0) {
       return value.toRadixString(radix);
     }
+    // Split value into two 32-bit unsigned digits (v1, v0).
+    final v1 = value >>> 32;
     var v0 = value.toUnsigned(32);
     // Long division by a single digit: (q1, q0) = (v1, v0) ~/ radix, remainder r0.
     final q1 = v1 ~/ radix;
