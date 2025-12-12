@@ -364,7 +364,7 @@ class Int64 implements IntX {
     }
     // Split value into two 32-bit unsigned digits (v1, v0).
     final v1 = value >>> 32;
-   if (v1 == 0) {
+    if (v1 == 0) {
       return value.toRadixString(radix);
     }
     var v0 = value.toUnsigned(32);
