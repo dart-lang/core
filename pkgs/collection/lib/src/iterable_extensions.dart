@@ -7,7 +7,6 @@ import 'dart:math' show Random;
 import '../collection.dart' show DelegatingIterable;
 import 'algorithms.dart';
 import 'functions.dart' as functions;
-import 'utils.dart';
 
 /// Extensions that apply to all iterables.
 ///
@@ -165,10 +164,16 @@ extension IterableExtension<T> on Iterable<T> {
   /// Creates a sorted list of the elements of the iterable.
   ///
   /// The elements are ordered by the natural ordering of the
-  /// property [keyOf] of the element.
-  List<T> sortedBy<K extends Comparable<K>>(K Function(T element) keyOf) {
+  /// [keyOf] property when [ascending] is `true` or reverse ordering
+  /// when [ascending] is `false`.
+  List<T> sortedBy<K extends Comparable<K>>(
+    K Function(T element) keyOf, {
+    bool ascending = true,
+  }) {
+    final compare =
+        ascending ? (K a, K b) => a.compareTo(b) : (K a, K b) => b.compareTo(a);
     var elements = [...this];
-    mergeSortBy<T, K>(elements, keyOf, compareComparable);
+    mergeSortBy<T, K>(elements, keyOf, compare);
     return elements;
   }
 
