@@ -10,8 +10,10 @@ import 'package:yaml/yaml.dart' as yaml;
 import 'package:http/http.dart' as http;
 
 /// Source of truth for linter rules.
-const rulesUrl =
-    'https://raw.githubusercontent.com/dart-lang/site-www/main/src/_data/linter_rules.json';
+final rulesUri = Uri.https(
+  'raw.githubusercontent.com',
+  'dart-lang/site-www/main/src/data/linter_rules.json',
+);
 
 /// Local cache of linter rules from [rulesUrl].
 ///
@@ -25,7 +27,7 @@ const rulesMarkdownFilePath = 'rules.md';
 
 /// Fetches the [rulesUrl] JSON description of all lints, saves a cached
 /// summary of the relevant fields in [rulesCacheFilePath], and
-/// updates [rulesMarkdownFilePath] to
+/// updates [rulesMarkdownFilePath].
 ///
 /// Passing any command line argument disables generating documentation,
 /// and makes this tool just verify that the doc is up-to-date with the
@@ -91,7 +93,7 @@ Future<Map<String, Map<String, String>>> _fetchRulesJson({
     final rulesJsonText = rulesJsonFile.readAsStringSync();
     return _readJson(rulesJsonText);
   }
-  final rulesJsonText = (await http.get(Uri.parse(rulesUrl))).body;
+  final rulesJsonText = (await http.get(rulesUri)).body;
   final rulesJson = _readJson(rulesJsonText);
 
   // Re-save [rulesJsonFile] file.

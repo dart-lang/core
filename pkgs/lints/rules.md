@@ -8,7 +8,7 @@
 | [`avoid_empty_else`](https://dart.dev/lints/avoid_empty_else) | Avoid empty statements in else clauses. | ✅ |
 | [`avoid_relative_lib_imports`](https://dart.dev/lints/avoid_relative_lib_imports) | Avoid relative imports for files in `lib/`. | ✅ |
 | [`avoid_shadowing_type_parameters`](https://dart.dev/lints/avoid_shadowing_type_parameters) | Avoid shadowing type parameters. |  |
-| [`avoid_types_as_parameter_names`](https://dart.dev/lints/avoid_types_as_parameter_names) | Avoid types as parameter names. | ✅ |
+| [`avoid_types_as_parameter_names`](https://dart.dev/lints/avoid_types_as_parameter_names) | Avoid types as parameter names. |  |
 | [`await_only_futures`](https://dart.dev/lints/await_only_futures) | Await only futures. | ✅ |
 | [`camel_case_extensions`](https://dart.dev/lints/camel_case_extensions) | Name extensions using UpperCamelCase. |  |
 | [`camel_case_types`](https://dart.dev/lints/camel_case_types) | Name types using UpperCamelCase. |  |
@@ -101,6 +101,7 @@
 | [`unnecessary_to_list_in_spreads`](https://dart.dev/lints/unnecessary_to_list_in_spreads) | Unnecessary `toList()` in spreads. | ✅ |
 | [`unnecessary_underscores`](https://dart.dev/lints/unnecessary_underscores) | Unnecessary underscores can be removed. | ✅ |
 | [`use_function_type_syntax_for_parameters`](https://dart.dev/lints/use_function_type_syntax_for_parameters) | Use generic function type syntax for parameters. | ✅ |
+| [`use_null_aware_elements`](https://dart.dev/lints/use_null_aware_elements) | If-elements testing for null can be replaced with null-aware elements. | ✅ |
 | [`use_rethrow_when_possible`](https://dart.dev/lints/use_rethrow_when_possible) | Use rethrow to rethrow a caught exception. | ✅ |
 | [`use_super_parameters`](https://dart.dev/lints/use_super_parameters) | Use super-initializer parameters where possible. | ✅ |
 <!-- recommended -->

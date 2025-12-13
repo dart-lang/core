@@ -321,8 +321,6 @@ class Int32 implements IntX {
     return Int32(value);
   }
 
-  /// Returns [:true:] if this [Int32] has the same numeric value as the
-  /// given object.  The argument may be an [int] or an [IntX].
   @override
   bool operator ==(Object other) {
     if (other is Int32) {
@@ -437,10 +435,10 @@ class Int32 implements IntX {
   @override
   List<int> toBytes() {
     var result = List<int>.filled(4, 0);
-    result[0] = _i & 0xff;
-    result[1] = (_i >> 8) & 0xff;
-    result[2] = (_i >> 16) & 0xff;
     result[3] = (_i >> 24) & 0xff;
+    result[2] = (_i >> 16) & 0xff;
+    result[1] = (_i >> 8) & 0xff;
+    result[0] = _i & 0xff;
     return result;
   }
 

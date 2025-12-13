@@ -3,12 +3,15 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Extension methods on common collection types.
+
 import 'dart:collection';
 import 'dart:math';
 
 import 'algorithms.dart';
 import 'algorithms.dart' as algorithms;
 import 'equality.dart';
+// For documentation only. Use docImport when reaching language version 3.8.
+import 'iterable_extensions.dart';
 import 'utils.dart';
 
 /// Various extensions on lists of arbitrary elements.
@@ -327,6 +330,169 @@ extension ListExtensions<E> on List<E> {
       yield slice(i, min(i + length, this.length));
     }
   }
+
+  /// The elements of this list separated by [separator] as a lazy list.
+  ///
+  /// Creates an unmodifiable list backed by this list, which has [separator]s
+  /// between, and optionally before and or/after, the elements of this list.
+  /// Changes to this list will be reflected in the returned list.
+  ///
+  /// If [before] is set to `true`, the returned list has a separator
+  /// before each element of this list.
+  /// If [after] is set to `true`, the returned list has a separator
+  /// after each element of this list.
+  /// The returned list always has a separator between two elements
+  /// of this list.
+  ///
+  /// If this iterable is empty, [before] and [after] have no effect.
+  ///
+  /// Compared to [IterableExtension.separatedList], this function
+  /// doesn't copy the elements into a new list, it creates a view
+  /// of the existing list with separators between the original elements.
+  /// To do that efficiently, the source must be a list, not just
+  /// an iterable.
+  ///
+  /// Example:
+  /// ```dart
+  /// print([1, 2, 3].separated(-1)); // [1, -1, 2, -1, 3]
+  /// print([1].separated(-1)); // [1]
+  /// print([].separated(-1)); // []
+  ///
+  /// print([1, 2, 3].separated(
+  ///   -1,
+  ///   before: true,
+  /// )); // [-1, 1, -1, 2, -1, 3]
+  ///
+  /// print([1].separated(
+  ///   -1,
+  ///   before: true,
+  ///   after: true,
+  /// )); // [-1, 1, -1]
+  ///
+  /// print([].separated(
+  ///   -1,
+  ///   before: true,
+  ///   after: true,
+  /// )); // []
+  /// ```
+  List<E> separated(E separator, {bool before = false, bool after = false}) =>
+      _SeparatedList<E>(this, separator, before, after);
+
+  /// Creates new list with the elements of this list separated by [separator].
+  ///
+  /// Returns a new list which contains the same elements as this list,
+  /// with a [separator] between any two of those elements.
+  ///
+  /// If [before] is set to `true`, a [separator] is also
+  /// added before the first element.
+  /// If [after] is set to `true`, a [separator] is also
+  /// added after the last element.
+  ///
+  /// If this list is empty, [before] and [after] have no effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// print([1, 2, 3].separatedList(-1)); // [1, -1, 2, -1, 3]
+  /// print([1].separatedList(-1)); // [1]
+  /// print([].separatedList(-1)); // []
+  ///
+  /// print([1, 2, 3].separatedList(
+  ///   -1
+  ///   before: true,
+  /// )); // [-1, 1, -1, 2, -1, 3]
+  ///
+  /// print([1].separatedList(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // [-1, 1, -1]
+  ///
+  /// print([].separatedList(
+  ///   -1
+  ///   before: true,
+  ///   after: true,
+  /// )); // []
+  /// ```
+  List<E> separatedList(E separator,
+          {bool before = false, bool after = false}) =>
+      isEmpty
+          ? []
+          : [
+              if (!before) this[0],
+              for (var i = before ? 0 : 1; i < length; i++) ...[
+                separator,
+                this[i],
+              ],
+              if (after) separator
+            ];
+
+  /// Inserts [separator] between elements of this list.
+  ///
+  /// Afterwards, the list will contains all the original elements,
+  /// with a [separator] between any two of those elements.
+  ///
+  /// If [before] is set to `true`, a [separator] is also
+  /// inserted before the first element.
+  /// If [after] is set to `true`, a [separator] is also
+  /// added after the last element.
+  ///
+  /// If this list is empty, [before] and [after] have no effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// print([1, 2, 3]..separate(-1)); // [1, -1, 2, -1, 3]
+  /// print([1]..separate(-1)); // [1]
+  /// print([]..separate(-1)); // []
+  ///
+  /// print([1, 2, 3]..separate(
+  ///   -1,
+  ///   before: true,
+  /// )); // [-1, 1, -1, 2, -1, 3]
+  ///
+  /// print([1]..separate(
+  ///   -1,
+  ///   before: true,
+  ///   after: true,
+  /// )); // [-1, 1, -1]
+  ///
+  /// print([]..separate(
+  ///   -1,
+  ///   before: true,
+  ///   after: true,
+  /// )); // []
+  /// ```
+  void separate(E separator, {bool before = false, bool after = false}) {
+    var length = this.length;
+    if (length == 0) return;
+    // New position of first element.
+    var newFirst = before ? 1 : 0;
+    // New position of last element.
+    var newLast = length * 2 - (newFirst ^ 1);
+
+    var splitIndex = length - newFirst;
+    var cursor = splitIndex >> 1;
+    if (splitIndex.isEven) {
+      add(this[cursor]);
+    }
+    cursor++;
+    while (this.length < newLast) {
+      add(separator);
+      add(this[cursor++]);
+    }
+    assert(cursor == length);
+    if (after) add(separator);
+
+    cursor = splitIndex >> 1;
+    if (splitIndex.isOdd) {
+      this[--length] = this[cursor];
+    }
+    cursor--;
+    for (var i = length; i > 1;) {
+      this[--i] = separator;
+      this[--i] = this[cursor--];
+    }
+    if (newFirst != 0) this[0] = separator;
+  }
 }
 
 /// Various extensions on lists of comparable elements.
@@ -569,4 +735,117 @@ class ListSlice<E> extends ListBase<E> {
   void replaceRange(int start, int end, Iterable<E> newContents) {
     throw UnsupportedError('Cannot remove from a fixed-length list');
   }
+}
+
+/// A lazy separator mapper around a `List`.
+class _SeparatedList<E> extends ListBase<E> {
+  final E _separator;
+  final List<E> _elements;
+
+  static const int _lengthDeltaShift = 1;
+  static const int _lengthDeltaUnit = 1 << _lengthDeltaShift;
+  static const int _beforeFlag = 1 << 0;
+
+  /// Bit flags for before/after separator behavior.
+  ///
+  /// Bit 0: Have separator before first element.
+  /// Bit 1+: Number of separators before and after.
+  ///         One of 0, 1 or 2 depending on how many of `before` and `after`
+  ///         were true.
+  final int _flags;
+
+  _SeparatedList(this._elements, this._separator, bool before, bool after)
+      : _flags = (before ? (_beforeFlag + _lengthDeltaUnit) : 0) +
+            (after ? _lengthDeltaUnit : 0);
+
+  @override
+  bool get isEmpty => _elements.isEmpty;
+
+  @override
+  bool get isNotEmpty => _elements.isNotEmpty;
+
+  @override
+  int get length {
+    var length = _elements.length;
+    if (length != 0) length = length * 2 - 1 + (_flags >> _lengthDeltaShift);
+    return length;
+  }
+
+  @override
+  E operator [](int index) {
+    IndexError.check(index, length, indexable: this);
+    var indexWithoutBefore = index - (_flags & _beforeFlag);
+    return indexWithoutBefore.isEven
+        ? _elements[indexWithoutBefore >> 1]
+        : _separator;
+  }
+
+  @override
+  void operator []=(int index, E value) => _unmodifiable();
+
+  @override
+  set length(int newLength) => _unmodifiable();
+
+  @override
+  set first(E element) => _unmodifiable();
+
+  @override
+  set last(E element) => _unmodifiable();
+
+  @override
+  void setAll(int at, Iterable<E> iterable) => _unmodifiable();
+
+  @override
+  void add(E value) => _unmodifiable();
+
+  @override
+  void insert(int index, E element) => _unmodifiable();
+
+  @override
+  void insertAll(int at, Iterable<E> iterable) => _unmodifiable();
+
+  @override
+  void addAll(Iterable<E> iterable) => _unmodifiable();
+
+  @override
+  bool remove(Object? element) => _unmodifiable();
+
+  @override
+  void removeWhere(bool Function(E element) test) => _unmodifiable();
+
+  @override
+  void retainWhere(bool Function(E element) test) => _unmodifiable();
+
+  @override
+  void sort([Comparator<E>? compare]) => _unmodifiable();
+
+  @override
+  void shuffle([Random? random]) => _unmodifiable();
+
+  @override
+  void clear() => _unmodifiable();
+
+  @override
+  E removeAt(int index) => _unmodifiable();
+
+  @override
+  E removeLast() => _unmodifiable();
+
+  @override
+  void setRange(int start, int end, Iterable<E> iterable,
+          [int skipCount = 0]) =>
+      _unmodifiable();
+
+  @override
+  void removeRange(int start, int end) => _unmodifiable();
+
+  @override
+  void replaceRange(int start, int end, Iterable<E> iterable) =>
+      _unmodifiable();
+
+  @override
+  void fillRange(int start, int end, [E? fillValue]) => _unmodifiable();
+
+  static Never _unmodifiable() =>
+      throw UnsupportedError('Cannot modify lazily separated list');
 }

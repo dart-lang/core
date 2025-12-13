@@ -291,9 +291,6 @@ Uint8List _parseInCBCategories(String file, {required bool verbose}) {
 }
 
 // --------------------------------------------------------------------
-// TODO: Use a sparse table?
-// Likely not worth it.
-
 /// Fixed length table for Unicode properties.
 class UnicodePropertyTable {
   static const int _unicodeCodePoints = 0x110000;
