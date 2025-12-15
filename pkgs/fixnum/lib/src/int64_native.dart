@@ -364,8 +364,8 @@ class Int64 implements IntX {
       throw ArgumentError('toStringRadixUnsigned radix must be >= 2 and <= 36'
           ' (found $radix)');
     }
-    if (value == 0) {
-      return '0';
+    if (value >= 0) {
+      return value.toRadixString(radix);
     }
     // Split value into two 32-bit unsigned digits (v1, v0).
     final v1 = value >>> 32;
