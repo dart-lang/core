@@ -357,13 +357,15 @@ class Int64 implements IntX {
 
   String toStringUnsigned() => _toRadixStringUnsigned(_i, 10);
 
+  String toDebugString() => 'Int64[_i=$_i]';
+
   static String _toRadixStringUnsigned(int value, int radix) {
     if (radix < 2 || radix > 36) {
       throw ArgumentError('toStringRadixUnsigned radix must be >= 2 and <= 36'
           ' (found $radix)');
     }
-    if (value == 0) {
-      return '0';
+    if (value >= 0) {
+      return value.toRadixString(radix);
     }
     // Split value into two 32-bit unsigned digits (v1, v0).
     final v1 = value >>> 32;
