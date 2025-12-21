@@ -270,6 +270,18 @@ extension ListExtensions<E> on List<E> {
     this[index2] = tmp;
   }
 
+  /// Move an element to the index of this list.
+  void move(int from, int to) {
+    RangeError.checkValidIndex(from, this, 'from');
+    RangeError.checkValidIndex(to, this, 'to');
+    if (from == to || from + 1 == to) return;
+    final element = removeAt(from);
+    if (from < to) {
+      to--;
+    }
+    insert(to, element);
+  }
+
   /// A fixed length view of a range of this list.
   ///
   /// The view is backed by this list, which must not change its length while
