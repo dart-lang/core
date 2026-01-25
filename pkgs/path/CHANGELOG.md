@@ -7,6 +7,7 @@
   queries and fragments when when normalizing, include them 
   in/as the last segment when splitting.
 - Run `dart format` with the new style.
+- Centralize join logic in `Context` and eliminate redundant validation in `absolute()`.
 
 ## 1.9.1
 
