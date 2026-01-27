@@ -93,31 +93,28 @@ class Context {
     String? part14,
     String? part15,
   ]) {
-    _validateArgList('absolute', [
-      part1,
-      part2,
-      part3,
-      part4,
-      part5,
-      part6,
-      part7,
-      part8,
-      part9,
-      part10,
-      part11,
-      part12,
-      part13,
-      part14,
-      part15,
-    ]);
-
     // If there's a single absolute path, just return it. This is a lot faster
     // for the common case of `p.absolute(path)`.
-    if (part2 == null && isAbsolute(part1) && !isRootRelative(part1)) {
+    if (part2 == null &&
+        isAbsolute(part1) &&
+        !isRootRelative(part1) &&
+        part3 == null &&
+        part4 == null &&
+        part5 == null &&
+        part6 == null &&
+        part7 == null &&
+        part8 == null &&
+        part9 == null &&
+        part10 == null &&
+        part11 == null &&
+        part12 == null &&
+        part13 == null &&
+        part14 == null &&
+        part15 == null) {
       return part1;
     }
 
-    return join(
+    return _join('absolute', [
       current,
       part1,
       part2,
@@ -134,7 +131,7 @@ class Context {
       part13,
       part14,
       part15,
-    );
+    ]);
   }
 
   /// Gets the part of [path] after the last separator on the context's
@@ -282,26 +279,29 @@ class Context {
     String? part14,
     String? part15,
     String? part16,
-  ]) {
-    final parts = <String?>[
-      part1,
-      part2,
-      part3,
-      part4,
-      part5,
-      part6,
-      part7,
-      part8,
-      part9,
-      part10,
-      part11,
-      part12,
-      part13,
-      part14,
-      part15,
-      part16,
-    ];
-    _validateArgList('join', parts);
+  ]) =>
+      _join('join', [
+        part1,
+        part2,
+        part3,
+        part4,
+        part5,
+        part6,
+        part7,
+        part8,
+        part9,
+        part10,
+        part11,
+        part12,
+        part13,
+        part14,
+        part15,
+        part16,
+      ]);
+
+  /// Joins the given path parts into a single path.
+  String _join(String method, List<String?> parts) {
+    _validateArgList(method, parts);
     return joinAll(parts.whereType<String>());
   }
 

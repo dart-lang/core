@@ -1329,6 +1329,11 @@ void main() {
         r'https://dart.dev/root/path/a/\\b/c/d',
       );
     });
+
+    test('disallows intermediate nulls', () {
+      expect(() => context.absolute('a', null, 'b'), throwsArgumentError);
+      expect(() => context.absolute('/a', null, 'b'), throwsArgumentError);
+    });
   });
 
   test('withoutExtension', () {
