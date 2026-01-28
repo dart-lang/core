@@ -1,10 +1,12 @@
-## 6.1.0-wip
+## 6.1.0
 
 - `recommended`:
   - added [use_null_aware_elements] (https://github.com/dart-lang/core/issues/899)
+  - added [no_wildcard_variable_uses] (https://github.com/dart-lang/core/issues/832)
 - Run `dart format` with the new style.
 
 [use_null_aware_elements]: https://dart.dev/lints/use_null_aware_elements
+[no_wildcard_variable_uses]: https://dart.dev/lints/no_wildcard_variable_uses
 
 ## 6.0.0
 
