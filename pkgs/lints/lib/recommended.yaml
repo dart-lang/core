@@ -29,6 +29,7 @@ linter:
     - library_private_types_in_public_api
     - no_leading_underscores_for_library_prefixes
     - no_leading_underscores_for_local_identifiers
+    - no_wildcard_variable_uses
     - null_closures
     - overridden_fields
     - package_names
