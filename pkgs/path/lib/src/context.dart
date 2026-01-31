@@ -114,7 +114,8 @@ class Context {
       return part1;
     }
 
-    return _join('absolute', [
+    _validateArgs(
+      'absolute',
       current,
       part1,
       part2,
@@ -131,6 +132,24 @@ class Context {
       part13,
       part14,
       part15,
+    );
+    return joinAll([
+      current,
+      part1,
+      ?part2,
+      ?part3,
+      ?part4,
+      ?part5,
+      ?part6,
+      ?part7,
+      ?part8,
+      ?part9,
+      ?part10,
+      ?part11,
+      ?part12,
+      ?part13,
+      ?part14,
+      ?part15,
     ]);
   }
 
@@ -279,30 +298,44 @@ class Context {
     String? part14,
     String? part15,
     String? part16,
-  ]) =>
-      _join('join', [
-        part1,
-        part2,
-        part3,
-        part4,
-        part5,
-        part6,
-        part7,
-        part8,
-        part9,
-        part10,
-        part11,
-        part12,
-        part13,
-        part14,
-        part15,
-        part16,
-      ]);
-
-  /// Joins the given path parts into a single path.
-  String _join(String method, List<String?> parts) {
-    _validateArgList(method, parts);
-    return joinAll(parts.whereType<String>());
+  ]) {
+    _validateArgs(
+      'join',
+      part1,
+      part2,
+      part3,
+      part4,
+      part5,
+      part6,
+      part7,
+      part8,
+      part9,
+      part10,
+      part11,
+      part12,
+      part13,
+      part14,
+      part15,
+      part16,
+    );
+    return joinAll([
+      part1,
+      ?part2,
+      ?part3,
+      ?part4,
+      ?part5,
+      ?part6,
+      ?part7,
+      ?part8,
+      ?part9,
+      ?part10,
+      ?part11,
+      ?part12,
+      ?part13,
+      ?part14,
+      ?part15,
+      ?part16,
+    ]);
   }
 
   /// Joins the given path parts into a single path. Example:
@@ -1165,28 +1198,446 @@ Uri _parseUri(Object uri) {
 
 /// Validates that there are no non-null arguments following a null one and
 /// throws an appropriate [ArgumentError] on failure.
-void _validateArgList(String method, List<String?> args) {
-  for (var i = 1; i < args.length; i++) {
-    // Ignore nulls hanging off the end.
-    if (args[i] == null || args[i - 1] != null) continue;
+///
+/// This function operates on individual arguments rather than a list for better
+/// performance by avoiding list allocation.
+void _validateArgs(
+  String method,
+  String? p0,
+  String? p1,
+  String? p2,
+  String? p3,
+  String? p4,
+  String? p5,
+  String? p6,
+  String? p7,
+  String? p8,
+  String? p9,
+  String? p10,
+  String? p11,
+  String? p12,
+  String? p13,
+  String? p14,
+  String? p15,
+) {
+  // p0 is always non-null (enforced by caller), so we start checking from p1.
+  // Once we see a null, all subsequent arguments must also be null.
+  var seenNull = false;
 
-    int numArgs;
-    for (numArgs = args.length; numArgs >= 1; numArgs--) {
-      if (args[numArgs - 1] != null) break;
-    }
-
-    // Show the arguments.
-    final message = StringBuffer();
-    message.write('$method(');
-    message.write(
-      args
-          .take(numArgs)
-          .map((arg) => arg == null ? 'null' : '"$arg"')
-          .join(', '),
-    );
-    message.write('): part ${i - 1} was null, but part $i was not.');
-    throw ArgumentError(message.toString());
+  if (p1 == null) {
+    seenNull = true;
   }
+
+  if (p2 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      2,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p3 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      3,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p4 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      4,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p5 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      5,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p6 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      6,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p7 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      7,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p8 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      8,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p9 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      9,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p10 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      10,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p11 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      11,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p12 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      12,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p13 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      13,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p14 == null) {
+    seenNull = true;
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      14,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+
+  if (p15 == null) {
+    // No more arguments to check after p15, so this is valid.
+  } else if (seenNull) {
+    _throwArgError(
+      method,
+      15,
+      p0,
+      p1,
+      p2,
+      p3,
+      p4,
+      p5,
+      p6,
+      p7,
+      p8,
+      p9,
+      p10,
+      p11,
+      p12,
+      p13,
+      p14,
+      p15,
+    );
+  }
+}
+
+/// Throws an [ArgumentError] for invalid argument ordering.
+///
+/// [nonNullIndex] is the index of the non-null argument that follows a null.
+Never _throwArgError(
+  String method,
+  int nonNullIndex,
+  String? p0,
+  String? p1,
+  String? p2,
+  String? p3,
+  String? p4,
+  String? p5,
+  String? p6,
+  String? p7,
+  String? p8,
+  String? p9,
+  String? p10,
+  String? p11,
+  String? p12,
+  String? p13,
+  String? p14,
+  String? p15,
+) {
+  final args = [
+    p0,
+    p1,
+    p2,
+    p3,
+    p4,
+    p5,
+    p6,
+    p7,
+    p8,
+    p9,
+    p10,
+    p11,
+    p12,
+    p13,
+    p14,
+    p15,
+  ];
+
+  int numArgs;
+  for (numArgs = args.length; numArgs >= 1; numArgs--) {
+    if (args[numArgs - 1] != null) break;
+  }
+
+  final message = StringBuffer();
+  message.write('$method(');
+  message.write(
+    args
+        .take(numArgs)
+        .map((arg) => arg == null ? 'null' : '"$arg"')
+        .join(', '),
+  );
+  message.write(
+    '): part ${nonNullIndex - 1} was null, but part $nonNullIndex was not.',
+  );
+  throw ArgumentError(message.toString());
 }
 
 /// An enum of possible return values for [Context._pathDirection].
