@@ -28,44 +28,44 @@ void main() {
       : NativePlatform.android;
   final otherVersion = original.operatingSystemVersion == '42' ? '87' : '42';
 
-  group('FakeNativePlatform', () {
+  group('TestNativePlatform', () {
     group('fromPlatform', () {
       test('copiesAllProperties', () {
-        var fake = FakeNativePlatform.from(original);
-        testNativeFake(
-          fake,
+        var testPlatform = TestNativePlatform.from(original);
+        testNative(
+          testPlatform,
           jsonDecode(original.toJson()) as Map<String, Object?>,
         );
       });
 
       test('converts properties to mutable', () {
-        var fake = FakeNativePlatform.from(original);
-        var key = fake.environment.keys.first;
+        var testPlatform = TestNativePlatform.from(original);
+        var key = testPlatform.environment.keys.first;
 
-        expect(fake.environment[key], original.environment[key]);
-        fake.environment[key] = 'FAKE';
-        expect(fake.environment[key], 'FAKE');
+        expect(testPlatform.environment[key], original.environment[key]);
+        testPlatform.environment[key] = 'TEST';
+        expect(testPlatform.environment[key], 'TEST');
 
         expect(
-          fake.executableArguments.length,
+          testPlatform.executableArguments.length,
           original.executableArguments.length,
         );
-        fake.executableArguments.add('ARG');
-        expect(fake.executableArguments.last, 'ARG');
+        testPlatform.executableArguments.add('ARG');
+        expect(testPlatform.executableArguments.last, 'ARG');
       });
     });
 
     group('copyWith', () {
       test('overrides a value, but leaves others intact', () {
         var expected = jsonDecode(original.toJson()) as Map<String, Object?>;
-        var fake = FakeNativePlatform.from(original);
+        var testPlatform = TestNativePlatform.from(original);
 
-        NativePlatform copy = fake.copyWith(numberOfProcessors: -1);
+        NativePlatform copy = testPlatform.copyWith(numberOfProcessors: -1);
         expected[json_key.numberOfProcessors] = -1;
-        testNativeFake(copy, expected);
+        testNative(copy, expected);
       });
       test('can override all values', () {
-        var fake = FakeNativePlatform.from(original);
+        var testPlatform = TestNativePlatform.from(original);
         var expected = <String, Object?>{
           json_key.environment: <String, String>{'PATH': '.'},
           json_key.executable: 'executable',
@@ -79,12 +79,12 @@ void main() {
           json_key.pathSeparator: ':',
           json_key.packageConfig: 'config.json',
           json_key.resolvedExecutable: '/executable',
-          json_key.script: '/platform/test/fake_platform_test.dart',
+          json_key.script: '/platform/test/test_platform_test.dart',
           json_key.stdinSupportsAnsi: false,
           json_key.stdoutSupportsAnsi: true,
           json_key.version: '0.1.1',
         };
-        var copy = fake.copyWith(
+        var copy = testPlatform.copyWith(
           environment: expected[json_key.environment] as Map<String, String>,
           executable: expected[json_key.executable] as String,
           executableArguments:
@@ -104,7 +104,7 @@ void main() {
           stdoutSupportsAnsi: expected[json_key.stdoutSupportsAnsi] as bool,
           version: expected[json_key.version] as String,
         );
-        testNativeFake(copy, expected);
+        testNative(copy, expected);
       });
     });
 
@@ -123,21 +123,21 @@ void main() {
           json_key.packageConfig: 'config.json',
           json_key.pathSeparator: '/',
           json_key.resolvedExecutable: '/bin/dart',
-          json_key.script: 'file:///platform/test/fake_platform_test.dart',
+          json_key.script: 'file:///platform/test/test_platform_test.dart',
           json_key.stdinSupportsAnsi: true,
           json_key.stdoutSupportsAnsi: false,
           json_key.version: '1.22.0',
         };
         var jsonText = jsonEncode(json);
-        var fake = FakeNativePlatform.fromJson(jsonText);
-        testNativeFake(fake, json);
+        var testPlatform = TestNativePlatform.fromJson(jsonText);
+        testNative(testPlatform, json);
         // Compare toJson.
-        expect(jsonDecode(fake.toJson()), json);
+        expect(jsonDecode(testPlatform.toJson()), json);
       });
 
       test('fromEmptyJson', () {
-        var fake = FakeNativePlatform.fromJson('{}');
-        testNativeFake(fake, {});
+        var testPlatform = TestNativePlatform.fromJson('{}');
+        testNative(testPlatform, {});
       });
 
       test('fromNullJson', () {
@@ -160,24 +160,24 @@ void main() {
           json_key.script: null,
           json_key.version: null,
         };
-        var fake = FakeNativePlatform.fromJson(jsonEncode(allNulls));
-        testNativeFake(fake, {});
-        expect(fake.toJson(), '{}');
+        var testPlatform = TestNativePlatform.fromJson(jsonEncode(allNulls));
+        testNative(testPlatform, {});
+        expect(testPlatform.toJson(), '{}');
       });
 
       test('fromJsonToJson', () {
         var current = original;
         var jsonText = current.toJson();
         var json = jsonDecode(jsonText) as Map<String, Object?>;
-        var fake = FakeNativePlatform.fromJson(jsonText);
-        testNativeFake(fake, json);
-        expect(jsonDecode(fake.toJson()), json);
+        var testPlatform = TestNativePlatform.fromJson(jsonText);
+        testNative(testPlatform, json);
+        expect(jsonDecode(testPlatform.toJson()), json);
       });
 
       test('fromJsonErrors', () {
         void fromJsonError(String source) {
           expect(
-            () => FakeNativePlatform.fromJson(source),
+            () => TestNativePlatform.fromJson(source),
             throwsFormatException,
           );
         }
@@ -240,8 +240,8 @@ void main() {
       });
     });
     test('Throws when unset non-null values are read', () {
-      final platform = FakeNativePlatform();
-      // Sanity check, in case `testNativeFake` was bugged.
+      final platform = TestNativePlatform();
+      // Sanity check, in case `testNative` was bugged.
       expect(() => platform.environment, throwsA(isStateError));
       expect(() => platform.executable, throwsA(isStateError));
       expect(() => platform.executableArguments, throwsA(isStateError));
@@ -263,32 +263,32 @@ void main() {
 
   group('runtime override', () {
     test('sync', () {
-      var fake = FakeNativePlatform.from(
+      var testPlatform = TestNativePlatform.from(
         original,
       ).copyWith(operatingSystem: otherOS);
-      expect(fake.operatingSystem, otherOS);
-      fake.run(() {
-        expect(NativePlatform.current, same(fake));
-        expect(Platform.current.nativePlatform, same(fake));
+      expect(testPlatform.operatingSystem, otherOS);
+      testPlatform.run(() {
+        expect(NativePlatform.current, same(testPlatform));
+        expect(Platform.current.nativePlatform, same(testPlatform));
         expect(NativePlatform.current?.operatingSystem, otherOS);
       });
     });
     test('async', () async {
       var currentNative = original;
-      var fake = FakeNativePlatform.from(
+      var testPlatform = TestNativePlatform.from(
         currentNative,
       ).copyWith(operatingSystem: otherOS);
       var parts = 0;
-      var asyncTesting = fake.run(() async {
+      var asyncTesting = testPlatform.run(() async {
         // Runs synchronously.
-        expect(NativePlatform.current, same(fake));
-        expect(Platform.current.nativePlatform, same(fake));
+        expect(NativePlatform.current, same(testPlatform));
+        expect(Platform.current.nativePlatform, same(testPlatform));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         parts++;
         await Future(() {}); // Timer-delay.
         // Runs later.
-        expect(NativePlatform.current, same(fake));
-        expect(Platform.current.nativePlatform, same(fake));
+        expect(NativePlatform.current, same(testPlatform));
+        expect(Platform.current.nativePlatform, same(testPlatform));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         parts++;
       });
@@ -301,30 +301,30 @@ void main() {
     });
   });
   group('nested overrides', () {
-    final fakeNative = FakeNativePlatform.from(
+    final testPlatformNative = TestNativePlatform.from(
       original,
     ).copyWith(operatingSystem: otherOS);
-    final fakeNative2 = FakeNativePlatform.from(
-      fakeNative,
+    final testPlatformNative2 = TestNativePlatform.from(
+      testPlatformNative,
     ).copyWith(operatingSystemVersion: otherVersion);
     test('sync', () {
-      fakeNative.run(() {
-        expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+      testPlatformNative.run(() {
+        expect(NativePlatform.current, same(testPlatformNative));
+        expect(Platform.current.nativePlatform, same(testPlatformNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(
           NativePlatform.current?.operatingSystemVersion,
           original.operatingSystemVersion,
         );
-        fakeNative2.run(() {
-          expect(NativePlatform.current, same(fakeNative2));
-          expect(Platform.current.nativePlatform, same(fakeNative2));
+        testPlatformNative2.run(() {
+          expect(NativePlatform.current, same(testPlatformNative2));
+          expect(Platform.current.nativePlatform, same(testPlatformNative2));
           expect(NativePlatform.current?.operatingSystem, otherOS);
           expect(NativePlatform.current?.operatingSystemVersion, otherVersion);
         });
         // Previous override restored when done.
-        expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+        expect(NativePlatform.current, same(testPlatformNative));
+        expect(Platform.current.nativePlatform, same(testPlatformNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(
           NativePlatform.current?.operatingSystemVersion,
@@ -333,32 +333,32 @@ void main() {
       });
     });
     test('async', () async {
-      await fakeNative.run(() async {
-        expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+      await testPlatformNative.run(() async {
+        expect(NativePlatform.current, same(testPlatformNative));
+        expect(Platform.current.nativePlatform, same(testPlatformNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(
           NativePlatform.current?.operatingSystemVersion,
           original.operatingSystemVersion,
         );
         var parts = 0;
-        var asyncTesting = fakeNative2.run(() async {
-          expect(NativePlatform.current, same(fakeNative2));
-          expect(Platform.current.nativePlatform, same(fakeNative2));
+        var asyncTesting = testPlatformNative2.run(() async {
+          expect(NativePlatform.current, same(testPlatformNative2));
+          expect(Platform.current.nativePlatform, same(testPlatformNative2));
           expect(NativePlatform.current?.operatingSystem, otherOS);
           expect(NativePlatform.current?.operatingSystemVersion, otherVersion);
           parts++;
           await Future(() {});
-          expect(NativePlatform.current, same(fakeNative2));
-          expect(Platform.current.nativePlatform, same(fakeNative2));
+          expect(NativePlatform.current, same(testPlatformNative2));
+          expect(Platform.current.nativePlatform, same(testPlatformNative2));
           expect(NativePlatform.current?.operatingSystem, otherOS);
           expect(NativePlatform.current?.operatingSystemVersion, otherVersion);
           parts++;
         });
         expect(parts, 1);
         // Previous override restored when done.
-        expect(NativePlatform.current, same(fakeNative));
-        expect(Platform.current.nativePlatform, same(fakeNative));
+        expect(NativePlatform.current, same(testPlatformNative));
+        expect(Platform.current.nativePlatform, same(testPlatformNative));
         expect(NativePlatform.current?.operatingSystem, otherOS);
         expect(
           NativePlatform.current?.operatingSystemVersion,
@@ -393,10 +393,7 @@ void _testProperty(Object? Function() read, Object? expected) {
 /// are expected to throw too.
 /// Otherwise they are tested to give the expected true/false value
 /// for the expected operating system.
-void testNativeFake(
-  NativePlatform actual,
-  Map<String, Object?> expectedValues,
-) {
+void testNative(NativePlatform actual, Map<String, Object?> expectedValues) {
   var expectedOS = expectedValues[json_key.operatingSystem] as String?;
   _testProperty(() => actual.operatingSystem, expectedOS);
   if (expectedOS == null) {

@@ -3,11 +3,13 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Shared functionality for overriding a `Platform` using zones.
+///
+/// @docImport 'test_platforms.dart';
 library;
 
 import 'dart:async';
 
-/// Class which is only implemented in `fake_platforms.dart`.
+/// Class which is only implemented in `test_platforms.dart`.
 abstract class OverrideMarker {}
 
 /// A variable which can only become non-`null` if testing.
@@ -18,7 +20,7 @@ abstract class OverrideMarker {}
 /// so compilers should be able to recognize that `marker` is always `null`.
 OverrideMarker? _marker;
 
-/// Unfakable key used to set a `Platform` override in zone variables.
+/// Private key used for a `Platform` override in zone variables.
 const _zoneKey = #_platformOverride;
 
 /// Reads the platform override
@@ -29,9 +31,8 @@ Object? get platformOverride => _marker == null ? null : Zone.current[_zoneKey];
 
 /// Runs [code] in a zone with a platform override, and returns its result.
 ///
-/// The [overrideValue] will be a `FakePlatform`, but that type is only
-/// available
-///
+/// The [overrideValue] will always be a [TestPlatform], but that type only
+/// exist when the `testing.dart` library is imported by the program.
 R runWith<R>(R Function() code, Object? overrideValue, OverrideMarker mark) {
   // After this, lookups on `Platform.current` will check for zone overrides.
   _marker = mark;

@@ -12,8 +12,8 @@ import 'package:platform/testing.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const fakeUA = 'Fake UserAgent';
-  const fakeVersion = 'Fake Version';
+  const testPlatformUA = 'Test UserAgent';
+  const testPlatformVersion = 'Test Version';
 
   final original = BrowserPlatform.current;
 
@@ -24,12 +24,12 @@ void main() {
 
   if (original == null) return; // Promote to non-null from here.
 
-  group('FakeBrowserPlatform', () {
+  group('TestBrowserPlatform', () {
     group('fromPlatform', () {
       test('copiesAllProperties', () {
-        var fake = FakeBrowserPlatform.fromPlatform(original);
-        testBrowserFake(
-          fake,
+        var testPlatform = TestBrowserPlatform.fromPlatform(original);
+        testBrowser(
+          testPlatform,
           jsonDecode(original.toJson()) as Map<String, Object?>,
         );
       });
@@ -38,42 +38,42 @@ void main() {
     group('copyWith', () {
       test('overrides a value, but leaves others intact', () {
         var expected = jsonDecode(original.toJson()) as Map<String, Object?>;
-        var fake = FakeBrowserPlatform.fromPlatform(original);
+        var testPlatform = TestBrowserPlatform.fromPlatform(original);
 
-        BrowserPlatform copy = fake.copyWith(version: '42.0');
+        BrowserPlatform copy = testPlatform.copyWith(version: '42.0');
         expected[json_key.version] = '42.0';
-        testBrowserFake(copy, expected);
+        testBrowser(copy, expected);
       });
       test('can override all values', () {
-        var fake = FakeBrowserPlatform.fromPlatform(original);
+        var testPlatform = TestBrowserPlatform.fromPlatform(original);
         var expected = <String, Object?>{
-          json_key.userAgent: fakeUA,
-          json_key.version: fakeVersion,
+          json_key.userAgent: testPlatformUA,
+          json_key.version: testPlatformVersion,
         };
-        var copy = fake.copyWith(
+        var copy = testPlatform.copyWith(
           userAgent: expected[json_key.userAgent] as String?,
           version: expected[json_key.version] as String?,
         );
-        testBrowserFake(copy, expected);
+        testBrowser(copy, expected);
       });
     });
 
     group('json', () {
       test('fromJson', () {
         var json = <String, Object?>{
-          json_key.userAgent: fakeUA,
-          json_key.version: fakeVersion,
+          json_key.userAgent: testPlatformUA,
+          json_key.version: testPlatformVersion,
         };
         var jsonText = jsonEncode(json);
-        var fake = FakeBrowserPlatform.fromJson(jsonText);
-        testBrowserFake(fake, json);
+        var testPlatform = TestBrowserPlatform.fromJson(jsonText);
+        testBrowser(testPlatform, json);
         // Compare toJson.
-        expect(jsonDecode(fake.toJson()), json);
+        expect(jsonDecode(testPlatform.toJson()), json);
       });
 
       test('fromEmptyJson', () {
-        var fake = FakeBrowserPlatform.fromJson('{}');
-        testBrowserFake(fake, {});
+        var testPlatform = TestBrowserPlatform.fromJson('{}');
+        testBrowser(testPlatform, {});
       });
 
       test('fromNullJson', () {
@@ -82,24 +82,24 @@ void main() {
           json_key.userAgent: null,
           json_key.version: null,
         };
-        var fake = FakeBrowserPlatform.fromJson(jsonEncode(allNulls));
-        testBrowserFake(fake, {});
-        expect(fake.toJson(), '{}');
+        var testPlatform = TestBrowserPlatform.fromJson(jsonEncode(allNulls));
+        testBrowser(testPlatform, {});
+        expect(testPlatform.toJson(), '{}');
       });
 
       test('fromJsonToJson', () {
         var current = original;
         var jsonText = current.toJson();
         var json = jsonDecode(jsonText) as Map<String, Object?>;
-        var fake = FakeBrowserPlatform.fromJson(jsonText);
-        testBrowserFake(fake, json);
-        expect(jsonDecode(fake.toJson()), json);
+        var testPlatform = TestBrowserPlatform.fromJson(jsonText);
+        testBrowser(testPlatform, json);
+        expect(jsonDecode(testPlatform.toJson()), json);
       });
 
       test('fromJsonErrors', () {
         void fromJsonError(String source) {
           expect(
-            () => FakeBrowserPlatform.fromJson(source),
+            () => TestBrowserPlatform.fromJson(source),
             throwsFormatException,
           );
         }
@@ -121,8 +121,8 @@ void main() {
     });
 
     test('Throws when unset non-null values are read', () {
-      final platform = FakeBrowserPlatform();
-      // Sanity check, in case `testBrowserFake` was bugged.
+      final platform = TestBrowserPlatform();
+      // Sanity check, in case `testBrowser` was bugged.
       expect(() => platform.userAgent, throwsA(isStateError));
       expect(() => platform.version, throwsA(isStateError));
     });
@@ -130,34 +130,34 @@ void main() {
 
   group('runtime override', () {
     test('sync', () {
-      var fake = FakeBrowserPlatform.fromPlatform(
+      var testPlatform = TestBrowserPlatform.fromPlatform(
         original,
-      ).copyWith(userAgent: fakeUA);
-      expect(fake.userAgent, fakeUA);
-      fake.run(() {
-        expect(BrowserPlatform.current, same(fake));
-        expect(Platform.current.browserPlatform, same(fake));
-        expect(BrowserPlatform.current?.userAgent, fakeUA);
+      ).copyWith(userAgent: testPlatformUA);
+      expect(testPlatform.userAgent, testPlatformUA);
+      testPlatform.run(() {
+        expect(BrowserPlatform.current, same(testPlatform));
+        expect(Platform.current.browserPlatform, same(testPlatform));
+        expect(BrowserPlatform.current?.userAgent, testPlatformUA);
         expect(BrowserPlatform.current?.version, original.version);
       });
     });
     test('async', () async {
       var currentNative = original;
-      var fake = FakeBrowserPlatform.fromPlatform(
+      var testPlatform = TestBrowserPlatform.fromPlatform(
         currentNative,
-      ).copyWith(userAgent: fakeUA);
+      ).copyWith(userAgent: testPlatformUA);
       var parts = 0;
-      var asyncTesting = fake.run(() async {
+      var asyncTesting = testPlatform.run(() async {
         // Runs synchronously.
-        expect(BrowserPlatform.current, same(fake));
-        expect(Platform.current.browserPlatform, same(fake));
-        expect(BrowserPlatform.current?.userAgent, fakeUA);
+        expect(BrowserPlatform.current, same(testPlatform));
+        expect(Platform.current.browserPlatform, same(testPlatform));
+        expect(BrowserPlatform.current?.userAgent, testPlatformUA);
         parts++;
         await Future(() {}); // Timer-delay.
-        // Fake platform is still current after async gap.
-        expect(BrowserPlatform.current, same(fake));
-        expect(Platform.current.browserPlatform, same(fake));
-        expect(BrowserPlatform.current?.userAgent, fakeUA);
+        // Test platform is still current after async gap.
+        expect(BrowserPlatform.current, same(testPlatform));
+        expect(Platform.current.browserPlatform, same(testPlatform));
+        expect(BrowserPlatform.current?.userAgent, testPlatformUA);
         parts++;
       });
       expect(parts, 1);
@@ -169,56 +169,56 @@ void main() {
     });
   });
   group('nested overrides', () {
-    final fakeNative = FakeBrowserPlatform.fromPlatform(
+    final testPlatformNative = TestBrowserPlatform.fromPlatform(
       original,
-    ).copyWith(userAgent: fakeUA);
-    final fakeNative2 = FakeBrowserPlatform.fromPlatform(
-      fakeNative,
-    ).copyWith(version: fakeVersion);
+    ).copyWith(userAgent: testPlatformUA);
+    final testPlatformNative2 = TestBrowserPlatform.fromPlatform(
+      testPlatformNative,
+    ).copyWith(version: testPlatformVersion);
     test('sync', () {
-      fakeNative.run(() {
-        expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
-        expect(BrowserPlatform.current?.userAgent, fakeUA);
+      testPlatformNative.run(() {
+        expect(BrowserPlatform.current, same(testPlatformNative));
+        expect(Platform.current.browserPlatform, same(testPlatformNative));
+        expect(BrowserPlatform.current?.userAgent, testPlatformUA);
         expect(BrowserPlatform.current?.version, original.version);
-        fakeNative2.run(() {
-          expect(BrowserPlatform.current, same(fakeNative2));
-          expect(Platform.current.browserPlatform, same(fakeNative2));
-          expect(BrowserPlatform.current?.userAgent, fakeUA);
-          expect(BrowserPlatform.current?.version, fakeVersion);
+        testPlatformNative2.run(() {
+          expect(BrowserPlatform.current, same(testPlatformNative2));
+          expect(Platform.current.browserPlatform, same(testPlatformNative2));
+          expect(BrowserPlatform.current?.userAgent, testPlatformUA);
+          expect(BrowserPlatform.current?.version, testPlatformVersion);
         });
         // Previous override restored when done.
-        expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
-        expect(BrowserPlatform.current?.userAgent, fakeUA);
+        expect(BrowserPlatform.current, same(testPlatformNative));
+        expect(Platform.current.browserPlatform, same(testPlatformNative));
+        expect(BrowserPlatform.current?.userAgent, testPlatformUA);
         expect(BrowserPlatform.current?.version, original.version);
       });
     });
     test('async', () async {
-      await fakeNative.run(() async {
-        expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
-        expect(BrowserPlatform.current?.userAgent, fakeUA);
+      await testPlatformNative.run(() async {
+        expect(BrowserPlatform.current, same(testPlatformNative));
+        expect(Platform.current.browserPlatform, same(testPlatformNative));
+        expect(BrowserPlatform.current?.userAgent, testPlatformUA);
         expect(BrowserPlatform.current?.version, original.version);
         var parts = 0;
-        var asyncTesting = fakeNative2.run(() async {
-          expect(BrowserPlatform.current, same(fakeNative2));
-          expect(Platform.current.browserPlatform, same(fakeNative2));
-          expect(BrowserPlatform.current?.userAgent, fakeUA);
-          expect(BrowserPlatform.current?.version, fakeVersion);
+        var asyncTesting = testPlatformNative2.run(() async {
+          expect(BrowserPlatform.current, same(testPlatformNative2));
+          expect(Platform.current.browserPlatform, same(testPlatformNative2));
+          expect(BrowserPlatform.current?.userAgent, testPlatformUA);
+          expect(BrowserPlatform.current?.version, testPlatformVersion);
           parts++;
           await Future(() {});
-          expect(BrowserPlatform.current, same(fakeNative2));
-          expect(Platform.current.browserPlatform, same(fakeNative2));
-          expect(BrowserPlatform.current?.userAgent, fakeUA);
-          expect(BrowserPlatform.current?.version, fakeVersion);
+          expect(BrowserPlatform.current, same(testPlatformNative2));
+          expect(Platform.current.browserPlatform, same(testPlatformNative2));
+          expect(BrowserPlatform.current?.userAgent, testPlatformUA);
+          expect(BrowserPlatform.current?.version, testPlatformVersion);
           parts++;
         });
         expect(parts, 1);
         // Previous override restored when done.
-        expect(BrowserPlatform.current, same(fakeNative));
-        expect(Platform.current.browserPlatform, same(fakeNative));
-        expect(BrowserPlatform.current?.userAgent, fakeUA);
+        expect(BrowserPlatform.current, same(testPlatformNative));
+        expect(Platform.current.browserPlatform, same(testPlatformNative));
+        expect(BrowserPlatform.current?.userAgent, testPlatformUA);
         expect(BrowserPlatform.current?.version, original.version);
         await asyncTesting;
         expect(parts, 2);
@@ -249,10 +249,7 @@ void _testProperty(Object? Function() read, Object? expected) {
 /// are expected to throw too.
 /// Otherwise they are tested to give the expected true/false value
 /// for the expected operating system.
-void testBrowserFake(
-  BrowserPlatform actual,
-  Map<String, Object?> expectedValues,
-) {
+void testBrowser(BrowserPlatform actual, Map<String, Object?> expectedValues) {
   _testProperty(() => actual.userAgent, expectedValues[json_key.userAgent]);
   _testProperty(() => actual.version, expectedValues[json_key.version]);
 }

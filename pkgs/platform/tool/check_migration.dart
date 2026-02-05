@@ -13,27 +13,24 @@
 //
 // from the package root directory.
 //
-// It will compile copy `../test/legacy/legacy_example_code.dart` to
-// a temporary directory (`../tmp/`), remove the line guarding its
-// deprecated uses, and run `dart fix` on the code.
+// It will copy `../tool/src/sample/legacy_example_code{,_2}.dart` to
+// a temporary directory (`../tmp/`), remove the `// ignore_for_file`
+// lines guarding deprecated uses, and run `dart fix` on the code.
 // It will then run `dart analyze` to see if there are any deprecated
 // uses left.
 //
 // (The script uses `Platform.executable` from `dart:io` as the compiler,
 // which is why it must be invoked with that compiler.)
 
-// ignore_for_file: prefer_single_quotes
-
 import 'dart:io';
 
 import 'src/dart_sdk.dart';
 import 'src/path.dart' as path;
-import 'src/tmp_dir.dart';
 
 int verbose = 0;
 
 void main(List<String> args) {
-  // Keep the files after running.
+  // Keep the files after running, always or only if not successful.
   var retain = false;
   var retainOnError = false;
   for (var arg in args) {
@@ -59,8 +56,11 @@ void main(List<String> args) {
   }
 
   var selfPath = File.fromUri(Platform.script).path;
-
-  var migrationTestDir = createTmpDir('migration_test', verbose: verbose);
+  // Put samples in `test/` to avoid warnings about `@visibleForTesting`.
+  var migrationTestDir = Directory(
+    path.join(path.parentDirectory(selfPath), 'out', 'test', 'migration_test'),
+  );
+  migrationTestDir.createSync(recursive: true);
 
   var sourceFileDir = path.join(path.directory(selfPath), 'src', 'sample');
   for (var sourceFile in Directory(sourceFileDir).listSync()) {
@@ -70,7 +70,7 @@ void main(List<String> args) {
         !sourceFilePath.contains('example_code')) {
       continue;
     }
-    var fileName = sourceFilePath.substring(sourceFileDir.length + 1);
+    var fileName = path.filename(sourceFilePath);
     var content = sourceFile.readAsStringSync();
     content = content.replaceFirst(
       ' ignore_for_file: deprecated_member_use_from_same_package',
@@ -80,7 +80,7 @@ void main(List<String> args) {
     testFile.writeAsStringSync(content);
     // Run `dart fix` on file.
     if (verbose > 0) {
-      stdout.writeln("Running: dart fix --apply ${testFile.path}");
+      stdout.writeln('Running: dart fix --apply ${testFile.path}');
     }
     var dartFixResult = run(dartExe, ['fix', '--apply', testFile.path]);
     if (dartFixResult.exitCode != 0) {
@@ -101,6 +101,8 @@ void main(List<String> args) {
     }
     var dartAnalyzeResult = run(dartExe, ['analyze', testFile.path]);
     stdout.writeln(dartAnalyzeResult.stdout);
+    // TODO: Maybe, if verbose, and `/bin/diff` exists, print the diff after
+    // fixing.
     // var diffres = Process.runSync("/bin/diff", [sourceFilePath, testFile.path],
     //     runInShell: true);
     // print(diffres.stdout);

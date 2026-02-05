@@ -1,0 +1,8 @@
+name: platform_internal_migration_test
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  platform:
+    path: ../
+    

@@ -1,0 +1,3 @@
+## Temporary directories created by tool/check_* scripts.
+/test/migration_test
+/tree_shaking_examples

@@ -13,17 +13,17 @@ import 'zone_overrides.dart' as overrides;
 
 /// Fake Dart runtime platform information.
 ///
-/// Implements [Platform], but allows a [FakeBrowserPlatform] or
-/// [FakeNativePlatform] to be the non-`null` platform object.
+/// Implements [Platform], but allows a [TestBrowserPlatform] or
+/// [TestNativePlatform] to be the non-`null` platform object.
 @visibleForTesting
-final class FakePlatform extends PlatformTestBase {
+final class TestPlatform extends PlatformTestBase {
   /// The current native platform, if running on a native platform.
   @override
-  final FakeNativePlatform? nativePlatform;
+  final TestNativePlatform? nativePlatform;
 
   /// The current browser platform, if running on a browser platform.
   @override
-  final FakeBrowserPlatform? browserPlatform;
+  final TestBrowserPlatform? browserPlatform;
 
   /// Whether currently running on a native platform.
   @override
@@ -35,42 +35,42 @@ final class FakePlatform extends PlatformTestBase {
 
   /// A fake platform with the given [nativePlatform].
   ///
-  /// Used by [FakeNativePlatform.run] to create a fake [Platform]
+  /// Used by [TestNativePlatform.run] to create a fake [Platform]
   /// with itself as the [Platform.nativePlatform].
-  const FakePlatform._native(FakeNativePlatform this.nativePlatform)
+  const TestPlatform._native(TestNativePlatform this.nativePlatform)
     : browserPlatform = null;
 
   /// A fake platform with the given [browserPlatform].
   ///
-  /// Used by [FakeBrowserPlatform.run] to create a fake [Platform]
+  /// Used by [TestBrowserPlatform.run] to create a fake [Platform]
   /// with itself as the [Platform.browserPlatform].
-  const FakePlatform._browser(FakeBrowserPlatform this.browserPlatform)
+  const TestPlatform._browser(TestBrowserPlatform this.browserPlatform)
     : nativePlatform = null;
 
   /// A platform with *none* of the native or browser platforms set.
-  const FakePlatform.unknown() : nativePlatform = null, browserPlatform = null;
+  const TestPlatform.unknown() : nativePlatform = null, browserPlatform = null;
 
   /// A fake platform with the same properties as [platform].
-  factory FakePlatform.fromPlatform(Platform platform) {
+  factory TestPlatform.fromPlatform(Platform platform) {
     // There is currently no way to have a platform with both
     // a browser platform and a native platform.
     var native = platform.nativePlatform;
-    if (native != null) return FakePlatform.fromNative(native);
+    if (native != null) return TestPlatform.fromNative(native);
     var browser = platform.browserPlatform;
-    if (browser != null) return FakePlatform.fromBrowser(browser);
-    return const FakePlatform.unknown();
+    if (browser != null) return TestPlatform.fromBrowser(browser);
+    return const TestPlatform.unknown();
   }
 
-  /// Creates a [FakePlatform] with a [NativePlatform].
+  /// Creates a [TestPlatform] with a [NativePlatform].
   ///
-  /// Creates a [FakeNativePlatform.new] with the same arguments,
-  /// and a [FakePlatform] with that as [nativePlatform].
+  /// Creates a [TestNativePlatform.new] with the same arguments,
+  /// and a [TestPlatform] with that as [nativePlatform].
   ///
   /// It's recommended to use
   /// ```dart
-  /// FakePlatform.fromNative(FakeNativePlatform(...))
+  /// TestPlatform.fromNative(TestNativePlatform(...))
   /// ```
-  FakePlatform.native({
+  TestPlatform.native({
     Map<String, String>? environment,
     String? executable,
     List<String>? executableArguments,
@@ -88,7 +88,7 @@ final class FakePlatform extends PlatformTestBase {
     bool? stdoutSupportsAnsi,
     String? version,
   }) : this._native(
-         FakeNativePlatform(
+         TestNativePlatform(
            environment: environment,
            executable: executable,
            executableArguments: executableArguments,
@@ -108,98 +108,51 @@ final class FakePlatform extends PlatformTestBase {
          ),
        );
 
-  /// Creates a [FakePlatform] with a [NativePlatform].
+  /// Creates a [TestPlatform] with a [NativePlatform].
   ///
-  /// If [nativePlatform] is omitted or `null`, the created `FakePlatform]
-  /// has a new [FakeNativePlatform] as [Platform.nativePlatform].
-  FakePlatform.fromNative(NativePlatform nativePlatform)
-    : this._native(FakeNativePlatform.from(nativePlatform));
+  /// If [nativePlatform] is omitted or `null`, the created `TestPlatform]
+  /// has a new [TestNativePlatform] as [Platform.nativePlatform].
+  TestPlatform.fromNative(NativePlatform nativePlatform)
+    : this._native(TestNativePlatform.from(nativePlatform));
 
-  /// Creates a [FakePlatform] with a [FakeNativePlatform] created from JSON.
+  /// Creates a [TestPlatform] with a [TestNativePlatform] created from JSON.
   ///
-  /// A new [FakeNativePlatform] is created using [FakeNativePlatform.fromJson]
-  /// with [nativePlatformJson] as argument, an a new [FakePlatform] is created
+  /// A new [TestNativePlatform] is created using [TestNativePlatform.fromJson]
+  /// with [nativePlatformJson] as argument, an a new [TestPlatform] is created
   /// with that native platform as [Platform.nativePlatform].
-  FakePlatform.nativeFromJson(String nativePlatformJson)
-    : this._native(FakeNativePlatform.fromJson(nativePlatformJson));
+  TestPlatform.nativeFromJson(String nativePlatformJson)
+    : this._native(TestNativePlatform.fromJson(nativePlatformJson));
 
-  /// Creates a [FakePlatform] with a [BrowserPlatform].
+  /// Creates a [TestPlatform] with a [BrowserPlatform].
   ///
-  /// If [browserPlatform] is omitted or `null`, the created `FakePlatform]
-  /// has a new [FakeBrowserPlatform] as [Platform.browserPlatform].
-  FakePlatform.fromBrowser([BrowserPlatform? browserPlatform])
+  /// If [browserPlatform] is omitted or `null`, the created `TestPlatform]
+  /// has a new [TestBrowserPlatform] as [Platform.browserPlatform].
+  TestPlatform.fromBrowser([BrowserPlatform? browserPlatform])
     : this._browser(
         browserPlatform = browserPlatform == null
-            ? FakeBrowserPlatform()
-            : FakeBrowserPlatform.fromPlatform(browserPlatform),
+            ? TestBrowserPlatform()
+            : TestBrowserPlatform.fromPlatform(browserPlatform),
       );
 
-  /// Creates a [FakePlatform] with a [FakeBrowserPlatform] created from JSON.
+  /// Creates a [TestPlatform] with a [TestBrowserPlatform] created from JSON.
   ///
-  /// A new [FakeBrowserPlatform] is created using
-  /// [FakeBrowserPlatform.fromJson] with [browserPlatformJson] as argument,
-  /// and a new [FakePlatform] is created with that native platform as
+  /// A new [TestBrowserPlatform] is created using
+  /// [TestBrowserPlatform.fromJson] with [browserPlatformJson] as argument,
+  /// and a new [TestPlatform] is created with that native platform as
   /// [Platform.browserPlatform].
-  FakePlatform.browserFromJson(String browserPlatformJson)
-    : this._browser(FakeBrowserPlatform.fromJson(browserPlatformJson));
+  TestPlatform.browserFromJson(String browserPlatformJson)
+    : this._browser(TestBrowserPlatform.fromJson(browserPlatformJson));
 
-  /// Runs [fakePlatformCode] with this fake platform as the current platform.
+  /// Runs [testCode] with this fake platform as the current platform.
   ///
-  /// While [fakePlatformCode] is running, the [Platform.current] refers to this
-  /// fake platform, which is likely the [FakePlatform.unknown] platform.
+  /// While [testCode] is running, the [Platform.current] refers to this
+  /// fake platform, which is likely the [TestPlatform.unknown] platform.
   ///
   /// Prior reads of [Platform.current] will retain their original value,
-  /// so the `fakePlatformCode` should make sure to read [Platform.current]
+  /// so the `TestCode` should make sure to read [Platform.current]
   /// when it's needed, and avoid any caching.
-  R run<R>(R Function() fakePlatformCode) =>
-      overrides.runWith(fakePlatformCode, this, _OverrideMarker.marker);
-
-  /// Migration helper for legacy `FakePlatform.copyWith`.
-  ///
-  /// Use [FakeNativePlatform.copyWith] instead.
-  /// Work directly with [FakeNativePlatform], rather than creating a
-  /// `FakePlatform` from it.
-  ///
-  /// Only works if there is a current [nativePlatform].
-  ///
-  /// Will be deprecated and removed when legacy classes are removed.
-  FakePlatform copyWithNativeMigrationHelper({
-    int? numberOfProcessors,
-    String? pathSeparator,
-    String? operatingSystem,
-    String? operatingSystemVersion,
-    String? localHostname,
-    Map<String, String>? environment,
-    String? executable,
-    String? resolvedExecutable,
-    Uri? script,
-    List<String>? executableArguments,
-    String? packageConfig,
-    String? version,
-    bool? stdinSupportsAnsi,
-    bool? stdoutSupportsAnsi,
-    String? localeName,
-  }) {
-    return FakePlatform._native(
-      nativePlatform!.copyWith(
-        numberOfProcessors: numberOfProcessors,
-        pathSeparator: pathSeparator,
-        operatingSystem: operatingSystem,
-        operatingSystemVersion: operatingSystemVersion,
-        localHostname: localHostname,
-        environment: environment,
-        executable: executable,
-        resolvedExecutable: resolvedExecutable,
-        script: script,
-        executableArguments: executableArguments,
-        packageConfig: packageConfig,
-        version: version,
-        stdinSupportsAnsi: stdinSupportsAnsi,
-        stdoutSupportsAnsi: stdoutSupportsAnsi,
-        localeName: localeName,
-      ),
-    );
-  }
+  R run<R>(R Function() testCode) =>
+      overrides.runWith(testCode, this, _OverrideMarker.marker);
 }
 
 /// Instance used to mark overrides as used.
@@ -207,54 +160,54 @@ enum _OverrideMarker implements overrides.OverrideMarker { marker }
 
 /// Fake [BrowserPlatform] for testing.
 @visibleForTesting
-final class FakeBrowserPlatform extends BrowserPlatformTestBase {
-  static const _className = 'FakeBrowserPlatform';
+final class TestBrowserPlatform extends BrowserPlatformTestBase {
+  static const _className = 'TestBrowserPlatform';
 
   final String? _version;
   final String? _userAgent;
 
-  FakeBrowserPlatform({String? version, String? userAgent})
+  TestBrowserPlatform({String? version, String? userAgent})
     : _version = version,
       _userAgent = userAgent;
 
-  factory FakeBrowserPlatform.fromJson(String jsonText) {
+  factory TestBrowserPlatform.fromJson(String jsonText) {
     var json = jsonDecode(jsonText);
     if (json is! Map<String, Object?>) {
       throw FormatException('Not a JSON map', jsonText);
     }
-    return FakeBrowserPlatform(
+    return TestBrowserPlatform(
       version: _getJsonProperty<String>(json, json_key.version, jsonText),
       userAgent: _getJsonProperty<String>(json, json_key.userAgent, jsonText),
     );
   }
 
-  factory FakeBrowserPlatform.fromPlatform(BrowserPlatform platform) {
-    if (platform is FakeBrowserPlatform) {
+  factory TestBrowserPlatform.fromPlatform(BrowserPlatform platform) {
+    if (platform is TestBrowserPlatform) {
       return platform.copyWith();
     }
-    return FakeBrowserPlatform(
+    return TestBrowserPlatform(
       version: platform.version,
       userAgent: platform.userAgent,
     );
   }
 
-  FakeBrowserPlatform copyWith({String? version, String? userAgent}) =>
-      FakeBrowserPlatform(
+  TestBrowserPlatform copyWith({String? version, String? userAgent}) =>
+      TestBrowserPlatform(
         version: version ?? _version,
         userAgent: userAgent ?? _userAgent,
       );
 
-  /// Runs [fakePlatformCode] with this as the current browser platform.
+  /// Runs [testCode] with this as the current browser platform.
   ///
-  /// While [fakePlatformCode] is running, the [Platform.browserPlatform]
-  /// of [Platform.current] refers to this [FakeBrowserPlatform].
+  /// While [testCode] is running, the [Platform.browserPlatform]
+  /// of [Platform.current] refers to this [TestBrowserPlatform].
   ///
   /// Prior reads of [Platform.current] will retain their original value,
-  /// so the `fakePlatformCode` should make sure to read [Platform.current]
+  /// so the `testCode` should make sure to read [Platform.current]
   /// when it's needed, and avoid any caching.
-  R run<R>(R Function() fakePlatformCode) => overrides.runWith(
-    fakePlatformCode,
-    FakePlatform._browser(this),
+  R run<R>(R Function() testCode) => overrides.runWith(
+    testCode,
+    TestPlatform._browser(this),
     _OverrideMarker.marker,
   );
 
@@ -283,8 +236,8 @@ final class FakeBrowserPlatform extends BrowserPlatformTestBase {
 /// [NativePlatform.operatingSystem] or, for example, [NativePlatform.isLinux]
 /// checks, which can lead to larger compiled programs.
 @visibleForTesting
-final class FakeNativePlatform extends NativePlatformTestBase {
-  static const String _className = 'FakeNativePlatform';
+final class TestNativePlatform extends NativePlatformTestBase {
+  static const String _className = 'TestNativePlatform';
 
   /// Operating system ID string, or `null` if not configured.
   ///
@@ -308,19 +261,19 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   final bool? _stdoutSupportsAnsi;
   final String? _version;
 
-  /// Creates a new [FakeNativePlatform] with the specified properties.
+  /// Creates a new [TestNativePlatform] with the specified properties.
   ///
   /// Parameters that are not provided with a non-`null` value
   /// will leave the corresponding property without a value.
   ///
-  /// Reading, for example, [FakeNativePlatform.operatingSystem]
+  /// Reading, for example, [TestNativePlatform.operatingSystem]
   /// when it had not been given a value, will throw an error.
   /// This behavior can be used in tests to ensure that code does not
   /// read properties that it is not supposed to.
   ///
   /// The [operatingSystem] string must be one of the known operating system
   /// ID strings in [NativePlatform.operatingSystemValues].
-  FakeNativePlatform({
+  TestNativePlatform({
     Map<String, String>? environment,
     String? executable,
     List<String>? executableArguments,
@@ -357,7 +310,7 @@ final class FakeNativePlatform extends NativePlatformTestBase {
        _stdoutSupportsAnsi = stdoutSupportsAnsi,
        _version = version;
 
-  /// Creates a new [FakeNativePlatform] with properties from a JSON string.
+  /// Creates a new [TestNativePlatform] with properties from a JSON string.
   ///
   /// The [jsonText] must be a valid JSON string representing a JSON object,
   /// and the values for the [NativePlatform] properties are extracted from
@@ -365,7 +318,7 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   ///
   /// Example:
   /// ```dart
-  /// var fake = FakeNativePlatform.fromJson('''{
+  /// var fake = TestNativePlatform.fromJson('''{
   ///   "operatingSystem": "linux",
   ///   "operatingSystemVersion": "fakeVersion.2.3",
   ///   "numberOfProcessors": 42,
@@ -388,11 +341,11 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   /// or keys with a `null` value, leave the property undefined.
   ///
   /// The [toJson] method will leave out undefined properties, so
-  /// `FakeNativePlatform.fromJson(fakeNativePlatform.toJson())` can create
+  /// `TestNativePlatform.fromJson(TestNativePlatform.toJson())` can create
   /// an exact copy at a later time.
-  /// (To create a copy _right now_, `fakeNativePlatform.copyWith()`
+  /// (To create a copy _right now_, `TestNativePlatform.copyWith()`
   /// is easier and more efficient.)
-  factory FakeNativePlatform.fromJson(String jsonText) {
+  factory TestNativePlatform.fromJson(String jsonText) {
     Object? jsonObject = jsonDecode(jsonText);
     if (jsonObject is! Map<String, Object?>) {
       throw FormatException('Not a JSON object', jsonText);
@@ -411,7 +364,7 @@ final class FakeNativePlatform extends NativePlatformTestBase {
     );
     var script = _getJsonProperty<String>(jsonObject, 'script', jsonText);
 
-    return FakeNativePlatform(
+    return TestNativePlatform(
       // Check that environment values are strings. Filter out null values.
       environment: environment == null
           ? null
@@ -505,12 +458,12 @@ final class FakeNativePlatform extends NativePlatformTestBase {
     );
   }
 
-  /// Creates a new [FakeNativePlatform] with the properties of [platform].
-  factory FakeNativePlatform.from(NativePlatform platform) =>
+  /// Creates a new [TestNativePlatform] with the properties of [platform].
+  factory TestNativePlatform.from(NativePlatform platform) =>
       platform
-          is FakeNativePlatform // Values may be unset.
+          is TestNativePlatform // Values may be unset.
       ? platform.copyWith()
-      : FakeNativePlatform(
+      : TestNativePlatform(
           environment: <String, String>{...platform.environment},
           executable: platform.executable,
           executableArguments: List.of(platform.executableArguments),
@@ -626,12 +579,12 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   @override
   String get version => _throwIfUnset(_version, _className, json_key.version);
 
-  /// Creates a new [FakeNativePlatform] from this one.
+  /// Creates a new [TestNativePlatform] from this one.
   ///
   /// If a parameter is given non-`null` argument value,
   /// the created object will have that value for the corresponding property,
   /// otherwise it will use this object's value of that property.
-  FakeNativePlatform copyWith({
+  TestNativePlatform copyWith({
     Map<String, String>? environment,
     String? executable,
     List<String>? executableArguments,
@@ -649,7 +602,7 @@ final class FakeNativePlatform extends NativePlatformTestBase {
     bool? stdoutSupportsAnsi,
     String? version,
   }) {
-    return FakeNativePlatform(
+    return TestNativePlatform(
       environment:
           environment ??
           (_environment == null ? null : <String, String>{..._environment}),
@@ -672,13 +625,60 @@ final class FakeNativePlatform extends NativePlatformTestBase {
     );
   }
 
-  /// Runs [fakePlatformCode] with this native platform as current platform.
+  /// Migration helper for legacy `FakePlatform.copyWith`.
   ///
-  /// If [fakePlatformCode] reads [Platform.current], it gets a platform object
+  /// Use [TestNativePlatform.copyWith] instead.
+  /// Work directly with [TestNativePlatform], rather than creating a
+  /// `TestPlatform` from it.
+  ///
+  /// Only works if there is a current [Platform.nativePlatform].
+  ///
+  /// Will be deprecated and removed when legacy classes are removed.
+  TestPlatform copyPlatformWith({
+    int? numberOfProcessors,
+    String? pathSeparator,
+    String? operatingSystem,
+    String? operatingSystemVersion,
+    String? localHostname,
+    Map<String, String>? environment,
+    String? executable,
+    String? resolvedExecutable,
+    Uri? script,
+    List<String>? executableArguments,
+    String? packageConfig,
+    String? version,
+    bool? stdinSupportsAnsi,
+    bool? stdoutSupportsAnsi,
+    String? localeName,
+  }) {
+    return TestPlatform._native(
+      copyWith(
+        numberOfProcessors: numberOfProcessors,
+        pathSeparator: pathSeparator,
+        operatingSystem: operatingSystem,
+        operatingSystemVersion: operatingSystemVersion,
+        localHostname: localHostname,
+        environment: environment,
+        executable: executable,
+        resolvedExecutable: resolvedExecutable,
+        script: script,
+        executableArguments: executableArguments,
+        packageConfig: packageConfig,
+        version: version,
+        stdinSupportsAnsi: stdinSupportsAnsi,
+        stdoutSupportsAnsi: stdoutSupportsAnsi,
+        localeName: localeName,
+      ),
+    );
+  }
+
+  /// Runs [testCode] with this native platform as current platform.
+  ///
+  /// If [testCode] reads [Platform.current], it gets a platform object
   /// whose [Platform.nativePlatform] is this fake native platform.
-  R run<R>(R Function() fakePlatformCode) => overrides.runWith(
-    fakePlatformCode,
-    FakePlatform._native(this),
+  R run<R>(R Function() testCode) => overrides.runWith(
+    testCode,
+    TestPlatform._native(this),
     _OverrideMarker.marker,
   );
 
@@ -693,7 +693,7 @@ final class FakeNativePlatform extends NativePlatformTestBase {
   ///
   /// Unset values are not included.
   ///
-  /// Can be parsed back by [FakeNativePlatform.fromJson].
+  /// Can be parsed back by [TestNativePlatform.fromJson].
   @override
   String toJson() {
     return const JsonEncoder.withIndent('  ').convert(<String, dynamic>{
@@ -748,7 +748,7 @@ T? _getJsonProperty<T extends Object>(
 
 /// Throws if [value] is `null`, otherwise returns it.
 ///
-/// Used by getters on fake classes like [FakeNativePlatform],
+/// Used by getters on fake classes like [TestNativePlatform],
 /// which allow otherwise non-nullable properties to be unset
 /// as long as they are not read.
 /// This function is called when reading such a property.
@@ -757,9 +757,9 @@ T _throwIfUnset<T extends Object>(T? value, String className, String name) =>
 
 /// A simple inefficient case-insensitive map.
 ///
-/// Used by [FakeNativePlatform.environment] when the (possibly fake)
+/// Used by [TestNativePlatform.environment] when the (possibly fake)
 /// operating system is [NativePlatform.windows].
-/// Performance is not a consideration since [FakeNativePlatform]
+/// Performance is not a consideration since [TestNativePlatform]
 /// is only intended for testing, and the environment is not expected
 /// to be larger than necessary.
 Map<String, String> _caseInsensitiveMap() => HashMap<String, String>(
@@ -767,15 +767,15 @@ Map<String, String> _caseInsensitiveMap() => HashMap<String, String>(
   hashCode: (String a) => a.toLowerCase().hashCode,
 );
 
-/// Temporary name for [FakePlatform] to avoid name conflict.
+/// Temporary name for [TestPlatform] to avoid name conflict.
 ///
-/// Rename any reference to [FakePlatform] after importing *only*
+/// Rename any reference to [TestPlatform] after importing *only*
 /// `testing.dart`, not also `platform.dart`.
 ///
-/// Since the legacy class `FakePlatform`, corresponding to the new
-/// [FakeNativePlatform], has the same name as the new [FakePlatform],
+/// Since the legacy class `TestPlatform`, corresponding to the new
+/// [TestNativePlatform], has the same name as the new [TestPlatform],
 /// both are available by an aliased name to allow migration.
 ///
 /// When the legacy declarations are removed, this type alias will
 /// be deprecated too
-typedef FakePlatformMigrationHelper = FakePlatform;
+typedef TestPlatformMigrationHelper = TestPlatform;

@@ -9,7 +9,7 @@
 /// types that it may or may not expose an instance of.
 ///
 /// On top of that, this library also exposes mock-versions of those
-/// platform specific classes: [FakeBrowserPlatform] and [FakeNativePlatform].
+/// platform specific classes: [TestBrowserPlatform] and [TestNativePlatform].
 ///
 /// These classes can be used to specify a platform configuration that is not
 /// the actual current platform.
@@ -20,8 +20,9 @@
 /// Even including them in a production program may cause more code to
 /// be retained than necessary.
 ///
+/// @docImport 'src/legacy_implementation/legacy_classes.dart';
 /// @docImport 'src/platforms.dart';
-/// @docImport 'src/testing/fake_platforms.dart';
+/// @docImport 'src/testing/test_platforms.dart';
 @visibleForTesting
 library;
 
@@ -30,9 +31,9 @@ import 'package:meta/meta.dart' show visibleForTesting;
 export 'src/platforms.dart'
     show BrowserPlatform, NativePlatform, Platform, PlatformIsOS;
 
-export 'src/testing/fake_platforms.dart'
+export 'src/testing/test_platforms.dart'
     show
-        FakeBrowserPlatform,
-        FakeNativePlatform,
-        FakePlatform,
-        FakePlatformMigrationHelper;
+        TestBrowserPlatform,
+        TestNativePlatform,
+        TestPlatform,
+        TestPlatformMigrationHelper;

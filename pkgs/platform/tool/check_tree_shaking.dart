@@ -28,7 +28,6 @@ import 'dart:io';
 
 import 'src/dart_sdk.dart';
 import 'src/path.dart' as path;
-import 'src/tmp_dir.dart';
 
 void main(List<String> args) {
   // Keep the files after running.
@@ -93,7 +92,10 @@ void main(List<String> args) {
   }
 
   // Where compiled executables are written.
-  var outputDir = createTmpDir('tree_shaking_examples', verbose: verbose);
+  var outputDir = Directory(
+    path.join(path.parentDirectory(selfPath), 'out', 'tree_shaking_examples'),
+  );
+  outputDir.createSync(recursive: true);
   if (verbose > 1) {
     print('Output: ${outputDir.path}');
   }
@@ -245,7 +247,7 @@ bool _checkCompiled(File source, File output, int verbose) {
 }
 
 List<String> defaultExampleFiles(String packageRoot) {
-  var exampleDir = Directory(path.join(packageRoot, 'example'));
+  var exampleDir = Directory(path.join(packageRoot, 'example', 'bin'));
   return [
     for (var example in exampleDir.listSync())
       if (path.filename(example.path) case var filename

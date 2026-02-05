@@ -10,6 +10,7 @@
   only used for testing, and to allow better performance in production.
 
   Legacy APIs are deprecated, but retained and emulated using the new API.
+  Use `dart fix` to migrate off the deprecated API.
 
 ## 3.1.7-wip
 

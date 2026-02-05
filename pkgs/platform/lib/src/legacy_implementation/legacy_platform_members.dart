@@ -6,7 +6,7 @@ import '../platforms_impl.dart' as p;
 
 // The members of the legacy `Platform` class, added to the new `Platform`
 // class for backwards interface compatibility.
-// Only works when used on a legacy [LocalPlatform] object or a
+// Only works when used on a value types as a legacy [LocalPlatform] object or a
 // legacy [FakePlatform] object (created using the deprecated constructors).
 // Other instances of `Platform` uses this mixin to throw.
 mixin LegacyPlatformMembers {
