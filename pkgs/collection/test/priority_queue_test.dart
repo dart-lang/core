@@ -103,7 +103,7 @@ void testQueueBody<T>(
   T notElement,
 ) {
   var q = create();
-  expect(q.isEmpty, isTrue);
+  expect(q, isEmpty);
   expect(q, hasLength(0));
   expect(() {
     q.first;
@@ -114,7 +114,7 @@ void testQueueBody<T>(
 
   // Tests removeFirst, first, contains, toList and toSet.
   void testElements() {
-    expect(q.isNotEmpty, isTrue);
+    expect(q, isNotEmpty);
     expect(q, hasLength(elements.length));
 
     expect(q.toList(), equals(elements));
@@ -143,7 +143,7 @@ void testQueueBody<T>(
       expect(all[i], same(elements[i]));
     }
 
-    expect(q.isEmpty, isTrue);
+    expect(q, isEmpty);
   }
 
   q.addAll(elements);
@@ -179,10 +179,11 @@ void testQueueBody<T>(
   q.addAll(elements);
   expect(q, hasLength(elements.length));
   var all = q.removeAll();
-  expect(q.isEmpty, isTrue);
+  expect(q, isEmpty);
   expect(all, hasLength(elements.length));
   for (var i = 0; i < elements.length; i++) {
-    expect(all, contains(elements[i]));
+    expect(all,
+        contains(elements[i])); // all is a List or Iterable, so this is fine?
   }
 
   // Test the same element more than once in queue.
@@ -211,7 +212,7 @@ void testQueueBody<T>(
   for (var element in elements.reversed) {
     expect(q.remove(element), isTrue);
   }
-  expect(q.isEmpty, isTrue);
+  expect(q, isEmpty);
 }
 
 void testDuplicates() {
