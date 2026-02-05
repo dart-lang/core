@@ -19,13 +19,9 @@
 /// and [FakePlatform] classes, and exposes deprecated members on the
 /// [Platform] interface.
 /// Code using those deprecated members or the class [LocalPlatform] should use
-/// [Platform.current.nativePlatform][Platform.nativePlatform] instead.
+/// [Platform.nativePlatform] of [Platform.current] instead.
 /// Code using [FakePlatform] should import `package:platform/testing.dart`
-/// and use `FakeNativePlatform` instead.
-/// Be aware that `package:platform/testing.dart` exposes a
-/// *different* class named `FakePlatform`, so using the two libraries
-/// together requires hiding `FakePlatform` from `testing.dart`
-/// until all legacy [FakePlatform] uses have been removed.
+/// and use `FestNativePlatform` instead.
 /// The legacy [FakePlatform] is also available as [LegacyFakePlatform].
 ///
 /// @docImport 'src/legacy_implementation/legacy_classes.dart';
@@ -33,8 +29,7 @@
 library;
 
 // Legacy classes, `LocalPlatform` and `FakePlatform`
-// (not the same as `FakePlatform` from `testing.dart`).
-// The `FakePlatform` from here is an alias for `LegacyFakePlatform`.
+// The `FakePlatform` is an alias for `LegacyFakePlatform`.
 export 'src/legacy_implementation/legacy_classes.dart'
     show FakePlatform, LegacyFakePlatform, LocalPlatform;
 

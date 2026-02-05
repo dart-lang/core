@@ -14,8 +14,6 @@ The `dart:io` core library is only available on Dart native platforms
 We recommend migration to `package:platform` version 3.2, as the APIs in
 `package:platform/platform.dart` are available on all current platforms.
 
-_Note: This migration can be performed automatically by running `dart fix`._
-
 ### General platform APIs
 
 The `dart:io` library exposes host platform information as static members of the
@@ -128,7 +126,7 @@ bool onAndroid = Platform.isAndroid;
 
 To:
 ```dart
-import 'package:platform/host.dart';
+import 'package:platform/platform.dart';
 
 bool onAndroid = Platform.current.isAndroid;
 ```
