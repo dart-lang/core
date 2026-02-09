@@ -90,6 +90,50 @@ void main() {
         var results = parser.parse(['--a']);
         throwsIllegalArg(() => results.multiOption('a'));
       });
+
+      test('flagCount', () {
+        var parser = ArgParser();
+        parser.addFlag('flag', abbr: 'f', defaultsTo: false, negatable: false);
+        parser.addFlag('negatable-flag', abbr: 'n', defaultsTo: false);
+
+        // Flags not occurring for testing default value.
+        parser.addFlag('default-true', abbr: 'd', defaultsTo: true);
+        parser.addFlag('default-false', defaultsTo: false);
+
+        var results = parser.parse([
+          '--flag',
+          '--negatable-flag',
+          '-f',
+          '-n',
+          '-fn',
+          '--no-negatable-flag', // Resets `-n` count
+          '-nf',
+          '-f',
+          '-n',
+          '--flag',
+          '--negatable-flag',
+        ]);
+
+        // Counts all occurrences.
+        expect(results.flagCount('flag'), 6);
+        expect(results.flag('flag'), true);
+
+        // Reset at `--no-negatable-flag`, only counts those after.
+        expect(results.flagCount('negatable-flag'), 3);
+        expect(results.flag('negatable-flag'), true);
+
+        expect(results.flagCount('default-true'), 1);
+        expect(results.flag('default-true'), true);
+
+        expect(results.flagCount('default-false'), 0);
+        expect(results.flag('default-false'), false);
+
+        // Reset works correctly as last occurrence,
+        // and doesn't fall back on default value.
+        results = parser.parse(['-d', '--no-default-true']);
+        expect(results.flagCount('default-true'), 0);
+        expect(results.flag('default-true'), false);
+      });
     });
 
     group('flag()', () {

@@ -124,6 +124,7 @@ class Parser {
     // Check if mandatory and invoke existing callbacks.
     _grammar.options.forEach((name, option) {
       var parsedOption = _results[name];
+      if (option.isFlag && parsedOption is int) parsedOption = parsedOption > 0;
 
       var callback = option.callback;
       if (callback == null) return;
@@ -374,11 +375,15 @@ class Parser {
     }
   }
 
-  /// Validates and stores [value] as the value for [option], which must be a
-  /// flag.
+  /// Validates and increases or resets the count for [option].
+  ///
+  /// If [value] is `false`, resets the option's value to zero.
+  /// If `true`, increases the count of occurrences of the [option],
+  /// which must be a flag.
   void _setFlag(Map results, Option option, bool value) {
     assert(option.isFlag);
-    results[option.name] = value;
+    results[option.name] =
+        value ? ((results[option.name] as int?) ?? 0) + 1 : 0;
   }
 
   /// Validates that [value] is allowed as a value of [option].

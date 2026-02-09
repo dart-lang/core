@@ -66,15 +66,18 @@ class ArgResults {
   /// > flags, [option] for options, and [multiOption] for multi-options.
   dynamic operator [](String name) {
     if (!_parser.options.containsKey(name)) {
-      throw ArgumentError('Could not find an option named "--$name".');
+      throw ArgumentError.value(
+          name, 'name', 'Could not find an option named "--$name".');
     }
 
     final option = _parser.options[name]!;
     if (option.mandatory && !_parsed.containsKey(name)) {
-      throw ArgumentError('Option $name is mandatory.');
+      throw ArgumentError.value(name, 'name', 'Option $name is mandatory.');
     }
-
-    return option.valueOrDefault(_parsed[name]);
+    var parsedValue = _parsed[name];
+    if (option.isFlag && parsedValue is int) parsedValue = parsedValue > 0;
+    var result = option.valueOrDefault(parsedValue);
+    return result;
   }
 
   /// Returns the parsed or default command-line flag named [name].
@@ -83,12 +86,45 @@ class ArgResults {
   bool flag(String name) {
     final option = _parser.options[name];
     if (option == null) {
-      throw ArgumentError('Could not find a flag named "--$name".');
+      throw ArgumentError.value(
+          name, 'name', 'Could not find a flag named "--$name".');
     }
     if (!option.isFlag) {
-      throw ArgumentError('"$name" is not a flag.');
+      throw ArgumentError.value(name, 'name', '"$name" is not a flag.');
     }
-    return option.valueOrDefault(_parsed[name]) as bool;
+    var parsedValue = _parsed[name];
+    if (parsedValue is int) {
+      parsedValue = parsedValue > 0;
+    }
+    return option.valueOrDefault(parsedValue) as bool;
+  }
+
+  /// The number of times the flag named [name] occurred.
+  ///
+  /// If a flag occurred more than once in the arguments,
+  /// this is the total number of counts.
+  ///
+  /// If the negated flag occurred, it resets the count to zero,
+  /// ignoring all prior occurrences. Later occurrences may still
+  /// increase the count again.
+  ///
+  /// If the default is to be enabled, the default count is `1` if there were
+  /// no occurrences of the flag.
+  ///
+  /// The [name] must be a valid flag name in the parser.
+  ///
+  /// The result is never negative.
+  int flagCount(String name) {
+    final option = _parser.options[name];
+    if (option == null) {
+      throw ArgumentError.value(
+          name, 'name', 'Could not find a flag named "--$name".');
+    }
+    if (!option.isFlag) {
+      throw ArgumentError.value(name, 'name', '"$name" is not a flag.');
+    }
+    return (_parsed[name] as int?) ??
+        (option.valueOrDefault(null) as bool ? 1 : 0);
   }
 
   /// Returns the parsed or default command-line option named [name].
@@ -97,13 +133,14 @@ class ArgResults {
   String? option(String name) {
     final option = _parser.options[name];
     if (option == null) {
-      throw ArgumentError('Could not find an option named "--$name".');
+      throw ArgumentError.value(
+          name, 'name', 'Could not find an option named "--$name".');
     }
     if (!option.isSingle) {
-      throw ArgumentError('"$name" is a multi-option.');
+      throw ArgumentError.value(name, 'name', '"$name" is a multi-option.');
     }
     if (option.mandatory && !_parsed.containsKey(name)) {
-      throw ArgumentError('Option $name is mandatory.');
+      throw ArgumentError.value(name, 'name', 'Option $name is mandatory.');
     }
     return option.valueOrDefault(_parsed[name]) as String?;
   }
@@ -114,10 +151,11 @@ class ArgResults {
   List<String> multiOption(String name) {
     var option = _parser.options[name];
     if (option == null) {
-      throw ArgumentError('Could not find an option named "--$name".');
+      throw ArgumentError.value(
+          name, 'name', 'Could not find an option named "--$name".');
     }
     if (!option.isMultiple) {
-      throw ArgumentError('"$name" is not a multi-option.');
+      throw ArgumentError.value(name, 'name', '"$name" is not a multi-option.');
     }
     return option.valueOrDefault(_parsed[name]) as List<String>;
   }
@@ -146,7 +184,8 @@ class ArgResults {
   /// [name] must be a valid option name in the parser.
   bool wasParsed(String name) {
     if (!_parser.options.containsKey(name)) {
-      throw ArgumentError('Could not find an option named "--$name".');
+      throw ArgumentError.value(
+          name, 'name', 'Could not find an option named "--$name".');
     }
 
     return _parsed.containsKey(name);
