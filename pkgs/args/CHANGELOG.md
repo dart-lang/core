@@ -1,3 +1,8 @@
+## 2.9.0-wip
+
+* Adds `flagCount(name)` to `ArgResults` which returns the number of occurrences
+  of a flag. Allows, for example, `-vv` to represent "double verbose".
+
 ## 2.8.0
 
 * Allow designating a top-level command or a subcommand as a default one by
