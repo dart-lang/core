@@ -164,7 +164,7 @@ void main() {
 
   group('length returns the length', () {
     forEachInternalRepresentation((queue) {
-      expect(queue.length, equals(15));
+      expect(queue, hasLength(15));
     });
   });
 
