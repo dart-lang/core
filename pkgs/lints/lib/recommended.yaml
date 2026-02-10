@@ -7,6 +7,8 @@
 # To learn more about customizing static analysis for your package or app,
 # visit https://dart.dev/tools/analysis.
 
+# Test
+
 include: package:lints/core.yaml
 
 linter:
