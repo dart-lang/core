@@ -65,7 +65,6 @@
 | [`library_private_types_in_public_api`](https://dart.dev/lints/library_private_types_in_public_api) | Avoid using private types in public APIs. |  |
 | [`no_leading_underscores_for_library_prefixes`](https://dart.dev/lints/no_leading_underscores_for_library_prefixes) | Avoid leading underscores for library prefixes. | ✅ |
 | [`no_leading_underscores_for_local_identifiers`](https://dart.dev/lints/no_leading_underscores_for_local_identifiers) | Avoid leading underscores for local identifiers. | ✅ |
-| [`no_wildcard_variable_uses`](https://dart.dev/lints/no_wildcard_variable_uses) | Don't use wildcard parameters or variables. |  |
 | [`null_closures`](https://dart.dev/lints/null_closures) | Do not pass `null` as an argument where a closure is expected. | ✅ |
 | [`overridden_fields`](https://dart.dev/lints/overridden_fields) | Don't override fields. |  |
 | [`package_names`](https://dart.dev/lints/package_names) | Use `lowercase_with_underscores` for package names. |  |
