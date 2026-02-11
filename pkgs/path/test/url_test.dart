@@ -459,8 +459,7 @@ void main() {
       );
     });
 
-    test(
-        'treats drive letters as part of the root for file: URLs '
+    test('treats drive letters as part of the root for file: URLs '
         'with encoded colons', () {
       expect(
         context.join('file:///c%3A/foo/bar', '/baz/qux'),
