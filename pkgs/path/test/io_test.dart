@@ -61,25 +61,27 @@ void main() {
     );
   });
 
-  test('registers changes to the working directory',
-      withLocalCurrentDirectory(() {
-    final dir = io.Directory.current.path;
-    expect(path.absolute('foo/bar'), equals(path.join(dir, 'foo/bar')));
-    expect(
-      path.absolute('foo/bar'),
-      equals(path.context.join(dir, 'foo/bar')),
-    );
+  test(
+    'registers changes to the working directory',
+    withLocalCurrentDirectory(() {
+      final dir = io.Directory.current.path;
+      expect(path.absolute('foo/bar'), equals(path.join(dir, 'foo/bar')));
+      expect(
+        path.absolute('foo/bar'),
+        equals(path.context.join(dir, 'foo/bar')),
+      );
 
-    io.Directory.current = path.dirname(dir);
-    expect(
-      path.normalize(path.absolute('foo/bar')),
-      equals(path.normalize(path.join(dir, '../foo/bar'))),
-    );
-    expect(
-      path.normalize(path.absolute('foo/bar')),
-      equals(path.normalize(path.context.join(dir, '../foo/bar'))),
-    );
-  }));
+      io.Directory.current = path.dirname(dir);
+      expect(
+        path.normalize(path.absolute('foo/bar')),
+        equals(path.normalize(path.join(dir, '../foo/bar'))),
+      );
+      expect(
+        path.normalize(path.absolute('foo/bar')),
+        equals(path.normalize(path.context.join(dir, '../foo/bar'))),
+      );
+    }),
+  );
 
   // Regression test for #35. This tests against the *actual* working directory
   // rather than just a custom context because we do some processing in
@@ -115,9 +117,11 @@ void main() {
 /// when writing to it and reading it back through `dart:io` functions.
 R Function() withLocalCurrentDirectory<R>(R Function() body) {
   var savedCurrentDirectory = io.Directory.current;
-  return () => io.IOOverrides.runZoned(body,
-      getCurrentDirectory: () => savedCurrentDirectory,
-      setCurrentDirectory: (dir) {
-        savedCurrentDirectory = io.Directory(dir);
-      });
+  return () => io.IOOverrides.runZoned(
+    body,
+    getCurrentDirectory: () => savedCurrentDirectory,
+    setCurrentDirectory: (dir) {
+      savedCurrentDirectory = io.Directory(dir);
+    },
+  );
 }
