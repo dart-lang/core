@@ -184,7 +184,7 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
   });
 
   test('$name - length', () {
-    expect(wrapped.length, equals(original.length));
+    expect(wrapped, hasLength(original.length));
   });
 
   test('$name - map', () {
@@ -294,7 +294,7 @@ void testIterable(Iterable<int> original, Iterable<int> wrapped, String name) {
 
 void testReadList(List original, List wrapped, String name) {
   test('$name - length', () {
-    expect(wrapped.length, equals(original.length));
+    expect(wrapped, hasLength(original.length));
   });
 
   test('$name - isEmpty', () {
