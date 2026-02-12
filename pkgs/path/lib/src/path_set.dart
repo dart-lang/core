@@ -24,7 +24,7 @@ class PathSet extends IterableBase<String?> implements Set<String?> {
   /// in [other] represent the same logical path, the first value will be
   /// used.
   PathSet.of(Iterable<String> other, {p.Context? context})
-    : _inner = _create(context)..addAll(other);
+      : _inner = _create(context)..addAll(other);
 
   /// Creates a set that uses [context] for equality and hashing.
   static Set<String?> _create(p.Context? context) {

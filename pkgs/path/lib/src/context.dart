@@ -48,8 +48,8 @@ class Context {
 
   /// Create a [Context] to be used internally within path.
   Context._internal()
-    : style = Style.platform as InternalStyle,
-      _current = null;
+      : style = Style.platform as InternalStyle,
+        _current = null;
 
   Context._(this.style, this._current);
 
@@ -1190,23 +1190,23 @@ List<String> _validateArgs(
 ) {
   // Helper to create the list of args for error messages.
   List<String?> allArgs() => [
-    p0,
-    p1,
-    p2,
-    p3,
-    p4,
-    p5,
-    p6,
-    p7,
-    p8,
-    p9,
-    p10,
-    p11,
-    p12,
-    p13,
-    p14,
-    p15,
-  ];
+        p0,
+        p1,
+        p2,
+        p3,
+        p4,
+        p5,
+        p6,
+        p7,
+        p8,
+        p9,
+        p10,
+        p11,
+        p12,
+        p13,
+        p14,
+        p15,
+      ];
 
   // p0 is always non-null (enforced by caller), so we start checking from p1.
   // Once we see a null, all subsequent arguments must also be null.

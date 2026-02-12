@@ -21,7 +21,7 @@ class PathMap<V> extends MapView<String?, V> {
   /// [other] represent the same logical path, the last key's value will be
   /// used.
   PathMap.of(Map<String, V> other, {p.Context? context})
-    : super(_create(context)..addAll(other));
+      : super(_create(context)..addAll(other));
 
   /// Creates a map that uses [context] for equality and hashing.
   static Map<String?, V> _create<V>(p.Context? context) {

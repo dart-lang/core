@@ -60,9 +60,8 @@ class UrlStyle extends InternalStyle {
     // If there is a scheme, include authority if any.
     // If no scheme, a leading `//` is considered part of a path, unlike
     // how a URI would parse it. (For backwards compatibility)
-    final afterAuthority = afterScheme > 0
-        ? authorityEnd(path, afterScheme)
-        : 0;
+    final afterAuthority =
+        afterScheme > 0 ? authorityEnd(path, afterScheme) : 0;
 
     // If no scheme and no authority, include leading `/` in root.
     // If scheme or authority, do not include a first `/` of the path in root.
@@ -93,9 +92,8 @@ class UrlStyle extends InternalStyle {
       // in root (and not `/`).
       var char = nextChar;
       var i = afterAuthority;
-      while (char != chars.hash &&
-          char != chars.question &&
-          char != chars.slash) {
+      while (
+          char != chars.hash && char != chars.question && char != chars.slash) {
         i++;
         if (i == path.length) break;
         char = path.codeUnitAt(i);

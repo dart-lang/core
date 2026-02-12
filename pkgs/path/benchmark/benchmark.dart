@@ -108,8 +108,7 @@ void runBenchmark(String name, int count, void Function() function) {
     function();
   }
 
-  final rate = (count / stopwatch.elapsedMicroseconds)
-      .toStringAsFixed(5)
-      .padLeft(9);
+  final rate =
+      (count / stopwatch.elapsedMicroseconds).toStringAsFixed(5).padLeft(9);
   print('${name.padLeft(32)}: $rate iter/us (${stopwatch.elapsed})');
 }

@@ -224,9 +224,9 @@ class ParsedPath {
     }
 
     final file = parts.cast<String?>().lastWhere(
-      (p) => p != '',
-      orElse: () => null,
-    );
+          (p) => p != '',
+          orElse: () => null,
+        );
 
     if (file == null) return ['', ''];
     if (file == '..') return ['..', ''];
@@ -241,10 +241,10 @@ class ParsedPath {
   }
 
   ParsedPath clone() => ParsedPath._(
-    style,
-    root,
-    isRootRelative,
-    List.from(parts),
-    List.from(separators),
-  );
+        style,
+        root,
+        isRootRelative,
+        List.from(parts),
+        List.from(separators),
+      );
 }

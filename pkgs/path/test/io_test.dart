@@ -118,10 +118,10 @@ void main() {
 R Function() withLocalCurrentDirectory<R>(R Function() body) {
   var savedCurrentDirectory = io.Directory.current;
   return () => io.IOOverrides.runZoned(
-    body,
-    getCurrentDirectory: () => savedCurrentDirectory,
-    setCurrentDirectory: (dir) {
-      savedCurrentDirectory = io.Directory(dir);
-    },
-  );
+        body,
+        getCurrentDirectory: () => savedCurrentDirectory,
+        setCurrentDirectory: (dir) {
+          savedCurrentDirectory = io.Directory(dir);
+        },
+      );
 }

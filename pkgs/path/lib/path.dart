@@ -134,23 +134,24 @@ String absolute(
   String? part13,
   String? part14,
   String? part15,
-]) => context.absolute(
-  part1,
-  part2,
-  part3,
-  part4,
-  part5,
-  part6,
-  part7,
-  part8,
-  part9,
-  part10,
-  part11,
-  part12,
-  part13,
-  part14,
-  part15,
-);
+]) =>
+    context.absolute(
+      part1,
+      part2,
+      part3,
+      part4,
+      part5,
+      part6,
+      part7,
+      part8,
+      part9,
+      part10,
+      part11,
+      part12,
+      part13,
+      part14,
+      part15,
+    );
 
 /// Gets the part of [path] after the last separator.
 ///
@@ -298,24 +299,25 @@ String join(
   String? part14,
   String? part15,
   String? part16,
-]) => context.join(
-  part1,
-  part2,
-  part3,
-  part4,
-  part5,
-  part6,
-  part7,
-  part8,
-  part9,
-  part10,
-  part11,
-  part12,
-  part13,
-  part14,
-  part15,
-  part16,
-);
+]) =>
+    context.join(
+      part1,
+      part2,
+      part3,
+      part4,
+      part5,
+      part6,
+      part7,
+      part8,
+      part9,
+      part10,
+      part11,
+      part12,
+      part13,
+      part14,
+      part15,
+      part16,
+    );
 
 /// Joins the given path parts into a single path using the current platform's
 /// [separator]. Example:
