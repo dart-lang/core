@@ -397,4 +397,55 @@ needs to be wrapped.
       expect(hideCursor.lengthWithoutAnsi, equals(0));
     });
   });
+
+  group('Advanced ANSI/ECMA-48 RegEx Tests', () {
+
+    test('Matches sequences with Intermediate Bytes correctly', () {
+      // CSI 1 Space q (Set cursor style)
+      // Here, the space is an Intermediate Byte (\x20)
+      const setCursorStyle = '\x1b[1 q'; 
+      expect(setCursorStyle.ansiLength, equals(5));
+      expect(setCursorStyle.stripAnsi(), equals(''));
+    });
+
+    test('Ensures it does NOT match sequences that violate the order', () {
+      // The standard requires: Parameters (0-9:;<=>?) THEN Intermediates (Space!"#$%&'()*+,-./) THEN Final (@-~)
+      
+      // Test 1: Final byte 'm' appearing before an intermediate byte '/'
+      // The RegEx should stop at 'm', leaving the '/' and space behind.
+      const invalidOrder = '\x1b[m/ '; 
+      expect(invalidOrder.ansiLength, equals(3)); // Matches '\x1b[m'
+      expect(invalidOrder.stripAnsi(), equals('/ '));
+
+      // Test 2: Parameter byte '?' appearing after a final byte 'm'
+      const paramsAfterFinal = '\x1b[m?';
+      expect(paramsAfterFinal.ansiLength, equals(3));
+      expect(paramsAfterFinal.stripAnsi(), equals('?'));
+    });
+
+    test('Matches every character in the allowed ranges', () {
+      // Parameter Range: < = > ? ; : and digits
+      const params = '\x1b[0123456789:;<=>?m';
+      expect(params.ansiLength, equals(params.length));
+
+      // Intermediate Range: Space ! " # $ % & ' ( ) * + , - . /
+      const intermediates = '\x1b[ !\"#\$%&\'()*+,-./m';
+      expect(intermediates.ansiLength, equals(intermediates.length));
+    });
+
+    test('Strictly terminates at the first Final Byte', () {
+      // In the string below, 'H' is a final byte. 
+      // Even though 'm' is also a valid final byte, the sequence must end at 'H'.
+      const twoFinals = '\x1b[1H;24m';
+      
+      expect(twoFinals.ansiLength, equals(4)); // Matches only '\x1b[1H'
+      expect(twoFinals.stripAnsi(), equals(';24m'));
+    });
+
+    test('Handles the "private" parameter range correctly', () {
+      // High-end terminal features often use the < = > ? prefix
+      const decvtpatch = '\x1b[>4;2m';
+      expect(decvtpatch.ansiLength, equals(7));
+    });
+  });
 }

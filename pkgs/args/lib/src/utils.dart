@@ -7,17 +7,16 @@ import 'dart:math' as math;
 /// A utility extension on [String] to provide ANSI code stripping and length
 /// calculation without ANSI codes.
 extension AnsiStringExtension on String {
+
   /// Matches the Control Sequence Introducer (CSI) ANSI escape sequences.
   ///
-  /// Anatomy:
-  /// \x1b     : The literal ESC character (ASCII 27).
-  /// \[       : The literal '[' character (together with ESC, this forms the CSI).
-  /// [0-9;?]* : Zero or more parameter bytes:
-  ///             - 0-9 : Numeric parameters (e.g., color codes).
-  ///             - ;   : Parameter separators.
-  ///             - ?   : Private mode indicators (e.g., cursor toggles).
-  /// [a-zA-Z] : The 'Final Byte' that determines the command (e.g., 'm' for color).
-  static final RegExp _ansiRegex = RegExp(r'\x1b\[[0-9;?]*[a-zA-Z]');
+  /// Anatomy based on ECMA-48:
+  /// \x1b       : The literal ESC character (ASCII 27).
+  /// \[         : The literal '[' character (together with ESC, this forms the CSI).
+  /// [\x30-\x3f]* : Parameter Bytes (0-9:;<=>?).
+  /// [\x20-\x2f]* : Intermediate Bytes ( !"#$%&'()*+,-./).
+  /// [\x40-\x7e]  : Final Byte (@A-Z[\]^_`a-z{|}~).
+  static final RegExp _ansiRegex = RegExp(r'\x1b\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]');
 
   /// Returns the total length of all ANSI escape sequences found in the string.
   int get ansiLength {
