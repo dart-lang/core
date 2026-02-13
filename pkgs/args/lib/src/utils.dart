@@ -4,37 +4,44 @@
 import 'dart:math' as math;
 
 
-/// A utility class for finding and stripping ANSI codes from strings.
-class _AnsiUtils {
-  static final String ansiCodePattern = [
-      '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
-      '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))'
-    ].join('|');
-
-  static final RegExp ansiRegex = RegExp(ansiCodePattern);
-
-  static String stripAnsi(String source) {
-    return source.replaceAll(ansiRegex, '');
-  }
-
-  static bool hasAnsi(String source) {
-    return ansiRegex.hasMatch(source);
-  }
-}
-
 /// A utility extension on [String] to provide ANSI code stripping and length
 /// calculation without ANSI codes.
-extension StringUtils on String {
-  /// Returns the length of the string without ANSI codes.
-  int get lengthWithoutAnsi {
-    if (!_AnsiUtils.hasAnsi(this)) return length;
-    return _AnsiUtils.stripAnsi(this).length;
+extension AnsiStringExtension on String {
+  /// Matches the Control Sequence Introducer (CSI) ANSI escape sequences.
+  ///
+  /// Anatomy:
+  /// \x1b     : The literal ESC character (ASCII 27).
+  /// \[       : The literal '[' character (together with ESC, this forms the CSI).
+  /// [0-9;?]* : Zero or more parameter bytes:
+  ///             - 0-9 : Numeric parameters (e.g., color codes).
+  ///             - ;   : Parameter separators.
+  ///             - ?   : Private mode indicators (e.g., cursor toggles).
+  /// [a-zA-Z] : The 'Final Byte' that determines the command (e.g., 'm' for color).
+  static final RegExp _ansiRegex = RegExp(r'\x1b\[[0-9;?]*[a-zA-Z]');
+
+  /// Returns the total length of all ANSI escape sequences found in the string.
+  int get ansiLength {
+    return _ansiRegex
+        .allMatches(this)
+        .fold(0, (sum, match) => sum + match.group(0)!.length);
   }
+
+  /// Returns the length of the string without ANSI escape sequences.
+  int get lengthWithoutAnsi => length - ansiLength;
+
+  /// Returns the string with all ANSI escape sequences removed.
+  String stripAnsi() => replaceAll(_ansiRegex, '');
+
+  /// Returns `true` if the string contains any ANSI escape sequences.
+  bool hasAnsi() {
+    return _ansiRegex.hasMatch(this);
+  }
+
 }
 
 /// Pads [source] to [length] by adding spaces at the end.
 String padRight(String source, int length) =>
-    source + ' ' * (length - source.lengthWithoutAnsi);
+    source.padRight(length + source.ansiLength);
 
 /// Wraps a block of text into lines no longer than [length].
 ///
