@@ -1,3 +1,9 @@
+## 2.8.1
+
+* Fix usage column formatting to calculate correct string lengths when there are ANSI
+  coloring/styling escape sequences present
+  
+
 ## 2.8.0
 
 * Allow designating a top-level command or a subcommand as a default one by
