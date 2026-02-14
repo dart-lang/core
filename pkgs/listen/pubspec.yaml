@@ -1,0 +1,10 @@
+name: listen
+version: 1.0.0-beta.0
+description: Includes core Flutter types Listenable and ValueListenable
+
+environment:
+  sdk: ^3.7.0
+
+dev_dependencies:
+  dart_flutter_team_lints: ^3.5.0
+  test: any
