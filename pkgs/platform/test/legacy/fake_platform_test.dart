@@ -2,6 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// ignore_for_file: deprecated_member_use_from_same_package
+
+@OnPlatform({'browser': Skip('Native-only functionality')})
+library;
+
 import 'dart:io' as io;
 
 import 'package:platform/platform.dart';
@@ -119,7 +124,7 @@ void main() {
 
     group('json', () {
       test('fromJson', () {
-        final json = io.File('test/platform.json').readAsStringSync();
+        final json = io.File('test/legacy/platform.json').readAsStringSync();
         fake = FakePlatform.fromJson(json);
         expect(fake.numberOfProcessors, 8);
         expect(fake.pathSeparator, '/');
