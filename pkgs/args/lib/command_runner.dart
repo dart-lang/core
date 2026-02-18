@@ -523,8 +523,8 @@ String _getCommandUsage(Map<String, Command> commands,
   var visible = names.where((name) => !commands[name]!.hidden);
   if (visible.isNotEmpty) names = visible;
 
-  // Show the commands alphabetically.
-  names = names.toList()..sort();
+  // Show names in the order they were first added
+  names = names.toList();
 
   // Group the commands by category.
   var commandsByCategory = SplayTreeMap<String, List<Command>>();

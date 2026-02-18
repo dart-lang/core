@@ -265,8 +265,8 @@ information about a command.'''));
     });
 
     test('contains default command', () {
-      runner.addCommand(FooCommand());
       runner.addCommand(BarCommand(), isDefault: true);
+      runner.addCommand(FooCommand());
 
       expect(runner.usage, equals('''
 A test command runner.
