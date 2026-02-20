@@ -89,7 +89,7 @@ void main() {
 
     test('expand from = 0', () {
       var b = BoolList(0, growable: true);
-      expect(b.length, 0);
+      expect(b, hasLength(0));
 
       b.length = 256;
       expect(b, List.filled(256, false));

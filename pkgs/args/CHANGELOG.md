@@ -1,3 +1,14 @@
+## 2.8.0
+
+* Allow designating a top-level command or a subcommand as a default one by
+  passing `isDefault: true` to `addCommand` or `addSubcommand`.
+  Default command will be selected by argument parser if no sibling command
+  matches. This allows creating command line interfaces where both
+  `program command` and `program command subcommand` are runnable
+  (Fixes #103).
+* Remove sorting of the subcommands in usage output. Ordering will depend on the
+  order that `addSubCommand` is called.
+
 ## 2.7.0
 
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will

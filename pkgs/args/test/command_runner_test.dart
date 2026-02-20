@@ -24,8 +24,15 @@ void main() {
     runner = CommandRunner('test', 'A test command runner.');
   });
 
-  test('.invocation has a sane default', () {
-    expect(runner.invocation, equals('test <command> [arguments]'));
+  group('.invocation has a sensible default', () {
+    test('without default command', () {
+      expect(runner.invocation, equals('test <command> [arguments]'));
+    });
+
+    test('with default command', () {
+      runner.addCommand(FooCommand(), isDefault: true);
+      expect(runner.invocation, equals('test [<command>] [arguments]'));
+    });
   });
 
   group('.usage', () {
@@ -256,11 +263,47 @@ Available commands:
 Run "name help <command>" for more
 information about a command.'''));
     });
+
+    test('contains default command', () {
+      runner.addCommand(BarCommand(), isDefault: true);
+      runner.addCommand(FooCommand());
+
+      expect(runner.usage, equals('''
+A test command runner.
+
+Usage: test [<command>] [arguments]
+
+Global options:
+-h, --help    Print this usage information.
+
+Available commands:
+  bar   (default) Set another value.
+  foo   Set a value.
+
+Default command (bar) will be selected if no command is explicitly specified.
+
+Run "test help <command>" for more information about a command.'''));
+    });
   });
 
   test('usageException splits up the message and usage', () {
     expect(() => runner.usageException('message'),
         throwsUsageException('message', _defaultUsage));
+  });
+
+  group('.addCommand', () {
+    test('only one command can be default', () {
+      runner.addCommand(FooCommand(), isDefault: true);
+      expect(() => runner.addCommand(BarCommand(), isDefault: true),
+          throwsStateError);
+    });
+
+    test('only leaf command can be default', () {
+      expect(
+          () => runner.addCommand(BarCommand()..addSubcommand(FooCommand()),
+              isDefault: true),
+          throwsArgumentError);
+    });
   });
 
   group('run()', () {
@@ -740,6 +783,141 @@ Run "test help" to see global options.'''));
             contains('Option mandatory-option is mandatory'))));
     expect(await runner.run([subcommand.name, '--mandatory-option', 'foo']),
         'foo');
+  });
+
+  test('default command runs', () {
+    final defaultSubcommand = FooCommand();
+    runner.addCommand(defaultSubcommand, isDefault: true);
+
+    expect(
+        runner.run([]).then((_) {
+          expect(defaultSubcommand.hasRun, isTrue);
+        }),
+        completes);
+  });
+
+  test('default subcommand runs', () {
+    final defaultSubcommand = FooCommand();
+    final command = FooCommand()
+      ..addSubcommand(AsyncCommand())
+      ..addSubcommand(defaultSubcommand, isDefault: true);
+    runner.addCommand(command);
+
+    expect(
+        runner.run(['foo']).then((_) {
+          expect(defaultSubcommand.hasRun, isTrue);
+        }),
+        completes);
+  });
+
+  test('default subcommand parses flags', () {
+    final defaultSubcommand = BarCommand();
+    final command = FooCommand()
+      ..addSubcommand(AsyncCommand())
+      ..addSubcommand(defaultSubcommand, isDefault: true);
+    runner.addCommand(command);
+
+    expect(
+        runner.run(['foo', '--flag']).then((_) {
+          expect(defaultSubcommand.hasRun, isTrue);
+          expect(defaultSubcommand.argResults?.flag('flag'), isTrue);
+        }),
+        completes);
+  });
+
+  test('named subcommand has precedence over default', () {
+    final defaultSubcommand = BarCommand();
+    final asyncCommand = AsyncCommand();
+    final command = FooCommand()
+      ..addSubcommand(asyncCommand)
+      ..addSubcommand(defaultSubcommand, isDefault: true);
+    runner.addCommand(command);
+
+    expect(
+        runner.run(['foo', 'async']).then((_) {
+          expect(defaultSubcommand.hasRun, isFalse);
+          expect(asyncCommand.hasRun, isTrue);
+        }),
+        completes);
+  });
+
+  test('default command throws meaningful error for unexpected argument', () {
+    final defaultSubcommand = BarCommand();
+    runner.addCommand(defaultSubcommand, isDefault: true);
+
+    expect(
+        runner.run(['foo']),
+        throwsUsageException(
+            '''Command "bar" does not take any arguments.''', anything));
+  });
+
+  test('default subcommand throws meaningful error for unexpected argument',
+      () {
+    final defaultSubcommand = BarCommand();
+    final asyncCommand = AsyncCommand();
+    final command = FooCommand()
+      ..addSubcommand(asyncCommand)
+      ..addSubcommand(defaultSubcommand, isDefault: true);
+    runner.addCommand(command);
+
+    expect(
+        runner.run(['foo', 'baz']),
+        throwsUsageException(
+            '''Command "bar" does not take any arguments.''', anything));
+  });
+
+  test('help flag has precedence over default command', () {
+    final defaultCommand = BarCommand();
+    runner.addCommand(defaultCommand, isDefault: true);
+
+    expect(
+        () => runner.run(['-h']).then((_) {
+              expect(defaultCommand.hasRun, isFalse);
+            }),
+        prints('''
+A test command runner.
+
+Usage: test [<command>] [arguments]
+
+Global options:
+-h, --help    Print this usage information.
+
+Available commands:
+  bar   (default) Set another value.
+
+Default command (bar) will be selected if no command is explicitly specified.
+
+Run "test help <command>" for more information about a command.
+'''));
+  });
+
+  test('help flag has precedence over default subcommand', () {
+    final defaultSubcommand = BarCommand();
+    final asyncCommand = AsyncCommand();
+    final command = FooCommand()
+      ..addSubcommand(asyncCommand)
+      ..addSubcommand(defaultSubcommand, isDefault: true);
+    runner.addCommand(command);
+
+    expect(
+        () => runner.run(['foo', '-h']).then((_) {
+              expect(defaultSubcommand.hasRun, isFalse);
+              expect(asyncCommand.hasRun, isFalse);
+            }),
+        prints('''
+Set a value.
+
+Usage: test foo [<subcommand>] [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  async   Set a value asynchronously.
+  bar     (default) Set another value.
+
+Default command (bar) will be selected if no command is explicitly specified.
+
+Run "test help" to see global options.
+'''));
   });
 }
 

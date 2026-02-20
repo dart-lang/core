@@ -1,5 +1,7 @@
 ## 1.20.0-wip
 
+- Adds `separated` and `separatedList` extension methods to `Iterable`.
+- Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
   `Map.entries`.
 - Explicitly mark `BoolList` as `abstract interface`
@@ -10,6 +12,8 @@
 - Add `descending` argument to `sortedBy`.
 - Address diagnostics from `strict_top_level_inference`.
 - Run `dart format` with the new style.
+- Replace `quickSort` implementation with a more performant and robust
+  Pattern-defeating Quicksort (pdqsort) algorithm.
 
 ## 1.19.1
 

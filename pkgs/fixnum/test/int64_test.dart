@@ -1140,7 +1140,24 @@ void main() {
     });
 
     test('toStringUnsigned', () {
-      List<Int64> values = [];
+      expect(Int64.MAX_VALUE.toStringUnsigned(), '9223372036854775807');
+      expect(Int32.MAX_VALUE.toInt64().toStringUnsigned(), '2147483647');
+      expect(Int64(2).toStringUnsigned(), '2');
+      expect(Int64(1).toStringUnsigned(), '1');
+      expect(Int64(0).toStringUnsigned(), '0');
+      expect(Int64(-1).toStringUnsigned(), '18446744073709551615');
+      expect(Int64(-2).toStringUnsigned(), '18446744073709551614');
+      expect(
+          Int32.MIN_VALUE.toInt64().toStringUnsigned(), '18446744071562067968');
+      expect(Int64.MIN_VALUE.toStringUnsigned(), '9223372036854775808');
+
+      List<Int64> values = [
+        Int64.MAX_VALUE,
+        Int64(1),
+        Int64(0),
+        Int64(-1),
+        Int64.MIN_VALUE,
+      ];
       for (int high = 0; high < 16; high++) {
         for (int low = -2; low <= 2; low++) {
           values.add((Int64(high) << (64 - 4)) + Int64(low));

@@ -1,0 +1,28 @@
+name: Enforce Major Version for lint changes
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+    paths:
+      - 'pkgs/lints/lib/**.yaml'
+
+jobs:
+  check-major-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify Major first in major version is X.0.0 or X.0.0-wip
+        if: "!contains(github.event.pull_request.labels.*.name, 'skip-breaking-check')"
+        working-directory: pkgs/lints
+        run: |
+          # 1. extract version from pubspec.yaml
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          echo "Checking version: $VERSION"
+
+          # 2. Assert format is X.0.0 or X.0.0-wip
+          if [[ ! "$VERSION" =~ ^[0-9]+\.0\.0(-wip)?$ ]]; then
+            echo "::error::Changes to lints require a major version bump."
+            echo "To bypass, add the 'skip-breaking-check' label."
+            exit 1
+          fi

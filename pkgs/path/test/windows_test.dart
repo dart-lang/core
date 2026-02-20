@@ -920,6 +920,11 @@ void main() {
       expect(context.absolute('a', r'c:\b', 'c', 'd'), r'c:\b\c\d');
       expect(context.absolute('a', r'\\b\c', r'\\d\e', 'f'), r'\\d\e\f');
     });
+
+    test('disallows intermediate nulls', () {
+      expect(() => context.absolute('a', null, 'b'), throwsArgumentError);
+      expect(() => context.absolute(r'C:\a', null, 'b'), throwsArgumentError);
+    });
   });
 
   test('withoutExtension', () {
