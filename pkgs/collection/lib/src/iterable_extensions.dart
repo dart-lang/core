@@ -70,14 +70,15 @@ extension IterableExtension<T> on Iterable<T> {
   /// Creates a sorted list of the elements of the iterable.
   ///
   /// The elements are ordered by the natural ordering of the
-  /// [keyOf] property when [ascending] is `true` or reverse ordering
-  /// when [ascending] is `false`.
+  /// [keyOf] property when [descending] is `false` (the default) or reverse
+  /// ordering when [descending] is `true`.
   List<T> sortedBy<K extends Comparable<K>>(
     K Function(T element) keyOf, {
-    bool ascending = true,
+    bool descending = false,
   }) {
-    final compare =
-        ascending ? (K a, K b) => a.compareTo(b) : (K a, K b) => b.compareTo(a);
+    final compare = descending
+        ? (K a, K b) => b.compareTo(a)
+        : (K a, K b) => a.compareTo(b);
     var elements = [...this];
     mergeSortBy<T, K>(elements, keyOf, compare);
     return elements;
