@@ -1,0 +1,22 @@
+// Copyright (c) 2024, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
+/// Example of safely accessing browser platform properties.
+library;
+
+import 'package:platform/platform.dart';
+
+void main() {
+  switch (Platform.current) {
+    case Platform(:var browserPlatform?):
+      print('Running in a browser');
+      print('User-agent: ${browserPlatform.userAgent}');
+    case Platform(nativePlatform: var platform?)
+        when platform.isLinux | platform.isMacOS | platform.isWindows:
+      print('Running on ${platform.operatingSystem}');
+      print('Hostname: ${platform.localHostname}');
+    default:
+      print('Not running on supported platform');
+  }
+}
