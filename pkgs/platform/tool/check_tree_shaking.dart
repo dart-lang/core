@@ -38,7 +38,6 @@
 /// 'RUNNING ...' string in the generated executable.
 library;
 
-
 import 'dart:convert';
 import 'dart:io';
 

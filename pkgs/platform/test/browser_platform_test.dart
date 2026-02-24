@@ -22,11 +22,7 @@ void main() {
     expect(isNative, false, reason: 'dart.library.io');
     expect(platform.isNative, false, reason: 'Platform.current.isNative');
     expect(platform.isBrowser, true, reason: 'Platform.current.isBrowser');
-    expect(
-      browserPlatform,
-      isNotNull,
-      reason: 'BrowserPlatform.current',
-    );
+    expect(browserPlatform, isNotNull, reason: 'BrowserPlatform.current');
     expect(platform.nativePlatform, isNull, reason: 'NativePlatform.current');
   });
 
