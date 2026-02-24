@@ -5,7 +5,7 @@ issue_tracker: https://github.com/dart-lang/core/issues
 version: 3.2.0-wip
 
 environment:
-  # IF UPDATED: Also updateSDK version in pubspecs in `example/` and `out/`.
+  # IF UPDATED: Also update SDK version in pubspecs in `example/` and `out/`.
   sdk: ^3.10.0
 
 dependencies:
