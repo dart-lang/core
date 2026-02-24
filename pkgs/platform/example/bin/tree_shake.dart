@@ -28,12 +28,10 @@ void main() {
       : 'unknown';
   print('Expected platform: $expectedPlatform');
 
-  if (Platform.current.isBrowser) {
+  if (BrowserPlatform.current case var browser?) {
     print('RUNNING IN A BROWSER');
-    var browser = Platform.current.browserPlatform!;
     print(browser.userAgent);
-  } else if (Platform.current.isNative) {
-    var native = Platform.current.nativePlatform!;
+  } else if (NativePlatform.current case var native?) {
     if (native.isLinux) {
       print('RUNNING ON LINUX');
     } else if (native.isMacOS) {

@@ -58,7 +58,7 @@ To:
 import 'package:platform/platform.dart';
 
 if (Platform.current.isNative) {
-  String hostname = Platform.current.nativePlatform!.localHostname;
+  String hostname = NativePlatform.current!.localHostname;
 }
 ```
 
@@ -108,7 +108,7 @@ To:
 import 'package:platform/platform.dart';    // version 3.2
 
 if (Platform.current.isNative) {
-  String hostname = Platform.current.nativePlatform!.localHostname;
+  String hostname = NativePlatform.current!.localHostname;
   print(hostname);
 }
 ```

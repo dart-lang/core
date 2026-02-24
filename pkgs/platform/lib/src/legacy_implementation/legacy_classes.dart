@@ -32,23 +32,14 @@ import '../util/json_keys.dart'
         stdoutSupportsAnsi,
         version;
 
-/// Provides a mutable implementation of the [Platform] interface.
+/// A mutable implementation of the legacy [Platform] interface.
 ///
 /// > [!WARNING]
 /// > Use `package:platform/testing.dart` for testing
-/// > the non-deprecated API, and use `FakeNativePlatform` to
+/// > the non-deprecated API, and use `TestNativePlatform` to
 /// > fake these properties.
-@Deprecated('Use FakeNativePlatform instead')
-typedef FakePlatform = LegacyFakePlatform;
-
-/// Provides a mutable implementation of the [Platform] interface.
-///
-/// > [!WARNING]
-/// > Use `package:platform/testing.dart` for testing
-/// > the non-deprecated API, and use `FakeNativePlatform` to
-/// > fake these properties.
-@Deprecated('Use FakeNativePlatform instead')
-final class LegacyFakePlatform extends PlatformTestBase {
+@Deprecated('Use TestNativePlatform instead')
+final class FakePlatform extends PlatformTestBase {
   int? _numberOfProcessors;
   String? _pathSeparator;
   String? _operatingSystem;
@@ -71,7 +62,7 @@ final class LegacyFakePlatform extends PlatformTestBase {
   /// Unspecified properties will *not* be assigned default values (they will
   /// remain `null`). If an unset non-null value is read, a [StateError] will
   /// be thrown instead of returning `null`.
-  LegacyFakePlatform({
+  FakePlatform({
     int? numberOfProcessors,
     String? pathSeparator,
     String? operatingSystem,
@@ -107,9 +98,9 @@ final class LegacyFakePlatform extends PlatformTestBase {
   ///
   /// [json] must be a JSON string that matches the encoding produced by
   /// [toJson].
-  factory LegacyFakePlatform.fromJson(String json) {
+  factory FakePlatform.fromJson(String json) {
     final map = const JsonDecoder().convert(json) as Map<String, dynamic>;
-    return LegacyFakePlatform(
+    return FakePlatform(
       numberOfProcessors: map[json_key.numberOfProcessors] as int?,
       pathSeparator: map[json_key.pathSeparator] as String?,
       operatingSystem: map[json_key.operatingSystem] as String?,
@@ -132,7 +123,7 @@ final class LegacyFakePlatform extends PlatformTestBase {
 
   /// Creates a new [FakePlatform] with properties whose initial values mirror
   /// the specified [platform].
-  LegacyFakePlatform.fromPlatform(Platform platform)
+  FakePlatform.fromPlatform(Platform platform)
     : _numberOfProcessors = platform.numberOfProcessors,
       _pathSeparator = platform.pathSeparator,
       _operatingSystem = platform.operatingSystem,
@@ -211,7 +202,7 @@ final class LegacyFakePlatform extends PlatformTestBase {
     bool? stdoutSupportsAnsi,
     String? localeName,
   }) {
-    return LegacyFakePlatform(
+    return FakePlatform(
       numberOfProcessors: numberOfProcessors ?? this.numberOfProcessors,
       pathSeparator: pathSeparator ?? this.pathSeparator,
       operatingSystem: operatingSystem ?? this.operatingSystem,
@@ -262,33 +253,33 @@ final class LegacyFakePlatform extends PlatformTestBase {
   }
 }
 
-@Deprecated('Use Platform.current.nativePlatform! instead')
+@Deprecated('Use NativePlatform.current! instead')
 final class LocalPlatform extends PlatformTestBase {
   static const _instance = LocalPlatform._();
-  @Deprecated('Use Platform.current.nativePlatform! instead')
+  @Deprecated('Use NativePlatform.current! instead')
   const factory LocalPlatform() = _LocalPlatformInstance;
 
   const LocalPlatform._();
 
-  @Deprecated('Use Platform.current.browserPlatform instead')
+  @Deprecated('Use BrowserPlatform.current instead')
   @override
   BrowserPlatform? get browserPlatform;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.environment instead')
+  @Deprecated('Use NativePlatform.current!.environment instead')
   Map<String, String> get environment =>
-      Platform.current.nativePlatform!.environment;
+      NativePlatform.current!.environment;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.executable instead')
-  String get executable => Platform.current.nativePlatform!.executable;
+  @Deprecated('Use NativePlatform.current!.executable instead')
+  String get executable => NativePlatform.current!.executable;
 
   @override
   @Deprecated(
-    'Use Platform.current.nativePlatform!.executableArguments instead',
+    'Use NativePlatform.current!.executableArguments instead',
   )
   List<String> get executableArguments =>
-      Platform.current.nativePlatform!.executableArguments;
+      NativePlatform.current!.executableArguments;
 
   @Deprecated('Use Platform.current.isBrowser instead')
   @override
@@ -299,67 +290,67 @@ final class LocalPlatform extends PlatformTestBase {
   bool get isNative;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.localeName instead')
-  String get localeName => Platform.current.nativePlatform!.localeName;
+  @Deprecated('Use NativePlatform.current!.localeName instead')
+  String get localeName => NativePlatform.current!.localeName;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.localHostname instead')
-  String get localHostname => Platform.current.nativePlatform!.localHostname;
+  @Deprecated('Use NativePlatform.current!.localHostname instead')
+  String get localHostname => NativePlatform.current!.localHostname;
 
   @override
   NativePlatform? get nativePlatform;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.numberOfProcessors instead')
+  @Deprecated('Use NativePlatform.current!.numberOfProcessors instead')
   int get numberOfProcessors =>
-      Platform.current.nativePlatform!.numberOfProcessors;
+      NativePlatform.current!.numberOfProcessors;
 
   // Implements existing behavior through `NativePlatform`.
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.operatingSystem instead')
+  @Deprecated('Use NativePlatform.current!.operatingSystem instead')
   String get operatingSystem =>
-      Platform.current.nativePlatform!.operatingSystem;
+      NativePlatform.current!.operatingSystem;
 
   @override
   @Deprecated(
-    'Use Platform.current.nativePlatform!.operatingSystemVersion instead',
+    'Use NativePlatform.current!.operatingSystemVersion instead',
   )
   String get operatingSystemVersion =>
-      Platform.current.nativePlatform!.operatingSystemVersion;
+      NativePlatform.current!.operatingSystemVersion;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.packageConfig instead')
-  String? get packageConfig => Platform.current.nativePlatform!.packageConfig;
+  @Deprecated('Use NativePlatform.current!.packageConfig instead')
+  String? get packageConfig => NativePlatform.current!.packageConfig;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.pathSeparator instead')
-  String get pathSeparator => Platform.current.nativePlatform!.pathSeparator;
+  @Deprecated('Use NativePlatform.current!.pathSeparator instead')
+  String get pathSeparator => NativePlatform.current!.pathSeparator;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.resolvedExecutable instead')
+  @Deprecated('Use NativePlatform.current!.resolvedExecutable instead')
   String get resolvedExecutable =>
-      Platform.current.nativePlatform!.resolvedExecutable;
+      NativePlatform.current!.resolvedExecutable;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.script instead')
-  Uri get script => Platform.current.nativePlatform!.script;
+  @Deprecated('Use NativePlatform.current!.script instead')
+  Uri get script => NativePlatform.current!.script;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.stdinSupportsAnsi instead')
+  @Deprecated('Use NativePlatform.current!.stdinSupportsAnsi instead')
   bool get stdinSupportsAnsi =>
-      Platform.current.nativePlatform!.stdinSupportsAnsi;
+      NativePlatform.current!.stdinSupportsAnsi;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.stdoutSupportsAnsi instead')
+  @Deprecated('Use NativePlatform.current!.stdoutSupportsAnsi instead')
   bool get stdoutSupportsAnsi =>
-      Platform.current.nativePlatform!.stdoutSupportsAnsi;
+      NativePlatform.current!.stdoutSupportsAnsi;
 
   @override
-  @Deprecated('Use Platform.current.nativePlatform!.version instead')
-  String get version => Platform.current.nativePlatform!.version;
+  @Deprecated('Use NativePlatform.current!.version instead')
+  String get version => NativePlatform.current!.version;
 
   @override
-  String toJson() => Platform.current.nativePlatform!.toJson();
+  String toJson() => NativePlatform.current!.toJson();
 }
 
 extension type const _LocalPlatformInstance._(LocalPlatform _)

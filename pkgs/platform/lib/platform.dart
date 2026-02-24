@@ -25,12 +25,12 @@
 ///   return false;
 /// }
 ///
-/// bool get isWeb => Platform.current.browserPlatform != null;
+/// bool get isWeb => Platform.browserPlatform.current != null;
 ///
 /// String get osAndVersionText => switch (Platform.current) {
 ///   Platform(nativePlatform: var n?) =>
 ///       '${n.operatingSystem} v. ${n.operatingSystemVersion}',
-///   Platform(browserPlatform: var b?) => '${b.userAgent}',
+///   Platform(browserPlatform: var b?) => b.userAgent,
 ///   _ => 'Unknown';
 /// }
 /// ```
@@ -43,7 +43,6 @@
 /// > should use [Platform.nativePlatform] of [Platform.current] instead.
 /// > Code using [FakePlatform] should import `package:platform/testing.dart`
 /// > and use `FestNativePlatform` instead.
-/// > The legacy [FakePlatform] is also available as [LegacyFakePlatform].
 ///
 /// @docImport 'src/legacy_implementation/legacy_classes.dart';
 /// @docImport 'src/platforms.dart';
@@ -54,9 +53,8 @@
 library;
 
 // Legacy classes, `LocalPlatform` and `FakePlatform`
-// The `FakePlatform` is an alias for `LegacyFakePlatform`.
 export 'src/legacy_implementation/legacy_classes.dart'
-    show FakePlatform, LegacyFakePlatform, LocalPlatform;
+    show FakePlatform, LocalPlatform;
 
 export 'src/platforms.dart'
     show BrowserPlatform, NativePlatform, Platform, PlatformIsOS;

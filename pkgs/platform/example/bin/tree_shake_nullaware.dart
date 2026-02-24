@@ -30,11 +30,11 @@ void main() {
 
   if (Platform.current.isBrowser) {
     print('RUNNING IN A BROWSER');
-  } else if (Platform.current.nativePlatform?.isLinux ?? false) {
+  } else if (NativePlatform.current?.isLinux ?? false) {
     print('RUNNING ON LINUX');
-  } else if (Platform.current.nativePlatform?.isMacOS ?? false) {
+  } else if (NativePlatform.current?.isMacOS ?? false) {
     print('RUNNING ON MACOS');
-  } else if (Platform.current.nativePlatform?.isWindows ?? false) {
+  } else if (NativePlatform.current?.isWindows ?? false) {
     print('RUNNING ON WINDOWS');
   }
 }

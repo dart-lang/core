@@ -25,20 +25,16 @@ void main() {
     expect(
       browserPlatform,
       isNotNull,
-      reason: 'Platform.current.browserPlatform',
+      reason: 'BrowserPlatform.current',
     );
-    expect(
-      platform.nativePlatform,
-      isNull,
-      reason: 'Platform.current.nativePlatform',
-    );
+    expect(platform.nativePlatform, isNull, reason: 'NativePlatform.current');
   });
 
   if (browserPlatform == null) return; // Promote to non-null.
 
   test('static properties', () {
     // The `current` getter is the same objects as
-    // `Platform.current.browserPlatform`.
+    // `BrowserPlatform.current`.
     expect(
       browserPlatform,
       same(BrowserPlatform.current),

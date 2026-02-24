@@ -31,7 +31,7 @@ void main() {
 
   test('Static properties', () {
     // The `current` getter is the same objects as
-    // `Platform.current.nativePlatform`.
+    // `NativePlatform.current`.
     expect(nativePlatform, same(NativePlatform.current));
 
     // Tests that the constants are what we expect them to be.

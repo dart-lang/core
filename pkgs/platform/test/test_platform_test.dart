@@ -14,7 +14,7 @@ void main() {
     testNative.run(() {
       expect(NativePlatform.current, isNot(same(currentNative)));
       expect(NativePlatform.current, same(testNative));
-      expect(Platform.current.nativePlatform, same(testNative));
+      expect(NativePlatform.current, same(testNative));
       expect(NativePlatform.current?.operatingSystem, 'banana');
     });
   });
@@ -25,7 +25,7 @@ void main() {
     testBrowser.run(() {
       expect(BrowserPlatform.current, isNot(same(currentBrowser)));
       expect(BrowserPlatform.current, same(testBrowser));
-      expect(Platform.current.browserPlatform, same(testBrowser));
+      expect(BrowserPlatform.current, same(testBrowser));
       expect(BrowserPlatform.current?.version, 'banana');
     });
   });

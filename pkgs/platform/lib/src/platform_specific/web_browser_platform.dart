@@ -26,7 +26,7 @@ final class BrowserPlatform {
 
   /// The current Browser platform, if any.
   ///
-  /// Same as [Platform.current.browserPlatform](Platform.browserPlatform).
+  /// Same as [Platform.browserPlatform] of [BrowserPlatform.current].
   static BrowserPlatform? get current => Platform.current.browserPlatform;
 
   /// The browser's version, as reported by `Navigator.appVersion` by default.

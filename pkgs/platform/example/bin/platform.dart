@@ -8,7 +8,7 @@ library;
 import 'package:platform/platform.dart';
 
 void main(List<String> arguments) {
-  final platform = Platform.current.nativePlatform;
+  final platform = NativePlatform.current;
   if (platform == null) {
     print('This program only supports execution on native platforms.');
   } else {
