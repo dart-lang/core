@@ -3,25 +3,41 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// Run this script as
-//
-//     dart check_tree_shaking.dart
-//
-// or
-//
-//     dart tool/check_tree_shaking.dart
-//
-// from the package root directory.
-//
-// It will compile each example in `../example/` to both `.exe` and `.js`,
-// then check which of the source program strings are retained in the
-// executable.
-//
-// When tree-shaking works optimally, there should be precisely one
-// 'RUNNING ...' string in the generated executable.
-//
-// (The script uses `Platform.executable` from `dart:io` as the compiler,
-// which is why it must be invoked with that compiler.)
+/// Internal script for checking that tree-shaking works.
+///
+/// Run this script as
+/// ```console
+/// dart check_tree_shaking.dart
+/// ```
+/// or
+/// ```console
+/// dart tool/check_tree_shaking.dart
+/// ```
+/// from the package root directory.
+///
+/// *MUST* be run with the `dart` executable.
+/// The script uses `Platform.executable` from `dart:io` as the compiler.
+///
+/// It will compile each example in `../example/bin/` to both `.exe` and `.js`,
+/// then check which of the source program strings are retained in the
+/// executable.
+///
+/// Accepts the following flags (mainly useful while debugging the script
+/// or package):
+/// * `-n`: Only compile to native `.exe`.
+/// * `-j`: Only compile to "web" `.js`. (Don't pass both `-j` and `-n`).
+/// * `-e`: If tree-shaking appears to fail, try running the program as well,
+///         so you can check what it actually prints.
+///         *MUST* have `d8` in the path to run compiled JS programs.
+/// * `-r`: Retain the compiled files where tree-shaking fails.
+/// * `-R`: Retain all compiled files.
+///         Otherwise the compiled files are deleted before exiting.
+/// * `-v`: More verbose output while running.
+///
+/// When tree-shaking works optimally, there should be precisely one
+/// 'RUNNING ...' string in the generated executable.
+library;
+
 
 import 'dart:convert';
 import 'dart:io';
@@ -107,67 +123,72 @@ void main(List<String> args) {
   var failures = <String>[];
 
   for (var examplePath in files) {
-    var example = File(examplePath);
-    var exampleFilename = path.filename(examplePath);
-    var exampleName = clipEnd(exampleFilename, '.dart');
+    var exampleDartFile = File(examplePath);
+    var exampleFileName = path.basename(examplePath);
+    var exampleName = clipEnd(exampleFileName, '.dart');
     if (!jsOnly) {
-      var exampleExe = '$exampleName.exe';
-      var exeOutput = path.join(outputDir.path, exampleExe);
+      var exeFileName = '$exampleName.exe';
+      var exeFilePath = path.join(outputDir.path, exeFileName);
       var result = run(dartExe, [
         'compile',
         'exe',
         '--target-os',
         platform,
         '-o',
-        exeOutput,
-        example.path,
+        exeFilePath,
+        exampleDartFile.path,
       ]);
-      if (!_checkCompiled(example, File(exeOutput), verbose)) {
+      if (!checkCompiled(exampleDartFile, File(exeFilePath), verbose)) {
         printProcessOutput(result);
         continue;
       }
 
-      if (!check(exeOutput, exampleExe)) {
-        failures.add(exampleExe);
+      if (!check(exeFilePath, exeFileName)) {
+        failures.add(exeFileName);
         if (executeOnError) {
           var result = Process.runSync(
-            exeOutput,
+            exeFilePath,
             stdoutEncoding: utf8,
             stderrEncoding: utf8,
             [],
           );
-          print('Running program $exampleExe: Exit code = ${result.exitCode}');
+          print(
+            'Running program $exeFileName:'
+            ' Exit code = ${result.exitCode}',
+          );
           printProcessOutput(result);
         }
       }
     }
 
     if (!nativeOnly) {
-      var exampleJS = '$exampleName.js';
-      var jsOutput = path.join(outputDir.path, exampleJS);
+      var jsFileName = '$exampleName.js';
+      var jsFilePath = path.join(outputDir.path, jsFileName);
       var result = Process.runSync(
         dartExe.path,
         stdoutEncoding: utf8,
         stderrEncoding: utf8,
-        ['compile', 'js', '-o', jsOutput, example.path],
+        ['compile', 'js', '-o', jsFilePath, exampleDartFile.path],
       );
-      if (!_checkCompiled(example, File(jsOutput), verbose)) {
+      if (!checkCompiled(exampleDartFile, File(jsFilePath), verbose)) {
         printProcessOutput(result);
         continue;
       }
-      if (!check(jsOutput, exampleJS)) {
-        failures.add(exampleJS);
-        // Try finding `d8` in path, and d8.js preamble in SDK.
-        // Until then, make sure to have a `d8` in then path which adds
-        // the preamble.
+      if (!check(jsFilePath, jsFileName)) {
+        failures.add(jsFileName);
+        // TODO: Try finding `d8` in path, and d8.js preamble in SDK.
+        // Until then, make sure the scripts can run without the preamble.
         if (executeOnError) {
           var result = Process.runSync(
             'd8',
             stdoutEncoding: utf8,
             stderrEncoding: utf8,
-            [jsOutput],
+            [jsFilePath],
           );
-          print('Running program $exampleJS: Exit code = ${result.exitCode}');
+          print(
+            'Running program $jsFileName:'
+            ' Exit code = ${result.exitCode}',
+          );
           printProcessOutput(result);
         }
       }
@@ -198,7 +219,10 @@ bool check(String path, String name) {
   var content = file.readAsBytesSync();
   const needle = 'RUNNING';
   var matchCount = 0;
-  // Find RUNNING
+  // Find "RUNNING" as a string in the file.
+  // (The compilers will not store an ASCII-only string as UTF-16,
+  // so looking for bytes is sufficient. If they start doing that,
+  // the check will start failing.)
   outer:
   for (var i = 0; i < content.length - needle.length; i++) {
     var j = 0;
@@ -232,7 +256,7 @@ String clipEnd(String text, String end) {
   return text;
 }
 
-bool _checkCompiled(File source, File output, int verbose) {
+bool checkCompiled(File source, File output, int verbose) {
   if (output.existsSync()) {
     if (verbose > 0) {
       var stat = output.statSync();
@@ -250,7 +274,7 @@ List<String> defaultExampleFiles(String packageRoot) {
   var exampleDir = Directory(path.join(packageRoot, 'example', 'bin'));
   return [
     for (var example in exampleDir.listSync())
-      if (path.filename(example.path) case var filename
+      if (path.basename(example.path) case var filename
           when example is File &&
               filename.startsWith('tree_shake_') &&
               filename.endsWith('.dart'))

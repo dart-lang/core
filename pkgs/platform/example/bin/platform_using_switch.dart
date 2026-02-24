@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// Example of safely accessing browser platform properties.
+/// Example of safely accessing platform specific properties.
 library;
 
 import 'package:platform/platform.dart';

@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Platform specific interface for `BrowserPlatform`.
+///
+/// @docImport '../../testing.dart';
 // ignore: unnecessary_library_name - Used by DartDoc
 library browser_platform_impl;
 
@@ -39,6 +41,9 @@ abstract final class BrowserPlatform {
   String get userAgent;
 
   /// A JSON representation of the state of this browser platform object.
+  ///
+  /// Can be emitted for debugging or be used to create a [TestBrowserPlatform]
+  /// with the same configuration.
   String toJson();
 }
 

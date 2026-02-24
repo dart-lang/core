@@ -20,9 +20,6 @@ export 'web_browser_platform.dart';
 
 const Platform platformInstance = Platform._();
 
-// For the legacy `LocalPlatform`.
-const NativePlatform? nativePlatformInstance = null;
-
 /// Dart runtime platform information.
 ///
 /// Provides information about the current runtime environment.

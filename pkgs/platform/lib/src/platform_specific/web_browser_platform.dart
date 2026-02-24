@@ -5,6 +5,8 @@
 /// Platform specific implementations for `LocalPlatform`
 /// when `dart:html` is available , but `dart:io` is not.
 /// (That is, when compiling for the web).
+///
+/// @docImport '../../testing.dart';
 // ignore: unnecessary_library_name - Used by DartDoc
 library browser_platform_impl;
 
@@ -53,6 +55,9 @@ final class BrowserPlatform {
       window.navigator?.userAgent ?? 'No navigator.userAgent';
 
   /// A JSON representation of the state of this browser platform object.
+  ///
+  /// Can be emitted for debugging or be used to create a [TestBrowserPlatform]
+  /// with the same configuration.
   String toJson() => const JsonEncoder.withIndent(
     '  ',
   ).convert({json_key.userAgent: userAgent, json_key.version: version});

@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Interface for a native platform without access to `dart:io`.
+///
+/// @docImport '../../testing.dart';
 // ignore: unnecessary_library_name - Used by DartDoc
 library native_platform_impl;
 
@@ -211,10 +213,10 @@ abstract final class NativePlatform {
   /// whitespace and other version and build details.
   String get version;
 
-  /// A JSON-encoded representation of platform information.
+  /// A JSON representation of the state of this native platform object.
   ///
-  /// Can be emitted for debugging, or be used as input to a fake environment
-  /// used for debugging.
+  /// Can be emitted for debugging or be used to create a [TestNativePlatform]
+  /// with the same configuration.
   String toJson();
 }
 
