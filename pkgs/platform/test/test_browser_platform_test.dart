@@ -25,9 +25,9 @@ void main() {
   if (original == null) return; // Promote to non-null from here.
 
   group('TestBrowserPlatform', () {
-    group('fromPlatform', () {
+    group('from', () {
       test('copiesAllProperties', () {
-        var testPlatform = TestBrowserPlatform.fromPlatform(original);
+        var testPlatform = TestBrowserPlatform.from(original);
         testBrowser(
           testPlatform,
           jsonDecode(original.toJson()) as Map<String, Object?>,
@@ -38,14 +38,14 @@ void main() {
     group('copyWith', () {
       test('overrides a value, but leaves others intact', () {
         var expected = jsonDecode(original.toJson()) as Map<String, Object?>;
-        var testPlatform = TestBrowserPlatform.fromPlatform(original);
+        var testPlatform = TestBrowserPlatform.from(original);
 
         BrowserPlatform copy = testPlatform.copyWith(version: '42.0');
         expected[json_key.version] = '42.0';
         testBrowser(copy, expected);
       });
       test('can override all values', () {
-        var testPlatform = TestBrowserPlatform.fromPlatform(original);
+        var testPlatform = TestBrowserPlatform.from(original);
         var expected = <String, Object?>{
           json_key.userAgent: testPlatformUA,
           json_key.version: testPlatformVersion,
@@ -130,7 +130,7 @@ void main() {
 
   group('runtime override', () {
     test('sync', () {
-      var testPlatform = TestBrowserPlatform.fromPlatform(
+      var testPlatform = TestBrowserPlatform.from(
         original,
       ).copyWith(userAgent: testPlatformUA);
       expect(testPlatform.userAgent, testPlatformUA);
@@ -143,7 +143,7 @@ void main() {
     });
     test('async', () async {
       var currentNative = original;
-      var testPlatform = TestBrowserPlatform.fromPlatform(
+      var testPlatform = TestBrowserPlatform.from(
         currentNative,
       ).copyWith(userAgent: testPlatformUA);
       var parts = 0;
@@ -169,10 +169,10 @@ void main() {
     });
   });
   group('nested overrides', () {
-    final testPlatformNative = TestBrowserPlatform.fromPlatform(
+    final testPlatformNative = TestBrowserPlatform.from(
       original,
     ).copyWith(userAgent: testPlatformUA);
-    final testPlatformNative2 = TestBrowserPlatform.fromPlatform(
+    final testPlatformNative2 = TestBrowserPlatform.from(
       testPlatformNative,
     ).copyWith(version: testPlatformVersion);
     test('sync', () {

@@ -37,7 +37,7 @@ import '../util/json_keys.dart'
 /// > [!WARNING]
 /// > Use `package:platform/testing.dart` for testing
 /// > the non-deprecated API, and use `TestNativePlatform` to
-/// > fake these properties.
+/// > give custom values to native platform properties.
 @Deprecated('Use TestNativePlatform instead')
 final class FakePlatform extends PlatformTestBase {
   int? _numberOfProcessors;
@@ -267,17 +267,14 @@ final class LocalPlatform extends PlatformTestBase {
 
   @override
   @Deprecated('Use NativePlatform.current!.environment instead')
-  Map<String, String> get environment =>
-      NativePlatform.current!.environment;
+  Map<String, String> get environment => NativePlatform.current!.environment;
 
   @override
   @Deprecated('Use NativePlatform.current!.executable instead')
   String get executable => NativePlatform.current!.executable;
 
   @override
-  @Deprecated(
-    'Use NativePlatform.current!.executableArguments instead',
-  )
+  @Deprecated('Use NativePlatform.current!.executableArguments instead')
   List<String> get executableArguments =>
       NativePlatform.current!.executableArguments;
 
@@ -302,19 +299,15 @@ final class LocalPlatform extends PlatformTestBase {
 
   @override
   @Deprecated('Use NativePlatform.current!.numberOfProcessors instead')
-  int get numberOfProcessors =>
-      NativePlatform.current!.numberOfProcessors;
+  int get numberOfProcessors => NativePlatform.current!.numberOfProcessors;
 
   // Implements existing behavior through `NativePlatform`.
   @override
   @Deprecated('Use NativePlatform.current!.operatingSystem instead')
-  String get operatingSystem =>
-      NativePlatform.current!.operatingSystem;
+  String get operatingSystem => NativePlatform.current!.operatingSystem;
 
   @override
-  @Deprecated(
-    'Use NativePlatform.current!.operatingSystemVersion instead',
-  )
+  @Deprecated('Use NativePlatform.current!.operatingSystemVersion instead')
   String get operatingSystemVersion =>
       NativePlatform.current!.operatingSystemVersion;
 
@@ -328,8 +321,7 @@ final class LocalPlatform extends PlatformTestBase {
 
   @override
   @Deprecated('Use NativePlatform.current!.resolvedExecutable instead')
-  String get resolvedExecutable =>
-      NativePlatform.current!.resolvedExecutable;
+  String get resolvedExecutable => NativePlatform.current!.resolvedExecutable;
 
   @override
   @Deprecated('Use NativePlatform.current!.script instead')
@@ -337,13 +329,11 @@ final class LocalPlatform extends PlatformTestBase {
 
   @override
   @Deprecated('Use NativePlatform.current!.stdinSupportsAnsi instead')
-  bool get stdinSupportsAnsi =>
-      NativePlatform.current!.stdinSupportsAnsi;
+  bool get stdinSupportsAnsi => NativePlatform.current!.stdinSupportsAnsi;
 
   @override
   @Deprecated('Use NativePlatform.current!.stdoutSupportsAnsi instead')
-  bool get stdoutSupportsAnsi =>
-      NativePlatform.current!.stdoutSupportsAnsi;
+  bool get stdoutSupportsAnsi => NativePlatform.current!.stdoutSupportsAnsi;
 
   @override
   @Deprecated('Use NativePlatform.current!.version instead')

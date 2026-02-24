@@ -9,18 +9,19 @@
 /// types that it may or may not expose an instance of.
 ///
 /// On top of that, this library also exposes mock-versions of those
-/// platform specific classes: [TestBrowserPlatform] and [TestNativePlatform].
+/// platform specific classes: [TestBrowserPlatform] and [TestNativePlatform],
+/// and a [TestPlatform] that can hold one of these.
 ///
-/// These classes can be used to specify a platform configuration that is not
-/// the actual current platform.
-/// Using the `run` methods of those fake-classes will run a function in
-/// a context where [Platform.current] exposes the fake configuration.
+/// These test-only classes can be used to specify a platform configuration
+/// that is not the actual current platform.
+/// Using the `run` methods of those test-classes will run the function in
+/// a zone-context where [Platform.current] is the test-configuration.
 ///
-/// These fake classes should *only* be used for testing.
-/// Even including them in a production program may cause more code to
-/// be retained than necessary.
+/// > [!WARNING]
+/// > These test-classes should *only* be used for testing.
+/// > Importing this library in a production program may cause more code to
+/// > be retained than necessary.
 ///
-/// @docImport 'src/legacy_implementation/legacy_classes.dart';
 /// @docImport 'src/platforms.dart';
 /// @docImport 'src/testing/test_platforms.dart';
 /// {@canonicalFor test_platforms.TestPlatform}

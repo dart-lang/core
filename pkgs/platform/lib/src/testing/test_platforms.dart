@@ -17,7 +17,7 @@ import '../platforms_impl.dart';
 import '../util/json_keys.dart' as json_key;
 import 'zone_overrides.dart' as overrides;
 
-/// Fake Dart runtime platform information.
+/// Custom Dart runtime platform information for testing.
 ///
 /// Implements [Platform], but allows a [TestBrowserPlatform] or
 /// [TestNativePlatform] to be the non-`null` platform object.
@@ -39,25 +39,25 @@ final class TestPlatform extends PlatformTestBase {
   @override
   bool get isBrowser => browserPlatform != null;
 
-  /// A fake platform with the given [nativePlatform].
+  /// A custom platform with the given [nativePlatform].
   ///
-  /// Used by [TestNativePlatform.run] to create a fake [Platform]
+  /// Used by [TestNativePlatform.run] to create a [TestPlatform]
   /// with itself as the [Platform.nativePlatform].
   const TestPlatform._native(TestNativePlatform this.nativePlatform)
     : browserPlatform = null;
 
-  /// A fake platform with the given [browserPlatform].
+  /// A custom platform with the given [browserPlatform].
   ///
-  /// Used by [TestBrowserPlatform.run] to create a fake [Platform]
+  /// Used by [TestBrowserPlatform.run] to create a [TestPlatform]
   /// with itself as the [Platform.browserPlatform].
   const TestPlatform._browser(TestBrowserPlatform this.browserPlatform)
     : nativePlatform = null;
 
-  /// A platform with *none* of the native or browser platforms set.
+  /// A platform with *neither* the native or the browser platform available.
   @visibleForTesting
   const TestPlatform.unknown() : nativePlatform = null, browserPlatform = null;
 
-  /// A fake platform with the same properties as [platform].
+  /// Creates a [TestPlatform] with the same properties as [platform].
   @visibleForTesting
   factory TestPlatform.fromPlatform(Platform platform) {
     // There is currently no way to have a platform with both
@@ -69,12 +69,12 @@ final class TestPlatform extends PlatformTestBase {
     return const TestPlatform.unknown();
   }
 
-  /// Creates a [TestPlatform] with a [NativePlatform].
+  /// Creates a [TestPlatform] with a new [TestNativePlatform].
   ///
-  /// Creates a [TestNativePlatform.new] with the same arguments,
+  /// Creates a [TestNativePlatform.new] with the provided arguments,
   /// and a [TestPlatform] with that as [nativePlatform].
   ///
-  /// It's recommended to use
+  /// Equivalent to:
   /// ```dart
   /// TestPlatform.fromNative(TestNativePlatform(...))
   /// ```
@@ -117,10 +117,11 @@ final class TestPlatform extends PlatformTestBase {
          ),
        );
 
-  /// Creates a [TestPlatform] with a [NativePlatform].
+  /// Creates a [TestPlatform] with a copy of a given [NativePlatform].
   ///
-  /// If [nativePlatform] is omitted or `null`, the created `TestPlatform]
-  /// has a new [TestNativePlatform] as [Platform.nativePlatform].
+  /// Creates a [TestNativePlatform] from [nativePlatform],
+  /// as by [TestNativePlatform.from], and a [TestPlatform]
+  /// with that as its [Platform.nativePlatform].
   @visibleForTesting
   TestPlatform.fromNative(NativePlatform nativePlatform)
     : this._native(TestNativePlatform.from(nativePlatform));
@@ -128,23 +129,25 @@ final class TestPlatform extends PlatformTestBase {
   /// Creates a [TestPlatform] with a [TestNativePlatform] created from JSON.
   ///
   /// A new [TestNativePlatform] is created using [TestNativePlatform.fromJson]
-  /// with [nativePlatformJson] as argument, an a new [TestPlatform] is created
+  /// with [nativePlatformJson] as argument, and a new [TestPlatform] is created
   /// with that native platform as [Platform.nativePlatform].
+  ///
+  /// Equivalent to:
+  /// ```dart
+  /// TestPlatform.fromNative(TestNativePlatform.fromJson(nativePlatformJson))
+  /// ```
   @visibleForTesting
   TestPlatform.nativeFromJson(String nativePlatformJson)
     : this._native(TestNativePlatform.fromJson(nativePlatformJson));
 
-  /// Creates a [TestPlatform] with a [BrowserPlatform].
+  /// Creates a [TestPlatform] with a copy of a given [BrowserPlatform].
   ///
-  /// If [browserPlatform] is omitted or `null`, the created `TestPlatform]
-  /// has a new [TestBrowserPlatform] as [Platform.browserPlatform].
+  /// Creates a [TestBrowserPlatform] from [browserPlatform],
+  /// as by [TestBrowserPlatform.from], and a [TestPlatform]
+  /// with that as its [Platform.browserPlatform].
   @visibleForTesting
-  TestPlatform.fromBrowser([BrowserPlatform? browserPlatform])
-    : this._browser(
-        browserPlatform = browserPlatform == null
-            ? TestBrowserPlatform()
-            : TestBrowserPlatform.fromPlatform(browserPlatform),
-      );
+  TestPlatform.fromBrowser(BrowserPlatform browserPlatform)
+    : this._browser(TestBrowserPlatform.from(browserPlatform));
 
   /// Creates a [TestPlatform] with a [TestBrowserPlatform] created from JSON.
   ///
@@ -156,14 +159,14 @@ final class TestPlatform extends PlatformTestBase {
   TestPlatform.browserFromJson(String browserPlatformJson)
     : this._browser(TestBrowserPlatform.fromJson(browserPlatformJson));
 
-  /// Runs [testCode] with this fake platform as the current platform.
+  /// Runs [testCode] with this platform as the current platform.
   ///
   /// While [testCode] is running, the [Platform.current] refers to this
-  /// fake platform, which is likely the [TestPlatform.unknown] platform.
+  /// platform object.
   ///
   /// Prior reads of [Platform.current] will retain their original value,
-  /// so the `TestCode` should make sure to read [Platform.current]
-  /// when it's needed, and avoid any caching.
+  /// so the [testCode] should make sure to read [Platform.current]
+  /// when it's needed, and not rely on previously read values.
   @visibleForTesting
   R run<R>(R Function() testCode) =>
       overrides.runWith(testCode, this, _OverrideMarker.marker);
@@ -172,7 +175,11 @@ final class TestPlatform extends PlatformTestBase {
 /// Instance used to mark overrides as used.
 enum _OverrideMarker implements overrides.OverrideMarker { marker }
 
-/// Fake [BrowserPlatform] for testing.
+/// A custom [BrowserPlatform] for testing.
+///
+/// The individual properties can be left unset by the constructors.
+/// Accessing such properties will throw, but a test which doesn't use
+/// those properties doesn't have to provide values for them.
 @visibleForTesting
 final class TestBrowserPlatform extends BrowserPlatformTestBase {
   static const _className = 'TestBrowserPlatform';
@@ -180,11 +187,43 @@ final class TestBrowserPlatform extends BrowserPlatformTestBase {
   final String? _version;
   final String? _userAgent;
 
+  /// Creates a custom `TestBrowserPlatform` with the given properties.
+  ///
+  /// If an argument is omitted or `null`, the created object will throw
+  /// an error when reading the corresponding property.
   @visibleForTesting
   TestBrowserPlatform({String? version, String? userAgent})
     : _version = version,
       _userAgent = userAgent;
 
+  /// Creates a new [TestBrowserPlatform] with properties from a JSON string.
+  ///
+  /// The [jsonText] must be a valid JSON string representing a JSON object,
+  /// and the values for the [BrowserPlatform] properties are extracted from
+  /// the object's values for keys with the properties' names.
+  ///
+  /// Example:
+  /// ```dart
+  /// var testBrowserPlatform = TestBrowserPlatform.fromJson('''{
+  ///   "userAgent": "Banana/1.0 (BananaOS 0.9.1)",
+  /// }''')'
+  /// ```
+  /// The JSON object's value for such a key must be either a string or `null`.
+  ///
+  /// Throws a [FormatException] if the [jsonText] string is not valid
+  /// JSON text, the JSON text does not represent a JSON object,
+  /// or a property's value is not a string.
+  /// (The property values must be strings because all properties of
+  /// `TestBrowserPlatform` are strings).
+  ///
+  /// Other keys are ignored. Missing property keys,
+  /// or keys with a `null` value, leave the property undefined.
+  ///
+  /// The [toJson] method will leave out undefined properties, so
+  /// `TestBrowserPlatform.fromJson(TestBrowserPlatform.toJson())` can create
+  /// an exact copy at a later time.
+  /// (To create a copy _right now_, `TestBrowserPlatform.copyWith()`
+  /// is easier and more efficient.)
   @visibleForTesting
   factory TestBrowserPlatform.fromJson(String jsonText) {
     var json = jsonDecode(jsonText);
@@ -197,17 +236,28 @@ final class TestBrowserPlatform extends BrowserPlatformTestBase {
     );
   }
 
+  /// Creates a custom `TestBrowserPlatform` as a copy of [browserPlatform].
+  ///
+  /// If [browserPlatform] is a [TestBrowserPlatform], the new object is
+  /// an exact copy of the original, including any undefined properties.
+  /// Otherwise the new object is a [TestBrowserPlatform]
+  /// that has the same property values as [browserPlatform].
   @visibleForTesting
-  factory TestBrowserPlatform.fromPlatform(BrowserPlatform platform) {
-    if (platform is TestBrowserPlatform) {
-      return platform.copyWith();
+  factory TestBrowserPlatform.from(BrowserPlatform browserPlatform) {
+    if (browserPlatform is TestBrowserPlatform) {
+      return browserPlatform.copyWith();
     }
     return TestBrowserPlatform(
-      version: platform.version,
-      userAgent: platform.userAgent,
+      version: browserPlatform.version,
+      userAgent: browserPlatform.userAgent,
     );
   }
 
+  /// Creates a new [TestBrowserPlatform] from this one.
+  ///
+  /// If a parameter is given non-`null` argument value,
+  /// the created object will have that value for the corresponding property,
+  /// otherwise it will use this object's value for that property.
   @visibleForTesting
   TestBrowserPlatform copyWith({String? version, String? userAgent}) =>
       TestBrowserPlatform(
@@ -215,14 +265,14 @@ final class TestBrowserPlatform extends BrowserPlatformTestBase {
         userAgent: userAgent ?? _userAgent,
       );
 
-  /// Runs [testCode] with this as the current browser platform.
+  /// Runs [testCode] with this object as `Platform.current.browserPlatform`.
   ///
   /// While [testCode] is running, the [Platform.browserPlatform]
   /// of [Platform.current] refers to this [TestBrowserPlatform].
   ///
   /// Prior reads of [Platform.current] will retain their original value,
   /// so the `testCode` should make sure to read [Platform.current]
-  /// when it's needed, and avoid any caching.
+  /// when it's needed, and not rely on previously read values.
   @visibleForTesting
   R run<R>(R Function() testCode) => overrides.runWith(
     testCode,
@@ -230,11 +280,15 @@ final class TestBrowserPlatform extends BrowserPlatformTestBase {
     _OverrideMarker.marker,
   );
 
+  /// A JSON-encoded representation of this browser platform test-configuration.
+  ///
+  /// Unset values are not included.
+  ///
+  /// Can be parsed back by [TestBrowserPlatform.fromJson].
   @override
-  String toJson() => const JsonEncoder.withIndent('  ').convert({
-    if (_version != null) json_key.version: _version,
-    if (_userAgent != null) json_key.userAgent: _userAgent,
-  });
+  String toJson() => const JsonEncoder.withIndent(
+    '  ',
+  ).convert({json_key.version: ?_version, json_key.userAgent: ?_userAgent});
 
   @override
   String get userAgent =>
@@ -244,7 +298,7 @@ final class TestBrowserPlatform extends BrowserPlatformTestBase {
   String get version => _throwIfUnset(_version, _className, json_key.version);
 }
 
-/// A fake [NativePlatform] for testing.
+/// A custom [NativePlatform] for testing.
 ///
 /// The individual properties can be left unset by the constructors.
 /// Accessing such properties will throw, but a test which doesn't use
@@ -334,19 +388,19 @@ final class TestNativePlatform extends NativePlatformTestBase {
   ///
   /// The [jsonText] must be a valid JSON string representing a JSON object,
   /// and the values for the [NativePlatform] properties are extracted from
-  /// the object's values for keys with the properties names.
+  /// the object's values for keys with the properties' names.
   ///
   /// Example:
   /// ```dart
-  /// var fake = TestNativePlatform.fromJson('''{
+  /// var testNativePlatform = TestNativePlatform.fromJson('''{
   ///   "operatingSystem": "linux",
-  ///   "operatingSystemVersion": "fakeVersion.2.3",
+  ///   "operatingSystemVersion": "MockVersion.2.3",
   ///   "numberOfProcessors": 42,
   ///   "lineTerminator": "\r",
   ///   "packageConfig": null
   /// }''')'
   /// ```
-  /// The JSON object's value for such a keys must be either a string or `null`.
+  /// The JSON object's value for such a key must be either a string or `null`.
   ///
   /// Throws a [FormatException] if the [jsonText] string is not valid
   /// JSON text, or the JSON text does not represent a JSON object.
@@ -605,7 +659,7 @@ final class TestNativePlatform extends NativePlatformTestBase {
   ///
   /// If a parameter is given non-`null` argument value,
   /// the created object will have that value for the corresponding property,
-  /// otherwise it will use this object's value of that property.
+  /// otherwise it will use this object's value for that property.
   @visibleForTesting
   TestNativePlatform copyWith({
     Map<String, String>? environment,
@@ -696,10 +750,14 @@ final class TestNativePlatform extends NativePlatformTestBase {
     );
   }
 
-  /// Runs [testCode] with this native platform as current platform.
+  /// Runs [testCode] with this native platform as current native platform.
   ///
-  /// If [testCode] reads [Platform.current], it gets a platform object
-  /// whose [Platform.nativePlatform] is this fake native platform.
+  /// While [testCode] is running, the [Platform.current] refers a new
+  /// [TestPlatform] with this native platform as [Platform.nativePlatform].
+  ///
+  /// Prior reads of [Platform.current] will retain their original value,
+  /// so the [testCode] should make sure to read [Platform.current]
+  /// when it's needed, and not rely on previously read values.
   @visibleForTesting
   R run<R>(R Function() testCode) => overrides.runWith(
     testCode,
@@ -707,7 +765,7 @@ final class TestNativePlatform extends NativePlatformTestBase {
     _OverrideMarker.marker,
   );
 
-  /// Wraps [withOverride] to run it with this fake native platform as current.
+  /// Wraps [withOverride] to run it with this native platform as current.
   ///
   /// The returned function runs [withOverride] through [run] every time it's
   /// called, to ensure all the calls will see the same override.
@@ -715,7 +773,7 @@ final class TestNativePlatform extends NativePlatformTestBase {
   R Function() bind<R>(R Function() withOverride) =>
       () => run(withOverride);
 
-  /// A JSON-encoded representation of this platform configuration.
+  /// A JSON-encoded representation of this native platform test-configuration.
   ///
   /// Unset values are not included.
   ///
@@ -723,28 +781,22 @@ final class TestNativePlatform extends NativePlatformTestBase {
   @override
   String toJson() {
     return const JsonEncoder.withIndent('  ').convert(<String, dynamic>{
-      if (_environment != null) json_key.environment: _environment,
-      if (_executable != null) json_key.executable: _executable,
-      if (_executableArguments != null)
-        json_key.executableArguments: _executableArguments,
-      if (_lineTerminator != null) json_key.lineTerminator: _lineTerminator,
-      if (_localeName != null) json_key.localeName: _localeName,
-      if (_localHostname != null) json_key.localHostname: _localHostname,
-      if (_numberOfProcessors != null)
-        json_key.numberOfProcessors: _numberOfProcessors,
-      if (_operatingSystem != null) json_key.operatingSystem: _operatingSystem,
-      if (_operatingSystemVersion != null)
-        json_key.operatingSystemVersion: _operatingSystemVersion,
-      if (packageConfig != null) json_key.packageConfig: packageConfig,
-      if (_pathSeparator != null) json_key.pathSeparator: _pathSeparator,
-      if (_resolvedExecutable != null)
-        json_key.resolvedExecutable: _resolvedExecutable,
-      if (_script != null) json_key.script: _script.toString(),
-      if (_stdinSupportsAnsi != null)
-        json_key.stdinSupportsAnsi: _stdinSupportsAnsi,
-      if (_stdoutSupportsAnsi != null)
-        json_key.stdoutSupportsAnsi: _stdoutSupportsAnsi,
-      if (_version != null) json_key.version: _version,
+      json_key.environment: ?_environment,
+      json_key.executable: ?_executable,
+      json_key.executableArguments: ?_executableArguments,
+      json_key.lineTerminator: ?_lineTerminator,
+      json_key.localeName: ?_localeName,
+      json_key.localHostname: ?_localHostname,
+      json_key.numberOfProcessors: ?_numberOfProcessors,
+      json_key.operatingSystem: ?_operatingSystem,
+      json_key.operatingSystemVersion: ?_operatingSystemVersion,
+      json_key.packageConfig: ?packageConfig,
+      json_key.pathSeparator: ?_pathSeparator,
+      json_key.resolvedExecutable: ?_resolvedExecutable,
+      json_key.script: ?_script?.toString(),
+      json_key.stdinSupportsAnsi: ?_stdinSupportsAnsi,
+      json_key.stdoutSupportsAnsi: ?_stdoutSupportsAnsi,
+      json_key.version: ?_version,
     });
   }
 }
@@ -774,7 +826,7 @@ T? _getJsonProperty<T extends Object>(
 
 /// Throws if [value] is `null`, otherwise returns it.
 ///
-/// Used by getters on fake classes like [TestNativePlatform],
+/// Used by getters on test-classes like [TestNativePlatform],
 /// which allow otherwise non-nullable properties to be unset
 /// as long as they are not read.
 /// This function is called when reading such a property.
@@ -783,8 +835,8 @@ T _throwIfUnset<T extends Object>(T? value, String className, String name) =>
 
 /// A simple inefficient case-insensitive map.
 ///
-/// Used by [TestNativePlatform.environment] when the (possibly fake)
-/// operating system is [NativePlatform.windows].
+/// Used by [TestNativePlatform.environment] when the (user-configured)
+/// [NativePlatform.operatingSystem] is [NativePlatform.windows].
 /// Performance is not a consideration since [TestNativePlatform]
 /// is only intended for testing, and the environment is not expected
 /// to be larger than necessary.

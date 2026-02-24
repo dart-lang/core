@@ -13,8 +13,8 @@ dependencies:
 
 dev_dependencies:
   dart_flutter_team_lints: ^3.5.0
-  test: ^1.16.8
   path: ^1.9.0
+  test: ^1.16.8
 
 topics:
   - information

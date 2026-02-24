@@ -91,7 +91,7 @@ extension type const _PlatformInstance._(Platform _) implements Platform {
   const _PlatformInstance() : this._(platformInstance);
 }
 
-/// Subtype which can be extended by a fake for testing.
+/// Subtype which can be extended for testing.
 abstract base class PlatformTestBase extends Platform {
   const PlatformTestBase() : super._();
 }
