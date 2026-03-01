@@ -10,7 +10,7 @@ jobs:
   check-major-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Verify Major first in major version is X.0.0 or X.0.0-wip
         if: "!contains(github.event.pull_request.labels.*.name, 'skip-breaking-check')"
