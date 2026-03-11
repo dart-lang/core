@@ -14,8 +14,7 @@
   (Fixes #103).
 * Remove sorting of the subcommands in usage output. Ordering will depend on the
   order that `addSubCommand` is called.
-  
-## 2.7.0
+
 
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will
   depend on key order for the passed `Map`.

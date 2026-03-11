@@ -8,6 +8,7 @@
   in/as the last segment when splitting.
 - Run `dart format` with the new style.
 - Centralize join logic in `Context` and eliminate redundant validation in `absolute()`.
+- Avoid list allocation in `join()` and `absolute()` argument validation for improved performance.
 
 ## 1.9.1
 
