@@ -218,7 +218,7 @@ class _Usage {
 
     if (column < _columnWidths.length) {
       // Fixed-size column, so pad it.
-      _buffer.write(padRight(text, _columnWidths[column]));
+      _buffer.write(text.padRightIgnoreAnsi(_columnWidths[column]));
     } else {
       // The last column, so just write it.
       _buffer.write(text);

@@ -4,7 +4,7 @@
 
 name: arg_parser_example
 version: 1.0.0
-description: An example of using ArgParser
+description: An example of using ArgParser (and companion example using ANSI colors)
 publish_to: 'none'
 
 environment:
@@ -13,3 +13,4 @@ environment:
 dependencies:
   args:
     path: ../..
+  quectocolors: ^1.1.1

@@ -26,7 +26,7 @@ const _ansiCombinedTrueColor = '\x1B[4;48;2;50;50;50;38;2;150;250;150mUnderlined
 void main() {
   group('padding', () {
     test('can pad on the right.', () {
-      expect(padRight('foo', 6), equals('foo   '));
+      expect('foo'.padRightIgnoreAnsi(6), equals('foo   '));
     });
   });
   group('text wrapping', () {
@@ -271,7 +271,7 @@ needs to be wrapped.
     });
   });
 
-  group('ANSI RegEx Systematic Tests', () {
+  group('ANSI RegExp Systematic Tests', () {
     
     test('Identifies standard SGR (Select Graphic Rendition) codes', () {
       const reset = '\x1b[0m';
@@ -294,31 +294,31 @@ needs to be wrapped.
     test('Matches every valid termination character (A-Z, a-z)', () {
       // CSI sequences usually end in the range 0x40 to 0x7E
       // We check all standard alphabetic termination characters.
-      for (int i = 65; i <= 122; i++) {
+      for (int i = 0x40; i <= 0x7E; i++) {
         if (i > 90 && i < 97) continue; // Skip non-alphas like [ \ ] ^ _ `
         
         final char = String.fromCharCode(i);
         final sequence = '\x1b[1;2;3$char';
         
-        // The RegEx should match the entire string
+        // The RegExp should match the entire string
         expect(sequence.ansiLength, equals(sequence.length), 
           reason: 'Failed on character: $char (ASCII $i)');
       }
     });
 
-    test('Correctly calculates length in mixed strings', () {
+    test('Correctly calculates length in mixed strings and withoutAnsi getter', () {
       const text = 'Hello \x1b[32mWorld\x1b[0m';
-      // "Hello " (6) + "World" (5) = 11 visible
-      // "\x1b[32m" (5) + "\x1b[0m" (4) = 9 ANSI
+      const textWithoutAnsi = 'Hello World'; // Expectation.  
       
-      expect(text.ansiLength, equals(9));
-      expect(text.stripAnsi().length, equals(11));
+      expect(text.ansiLength, equals(text.length - textWithoutAnsi.length));
+      expect(text.lengthWithoutAnsi, textWithoutAnsi.length);
+      expect(text.withoutAnsi, textWithoutAnsi);
       expect(text.length, equals(20));
     });
 
-    test('Handles complex semicolon separators', () {
-      const complex = '\x1b[38;5;209;48;5;255m'; // Extended 256-color sequence
-      expect(complex.ansiLength, equals(20));
+    test('Handles semicolon separators', () {
+      const semiColonSeparators = '\x1b[38;5;209;48;5;255m'; // Extended 256-color sequence
+      expect(semiColonSeparators.ansiLength, equals(20));
     });
 
     test('Does not match partial or broken sequences', () {
@@ -338,11 +338,11 @@ needs to be wrapped.
       expect('\x1B[38;5;209m'.ansiLength, equals(11));
     });
 
-    test('hasAnsi correctly identifies presence of sequences', () {
-      expect(_ansiReset.hasAnsi(), isTrue);
-      expect(_ansiMixedStyles.hasAnsi(), isTrue);
-      expect(_shortLine.hasAnsi(), isFalse);
-      expect('Plain text'.hasAnsi(), isFalse);
+    test('containsAnsi correctly identifies presence of sequences', () {
+      expect(_ansiReset.containsAnsi, isTrue);
+      expect(_ansiMixedStyles.containsAnsi, isTrue);
+      expect(_shortLine.containsAnsi, isFalse);
+      expect('Plain text'.containsAnsi, isFalse);
     });
 
     test('lengthWithoutAnsi and ansiLength sum to total length', () {
@@ -363,23 +363,23 @@ needs to be wrapped.
   });
 
   group('ANSI-aware padding', () {
-    test('padRight accounts for ANSI length to align visually', () {
+    test('padRightIgnoreAnsi accounts for ANSI length to align visually', () {
       // "Red" is 3 visual chars, but 12 literal chars
       // \x1B[31mRed\x1B[0m
       const red = '\x1B[31mRed\x1B[0m';
       
       // We want a visual width of 10. 
       // Traditional padRight(10) would see 12 chars and add nothing.
-      // Our utility padRight should add 7 spaces (10 - 3 visual).
-      final padded = padRight(red, 10);
+      // Our string extension padRightIgnoreAnsi should add 7 spaces (10 - 3 visual).
+      final padded = red.padRightIgnoreAnsi(10);
       
       expect(padded.lengthWithoutAnsi, equals(10));
       expect(padded.startsWith(red), isTrue);
       expect(padded.endsWith(' ' * 7), isTrue);
     });
 
-    test('padRight works with plain text', () {
-      expect(padRight('foo', 6), equals('foo   '));
+    test('padRightIgnoreAnsi works with plain text', () {
+      expect('foo'.padRightIgnoreAnsi(6), equals('foo   '));
     });
   });
 
@@ -398,29 +398,29 @@ needs to be wrapped.
     });
   });
 
-  group('Advanced ANSI/ECMA-48 RegEx Tests', () {
+  group('Advanced ANSI/ECMA-48 RegExp Tests', () {
 
     test('Matches sequences with Intermediate Bytes correctly', () {
       // CSI 1 Space q (Set cursor style)
       // Here, the space is an Intermediate Byte (\x20)
       const setCursorStyle = '\x1b[1 q'; 
       expect(setCursorStyle.ansiLength, equals(5));
-      expect(setCursorStyle.stripAnsi(), equals(''));
+      expect(setCursorStyle.withoutAnsi, equals(''));
     });
 
     test('Ensures it does NOT match sequences that violate the order', () {
       // The standard requires: Parameters (0-9:;<=>?) THEN Intermediates (Space!"#$%&'()*+,-./) THEN Final (@-~)
       
       // Test 1: Final byte 'm' appearing before an intermediate byte '/'
-      // The RegEx should stop at 'm', leaving the '/' and space behind.
+      // The RegExp should stop at 'm', leaving the '/' and space behind.
       const invalidOrder = '\x1b[m/ '; 
       expect(invalidOrder.ansiLength, equals(3)); // Matches '\x1b[m'
-      expect(invalidOrder.stripAnsi(), equals('/ '));
+      expect(invalidOrder.withoutAnsi, equals('/ '));
 
       // Test 2: Parameter byte '?' appearing after a final byte 'm'
       const paramsAfterFinal = '\x1b[m?';
       expect(paramsAfterFinal.ansiLength, equals(3));
-      expect(paramsAfterFinal.stripAnsi(), equals('?'));
+      expect(paramsAfterFinal.withoutAnsi, equals('?'));
     });
 
     test('Matches every character in the allowed ranges', () {
@@ -428,8 +428,11 @@ needs to be wrapped.
       const params = '\x1b[0123456789:;<=>?m';
       expect(params.ansiLength, equals(params.length));
 
-      // Intermediate Range: Space ! " # $ % & ' ( ) * + , - . /
-      const intermediates = '\x1b[ !\"#\$%&\'()*+,-./m';
+      // Intermediate Range Character Codes 0x20 - 0x2f  [Space ! " # $ % & ' ( ) * + , - . /]
+      final intermediateChars = String.fromCharCodes([  
+                                  for (var c = 0x20; c <= 0x2F; c++) c,  
+                                ]);  
+      final intermediates = '\x1b[${intermediateChars}m';  
       expect(intermediates.ansiLength, equals(intermediates.length));
     });
 
@@ -439,13 +442,63 @@ needs to be wrapped.
       const twoFinals = '\x1b[1H;24m';
       
       expect(twoFinals.ansiLength, equals(4)); // Matches only '\x1b[1H'
-      expect(twoFinals.stripAnsi(), equals(';24m'));
+      expect(twoFinals.withoutAnsi, equals(';24m'));
     });
 
     test('Handles the "private" parameter range correctly', () {
       // High-end terminal features often use the < = > ? prefix
       const decvtpatch = '\x1b[>4;2m';
       expect(decvtpatch.ansiLength, equals(7));
+    });
+  });
+
+  group('Negative edge-cases', () {
+    test('Character between ESC and [', () {
+      final chars = ['\\', 'a', ' ', '\x1b'];
+      for (var char in chars) {
+        final str = '\x1b$char[m';
+        expect(str.ansiLength, equals(0), reason: 'Failed on char: $char');
+      }
+    });
+
+    test('Non-valid character instead of terminator', () {
+      final chars = <String>[
+        String.fromCharCode(0x7f),
+        ...List.generate(0x20, (i) => String.fromCharCode(i)),
+        String.fromCharCode('m'.codeUnitAt(0) + 0x80),
+        String.fromCharCode('m'.codeUnitAt(0) + 0x100),
+        String.fromCharCode('m'.codeUnitAt(0) + 0xD800),
+        String.fromCharCode('m'.codeUnitAt(0) + 0x10000),
+      ];
+      for (var char in chars) {
+        final str = '\x1b[$char';
+        expect(str.ansiLength, equals(0), reason: 'Failed on char: $char');
+      }
+    });
+
+    test('Characters with offsets (ESC, [, parameter, intermediate, terminator)', () {
+      final offsets = [0x80, 0x100, 0x1000, 0xd800, 0x10000];
+      for (var offset in offsets) {
+        // ESC replaced
+        var str = '${String.fromCharCode(0x1b + offset)}[0m';
+        expect(str.ansiLength, equals(0), reason: 'Failed on ESC + 0x${offset.toRadixString(16)}');
+
+        // [ replaced
+        str = '\x1b${String.fromCharCode(0x5b + offset)}0m';
+        expect(str.ansiLength, equals(0), reason: 'Failed on [ + 0x${offset.toRadixString(16)}');
+
+        // Parameter byte replaced
+        str = '\x1b[${String.fromCharCode(0x30 + offset)}m';
+        expect(str.ansiLength, equals(0), reason: 'Failed on param + 0x${offset.toRadixString(16)}');
+
+        // Intermediate byte replaced
+        str = '\x1b[0${String.fromCharCode(0x20 + offset)}m';
+        expect(str.ansiLength, equals(0), reason: 'Failed on intermediate + 0x${offset.toRadixString(16)}');
+
+        // Terminator byte replaced
+        str = '\x1b[0${String.fromCharCode(0x6d + offset)}';
+        expect(str.ansiLength, equals(0), reason: 'Failed on terminator + 0x${offset.toRadixString(16)}');
+      }
     });
   });
 }
