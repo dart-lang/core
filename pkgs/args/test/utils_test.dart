@@ -454,7 +454,7 @@ needs to be wrapped.
 
   group('Negative edge-cases', () {
     test('Character between ESC and [', () {
-      final chars = ['\\', 'a', ' ', '\x1b'];
+      final chars = ['\\', 'a', ' ', '\x1c'];
       for (var char in chars) {
         final str = '\x1b$char[m';
         expect(str.ansiLength, equals(0), reason: 'Failed on char: $char');
