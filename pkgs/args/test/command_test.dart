@@ -156,8 +156,8 @@ Usage: test foo [<subcommand>] [arguments]
 -h, --help    Print this usage information.
 
 Available subcommands:
-  async   Set a value asynchronously.
   bar     (default) Set another value.
+  async   Set a value asynchronously.
 
 Default command (bar) will be selected if no command is explicitly specified.
 
