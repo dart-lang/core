@@ -228,71 +228,43 @@ needs to be wrapped.
     });
   });
 
-  group('text lengthWithoutAnsi is correct with no ANSI sequences', () {
-    test('lengthWithoutAnsi returns correct length on lines without ansi', () {
+  group('text lengthWithoutAnsi', () {
+    test('returns correct length on lines without ansi', () {
       expect(_longLine.lengthWithoutAnsi, equals(_longLine.length));
     });
     test(
-        'lengthWithoutAnsi returns correct length '
+        'returns correct length '
         'on lines newlines and without ansi', () {
       expect(_longLineWithNewlines.lengthWithoutAnsi,
           equals(_longLineWithNewlines.length));
     });
     test(
-        'lengthWithoutAnsi returns correct length '
+        'returns correct length '
         'on lines indented/newlines and without ansi', () {
       expect(_indentedLongLineWithNewlines.lengthWithoutAnsi,
           equals(_indentedLongLineWithNewlines.length));
     });
-    test('lengthWithoutAnsi returns correct length on short line without ansi',
-        () {
+    test('returns correct length on short line without ansi', () {
       expect(_shortLine.lengthWithoutAnsi, equals(_shortLine.length));
     });
-  });
-
-  group('lengthWithoutAnsi is correct with no ANSI sequences', () {
-    test('lengthWithoutAnsi returns correct length on lines without ansi', () {
-      expect(_longLine.lengthWithoutAnsi, equals(_longLine.length));
-    });
-    test(
-        'lengthWithoutAnsi returns correct length '
-        'on lines newlines and without ansi', () {
-      expect(_longLineWithNewlines.lengthWithoutAnsi,
-          equals(_longLineWithNewlines.length));
-    });
-    test(
-        'lengthWithoutAnsi returns correct length '
-        'on lines indented/newlines and without ansi', () {
-      expect(_indentedLongLineWithNewlines.lengthWithoutAnsi,
-          equals(_indentedLongLineWithNewlines.length));
-    });
-    test('lengthWithoutAnsi returns correct length on short line without ansi',
-        () {
-      expect(_shortLine.lengthWithoutAnsi, equals(_shortLine.length));
-    });
-  });
-
-  group('lengthWithoutAnsi is correct with variety of ANSI sequences', () {
-    test('lengthWithoutAnsi returns correct length - ansi reset', () {
+    test('returns correct length - ansi reset', () {
       expect(_ansiReset.lengthWithoutAnsi, equals(36));
     });
     test(
-        'lengthWithoutAnsi returns correct length '
+        'returns correct length '
         '- ansi bold, bold specific reset', () {
       expect(_ansiBoldTextSpecificReset.lengthWithoutAnsi, equals(59));
     });
-    test('lengthWithoutAnsi returns correct length - ansi mixed styles', () {
+    test('returns correct length - ansi mixed styles', () {
       expect(_ansiMixedStyles.lengthWithoutAnsi, equals(54));
     });
-    test('lengthWithoutAnsi returns correct length- ansi long sequence', () {
+    test('returns correct length- ansi long sequence', () {
       expect(_ansiLongSequence.lengthWithoutAnsi, equals(32));
     });
-    test('lengthWithoutAnsi returns correct length - ansi 256 color sequence',
-        () {
+    test('returns correct length - ansi 256 color sequence', () {
       expect(_ansiCombined256.lengthWithoutAnsi, equals(41));
     });
-    test('lengthWithoutAnsi returns correct length - ansi true color sequences',
-        () {
+    test('returns correct length - ansi true color sequences', () {
       expect(_ansiCombinedTrueColor.lengthWithoutAnsi, equals(41));
     });
   });
