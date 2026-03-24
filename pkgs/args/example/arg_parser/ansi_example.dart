@@ -30,12 +30,16 @@ void main() {
       ],
       allowedHelp: {
         'none': 'Do not compile the Dart code (run native Dart code on the'
-            ' VM).\n(only valid with the following runtimes: vm, drt)'.red,
-        'dart2js': 'Compile dart code to $javaScriptStyled by running dart2js.\n'
-            '(only valid with the following runtimes: d8, drt, chrome\n'
-            'safari, ie, firefox, opera, none (compile only))'.green,
+                ' VM).\n(only valid with the following runtimes: vm, drt)'
+            .red,
+        'dart2js':
+            'Compile dart code to $javaScriptStyled by running dart2js.\n'
+                    '(only valid with the following runtimes: d8, drt, chrome\n'
+                    'safari, ie, firefox, opera, none (compile only))'
+                .green,
         'dartc': 'Perform static analysis on Dart code by running dartc.\n'
-            '(only valid with the following runtimes: none)'.cornflowerBlue,
+                '(only valid with the following runtimes: none)'
+            .cornflowerBlue,
       });
 
   parser.addOption('runtime',
@@ -58,8 +62,10 @@ void main() {
       allowedHelp: {
         'vm': 'Run Dart code on the standalone dart vm.'.teal,
         'd8': 'Run $javaScriptStyled from the command line using v8.'.yellow,
-        'drt': 'Run Dart or $javaScriptStyled in the headless version of Chrome,\n'
-            'content shell.'.lightGreen,
+        'drt':
+            'Run Dart or $javaScriptStyled in the headless version of Chrome,\n'
+                    'content shell.'
+                .lightGreen,
         'dartium': 'Run Dart or $javaScriptStyled in Dartium.'.lightBlue,
         'ff': 'Run $javaScriptStyled in Firefox'.pink,
         'chrome': 'Run $javaScriptStyled in Chrome'.orange,
@@ -67,7 +73,8 @@ void main() {
         'ie': 'Run $javaScriptStyled in Internet Explorer'.cyan,
         'opera': 'Run $javaScriptStyled in Opera'.brightYellow,
         'none': 'No runtime, compile only (for example, used for dartc static\n'
-            'analysis tests).'.grey,
+                'analysis tests).'
+            .grey,
       });
 
   parser.addOption('arch',
@@ -105,11 +112,13 @@ void main() {
 
   parser.addOption('shards',
       defaultsTo: '1',
-      help: 'The number of instances that the tests will be sharded over'.olive);
+      help:
+          'The number of instances that the tests will be sharded over'.olive);
 
   parser.addOption('shard',
       defaultsTo: '1',
-      help: 'The index of this instance when running in sharded mode'.peachPuff);
+      help:
+          'The index of this instance when running in sharded mode'.peachPuff);
 
   parser.addFlag('valgrind',
       defaultsTo: false, help: 'Run tests through valgrind'.salmon);
@@ -132,8 +141,8 @@ void main() {
 
   parser.addFlag('report',
       defaultsTo: false,
-      help: 'Print a summary report of the number of tests, by expectation'
-          .plum);
+      help:
+          'Print a summary report of the number of tests, by expectation'.plum);
 
   parser.addFlag('verbose',
       abbr: 'v', defaultsTo: false, help: 'Verbose output'.rosyBrown);
@@ -156,7 +165,8 @@ void main() {
       defaultsTo: false,
       help: 'Keep the generated files in the temporary directory'.steelBlue);
 
-  parser.addOption('special-command', help: """
+  parser.addOption('special-command',
+      help: """
 Special command support. Wraps the command line in
 a special command. The special command should contain
 an '@' character which will be replaced by the normal
@@ -165,7 +175,8 @@ command.
 For example if the normal command that will be executed
 is 'dart file.dart' and you specify special command
 'python -u valgrind.py @ suffix' the final command will be
-'python -u valgrind.py dart file.dart suffix'""".brightMagenta);
+'python -u valgrind.py dart file.dart suffix'"""
+          .brightMagenta);
 
   parser.addOption('dart', help: 'Path to dart executable'.tan);
   parser.addOption('drt', help: 'Path to content shell executable'.thistle);
