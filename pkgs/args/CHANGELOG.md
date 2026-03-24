@@ -1,8 +1,8 @@
-## 2.8.1
+## 2.9.0-wip
 
-* Fix usage column formatting to calculate correct string lengths when there are ANSI
-  coloring/styling escape sequences present
-  
+* Fix usage column formatting to calculate correct string lengths when there are
+  ANSI coloring/styling escape sequences present
+
 
 ## 2.8.0
 
