@@ -18,15 +18,18 @@ const _indentedLongLine = '    This is an indented long line that needs to be '
     'wrapped and indentation preserved.';
 const _ansiReset = 'This is normal text. \x1B[0m<- Reset point.';
 const _ansiBoldTextSpecificReset =
-    'This is normal, \x1B[1mthis is bold\x1B[22m, and this uses specific reset.';
+    'This is normal, \x1B[1mthis is bold\x1B[22m, '
+    'and this uses specific reset.';
 const _ansiMixedStyles =
-    'Normal, \x1B[31mRed\x1B[0m, \x1B[1mBold\x1B[0m, \x1B[4mUnderline\x1B[0m, \x1B[1;34mBold Blue\x1B[0m, Normal again.';
+    'Normal, \x1B[31mRed\x1B[0m, \x1B[1mBold\x1B[0m, \x1B[4mUnderline\x1B[0m, '
+    '\x1B[1;34mBold Blue\x1B[0m, Normal again.';
 const _ansiLongSequence =
-    'Start \x1B[1;3;4;5;7;9;31;42;38;5;196;48;5;226m Beaucoup formatting! \x1B[0m End';
+    'Start \x1B[1;3;4;5;7;9;31;42;38;5;196;48;5;226m Beaucoup formatting! '
+    '\x1B[0m End';
 const _ansiCombined256 =
     '\x1B[1;38;5;27;48;5;220mBold Bright Blue FG (27) on Gold BG (220)\x1B[0m';
-const _ansiCombinedTrueColor =
-    '\x1B[4;48;2;50;50;50;38;2;150;250;150mUnderlined Light Green FG on Dark Grey BG\x1B[0m';
+const _ansiCombinedTrueColor = '\x1B[4;48;2;50;50;50;38;2;150;250;150m'
+    'Underlined Light Green FG on Dark Grey BG\x1B[0m';
 
 void main() {
   group('padding', () {
@@ -230,14 +233,14 @@ needs to be wrapped.
       expect(_longLine.lengthWithoutAnsi, equals(_longLine.length));
     });
     test(
-        'lengthWithoutAnsi returns correct length on lines newlines and without ansi',
-        () {
+        'lengthWithoutAnsi returns correct length '
+        'on lines newlines and without ansi', () {
       expect(_longLineWithNewlines.lengthWithoutAnsi,
           equals(_longLineWithNewlines.length));
     });
     test(
-        'lengthWithoutAnsi returns correct length on lines indented/newlines and without ansi',
-        () {
+        'lengthWithoutAnsi returns correct length '
+        'on lines indented/newlines and without ansi', () {
       expect(_indentedLongLineWithNewlines.lengthWithoutAnsi,
           equals(_indentedLongLineWithNewlines.length));
     });
@@ -252,14 +255,14 @@ needs to be wrapped.
       expect(_longLine.lengthWithoutAnsi, equals(_longLine.length));
     });
     test(
-        'lengthWithoutAnsi returns correct length on lines newlines and without ansi',
-        () {
+        'lengthWithoutAnsi returns correct length '
+        'on lines newlines and without ansi', () {
       expect(_longLineWithNewlines.lengthWithoutAnsi,
           equals(_longLineWithNewlines.length));
     });
     test(
-        'lengthWithoutAnsi returns correct length on lines indented/newlines and without ansi',
-        () {
+        'lengthWithoutAnsi returns correct length '
+        'on lines indented/newlines and without ansi', () {
       expect(_indentedLongLineWithNewlines.lengthWithoutAnsi,
           equals(_indentedLongLineWithNewlines.length));
     });
@@ -274,8 +277,8 @@ needs to be wrapped.
       expect(_ansiReset.lengthWithoutAnsi, equals(36));
     });
     test(
-        'lengthWithoutAnsi returns correct length - ansi bold, bold specific reset',
-        () {
+        'lengthWithoutAnsi returns correct length '
+        '- ansi bold, bold specific reset', () {
       expect(_ansiBoldTextSpecificReset.lengthWithoutAnsi, equals(59));
     });
     test('lengthWithoutAnsi returns correct length - ansi mixed styles', () {
@@ -394,7 +397,8 @@ needs to be wrapped.
 
       // We want a visual width of 10.
       // Traditional padRight(10) would see 12 chars and add nothing.
-      // Our string extension padRightIgnoreAnsi should add 7 spaces (10 - 3 visual).
+      // Our string extension padRightIgnoreAnsi should add 7 spaces
+      // (10 - 3 visual).
       final padded = red.padRightIgnoreAnsi(10);
 
       expect(padded.lengthWithoutAnsi, equals(10));
@@ -461,7 +465,8 @@ needs to be wrapped.
 
     test('Strictly terminates at the first Final Byte', () {
       // In the string below, 'H' is a final byte.
-      // Even though 'm' is also a valid final byte, the sequence must end at 'H'.
+      // Even though 'm' is also a valid final byte,
+      // the sequence must end at 'H'.
       const twoFinals = '\x1b[1H;24m';
 
       expect(twoFinals.ansiLength, equals(4)); // Matches only '\x1b[1H'
@@ -487,7 +492,7 @@ needs to be wrapped.
     test('Non-valid character instead of terminator', () {
       final chars = <String>[
         String.fromCharCode(0x7f),
-        ...List.generate(0x20, (i) => String.fromCharCode(i)),
+        ...List.generate(0x20, String.fromCharCode),
         String.fromCharCode('m'.codeUnitAt(0) + 0x80),
         String.fromCharCode('m'.codeUnitAt(0) + 0x100),
         String.fromCharCode('m'.codeUnitAt(0) + 0xD800),
