@@ -291,7 +291,7 @@ needs to be wrapped.
     test('Matches every valid termination character (A-Z, a-z)', () {
       // CSI sequences usually end in the range 0x40 to 0x7E
       // We check all standard alphabetic termination characters.
-      for (int i = 0x40; i <= 0x7E; i++) {
+      for (var i = 0x40; i <= 0x7E; i++) {
         if (i > 90 && i < 97) continue; // Skip non-alphas like [ \ ] ^ _ `
 
         final char = String.fromCharCode(i);
