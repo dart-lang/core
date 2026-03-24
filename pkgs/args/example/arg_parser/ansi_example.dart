@@ -10,42 +10,41 @@ library;
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:quectocolors/quectocolors.dart';
+import 'package:io/ansi.dart';
 
 void main() {
   var parser = ArgParser();
 
   parser.addSeparator('===== Platform');
 
-  final javaScriptStyled = 'JavaScript'.chartreuse.italic;
+  final javaScriptStyled = styleItalic.wrap(lightGreen.wrap('JavaScript'));
 
   parser.addOption('compiler',
       abbr: 'c',
       defaultsTo: 'none',
-      help: 'Specify any compilation step (if needed).'.blue,
+      help: blue.wrap('Specify any compilation step (if needed).'),
       allowed: [
         'none',
         'dart2js',
         'dartc'
       ],
       allowedHelp: {
-        'none': 'Do not compile the Dart code (run native Dart code on the'
-                ' VM).\n(only valid with the following runtimes: vm, drt)'
-            .red,
-        'dart2js':
-            'Compile dart code to $javaScriptStyled by running dart2js.\n'
-                    '(only valid with the following runtimes: d8, drt, chrome\n'
-                    'safari, ie, firefox, opera, none (compile only))'
-                .green,
-        'dartc': 'Perform static analysis on Dart code by running dartc.\n'
-                '(only valid with the following runtimes: none)'
-            .cornflowerBlue,
+        'none':
+            red.wrap('Do not compile the Dart code (run native Dart code on the'
+                ' VM).\n(only valid with the following runtimes: vm, drt)')!,
+        'dart2js': green
+            .wrap('Compile dart code to $javaScriptStyled by running dart2js.\n'
+                '(only valid with the following runtimes: d8, drt, chrome\n'
+                'safari, ie, firefox, opera, none (compile only))')!,
+        'dartc': lightBlue
+            .wrap('Perform static analysis on Dart code by running dartc.\n'
+                '(only valid with the following runtimes: none)')!,
       });
 
   parser.addOption('runtime',
       abbr: 'r',
       defaultsTo: 'vm',
-      help: 'Where the tests should be run.'.magenta,
+      help: magenta.wrap('Where the tests should be run.'),
       allowed: [
         'vm',
         'd8',
@@ -60,33 +59,33 @@ void main() {
         'none'
       ],
       allowedHelp: {
-        'vm': 'Run Dart code on the standalone dart vm.'.teal,
-        'd8': 'Run $javaScriptStyled from the command line using v8.'.yellow,
-        'drt':
+        'vm': cyan.wrap('Run Dart code on the standalone dart vm.')!,
+        'd8': yellow
+            .wrap('Run $javaScriptStyled from the command line using v8.')!,
+        'drt': lightGreen.wrap(
             'Run Dart or $javaScriptStyled in the headless version of Chrome,\n'
-                    'content shell.'
-                .lightGreen,
-        'dartium': 'Run Dart or $javaScriptStyled in Dartium.'.lightBlue,
-        'ff': 'Run $javaScriptStyled in Firefox'.pink,
-        'chrome': 'Run $javaScriptStyled in Chrome'.orange,
-        'safari': 'Run $javaScriptStyled in Safari'.purple,
-        'ie': 'Run $javaScriptStyled in Internet Explorer'.cyan,
-        'opera': 'Run $javaScriptStyled in Opera'.brightYellow,
-        'none': 'No runtime, compile only (for example, used for dartc static\n'
-                'analysis tests).'
-            .grey,
+            'content shell.')!,
+        'dartium': lightBlue.wrap('Run Dart or $javaScriptStyled in Dartium.')!,
+        'ff': lightRed.wrap('Run $javaScriptStyled in Firefox')!,
+        'chrome': yellow.wrap('Run $javaScriptStyled in Chrome')!,
+        'safari': magenta.wrap('Run $javaScriptStyled in Safari')!,
+        'ie': cyan.wrap('Run $javaScriptStyled in Internet Explorer')!,
+        'opera': lightYellow.wrap('Run $javaScriptStyled in Opera')!,
+        'none': darkGray.wrap(
+            'No runtime, compile only (for example, used for dartc static\n'
+            'analysis tests).')!,
       });
 
   parser.addOption('arch',
       abbr: 'a',
       defaultsTo: 'ia32',
-      help: 'The architecture to run tests for'.cyan,
+      help: cyan.wrap('The architecture to run tests for'),
       allowed: ['all', 'ia32', 'x64', 'simarm']);
 
   parser.addOption('system',
       abbr: 's',
       defaultsTo: Platform.operatingSystem,
-      help: 'The operating system to run tests on'.gold,
+      help: yellow.wrap('The operating system to run tests on'),
       allowed: ['linux', 'macos', 'windows']);
 
   parser.addSeparator('===== Runtime');
@@ -94,41 +93,43 @@ void main() {
   parser.addOption('mode',
       abbr: 'm',
       defaultsTo: 'debug',
-      help: 'Mode in which to run the tests'.lavender,
+      help: lightMagenta.wrap('Mode in which to run the tests'),
       allowed: ['all', 'debug', 'release']);
 
   parser.addFlag('checked',
-      defaultsTo: false, help: 'Run tests in checked mode'.lime);
+      defaultsTo: false, help: lightGreen.wrap('Run tests in checked mode'));
 
   parser.addFlag('host-checked',
-      defaultsTo: false, help: 'Run compiler in checked mode'.maroon);
+      defaultsTo: false, help: red.wrap('Run compiler in checked mode'));
 
-  parser.addOption('timeout', abbr: 't', help: 'Timeout in seconds'.mintCream);
+  parser.addOption('timeout',
+      abbr: 't', help: white.wrap('Timeout in seconds'));
 
   parser.addOption('tasks',
       abbr: 'j',
       defaultsTo: Platform.numberOfProcessors.toString(),
-      help: 'The number of parallel tasks to run'.navy.onBrightWhite);
+      help: backgroundWhite
+          .wrap(blue.wrap('The number of parallel tasks to run')));
 
   parser.addOption('shards',
       defaultsTo: '1',
-      help:
-          'The number of instances that the tests will be sharded over'.olive);
+      help: green
+          .wrap('The number of instances that the tests will be sharded over'));
 
   parser.addOption('shard',
       defaultsTo: '1',
-      help:
-          'The index of this instance when running in sharded mode'.peachPuff);
+      help: lightYellow
+          .wrap('The index of this instance when running in sharded mode'));
 
   parser.addFlag('valgrind',
-      defaultsTo: false, help: 'Run tests through valgrind'.salmon);
+      defaultsTo: false, help: lightRed.wrap('Run tests through valgrind'));
 
   parser.addSeparator('===== Output');
 
   parser.addOption('progress',
       abbr: 'p',
       defaultsTo: 'compact',
-      help: 'Progress indication mode'.skyBlue,
+      help: lightBlue.wrap('Progress indication mode'),
       allowed: [
         'compact',
         'color',
@@ -141,32 +142,32 @@ void main() {
 
   parser.addFlag('report',
       defaultsTo: false,
-      help:
-          'Print a summary report of the number of tests, by expectation'.plum);
+      help: lightMagenta.wrap(
+          'Print a summary report of the number of tests, by expectation'));
 
   parser.addFlag('verbose',
-      abbr: 'v', defaultsTo: false, help: 'Verbose output'.rosyBrown);
+      abbr: 'v', defaultsTo: false, help: red.wrap('Verbose output'));
 
   parser.addFlag('list',
-      defaultsTo: false, help: 'List tests only, do not run them'.royalBlue);
+      defaultsTo: false, help: blue.wrap('List tests only, do not run them'));
 
   parser.addFlag('time',
-      help: 'Print timings information after running tests'.seaGreen,
+      help: green.wrap('Print timings information after running tests'),
       defaultsTo: false);
 
   parser.addFlag('batch',
       abbr: 'b',
-      help: 'Run browser tests in batch mode'.slateBlue,
+      help: blue.wrap('Run browser tests in batch mode'),
       defaultsTo: true);
 
   parser.addSeparator('===== Miscellaneous');
 
   parser.addFlag('keep-generated-tests',
       defaultsTo: false,
-      help: 'Keep the generated files in the temporary directory'.steelBlue);
+      help: lightBlue
+          .wrap('Keep the generated files in the temporary directory'));
 
-  parser.addOption('special-command',
-      help: """
+  parser.addOption('special-command', help: lightMagenta.wrap("""
 Special command support. Wraps the command line in
 a special command. The special command should contain
 an '@' character which will be replaced by the normal
@@ -175,15 +176,15 @@ command.
 For example if the normal command that will be executed
 is 'dart file.dart' and you specify special command
 'python -u valgrind.py @ suffix' the final command will be
-'python -u valgrind.py dart file.dart suffix'"""
-          .brightMagenta);
+'python -u valgrind.py dart file.dart suffix'"""));
 
-  parser.addOption('dart', help: 'Path to dart executable'.tan);
-  parser.addOption('drt', help: 'Path to content shell executable'.thistle);
+  parser.addOption('dart', help: yellow.wrap('Path to dart executable'));
+  parser.addOption('drt',
+      help: lightMagenta.wrap('Path to content shell executable'));
   parser.addOption('dartium',
-      help: 'Path to Dartium Chrome executable'.turquoise);
+      help: lightCyan.wrap('Path to Dartium Chrome executable'));
   parser.addOption('mandatory',
-      help: 'A mandatory option'.violet, mandatory: true);
+      help: magenta.wrap('A mandatory option'), mandatory: true);
 
   print(parser.usage);
 }

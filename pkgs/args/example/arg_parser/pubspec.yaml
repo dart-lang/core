@@ -13,4 +13,4 @@ environment:
 dependencies:
   args:
     path: ../..
-  quectocolors: ^1.1.1
+  io: ^1.0.0
