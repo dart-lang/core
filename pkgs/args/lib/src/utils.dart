@@ -3,9 +3,39 @@
 // BSD-style license that can be found in the LICENSE file.
 import 'dart:math' as math;
 
-/// Pads [source] to [length] by adding spaces at the end.
-String padRight(String source, int length) =>
-    source + ' ' * (length - source.length);
+/// ANSI code stripping and length calculation without ANSI codes.
+extension AnsiStringExtension on String {
+  /// Matches the Control Sequence Introducer (CSI) ANSI escape sequences.
+  ///
+  /// Structure based on ECMA-48:
+  /// * `\x1b`: The literal ESC character (ASCII 27, U+001B).
+  /// * `\[`: The literal `[` character (together with the ESC, this starts the CSI).
+  /// * `[\x30-\x3f]*`: Parameter bytes (`0-9:;<=>?`).
+  /// * `[\x20-\x2f]*`: Intermediate bytes (`!"#$%&'()*+,-./`).
+  /// * `[\x40-\x7e]`: Final byte (`@A-Z[\]^_`a-z{|}~`).
+  static final RegExp _ansiRegExp =
+      RegExp(r'\x1b\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]');
+
+  /// Combined length of all ANSI escape sequences in the string.
+  int get ansiLength {
+    return _ansiRegExp
+        .allMatches(this)
+        .fold(0, (sum, match) => sum + match[0]!.length);
+  }
+
+  /// Length of the string without ANSI escape sequences.
+  int get lengthWithoutAnsi => length - ansiLength;
+
+  /// String with all ANSI escape sequences removed.
+  String get withoutAnsi => replaceAll(_ansiRegExp, '');
+
+  /// Whether this string contains any ANSI escape sequences.
+  bool get containsAnsi => _ansiRegExp.hasMatch(this);
+
+  /// Pads this string to [length] by adding spaces at the end, ignoring
+  /// ANSI escape sequences when calculating the current length.
+  String padRightIgnoreAnsi(int length) => padRight(length + ansiLength);
+}
 
 /// Wraps a block of text into lines no longer than [length].
 ///

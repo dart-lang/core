@@ -1,4 +1,4 @@
-## 2.8.0
+## 2.8.0-wip
 
 * Allow designating a top-level command or a subcommand as a default one by
   passing `isDefault: true` to `addCommand` or `addSubcommand`.
@@ -8,15 +8,14 @@
   (Fixes #103).
 * Remove sorting of the subcommands in usage output. Ordering will depend on the
   order that `addSubCommand` is called.
-
-## 2.7.0
-
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will
   depend on key order for the passed `Map`.
 * Fix the repository URL in `pubspec.yaml`.
 * Added option `hideNegatedUsage` to `ArgParser.flag()` allowing a flag to be
   `negatable` without showing it in the usage text.
 * Fixed #101, adding check for mandatory when using `.option()`.
+* Fix usage column formatting to calculate correct string lengths when there are
+  ANSI coloring/styling escape sequences present
 
 ## 2.6.0
 
