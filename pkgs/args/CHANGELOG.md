@@ -1,4 +1,4 @@
-## 2.8.0
+## 2.8.0-wip
 
 * Allow designating a top-level command or a subcommand as a default one by
   passing `isDefault: true` to `addCommand` or `addSubcommand`.
@@ -8,6 +8,7 @@
   (Fixes #103).
 * Remove sorting of the subcommands in usage output. Ordering will depend on the
   order that `addSubCommand` is called.
+* Remove extra newlines following separators when using flags without help text.
 
 ## 2.7.0
 
