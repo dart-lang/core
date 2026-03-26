@@ -786,7 +786,7 @@ Run "test help" to see global options.'''));
   });
 
   test('mandatory options in subcommand does not interfere with help command',
-    () async {
+      () async {
     var subcommand = _MandatoryOptionCommand();
     runner.addCommand(subcommand);
     expect(() => runner.run(['help']), prints('''
