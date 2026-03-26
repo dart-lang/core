@@ -803,6 +803,24 @@ Run "test help <command>" for more information about a command.
 '''));
   });
 
+  test('mandatory global options do not interfere with help command', () {
+    runner.argParser.addOption('mandatory', mandatory: true);
+    expect(() => runner.run(['help']), prints('''
+A test command runner.
+
+Usage: test <command> [arguments]
+
+Global options:
+-h, --help                     Print this usage information.
+    --mandatory (mandatory)    
+
+Available commands:
+  help   Display help information for test.
+
+Run "test help <command>" for more information about a command.
+'''));
+  });
+
   test('default command runs', () {
     final defaultSubcommand = FooCommand();
     runner.addCommand(defaultSubcommand, isDefault: true);

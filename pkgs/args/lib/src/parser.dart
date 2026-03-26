@@ -122,7 +122,8 @@ class Parser {
     }
 
     // Check if mandatory and invoke existing callbacks.
-    final ignoreMandatoryOptions = _results.containsKey('help');
+    final ignoreMandatoryOptions =
+        _results.containsKey('help') || command?.name == 'help';
     _grammar.options.forEach((name, option) {
       var parsedOption = _results[name];
 
