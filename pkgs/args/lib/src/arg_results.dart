@@ -70,10 +70,6 @@ class ArgResults {
     }
 
     final option = _parser.options[name]!;
-    if (option.mandatory && !_parsed.containsKey(name)) {
-      throw ArgumentError('Option $name is mandatory.');
-    }
-
     return option.valueOrDefault(_parsed[name]);
   }
 
@@ -101,9 +97,6 @@ class ArgResults {
     }
     if (!option.isSingle) {
       throw ArgumentError('"$name" is a multi-option.');
-    }
-    if (option.mandatory && !_parsed.containsKey(name)) {
-      throw ArgumentError('Option $name is mandatory.');
     }
     return option.valueOrDefault(_parsed[name]) as String?;
   }

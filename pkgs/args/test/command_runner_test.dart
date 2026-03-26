@@ -779,10 +779,28 @@ Run "test help" to see global options.'''));
     runner.addCommand(subcommand);
     expect(
         () => runner.run([subcommand.name]),
-        throwsA(isA<ArgumentError>().having((e) => e.message, 'message',
+        throwsA(isA<UsageException>().having((e) => e.message, 'message',
             contains('Option mandatory-option is mandatory'))));
     expect(await runner.run([subcommand.name, '--mandatory-option', 'foo']),
         'foo');
+  });
+
+  test('mandatory options in does not interfere with help command', () async {
+    var subcommand = _MandatoryOptionCommand();
+    runner.addCommand(subcommand);
+    expect(() => runner.run(['help']), prints('''
+A test command runner.
+
+Usage: test <command> [arguments]
+
+Global options:
+-h, --help    Print this usage information.
+
+Available commands:
+  mandatory-option-command   A command with a mandatory option
+
+Run "test help <command>" for more information about a command.
+'''));
   });
 
   test('default command runs', () {
