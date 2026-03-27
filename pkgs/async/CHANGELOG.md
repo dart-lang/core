@@ -1,6 +1,12 @@
+## 2.14.0-wip
+
+- Add a `Duration` argument to `RestartableTimer.reset` to allow restarting
+  with variable intervals.
+
 ## 2.13.1
 
-- Fix `StreamGroup.broadcast().close()` to properly complete when all streams in the group close without being explicitly removed.
+- Fix `StreamGroup.broadcast().close()` to properly complete when all streams in
+  the group close without being explicitly removed.
 - Run `dart format` with the new style.
 
 ## 2.13.0
