@@ -27,7 +27,7 @@ class RestartableTimer implements Timer {
   /// default. Unlike a normal non-periodic [Timer], [_callback] may be called
   /// more than once.
   RestartableTimer(this._defaultDuration, this._callback)
-    : _timer = Timer(_defaultDuration, _callback);
+      : _timer = Timer(_defaultDuration, _callback);
 
   @override
   bool get isActive => _timer.isActive;
