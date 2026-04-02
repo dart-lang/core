@@ -4,8 +4,7 @@
 .dart_tool/
 .pub/
 build/
-packages
-.packages
+doc/
 
 # Include when developing application packages.
 pubspec.lock
