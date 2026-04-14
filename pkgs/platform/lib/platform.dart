@@ -40,12 +40,13 @@
 /// > and [FakePlatform] classes, and exposes deprecated members on the
 /// > [Platform] interface.
 /// > Code using those deprecated members or the class [LocalPlatform]
-/// > should use [Platform.nativePlatform] of [Platform.current] instead.
+/// > should use [Platform.nativePlatform] or [Platform.current] instead.
 /// > Code using [FakePlatform] should import `package:platform/testing.dart`
-/// > and use `FestNativePlatform` instead.
+/// > and use [TestNativePlatform] instead.
 ///
 /// @docImport 'src/legacy_implementation/legacy_classes.dart';
 /// @docImport 'src/platforms.dart';
+/// @docImport 'src/testing/test_platforms.dart';
 /// {@canonicalFor platform_impl.Platform}
 /// {@canonicalFor browser_platform_impl.BrowserPlatform}
 /// {@canonicalFor native_platform_impl.NativePlatform}
