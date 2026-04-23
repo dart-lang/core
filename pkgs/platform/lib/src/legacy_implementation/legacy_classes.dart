@@ -11,7 +11,8 @@ import 'dart:convert' show JsonDecoder, JsonEncoder;
 
 import '../platforms_impl.dart'
     show BrowserPlatform, NativePlatform, Platform, PlatformTestBase;
-
+// ignore: invalid_use_of_visible_for_testing_member
+import '../testing/test_platforms.dart' show TestNativePlatform;
 // Not showing `lineTerminator` which wasn't used in the legacy code.
 import '../util/json_keys.dart'
     as json_key
@@ -56,6 +57,26 @@ final class FakePlatform extends PlatformTestBase {
   String? _localeName;
   @override
   String? packageConfig;
+
+  @override
+  // ignore: invalid_use_of_visible_for_testing_member
+  NativePlatform get nativePlatform => TestNativePlatform(
+    numberOfProcessors: _numberOfProcessors,
+    pathSeparator: _pathSeparator,
+    operatingSystem: _operatingSystem,
+    operatingSystemVersion: _operatingSystemVersion,
+    localHostname: _localHostname,
+    environment: _environment,
+    executable: _executable,
+    resolvedExecutable: _resolvedExecutable,
+    script: _script,
+    executableArguments: _executableArguments,
+    packageConfig: packageConfig,
+    version: _version,
+    stdinSupportsAnsi: _stdinSupportsAnsi,
+    stdoutSupportsAnsi: _stdoutSupportsAnsi,
+    localeName: _localeName,
+  );
 
   /// Creates a new legacy [FakePlatform] with the specified properties.
   ///

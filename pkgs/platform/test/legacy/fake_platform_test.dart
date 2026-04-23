@@ -122,6 +122,38 @@ void main() {
       });
     });
 
+    group('Handles is* OS checks', () {
+      test('matches isAndroid when operatingSystem is android', () {
+        final platform = FakePlatform(operatingSystem: 'android');
+        expect(platform.isAndroid, isTrue);
+      });
+
+      test('matches isIOS when operatingSystem is ios', () {
+        final platform = FakePlatform(operatingSystem: 'ios');
+        expect(platform.isIOS, isTrue);
+      });
+
+      test('matches isFuchsia when operatingSystem is fuchsia', () {
+        final platform = FakePlatform(operatingSystem: 'fuchsia');
+        expect(platform.isFuchsia, isTrue);
+      });
+
+      test('matches isMacOS when operatingSystem is macos', () {
+        final platform = FakePlatform(operatingSystem: 'macos');
+        expect(platform.isMacOS, isTrue);
+      });
+
+      test('matches isWindows when operatingSystem is windows', () {
+        final platform = FakePlatform(operatingSystem: 'windows');
+        expect(platform.isWindows, isTrue);
+      });
+
+      test('isLinux is false when operatingSystem is windows', () {
+        final platform = FakePlatform(operatingSystem: 'windows');
+        expect(platform.isLinux, isFalse);
+      });
+    });
+
     group('json', () {
       test('fromJson', () {
         final json = io.File('test/legacy/platform.json').readAsStringSync();
