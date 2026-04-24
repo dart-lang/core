@@ -14,10 +14,10 @@ abstract class OverrideMarker {}
 
 /// A variable which can only become non-`null` if testing.
 ///
-/// Only set when using the `runWith` function, which is only called from
-/// `FakePlatform.run`. When not importing the `testing.dart` library,
-/// there are no concrete subclasses of `OverrideMarker` in the program,
-/// so compilers should be able to recognize that `marker` is always `null`.
+/// Only set when using the [runWith] function, which is only called from
+/// [TestPlatform.run]. When not importing the `testing.dart` library,
+/// there are no concrete subclasses of [OverrideMarker] in the program,
+/// so compilers should be able to recognize that `_marker` is always `null`.
 OverrideMarker? _marker;
 
 /// Private key used for a `Platform` override in zone variables.
