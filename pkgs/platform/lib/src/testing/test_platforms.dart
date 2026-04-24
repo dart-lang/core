@@ -707,7 +707,7 @@ final class TestNativePlatform extends NativePlatformBase {
   ///
   /// Use [TestNativePlatform.copyWith] instead.
   /// Work directly with [TestNativePlatform], rather than creating a
-  /// `TestPlatform` from it.
+  /// [TestPlatform] from it.
   ///
   /// Only works if there is a current [Platform.nativePlatform].
   ///
