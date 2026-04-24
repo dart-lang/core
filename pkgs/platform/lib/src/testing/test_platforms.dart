@@ -5,7 +5,7 @@
 /// User-configurable platform libraries.
 ///
 /// Should only be used for testing.
-// ignore: unnecessary_library_name - Used by DartDoc
+// ignore: unnecessary_library_name - Used by DartDoc doc-imports.
 library test_platforms;
 
 import 'dart:collection';
@@ -706,7 +706,7 @@ final class TestNativePlatform extends NativePlatformTestBase {
   ///
   /// Use [TestNativePlatform.copyWith] instead.
   /// Work directly with [TestNativePlatform], rather than creating a
-  /// `TestPlatform` from it.
+  /// [TestPlatform] from it.
   ///
   /// Only works if there is a current [Platform.nativePlatform].
   ///
