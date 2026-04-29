@@ -4,6 +4,3 @@ analyzer:
   errors:
     # Allow having TODOs in the code
     todo: ignore
-    # Increase the pressure?
-    deprecated_member_use: warning
-    deprecated_member_use_from_same_package: warning
