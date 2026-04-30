@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import '../platforms_impl.dart' as p;
+import '../platform_apis.dart' as p;
 
 // The members of the legacy `Platform` class, added to the new `Platform`
 // class for backwards interface compatibility.

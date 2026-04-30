@@ -305,9 +305,6 @@ transforms:
       - kind: "rename"
         newName: "nativePlatform!.toJson"
 
-  ## Legacy FakePlatform class -> new TestPlatform class.
-  ## The new TestPlatform is from `package:platform/testing.dart`.
-
   ## Instance members on `FakePlatform` -> members on `Platform.nativePlatform!`
   - title: "Platform.environment"
     date: 2024-06-14

@@ -12,10 +12,9 @@ library browser_platform_impl;
 
 import 'dart:convert' show JsonEncoder;
 
+import '../platform_apis.dart' as apis;
 import '../util/json_keys.dart' as json_key;
 import '../util/platform_browser_interop.dart' as window;
-
-import 'web_platform.dart';
 
 /// For access in `platform_browser_impl.dart` without public constructor.
 const BrowserPlatform browserPlatformInstance = BrowserPlatform._();
@@ -23,13 +22,8 @@ const BrowserPlatform browserPlatformInstance = BrowserPlatform._();
 /// Information about the current browser.
 ///
 /// Only available while running in a browser.
-final class BrowserPlatform {
+final class BrowserPlatform extends apis.BrowserPlatformBase {
   const BrowserPlatform._();
-
-  /// The current Browser platform, if any.
-  ///
-  /// Same as [Platform.browserPlatform] of [BrowserPlatform.current].
-  static BrowserPlatform? get current => Platform.current.browserPlatform;
 
   /// The browser's version, as reported by `Navigator.appVersion` by default.
   ///
@@ -42,6 +36,7 @@ final class BrowserPlatform {
   ///
   /// If no `Navigator` object is a available,
   /// the string content and format is unspecified.
+  @override
   String get version =>
       window.navigator?.appVersion ?? 'No navigator.appVersion';
 
@@ -51,6 +46,7 @@ final class BrowserPlatform {
   /// the string `"unknown"`.
   ///
   /// The string content and format is unspecified.
+  @override
   String get userAgent =>
       window.navigator?.userAgent ?? 'No navigator.userAgent';
 
@@ -58,9 +54,8 @@ final class BrowserPlatform {
   ///
   /// Can be emitted for debugging or be used to create a [TestBrowserPlatform]
   /// with the same configuration.
+  @override
   String toJson() => const JsonEncoder.withIndent(
     '  ',
   ).convert({json_key.userAgent: userAgent, json_key.version: version});
 }
-
-abstract base class BrowserPlatformTestBase implements BrowserPlatform {}

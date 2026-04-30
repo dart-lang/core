@@ -6,12 +6,12 @@
 ///
 /// All classes are declared in the same library, so that they can all be final,
 /// and still depend with the.
-/// @docImport 'platforms_impl.dart';
+/// @docImport 'platform_apis.dart';
 // ignore: unnecessary_library_name - Used by DartDoc
 library exported_platforms;
 
-import 'platforms_impl.dart' show Platform;
-export 'platforms_impl.dart' show BrowserPlatform, NativePlatform, Platform;
+import 'platform_apis.dart' show Platform;
+export 'platform_apis.dart' show BrowserPlatform, NativePlatform, Platform;
 
 /// Shorthands for checking operating system on the native platform.
 ///

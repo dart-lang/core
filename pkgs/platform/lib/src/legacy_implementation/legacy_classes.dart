@@ -9,8 +9,8 @@ library;
 
 import 'dart:convert' show JsonDecoder, JsonEncoder;
 
-import '../platforms_impl.dart'
-    show BrowserPlatform, NativePlatform, Platform, PlatformTestBase;
+import '../platform_apis.dart'
+    show BrowserPlatform, NativePlatform, Platform, PlatformBase;
 
 // Not showing `lineTerminator` which wasn't used in the legacy code.
 import '../util/json_keys.dart'
@@ -39,7 +39,7 @@ import '../util/json_keys.dart'
 /// > the non-deprecated API, and use `TestNativePlatform` to
 /// > give custom values to native platform properties.
 @Deprecated('Use TestNativePlatform instead')
-final class FakePlatform extends PlatformTestBase {
+final class FakePlatform extends PlatformBase {
   int? _numberOfProcessors;
   String? _pathSeparator;
   String? _operatingSystem;
@@ -251,10 +251,22 @@ final class FakePlatform extends PlatformTestBase {
     }
     return value;
   }
+
+  @override
+  BrowserPlatform? get browserPlatform => null;
+
+  @override
+  bool get isBrowser => false;
+
+  @override
+  bool get isNative => true;
+
+  @override
+  NativePlatform? get nativePlatform => Platform.current.nativePlatform;
 }
 
 @Deprecated('Use NativePlatform.current! instead')
-final class LocalPlatform extends PlatformTestBase {
+final class LocalPlatform extends PlatformBase {
   static const _instance = LocalPlatform._();
   @Deprecated('Use NativePlatform.current! instead')
   const factory LocalPlatform() = _LocalPlatformInstance;
@@ -263,7 +275,7 @@ final class LocalPlatform extends PlatformTestBase {
 
   @Deprecated('Use BrowserPlatform.current instead')
   @override
-  BrowserPlatform? get browserPlatform;
+  BrowserPlatform? get browserPlatform => null;
 
   @override
   @Deprecated('Use NativePlatform.current!.environment instead')
@@ -280,11 +292,11 @@ final class LocalPlatform extends PlatformTestBase {
 
   @Deprecated('Use Platform.current.isBrowser instead')
   @override
-  bool get isBrowser;
+  bool get isBrowser => false;
 
   @Deprecated('Use Platform.current.isNative instead')
   @override
-  bool get isNative;
+  bool get isNative => true;
 
   @override
   @Deprecated('Use NativePlatform.current!.localeName instead')
@@ -295,7 +307,7 @@ final class LocalPlatform extends PlatformTestBase {
   String get localHostname => NativePlatform.current!.localHostname;
 
   @override
-  NativePlatform? get nativePlatform;
+  NativePlatform? get nativePlatform => NativePlatform.current;
 
   @override
   @Deprecated('Use NativePlatform.current!.numberOfProcessors instead')

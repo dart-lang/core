@@ -46,9 +46,9 @@
 ///
 /// @docImport 'src/legacy_implementation/legacy_classes.dart';
 /// @docImport 'src/platforms.dart';
-/// {@canonicalFor platform_impl.Platform}
-/// {@canonicalFor browser_platform_impl.BrowserPlatform}
-/// {@canonicalFor native_platform_impl.NativePlatform}
+/// {@canonicalFor platform_apis.Platform}
+/// {@canonicalFor platform_apis.BrowserPlatform}
+/// {@canonicalFor platform_apis.NativePlatform}
 /// {@canonicalFor exported_platforms.PlatformIsOS}
 library;
 

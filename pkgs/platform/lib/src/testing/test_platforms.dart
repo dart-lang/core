@@ -5,6 +5,7 @@
 /// User-configurable platform libraries.
 ///
 /// Should only be used for testing.
+/// @docImport '../platform_apis.dart';
 // ignore: unnecessary_library_name - Used by DartDoc
 library test_platforms;
 
@@ -13,7 +14,7 @@ import 'dart:convert';
 
 import 'package:meta/meta.dart';
 
-import '../platforms_impl.dart';
+import '../platform_apis.dart';
 import '../util/json_keys.dart' as json_key;
 import 'zone_overrides.dart' as overrides;
 
@@ -22,7 +23,7 @@ import 'zone_overrides.dart' as overrides;
 /// Implements [Platform], but allows a [TestBrowserPlatform] or
 /// [TestNativePlatform] to be the non-`null` platform object.
 @visibleForTesting
-final class TestPlatform extends PlatformTestBase {
+final class TestPlatform extends PlatformBase {
   /// The current native platform, if running on a native platform.
   @override
   final TestNativePlatform? nativePlatform;
@@ -181,7 +182,7 @@ enum _OverrideMarker implements overrides.OverrideMarker { marker }
 /// Accessing such properties will throw, but a test which doesn't use
 /// those properties doesn't have to provide values for them.
 @visibleForTesting
-final class TestBrowserPlatform extends BrowserPlatformTestBase {
+final class TestBrowserPlatform extends BrowserPlatformBase {
   static const _className = 'TestBrowserPlatform';
 
   final String? _version;
@@ -309,7 +310,7 @@ final class TestBrowserPlatform extends BrowserPlatformTestBase {
 /// [NativePlatform.operatingSystem] or, for example, [NativePlatform.isLinux]
 /// checks, which can lead to larger compiled programs.
 @visibleForTesting
-final class TestNativePlatform extends NativePlatformTestBase {
+final class TestNativePlatform extends NativePlatformBase {
   static const String _className = 'TestNativePlatform';
 
   /// Operating system ID string, or `null` if not configured.
