@@ -49,7 +49,7 @@ extension ListExtensions<E> on List<E> {
         this,
         keyOf,
         compare,
-        element,
+        keyOf(element),
         start,
         end,
       );
@@ -75,7 +75,7 @@ extension ListExtensions<E> on List<E> {
         this,
         keyOf,
         (a, b) => a.compareTo(b),
-        element,
+        keyOf(element),
         start,
         end,
       );
@@ -117,7 +117,7 @@ extension ListExtensions<E> on List<E> {
     int start = 0,
     int? end,
   ]) =>
-      algorithms.lowerBoundBy(this, keyOf, compare, element, start, end);
+      algorithms.lowerBoundBy(this, keyOf, compare, keyOf(element), start, end);
 
   /// Returns the index where [element] should be in this sorted list.
   ///
@@ -145,7 +145,7 @@ extension ListExtensions<E> on List<E> {
         this,
         keyOf,
         compareComparable,
-        element,
+        keyOf(element),
         start,
         end,
       );
