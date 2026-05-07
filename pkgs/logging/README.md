@@ -10,6 +10,7 @@ messages.
 
 Here is a simple logging configuration that logs all messages via `print`.
 
+<?code-excerpt "example/readme_examples.dart (init-root)"?>
 ```dart
 Logger.root.level = Level.ALL; // defaults to Level.INFO
 Logger.root.onRecord.listen((record) {
@@ -35,6 +36,7 @@ class has various properties for the message, error, logger name, and more.
 
 To listen for changed level notifications use:
 
+<?code-excerpt "example/readme_examples.dart (on-level-changed)"?>
 ```dart
 Logger.root.onLevelChanged.listen((level) {
   print('The new log level is $level');
@@ -46,12 +48,14 @@ Logger.root.onLevelChanged.listen((level) {
 Create a `Logger` with a unique name to easily identify the source of the log
 messages.
 
+<?code-excerpt "example/readme_examples.dart (create-logger)"?>
 ```dart
 final log = Logger('MyClassName');
 ```
 
 Here is an example of logging a debug message and an error:
 
+<?code-excerpt "example/readme_examples.dart (log-error)" replace="/Object //g; /StackTrace //g;"?>
 ```dart
 var future = doSomethingAsync().then((result) {
   log.fine('Got the result: $result');
@@ -62,6 +66,7 @@ var future = doSomethingAsync().then((result) {
 When logging more complex messages, you can pass a closure instead that will be
 evaluated only if the message is actually logged:
 
+<?code-excerpt "example/readme_examples.dart (complex-message)"?>
 ```dart
 log.fine(() => [1, 2, 3, 4, 5].map((e) => e * 4).join("-"));
 ```
@@ -88,45 +93,46 @@ Then, create unique loggers and configure their `level` attributes and assign an
 their `onRecord` streams.
 
 
+<?code-excerpt "example/readme_examples.dart (hierarchical)"?>
 ```dart
-  hierarchicalLoggingEnabled = true;
-  Logger.root.level = Level.WARNING;
-  Logger.root.onRecord.listen((record) {
-    print('[ROOT][WARNING+] ${record.message}');
-  });
+hierarchicalLoggingEnabled = true;
+Logger.root.level = Level.WARNING;
+Logger.root.onRecord.listen((record) {
+  print('[ROOT][WARNING+] ${record.message}');
+});
 
-  final log1 = Logger('FINE+');
-  log1.level = Level.FINE;
-  log1.onRecord.listen((record) {
-    print('[LOG1][FINE+] ${record.message}');
-  });
+final log1 = Logger('FINE+');
+log1.level = Level.FINE;
+log1.onRecord.listen((record) {
+  print('[LOG1][FINE+] ${record.message}');
+});
 
-  // log2 inherits LEVEL value of WARNING from `Logger.root`
-  final log2 = Logger('WARNING+');
-  log2.onRecord.listen((record) {
-    print('[LOG2][WARNING+] ${record.message}');
-  });
+// log2 inherits LEVEL value of WARNING from `Logger.root`
+final log2 = Logger('WARNING+');
+log2.onRecord.listen((record) {
+  print('[LOG2][WARNING+] ${record.message}');
+});
 
 
-  // Will NOT print because FINER is too low level for `Logger.root`.
-  log1.finer('LOG_01 FINER (X)');
+// Will NOT print because FINER is too low level for `Logger.root`.
+log1.finer('LOG_01 FINER (X)');
 
-  // Will print twice ([LOG1] & [ROOT])
-  log1.fine('LOG_01 FINE (√√)');
+// Will print twice ([LOG1] & [ROOT])
+log1.fine('LOG_01 FINE (√√)');
 
-  // Will print ONCE because `log1` only uses root listener.
-  log1.warning('LOG_01 WARNING (√)');
+// Will print ONCE because `log1` only uses root listener.
+log1.warning('LOG_01 WARNING (√)');
 
-  // Will never print because FINE is too low level.
-  log2.fine('LOG_02 FINE (X)');
+// Will never print because FINE is too low level.
+log2.fine('LOG_02 FINE (X)');
 
-  // Will print twice ([LOG2] & [ROOT]) because warning is sufficient for all
-  // loggers' levels.
-  log2.warning('LOG_02 WARNING (√√)');
+// Will print twice ([LOG2] & [ROOT]) because warning is sufficient for all
+// loggers' levels.
+log2.warning('LOG_02 WARNING (√√)');
 
-  // Will never print because `info` is filtered by `Logger.root.level` of
-  // `Level.WARNING`.
-  log2.info('INFO (X)');
+// Will never print because `info` is filtered by `Logger.root.level` of
+// `Level.WARNING`.
+log2.info('INFO (X)');
 ```
 
 Results in:
