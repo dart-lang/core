@@ -40,12 +40,8 @@ void direct() {
   }
 
   Platform platform = fakePlatform;
-  if (fakePlatform.executable == 'apricot') {
-    throw AssertionError('Not it');
-  }
-  if (platform.executable == 'apricot') {
-    throw AssertionError('Not it');
-  }
+  if (fakePlatform.executable == 'apricot') throw AssertionError('Not it');
+  if (platform.executable == 'apricot') throw AssertionError('Not it');
 }
 
 void withPrefix() {
@@ -66,10 +62,6 @@ void withPrefix() {
   }
 
   prefix.Platform platform = fakePlatform;
-  if (fakePlatform.executable == 'apricot') {
-    throw AssertionError('Not it');
-  }
-  if (platform.executable == 'apricot') {
-    throw AssertionError('Not it');
-  }
+  if (fakePlatform.executable == 'apricot') throw AssertionError('Not it');
+  if (platform.executable == 'apricot') throw AssertionError('Not it');
 }

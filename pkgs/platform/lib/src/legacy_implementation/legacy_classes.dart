@@ -9,10 +9,8 @@ library;
 
 import 'dart:convert' show JsonDecoder, JsonEncoder;
 
-import '../platforms_impl.dart'
-    show BrowserPlatform, NativePlatform, Platform, PlatformTestBase;
-// ignore: invalid_use_of_visible_for_testing_member
-import '../testing/test_platforms.dart' show TestNativePlatform;
+import '../platform_apis.dart'
+    show BrowserPlatform, NativePlatform, Platform, PlatformBase;
 
 // Not showing `lineTerminator` which wasn't used in the legacy code.
 import '../util/json_keys.dart'
@@ -41,9 +39,23 @@ import '../util/json_keys.dart'
 /// > the non-deprecated API, and use `TestNativePlatform` to
 /// > give custom values to native platform properties.
 @Deprecated('Use TestNativePlatform instead')
-final class FakePlatform extends PlatformTestBase {
-  // ignore: invalid_use_of_visible_for_testing_member
-  final TestNativePlatform _nativePlatform;
+final class FakePlatform extends PlatformBase {
+  int? _numberOfProcessors;
+  String? _pathSeparator;
+  String? _operatingSystem;
+  String? _operatingSystemVersion;
+  String? _localHostname;
+  Map<String, String>? _environment;
+  String? _executable;
+  String? _resolvedExecutable;
+  Uri? _script;
+  List<String>? _executableArguments;
+  String? _version;
+  bool? _stdinSupportsAnsi;
+  bool? _stdoutSupportsAnsi;
+  String? _localeName;
+  @override
+  String? packageConfig;
 
   /// Creates a new legacy [FakePlatform] with the specified properties.
   ///
@@ -61,33 +73,25 @@ final class FakePlatform extends PlatformTestBase {
     String? resolvedExecutable,
     Uri? script,
     List<String>? executableArguments,
-    String? packageConfig,
+    this.packageConfig,
     String? version,
     bool? stdinSupportsAnsi,
     bool? stdoutSupportsAnsi,
     String? localeName,
-  }) : this._(
-         // ignore: invalid_use_of_visible_for_testing_member
-         TestNativePlatform(
-           numberOfProcessors: numberOfProcessors,
-           pathSeparator: pathSeparator,
-           operatingSystem: operatingSystem,
-           operatingSystemVersion: operatingSystemVersion,
-           localHostname: localHostname,
-           environment: environment,
-           executable: executable,
-           resolvedExecutable: resolvedExecutable,
-           script: script,
-           executableArguments: executableArguments,
-           packageConfig: packageConfig,
-           version: version,
-           stdinSupportsAnsi: stdinSupportsAnsi,
-           stdoutSupportsAnsi: stdoutSupportsAnsi,
-           localeName: localeName,
-         ),
-       );
-
-  FakePlatform._(this._nativePlatform);
+  }) : _numberOfProcessors = numberOfProcessors,
+       _pathSeparator = pathSeparator,
+       _operatingSystem = operatingSystem,
+       _operatingSystemVersion = operatingSystemVersion,
+       _localHostname = localHostname,
+       _environment = environment,
+       _executable = executable,
+       _resolvedExecutable = resolvedExecutable,
+       _script = script,
+       _executableArguments = executableArguments,
+       _version = version,
+       _stdinSupportsAnsi = stdinSupportsAnsi,
+       _stdoutSupportsAnsi = stdoutSupportsAnsi,
+       _localeName = localeName;
 
   /// Creates a new [FakePlatform] with properties extracted from the encoded
   /// JSON string.
@@ -117,73 +121,66 @@ final class FakePlatform extends PlatformTestBase {
     );
   }
 
-  /// Creates a new [FakePlatform] with properties values mirroring [platform].
+  /// Creates a new [FakePlatform] with properties whose initial values mirror
+  /// the specified [platform].
   FakePlatform.fromPlatform(Platform platform)
-    : this(
-        numberOfProcessors: platform.numberOfProcessors,
-        pathSeparator: platform.pathSeparator,
-        operatingSystem: platform.operatingSystem,
-        operatingSystemVersion: platform.operatingSystemVersion,
-        localHostname: platform.localHostname,
-        environment: Map<String, String>.from(platform.environment),
-        executable: platform.executable,
-        resolvedExecutable: platform.resolvedExecutable,
-        script: platform.script,
-        executableArguments: List<String>.from(platform.executableArguments),
-        packageConfig: platform.packageConfig,
-        version: platform.version,
-        stdinSupportsAnsi: platform.stdinSupportsAnsi,
-        stdoutSupportsAnsi: platform.stdoutSupportsAnsi,
-        localeName: platform.localeName,
-      );
+    : _numberOfProcessors = platform.numberOfProcessors,
+      _pathSeparator = platform.pathSeparator,
+      _operatingSystem = platform.operatingSystem,
+      _operatingSystemVersion = platform.operatingSystemVersion,
+      _localHostname = platform.localHostname,
+      _environment = Map<String, String>.from(platform.environment),
+      _executable = platform.executable,
+      _resolvedExecutable = platform.resolvedExecutable,
+      _script = platform.script,
+      _executableArguments = List<String>.from(platform.executableArguments),
+      packageConfig = platform.packageConfig,
+      _version = platform.version,
+      _stdinSupportsAnsi = platform.stdinSupportsAnsi,
+      _stdoutSupportsAnsi = platform.stdoutSupportsAnsi,
+      _localeName = platform.localeName;
 
   @override
-  NativePlatform get nativePlatform => _nativePlatform;
+  Map<String, String> get environment => _throwIfNull(_environment);
 
   @override
-  Map<String, String> get environment => _nativePlatform.environment;
+  String get executable => _throwIfNull(_executable);
 
   @override
-  String get executable => _nativePlatform.executable;
+  List<String> get executableArguments => _throwIfNull(_executableArguments);
 
   @override
-  List<String> get executableArguments => _nativePlatform.executableArguments;
+  String get localeName => _throwIfNull(_localeName);
 
   @override
-  String get localeName => _nativePlatform.localeName;
+  String get localHostname => _throwIfNull(_localHostname);
 
   @override
-  String get localHostname => _nativePlatform.localHostname;
+  int get numberOfProcessors => _throwIfNull(_numberOfProcessors);
 
   @override
-  int get numberOfProcessors => _nativePlatform.numberOfProcessors;
+  String get operatingSystem => _throwIfNull(_operatingSystem);
 
   @override
-  String get operatingSystem => _nativePlatform.operatingSystem;
+  String get operatingSystemVersion => _throwIfNull(_operatingSystemVersion);
 
   @override
-  String get operatingSystemVersion => _nativePlatform.operatingSystemVersion;
+  String get pathSeparator => _throwIfNull(_pathSeparator);
 
   @override
-  String? get packageConfig => _nativePlatform.packageConfig;
+  String get resolvedExecutable => _throwIfNull(_resolvedExecutable);
 
   @override
-  String get pathSeparator => _nativePlatform.pathSeparator;
+  Uri get script => _throwIfNull(_script);
 
   @override
-  String get resolvedExecutable => _nativePlatform.resolvedExecutable;
+  bool get stdinSupportsAnsi => _throwIfNull(_stdinSupportsAnsi);
 
   @override
-  Uri get script => _nativePlatform.script;
+  bool get stdoutSupportsAnsi => _throwIfNull(_stdoutSupportsAnsi);
 
   @override
-  bool get stdinSupportsAnsi => _nativePlatform.stdinSupportsAnsi;
-
-  @override
-  bool get stdoutSupportsAnsi => _nativePlatform.stdoutSupportsAnsi;
-
-  @override
-  String get version => _nativePlatform.version;
+  String get version => _throwIfNull(_version);
 
   /// Creates a new [FakePlatform] from this one,
   /// with some properties replaced by the given properties.
@@ -204,26 +201,26 @@ final class FakePlatform extends PlatformTestBase {
     bool? stdinSupportsAnsi,
     bool? stdoutSupportsAnsi,
     String? localeName,
-  }) => FakePlatform._(
-    // ignore: invalid_use_of_visible_for_testing_member
-    _nativePlatform.copyWith(
-      numberOfProcessors: numberOfProcessors,
-      pathSeparator: pathSeparator,
-      operatingSystem: operatingSystem,
-      operatingSystemVersion: operatingSystemVersion,
-      localHostname: localHostname,
-      environment: environment,
-      executable: executable,
-      resolvedExecutable: resolvedExecutable,
-      script: script,
-      executableArguments: executableArguments,
-      packageConfig: packageConfig,
-      version: version,
-      stdinSupportsAnsi: stdinSupportsAnsi,
-      stdoutSupportsAnsi: stdoutSupportsAnsi,
-      localeName: localeName,
-    ),
-  );
+  }) {
+    return FakePlatform(
+      numberOfProcessors: numberOfProcessors ?? this.numberOfProcessors,
+      pathSeparator: pathSeparator ?? this.pathSeparator,
+      operatingSystem: operatingSystem ?? this.operatingSystem,
+      operatingSystemVersion:
+          operatingSystemVersion ?? this.operatingSystemVersion,
+      localHostname: localHostname ?? this.localHostname,
+      environment: environment ?? this.environment,
+      executable: executable ?? this.executable,
+      resolvedExecutable: resolvedExecutable ?? this.resolvedExecutable,
+      script: script ?? this.script,
+      executableArguments: executableArguments ?? this.executableArguments,
+      packageConfig: packageConfig ?? this.packageConfig,
+      version: version ?? this.version,
+      stdinSupportsAnsi: stdinSupportsAnsi ?? this.stdinSupportsAnsi,
+      stdoutSupportsAnsi: stdoutSupportsAnsi ?? this.stdoutSupportsAnsi,
+      localeName: localeName ?? this.localeName,
+    );
+  }
 
   @override
   String toJson() {
@@ -245,6 +242,27 @@ final class FakePlatform extends PlatformTestBase {
       json_key.localeName: localeName,
     });
   } // New API on a legacy class. It works, but use the new API instead.
+
+  T _throwIfNull<T>(T? value) {
+    if (value == null) {
+      throw StateError(
+        'Tried to read property of FakePlatform but it was unset.',
+      );
+    }
+    return value;
+  }
+
+  @override
+  BrowserPlatform? get browserPlatform => null;
+
+  @override
+  bool get isBrowser => false;
+
+  @override
+  bool get isNative => true;
+
+  @override
+  NativePlatform? get nativePlatform => Platform.current.nativePlatform;
 }
 
 @Deprecated('Use NativePlatform.current! instead')
