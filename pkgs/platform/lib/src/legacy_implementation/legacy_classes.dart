@@ -245,6 +245,7 @@ final class FakePlatform extends PlatformBase {
       json_key.localeName: localeName,
     });
   } // New API on a legacy class. It works, but use the new API instead.
+
   @override
   BrowserPlatform? get browserPlatform => null;
 
