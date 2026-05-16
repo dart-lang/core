@@ -27,12 +27,12 @@ int binarySearch<E>(
   return binarySearchBy<E, E>(sortedList, identity, compare, value);
 }
 
-/// Returns a position of the [value] in [sortedList], if it is there.
+/// Returns a position of the [key] in [sortedList], if it is there.
 ///
 /// If the list isn't sorted according to the [compare] function on the [keyOf]
 /// property of the elements, the result is unpredictable.
 ///
-/// Returns -1 if [value] is not in the list by default.
+/// Returns -1 if [key] is not in the list by default.
 ///
 /// If [start] and [end] are supplied, only that range is searched,
 /// and only that range need to be sorted.
@@ -40,14 +40,13 @@ int binarySearchBy<E, K>(
   List<E> sortedList,
   K Function(E element) keyOf,
   int Function(K, K) compare,
-  E value, [
+  K key, [
   int start = 0,
   int? end,
 ]) {
   end = RangeError.checkValidRange(start, end, sortedList.length);
   var min = start;
   var max = end;
-  var key = keyOf(value);
   while (min < max) {
     var mid = min + ((max - min) >> 1);
     var element = sortedList[mid];
@@ -80,9 +79,9 @@ int lowerBound<E>(List<E> sortedList, E value, {int Function(E, E)? compare}) {
   return lowerBoundBy<E, E>(sortedList, identity, compare, value);
 }
 
-/// Returns the first position in [sortedList] that is not before [value].
+/// Returns the first position in [sortedList] that is not before [key].
 ///
-/// Uses binary search to find the location of [value].
+/// Uses binary search to find the location of [key].
 /// This takes on the order of `log(n)` comparisons.
 /// Elements are compared using the [compare] function of the [keyOf] property
 /// of the elements.
@@ -90,7 +89,7 @@ int lowerBound<E>(List<E> sortedList, E value, {int Function(E, E)? compare}) {
 /// unpredictable.
 ///
 /// Returns the length of [sortedList] if all the items in [sortedList] are
-/// before [value].
+/// before [key].
 ///
 /// If [start] and [end] are supplied, only that range is searched,
 /// and only that range need to be sorted.
@@ -98,14 +97,13 @@ int lowerBoundBy<E, K>(
   List<E> sortedList,
   K Function(E element) keyOf,
   int Function(K, K) compare,
-  E value, [
+  K key, [
   int start = 0,
   int? end,
 ]) {
   end = RangeError.checkValidRange(start, end, sortedList.length);
   var min = start;
   var max = end;
-  var key = keyOf(value);
   while (min < max) {
     var mid = min + ((max - min) >> 1);
     var element = sortedList[mid];

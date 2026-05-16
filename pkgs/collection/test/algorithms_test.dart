@@ -163,6 +163,47 @@ void main() {
     expect(lowerBound(l2, C(5), compare: compareC), equals(1));
   });
 
+  // Tests for binarySearchBy with K key (different type from E).
+  test('binsearchBy - search by key of different type', () {
+    var list = [C(0), C(5), C(10)];
+    // Search using int key directly instead of C object.
+    expect(binarySearchBy(list, (c) => c.id, (a, b) => a - b, -1), equals(-1));
+    expect(binarySearchBy(list, (c) => c.id, (a, b) => a - b, 0), equals(0));
+    expect(binarySearchBy(list, (c) => c.id, (a, b) => a - b, 2), equals(-1));
+    expect(binarySearchBy(list, (c) => c.id, (a, b) => a - b, 5), equals(1));
+    expect(binarySearchBy(list, (c) => c.id, (a, b) => a - b, 7), equals(-1));
+    expect(binarySearchBy(list, (c) => c.id, (a, b) => a - b, 10), equals(2));
+    expect(binarySearchBy(list, (c) => c.id, (a, b) => a - b, 12), equals(-1));
+  });
+
+  test('binsearchBy - empty list', () {
+    expect(binarySearchBy(<C>[], (c) => c.id, (a, b) => a - b, 5), equals(-1));
+  });
+
+  // Tests for lowerBoundBy with K key (different type from E).
+  test('lowerboundBy - search by key of different type', () {
+    var list = [C(0), C(5), C(10)];
+    // Search using int key directly instead of C object.
+    expect(lowerBoundBy(list, (c) => c.id, (a, b) => a - b, -1), equals(0));
+    expect(lowerBoundBy(list, (c) => c.id, (a, b) => a - b, 0), equals(0));
+    expect(lowerBoundBy(list, (c) => c.id, (a, b) => a - b, 2), equals(1));
+    expect(lowerBoundBy(list, (c) => c.id, (a, b) => a - b, 5), equals(1));
+    expect(lowerBoundBy(list, (c) => c.id, (a, b) => a - b, 7), equals(2));
+    expect(lowerBoundBy(list, (c) => c.id, (a, b) => a - b, 10), equals(2));
+    expect(lowerBoundBy(list, (c) => c.id, (a, b) => a - b, 12), equals(3));
+  });
+
+  test('lowerboundBy - empty list', () {
+    expect(lowerBoundBy(<C>[], (c) => c.id, (a, b) => a - b, 5), equals(0));
+  });
+
+  test('lowerboundBy - repeat keys', () {
+    var l1 = [C(5), C(5), C(5)];
+    var l2 = [C(0), C(5), C(5), C(5), C(10)];
+    expect(lowerBoundBy(l1, (c) => c.id, (a, b) => a - b, 5), equals(0));
+    expect(lowerBoundBy(l2, (c) => c.id, (a, b) => a - b, 5), equals(1));
+  });
+
   void testSort(
     String name,
     void Function(List<int> elements, [int? start, int? end]) sort,
