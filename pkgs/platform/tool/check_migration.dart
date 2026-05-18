@@ -1,4 +1,5 @@
 #! /bin/env dart
+
 // Copyright (c) 2024, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
@@ -20,8 +21,9 @@
 /// and `dart fix`.
 ///
 /// It will copy `../tool/src/sample/legacy_example_code*.dart` to
-/// a temporary directory (`../tmp/`), remove the `// ignore_for_file`
-/// lines guarding deprecated uses, and run `dart fix` on the code.
+/// a temporary directory (`../out/test/migration_test/`),
+/// remove the `// ignore_for_file` lines guarding deprecated uses,
+/// and run `dart fix` on the code.
 /// It will then run `dart analyze` to see if there are any deprecated
 /// uses left.
 ///

@@ -293,10 +293,10 @@ final class TestBrowserPlatform extends BrowserPlatformBase {
 
   @override
   String get userAgent =>
-      _throwIfUnset(_userAgent, _className, json_key.userAgent);
+      _userAgent ?? _throwUnset(_className, json_key.userAgent);
 
   @override
-  String get version => _throwIfUnset(_version, _className, json_key.version);
+  String get version => _version ?? _throwUnset(_className, json_key.version);
 }
 
 /// A custom [NativePlatform] for testing.
@@ -585,76 +585,66 @@ final class TestNativePlatform extends NativePlatformBase {
 
   @override
   String get operatingSystem =>
-      _throwIfUnset(_operatingSystem, _className, json_key.operatingSystem);
+      _operatingSystem ?? _throwUnset(_className, json_key.operatingSystem);
 
   @override
-  String get operatingSystemVersion => _throwIfUnset(
-    _operatingSystemVersion,
-    _className,
-    json_key.operatingSystemVersion,
-  );
+  String get operatingSystemVersion =>
+      _operatingSystemVersion ??
+      _throwUnset(_className, json_key.operatingSystemVersion);
 
   @override
   Map<String, String> get environment =>
-      _throwIfUnset(_environment, _className, json_key.environment);
+      _environment ?? _throwUnset(_className, json_key.environment);
 
   @override
   String get executable =>
-      _throwIfUnset(_executable, _className, json_key.executable);
+      _executable ?? _throwUnset(_className, json_key.executable);
 
   @override
-  List<String> get executableArguments => _throwIfUnset<List<String>>(
-    _executableArguments,
-    _className,
-    json_key.executableArguments,
-  );
+  List<String> get executableArguments =>
+      _executableArguments ??
+      _throwUnset(_className, json_key.executableArguments);
 
   @override
   String get lineTerminator =>
-      _throwIfUnset(_lineTerminator, _className, json_key.lineTerminator);
+      _lineTerminator ?? _throwUnset(_className, json_key.lineTerminator);
 
   @override
   String get localeName =>
-      _throwIfUnset(_localeName, _className, json_key.localeName);
+      _localeName ?? _throwUnset(_className, json_key.localeName);
 
   @override
   String get localHostname =>
-      _throwIfUnset(_localHostname, _className, json_key.localHostname);
+      _localHostname ?? _throwUnset(_className, json_key.localHostname);
 
   @override
-  int get numberOfProcessors => _throwIfUnset(
-    _numberOfProcessors,
-    _className,
-    json_key.numberOfProcessors,
-  );
+  int get numberOfProcessors =>
+      _numberOfProcessors ??
+      _throwUnset(_className, json_key.numberOfProcessors);
 
   @override
   String get pathSeparator =>
-      _throwIfUnset(_pathSeparator, _className, json_key.pathSeparator);
+      _pathSeparator ?? _throwUnset(_className, json_key.pathSeparator);
 
   @override
-  String get resolvedExecutable => _throwIfUnset(
-    _resolvedExecutable,
-    _className,
-    json_key.resolvedExecutable,
-  );
+  String get resolvedExecutable =>
+      _resolvedExecutable ??
+      _throwUnset(_className, json_key.resolvedExecutable);
 
   @override
-  Uri get script => _throwIfUnset(_script, _className, json_key.script);
+  Uri get script => _script ?? _throwUnset(_className, json_key.script);
 
   @override
   bool get stdinSupportsAnsi =>
-      _throwIfUnset(_stdinSupportsAnsi, _className, json_key.stdinSupportsAnsi);
+      _stdinSupportsAnsi ?? _throwUnset(_className, json_key.stdinSupportsAnsi);
 
   @override
-  bool get stdoutSupportsAnsi => _throwIfUnset(
-    _stdoutSupportsAnsi,
-    _className,
-    json_key.stdoutSupportsAnsi,
-  );
+  bool get stdoutSupportsAnsi =>
+      _stdoutSupportsAnsi ??
+      _throwUnset(_className, json_key.stdoutSupportsAnsi);
 
   @override
-  String get version => _throwIfUnset(_version, _className, json_key.version);
+  String get version => _version ?? _throwUnset(_className, json_key.version);
 
   /// Creates a new [TestNativePlatform] from this one.
   ///
@@ -825,14 +815,15 @@ T? _getJsonProperty<T extends Object>(
   _failJsonParse<T>(property, value, source);
 }
 
-/// Throws if [value] is `null`, otherwise returns it.
+/// Throws the error of a test-class property which is unset.
 ///
 /// Used by getters on test-classes like [TestNativePlatform],
 /// which allow otherwise non-nullable properties to be unset
 /// as long as they are not read.
 /// This function is called when reading such a property.
-T _throwIfUnset<T extends Object>(T? value, String className, String name) =>
-    value ?? (throw StateError('$className.$name property is unset'));
+Never _throwUnset<T extends Object>(String className, String name) {
+  throw StateError('$className.$name property is unset');
+}
 
 /// A simple inefficient case-insensitive map.
 ///
