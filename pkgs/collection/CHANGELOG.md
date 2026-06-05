@@ -1,5 +1,10 @@
 ## 1.20.0-wip
 
+- Generalize `binarySearchBy` and `lowerBoundBy` to accept a key of type `K`
+  directly instead of a list element of type `E`. This allows searching a
+  `List<E>` sorted by a key field using a standalone key value without
+  constructing a full `E` object.
+
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
