@@ -6,6 +6,7 @@ import 'dart:collection';
 
 import 'allow_anything_parser.dart';
 import 'arg_results.dart';
+import 'json_schema.dart';
 import 'option.dart';
 import 'parser.dart';
 import 'usage.dart';
@@ -397,4 +398,48 @@ class ArgParser {
   /// Finds the option whose name or alias matches [name], or `null` if no
   /// option has that name or alias.
   Option? findByNameOrAlias(String name) => options[_aliases[name] ?? name];
+
+  Map<String, Object?> get jsonSchema {
+    final properties = <String, Schema>{};
+    final required = <String>[];
+    for (final option in _options.values) {
+      if (option.hide) continue;
+      var help = option.help;
+      final extras = <String>[];
+      if (option.defaultsTo != null) {
+        extras.add('defaults to "${option.defaultsTo}"');
+      }
+      if (option.allowed?.isNotEmpty ?? false) {
+        extras.add('allowed values: ${option.allowed?.join(', ')}');
+      }
+      if (extras.isNotEmpty) {
+        help = [
+          if (help != null) help,
+          ...extras,
+        ].join('\n');
+      }
+      final schema = switch (option.type) {
+        OptionType.flag => Schema.bool(
+            description: help,
+          ),
+        OptionType.single => Schema.string(
+            description: help,
+          ),
+        OptionType.multiple => Schema.list(
+            description: help,
+            items: Schema.string(),
+          ),
+        _ => throw StateError('Unhandled Option Type: ${option.type.name}')
+      };
+
+      if (option.mandatory) {
+        required.add(option.name);
+      }
+      properties[option.name] = schema;
+    }
+    return Schema.object(
+      properties: properties,
+      required: required,
+    ).asMap();
+  }
 }
