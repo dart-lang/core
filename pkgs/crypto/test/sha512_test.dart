@@ -34,7 +34,7 @@ void main() {
       test('close closes the underlying sink', () {
         var inner = ChunkedConversionSink<Digest>.withCallback(
           expectAsync1((accumulated) {
-            expect(accumulated.length, equals(1));
+            expect(accumulated, hasLength(1));
             expect(
               accumulated.first.toString(),
               equals(
@@ -73,7 +73,7 @@ void main() {
       test('close closes the underlying sink', () {
         var inner = ChunkedConversionSink<Digest>.withCallback(
           expectAsync1((accumulated) {
-            expect(accumulated.length, equals(1));
+            expect(accumulated, hasLength(1));
             expect(
               accumulated.first.toString(),
               equals(

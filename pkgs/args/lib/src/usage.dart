@@ -81,6 +81,7 @@ class _Usage {
     if (_buffer.isNotEmpty) _buffer.write('\n\n');
     _buffer.write(separator);
     _newlinesNeeded = 1;
+    _currentColumn = 0;
   }
 
   void _writeOption(Option option) {

@@ -1,0 +1,48 @@
+// Copyright (c) 2024, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
+/// Example of tree shaking using constant patterns.
+///
+/// Compile this file for a specific platform, for example as:
+/// ```console
+/// dart compile exe --target-os=linux tree_shake_pattern_const.dart
+/// dart compile js -o tree_shake_pattern_const.js tree_shake_pattern_const.dart
+/// ```
+/// and check that the executable does not contain the strings for
+/// other platforms. For example on Linux, use:
+/// ```console
+/// strings tree_shake_pattern_const.{exe,js} | grep "RUNNING"
+/// ```
+/// and check that the only retained value is either `RUNNING ON LINUX` or
+/// `RUNNING IN A BROWSER`.
+library;
+
+import 'package:platform/platform.dart';
+
+void main() {
+  const expectedPlatform = bool.fromEnvironment('dart.library.js_interop')
+      ? 'browser'
+      : bool.fromEnvironment('dart.library.io')
+      ? 'native'
+      : 'unknown';
+  print('Expected platform: $expectedPlatform');
+
+  switch (Platform.current) {
+    case Platform(:var browserPlatform?):
+      print('RUNNING IN A BROWSER');
+      print('User-agent: ${browserPlatform.userAgent}');
+    case Platform(
+      nativePlatform: NativePlatform(operatingSystem: NativePlatform.linux),
+    ):
+      print('RUNNING ON LINUX');
+    case Platform(
+      nativePlatform: NativePlatform(operatingSystem: NativePlatform.macOS),
+    ):
+      print('RUNNING ON MACOS');
+    case Platform(
+      nativePlatform: NativePlatform(operatingSystem: NativePlatform.windows),
+    ):
+      print('RUNNING ON WINDOWS');
+  }
+}

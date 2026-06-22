@@ -865,6 +865,11 @@
     "fixStatus": "noFix"
   },
   {
+    "name": "simplify_variable_pattern",
+    "description": "Avoid unnecessary member names in variable patterns.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "sized_box_for_whitespace",
     "description": "`SizedBox` for whitespace.",
     "fixStatus": "hasFix"

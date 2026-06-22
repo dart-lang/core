@@ -455,6 +455,35 @@ void main() {
             --[no-]wombat    Third
             ''');
       });
+      test('consistently attaches separator headers to options', () {
+        var parser = ArgParser()
+          ..addSeparator('Group 1')
+          ..addFlag('flag-1')
+          ..addSeparator('Group 2 (follows no options with help)')
+          ..addFlag('flag-2', help: 'something')
+          ..addFlag('flag-3')
+          ..addSeparator('Group 3 (follows non-trailing option with help)')
+          ..addFlag('flag-4')
+          ..addFlag('flag-5', help: 'something')
+          ..addSeparator('Group 4 (follows trailing option with help)')
+          ..addFlag('flag-6');
+
+        validateUsage(parser, '''
+            Group 1
+            --[no-]flag-1    
+
+            Group 2 (follows no options with help)
+            --[no-]flag-2    something
+            --[no-]flag-3    
+
+            Group 3 (follows non-trailing option with help)
+            --[no-]flag-4    
+            --[no-]flag-5    something
+
+            Group 4 (follows trailing option with help)
+            --[no-]flag-6    
+            ''');
+      });
 
       test("doesn't add extra newlines after a multiline option", () {
         var parser = ArgParser();

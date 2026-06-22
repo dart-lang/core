@@ -559,21 +559,21 @@ void main() {
     });
 
     test('.contains', () {
-      expect(set.contains('foo'), isFalse);
+      expect(set, isNot(contains('foo')));
       map['foo'] = 1;
-      expect(set.contains('foo'), isTrue);
+      expect(set, contains('foo'));
     });
 
     test('.isEmpty', () {
-      expect(set.isEmpty, isTrue);
+      expect(set, isEmpty);
       map['foo'] = 1;
-      expect(set.isEmpty, isFalse);
+      expect(set, isNotEmpty);
     });
 
     test('.isNotEmpty', () {
-      expect(set.isNotEmpty, isFalse);
+      expect(set, isEmpty);
       map['foo'] = 1;
-      expect(set.isNotEmpty, isTrue);
+      expect(set, isNotEmpty);
     });
 
     test('.length', () {
@@ -630,22 +630,22 @@ void main() {
     });
 
     test('.contains', () {
-      expect(set.contains('foo'), isFalse);
+      expect(set, isNot(contains('foo')));
       map['f'] = 'foo';
-      expect(set.contains('foo'), isTrue);
-      expect(set.contains('fblthp'), isTrue);
+      expect(set, contains('foo'));
+      expect(set, contains('fblthp'));
     });
 
     test('.isEmpty', () {
-      expect(set.isEmpty, isTrue);
+      expect(set, isEmpty);
       map['f'] = 'foo';
-      expect(set.isEmpty, isFalse);
+      expect(set, isNotEmpty);
     });
 
     test('.isNotEmpty', () {
-      expect(set.isNotEmpty, isFalse);
+      expect(set, isEmpty);
       map['f'] = 'foo';
-      expect(set.isNotEmpty, isTrue);
+      expect(set, isNotEmpty);
     });
 
     test('.length', () {

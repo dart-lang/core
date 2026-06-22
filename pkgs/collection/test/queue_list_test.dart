@@ -114,15 +114,15 @@ void main() {
 
   group('length', () {
     test('returns the length of a queue', () {
-      expect(QueueList.from([1, 2, 3]).length, equals(3));
+      expect(QueueList.from([1, 2, 3]), hasLength(3));
     });
 
     test('returns the length of a queue with an internal gap', () {
-      expect(withInternalGap().length, equals(7));
+      expect(withInternalGap(), hasLength(7));
     });
 
     test('returns the length of a queue at capacity', () {
-      expect(atCapacity().length, equals(7));
+      expect(atCapacity(), hasLength(7));
     });
   });
 

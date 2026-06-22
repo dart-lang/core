@@ -58,6 +58,16 @@ void main(List<String> args) {
     }
 
     benchmark('absolute', context.absolute);
+    runBenchmark('${style.name}-join', 100000, () {
+      for (var file in files) {
+        context.join(file, 'subdir', 'file.txt');
+      }
+    });
+    runBenchmark('${style.name}-join-many', 100000, () {
+      for (var file in files) {
+        context.join(file, 'a', 'b', 'c', 'd', 'e', 'f');
+      }
+    });
     benchmark('basename', context.basename);
     benchmark('basenameWithoutExtension', context.basenameWithoutExtension);
     benchmark('dirname', context.dirname);

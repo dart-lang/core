@@ -13,13 +13,13 @@ void main() {
     });
 
     test('length returns 0', () {
-      expect(set.length, equals(0));
+      expect(set, hasLength(0));
     });
 
     test('contains() returns false', () {
-      expect(set.contains(0), isFalse);
-      expect(set.contains(null), isFalse);
-      expect(set.contains('foo'), isFalse);
+      expect(set, isNot(contains(0)));
+      expect(set, isNot(contains(null)));
+      expect(set, isNot(contains('foo')));
     });
 
     test('lookup() returns null', () {
@@ -50,14 +50,14 @@ void main() {
     });
 
     test('length returns the total length', () {
-      expect(set.length, equals(5));
+      expect(set, hasLength(5));
     });
 
     test('contains() returns whether any set contains the element', () {
-      expect(set.contains(1), isTrue);
-      expect(set.contains(4), isTrue);
-      expect(set.contains(5), isTrue);
-      expect(set.contains(6), isFalse);
+      expect(set, contains(1));
+      expect(set, contains(4));
+      expect(set, contains(5));
+      expect(set, isNot(contains(6)));
     });
 
     test('lookup() returns elements that are in any set', () {
@@ -89,14 +89,14 @@ void main() {
     });
 
     test('length returns the total length', () {
-      expect(set.length, equals(5));
+      expect(set, hasLength(5));
     });
 
     test('contains() returns whether any set contains the element', () {
-      expect(set.contains(1), isTrue);
-      expect(set.contains(4), isTrue);
-      expect(set.contains(5), isTrue);
-      expect(set.contains(6), isFalse);
+      expect(set, contains(1));
+      expect(set, contains(4));
+      expect(set, contains(5));
+      expect(set, isNot(contains(6)));
     });
 
     test('lookup() returns elements that are in any set', () {
@@ -146,15 +146,15 @@ void main() {
     });
 
     test('length returns the total length', () {
-      expect(set.length, equals(5));
+      expect(set, hasLength(5));
     });
 
     test('contains() returns true for a new element', () {
-      expect(set.contains(4), isTrue);
+      expect(set, contains(4));
     });
 
     test('contains() returns false for a removed element', () {
-      expect(set.contains(7), isFalse);
+      expect(set, isNot(contains(7)));
     });
 
     test('lookup() returns a new element', () {
@@ -191,15 +191,15 @@ void main() {
     });
 
     test('length returns the total length', () {
-      expect(set.length, equals(5));
+      expect(set, hasLength(5));
     });
 
     test('contains() returns true for a new element', () {
-      expect(set.contains(4), isTrue);
+      expect(set, contains(4));
     });
 
     test('contains() returns false for a removed element', () {
-      expect(set.contains(6), isFalse);
+      expect(set, isNot(contains(6)));
     });
 
     test('lookup() returns a new element', () {

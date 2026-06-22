@@ -594,34 +594,26 @@ void main() {
         test('throw if no args', () {
           var parser = ArgParser();
           parser.addOption('username', mandatory: true);
-          var results = parser.parse([]);
-          expect(() => results['username'], throwsA(isA<ArgumentError>()));
+          throwsArgParserException(
+              parser, [], 'Option username is mandatory.', [], 'username');
         });
 
         test('throw if no mandatory args', () {
           var parser = ArgParser();
           parser.addOption('test');
           parser.addOption('username', mandatory: true);
-          var results = parser.parse(['--test', 'test']);
-          expect(results['test'], equals('test'));
-          expect(() => results['username'], throwsA(isA<ArgumentError>()));
+          throwsArgParserException(parser, ['--test', 'test'],
+              'Option username is mandatory.', [], 'username');
         });
 
-        test('parse successfully', () {
-          var parser = ArgParser();
-          parser.addOption('test', mandatory: true);
-          var results = parser.parse(['--test', 'test']);
-          expect(results['test'], equals('test'));
-        });
-
-        test('throws when value retrieved', () {
+        test('does not interfere with help flag', () {
           var parser = ArgParser();
           parser.addFlag('help', abbr: 'h', negatable: false);
           parser.addOption('test', mandatory: true);
           var results = parser.parse(['-h']);
           expect(results['help'], true);
-          expect(() => results['test'], throwsA(isA<ArgumentError>()));
-          expect(() => results.option('test'), throwsA(isA<ArgumentError>()));
+          expect(results['test'], null);
+          expect(results.option('test'), null);
         });
       });
     });

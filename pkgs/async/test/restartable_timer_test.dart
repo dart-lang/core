@@ -106,4 +106,24 @@ void main() {
       async.elapse(const Duration(seconds: 10));
     });
   });
+
+  test('can be reset with a variable duration', () {
+    FakeAsync().run((async) {
+      var fired = 0;
+      var timer = RestartableTimer(const Duration(seconds: 5), () {
+        fired++;
+      });
+
+      timer.reset(const Duration(seconds: 10));
+      async.elapse(const Duration(seconds: 6));
+      expect(fired, equals(0));
+
+      async.elapse(const Duration(seconds: 5));
+      expect(fired, equals(1));
+
+      timer.reset();
+      async.elapse(const Duration(seconds: 5));
+      expect(fired, equals(2));
+    });
+  });
 }

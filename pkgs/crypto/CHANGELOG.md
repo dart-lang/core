@@ -1,3 +1,7 @@
+## 3.0.8-wip
+
+- Drop unused `pkg:typed_data` dependency.
+
 ## 3.0.7
 
 - Run `dart format` with the new style.

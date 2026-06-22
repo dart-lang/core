@@ -1,4 +1,6 @@
-## 6.1.0-wip
+## 6.1.1-wip
+
+## 6.1.0
 
 - `recommended`:
   - added [use_null_aware_elements] (https://github.com/dart-lang/core/issues/899)

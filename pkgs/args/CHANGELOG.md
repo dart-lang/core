@@ -1,4 +1,4 @@
-## 2.8.0
+## 2.8.0-wip
 
 * Allow designating a top-level command or a subcommand as a default one by
   passing `isDefault: true` to `addCommand` or `addSubcommand`.
@@ -6,6 +6,11 @@
   matches. This allows creating command line interfaces where both
   `program command` and `program command subcommand` are runnable
   (Fixes #103).
+* Remove sorting of the subcommands in usage output. Ordering will depend on the
+  order that `addSubCommand` is called.
+* Remove extra newlines following separators when using flags without help text.
+* Throw an exception when parsing argument lists with missing mandatory
+  arguments instead of waiting until they are read.
 
 ## 2.7.0
 

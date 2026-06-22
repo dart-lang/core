@@ -2,6 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// ignore_for_file: deprecated_member_use_from_same_package
+
+@OnPlatform({'browser': Skip('Native-only functionality')})
+library;
+
 import 'dart:io' as io;
 
 import 'package:platform/platform.dart';
@@ -117,9 +122,98 @@ void main() {
       });
     });
 
+    group('handles is* OS: checks', () {
+      test('`isAndroid when operatingSystem is android', () {
+        final platform = FakePlatform(operatingSystem: 'android');
+        expect(platform.isAndroid, isTrue);
+        expect(platform.isFuchsia, isFalse);
+        expect(platform.isIOS, isFalse);
+        expect(platform.isLinux, isFalse);
+        expect(platform.isMacOS, isFalse);
+        expect(platform.isWindows, isFalse);
+        expect(platform.isBrowser, isFalse);
+      });
+
+      test('`isFuchsia when operatingSystem is fuchsia', () {
+        final platform = FakePlatform(operatingSystem: 'fuchsia');
+        expect(platform.isAndroid, isFalse);
+        expect(platform.isFuchsia, isTrue);
+        expect(platform.isIOS, isFalse);
+        expect(platform.isLinux, isFalse);
+        expect(platform.isMacOS, isFalse);
+        expect(platform.isWindows, isFalse);
+        expect(platform.isBrowser, isFalse);
+      });
+
+      test('`isIOS when operatingSystem is ios', () {
+        final platform = FakePlatform(operatingSystem: 'ios');
+        expect(platform.isAndroid, isFalse);
+        expect(platform.isFuchsia, isFalse);
+        expect(platform.isIOS, isTrue);
+        expect(platform.isLinux, isFalse);
+        expect(platform.isMacOS, isFalse);
+        expect(platform.isWindows, isFalse);
+        expect(platform.isBrowser, isFalse);
+      });
+
+      test('isLinux when operatingSystem is linux', () {
+        final platform = FakePlatform(operatingSystem: 'linux');
+        expect(platform.isAndroid, isFalse);
+        expect(platform.isFuchsia, isFalse);
+        expect(platform.isIOS, isFalse);
+        expect(platform.isLinux, isTrue);
+        expect(platform.isMacOS, isFalse);
+        expect(platform.isWindows, isFalse);
+        expect(platform.isBrowser, isFalse);
+      });
+
+      test('`isMacOS when operatingSystem is macos', () {
+        final platform = FakePlatform(operatingSystem: 'macos');
+        expect(platform.isAndroid, isFalse);
+        expect(platform.isFuchsia, isFalse);
+        expect(platform.isIOS, isFalse);
+        expect(platform.isLinux, isFalse);
+        expect(platform.isMacOS, isTrue);
+        expect(platform.isWindows, isFalse);
+        expect(platform.isBrowser, isFalse);
+      });
+
+      test('`isWindows when operatingSystem is windows', () {
+        final platform = FakePlatform(operatingSystem: 'windows');
+        expect(platform.isAndroid, isFalse);
+        expect(platform.isFuchsia, isFalse);
+        expect(platform.isIOS, isFalse);
+        expect(platform.isLinux, isFalse);
+        expect(platform.isMacOS, isFalse);
+        expect(platform.isWindows, isTrue);
+      });
+
+      test('All are false when operatingSystem is unknown', () {
+        final platform = FakePlatform(operatingSystem: 'unknown');
+        expect(platform.isAndroid, isFalse);
+        expect(platform.isFuchsia, isFalse);
+        expect(platform.isIOS, isFalse);
+        expect(platform.isLinux, isFalse);
+        expect(platform.isMacOS, isFalse);
+        expect(platform.isWindows, isFalse);
+        expect(platform.isBrowser, isFalse);
+      });
+
+      test('All are false when operatingSystem is browser', () {
+        final platform = FakePlatform(operatingSystem: 'browser');
+        expect(platform.isAndroid, isFalse);
+        expect(platform.isFuchsia, isFalse);
+        expect(platform.isIOS, isFalse);
+        expect(platform.isLinux, isFalse);
+        expect(platform.isMacOS, isFalse);
+        expect(platform.isWindows, isFalse);
+        expect(platform.isBrowser, isFalse);
+      });
+    });
+
     group('json', () {
       test('fromJson', () {
-        final json = io.File('test/platform.json').readAsStringSync();
+        final json = io.File('test/legacy/platform.json').readAsStringSync();
         fake = FakePlatform.fromJson(json);
         expect(fake.numberOfProcessors, 8);
         expect(fake.pathSeparator, '/');
