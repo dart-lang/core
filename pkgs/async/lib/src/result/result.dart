@@ -57,7 +57,6 @@ abstract class Result<T> {
     ReleaseStreamTransformer<Object>(),
   );
 
-
   /// Creates a `Result` with the result of calling [computation].
   ///
   /// This generates either a [ValueResult] with the value returned by
