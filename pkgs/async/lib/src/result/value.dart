@@ -37,6 +37,9 @@ class ValueResult<T> implements Result<T> {
   Future<T> get asFuture => Future.value(value);
 
   @override
+  T get valueOrRethrow => value;
+
+  @override
   int get hashCode => value.hashCode ^ 0x323f1d61;
 
   @override

@@ -40,6 +40,11 @@ class ErrorResult implements Result<Never> {
   @override
   Future<Never> get asFuture => Future<Never>.error(error, stackTrace);
 
+  @override
+  Never get valueOrRethrow {
+    Error.throwWithStackTrace(error, stackTrace);
+  }
+
   /// Calls an error handler with the error and stacktrace.
   ///
   /// An async error handler function is either a function expecting two

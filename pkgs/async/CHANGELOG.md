@@ -2,6 +2,7 @@
 
 - Add a `Duration` argument to `RestartableTimer.reset` to allow restarting
   with variable intervals.
+- Add `valueOrRethrow` getter to `Result`.
 
 ## 2.13.1
 

@@ -131,6 +131,29 @@ void main() {
     );
   });
 
+  group('valueOrRethrow', () {
+    test('returns value for ValueResult', () {
+      var result = Result<int>.value(42);
+      expect(result.valueOrRethrow, equals(42));
+    });
+
+    test('throws error for ErrorResult', () {
+      var result = Result<int>.error('BAD', stack);
+      expect(() => result.valueOrRethrow, throwsA('BAD'));
+    });
+
+    test('throws error with stack trace for ErrorResult', () {
+      var result = Result<int>.error('BAD', stack);
+      try {
+        result.valueOrRethrow;
+        fail('Expected error to be thrown');
+      } catch (e, s) {
+        expect(e, equals('BAD'));
+        expect(s, same(stack));
+      }
+    });
+  });
+
   test('capture future value', () {
     var value = Future<int>.value(42);
     Result.capture(value).then(
