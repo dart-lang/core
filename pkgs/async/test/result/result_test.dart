@@ -149,7 +149,7 @@ void main() {
         fail('Expected error to be thrown');
       } catch (e, s) {
         expect(e, equals('BAD'));
-        expect(s, same(stack));
+        expect(Trace.from(s).toString(), equals(stack.toString()));
       }
     });
   });
