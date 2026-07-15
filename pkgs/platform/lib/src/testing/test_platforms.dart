@@ -15,6 +15,7 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 import '../platform_apis.dart';
+import '../platforms.dart' show PlatformIsOSMixin;
 import '../util/json_keys.dart' as json_key;
 import 'zone_overrides.dart' as overrides;
 
@@ -23,7 +24,7 @@ import 'zone_overrides.dart' as overrides;
 /// Implements [Platform], but allows a [TestBrowserPlatform] or
 /// [TestNativePlatform] to be the non-`null` platform object.
 @visibleForTesting
-final class TestPlatform extends PlatformBase {
+final class TestPlatform extends PlatformBase with PlatformIsOSMixin {
   /// The current native platform, if running on a native platform.
   @override
   final TestNativePlatform? nativePlatform;
