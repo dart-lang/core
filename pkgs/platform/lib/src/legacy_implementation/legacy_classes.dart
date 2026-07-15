@@ -7,7 +7,6 @@
 @Deprecated('Import package:platform/testing.dart for testing')
 library;
 
-import 'dart:async';
 import 'dart:convert' show JsonDecoder, JsonEncoder;
 
 import '../platform_apis.dart'

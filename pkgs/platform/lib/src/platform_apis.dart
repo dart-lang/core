@@ -7,7 +7,6 @@
 // ignore: unnecessary_library_name - Used by DartDoc
 library platform_apis;
 
-import '../testing.dart';
 import 'legacy_implementation/legacy_platform_members.dart'
     show LegacyPlatformMembers;
 import 'platform_specific/unknown_platform.dart'
