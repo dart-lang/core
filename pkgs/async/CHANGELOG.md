@@ -9,6 +9,8 @@
   the group close without being explicitly removed.
 - Run `dart format` with the new style.
 
+* Add `CancelableOperationGroup`.
+
 ## 2.13.0
 
 - Fix type check and cast in SubscriptionStream's cancelOnError wrapper

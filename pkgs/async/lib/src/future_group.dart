@@ -4,6 +4,12 @@
 
 import 'dart:async';
 
+import 'cancelable_operation.dart';
+
+/// A sentinel object indicating that a member of a [FutureGroup] was canceled
+/// rather than completing normally.
+final _canceledResult = Object();
+
 /// A collection of futures waits until all added [Future]s complete.
 ///
 /// Futures are added to the group with [add]. Once you're finished adding
@@ -61,12 +67,26 @@ class FutureGroup<T> implements Sink<Future<T>> {
   /// The values emitted by the futures that have been added to the group, in
   /// the order they were added.
   ///
-  /// The slots for futures that haven't completed yet are `null`.
-  final _values = <T?>[];
+  /// This is type `Object?` rather than `T?` so it can contain
+  /// [_canceledResult]. The slots for futures that haven't completed yet are
+  /// `null`.
+  final _values = <Object?>[];
 
   /// Wait for [task] to complete.
   @override
-  void add(Future<T> task) {
+  void add(Future<T> task) => _add(task);
+
+  /// Wait for [task] to complete.
+  ///
+  /// If [task] is canceled, it's removed from the group without adding a value
+  /// to [future].
+  void addCancelable(CancelableOperation<T> task) {
+    _add(task
+        .then((value) => value, onCancel: () => _canceledResult)
+        .valueOrCancellation());
+  }
+
+  void _add(Future<Object?> task) {
     if (_closed) throw StateError('The FutureGroup is closed.');
 
     // Ensure that future values are put into [values] in the same order they're
@@ -88,7 +108,10 @@ class FutureGroup<T> implements Sink<Future<T>> {
 
       if (!_closed) return null;
       if (onIdleController != null) onIdleController.close();
-      _completer.complete(_values.whereType<T>().toList());
+      _completer.complete([
+        for (var value in _values)
+          if (value != _canceledResult) value as T
+      ]);
     }).catchError((Object error, StackTrace stackTrace) {
       if (_completer.isCompleted) return null;
       _completer.completeError(error, stackTrace);
@@ -102,6 +125,9 @@ class FutureGroup<T> implements Sink<Future<T>> {
     _closed = true;
     if (_pending != 0) return;
     if (_completer.isCompleted) return;
-    _completer.complete(_values.whereType<T>().toList());
+    _completer.complete([
+      for (var value in _values)
+        if (value != _canceledResult) value as T
+    ]);
   }
 }
