@@ -4,6 +4,7 @@
   with variable intervals.
 - Mark `Result` as `sealed`, and  `ValueResult`, and `ErrorResult` as `final`
   classes.
+- Add `value` getter to `Result`.
 
 ## 2.13.1
 
