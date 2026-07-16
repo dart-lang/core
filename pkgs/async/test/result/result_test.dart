@@ -131,21 +131,21 @@ void main() {
     );
   });
 
-  group('valueOrRethrow', () {
+  group('value', () {
     test('returns value for ValueResult', () {
       var result = Result<int>.value(42);
-      expect(result.valueOrRethrow, equals(42));
+      expect(result.value, equals(42));
     });
 
     test('throws error for ErrorResult', () {
       var result = Result<int>.error('BAD', stack);
-      expect(() => result.valueOrRethrow, throwsA('BAD'));
+      expect(() => result.value, throwsA('BAD'));
     });
 
     test('throws error with stack trace for ErrorResult', () {
       var result = Result<int>.error('BAD', stack);
       try {
-        result.valueOrRethrow;
+        result.value;
         fail('Expected error to be thrown');
       } catch (e, s) {
         expect(e, equals('BAD'));
