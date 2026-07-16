@@ -23,7 +23,7 @@ part 'value.dart';
 ///
 /// A [Future] represents a potential result, one that might not have been
 /// computed yet, and a [Result] is always a completed and available result.
-abstract final class Result<T> {
+sealed class Result<T> {
   /// A stream transformer that captures a stream of events into [Result]s.
   ///
   /// The result of the transformation is a stream of [Result] values and no
