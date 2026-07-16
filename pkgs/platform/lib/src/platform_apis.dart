@@ -14,6 +14,7 @@ import 'platform_specific/unknown_platform.dart'
     if (dart.library.js_interop) 'platform_specific/web_platform.dart'
     as impl
     show platformInstance;
+import 'platforms.dart' show PlatformIsOSMembers;
 import 'testing/zone_overrides.dart' as overrides;
 
 /// Dart runtime platform information.
@@ -26,7 +27,9 @@ import 'testing/zone_overrides.dart' as overrides;
 ///
 /// If running in a browser, the [browserPlatform] objects is
 /// non-`null` and provides information about the browser.
-abstract final class Platform with LegacyPlatformMembers {
+abstract final class Platform
+    with LegacyPlatformMembers
+    implements PlatformIsOSMembers {
   /// The current [Platform] information of the running program.
   @pragma('dart2js:prefer-inline')
   static Platform get current =>
