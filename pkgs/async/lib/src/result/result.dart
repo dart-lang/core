@@ -7,10 +7,11 @@ import 'dart:async';
 import '../stream_sink_transformer.dart';
 import 'capture_sink.dart';
 import 'capture_transformer.dart';
-import 'error.dart';
 import 'release_sink.dart';
 import 'release_transformer.dart';
-import 'value.dart';
+
+part 'error.dart';
+part 'value.dart';
 
 /// The result of a computation.
 ///
@@ -22,7 +23,7 @@ import 'value.dart';
 ///
 /// A [Future] represents a potential result, one that might not have been
 /// computed yet, and a [Result] is always a completed and available result.
-abstract class Result<T> {
+sealed class Result<T> {
   /// A stream transformer that captures a stream of events into [Result]s.
   ///
   /// The result of the transformation is a stream of [Result] values and no
