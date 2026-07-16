@@ -38,7 +38,7 @@ final class ErrorResult implements Result<Never> {
   Future<Never> get asFuture => Future<Never>.error(error, stackTrace);
 
   @override
-  Never get valueOrRethrow {
+  Never get value {
     Error.throwWithStackTrace(error, stackTrace);
   }
 

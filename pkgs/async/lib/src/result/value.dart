@@ -7,6 +7,7 @@ part of 'result.dart';
 /// A result representing a returned value.
 final class ValueResult<T> implements Result<T> {
   /// The result of a successful computation.
+  @override
   final T value;
 
   @override
@@ -32,9 +33,6 @@ final class ValueResult<T> implements Result<T> {
 
   @override
   Future<T> get asFuture => Future.value(value);
-
-  @override
-  T get valueOrRethrow => value;
 
   @override
   int get hashCode => value.hashCode ^ 0x323f1d61;
