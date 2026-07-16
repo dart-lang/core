@@ -12,10 +12,6 @@
   Legacy APIs are deprecated, but retained and emulated using the new API.
   Use `dart fix` to migrate off the deprecated API.
 
-## 3.1.7-wip
-
-- Run `dart format` with the new style.
-
 ## 3.1.6
 
 * Move to `dart-lang/core` monorepo.
