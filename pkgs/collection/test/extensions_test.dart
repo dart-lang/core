@@ -2393,6 +2393,19 @@ void main() {
       });
     });
   });
+
+  group('Map', () {
+    group('pairs', () {
+      test('returns an empty list for an empty map', () {
+        expect(const <int, int>{}.pairs, isEmpty);
+      });
+
+      test('returns a pair for every entry in the map', () {
+        expect(const {1: 2, 3: 4, 5: 6}.pairs,
+            equals(const [(1, 2), (3, 4), (5, 6)]));
+      });
+    });
+  });
 }
 
 /// Creates a plain iterable not implementing any other class.
