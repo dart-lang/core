@@ -103,6 +103,24 @@ class WindowsStyle extends InternalStyle {
 
   @override
   Uri absolutePathToUri(String path) {
+    // Strip Windows Extended-Length Path prefixes so that `toUri()` aligns
+    // with `Uri.file()` / `Uri.directory()` from `dart:io`.
+    //
+    // `\\?\C:\path`           -> `C:\path`
+    // `\\?\UNC\server\share` -> `\\server\share`
+    //
+    // The `\\?\` prefix is a Win32 API artifact (enables paths > 260 chars
+    // and disables DOS device-name interpretation). It is not user intent and
+    // should not leak into the resulting file URI. See:
+    // https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#win32-file-namespaces
+    if (path.startsWith(r'\\?\')) {
+      if (path.startsWith(r'\\?\UNC\')) {
+        path = r'\\' + path.substring(8);
+      } else {
+        path = path.substring(4);
+      }
+    }
+
     final parsed = ParsedPath.parse(path, this);
     if (parsed.root!.startsWith(r'\\')) {
       // Network paths become "file://server/share/path/to/file".
@@ -119,10 +137,7 @@ class WindowsStyle extends InternalStyle {
       }
 
       return Uri(
-        scheme: 'file',
-        host: rootParts.first,
-        pathSegments: parsed.parts,
-      );
+          scheme: 'file', host: rootParts.first, pathSegments: parsed.parts);
     } else {
       // Drive-letter paths become "file:///C:/path/to/file".
 
@@ -136,10 +151,8 @@ class WindowsStyle extends InternalStyle {
 
       // Get rid of the trailing "\" in "C:\" because the URI constructor will
       // add a separator on its own.
-      parsed.parts.insert(
-        0,
-        parsed.root!.replaceAll('/', '').replaceAll('\\', ''),
-      );
+      parsed.parts
+          .insert(0, parsed.root!.replaceAll('/', '').replaceAll('\\', ''));
 
       return Uri(scheme: 'file', pathSegments: parsed.parts);
     }
