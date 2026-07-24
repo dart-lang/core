@@ -7,13 +7,14 @@
 library platform_impl;
 
 import '../platform_apis.dart' as apis;
+import '../platforms.dart' show PlatformIsOSMixin;
 import 'io_native_platform.dart';
 
 const Platform platformInstance = Platform._();
 
 /// Native (`dart:io`-based) implementation of [apis.Platform] and
 /// [apis.NativePlatform].
-final class Platform extends apis.PlatformBase {
+final class Platform extends apis.PlatformBase with PlatformIsOSMixin {
   /// The current native platform, if running on a native platform.
   @pragma('vm:prefer-inline')
   @override

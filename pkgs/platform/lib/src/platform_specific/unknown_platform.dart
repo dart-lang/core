@@ -8,11 +8,12 @@
 library platform_impl;
 
 import '../platform_apis.dart' as apis;
+import '../platforms.dart' show PlatformIsOSMixin;
 
 const platformInstance = Platform._();
 
 /// Non-web, non-native Platform implementation.
-final class Platform extends apis.PlatformBase {
+final class Platform extends apis.PlatformBase with PlatformIsOSMixin {
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
   @override

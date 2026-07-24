@@ -9,6 +9,7 @@
 library platform_impl;
 
 import '../platform_apis.dart' as apis;
+import '../platforms.dart' show PlatformIsOSMixin;
 import 'web_browser_platform.dart';
 
 const Platform platformInstance = Platform._();
@@ -16,7 +17,7 @@ const Platform platformInstance = Platform._();
 /// Web/JS based implementation of [apis.Platform].
 ///
 /// Uses [BrowserPlatform] to implement [apis.BrowserPlatform].
-final class Platform extends apis.PlatformBase {
+final class Platform extends apis.PlatformBase with PlatformIsOSMixin {
   /// The current native platform, if running on a native platform.
   @override
   @pragma('dart2js:prefer-inline')

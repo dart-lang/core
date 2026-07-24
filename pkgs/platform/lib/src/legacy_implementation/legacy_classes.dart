@@ -11,6 +11,7 @@ import 'dart:convert' show JsonDecoder, JsonEncoder;
 
 import '../platform_apis.dart'
     show BrowserPlatform, NativePlatform, Platform, PlatformBase;
+import '../platforms.dart' show PlatformIsOSMixin;
 // ignore: invalid_use_of_visible_for_testing_member
 import '../testing/test_platforms.dart' show TestNativePlatform;
 
@@ -41,7 +42,7 @@ import '../util/json_keys.dart'
 /// > the non-deprecated API, and use `TestNativePlatform` to
 /// > give custom values to native platform properties.
 @Deprecated('Use TestNativePlatform instead')
-final class FakePlatform extends PlatformBase {
+final class FakePlatform extends PlatformBase with PlatformIsOSMixin {
   // ignore: invalid_use_of_visible_for_testing_member
   final TestNativePlatform _nativePlatform;
 
@@ -257,7 +258,7 @@ final class FakePlatform extends PlatformBase {
 }
 
 @Deprecated('Use NativePlatform.current! instead')
-final class LocalPlatform extends PlatformBase {
+final class LocalPlatform extends PlatformBase with PlatformIsOSMixin {
   static const _instance = LocalPlatform._();
   @Deprecated('Use NativePlatform.current! instead')
   const factory LocalPlatform() = _LocalPlatformInstance;
