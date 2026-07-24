@@ -144,6 +144,7 @@ void main() {
 
     test('throws error with stack trace for ErrorResult', () {
       var result = Result<int>.error('BAD', stack);
+      // Use try/catch over throwsA to check expectations about the stack trace
       try {
         result.value;
         fail('Expected error to be thrown');
