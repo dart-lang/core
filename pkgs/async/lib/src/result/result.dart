@@ -221,6 +221,16 @@ sealed class Result<T> {
   /// Calls the sink's `add` or `addError` method as appropriate.
   void addTo(EventSink<T> sink);
 
+  /// The value of this result, or throws the error if this is an error result.
+  ///
+  /// If this is a [ValueResult], returns its value.
+  /// If this is an [ErrorResult], throws its error with its stack trace
+  /// using [Error.throwWithStackTrace].
+  ///
+  /// To read the value without the risk of an exception first check [isValue]
+  /// or use [asValue] to get `null` instead.
+  T get value;
+
   /// A future that has been completed with this result as a value or an error.
   Future<T> get asFuture;
 }
