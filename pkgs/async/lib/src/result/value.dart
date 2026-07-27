@@ -7,6 +7,7 @@ part of 'result.dart';
 /// A result representing a returned value.
 final class ValueResult<T> implements Result<T> {
   /// The result of a successful computation.
+  @override
   final T value;
 
   @override
