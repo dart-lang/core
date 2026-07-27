@@ -29,9 +29,9 @@ void main([List<String>? args]) {
     test('operations', () {
       var flag = '\u{1F1E9}\u{1F1F0}'; // Regional Indicators "DK".
       var string = 'Hi $flag!';
-      expect(string.length, 8);
+      expect(string, hasLength(8));
       var cs = gc(string);
-      expect(cs.length, 5);
+      expect(cs, hasLength(5));
       expect(cs.toList(), ['H', 'i', ' ', flag, '!']);
       expect(cs.skip(2).toString(), ' $flag!');
       expect(cs.skipLast(2).toString(), 'Hi ');
@@ -41,9 +41,9 @@ void main([List<String>? args]) {
       expect(cs.characterAt(1).toString(), 'i');
       expect(cs.characterAt(3).toString(), flag);
 
-      expect(cs.contains('\u{1F1E9}'), false);
-      expect(cs.contains(flag), true);
-      expect(cs.contains('$flag!'), false);
+      expect(cs, isNot(contains('\u{1F1E9}')));
+      expect(cs, contains(flag));
+      expect(cs, isNot(contains('$flag!')));
       expect(cs.containsAll(gc('$flag!')), true);
 
       expect(cs.takeWhile((x) => x != ' ').toString(), 'Hi');
@@ -82,24 +82,24 @@ void main([List<String>? args]) {
   group('CharacterRange', () {
     test('new', () {
       var range = CharacterRange('abc');
-      expect(range.isEmpty, true);
+      expect(range, isEmpty);
       expect(range.moveNext(), true);
       expect(range.current, 'a');
     });
     group('new.at', () {
       test('simple', () {
         var range = CharacterRange.at('abc', 0);
-        expect(range.isEmpty, true);
+        expect(range, isEmpty);
         expect(range.moveNext(), true);
         expect(range.current, 'a');
 
         range = CharacterRange.at('abc', 1);
-        expect(range.isEmpty, true);
+        expect(range, isEmpty);
         expect(range.moveNext(), true);
         expect(range.current, 'b');
 
         range = CharacterRange.at('abc', 1, 2);
-        expect(range.isEmpty, false);
+        expect(range, isNotEmpty);
         expect(range.current, 'b');
         expect(range.moveNext(), true);
 
@@ -118,30 +118,30 @@ void main([List<String>? args]) {
         var rainbowFlag = '$flag$white$zwj$rainbow';
         var string = '-$rainbowFlag-';
         var range = CharacterRange.at(string, 1);
-        expect(range.isEmpty, true);
+        expect(range, isEmpty);
         expect(range.moveNext(), true);
         expect(range.current, rainbowFlag);
 
         range = range = CharacterRange.at(string, 2);
-        expect(range.isEmpty, false);
+        expect(range, isNotEmpty);
         expect(range.current, rainbowFlag);
 
         range = range = CharacterRange.at(string, 0, 2);
-        expect(range.isEmpty, false);
+        expect(range, isNotEmpty);
         expect(range.current, '-$rainbowFlag');
 
         range = range = CharacterRange.at(string, 0, 2);
-        expect(range.isEmpty, false);
+        expect(range, isNotEmpty);
         expect(range.current, '-$rainbowFlag');
 
         range =
             range = CharacterRange.at(string, 2, '-$rainbowFlag'.length - 1);
-        expect(range.isEmpty, false);
+        expect(range, isNotEmpty);
         expect(range.current, rainbowFlag);
         expect(range.stringBeforeLength, 1);
 
         range = range = CharacterRange.at(string, 0, string.length);
-        expect(range.isEmpty, false);
+        expect(range, isNotEmpty);
         expect(range.current, string);
       });
     });
@@ -244,7 +244,7 @@ void expectGC(Characters actual, List<String> expected) {
   expect(actual.string, text);
   expect(actual.toString(), text);
   expect(actual.toList(), expected);
-  expect(actual.length, expected.length);
+  expect(actual, hasLength(expected.length));
   if (expected.isNotEmpty) {
     expect(actual.first, expected.first);
     expect(actual.last, expected.last);
@@ -261,10 +261,10 @@ void expectGC(Characters actual, List<String> expected) {
   expect(actual.isNotEmpty, expected.isNotEmpty);
   expect(actual.contains(''), false);
   for (var char in expected) {
-    expect(actual.contains(char), true);
+    expect(actual, contains(char));
   }
   for (var i = 1; i < expected.length; i++) {
-    expect(actual.contains(expected[i - 1] + expected[i]), false);
+    expect(actual, isNot(contains(expected[i - 1] + expected[i])));
   }
   expect(actual.skip(1).toList(), expected.skip(1).toList());
   expect(actual.take(1).toList(), expected.take(1).toList());
@@ -324,7 +324,7 @@ void expectGC(Characters actual, List<String> expected) {
 
   // Iteration.
   var it = actual.iterator;
-  expect(it.isEmpty, true);
+  expect(it, isEmpty);
   for (var i = 0; i < expected.length; i++) {
     expect(it.moveNext(), true);
     expect(it.current, expected[i]);
@@ -340,7 +340,7 @@ void expectGC(Characters actual, List<String> expected) {
     expect(it.current, expected[i]);
   }
   expect(it.moveBack(), false);
-  expect(it.isEmpty, true);
+  expect(it, isEmpty);
 
   // GraphemeClusters operations.
   expect(actual.toUpperCase().string, text.toUpperCase());
@@ -379,10 +379,10 @@ void expectGC(Characters actual, List<String> expected) {
       var back = false;
       if (pos < 0) {
         expect(lastMove, false);
-        expect(it.isEmpty, true);
+        expect(it, isEmpty);
       } else if (pos >= expected.length) {
         expect(lastMove, false);
-        expect(it.isEmpty, true);
+        expect(it, isEmpty);
         back = true;
       } else {
         expect(lastMove, true);
@@ -413,48 +413,48 @@ void testParts(
   var cs = gc('$a$b$c$d$e');
   test('$cs', () {
     var it = cs.iterator;
-    expect(it.isEmpty, true);
-    expect(it.isNotEmpty, false);
+    expect(it, isEmpty);
+    expect(it, isEmpty);
     expect(it.current, '');
 
     // moveNext().
     expect(it.moveNext(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$a');
     expect(it.moveNext(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$b');
     expect(it.moveNext(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$c');
     expect(it.moveNext(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$d');
     expect(it.moveNext(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$e');
     expect(it.moveNext(), false);
-    expect(it.isEmpty, true);
+    expect(it, isEmpty);
     expect(it.current, '');
 
     // moveBack().
     expect(it.moveBack(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$e');
     expect(it.moveBack(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$d');
     expect(it.moveBack(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$c');
     expect(it.moveBack(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$b');
     expect(it.moveBack(), true);
-    expect(it.isEmpty, false);
+    expect(it, isNotEmpty);
     expect(it.current, '$a');
     expect(it.moveBack(), false);
-    expect(it.isEmpty, true);
+    expect(it, isEmpty);
     expect(it.current, '');
 
     // moveNext(int).
@@ -723,10 +723,10 @@ void testParts(
     ci.dropFirst();
     ci.dropLast();
     expect(ci.currentCharacters, cr + pattern + lf + pic + pattern + zwj + pic);
-    expect(ci.currentCharacters.length, 7);
+    expect(ci.currentCharacters, hasLength(7));
     ri = ci.replaceAll(pattern, non)!;
     expect(ri.currentCharacters, cr + lf + pic + zwj + pic);
-    expect(ri.currentCharacters.length, 2);
+    expect(ri.currentCharacters, hasLength(2));
     ci.dropFirst();
     ci.dropLast(5);
     expect(ci.currentCharacters, pattern);

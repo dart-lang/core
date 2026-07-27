@@ -25,8 +25,8 @@ void main() {
     test('set affects nothing for uncanonicalizable key', () {
       map['foo'] = 'value';
       expect(map['foo'], isNull);
-      expect(map.containsKey('foo'), isFalse);
-      expect(map.length, equals(0));
+      expect(map, isNot(contains('foo')));
+      expect(map, hasLength(0));
     });
 
     test('canonicalizes keys for addAll', () {
@@ -38,7 +38,7 @@ void main() {
 
     test('uses the final value for addAll collisions', () {
       map.addAll({'1': 'value 1', '01': 'value 2', '001': 'value 3'});
-      expect(map.length, equals(1));
+      expect(map, hasLength(1));
       expect(map['0001'], equals('value 3'));
     });
 
@@ -51,12 +51,12 @@ void main() {
 
     test('canonicalizes keys for containsKey', () {
       map['1'] = 'value';
-      expect(map.containsKey('01'), isTrue);
-      expect(map.containsKey('2'), isFalse);
+      expect(map, contains('01'));
+      expect(map, isNot(contains('2')));
     });
 
     test('containsKey returns false for uncanonicalizable key', () {
-      expect(map.containsKey('foo'), isFalse);
+      expect(map, isNot(contains('foo')));
     });
 
     test('canonicalizes keys for putIfAbsent', () {
@@ -81,34 +81,34 @@ void main() {
 
     test('containsValue returns whether a value is in the map', () {
       map['1'] = 'value';
-      expect(map.containsValue('value'), isTrue);
-      expect(map.containsValue('not value'), isFalse);
+      expect(map, containsValue('value'));
+      expect(map, isNot(containsValue('not value')));
     });
 
     test('isEmpty returns whether the map is empty', () {
-      expect(map.isEmpty, isTrue);
+      expect(map, isEmpty);
       map['1'] = 'value';
-      expect(map.isEmpty, isFalse);
+      expect(map, isNotEmpty);
       map.remove('01');
-      expect(map.isEmpty, isTrue);
+      expect(map, isEmpty);
     });
 
     test("isNotEmpty returns whether the map isn't empty", () {
-      expect(map.isNotEmpty, isFalse);
+      expect(map, isEmpty);
       map['1'] = 'value';
-      expect(map.isNotEmpty, isTrue);
+      expect(map, isNotEmpty);
       map.remove('01');
-      expect(map.isNotEmpty, isFalse);
+      expect(map, isEmpty);
     });
 
     test('length returns the number of pairs in the map', () {
-      expect(map.length, equals(0));
+      expect(map, hasLength(0));
       map['1'] = 'value 1';
-      expect(map.length, equals(1));
+      expect(map, hasLength(1));
       map['01'] = 'value 01';
-      expect(map.length, equals(1));
+      expect(map, hasLength(1));
       map['02'] = 'value 02';
-      expect(map.length, equals(2));
+      expect(map, hasLength(2));
     });
 
     test('uses original keys for keys', () {
@@ -216,7 +216,7 @@ void main() {
         '01': 'value 2',
         '001': 'value 3',
       }, int.parse);
-      expect(map.length, equals(1));
+      expect(map, hasLength(1));
       expect(map['0001'], equals('value 3'));
     });
   });
@@ -237,7 +237,7 @@ void main() {
         {'1': 'value 1', '01': 'value 2', '001': 'value 3'}.entries,
         int.parse,
       );
-      expect(map.length, equals(1));
+      expect(map, hasLength(1));
       expect(map['0001'], equals('value 3'));
     });
   });

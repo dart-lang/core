@@ -37,13 +37,13 @@ void main() {
   test('should function as an empty map when no maps are passed', () {
     var empty = CombinedMapView([]);
     expect(empty, isEmpty);
-    expect(empty.length, 0);
+    expect(empty, hasLength(0));
   });
 
   test('should function as an empty map when only empty maps are passed', () {
     var empty = CombinedMapView([{}, {}, {}]);
     expect(empty, isEmpty);
-    expect(empty.length, 0);
+    expect(empty, hasLength(0));
   });
 
   test('should reflect underlying changes back to the combined map', () {
@@ -74,7 +74,7 @@ void main() {
 
 void _testReadMap(Map<int, int> original, Map<int, int> wrapped, String name) {
   test('$name length', () {
-    expect(wrapped.length, equals(original.length));
+    expect(wrapped, hasLength(original.length));
   });
 
   test('$name isEmpty', () {

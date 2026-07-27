@@ -45,6 +45,28 @@ class FooCommand extends Command {
   }
 }
 
+class BarCommand extends Command {
+  bool hasRun = false;
+
+  @override
+  final name = 'bar';
+
+  @override
+  final description = 'Set another value.';
+
+  @override
+  final takesArguments = false;
+
+  BarCommand() {
+    argParser.addFlag('flag', help: 'Some flag');
+  }
+
+  @override
+  void run() {
+    hasRun = true;
+  }
+}
+
 class ValueCommand extends Command<int> {
   @override
   final name = 'foo';

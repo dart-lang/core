@@ -104,4 +104,11 @@ class AllowAnythingParser implements ArgParser {
 
   @override
   Option? findByNameOrAlias(String name) => null;
+
+  @override
+  String? get defaultCommand => null;
+
+  @override
+  set defaultCommand(String? value) => throw UnsupportedError(
+      "ArgParser.allowAnything().defaultCommand= isn't supported.");
 }

@@ -31,9 +31,19 @@ class CommandRunner<T> {
 
   /// A single-line template for how to invoke this executable.
   ///
-  /// Defaults to `"$executableName <command> arguments`". Subclasses can
-  /// override this for a more specific template.
-  String get invocation => '$executableName <command> [arguments]';
+  /// Defaults to `"$executableName <command> arguments"` (if there is no
+  /// default command) or `"$executableName [<command>] arguments"` (otherwise).
+  ///
+  /// Subclasses can override this for a more specific template.
+  String get invocation {
+    var command = '<command>';
+
+    if (argParser.defaultCommand != null) {
+      command = '[$command]';
+    }
+
+    return '$executableName $command [arguments]';
+  }
 
   /// Generates a string displaying usage information for the executable.
   ///
@@ -56,9 +66,10 @@ class CommandRunner<T> {
     );
     buffer.writeln(_wrap('Global options:'));
     buffer.writeln('${argParser.usage}\n');
-    buffer.writeln(
-      '${_getCommandUsage(_commands, lineLength: argParser.usageLineLength)}\n',
-    );
+    buffer.writeln(_getCommandUsage(_commands,
+        lineLength: argParser.usageLineLength,
+        defaultCommand: argParser.defaultCommand));
+    buffer.writeln();
     buffer.write(_wrap(
         'Run "$executableName help <command>" for more information about a '
         'command.'));
@@ -105,11 +116,24 @@ class CommandRunner<T> {
       throw UsageException(message, _usageWithoutDescription);
 
   /// Adds [Command] as a top-level command to this runner.
-  void addCommand(Command<T> command) {
+  ///
+  /// If [isDefault] is `true` then added command will be designated as a
+  /// default one. Default command is selected if no other sibling command
+  /// matches. Only a single leaf-command can be designated as a default.
+  void addCommand(Command<T> command, {bool isDefault = false}) {
+    if (isDefault && command.subcommands.isNotEmpty) {
+      throw ArgumentError('default command must be a leaf command');
+    }
+    if (isDefault && argParser.defaultCommand != null) {
+      throw StateError('default command already defined');
+    }
     var names = [command.name, ...command.aliases];
     for (var name in names) {
       _commands[name] = command;
       argParser.addCommand(name, command.argParser);
+    }
+    if (isDefault) {
+      argParser.defaultCommand = command.name;
     }
     command._runner = this;
   }
@@ -288,9 +312,13 @@ abstract class Command<T> {
     parents.add(runner!.executableName);
 
     var invocation = parents.reversed.join(' ');
-    return _subcommands.isNotEmpty
-        ? '$invocation <subcommand> [arguments]'
-        : '$invocation [arguments]';
+    if (argParser.defaultCommand != null) {
+      return '$invocation [<subcommand>] [arguments]';
+    } else if (_subcommands.isNotEmpty) {
+      return '$invocation <subcommand> [arguments]';
+    } else {
+      return '$invocation [arguments]';
+    }
   }
 
   /// The command's parent command, if this is a subcommand.
@@ -363,11 +391,10 @@ abstract class Command<T> {
 
     if (_subcommands.isNotEmpty) {
       buffer.writeln();
-      buffer.writeln(_getCommandUsage(
-        _subcommands,
-        isSubcommand: true,
-        lineLength: length,
-      ));
+      buffer.writeln(_getCommandUsage(_subcommands,
+          isSubcommand: true,
+          lineLength: length,
+          defaultCommand: argParser.defaultCommand));
     }
 
     buffer.writeln();
@@ -446,11 +473,25 @@ abstract class Command<T> {
   }
 
   /// Adds [Command] as a subcommand of this.
-  void addSubcommand(Command<T> command) {
+  ///
+  /// If [isDefault] is `true` then added command will be designated as a
+  /// default one. Default subcommand is selected if no other sibling subcommand
+  /// matches. Only a single leaf-command can be designated as a default.
+  void addSubcommand(Command<T> command, {bool isDefault = false}) {
+    if (isDefault && command.subcommands.isNotEmpty) {
+      throw ArgumentError('default command must be a leaf command');
+    }
+    if (isDefault && argParser.defaultCommand != null) {
+      throw StateError('default command already defined');
+    }
+
     var names = [command.name, ...command.aliases];
     for (var name in names) {
       _subcommands[name] = command;
       argParser.addCommand(name, command.argParser);
+    }
+    if (isDefault) {
+      argParser.defaultCommand = command.name;
     }
     command._parent = this;
   }
@@ -470,8 +511,10 @@ abstract class Command<T> {
 ///
 /// [isSubcommand] indicates whether the commands should be called "commands" or
 /// "subcommands".
+///
+/// [defaultCommand] indicate which command (if any) is designated as default.
 String _getCommandUsage(Map<String, Command> commands,
-    {bool isSubcommand = false, int? lineLength}) {
+    {bool isSubcommand = false, int? lineLength, String? defaultCommand}) {
   // Don't include aliases.
   var names =
       commands.keys.where((name) => !commands[name]!.aliases.contains(name));
@@ -480,8 +523,8 @@ String _getCommandUsage(Map<String, Command> commands,
   var visible = names.where((name) => !commands[name]!.hidden);
   if (visible.isNotEmpty) names = visible;
 
-  // Show the commands alphabetically.
-  names = names.toList()..sort();
+  // Show names in the order they were first added
+  names = names.toList();
 
   // Group the commands by category.
   var commandsByCategory = SplayTreeMap<String, List<Command>>();
@@ -502,7 +545,8 @@ String _getCommandUsage(Map<String, Command> commands,
       buffer.write(category);
     }
     for (var command in commandsByCategory[category]!) {
-      var lines = wrapTextAsLines(command.summary,
+      var defaultMarker = defaultCommand == command.name ? '(default) ' : '';
+      var lines = wrapTextAsLines(defaultMarker + command.summary,
           start: columnStart, length: lineLength);
       buffer.writeln();
       buffer.write('  ${padRight(command.name, length)}   ${lines.first}');
@@ -513,6 +557,15 @@ String _getCommandUsage(Map<String, Command> commands,
         buffer.write(line);
       }
     }
+  }
+
+  if (defaultCommand != null) {
+    buffer.writeln();
+    buffer.writeln();
+    buffer.write(wrapText(
+        'Default command ($defaultCommand) will be selected if no command'
+        ' is explicitly specified.',
+        length: lineLength));
   }
 
   return buffer.toString();

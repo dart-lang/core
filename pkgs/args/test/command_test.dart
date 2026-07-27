@@ -16,7 +16,7 @@ void main() {
     CommandRunner<void>('test', 'A test command runner.').addCommand(foo);
   });
 
-  group('.invocation has a sane default', () {
+  group('.invocation has a sensible default', () {
     test('without subcommands', () {
       expect(foo.invocation, equals('test foo [arguments]'));
     });
@@ -24,6 +24,11 @@ void main() {
     test('with subcommands', () {
       foo.addSubcommand(AsyncCommand());
       expect(foo.invocation, equals('test foo <subcommand> [arguments]'));
+    });
+
+    test('with default subcommand', () {
+      foo.addSubcommand(AsyncCommand(), isDefault: true);
+      expect(foo.invocation, equals('test foo [<subcommand>] [arguments]'));
     });
 
     test('for a subcommand', () {
@@ -140,6 +145,24 @@ Usage: longtest long [arguments]
 Run "longtest help" to see global
 options.'''));
     });
+
+    test('prints default subcommand', () {
+      foo.addSubcommand(BarCommand(), isDefault: true);
+      foo.addSubcommand(AsyncCommand());
+      expect(foo.usage, equals('''
+Set a value.
+
+Usage: test foo [<subcommand>] [arguments]
+-h, --help    Print this usage information.
+
+Available subcommands:
+  bar     (default) Set another value.
+  async   Set a value asynchronously.
+
+Default command (bar) will be selected if no command is explicitly specified.
+
+Run "test help" to see global options.'''));
+    });
   });
 
   test('usageException splits up the message and usage', () {
@@ -154,5 +177,20 @@ Run "test help" to see global options.'''));
   test('considers a command hidden if all its subcommands are hidden', () {
     foo.addSubcommand(HiddenCommand());
     expect(foo.hidden, isTrue);
+  });
+
+  group('.addSubcommand', () {
+    test('only one subcommand can be default', () {
+      foo.addSubcommand(BarCommand(), isDefault: true);
+      expect(() => foo.addSubcommand(AsyncCommand(), isDefault: true),
+          throwsStateError);
+    });
+
+    test('only leaf subcommand can be default', () {
+      expect(
+          () => foo.addSubcommand(BarCommand()..addSubcommand(FooCommand()),
+              isDefault: true),
+          throwsArgumentError);
+    });
   });
 }

@@ -160,13 +160,13 @@ void main() {
 
     final severe = records[0];
     expect(severe.message, 'severe');
-    expect(severe.error is UnsupportedError, isTrue);
-    expect(severe.stackTrace is StackTrace, isTrue);
+    expect(severe.error, isA<UnsupportedError>());
+    expect(severe.stackTrace, isA<StackTrace>());
 
     final warning = records[1];
     expect(warning.message, 'warning');
-    expect(warning.error is UnsupportedError, isTrue);
-    expect(warning.stackTrace is StackTrace, isTrue);
+    expect(warning.error, isA<UnsupportedError>());
+    expect(warning.stackTrace, isA<StackTrace>());
 
     final shout = records[2];
     expect(shout.message, 'shout');

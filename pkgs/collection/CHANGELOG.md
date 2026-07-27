@@ -9,8 +9,11 @@
 - Optimize equality and hash code for maps by using `update` and a `values`
   iterator to avoid extra lookups.
 - Add `PriorityQueue.of` constructor and optimize adding many elements.
+- Add `descending` argument to `sortedBy`.
 - Address diagnostics from `strict_top_level_inference`.
 - Run `dart format` with the new style.
+- Replace `quickSort` implementation with a more performant and robust
+  Pattern-defeating Quicksort (pdqsort) algorithm.
 
 ## 1.19.1
 

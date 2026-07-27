@@ -1,3 +1,8 @@
+## 3.0.8-wip
+
+- Drop unused `pkg:typed_data` dependency.
+- Work-around [dart-lang/sdk#63747](https://github.com/dart-lang/sdk/issues/63747).
+
 ## 3.0.7
 
 - Run `dart format` with the new style.

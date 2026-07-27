@@ -1,10 +1,19 @@
 ## 2.14.0-wip
 
-- Fix `StreamGroup.broadcast().close()` to properly complete when all streams in the group close without being explicitly removed.
-- Run `dart format` with the new style.
-
+- Add a `Duration` argument to `RestartableTimer.reset` to allow restarting
+  with variable intervals.
+- Mark `Result` as `sealed`, and  `ValueResult`, and `ErrorResult` as `final`
+  classes.
+- Add `value` getter to `Result`.
 * Add `CancelableOperationGroup`.
 
+## 2.13.1
+- Fix `StreamGroup.broadcast().close()` to properly complete when all streams in
+  the group close without being explicitly removed.
+- Run `dart format` with the new style.
+- Can decide `fetch` method of `AsyncCache` will store exception or not
+  by using `cacheErrors` property.
+- 
 ## 2.13.0
 
 - Fix type check and cast in SubscriptionStream's cancelOnError wrapper

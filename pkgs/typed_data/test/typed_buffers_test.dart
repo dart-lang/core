@@ -288,7 +288,7 @@ void testFloat32x4Buffer(List<double> floatSamples) {
     var buffer = Float32x4Buffer(5);
     expect(buffer, const TypeMatcher<List<Float32x4>>());
 
-    expect(buffer.length, equals(5));
+    expect(buffer, hasLength(5));
     expect(buffer.elementSizeInBytes, equals(128 ~/ 8));
     expect(buffer.lengthInBytes, equals(5 * 128 ~/ 8));
     expect(buffer.offsetInBytes, equals(0));
@@ -301,10 +301,10 @@ void testFloat32x4Buffer(List<double> floatSamples) {
       buffer.add(sample);
       x4Equals(buffer[buffer.length - 1], sample);
     }
-    expect(buffer.length, equals(float4Samples.length));
+    expect(buffer, hasLength(float4Samples.length));
 
     buffer.addAll(float4Samples);
-    expect(buffer.length, equals(float4Samples.length * 2));
+    expect(buffer, hasLength(float4Samples.length * 2));
     for (var i = 0; i < float4Samples.length; i++) {
       x4Equals(buffer[i], buffer[float4Samples.length + i]);
     }
@@ -340,35 +340,35 @@ void testFloatBuffer(
     expect(buffer, const TypeMatcher<List<double>>());
     var byteSize = bitSize ~/ 8;
 
-    expect(buffer.length, equals(0));
+    expect(buffer, isEmpty);
     buffer.add(0.0);
-    expect(buffer.length, equals(1));
+    expect(buffer, hasLength(1));
     expect(buffer.removeLast(), equals(0.0));
-    expect(buffer.length, equals(0));
+    expect(buffer, isEmpty);
 
     for (var value in samples) {
       buffer.add(value);
       doubleEqual(buffer[buffer.length - 1], round(value));
     }
-    expect(buffer.length, equals(samples.length));
+    expect(buffer, hasLength(samples.length));
 
     buffer.addAll(samples);
-    expect(buffer.length, equals(samples.length * 2));
+    expect(buffer, hasLength(samples.length * 2));
     for (var i = 0; i < samples.length; i++) {
       doubleEqual(buffer[i], buffer[samples.length + i]);
     }
 
     buffer.removeRange(samples.length, buffer.length);
-    expect(buffer.length, equals(samples.length));
+    expect(buffer, hasLength(samples.length));
 
     buffer.insertAll(0, samples);
-    expect(buffer.length, equals(samples.length * 2));
+    expect(buffer, hasLength(samples.length * 2));
     for (var i = 0; i < samples.length; i++) {
       doubleEqual(buffer[i], buffer[samples.length + i]);
     }
 
     buffer.length = samples.length;
-    expect(buffer.length, equals(samples.length));
+    expect(buffer, hasLength(samples.length));
 
     // TypedData.
     expect(buffer.elementSizeInBytes, equals(byteSize));
@@ -411,7 +411,7 @@ void testInt32x4Buffer(List<int> intSamples) {
 
     var buffer = Int32x4Buffer(0);
     expect(buffer, const TypeMatcher<List<Int32x4>>());
-    expect(buffer.length, equals(0));
+    expect(buffer, isEmpty);
 
     expect(buffer.elementSizeInBytes, equals(bytes));
     expect(buffer.lengthInBytes, equals(0));
@@ -419,7 +419,7 @@ void testInt32x4Buffer(List<int> intSamples) {
 
     var sample = Int32x4(-0x80000000, -1, 0, 0x7fffffff);
     buffer.add(sample);
-    expect(buffer.length, equals(1));
+    expect(buffer, hasLength(1));
     expect(buffer[0], equals32x4(sample));
 
     expect(buffer.elementSizeInBytes, equals(bytes));
@@ -427,7 +427,7 @@ void testInt32x4Buffer(List<int> intSamples) {
     expect(buffer.offsetInBytes, equals(0));
 
     buffer.length = 0;
-    expect(buffer.length, equals(0));
+    expect(buffer, isEmpty);
 
     var samples = intSamples
         .map((value) => Int32x4(value, -value, ~value, ~ -value))
@@ -435,7 +435,7 @@ void testInt32x4Buffer(List<int> intSamples) {
     for (var value in samples) {
       var length = buffer.length;
       buffer.add(value);
-      expect(buffer.length, equals(length + 1));
+      expect(buffer, hasLength(length + 1));
       expect(buffer[length], equals32x4(value));
     }
 
@@ -446,7 +446,7 @@ void testInt32x4Buffer(List<int> intSamples) {
 
     // Remove range works and changes length.
     buffer.removeRange(samples.length, buffer.length);
-    expect(buffer.length, equals(samples.length));
+    expect(buffer, hasLength(samples.length));
 
     // Accessing the underlying buffer works.
     buffer.length = 2;
@@ -476,7 +476,7 @@ void testIntBuffer(
   // All int buffers default to the value 0.
   var buffer = create(0);
   expect(buffer, const TypeMatcher<List<int>>());
-  expect(buffer.length, equals(0));
+  expect(buffer, isEmpty);
   var bytes = bits ~/ 8;
 
   expect(buffer.elementSizeInBytes, equals(bytes));
@@ -484,7 +484,7 @@ void testIntBuffer(
   expect(buffer.offsetInBytes, equals(0));
 
   buffer.add(min);
-  expect(buffer.length, equals(1));
+  expect(buffer, hasLength(1));
   expect(buffer[0], equals(min));
 
   expect(buffer.elementSizeInBytes, equals(bytes));
@@ -492,13 +492,13 @@ void testIntBuffer(
   expect(buffer.offsetInBytes, equals(0));
 
   buffer.length = 0;
-  expect(buffer.length, equals(0));
+  expect(buffer, isEmpty);
 
   var samples = intSamples.toList()..addAll(intSamples.map((x) => -x));
   for (var value in samples) {
     var length = buffer.length;
     buffer.add(value);
-    expect(buffer.length, equals(length + 1));
+    expect(buffer, hasLength(length + 1));
     expect(buffer[length], equals(round(value)));
   }
   buffer.addAll(samples); // Add all the values at once.
@@ -508,7 +508,7 @@ void testIntBuffer(
 
   // Remove range works and changes length.
   buffer.removeRange(samples.length, buffer.length);
-  expect(buffer.length, equals(samples.length));
+  expect(buffer, hasLength(samples.length));
 
   // Both values are in `samples`, but equality is performed without rounding.
   // For signed 64 bit ints, min and max wrap around, min-1=max and max+1=min
