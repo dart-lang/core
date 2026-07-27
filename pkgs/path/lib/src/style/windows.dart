@@ -114,10 +114,10 @@ class WindowsStyle extends InternalStyle {
     // should not leak into the resulting file URI. See:
     // https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#win32-file-namespaces
     if (path.startsWith(r'\\?\')) {
-      if (path.startsWith(r'\\?\UNC\')) {
-        path = r'\\' + path.substring(8);
+      if (path.startsWith(r'UNC\', r'\\?\'.length)) {
+        path = path.replaceRange(0, r'\\?\UNC'.length, r'\');
       } else {
-        path = path.substring(4);
+        path = path.substring(r'\\?\'.length);
       }
     }
 
