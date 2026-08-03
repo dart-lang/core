@@ -1,4 +1,5 @@
 name: Enforce Major Version for lint changes
+permissions: read-all
 
 on:
   pull_request:
