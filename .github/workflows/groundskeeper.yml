@@ -1,4 +1,6 @@
 name: Groundskeeper
+permissions:
+  contents: read
 
 on:
   schedule:
@@ -27,9 +29,9 @@ jobs:
           - path
           - platform
           - typed_data
-    uses: dart-lang/ecosystem/.github/workflows/groundskeeper.yml@main
+    uses: dart-lang/ecosystem/.github/workflows/groundskeeper.yml@edfdb3b4063b9034b708144633a700204f865f43
     with:
       directory: pkgs/${{ matrix.package }}
       branch: auto-tidy-${{ matrix.package }}
       title: 'Tidy: package:${{ matrix.package }}'
-    secrets: inherit
+    secrets: inherit # zizmor: ignore[secrets-inherit]
