@@ -1,6 +1,7 @@
 # Dependabot configuration file.
 # See https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
 version: 2
+enable-beta-ecosystems: true
 
 updates:
   - package-ecosystem: github-actions
@@ -13,3 +14,12 @@ updates:
       github-actions:
         patterns:
           - "*"
+
+  - package-ecosystem: "pub"
+    directories:
+      - "/pkgs/*"
+    schedule:
+      interval: monthly
+    labels:
+      - autosubmit
+    versioning-strategy: increase-if-necessary
