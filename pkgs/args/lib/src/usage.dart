@@ -153,12 +153,15 @@ class _Usage {
 
       // Make room for the option.
       title = math.max(
-          title, _longOption(option).lengthWithoutAnsi + _mandatoryOption(option).lengthWithoutAnsi);
+          title,
+          _longOption(option).lengthWithoutAnsi +
+              _mandatoryOption(option).lengthWithoutAnsi);
 
       // Make room for the allowed help.
       if (option.allowedHelp != null) {
         for (var allowed in option.allowedHelp!.keys) {
-          title = math.max(title, _allowedTitle(option, allowed).lengthWithoutAnsi);
+          title =
+              math.max(title, _allowedTitle(option, allowed).lengthWithoutAnsi);
         }
       }
     }
