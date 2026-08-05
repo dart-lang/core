@@ -1,0 +1,37 @@
+name: Groundskeeper
+permissions:
+  contents: read
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Daily at 00:00 UTC
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  tidy:
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - args
+          - async
+          - characters
+          - collection
+          - convert
+          - crypto
+          - fixnum
+          - lints
+          - logging
+          - os_detect
+          - path
+          - platform
+          - typed_data
+    uses: dart-lang/ecosystem/.github/workflows/groundskeeper.yml@ed9c592c1d35106c0a8a52044426515017a60646
+    with:
+      directory: pkgs/${{ matrix.package }}
+      branch: auto-tidy-${{ matrix.package }}
+      title: 'Tidy: package:${{ matrix.package }}'
+    secrets: inherit # zizmor: ignore[secrets-inherit]

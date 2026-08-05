@@ -7,10 +7,10 @@ import 'dart:async';
 /// A non-periodic timer that can be restarted any number of times.
 ///
 /// Once restarted (via [reset]), the timer counts down from its original
-/// duration again.
+/// or a passed duration.
 class RestartableTimer implements Timer {
-  /// The duration of the timer.
-  final Duration _duration;
+  /// The default duration of the timer.
+  final Duration _defaultDuration;
 
   /// The callback to call when the timer fires.
   final ZoneCallback _callback;
@@ -23,21 +23,24 @@ class RestartableTimer implements Timer {
 
   /// Creates a new timer.
   ///
-  /// The [_callback] function is invoked after the given [_duration]. Unlike a
-  /// normal non-periodic [Timer], [_callback] may be called more than once.
-  RestartableTimer(this._duration, this._callback)
-      : _timer = Timer(_duration, _callback);
+  /// The [_callback] function is invoked after the given [_defaultDuration] by
+  /// default. Unlike a normal non-periodic [Timer], [_callback] may be called
+  /// more than once.
+  RestartableTimer(this._defaultDuration, this._callback)
+      : _timer = Timer(_defaultDuration, _callback);
 
   @override
   bool get isActive => _timer.isActive;
 
-  /// Restarts the timer so that it counts down from its original duration
-  /// again.
+  /// Restarts the timer so that it counts down again.
   ///
   /// This restarts the timer even if it has already fired or has been canceled.
-  void reset() {
+  /// If [duration] is passed it is used for this cycle of the timer but
+  /// does not change the default duration for this timer if future calls to
+  /// `reset` omit the [duration] argument.
+  void reset([Duration? duration]) {
     _timer.cancel();
-    _timer = Timer(_duration, _callback);
+    _timer = Timer(duration ?? _defaultDuration, _callback);
   }
 
   @override

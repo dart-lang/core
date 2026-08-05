@@ -1,6 +1,16 @@
-## 3.1.7-wip
+## 3.2.0-wip
 
-- Run `dart format` with the new style.
+* New non-backwards compatible API.
+  Use `Platform.current` to access the current platform,
+  and `Platform.current.nativePlatform` to either get access to native
+  platform information, or get a `null` on non-native platforms.
+  Similarly `Platform.current.browserPlatform` is only non-`null` on the web.
+
+  Mocking APIs are moved to a separate library to ensure they are
+  only used for testing, and to allow better performance in production.
+
+  Legacy APIs are deprecated, but retained and emulated using the new API.
+  Use `dart fix` to migrate off the deprecated API.
 
 ## 3.1.6
 

@@ -30,11 +30,12 @@ class Hmac extends Converter<List<int>, Digest> {
       : _hash = hash,
         _key = Uint8List(hash.blockSize) {
     // Hash the key if it's longer than the block size of the hash.
-    if (key.length > _hash.blockSize) key = _hash.convert(key).bytes;
+    final keyBytes =
+        key.length > _hash.blockSize ? _hash.convert(key).bytes : key;
 
     // If [key] is shorter than the block size, the rest of [_key] will be
     // 0-padded.
-    _key.setRange(0, key.length, key);
+    _key.setRange(0, keyBytes.length, keyBytes);
   }
 
   @override
