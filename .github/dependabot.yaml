@@ -1,15 +1,31 @@
 # Dependabot configuration file.
 # See https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
 version: 2
+enable-beta-ecosystems: true
 
 updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 7
     labels:
       - autosubmit
     groups:
       github-actions:
         patterns:
           - "*"
+
+  - package-ecosystem: "pub"
+    directories:
+      - "/pkgs/*"
+    schedule:
+      interval: monthly
+    allow:
+      - update-types: ["version-update:semver-major"]
+    cooldown:
+      default-days: 7
+    labels:
+      - autosubmit
+    versioning-strategy: increase-if-necessary
