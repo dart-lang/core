@@ -40,6 +40,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "async_return_with_no_await",
+    "description": "Return with no await.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "avoid_annotating_with_dynamic",
     "description": "Avoid annotating with `dynamic` when not required.",
     "fixStatus": "hasFix"
@@ -102,7 +107,7 @@
   {
     "name": "avoid_final_parameters",
     "description": "Avoid `final` for parameter declarations.",
-    "fixStatus": "needsFix"
+    "fixStatus": "hasFix"
   },
   {
     "name": "avoid_function_literals_in_foreach_calls",
@@ -380,6 +385,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "empty_container_bodies",
+    "description": "Use `;` instead of `{}` for empty container bodies.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "empty_statements",
     "description": "Avoid empty statements.",
     "fixStatus": "hasFix"
@@ -430,13 +440,18 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "initialize_in_field_declaration",
+    "description": "Initialize the field in the field's initializer.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "invalid_case_patterns",
     "description": "Use case expressions that are valid in Dart 3.0.",
     "fixStatus": "hasFix"
   },
   {
     "name": "invalid_runtime_check_with_js_interop_types",
-    "description": "Avoid runtime type tests with JS interop types where the result may not\n    be platform-consistent.",
+    "description": "Avoid runtime type tests with JS interop types where the result may not be platform-consistent.",
     "fixStatus": "needsEvaluation"
   },
   {
@@ -525,6 +540,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "no_dynamic_casts",
+    "description": "Avoid implicit casts from `dynamic`.",
+    "fixStatus": "needsFix"
+  },
+  {
     "name": "no_leading_underscores_for_library_prefixes",
     "description": "Avoid leading underscores for library prefixes.",
     "fixStatus": "hasFix"
@@ -545,7 +565,12 @@
     "fixStatus": "noFix"
   },
   {
-    "name": "no_runtimeType_toString",
+    "name": "no_raw_types",
+    "description": "Avoid raw types.",
+    "fixStatus": "needsFix"
+  },
+  {
+    "name": "no_runtimetype_tostring",
     "description": "Avoid calling `toString()` on `runtimeType`.",
     "fixStatus": "noFix"
   },
@@ -865,6 +890,11 @@
     "fixStatus": "noFix"
   },
   {
+    "name": "simple_directive_paths",
+    "description": "Use simple directive paths.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "simplify_variable_pattern",
     "description": "Avoid unnecessary member names in variable patterns.",
     "fixStatus": "hasFix"
@@ -995,6 +1025,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "unnecessary_const_in_enum_constructor",
+    "description": "Don't use an explicit `const` in a generative enum constructor.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "unnecessary_constructor_name",
     "description": "Unnecessary `.new` constructor name.",
     "fixStatus": "hasFix"
@@ -1047,7 +1082,7 @@
   {
     "name": "unnecessary_null_aware_operator_on_extension_on_nullable",
     "description": "Unnecessary null aware operator on extension on a nullable type.",
-    "fixStatus": "needsFix"
+    "fixStatus": "hasFix"
   },
   {
     "name": "unnecessary_null_checks",
@@ -1072,6 +1107,11 @@
   {
     "name": "unnecessary_parenthesis",
     "description": "Unnecessary parentheses can be removed.",
+    "fixStatus": "hasFix"
+  },
+  {
+    "name": "unnecessary_primary_constructor_body",
+    "description": "Unnecessary primary constructor bodies can be removed.",
     "fixStatus": "hasFix"
   },
   {
@@ -1105,6 +1145,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "unnecessary_type_name_in_constructor",
+    "description": "Don't use an explicit type name in a constructor.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "unnecessary_unawaited",
     "description": "Unnecessary use of 'unawaited'.",
     "fixStatus": "hasFix"
@@ -1122,7 +1167,7 @@
   {
     "name": "unrelated_type_equality_checks",
     "description": "Equality operator `==` invocation with references of unrelated types.",
-    "fixStatus": "needsEvaluation"
+    "fixStatus": "hasFix"
   },
   {
     "name": "unsafe_html",
@@ -1142,6 +1187,11 @@
   {
     "name": "use_colored_box",
     "description": "Use `ColoredBox`.",
+    "fixStatus": "hasFix"
+  },
+  {
+    "name": "use_declaring_parameters",
+    "description": "Use a declaring parameter.",
     "fixStatus": "hasFix"
   },
   {
@@ -1243,6 +1293,11 @@
     "name": "valid_regexps",
     "description": "Use valid regular expression syntax.",
     "fixStatus": "noFix"
+  },
+  {
+    "name": "var_with_no_type_annotation",
+    "description": "Avoid declaring parameters with `var` and no type annotation.",
+    "fixStatus": "hasFix"
   },
   {
     "name": "void_checks",

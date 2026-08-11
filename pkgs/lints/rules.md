@@ -33,12 +33,14 @@
 | [`provide_deprecation_message`](https://dart.dev/lints/provide_deprecation_message) | Provide a deprecation message, via `@Deprecated("message")`. |  |
 | [`secure_pubspec_urls`](https://dart.dev/lints/secure_pubspec_urls) | Use secure urls in `pubspec.yaml`. |  |
 | [`strict_top_level_inference`](https://dart.dev/lints/strict_top_level_inference) | Specify type annotations. | ✅ |
+| [`switch_on_type`](https://dart.dev/lints/switch_on_type) | Avoid switch statements on a 'Type'. |  |
 | [`type_literal_in_constant_pattern`](https://dart.dev/lints/type_literal_in_constant_pattern) | Don't use constant patterns with type literals. | ✅ |
 | [`unintended_html_in_doc_comment`](https://dart.dev/lints/unintended_html_in_doc_comment) | Use of angle brackets in a doc comment is treated as HTML by Markdown. |  |
 | [`unnecessary_overrides`](https://dart.dev/lints/unnecessary_overrides) | Don't override a method to do a super method invocation with the same parameters. | ✅ |
-| [`unrelated_type_equality_checks`](https://dart.dev/lints/unrelated_type_equality_checks) | Equality operator `==` invocation with references of unrelated types. |  |
+| [`unrelated_type_equality_checks`](https://dart.dev/lints/unrelated_type_equality_checks) | Equality operator `==` invocation with references of unrelated types. | ✅ |
 | [`use_string_in_part_of_directives`](https://dart.dev/lints/use_string_in_part_of_directives) | Use string in part of directives. | ✅ |
 | [`valid_regexps`](https://dart.dev/lints/valid_regexps) | Use valid regular expression syntax. |  |
+| [`var_with_no_type_annotation`](https://dart.dev/lints/var_with_no_type_annotation) | Avoid declaring parameters with `var` and no type annotation. | ✅ |
 | [`void_checks`](https://dart.dev/lints/void_checks) | Don't assign to `void`. |  |
 <!-- core -->
 
@@ -83,6 +85,8 @@
 | [`prefer_null_aware_operators`](https://dart.dev/lints/prefer_null_aware_operators) | Prefer using `null`-aware operators. | ✅ |
 | [`prefer_spread_collections`](https://dart.dev/lints/prefer_spread_collections) | Use spread collections when possible. | ✅ |
 | [`recursive_getters`](https://dart.dev/lints/recursive_getters) | Property getter recursively returns itself. |  |
+| [`simple_directive_paths`](https://dart.dev/lints/simple_directive_paths) | Use simple directive paths. | ✅ |
+| [`simplify_variable_pattern`](https://dart.dev/lints/simplify_variable_pattern) | Avoid unnecessary member names in variable patterns. | ✅ |
 | [`slash_for_doc_comments`](https://dart.dev/lints/slash_for_doc_comments) | Prefer using `///` for doc comments. | ✅ |
 | [`type_init_formals`](https://dart.dev/lints/type_init_formals) | Don't type annotate initializing formals. | ✅ |
 | [`unnecessary_brace_in_string_interps`](https://dart.dev/lints/unnecessary_brace_in_string_interps) | Avoid using braces in interpolation when not needed. | ✅ |
@@ -99,6 +103,7 @@
 | [`unnecessary_string_interpolations`](https://dart.dev/lints/unnecessary_string_interpolations) | Unnecessary string interpolation. | ✅ |
 | [`unnecessary_this`](https://dart.dev/lints/unnecessary_this) | Don't access members with `this` unless avoiding shadowing. | ✅ |
 | [`unnecessary_to_list_in_spreads`](https://dart.dev/lints/unnecessary_to_list_in_spreads) | Unnecessary `toList()` in spreads. | ✅ |
+| [`unnecessary_unawaited`](https://dart.dev/lints/unnecessary_unawaited) | Unnecessary use of 'unawaited'. | ✅ |
 | [`unnecessary_underscores`](https://dart.dev/lints/unnecessary_underscores) | Unnecessary underscores can be removed. | ✅ |
 | [`use_function_type_syntax_for_parameters`](https://dart.dev/lints/use_function_type_syntax_for_parameters) | Use generic function type syntax for parameters. | ✅ |
 | [`use_null_aware_elements`](https://dart.dev/lints/use_null_aware_elements) | If-elements testing for null can be replaced with null-aware elements. | ✅ |
