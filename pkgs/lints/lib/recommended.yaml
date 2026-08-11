@@ -23,7 +23,6 @@ linter:
     - empty_constructor_bodies
     - empty_statements
     - exhaustive_cases
-    - future_sync_value
     - implementation_imports
     - invalid_runtime_check_with_js_interop_types
     - library_prefixes
