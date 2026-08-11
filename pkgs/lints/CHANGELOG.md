@@ -7,12 +7,14 @@
   - added [simple_directive_paths] (https://github.com/dart-lang/core/issues/978)
   - added [simplify_variable_pattern] (https://github.com/dart-lang/core/issues/954)
   - added [unnecessary_unawaited] (https://github.com/dart-lang/core/issues/954)
+  - added [future_sync_value] (https://github.com/dart-lang/core/issues/976)
 
 [var_with_no_type_annotation]: https://dart.dev/lints/var_with_no_type_annotation
 [switch_on_type]: https://dart.dev/lints/switch_on_type
 [simple_directive_paths]: https://dart.dev/lints/simple_directive_paths
 [simplify_variable_pattern]: https://dart.dev/lints/simplify_variable_pattern
 [unnecessary_unawaited]: https://dart.dev/lints/unnecessary_unawaited
+[future_sync_value]: https://dart.dev/tools/diagnostics/future_sync_value
 
 ## 6.1.0
 
