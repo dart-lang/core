@@ -29,9 +29,6 @@ const int categoryEoT = 18; // End of Text (synthetic input)
 const int categoryCount = categoryEoT + 1;
 const int inputCategoryCount = categoryEoT;
 
-const int regionalIndicatorStart = 0x1F1E6; // A
-const int regionalIndicatorEnd = 0x1F1FF; // Z
-
 // Automaton states for forwards automaton.
 
 /// Bit flag or'ed to the automaton output if there should not be a break
@@ -55,7 +52,6 @@ const int maskState = ~maskFlags;
 // breaks and cursor afterwards.
 const int flagLookaheadBreakNone = flagNoBreak;
 const int flagLookaheadBreakEarly = flagBreak;
-const int flagLookaheadBreakLate = flagLookahead | flagNoBreak; // Not used.
 const int flagLookaheadBreakBoth = flagLookahead | flagBreak;
 
 /// Automaton row length, number of input categories rounded up
