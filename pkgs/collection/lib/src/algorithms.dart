@@ -199,21 +199,6 @@ void insertionSort<E>(
   }
 }
 
-/// Generalized insertion sort.
-///
-/// Performs insertion sort on the [elements] range from [start] to [end].
-/// Ordering is the [compare] of the [keyOf] of the elements.
-void insertionSortBy<E, K>(
-  List<E> elements,
-  K Function(E element) keyOf,
-  int Function(K a, K b) compare, [
-  int start = 0,
-  int? end,
-]) {
-  end = RangeError.checkValidRange(start, end, elements.length);
-  _movingInsertionSort(elements, keyOf, compare, start, end, elements, start);
-}
-
 /// Limit below which merge sort defaults to insertion sort.
 const int _mergeSortLimit = 32;
 
@@ -526,8 +511,13 @@ int _log2(int n) => n > 0 ? n.bitLength - 1 : 0;
 // Implementation: Direct Comparison
 // ==========================================
 
-void _pdqSortImpl<E>(List<E> elements, int Function(E, E) compare, int start,
-    int end, int badAllowed) {
+void _pdqSortImpl<E>(
+  List<E> elements,
+  int Function(E, E) compare,
+  int start,
+  int end,
+  int badAllowed,
+) {
   while (true) {
     final size = end - start;
     if (size < _pdqInsertionSortThreshold) {
@@ -583,7 +573,11 @@ void _pdqSortImpl<E>(List<E> elements, int Function(E, E) compare, int start,
 }
 
 bool _handlePresorted<E>(
-    List<E> elements, int Function(E, E) compare, int start, int end) {
+  List<E> elements,
+  int Function(E, E) compare,
+  int start,
+  int end,
+) {
   if (compare(elements[start], elements[start + 1]) > 0) {
     // Check strictly decreasing
     var i = start + 1;
@@ -618,7 +612,11 @@ void _reverseRange<E>(List<E> elements, int start, int end) {
 }
 
 void _insertionSort<E>(
-    List<E> elements, int Function(E, E) compare, int start, int end) {
+  List<E> elements,
+  int Function(E, E) compare,
+  int start,
+  int end,
+) {
   for (var i = start + 1; i < end; i++) {
     var current = elements[i];
     var j = i - 1;
@@ -631,7 +629,11 @@ void _insertionSort<E>(
 }
 
 void _heapSort<E>(
-    List<E> elements, int Function(E, E) compare, int start, int end) {
+  List<E> elements,
+  int Function(E, E) compare,
+  int start,
+  int end,
+) {
   final n = end - start;
   for (var i = n ~/ 2 - 1; i >= 0; i--) {
     _siftDown(elements, compare, i, n, start);
@@ -645,7 +647,12 @@ void _heapSort<E>(
 }
 
 void _siftDown<E>(
-    List<E> elements, int Function(E, E) compare, int i, int n, int start) {
+  List<E> elements,
+  int Function(E, E) compare,
+  int i,
+  int n,
+  int start,
+) {
   var root = i;
   while (true) {
     final left = 2 * root + 1;
@@ -667,8 +674,14 @@ void _siftDown<E>(
   }
 }
 
-void _selectPivot<E>(List<E> elements, int Function(E, E) compare, int start,
-    int mid, int end, int size) {
+void _selectPivot<E>(
+  List<E> elements,
+  int Function(E, E) compare,
+  int start,
+  int mid,
+  int end,
+  int size,
+) {
   if (size > 80) {
     final s = size ~/ 8;
     _sort3(elements, compare, start, start + s, start + 2 * s);
@@ -684,7 +697,12 @@ void _selectPivot<E>(List<E> elements, int Function(E, E) compare, int start,
 }
 
 void _sort3<E>(
-    List<E> elements, int Function(E, E) compare, int a, int b, int c) {
+  List<E> elements,
+  int Function(E, E) compare,
+  int a,
+  int b,
+  int c,
+) {
   if (compare(elements[a], elements[b]) > 0) {
     final t = elements[a];
     elements[a] = elements[b];
@@ -708,8 +726,14 @@ void _sort3<E>(
 
 /// [badAllowed] tracks how many bad pivot selections are allowed before
 /// falling back to heap sort.
-void _pdqSortByImpl<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int start, int end, int badAllowed) {
+void _pdqSortByImpl<E, K>(
+  List<E> elements,
+  K Function(E) keyOf,
+  int Function(K, K) compare,
+  int start,
+  int end,
+  int badAllowed,
+) {
   while (true) {
     final size = end - start;
     if (size < _pdqInsertionSortThreshold) {
@@ -767,8 +791,13 @@ void _pdqSortByImpl<E, K>(List<E> elements, K Function(E) keyOf,
   }
 }
 
-bool _handlePresortedBy<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int start, int end) {
+bool _handlePresortedBy<E, K>(
+  List<E> elements,
+  K Function(E) keyOf,
+  int Function(K, K) compare,
+  int start,
+  int end,
+) {
   if (compare(keyOf(elements[start]), keyOf(elements[start + 1])) > 0) {
     var i = start + 1;
     while (
@@ -790,8 +819,13 @@ bool _handlePresortedBy<E, K>(List<E> elements, K Function(E) keyOf,
   return false;
 }
 
-void _insertionSortBy<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int start, int end) {
+void _insertionSortBy<E, K>(
+  List<E> elements,
+  K Function(E) keyOf,
+  int Function(K, K) compare,
+  int start,
+  int end,
+) {
   for (var i = start + 1; i < end; i++) {
     final current = elements[i];
     final currentKey = keyOf(current);
@@ -804,8 +838,13 @@ void _insertionSortBy<E, K>(List<E> elements, K Function(E) keyOf,
   }
 }
 
-void _heapSortBy<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int start, int end) {
+void _heapSortBy<E, K>(
+  List<E> elements,
+  K Function(E) keyOf,
+  int Function(K, K) compare,
+  int start,
+  int end,
+) {
   final n = end - start;
   for (var i = n ~/ 2 - 1; i >= 0; i--) {
     _siftDownBy(elements, keyOf, compare, i, n, start);
@@ -818,8 +857,14 @@ void _heapSortBy<E, K>(List<E> elements, K Function(E) keyOf,
   }
 }
 
-void _siftDownBy<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int i, int n, int start) {
+void _siftDownBy<E, K>(
+  List<E> elements,
+  K Function(E) keyOf,
+  int Function(K, K) compare,
+  int i,
+  int n,
+  int start,
+) {
   var root = i;
   while (true) {
     final left = 2 * root + 1;
@@ -848,8 +893,15 @@ void _siftDownBy<E, K>(List<E> elements, K Function(E) keyOf,
   }
 }
 
-void _selectPivotBy<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int start, int mid, int end, int size) {
+void _selectPivotBy<E, K>(
+  List<E> elements,
+  K Function(E) keyOf,
+  int Function(K, K) compare,
+  int start,
+  int mid,
+  int end,
+  int size,
+) {
   if (size > 80) {
     final s = size ~/ 8;
     _sort3By(elements, keyOf, compare, start, start + s, start + 2 * s);
@@ -864,8 +916,14 @@ void _selectPivotBy<E, K>(List<E> elements, K Function(E) keyOf,
   elements[mid] = temp;
 }
 
-void _sort3By<E, K>(List<E> elements, K Function(E) keyOf,
-    int Function(K, K) compare, int a, int b, int c) {
+void _sort3By<E, K>(
+  List<E> elements,
+  K Function(E) keyOf,
+  int Function(K, K) compare,
+  int a,
+  int b,
+  int c,
+) {
   if (compare(keyOf(elements[a]), keyOf(elements[b])) > 0) {
     final t = elements[a];
     elements[a] = elements[b];

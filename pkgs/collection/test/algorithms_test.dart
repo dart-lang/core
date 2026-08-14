@@ -209,7 +209,12 @@ void main() {
   int intId(int x) => x;
   int intCompare(int a, int b) => a - b;
   testSort('insertionSort', (list, [start, end]) {
-    insertionSortBy(list, intId, intCompare, start ?? 0, end ?? list.length);
+    insertionSort(
+      list,
+      compare: intCompare,
+      start: start ?? 0,
+      end: end ?? list.length,
+    );
   });
   testSort('mergeSort compare', (list, [start, end]) {
     mergeSort(
@@ -322,7 +327,6 @@ void main() {
     }
   }
 
-  testSortBy('insertionSort', insertionSortBy);
   testSortBy('mergeSort', mergeSortBy);
   testSortBy('quickSortBy', quickSortBy);
 
