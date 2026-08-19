@@ -5,8 +5,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-const _baseUrl =
-    'https://raw.githubusercontent.com/C2SP/wycheproof/main/testvectors_v1';
+final _baseUrl = Uri.https(
+  'raw.githubusercontent.com',
+  'C2SP/wycheproof/main/testvectors_v1/',
+);
 
 const _hmacVectors = [
   'hmac_sha256_test.json',
@@ -23,7 +25,7 @@ Future<void> main() async {
   final vectorContents = <String, String>{};
 
   for (final file in _hmacVectors) {
-    final uri = Uri.parse('$_baseUrl/$file');
+    final uri = _baseUrl.resolve(file);
     stdout.write('Fetching $file from $_baseUrl... ');
     final request = await client.getUrl(uri);
     final response = await request.close();
