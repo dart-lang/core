@@ -71,9 +71,19 @@ Future<void> main() async {
 
   buffer.writeln('};');
 
-  await File('test/wycheproof_data.dart').writeAsString(buffer.toString());
+  final targetFile = File('test/wycheproof_data.dart');
+  await targetFile.writeAsString(buffer.toString());
   stdout.writeln(
-    'Generated test/wycheproof_data.dart '
+    'Generated ${targetFile.path} '
     '(${(buffer.length / 1024).toStringAsFixed(1)} KB)',
   );
+
+  final formatResult = await Process.run(
+    Platform.executable,
+    ['format', targetFile.path],
+  );
+  if (formatResult.exitCode != 0) {
+    stderr
+        .writeln('Error formatting ${targetFile.path}: ${formatResult.stderr}');
+  }
 }
