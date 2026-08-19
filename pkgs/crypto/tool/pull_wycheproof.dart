@@ -19,11 +19,6 @@ const _hmacVectors = [
 ];
 
 Future<void> main() async {
-  final dataDir = Directory('test/data/wycheproof');
-  if (!dataDir.existsSync()) {
-    await dataDir.create(recursive: true);
-  }
-
   final client = HttpClient();
   final vectorContents = <String, String>{};
 
@@ -38,14 +33,13 @@ Future<void> main() async {
       continue;
     }
     final content = await response.transform(utf8.decoder).join();
-    await File('${dataDir.path}/$file').writeAsString(content);
     vectorContents[file] = content;
     stdout.writeln('DONE (${(content.length / 1024).toStringAsFixed(1)} KB)');
   }
   client.close();
 
-  // Generate test/wycheproof_data.dart with base64-encoded strings to allow
-  // browser & wasm tests without dart:io, and avoid secret scanner false alarms
+  // Generate test/wycheproof_data.dart with wrapped base64-encoded strings
+  // (chunked at 70 chars) matching the pubviz asset-inlining pattern.
   final buffer = StringBuffer()
     ..writeln('// Copyright (c) 2026, the Dart project authors.  '
         'Please see the AUTHORS file')
@@ -61,9 +55,18 @@ Future<void> main() async {
     ..writeln('const wycheproofVectorsBase64 = <String, String>{');
 
   for (final entry in vectorContents.entries) {
-    final encoded = base64.encode(utf8.encode(entry.value));
+    final base64String = base64.encode(utf8.encode(entry.value));
     buffer.writeln("  '${entry.key}':");
-    buffer.writeln("      '$encoded',");
+
+    const chunkSize = 70;
+    for (var i = 0; i < base64String.length; i += chunkSize) {
+      final end = (i + chunkSize < base64String.length)
+          ? i + chunkSize
+          : base64String.length;
+      final chunk = base64String.substring(i, end);
+      final isLast = end == base64String.length;
+      buffer.writeln("      '$chunk'${isLast ? ',' : ''}");
+    }
   }
 
   buffer.writeln('};');
