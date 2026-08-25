@@ -1,4 +1,4 @@
-## 3.2.0-wip
+## 3.2.0
 
 * New non-backwards compatible API.
   Use `Platform.current` to access the current platform,
