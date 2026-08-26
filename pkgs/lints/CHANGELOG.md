@@ -1,4 +1,16 @@
-## 6.1.1-wip
+## 7.0.0-wip
+
+- `core`:
+  - added [switch_on_type] (https://github.com/dart-lang/core/issues/954)
+- `recommended`:
+  - added [simple_directive_paths] (https://github.com/dart-lang/core/issues/978)
+  - added [simplify_variable_pattern] (https://github.com/dart-lang/core/issues/954)
+  - added [unnecessary_unawaited] (https://github.com/dart-lang/core/issues/954)
+
+[switch_on_type]: https://dart.dev/lints/switch_on_type
+[simple_directive_paths]: https://dart.dev/lints/simple_directive_paths
+[simplify_variable_pattern]: https://dart.dev/lints/simplify_variable_pattern
+[unnecessary_unawaited]: https://dart.dev/lints/unnecessary_unawaited
 
 ## 6.1.0
 

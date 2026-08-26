@@ -47,6 +47,8 @@ linter:
     - prefer_null_aware_operators
     - prefer_spread_collections
     - recursive_getters
+    - simple_directive_paths
+    - simplify_variable_pattern
     - slash_for_doc_comments
     - type_init_formals
     - unnecessary_brace_in_string_interps
@@ -63,6 +65,7 @@ linter:
     - unnecessary_string_interpolations
     - unnecessary_this
     - unnecessary_to_list_in_spreads
+    - unnecessary_unawaited
     - unnecessary_underscores
     - use_function_type_syntax_for_parameters
     - use_null_aware_elements
