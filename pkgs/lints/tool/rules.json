@@ -420,6 +420,11 @@
     "fixStatus": "hasFix"
   },
   {
+    "name": "future_sync_value",
+    "description": "For synchronous values, `Future.syncValue` is more performant.",
+    "fixStatus": "hasFix"
+  },
+  {
     "name": "hash_and_equals",
     "description": "Always override `hashCode` if overriding `==`.",
     "fixStatus": "hasFix"
@@ -513,6 +518,11 @@
     "name": "matching_super_parameters",
     "description": "Use matching super parameter names.",
     "fixStatus": "needsFix"
+  },
+  {
+    "name": "migrate_design_widgets",
+    "description": "Design widgets should be imported from Material or Cupertino packages.",
+    "fixStatus": "hasFix"
   },
   {
     "name": "missing_code_block_language_in_doc_comment",
@@ -927,7 +937,7 @@
   {
     "name": "sort_pub_dependencies",
     "description": "Sort pub dependencies alphabetically.",
-    "fixStatus": "needsFix"
+    "fixStatus": "hasFix"
   },
   {
     "name": "sort_unnamed_constructors_first",
@@ -1138,6 +1148,11 @@
     "name": "unnecessary_this",
     "description": "Don't access members with `this` unless avoiding shadowing.",
     "fixStatus": "hasFix"
+  },
+  {
+    "name": "unnecessary_this_alias",
+    "description": "Use 'this' directly instead of assigning it to a local variable.",
+    "fixStatus": "needsEvaluation"
   },
   {
     "name": "unnecessary_to_list_in_spreads",

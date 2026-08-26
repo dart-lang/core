@@ -41,5 +41,4 @@ linter:
     - unrelated_type_equality_checks
     - use_string_in_part_of_directives
     - valid_regexps
-    - var_with_no_type_annotation
     - void_checks

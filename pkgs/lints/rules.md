@@ -40,7 +40,6 @@
 | [`unrelated_type_equality_checks`](https://dart.dev/lints/unrelated_type_equality_checks) | Equality operator `==` invocation with references of unrelated types. | ✅ |
 | [`use_string_in_part_of_directives`](https://dart.dev/lints/use_string_in_part_of_directives) | Use string in part of directives. | ✅ |
 | [`valid_regexps`](https://dart.dev/lints/valid_regexps) | Use valid regular expression syntax. |  |
-| [`var_with_no_type_annotation`](https://dart.dev/lints/var_with_no_type_annotation) | Avoid declaring parameters with `var` and no type annotation. | ✅ |
 | [`void_checks`](https://dart.dev/lints/void_checks) | Don't assign to `void`. |  |
 <!-- core -->
 
