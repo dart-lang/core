@@ -2,12 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import '../characters.dart' as chars;
-import '../internal_style.dart';
-import '../parsed_path.dart';
+part of '../style.dart';
 
 /// The style for POSIX paths.
-class PosixStyle extends InternalStyle {
+final class PosixStyle extends InternalStyle {
   @override
   final name = 'posix';
   @override

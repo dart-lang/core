@@ -2,15 +2,14 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'context.dart';
-import 'style.dart';
+part of 'style.dart';
 
 /// The internal interface for the [Style] type.
 ///
 /// Users should be able to pass around instances of [Style] like an enum, but
 /// the members that [Context] uses should be hidden from them. Those members
 /// are defined on this class instead.
-abstract class InternalStyle extends Style {
+abstract final class InternalStyle extends Style {
   /// The default path separator for this style.
   ///
   /// On POSIX, this is `/`. On Windows, it's `\`.

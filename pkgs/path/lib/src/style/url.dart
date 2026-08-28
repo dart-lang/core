@@ -2,12 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import '../characters.dart' as chars;
-import '../internal_style.dart';
-import '../utils.dart';
+part of '../style.dart';
 
 /// The style for URL paths.
-class UrlStyle extends InternalStyle {
+final class UrlStyle extends InternalStyle {
   @override
   final name = 'url';
   @override
