@@ -7,7 +7,7 @@ import 'context.dart';
 import 'parsed_path.dart';
 import 'utils.dart';
 
-part  'style/posix.dart';
+part 'style/posix.dart';
 part 'internal_style.dart';
 part 'style/url.dart';
 part 'style/windows.dart';
