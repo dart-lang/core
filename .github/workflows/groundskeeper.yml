@@ -29,7 +29,7 @@ jobs:
           - path
           - platform
           - typed_data
-    uses: dart-lang/ecosystem/.github/workflows/groundskeeper.yml@ed9c592c1d35106c0a8a52044426515017a60646
+    uses: dart-lang/ecosystem/.github/workflows/groundskeeper.yml@fc3dd9a17a8e18b3b4aa5abac8a0f4a679fe2d57
     with:
       directory: pkgs/${{ matrix.package }}
       branch: auto-tidy-${{ matrix.package }}
