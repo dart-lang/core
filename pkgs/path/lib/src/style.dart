@@ -2,13 +2,18 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'characters.dart' as chars;
 import 'context.dart';
-import 'style/posix.dart';
-import 'style/url.dart';
-import 'style/windows.dart';
+import 'parsed_path.dart';
+import 'utils.dart';
+
+part 'style/posix.dart';
+part 'internal_style.dart';
+part 'style/url.dart';
+part 'style/windows.dart';
 
 /// An enum type describing a "flavor" of path.
-abstract class Style {
+abstract final class Style {
   /// POSIX-style paths use "/" (forward slash) as separators. Absolute paths
   /// start with "/". Used by UNIX, Linux, Mac OS X, and others.
   static final Style posix = PosixStyle();
