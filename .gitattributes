@@ -1,0 +1,2 @@
+# Collapse generated test data in GitHub PR reviews
+pkgs/crypto/test/wycheproof_data.dart linguist-generated=true
