@@ -5,8 +5,9 @@
 /// A formatter and parser for [DateTime] in a fixed format [String] pattern.
 ///
 /// For example, calling
-/// `FixedDateTimeFormatter('YYYYMMDDhhmmss', isUtc: false).decode('19960425050322')`
-/// has the same result as calling `DateTime(1996, 4, 25, 5, 3, 22)`.
+/// `FixedDateTimeFormatter('YYYYMMDDhhmmss', isUtc: false)`
+/// `.decode('19960425050322')` has the same result as calling
+/// `DateTime(1996, 4, 25, 5, 3, 22)`.
 ///
 /// The allowed characters are
 /// * `Y`	for “calendar year”
