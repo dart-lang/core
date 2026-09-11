@@ -20,6 +20,7 @@
 | [`file_names`](https://dart.dev/lints/file_names) | Name source files using `lowercase_with_underscores`. |  |
 | [`hash_and_equals`](https://dart.dev/lints/hash_and_equals) | Always override `hashCode` if overriding `==`. | ✅ |
 | [`implicit_call_tearoffs`](https://dart.dev/lints/implicit_call_tearoffs) | Explicitly tear-off `call` methods when using an object as a Function. | ✅ |
+| [`invalid_runtime_check_with_js_interop_types`](https://dart.dev/lints/invalid_runtime_check_with_js_interop_types) | Avoid runtime type tests with JS interop types where the result may not be platform-consistent. |  |
 | [`library_annotations`](https://dart.dev/lints/library_annotations) | Attach library annotations to library directives. | ✅ |
 | [`no_duplicate_case_values`](https://dart.dev/lints/no_duplicate_case_values) | Don't use more than one case with same value. | ✅ |
 | [`no_wildcard_variable_uses`](https://dart.dev/lints/no_wildcard_variable_uses) | Don't use wildcard parameters or variables. |  |
@@ -59,9 +60,8 @@
 | [`control_flow_in_finally`](https://dart.dev/lints/control_flow_in_finally) | Avoid control flow in `finally` blocks. |  |
 | [`empty_constructor_bodies`](https://dart.dev/lints/empty_constructor_bodies) | Use `;` instead of `{}` for empty constructor bodies. | ✅ |
 | [`empty_statements`](https://dart.dev/lints/empty_statements) | Avoid empty statements. | ✅ |
-| [`exhaustive_cases`](https://dart.dev/lints/exhaustive_cases) | Define case clauses for all constants in enum-like classes. | ✅ |
+| [`exhaustive_cases`](https://dart.dev/lints/exhaustive_cases) | Define case clauses for all constants in enum-like types. | ✅ |
 | [`implementation_imports`](https://dart.dev/lints/implementation_imports) | Don't import implementation files from another package. |  |
-| [`invalid_runtime_check_with_js_interop_types`](https://dart.dev/lints/invalid_runtime_check_with_js_interop_types) | Avoid runtime type tests with JS interop types where the result may not be platform-consistent. |  |
 | [`library_prefixes`](https://dart.dev/lints/library_prefixes) | Use `lowercase_with_underscores` when specifying a library prefix. |  |
 | [`library_private_types_in_public_api`](https://dart.dev/lints/library_private_types_in_public_api) | Avoid using private types in public APIs. |  |
 | [`no_leading_underscores_for_library_prefixes`](https://dart.dev/lints/no_leading_underscores_for_library_prefixes) | Avoid leading underscores for library prefixes. | ✅ |

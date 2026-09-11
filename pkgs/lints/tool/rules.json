@@ -406,7 +406,7 @@
   },
   {
     "name": "exhaustive_cases",
-    "description": "Define case clauses for all constants in enum-like classes.",
+    "description": "Define case clauses for all constants in enum-like types.",
     "fixStatus": "hasFix"
   },
   {
