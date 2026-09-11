@@ -2,11 +2,14 @@
 
 - `core`:
   - added [switch_on_type] (https://github.com/dart-lang/core/issues/954)
+  - promoted [invalid_runtime_check_with_js_interop_types] from `recommended`
+    (https://github.com/dart-lang/core/issues/1000)
 - `recommended`:
   - added [simple_directive_paths] (https://github.com/dart-lang/core/issues/978)
   - added [simplify_variable_pattern] (https://github.com/dart-lang/core/issues/954)
   - added [unnecessary_unawaited] (https://github.com/dart-lang/core/issues/954)
 
+[invalid_runtime_check_with_js_interop_types]: https://dart.dev/lints/invalid_runtime_check_with_js_interop_types
 [switch_on_type]: https://dart.dev/lints/switch_on_type
 [simple_directive_paths]: https://dart.dev/lints/simple_directive_paths
 [simplify_variable_pattern]: https://dart.dev/lints/simplify_variable_pattern
