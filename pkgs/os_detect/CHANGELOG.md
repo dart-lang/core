@@ -1,5 +1,7 @@
-## 2.0.4-wip
+## 2.0.4
 
+- Mark package deprecated.
+- Add data-driven fixes to support migration to package:platform.
 - Run `dart format` with the new style.
 
 ## 2.0.3
