@@ -1,4 +1,4 @@
-## 2.0.4
+## 2.0.4-preview.1
 
 - Mark package deprecated.
 - Add data-driven fixes to support migration to package:platform.
