@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Information about the current operating system.
+@Deprecated('Use package:platform, version 3.2 or later. '
+  'Migrate with `dart fix`.')
 library;
 
 import 'src/os_override.dart';
@@ -18,11 +20,13 @@ import 'src/os_override.dart';
 /// **Notice:** Programs running in a browser will report their
 /// operating system as `"browser"`, not the operating system
 /// that browser is running on. See [isBrowser].
+@Deprecated('Use NativePlatform.current!.operatingSystem instead')
 String get operatingSystem => OperatingSystem.current.id;
 
 /// Representation of the version of the current operating system or platform.
 ///
 /// May be empty if no version is known or available.
+@Deprecated('Use NativePlatform.current!.operatingSystemVersion instead')
 String get operatingSystemVersion => OperatingSystem.current.version;
 
 /// Whether the current operating system is a version of
@@ -35,6 +39,7 @@ String get operatingSystemVersion => OperatingSystem.current.version;
 /// for example Android (see [isAndroid]),
 /// or if the code is running inside a browser (see [isBrowser]).
 @pragma('vm:prefer-inline')
+@Deprecated('Use Platform.current.isLinux instead')
 bool get isLinux => OperatingSystem.current.isLinux;
 
 /// Whether the current operating system is a version of
@@ -45,6 +50,7 @@ bool get isLinux => OperatingSystem.current.isLinux;
 /// The value is `false` if the code is running inside a browser,
 /// even if that browser is running on MacOS (see [isBrowser]).
 @pragma('vm:prefer-inline')
+@Deprecated('Use Platform.current.isMacOS instead')
 bool get isMacOS => OperatingSystem.current.isMacOS;
 
 /// Whether the current operating system is a version of
@@ -55,6 +61,7 @@ bool get isMacOS => OperatingSystem.current.isMacOS;
 /// The value is `false` if the code is running inside a browser,
 /// even if that browser is running on Windows (see [isBrowser]).
 @pragma('vm:prefer-inline')
+@Deprecated('Use Platform.current.isWindows instead')
 bool get isWindows => OperatingSystem.current.isWindows;
 
 /// Whether the current operating system is a version of
@@ -65,6 +72,7 @@ bool get isWindows => OperatingSystem.current.isWindows;
 /// The value is `false` if the code is running inside a browser,
 /// even if that browser is running on Android (see [isBrowser]).
 @pragma('vm:prefer-inline')
+@Deprecated('Use Platform.current.isAndroid instead')
 bool get isAndroid => OperatingSystem.current.isAndroid;
 
 /// Whether the current operating system is a version of
@@ -75,6 +83,7 @@ bool get isAndroid => OperatingSystem.current.isAndroid;
 /// The value is `false` if the code is running inside a browser,
 /// even if that browser is running on iOS (see [isBrowser]).
 @pragma('vm:prefer-inline')
+@Deprecated('Use Platform.current.isIOS instead')
 bool get isIOS => OperatingSystem.current.isIOS;
 
 /// Whether the current operating system is a version of
@@ -85,6 +94,7 @@ bool get isIOS => OperatingSystem.current.isIOS;
 /// The value is `false` if the code is running inside a browser,
 /// even if that browser is running on Fuchsia (see [isBrowser]).
 @pragma('vm:prefer-inline')
+@Deprecated('Use Platform.current.isFuchsia instead')
 bool get isFuchsia => OperatingSystem.current.isFuchsia;
 
 /// Whether running in a web browser.
@@ -101,4 +111,5 @@ bool get isFuchsia => OperatingSystem.current.isFuchsia;
 /// but browsers are able to lie in the app-version/user-agent
 /// string.
 @pragma('vm:prefer-inline')
+@Deprecated('Use Platform.current.isBrowser instead')
 bool get isBrowser => OperatingSystem.current.isBrowser;
