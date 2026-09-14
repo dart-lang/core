@@ -1,0 +1,20 @@
+name: os_detect_test_fixes
+description: >-
+  Golden files for the data-driven fixes declared in `../lib/fix_data.yaml`.
+  Not published; see `README.md`.
+publish_to: none
+
+environment:
+  # `package:platform` 3.2 requires a recent SDK. This only constrains the
+  # golden files, not `package:os_detect` itself.
+  sdk: ^3.10.0
+
+dependencies:
+  # Deprecation diagnostics (and therefore data-driven fixes) are only reported
+  # across package boundaries, so the golden files live in their own package.
+  os_detect:
+    path: ../
+  # Resolved from the monorepo so the goldens track the `package:platform` API
+  # and `fix_data.yaml` that this migration targets.
+  platform:
+    path: ../../platform
