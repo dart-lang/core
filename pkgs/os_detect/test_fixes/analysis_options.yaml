@@ -1,0 +1,7 @@
+# The golden files in this directory deliberately use deprecated APIs, so the
+# package's own lint set is not applied here. This file also stops the
+# `exclude: test_fixes/**` in `../analysis_options.yaml` from applying to this
+# analysis context, which would prevent `dart fix` from seeing the deprecation
+# diagnostics that the fixes are keyed off.
+#
+# https://dart.dev/tools/analysis#the-analysis-options-file

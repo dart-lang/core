@@ -1,0 +1,38 @@
+# Golden files for `lib/fix_data.yaml`
+
+This directory holds the tests for the [data-driven fixes][] declared in
+[`../lib/fix_data.yaml`](../lib/fix_data.yaml), which migrate users of the
+deprecated `package:os_detect` API to `package:platform` 3.2 or later.
+
+Each `<name>.dart` file contains uses of the deprecated API, and the matching
+`<name>.dart.expect` file contains the same code after `dart fix` has been
+applied to it.
+
+## Running the tests
+
+```console
+$ dart pub get
+$ dart fix --compare-to-golden
+```
+
+Or, from the package root, `dart test test/fix_data_test.dart`, which does the
+same thing.
+
+To regenerate the golden files after changing `fix_data.yaml`, copy the inputs
+aside, run `dart fix --apply`, rename the results to `.expect`, and restore the
+inputs. **Always review the regenerated output** — see the limitations below.
+
+## Why this is a separate package
+
+`dart fix` only offers a data-driven fix where the analyzer reports a
+diagnostic. Deprecation of a member is *not* reported within the package that
+declares it, so these files cannot be part of `package:os_detect` itself; they
+live in a tiny path-dependency package instead
+([`pubspec.yaml`](pubspec.yaml)).
+
+For the same reason there is a local [`analysis_options.yaml`](analysis_options.yaml):
+`../analysis_options.yaml` excludes `test_fixes/**` so that `dart analyze
+--fatal-infos` stays green at the package root, and that exclusion would
+otherwise also apply here and hide the diagnostics the fixes depend on.
+
+[data-driven fixes]: https://github.com/flutter/flutter/blob/master/docs/contributing/Data-driven-Fixes.md

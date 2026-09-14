@@ -1,0 +1,153 @@
+# Copyright (c) 2026, the Dart project authors.  Please see the AUTHORS file
+# for details. All rights reserved. Use of this source code is governed by a
+# BSD-style license that can be found in the LICENSE file.
+
+# Data-driven fixes for `package:os_detect`.
+#
+# This file migrates users of the deprecated `package:os_detect/os_detect.dart`
+# APIs to `package:platform` version 3.2 or later.
+#
+# Applied automatically by `dart fix --apply`, and offered as quick fixes
+# in IDEs.
+#
+# Format documentation:
+# https://github.com/flutter/flutter/blob/master/docs/contributing/Data-driven-Fixes.md
+#
+# Tests live in `test_fixes/`, run them with:
+#     dart fix --compare-to-golden test_fixes
+
+version: 1
+transforms:
+  # ---------------------------------------------------------------------------
+  # Deprecated in os_detect 2.1.0 in favor of `package:platform` >= 3.2.
+  # ---------------------------------------------------------------------------
+
+  # `operatingSystem` -> `NativePlatform.current!.operatingSystem`
+  #
+  # The `!` is needed because `NativePlatform.current` is `null` when not
+  # running on a native platform (for example in a browser). Code that used
+  # `os_detect` in a browser should check `Platform.current.isBrowser` first.
+  - title: "Use NativePlatform.current!.operatingSystem"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "operatingSystem"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current!.operatingSystem"
+          inClass: "NativePlatform"
+          static: true
+
+  # `operatingSystemVersion` -> `NativePlatform.current!.operatingSystemVersion`
+  - title: "Use NativePlatform.current!.operatingSystemVersion"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "operatingSystemVersion"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current!.operatingSystemVersion"
+          inClass: "NativePlatform"
+          static: true
+
+  # `isAndroid` -> `Platform.current.isAndroid`
+  - title: "Use Platform.current.isAndroid"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "isAndroid"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current.isAndroid"
+          inClass: "Platform"
+          static: true
+
+  # `isBrowser` -> `Platform.current.isBrowser`
+  - title: "Use Platform.current.isBrowser"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "isBrowser"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current.isBrowser"
+          inClass: "Platform"
+          static: true
+
+  # `isFuchsia` -> `Platform.current.isFuchsia`
+  - title: "Use Platform.current.isFuchsia"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "isFuchsia"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current.isFuchsia"
+          inClass: "Platform"
+          static: true
+
+  # `isIOS` -> `Platform.current.isIOS`
+  - title: "Use Platform.current.isIOS"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "isIOS"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current.isIOS"
+          inClass: "Platform"
+          static: true
+
+  # `isLinux` -> `Platform.current.isLinux`
+  - title: "Use Platform.current.isLinux"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "isLinux"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current.isLinux"
+          inClass: "Platform"
+          static: true
+
+  # `isMacOS` -> `Platform.current.isMacOS`
+  - title: "Use Platform.current.isMacOS"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "isMacOS"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current.isMacOS"
+          inClass: "Platform"
+          static: true
+
+  # `isWindows` -> `Platform.current.isWindows`
+  - title: "Use Platform.current.isWindows"
+    date: 2026-09-14
+    element:
+      uris: ["package:os_detect/os_detect.dart"]
+      getter: "isWindows"
+    changes:
+      - kind: "replacedBy"
+        newElement:
+          uris: ["package:platform/platform.dart"]
+          getter: "current.isWindows"
+          inClass: "Platform"
+          static: true
