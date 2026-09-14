@@ -4,7 +4,7 @@
 
 /// Information about the current operating system.
 @Deprecated('Use package:platform, version 3.2 or later. '
-  'Migrate with `dart fix`.')
+    'Migrate with `dart fix`.')
 library;
 
 import 'src/os_override.dart';
