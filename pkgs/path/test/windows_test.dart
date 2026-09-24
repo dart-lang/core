@@ -1058,6 +1058,31 @@ void main() {
       Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_'),
     );
     expect(context.toUri(''), Uri.parse(''));
+
+    // Windows Extended-Length Path prefixes are stripped to align with
+    // `Uri.file()` from `dart:io`. See:
+    // https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#win32-file-namespaces
+    expect(
+      context.toUri(r'\\?\UNC\server\share\path\to\foo'),
+      Uri.parse('file://server/share/path/to/foo'),
+    );
+    expect(
+      context.toUri(r'\\?\UNC\wsl.localhost\Ubuntu-24.04\tmp\foo'),
+      Uri.parse('file://wsl.localhost/Ubuntu-24.04/tmp/foo'),
+    );
+    expect(
+      context.toUri(r'\\?\UNC\server\share'),
+      Uri.parse('file://server/share'),
+    );
+    expect(
+      context.toUri(r'\\?\UNC\server\share\'),
+      Uri.parse('file://server/share/'),
+    );
+    expect(
+      context.toUri(r'\\?\C:\path\to\foo'),
+      Uri.parse('file:///C:/path/to/foo'),
+    );
+    expect(context.toUri(r'\\?\C:\'), Uri.parse('file:///C:/'));
   });
 
   group('prettyUri', () {
