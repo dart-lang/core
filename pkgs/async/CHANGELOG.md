@@ -5,9 +5,9 @@
 - Mark `Result` as `sealed`, and  `ValueResult`, and `ErrorResult` as `final`
   classes.
 - Add `value` getter to `Result`.
+* Add `CancelableOperationGroup`.
 
 ## 2.13.1
-
 - Fix `StreamGroup.broadcast().close()` to properly complete when all streams in
   the group close without being explicitly removed.
 - Run `dart format` with the new style.
