@@ -1,4 +1,4 @@
-## 3.1.3-wip
+## 3.2.0-wip
 
 - Add `StringReplacer` (`Converter<String, String>` and `StringReplacer.replace`)
   for simultaneous single-pass multi-string replacement.
