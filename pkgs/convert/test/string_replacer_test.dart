@@ -88,6 +88,10 @@ void main() {
       final replacer = StringReplacer(map);
       expect(replacer.convert(r'\\n'), r'\n');
       expect(StringReplacer.replace(r'\\n', map), r'\n');
+      expect(replacer.convert(r'\\\n'), '\\\n');
+      expect(StringReplacer.replace(r'\\\n', map), '\\\n');
+      expect(replacer.convert(r'\" \\\"'), '" \\"');
+      expect(StringReplacer.replace(r'\" \\\"', map), '" \\"');
     });
 
     test('template injection hazard', () {
