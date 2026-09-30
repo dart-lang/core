@@ -481,7 +481,7 @@ String _replaceOneShotIndexOf(
 /// Repeatedly emits the earliest (and longest on ties) match among
 /// [activeKeys], lazily advancing `positions[k]` via `s.indexOf` only for keys
 /// whose cached match position fell behind `lastFlush`, and dropping keys from
-/// the active set as soon as they have no remaining matches in `[lastFlush, end)`.
+/// the active set once they have no remaining matches in `[lastFlush, end)`.
 String _finishActiveKeyReplace(
   String s,
   int start,
