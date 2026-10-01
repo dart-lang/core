@@ -113,7 +113,7 @@ abstract final class StringReplacer extends Converter<String, String> {
   ]) {
     end = RangeError.checkValidRange(start, end, input.length);
     if (replacements.isEmpty) {
-      return input.substring(start, end);
+      return _substring(input, start, end);
     }
     if (_isWeb || end - start < 64 || replacements.length == 1) {
       return _replaceOneShotIndexOf(input, replacements, start, end);
@@ -135,7 +135,7 @@ final class _EmptyStringReplacer extends StringReplacer {
   @override
   String convert(String input, [int start = 0, int? end]) {
     end = RangeError.checkValidRange(start, end, input.length);
-    return input.substring(start, end);
+    return _substring(input, start, end);
   }
 
   @override
@@ -177,7 +177,7 @@ final class _SingleUnitStringReplacer extends StringReplacer {
       i++;
     }
     if (i == end) {
-      return input.substring(start, end);
+      return _substring(input, start, end);
     }
 
     final out = StringBuffer();
@@ -235,7 +235,7 @@ final class _MultiUnitStringReplacer extends StringReplacer {
       i++;
     }
     if (i == end) {
-      return input.substring(start, end);
+      return _substring(input, start, end);
     }
 
     StringBuffer? out;
@@ -259,7 +259,7 @@ final class _MultiUnitStringReplacer extends StringReplacer {
     }
 
     if (out == null) {
-      return input.substring(start, end);
+      return _substring(input, start, end);
     }
     if (end > lastFlush) {
       out.write(input.substring(lastFlush, end));
@@ -409,7 +409,7 @@ String _replaceWeb(
   }
 
   if (activeKeys == null) {
-    return s.substring(start, end);
+    return _substring(s, start, end);
   }
 
   return _finishActiveKeyReplace(
@@ -463,7 +463,7 @@ String _replaceOneShotIndexOf(
   }
 
   if (activeKeys == null) {
-    return s.substring(start, end);
+    return _substring(s, start, end);
   }
 
   return _finishActiveKeyReplace(
@@ -477,6 +477,12 @@ String _replaceOneShotIndexOf(
     bestPos,
   );
 }
+
+/// Returns [s] unchanged when the slice covers the entire string, avoiding a
+/// `JSStringImpl` wrapper allocation on `dart2wasm` where
+/// `substring(0, length)` does not return `this`.
+String _substring(String s, int start, int end) =>
+    (start == 0 && end == s.length) ? s : s.substring(start, end);
 
 /// Repeatedly emits the earliest (and longest on ties) match among
 /// [activeKeys], lazily advancing `positions[k]` via `s.indexOf` only for keys
