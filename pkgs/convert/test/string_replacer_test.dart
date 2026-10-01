@@ -6,6 +6,17 @@ import 'dart:convert';
 import 'package:convert/convert.dart';
 import 'package:test/test.dart';
 
+// On dart2wasm, JSStringImpl.substring(0, length) allocates a new Wasm struct
+// wrapper around the JS externref rather than returning `this`.
+const _isWasm = bool.fromEnvironment('dart.tool.dart2wasm');
+
+void _expectSameString(String actual, String expected) {
+  expect(actual, expected);
+  if (!_isWasm) {
+    expect(identical(actual, expected), isTrue);
+  }
+}
+
 void main() {
   group('StringReplacer', () {
     test('rejects empty key in constructor and static replace', () {
@@ -28,8 +39,8 @@ void main() {
     test('empty map returns identical input', () {
       final replacer = StringReplacer(const {});
       final input = String.fromCharCodes('hello'.codeUnits);
-      expect(identical(replacer.convert(input), input), isTrue);
-      expect(identical(StringReplacer.replace(input, const {}), input), isTrue);
+      _expectSameString(replacer.convert(input), input);
+      _expectSameString(StringReplacer.replace(input, const {}), input);
       expect(replacer.convert(input, 1, 4), 'ell');
       expect(StringReplacer.replace(input, const {}, 1, 4), 'ell');
     });
@@ -46,17 +57,17 @@ void main() {
       final multiReplacer = StringReplacer({'az': 'Y', 'bc': 'Z'});
       final input = String.fromCharCodes('abd_efg'.codeUnits);
 
-      expect(identical(singleReplacer.convert(input), input), isTrue);
-      expect(
-        identical(StringReplacer.replace(input, {'x': 'y', 'z': 'w'}), input),
-        isTrue,
+      _expectSameString(singleReplacer.convert(input), input);
+      _expectSameString(
+        StringReplacer.replace(input, {'x': 'y', 'z': 'w'}),
+        input,
       );
       // Note: 'a' and 'b' appear in `input`, so the first-unit table bucket is
       // non-null, but neither 'az' nor 'bc' matches. Must still return `input`.
-      expect(identical(multiReplacer.convert(input), input), isTrue);
-      expect(
-        identical(StringReplacer.replace(input, {'az': 'Y', 'bc': 'Z'}), input),
-        isTrue,
+      _expectSameString(multiReplacer.convert(input), input);
+      _expectSameString(
+        StringReplacer.replace(input, {'az': 'Y', 'bc': 'Z'}),
+        input,
       );
     });
 
@@ -186,8 +197,8 @@ void main() {
       final replacer = StringReplacer(map);
       final padding = '.' * 80;
       final noMatch = String.fromCharCodes('${padding}baz$padding'.codeUnits);
-      expect(identical(replacer.convert(noMatch), noMatch), isTrue);
-      expect(identical(StringReplacer.replace(noMatch, map), noMatch), isTrue);
+      _expectSameString(replacer.convert(noMatch), noMatch);
+      _expectSameString(StringReplacer.replace(noMatch, map), noMatch);
 
       final oneMatch = '${padding}foo$padding';
       final expectedOne = '${padding}bar$padding';
@@ -253,8 +264,8 @@ void main() {
 
       // 1. 0 active keys in long string -> identical return
       final none = String.fromCharCodes('$pad.$pad.$pad'.codeUnits);
-      expect(identical(replacer.convert(none), none), isTrue);
-      expect(identical(StringReplacer.replace(none, map), none), isTrue);
+      _expectSameString(replacer.convert(none), none);
+      _expectSameString(StringReplacer.replace(none, map), none);
       expect(replacer.convert(none, 10, none.length - 10),
           none.substring(10, none.length - 10));
       expect(StringReplacer.replace(none, map, 10, none.length - 10),
