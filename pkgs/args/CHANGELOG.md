@@ -11,15 +11,14 @@
 * Remove extra newlines following separators when using flags without help text.
 * Throw an exception when parsing argument lists with missing mandatory
   arguments instead of waiting until they are read.
-
-## 2.7.0
-
 * Remove sorting of the `allowedHelp` argument in usage output. Ordering will
   depend on key order for the passed `Map`.
 * Fix the repository URL in `pubspec.yaml`.
 * Added option `hideNegatedUsage` to `ArgParser.flag()` allowing a flag to be
   `negatable` without showing it in the usage text.
 * Fixed #101, adding check for mandatory when using `.option()`.
+* Fix usage column formatting to calculate correct string lengths when there are
+  ANSI coloring/styling escape sequences present (Fixes #879)
 
 ## 2.6.0
 

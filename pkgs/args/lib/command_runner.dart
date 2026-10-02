@@ -549,7 +549,8 @@ String _getCommandUsage(Map<String, Command> commands,
       var lines = wrapTextAsLines(defaultMarker + command.summary,
           start: columnStart, length: lineLength);
       buffer.writeln();
-      buffer.write('  ${padRight(command.name, length)}   ${lines.first}');
+      buffer.write(
+          '  ${command.name.padRightIgnoreAnsi(length)}   ${lines.first}');
 
       for (var line in lines.skip(1)) {
         buffer.writeln();
