@@ -20,6 +20,7 @@ construct a [`p.Context`][Context] for that style.
 The path library was designed to be imported with a prefix, though you don't
 have to if you don't want to:
 
+<?code-excerpt "example/readme_examples.dart (import)"?>
 ```dart
 import 'package:path/path.dart' as p;
 ```
@@ -28,6 +29,7 @@ The most common way to use the library is through the top-level functions.
 These manipulate path strings based on your current working directory and
 the path style (POSIX, Windows, or URLs) of the host platform. For example:
 
+<?code-excerpt "example/readme_examples.dart (join)"?>
 ```dart
 p.join('directory', 'file.txt');
 ```
@@ -38,6 +40,7 @@ This calls the top-level `join()` function to join the "directory" and
 If you want to work with paths for a specific platform regardless of the underlying platform that the program is running on, you can create a
 [Context] and give it an explicit [Style]:
 
+<?code-excerpt "example/readme_examples.dart (context)" replace="/p.Style/Style/g;"?>
 ```dart
 var context = p.Context(style: Style.windows);
 context.join('directory', 'file.txt');

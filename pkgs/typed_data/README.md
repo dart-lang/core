@@ -10,6 +10,7 @@ The `typed_data` package contains utility functions and classes that makes worki
 
 The `typed_data` package can be imported using:
 
+<?code-excerpt "example/readme_examples.dart (import)"?>
 ```dart
 import 'package:typed_data/typed_data.dart';
 ```
