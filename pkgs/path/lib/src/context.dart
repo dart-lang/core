@@ -731,6 +731,28 @@ final class Context {
     while (parentIndex < parent.length && childIndex < child.length) {
       var parentCodeUnit = parent.codeUnitAt(parentIndex);
       var childCodeUnit = child.codeUnitAt(childIndex);
+
+      // A lone "." component means "this directory". Skip it before comparing
+      // characters so a parent like "/dir/." is the same directory as "/dir"
+      // and still contains children such as "/dir/.file". Matching the "."
+      // against the child's next character would treat ".file" as a different
+      // component and reject a path that is actually inside the parent.
+      if (parentCodeUnit == chars.period && style.isSeparator(lastCodeUnit)) {
+        final nextParentIndex = parentIndex + 1;
+        final dotIsComponent = nextParentIndex == parent.length ||
+            style.isSeparator(parent.codeUnitAt(nextParentIndex));
+        if (dotIsComponent) {
+          parentIndex = nextParentIndex;
+          if (parentIndex < parent.length &&
+              style.isSeparator(parent.codeUnitAt(parentIndex))) {
+            lastParentSeparator = parentIndex;
+            lastCodeUnit = parent.codeUnitAt(parentIndex);
+            parentIndex++;
+          }
+          continue;
+        }
+      }
+
       if (style.codeUnitsEqual(parentCodeUnit, childCodeUnit)) {
         if (style.isSeparator(parentCodeUnit)) {
           lastParentSeparator = parentIndex;
