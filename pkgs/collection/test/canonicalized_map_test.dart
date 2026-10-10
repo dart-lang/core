@@ -159,6 +159,14 @@ void main() {
     test('cast returns a new map instance', () {
       expect(map.cast<Pattern, Pattern>(), isNot(same(map)));
     });
+
+    test('cast preserves lookups on the public key and value types', () {
+      map.addAll({'01': 'value 01', '2': 'value 2'});
+      final casted = map.cast<String, String>();
+      expect(casted['01'], 'value 01');
+      expect(casted['1'], 'value 01');
+      expect(casted.length, 2);
+    });
   });
 
   group('CanonicalizedMap builds an informative string representation', () {
