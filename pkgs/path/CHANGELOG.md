@@ -1,5 +1,6 @@
 ## 1.9.2-wip
 
+- `join('C:', r'\Users\name')` keeps the drive letter.
 - Make `Url` style better at recognizing schemes and authorities.
   Only consider a path as being a schemed URL if it starts with a
   valid scheme.
