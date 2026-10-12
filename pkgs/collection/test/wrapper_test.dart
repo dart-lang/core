@@ -9,6 +9,7 @@
 library;
 
 import 'dart:collection';
+// ignore: deprecated_member_use
 import 'dart:mirrors';
 
 import 'package:collection/collection.dart';
