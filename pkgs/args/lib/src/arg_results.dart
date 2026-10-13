@@ -29,6 +29,9 @@ class ArgResults {
   /// The [ArgParser] whose options were parsed for these results.
   final ArgParser _parser;
 
+  /// The top-level root [ArgResults] when these results are for a subcommand.
+  ArgResults? _root;
+
   /// The option values that were parsed from arguments.
   final Map<String, dynamic> _parsed;
 
@@ -144,4 +147,21 @@ class ArgResults {
 
     return _parsed.containsKey(name);
   }
+}
+
+/// Returns whether [name] is a registered option in the parser that produced
+/// [results].
+///
+/// Unlike [ArgResults.options], this returns `true` even when the option has
+/// `defaultsTo: null` and was not passed on the command line, and runs in
+/// `O(1)` time without allocating a [Set].
+bool isOptionRegistered(ArgResults results, String name) =>
+    results._parser.options.containsKey(name);
+
+/// Returns the top-level root [ArgResults] for [results].
+ArgResults rootOf(ArgResults results) => results._root ?? results;
+
+/// Sets the top-level root [ArgResults] for [results].
+void setRootOf(ArgResults results, ArgResults root) {
+  results._root = root;
 }

@@ -143,8 +143,14 @@ class Parser {
     // Add in the leftover arguments we didn't parse to the innermost command.
     _rest.addAll(_args);
     _args.clear();
-    return newArgResults(
+    final results = newArgResults(
         _grammar, _results, _commandName, commandResults, _rest, arguments);
+    if (_parent == null) {
+      for (var child = commandResults; child != null; child = child.command) {
+        setRootOf(child, results);
+      }
+    }
+    return results;
   }
 
   /// Pulls the value for [option] from the second argument in [_args].

@@ -92,6 +92,8 @@ class Option {
   /// All aliases for [name].
   final List<String> aliases;
 
+  Object? _descriptor;
+
   /// Whether the option is boolean-valued flag.
   bool get isFlag => type == OptionType.flag;
 
@@ -197,4 +199,12 @@ class OptionType {
   final String name;
 
   const OptionType._(this.name);
+}
+
+/// Returns the typed descriptor associated with [option], if any.
+Object? descriptorOf(Option option) => option._descriptor;
+
+/// Associates a typed [descriptor] with [option].
+void setDescriptorOf(Option option, Object descriptor) {
+  option._descriptor = descriptor;
 }
