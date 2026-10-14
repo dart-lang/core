@@ -53,14 +53,6 @@ const _noise = [
   0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391,
 ];
 
-/// Per-round shift amounts.
-const _shiftAmounts = [
-  07, 12, 17, 22, 07, 12, 17, 22, 07, 12, 17, 22, 07, 12, 17, 22, 05, 09, 14, //
-  20, 05, 09, 14, 20, 05, 09, 14, 20, 05, 09, 14, 20, 04, 11, 16, 23, 04, 11,
-  16, 23, 04, 11, 16, 23, 04, 11, 16, 23, 06, 10, 15, 21, 06, 10, 15, 21, 06,
-  10, 15, 21, 06, 10, 15, 21,
-];
-
 /// The concrete implementation of `MD5`.
 ///
 /// This is separate so that it can extend [HashSink] without leaking additional
@@ -89,11 +81,8 @@ class _MD5Sink extends HashSink {
     var b = digest[1];
     var a = digest[0];
 
-    var e = 0;
-    var f = 0;
-
     @pragma('vm:prefer-inline')
-    void round(int i) {
+    void round(int e, int f, int i, int s) {
       var temp = d;
       d = c;
       c = b;
@@ -101,39 +90,40 @@ class _MD5Sink extends HashSink {
       b = add32(
         b,
         rotl32(
-          add32(add32(a, e), add32(_noise[i], chunk[f])),
-          _shiftAmounts[i],
+          add32(add32(a, e), add32(_noise[i], chunk[f & 15])),
+          s,
         ),
       );
 
       a = temp;
     }
 
-    for (var i = 0; i < 16; i++) {
-      e = (b & c) | ((~b & mask32) & d);
-      // Doing `i % 16` would get rid of a "GenericCheckBound" call in the VM,
-      // but is slightly slower anyway.
-      // See also https://github.com/dart-lang/sdk/issues/60753.
-      f = i;
-      round(i);
+    for (var i = 0; i < 16;) {
+      round((b & c) | ((~b & mask32) & d), i, i++, 7);
+      round((b & c) | ((~b & mask32) & d), i, i++, 12);
+      round((b & c) | ((~b & mask32) & d), i, i++, 17);
+      round((b & c) | ((~b & mask32) & d), i, i++, 22);
     }
 
-    for (var i = 16; i < 32; i++) {
-      e = (d & b) | ((~d & mask32) & c);
-      f = ((5 * i) + 1) % 16;
-      round(i);
+    for (var i = 16; i < 32;) {
+      round((d & b) | ((~d & mask32) & c), 5 * i + 1, i++, 5);
+      round((d & b) | ((~d & mask32) & c), 5 * i + 1, i++, 9);
+      round((d & b) | ((~d & mask32) & c), 5 * i + 1, i++, 14);
+      round((d & b) | ((~d & mask32) & c), 5 * i + 1, i++, 20);
     }
 
-    for (var i = 32; i < 48; i++) {
-      e = b ^ c ^ d;
-      f = ((3 * i) + 5) % 16;
-      round(i);
+    for (var i = 32; i < 48;) {
+      round(b ^ c ^ d, 3 * i + 5, i++, 4);
+      round(b ^ c ^ d, 3 * i + 5, i++, 11);
+      round(b ^ c ^ d, 3 * i + 5, i++, 16);
+      round(b ^ c ^ d, 3 * i + 5, i++, 23);
     }
 
-    for (var i = 48; i < 64; i++) {
-      e = c ^ (b | (~d & mask32));
-      f = (7 * i) % 16;
-      round(i);
+    for (var i = 48; i < 64;) {
+      round(c ^ (b | (~d & mask32)), 7 * i, i++, 6);
+      round(c ^ (b | (~d & mask32)), 7 * i, i++, 10);
+      round(c ^ (b | (~d & mask32)), 7 * i, i++, 15);
+      round(c ^ (b | (~d & mask32)), 7 * i, i++, 21);
     }
 
     digest[0] = add32(a, digest[0]);
