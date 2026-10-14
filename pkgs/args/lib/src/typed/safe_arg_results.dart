@@ -13,30 +13,34 @@ import 'option_descriptor.dart';
 extension SafeArgResults on ArgResults {
   /// Returns the resolved value for [descriptor], falling back to its default
   /// value.
-  T getValue<T>(OptionDescriptor<T> descriptor, {ArgResults? globalResults}) =>
-      descriptor.getValue(this, globalResults: globalResults);
+  T getValue<T>(OptionDescriptor<T> descriptor) => descriptor.getValue(this);
 
   /// Parses [bundle] from these results into a strongly-typed value [T].
-  T getBundle<T>(ValueOptionBundle<T> bundle, {ArgResults? globalResults}) =>
-      bundle.parse(this, globalResults: globalResults);
+  T getBundle<T>(ValueOptionBundle<T> bundle) => bundle.parse(this);
 
   /// Returns whether [descriptor] was explicitly provided on the command line.
-  bool wasProvided(
-    OptionDescriptor<Object?> descriptor, {
-    ArgResults? globalResults,
-  }) =>
-      descriptor.wasProvided(this, globalResults: globalResults);
+  ///
+  /// Named `wasProvided` because [ArgResults.wasParsed] is an instance method
+  /// taking a `String` option name, which extension methods cannot overload.
+  bool wasProvided(OptionDescriptor<Object?> descriptor) =>
+      descriptor.wasProvided(this);
 
   /// Returns whether [descriptor] is registered in these results.
-  bool hasOption(
-    OptionDescriptor<Object?> descriptor, {
-    ArgResults? globalResults,
-  }) =>
-      descriptor.isRegistered(this, globalResults: globalResults);
+  bool hasOption(OptionDescriptor<Object?> descriptor) =>
+      descriptor.isRegistered(this);
 }
 
 /// Type-safe argument extraction extension for [Command].
 extension CommandSafeArgResults on Command<dynamic> {
+  ArgResults? get _effectiveResults {
+    final local = argResults;
+    final global = globalResults;
+    if (local != null && global != null) {
+      setRootOf(local, global);
+    }
+    return local ?? global;
+  }
+
   /// Returns the resolved value for [descriptor], falling back to its default
   /// value.
   ///
@@ -44,7 +48,7 @@ extension CommandSafeArgResults on Command<dynamic> {
   /// [UsageException] via [usageException].
   T getValue<T>(OptionDescriptor<T> descriptor) {
     try {
-      return descriptor.getValue(argResults, globalResults: globalResults);
+      return descriptor.getValue(_effectiveResults);
     } on FormatException catch (e) {
       usageException(e.message);
     }
@@ -56,7 +60,7 @@ extension CommandSafeArgResults on Command<dynamic> {
   /// [UsageException] via [usageException].
   T getBundle<T>(ValueOptionBundle<T> bundle) {
     try {
-      return bundle.parse(argResults, globalResults: globalResults);
+      return bundle.parse(_effectiveResults);
     } on FormatException catch (e) {
       usageException(e.message);
     }
@@ -64,20 +68,23 @@ extension CommandSafeArgResults on Command<dynamic> {
 
   /// Returns whether [descriptor] was explicitly provided on the command line.
   bool wasProvided(OptionDescriptor<Object?> descriptor) =>
-      descriptor.wasProvided(argResults, globalResults: globalResults);
+      descriptor.wasProvided(_effectiveResults);
 
   /// Checks if this option was explicitly parsed (alias for [wasProvided]).
   bool wasParsed(OptionDescriptor<Object?> descriptor) =>
-      descriptor.wasProvided(argResults, globalResults: globalResults);
+      descriptor.wasProvided(_effectiveResults);
 
   /// Returns whether [descriptor] is registered on this command (or globally).
   bool hasOption(OptionDescriptor<Object?> descriptor) =>
-      descriptor.isRegistered(argResults, globalResults: globalResults);
+      descriptor.isRegistered(_effectiveResults);
 
   /// Registers [bundles] onto this command.
-  void registerOptionBundles(List<OptionBundle> bundles) {
+  void registerOptionBundles(
+    Iterable<OptionBundle> bundles, {
+    bool verboseHelp = false,
+  }) {
     for (final bundle in bundles) {
-      bundle.registerOnCommand(this);
+      bundle.registerOnCommand(this, verboseHelp: verboseHelp);
     }
   }
 }
@@ -85,26 +92,59 @@ extension CommandSafeArgResults on Command<dynamic> {
 /// Extension on [ArgParser] to register option descriptors and bundles cleanly.
 extension ArgParserBundleExtension on ArgParser {
   /// Adds an [OptionDescriptor] directly to this parser.
-  void addOptionDescriptor(OptionDescriptor<Object?> descriptor) {
-    descriptor.addTo(this);
+  void addDescriptor(
+    OptionDescriptor<Object?> descriptor, {
+    bool verboseHelp = false,
+    bool? hide,
+    String? help,
+  }) {
+    descriptor.addTo(this, verboseHelp: verboseHelp, hide: hide, help: help);
   }
 
   /// Adds multiple [descriptors] directly to this parser.
-  void addOptionDescriptors(List<OptionDescriptor<Object?>> descriptors) {
+  void addDescriptors(
+    Iterable<OptionDescriptor<Object?>> descriptors, {
+    bool verboseHelp = false,
+    bool? hide,
+  }) {
     for (final descriptor in descriptors) {
-      descriptor.addTo(this);
+      descriptor.addTo(this, verboseHelp: verboseHelp, hide: hide);
+    }
+  }
+
+  /// Adds an [OptionDescriptor] directly to this parser.
+  void addOptionDescriptor(
+    OptionDescriptor<Object?> descriptor, {
+    bool verboseHelp = false,
+    bool? hide,
+    String? help,
+  }) {
+    descriptor.addTo(this, verboseHelp: verboseHelp, hide: hide, help: help);
+  }
+
+  /// Adds multiple [descriptors] directly to this parser.
+  void addOptionDescriptors(
+    Iterable<OptionDescriptor<Object?>> descriptors, {
+    bool verboseHelp = false,
+    bool? hide,
+  }) {
+    for (final descriptor in descriptors) {
+      descriptor.addTo(this, verboseHelp: verboseHelp, hide: hide);
     }
   }
 
   /// Registers [bundle] into this parser.
-  void registerBundle(OptionBundle bundle) {
-    bundle.register(this);
+  void registerBundle(OptionBundle bundle, {bool verboseHelp = false}) {
+    bundle.register(this, verboseHelp: verboseHelp);
   }
 
   /// Registers multiple [bundles] into this parser.
-  void registerBundles(List<OptionBundle> bundles) {
+  void registerBundles(
+    Iterable<OptionBundle> bundles, {
+    bool verboseHelp = false,
+  }) {
     for (final bundle in bundles) {
-      bundle.register(this);
+      bundle.register(this, verboseHelp: verboseHelp);
     }
   }
 }

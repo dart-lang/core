@@ -25,21 +25,21 @@ abstract class OptionBundle {
   List<OptionBundle> get subBundles => const <OptionBundle>[];
 
   /// Registers all option descriptors and child bundles into [parser].
-  void register(ArgParser parser) {
+  void register(ArgParser parser, {bool verboseHelp = false}) {
     if (title != null) {
       parser.addSeparator(title!);
     }
     for (final descriptor in descriptors) {
-      descriptor.addTo(parser);
+      descriptor.addTo(parser, verboseHelp: verboseHelp);
     }
     for (final subBundle in subBundles) {
-      subBundle.register(parser);
+      subBundle.register(parser, verboseHelp: verboseHelp);
     }
   }
 
   /// Registers this bundle onto a [Command], populating [Command.argParser].
-  void registerOnCommand(Command<dynamic> command) {
-    register(command.argParser);
+  void registerOnCommand(Command<dynamic> command, {bool verboseHelp = false}) {
+    register(command.argParser, verboseHelp: verboseHelp);
   }
 }
 
@@ -48,7 +48,6 @@ abstract class OptionBundle {
 abstract class ValueOptionBundle<T> extends OptionBundle {
   const ValueOptionBundle();
 
-  /// Parses the registered options from [results] (and optional
-  /// [globalResults]) into an instance of [T].
-  T parse(ArgResults? results, {ArgResults? globalResults});
+  /// Parses the registered options from [results] into an instance of [T].
+  T parse(ArgResults? results);
 }

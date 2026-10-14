@@ -27,6 +27,7 @@ void main() {
       expect(descriptor.getValue(results), equals('build/output'));
       expect(descriptor.wasProvided(results), isFalse);
       expect(descriptor.isRegistered(results), isTrue);
+      expect(descriptor.aliases, equals(['out']));
       expect(parser.options['output']!.descriptor, same(descriptor));
     });
 
@@ -88,6 +89,37 @@ void main() {
       final parser = ArgParser()..addOption('output', help: 'Imperative');
       expect(parser.options['output']!.descriptor, isNull);
       expect(() => descriptor.addTo(parser), throwsA(isA<ArgumentError>()));
+    });
+
+    test('supports verboseOnly, verboseHelp, hide, and help overrides', () {
+      const verboseOpt = FlagOptionDescriptor(
+        name: 'experimental-flag',
+        help: 'Experimental flag',
+        verboseOnly: true,
+      );
+
+      final normalParser = ArgParser()..addOptionDescriptor(verboseOpt);
+      expect(normalParser.options['experimental-flag']!.hide, isTrue);
+
+      final verboseParser = ArgParser()
+        ..addOptionDescriptor(verboseOpt, verboseHelp: true);
+      expect(verboseParser.options['experimental-flag']!.hide, isFalse);
+
+      final overrideParser = ArgParser()
+        ..addDescriptor(
+          descriptor,
+          hide: true,
+          help: 'Output directory (default mode)',
+        );
+      expect(overrideParser.options['output']!.hide, isTrue);
+      expect(
+        overrideParser.options['output']!.help,
+        equals('Output directory (default mode)'),
+      );
+      expect(overrideParser.options['output']!.descriptor, same(descriptor));
+
+      final overrideResults = overrideParser.parse(['--output=dist/output']);
+      expect(overrideResults.wasProvided(descriptor), isTrue);
     });
   });
 
@@ -350,12 +382,12 @@ void main() {
       expect(customResults.getValue(timeoutOpt), equals(120));
     });
 
-    test('throws FormatException on invalid integer string', () {
+    test('throws ArgParserException at parse time on invalid integer string',
+        () {
       final parser = ArgParser()..addOptionDescriptor(portOpt);
-      final results = parser.parse(['--port=not-a-number']);
       expect(
-        () => results.getValue(portOpt),
-        throwsA(isA<FormatException>()),
+        () => parser.parse(['--port=not-a-number']),
+        throwsA(isA<ArgParserException>()),
       );
     });
   });
@@ -379,21 +411,14 @@ void main() {
     });
 
     test(
-      'Command.getValue and getBundle convert FormatException into '
-      'UsageException',
+      'CommandRunner.run throws UsageException at parse time on invalid int',
       () {
         final runner = CommandRunner<void>('test', 'test');
         final command = SafeTestCommand();
         runner.addCommand(command);
 
-        runner.run(['safe-test', '--port=not-an-int']);
-
         expect(
-          () => command.getValue(SafeTestCommand.port),
-          throwsA(isA<UsageException>()),
-        );
-        expect(
-          () => command.getBundle(const SafeBundle()),
+          () => runner.run(['safe-test', '--port=not-an-int']),
           throwsA(isA<UsageException>()),
         );
       },
@@ -438,14 +463,10 @@ class SafeBundle extends ValueOptionBundle<(bool, String?, int?)> {
       ];
 
   @override
-  (bool, String?, int?) parse(
-    ArgResults? results, {
-    ArgResults? globalResults,
-  }) =>
-      (
-        SafeTestCommand.flag.getValue(results, globalResults: globalResults),
-        SafeTestCommand.opt.getValue(results, globalResults: globalResults),
-        SafeTestCommand.port.getValue(results, globalResults: globalResults),
+  (bool, String?, int?) parse(ArgResults? results) => (
+        SafeTestCommand.flag.getValue(results),
+        SafeTestCommand.opt.getValue(results),
+        SafeTestCommand.port.getValue(results),
       );
 }
 
