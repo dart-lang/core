@@ -2,15 +2,16 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'digest.dart';
 import 'utils.dart';
 
-/// A base class for [Sink] implementations for hash algorithms.
+/// A base class for [ByteConversionSink] implementations for hash algorithms.
 ///
 /// Subclasses should override [updateHash] and [digest].
-abstract class HashSink implements Sink<List<int>> {
+abstract class HashSink extends ByteConversionSink {
   /// The inner sink that this should forward to.
   final Sink<Digest> _sink;
 
@@ -89,17 +90,28 @@ abstract class HashSink implements Sink<List<int>> {
   void add(List<int> data) {
     if (_isClosed) throw StateError('Hash.add() called after close().');
     _lengthInBytes += data.length;
-    _addData(data);
+    _addData(data, 0, data.length);
   }
 
-  void _addData(List<int> data) {
-    var dataIndex = 0;
+  @override
+  void addSlice(List<int> chunk, int start, int end, bool isLast) {
+    if (_isClosed) throw StateError('Hash.addSlice() called after close().');
+    RangeError.checkValidRange(start, end, chunk.length);
+    if (start < end) {
+      _lengthInBytes += end - start;
+      _addData(chunk, start, end);
+    }
+    if (isLast) close();
+  }
+
+  void _addData(List<int> data, int start, int end) {
+    var dataIndex = start;
     var chunkNextIndex = _chunkNextIndex;
     final size = _chunk.length;
     _byteDataView ??= _chunk.buffer.asByteData();
     while (true) {
       // Check if there is enough data left in [data] for a full chunk.
-      var restEnd = chunkNextIndex + data.length - dataIndex;
+      var restEnd = chunkNextIndex + end - dataIndex;
       if (restEnd < size) {
         // There is not enough data, so just add into [_chunk].
         _chunk.setRange(chunkNextIndex, restEnd, data, dataIndex);
@@ -193,7 +205,7 @@ abstract class HashSink implements Sink<List<int>> {
       byteData.setUint32(offset + bytesPerWord, highBits, _endian);
     }
 
-    _addData(padding);
+    _addData(padding, 0, padding.length);
   }
 
   /// Rounds [val] up to the next multiple of [n], as long as [n] is a power of

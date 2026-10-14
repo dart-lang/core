@@ -33,7 +33,7 @@ class _Sha256 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(_Sha256Sink(sink));
+      _Sha256Sink(sink);
 }
 
 /// An implementation of the [SHA-224][rfc] hash function.
@@ -50,7 +50,7 @@ class _Sha224 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(_Sha224Sink(sink));
+      _Sha224Sink(sink);
 }
 
 /// Data from a non-linear function that functions as reproducible noise.

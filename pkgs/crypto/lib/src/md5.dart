@@ -34,7 +34,7 @@ class _MD5 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(_MD5Sink(sink));
+      _MD5Sink(sink);
 }
 
 /// Data from a non-linear mathematical function that functions as
