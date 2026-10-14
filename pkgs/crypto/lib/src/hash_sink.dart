@@ -131,18 +131,23 @@ abstract class HashSink extends ByteConversionSink {
       _chunk.setRange(chunkNextIndex, size, data, dataIndex);
       dataIndex += size - chunkNextIndex;
 
-      // Now do endian conversion to words if needed.
-      if (_endian != Endian.host) {
-        var j = 0;
-        do {
-          _chunk32[j] = _byteDataView.getUint32(j * bytesPerWord, _endian);
-          j++;
-        } while (j < _chunk32.length);
-      }
-
-      updateHash(_chunk32);
+      _processChunk();
       chunkNextIndex = 0;
     }
+  }
+
+  @pragma('vm:prefer-inline')
+  void _processChunk() {
+    // Now do endian conversion to words if needed.
+    if (_endian != Endian.host) {
+      var j = 0;
+      do {
+        _chunk32[j] = _byteDataView.getUint32(j * bytesPerWord, _endian);
+        j++;
+      } while (j < _chunk32.length);
+    }
+
+    updateHash(_chunk32);
   }
 
   @override
@@ -180,45 +185,43 @@ abstract class HashSink extends ByteConversionSink {
       );
     }
 
-    final contentsLength = _lengthInBytes + 1 /* 0x80 */ + _signatureBytes;
-    final finalizedLength = _roundUp(
-      contentsLength,
-      _chunk.lengthInBytes,
-    );
+    final size = _chunk.length;
+    var chunkNextIndex = _chunkNextIndex;
 
-    // Prepare the finalization data.
-    var padding = Uint8List(finalizedLength - _lengthInBytes);
     // Pad out the data with 0x80, eight or sixteen 0s, and as many more 0s
     // as we need to land cleanly on a chunk boundary.
-    padding[0] = 0x80;
+    _chunk[chunkNextIndex++] = 0x80;
 
-    // The rest is already 0-bytes.
-
-    var lengthInBits = _lengthInBytes * bitsPerByte;
-
-    // Add the full length of the input data as a 64-bit value at the end of the
-    // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
-    // signature is 128-bit.
-    final offset = padding.length - 8;
-    var byteData = padding.buffer.asByteData();
-
-    // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
-    // here, but that method isn't supported on dart2js so we implement it
-    // manually instead.
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
-    if (_endian == Endian.big) {
-      byteData.setUint32(offset, highBits, _endian);
-      byteData.setUint32(offset + bytesPerWord, lowBits, _endian);
-    } else {
-      byteData.setUint32(offset, lowBits, _endian);
-      byteData.setUint32(offset + bytesPerWord, highBits, _endian);
+    if (chunkNextIndex > size - _signatureBytes) {
+      _chunk.fillRange(chunkNextIndex, size, 0);
+      _processChunk();
+      chunkNextIndex = 0;
     }
 
-    _addData(padding, 0, padding.length);
-  }
+    // Add the full length of the input data as a 64-bit value at the end of the
+    // hash. Note: we're only writing out 64 bits, so zero-fill up to size - 8
+    // even if the signature is 128-bit.
+    final offset = size - 8;
+    _chunk.fillRange(chunkNextIndex, offset, 0);
 
-  /// Rounds [val] up to the next multiple of [n], as long as [n] is a power of
-  /// two.
-  int _roundUp(int val, int n) => (val + n - 1) & -n;
+    var lengthInBits = _lengthInBytes * bitsPerByte;
+    if (!const bool.fromEnvironment('dart.library.js_interop')) {
+      _byteDataView.setUint64(offset, lengthInBits, _endian);
+    } else {
+      // byteData.setUint64 isn't supported on dart2js so we implement it
+      // manually instead.
+      var highBits = lengthInBits ~/ 0x100000000; // >> 32
+      var lowBits = lengthInBits & mask32;
+      if (_endian == Endian.big) {
+        _byteDataView.setUint32(offset, highBits, _endian);
+        _byteDataView.setUint32(offset + bytesPerWord, lowBits, _endian);
+      } else {
+        _byteDataView.setUint32(offset, lowBits, _endian);
+        _byteDataView.setUint32(offset + bytesPerWord, highBits, _endian);
+      }
+    }
+
+    _processChunk();
+    _chunkNextIndex = 0;
+  }
 }
