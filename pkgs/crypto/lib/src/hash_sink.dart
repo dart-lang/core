@@ -21,7 +21,7 @@ abstract class HashSink extends ByteConversionSink {
   /// A [ByteData] view of the current chunk of data.
   ///
   /// This is an instance variable to avoid re-allocating.
-  ByteData? _byteDataView;
+  final ByteData _byteDataView;
 
   /// The actual chunk of bytes currently accumulating.
   ///
@@ -30,7 +30,7 @@ abstract class HashSink extends ByteConversionSink {
   final Uint8List _chunk;
 
   /// The index of the next insertion into the chunk.
-  int _chunkNextIndex;
+  int _chunkNextIndex = 0;
 
   /// A [Uint32List] (in specified endian) copy of the chunk.
   ///
@@ -68,16 +68,25 @@ abstract class HashSink extends ByteConversionSink {
   /// [chunkSizeInWords] represents the size of the input chunks processed by
   /// the algorithm, in terms of 32-bit words.
   HashSink(
-    this._sink,
+    Sink<Digest> sink,
     int chunkSizeInWords, {
     Endian endian = Endian.big,
     int signatureBytes = 8,
-  })  : _endian = endian,
-        assert(signatureBytes >= 8),
-        _signatureBytes = signatureBytes,
-        _chunk = Uint8List(chunkSizeInWords * bytesPerWord),
-        _chunkNextIndex = 0,
-        _chunk32 = Uint32List(chunkSizeInWords);
+  }) : this._(
+          sink,
+          Uint8List(chunkSizeInWords * bytesPerWord),
+          endian,
+          signatureBytes,
+        );
+
+  HashSink._(
+    this._sink,
+    this._chunk,
+    this._endian,
+    this._signatureBytes,
+  )   : assert(_signatureBytes >= 8),
+        _chunk32 = Uint32List(_chunk.length ~/ bytesPerWord),
+        _byteDataView = _chunk.buffer.asByteData();
 
   /// Runs a single iteration of the hash computation, updating [digest] with
   /// the result.
@@ -108,7 +117,6 @@ abstract class HashSink extends ByteConversionSink {
     var dataIndex = start;
     var chunkNextIndex = _chunkNextIndex;
     final size = _chunk.length;
-    _byteDataView ??= _chunk.buffer.asByteData();
     while (true) {
       // Check if there is enough data left in [data] for a full chunk.
       var restEnd = chunkNextIndex + end - dataIndex;
@@ -126,7 +134,7 @@ abstract class HashSink extends ByteConversionSink {
       // Now do endian conversion to words.
       var j = 0;
       do {
-        _chunk32[j] = _byteDataView!.getUint32(j * bytesPerWord, _endian);
+        _chunk32[j] = _byteDataView.getUint32(j * bytesPerWord, _endian);
         j++;
       } while (j < _chunk32.length);
 
