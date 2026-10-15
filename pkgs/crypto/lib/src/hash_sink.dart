@@ -183,27 +183,25 @@ abstract class HashSink extends ByteConversionSink {
       );
     }
 
-    final contentsLength = _lengthInBytes + 1 /* 0x80 */ + _signatureBytes;
-    final finalizedLength = _roundUp(
-      contentsLength,
-      _chunk.lengthInBytes,
-    );
-
-    // Prepare the finalization data.
-    var padding = Uint8List(finalizedLength - _lengthInBytes);
     // Pad out the data with 0x80, eight or sixteen 0s, and as many more 0s
     // as we need to land cleanly on a chunk boundary.
-    padding[0] = 0x80;
+    _chunk[_chunkNextIndex++] = 0x80;
 
-    // The rest is already 0-bytes.
+    // If the length doesn't fit in this chunk, pad it with 0s and process it.
+    if (_chunkNextIndex > _chunk.length - _signatureBytes) {
+      _chunk.fillRange(_chunkNextIndex, _chunk.length, 0);
+      _processChunk();
+      _chunkNextIndex = 0;
+    }
 
     var lengthInBits = _lengthInBytes * bitsPerByte;
 
     // Add the full length of the input data as a 64-bit value at the end of the
     // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
     // signature is 128-bit.
-    final offset = padding.length - 8;
-    var byteData = padding.buffer.asByteData();
+    final offset = _chunk.length - 8;
+    _chunk.fillRange(_chunkNextIndex, offset, 0);
+    var byteData = _byteDataView;
 
     // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
     // here, but that method isn't supported on dart2js so we implement it
@@ -218,10 +216,7 @@ abstract class HashSink extends ByteConversionSink {
       byteData.setUint32(offset + bytesPerWord, highBits, _endian);
     }
 
-    _addData(padding, 0, padding.length);
+    _processChunk();
+    _chunkNextIndex = 0;
   }
-
-  /// Rounds [val] up to the next multiple of [n], as long as [n] is a power of
-  /// two.
-  int _roundUp(int val, int n) => (val + n - 1) & -n;
 }
