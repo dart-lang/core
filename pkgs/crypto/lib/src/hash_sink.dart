@@ -203,17 +203,20 @@ abstract class HashSink extends ByteConversionSink {
     _chunk.fillRange(_chunkNextIndex, offset, 0);
     var byteData = _byteDataView;
 
-    // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
-    // here, but that method isn't supported on dart2js so we implement it
-    // manually instead.
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
-    if (_endian == Endian.big) {
-      byteData.setUint32(offset, highBits, _endian);
-      byteData.setUint32(offset + bytesPerWord, lowBits, _endian);
+    if (!const bool.fromEnvironment('dart.library.js_interop')) {
+      byteData.setUint64(offset, lengthInBits, _endian);
     } else {
-      byteData.setUint32(offset, lowBits, _endian);
-      byteData.setUint32(offset + bytesPerWord, highBits, _endian);
+      // byteData.setUint64 isn't supported on dart2js so we implement it
+      // manually instead.
+      var highBits = lengthInBits ~/ 0x100000000; // >> 32
+      var lowBits = lengthInBits & mask32;
+      if (_endian == Endian.big) {
+        byteData.setUint32(offset, highBits, _endian);
+        byteData.setUint32(offset + bytesPerWord, lowBits, _endian);
+      } else {
+        byteData.setUint32(offset, lowBits, _endian);
+        byteData.setUint32(offset + bytesPerWord, highBits, _endian);
+      }
     }
 
     _processChunk();
