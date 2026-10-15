@@ -131,16 +131,21 @@ abstract class HashSink extends ByteConversionSink {
       _chunk.setRange(chunkNextIndex, size, data, dataIndex);
       dataIndex += size - chunkNextIndex;
 
-      // Now do endian conversion to words.
-      var j = 0;
-      do {
-        _chunk32[j] = _byteDataView.getUint32(j * bytesPerWord, _endian);
-        j++;
-      } while (j < _chunk32.length);
-
-      updateHash(_chunk32);
+      _processChunk();
       chunkNextIndex = 0;
     }
+  }
+
+  @pragma('vm:prefer-inline')
+  void _processChunk() {
+    // Now do endian conversion to words.
+    var j = 0;
+    do {
+      _chunk32[j] = _byteDataView.getUint32(j * bytesPerWord, _endian);
+      j++;
+    } while (j < _chunk32.length);
+
+    updateHash(_chunk32);
   }
 
   @override
