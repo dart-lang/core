@@ -2,15 +2,16 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'digest.dart';
 import 'utils.dart';
 
-/// A base class for [Sink] implementations for hash algorithms.
+/// A base class for [ByteConversionSink] implementations for hash algorithms.
 ///
 /// Subclasses should override [updateHash] and [digest].
-abstract class HashSink implements Sink<List<int>> {
+abstract class HashSink extends ByteConversionSink {
   /// The inner sink that this should forward to.
   final Sink<Digest> _sink;
 
@@ -20,7 +21,7 @@ abstract class HashSink implements Sink<List<int>> {
   /// A [ByteData] view of the current chunk of data.
   ///
   /// This is an instance variable to avoid re-allocating.
-  ByteData? _byteDataView;
+  final ByteData _byteDataView;
 
   /// The actual chunk of bytes currently accumulating.
   ///
@@ -29,7 +30,7 @@ abstract class HashSink implements Sink<List<int>> {
   final Uint8List _chunk;
 
   /// The index of the next insertion into the chunk.
-  int _chunkNextIndex;
+  int _chunkNextIndex = 0;
 
   /// A [Uint32List] (in specified endian) copy of the chunk.
   ///
@@ -67,16 +68,25 @@ abstract class HashSink implements Sink<List<int>> {
   /// [chunkSizeInWords] represents the size of the input chunks processed by
   /// the algorithm, in terms of 32-bit words.
   HashSink(
-    this._sink,
+    Sink<Digest> sink,
     int chunkSizeInWords, {
     Endian endian = Endian.big,
     int signatureBytes = 8,
-  })  : _endian = endian,
-        assert(signatureBytes >= 8),
-        _signatureBytes = signatureBytes,
-        _chunk = Uint8List(chunkSizeInWords * bytesPerWord),
-        _chunkNextIndex = 0,
-        _chunk32 = Uint32List(chunkSizeInWords);
+  }) : this._(
+          sink,
+          Uint8List(chunkSizeInWords * bytesPerWord),
+          endian,
+          signatureBytes,
+        );
+
+  HashSink._(
+    this._sink,
+    this._chunk,
+    this._endian,
+    this._signatureBytes,
+  )   : assert(_signatureBytes >= 8),
+        _chunk32 = Uint32List(_chunk.length ~/ bytesPerWord),
+        _byteDataView = _chunk.buffer.asByteData();
 
   /// Runs a single iteration of the hash computation, updating [digest] with
   /// the result.
@@ -89,17 +99,27 @@ abstract class HashSink implements Sink<List<int>> {
   void add(List<int> data) {
     if (_isClosed) throw StateError('Hash.add() called after close().');
     _lengthInBytes += data.length;
-    _addData(data);
+    _addData(data, 0, data.length);
   }
 
-  void _addData(List<int> data) {
-    var dataIndex = 0;
+  @override
+  void addSlice(List<int> chunk, int start, int end, bool isLast) {
+    if (_isClosed) throw StateError('Hash.addSlice() called after close().');
+    RangeError.checkValidRange(start, end, chunk.length);
+    if (start < end) {
+      _lengthInBytes += end - start;
+      _addData(chunk, start, end);
+    }
+    if (isLast) close();
+  }
+
+  void _addData(List<int> data, int start, int end) {
+    var dataIndex = start;
     var chunkNextIndex = _chunkNextIndex;
     final size = _chunk.length;
-    _byteDataView ??= _chunk.buffer.asByteData();
     while (true) {
       // Check if there is enough data left in [data] for a full chunk.
-      var restEnd = chunkNextIndex + data.length - dataIndex;
+      var restEnd = chunkNextIndex + end - dataIndex;
       if (restEnd < size) {
         // There is not enough data, so just add into [_chunk].
         _chunk.setRange(chunkNextIndex, restEnd, data, dataIndex);
@@ -111,16 +131,21 @@ abstract class HashSink implements Sink<List<int>> {
       _chunk.setRange(chunkNextIndex, size, data, dataIndex);
       dataIndex += size - chunkNextIndex;
 
-      // Now do endian conversion to words.
-      var j = 0;
-      do {
-        _chunk32[j] = _byteDataView!.getUint32(j * bytesPerWord, _endian);
-        j++;
-      } while (j < _chunk32.length);
-
-      updateHash(_chunk32);
+      _processChunk();
       chunkNextIndex = 0;
     }
+  }
+
+  @pragma('vm:prefer-inline')
+  void _processChunk() {
+    // Now do endian conversion to words.
+    var j = 0;
+    do {
+      _chunk32[j] = _byteDataView.getUint32(j * bytesPerWord, _endian);
+      j++;
+    } while (j < _chunk32.length);
+
+    updateHash(_chunk32);
   }
 
   @override
@@ -158,45 +183,43 @@ abstract class HashSink implements Sink<List<int>> {
       );
     }
 
-    final contentsLength = _lengthInBytes + 1 /* 0x80 */ + _signatureBytes;
-    final finalizedLength = _roundUp(
-      contentsLength,
-      _chunk.lengthInBytes,
-    );
-
-    // Prepare the finalization data.
-    var padding = Uint8List(finalizedLength - _lengthInBytes);
     // Pad out the data with 0x80, eight or sixteen 0s, and as many more 0s
     // as we need to land cleanly on a chunk boundary.
-    padding[0] = 0x80;
+    _chunk[_chunkNextIndex++] = 0x80;
 
-    // The rest is already 0-bytes.
+    // If the length doesn't fit in this chunk, pad it with 0s and process it.
+    if (_chunkNextIndex > _chunk.length - _signatureBytes) {
+      _chunk.fillRange(_chunkNextIndex, _chunk.length, 0);
+      _processChunk();
+      _chunkNextIndex = 0;
+    }
 
     var lengthInBits = _lengthInBytes * bitsPerByte;
 
     // Add the full length of the input data as a 64-bit value at the end of the
     // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
     // signature is 128-bit.
-    final offset = padding.length - 8;
-    var byteData = padding.buffer.asByteData();
+    final offset = _chunk.length - 8;
+    _chunk.fillRange(_chunkNextIndex, offset, 0);
+    var byteData = _byteDataView;
 
-    // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
-    // here, but that method isn't supported on dart2js so we implement it
-    // manually instead.
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
-    if (_endian == Endian.big) {
-      byteData.setUint32(offset, highBits, _endian);
-      byteData.setUint32(offset + bytesPerWord, lowBits, _endian);
+    if (!const bool.fromEnvironment('dart.library.js_interop')) {
+      byteData.setUint64(offset, lengthInBits, _endian);
     } else {
-      byteData.setUint32(offset, lowBits, _endian);
-      byteData.setUint32(offset + bytesPerWord, highBits, _endian);
+      // byteData.setUint64 isn't supported on dart2js so we implement it
+      // manually instead.
+      var highBits = lengthInBits ~/ 0x100000000; // >> 32
+      var lowBits = lengthInBits & mask32;
+      if (_endian == Endian.big) {
+        byteData.setUint32(offset, highBits, _endian);
+        byteData.setUint32(offset + bytesPerWord, lowBits, _endian);
+      } else {
+        byteData.setUint32(offset, lowBits, _endian);
+        byteData.setUint32(offset + bytesPerWord, highBits, _endian);
+      }
     }
 
-    _addData(padding);
+    _processChunk();
+    _chunkNextIndex = 0;
   }
-
-  /// Rounds [val] up to the next multiple of [n], as long as [n] is a power of
-  /// two.
-  int _roundUp(int val, int n) => (val + n - 1) & -n;
 }

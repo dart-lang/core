@@ -43,7 +43,7 @@ class _Sha384 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(Sha384Sink(sink));
+      Sha384Sink(sink);
 }
 
 /// An implementation of the [SHA-512][rfc] hash function.
@@ -59,7 +59,7 @@ class _Sha512 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(Sha512Sink(sink));
+      Sha512Sink(sink);
 }
 
 /// An implementation of the [SHA-512/224][FIPS] hash function.
@@ -75,7 +75,7 @@ class _Sha512224 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(Sha512224Sink(sink));
+      Sha512224Sink(sink);
 }
 
 /// An implementation of the [SHA-512/256][FIPS] hash function.
@@ -91,5 +91,5 @@ class _Sha512256 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(Sha512256Sink(sink));
+      Sha512256Sink(sink);
 }
