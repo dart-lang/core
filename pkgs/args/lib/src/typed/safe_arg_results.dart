@@ -76,15 +76,35 @@ extension CommandSafeArgResults on Command<dynamic> {
 
   /// Returns whether [descriptor] is registered on this command (or globally).
   bool hasOption(OptionDescriptor<Object?> descriptor) =>
-      descriptor.isRegistered(_effectiveResults);
+      switch (descriptor.scope) {
+        OptionScope.local => descriptor.isRegisteredOnParser(argParser) ||
+            descriptor.isRegistered(argResults),
+        OptionScope.global => (runner != null &&
+                descriptor.isRegisteredOnParser(runner!.argParser)) ||
+            descriptor.isRegistered(_effectiveResults),
+        OptionScope.any => descriptor.isRegisteredOnParser(argParser) ||
+            (runner != null &&
+                descriptor.isRegisteredOnParser(runner!.argParser)) ||
+            descriptor.isRegistered(_effectiveResults),
+      };
+
+  /// Registers [bundle] onto this command.
+  void registerOptionBundle(
+    OptionBundle bundle, {
+    bool verboseHelp = false,
+    bool? hide,
+  }) {
+    bundle.registerOnCommand(this, verboseHelp: verboseHelp, hide: hide);
+  }
 
   /// Registers [bundles] onto this command.
   void registerOptionBundles(
     Iterable<OptionBundle> bundles, {
     bool verboseHelp = false,
+    bool? hide,
   }) {
     for (final bundle in bundles) {
-      bundle.registerOnCommand(this, verboseHelp: verboseHelp);
+      bundle.registerOnCommand(this, verboseHelp: verboseHelp, hide: hide);
     }
   }
 }
@@ -134,17 +154,22 @@ extension ArgParserBundleExtension on ArgParser {
   }
 
   /// Registers [bundle] into this parser.
-  void registerBundle(OptionBundle bundle, {bool verboseHelp = false}) {
-    bundle.register(this, verboseHelp: verboseHelp);
+  void registerBundle(
+    OptionBundle bundle, {
+    bool verboseHelp = false,
+    bool? hide,
+  }) {
+    bundle.register(this, verboseHelp: verboseHelp, hide: hide);
   }
 
   /// Registers multiple [bundles] into this parser.
   void registerBundles(
     Iterable<OptionBundle> bundles, {
     bool verboseHelp = false,
+    bool? hide,
   }) {
     for (final bundle in bundles) {
-      bundle.register(this, verboseHelp: verboseHelp);
+      bundle.register(this, verboseHelp: verboseHelp, hide: hide);
     }
   }
 }

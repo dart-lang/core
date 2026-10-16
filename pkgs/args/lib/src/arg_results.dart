@@ -149,14 +149,8 @@ class ArgResults {
   }
 }
 
-/// Returns whether [name] is a registered option in the parser that produced
-/// [results].
-///
-/// Unlike [ArgResults.options], this returns `true` even when the option has
-/// `defaultsTo: null` and was not passed on the command line, and runs in
-/// `O(1)` time without allocating a [Set].
-bool isOptionRegistered(ArgResults results, String name) =>
-    results._parser.options.containsKey(name);
+/// Returns the [ArgParser] that produced [results].
+ArgParser parserOf(ArgResults results) => results._parser;
 
 /// Returns the top-level root [ArgResults] for [results].
 ArgResults rootOf(ArgResults results) => results._root ?? results;

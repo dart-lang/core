@@ -211,6 +211,79 @@ void main() {
       expect(multi.getValue(parsedResults), equals(['foo=bar', 'baz=qux']));
       expect(multi.wasProvided(parsedResults), isTrue);
     });
+
+    test('defaultsTo defaults to empty list when omitted in constructor', () {
+      const bareMulti = MultiOptionDescriptor(
+        name: 'tag',
+        help: 'Tags',
+      );
+      expect(bareMulti.defaultsTo, equals(const <String>[]));
+
+      final parser = ArgParser()..addOptionDescriptor(bareMulti);
+      final results = parser.parse([]);
+      expect(bareMulti.getValue(results), isEmpty);
+    });
+  });
+
+  group('Descriptor identity in isRegistered, isRegisteredOnParser & getValue',
+      () {
+    const commonFatalWarnings = FlagOptionDescriptor(
+      name: 'fatal-warnings',
+      help: 'Common logger fatal warnings',
+      defaultsTo: false,
+    );
+    const analyzeFatalWarnings = FlagOptionDescriptor(
+      name: 'fatal-warnings',
+      help: 'Analyze exit code fatal warnings',
+      defaultsTo: true,
+    );
+    const stringCollision = StringOptionDescriptor(
+      name: 'fatal-warnings',
+      help: 'Colliding string option',
+    );
+
+    test(
+      'imperative option with same name does not match descriptor identity',
+      () {
+        final parser = ArgParser()
+          ..addFlag(
+            'fatal-warnings',
+            defaultsTo: true,
+            help: 'Imperative flag',
+          );
+        expect(commonFatalWarnings.isRegisteredOnParser(parser), isFalse);
+
+        final results = parser.parse(['--fatal-warnings']);
+        expect(commonFatalWarnings.isRegistered(results), isFalse);
+        expect(results.hasOption(commonFatalWarnings), isFalse);
+        expect(commonFatalWarnings.wasProvided(results), isFalse);
+        expect(commonFatalWarnings.wasParsed(results), isFalse);
+        expect(commonFatalWarnings.getValue(results), isFalse);
+      },
+    );
+
+    test(
+      'distinct descriptor with same name does not match other descriptor',
+      () {
+        final parser = ArgParser()..addDescriptor(analyzeFatalWarnings);
+        expect(analyzeFatalWarnings.isRegisteredOnParser(parser), isTrue);
+        expect(commonFatalWarnings.isRegisteredOnParser(parser), isFalse);
+        expect(stringCollision.isRegisteredOnParser(parser), isFalse);
+
+        final results = parser.parse([]);
+        expect(results.hasOption(analyzeFatalWarnings), isTrue);
+        expect(results.hasOption(commonFatalWarnings), isFalse);
+        expect(results.hasOption(stringCollision), isFalse);
+        expect(results.getValue(analyzeFatalWarnings), isTrue);
+        expect(results.getValue(commonFatalWarnings), isFalse);
+        expect(results.getValue(stringCollision), isNull);
+
+        final parsedResults = parser.parse(['--no-fatal-warnings']);
+        expect(parsedResults.wasProvided(analyzeFatalWarnings), isTrue);
+        expect(parsedResults.wasProvided(commonFatalWarnings), isFalse);
+        expect(parsedResults.getValue(analyzeFatalWarnings), isFalse);
+      },
+    );
   });
 
   group('OptionScope & automatic root resolution', () {
@@ -253,31 +326,87 @@ void main() {
       expect(leafResults.wasProvided(anyOpt), isTrue);
     });
 
-    test('OptionScope.any prefers local registration when neither is parsed',
-        () {
-      const localDefault = DefaultedStringOptionDescriptor(
-        name: 'shared-opt',
-        help: 'Shared option',
-        defaultsTo: 'local_default',
-        scope: OptionScope.any,
-      );
-      const globalDefault = DefaultedStringOptionDescriptor(
-        name: 'shared-opt',
-        help: 'Shared option',
-        defaultsTo: 'global_default',
-        scope: OptionScope.any,
-      );
+    test(
+      'OptionScope.any prefers local registration when same descriptor is on '
+      'both parsers and neither is parsed',
+      () {
+        const sharedDescriptor = DefaultedStringOptionDescriptor(
+          name: 'shared-opt',
+          help: 'Shared option',
+          defaultsTo: 'shared_default',
+          scope: OptionScope.any,
+        );
 
-      final rootParser = ArgParser()..addOptionDescriptor(globalDefault);
-      final subParser = rootParser.addCommand('sub')
-        ..addOptionDescriptor(localDefault);
+        final rootParser = ArgParser()..addOptionDescriptor(sharedDescriptor);
+        final subParser = rootParser.addCommand('sub')
+          ..addOptionDescriptor(sharedDescriptor);
 
-      final rootResults = rootParser.parse(['sub']);
-      final subResults = rootResults.command!;
+        final rootResults = rootParser.parse(['sub']);
+        final subResults = rootResults.command!;
 
-      expect(subParser.options.containsKey('shared-opt'), isTrue);
-      expect(subResults.getValue(localDefault), equals('local_default'));
-    });
+        expect(subParser.options.containsKey('shared-opt'), isTrue);
+        expect(subResults.hasOption(sharedDescriptor), isTrue);
+        expect(subResults.getValue(sharedDescriptor), equals('shared_default'));
+      },
+    );
+
+    test(
+      'OptionScope.any falls back to global when subcommand shadows option '
+      'name with a different descriptor or imperative option',
+      () {
+        const globalShared = DefaultedStringOptionDescriptor(
+          name: 'shared-opt',
+          help: 'Global shared option',
+          defaultsTo: 'global_default',
+          scope: OptionScope.any,
+        );
+        const localShadow = DefaultedStringOptionDescriptor(
+          name: 'shared-opt',
+          help: 'Local shadow option',
+          defaultsTo: 'local_default',
+          scope: OptionScope.any,
+        );
+
+        final rootParser = ArgParser()..addOptionDescriptor(globalShared);
+        final subParser = rootParser.addCommand('sub')
+          ..addOptionDescriptor(localShadow);
+
+        // Neither passed: each descriptor resolves against the parser where
+        // that specific descriptor instance was registered.
+        final defaultRootResults = rootParser.parse(['sub']);
+        final defaultSubResults = defaultRootResults.command!;
+        expect(defaultSubResults.hasOption(globalShared), isTrue);
+        expect(defaultSubResults.hasOption(localShadow), isTrue);
+        expect(defaultSubResults.getValue(globalShared), 'global_default');
+        expect(defaultSubResults.getValue(localShadow), 'local_default');
+        expect(globalShared.isRegisteredOnParser(subParser), isFalse);
+        expect(localShadow.isRegisteredOnParser(subParser), isTrue);
+
+        // Passed on subcommand only: localShadow sees it, globalShared does
+        // not get hijacked by subResults and still returns global_default.
+        final subPassedRoot = rootParser.parse([
+          'sub',
+          '--shared-opt=sub_custom',
+        ]);
+        final subPassedSub = subPassedRoot.command!;
+        expect(subPassedSub.wasProvided(localShadow), isTrue);
+        expect(subPassedSub.getValue(localShadow), 'sub_custom');
+        expect(subPassedSub.wasProvided(globalShared), isFalse);
+        expect(subPassedSub.getValue(globalShared), 'global_default');
+
+        // Passed globally AND locally: each descriptor sees its own value.
+        final bothPassedRoot = rootParser.parse([
+          '--shared-opt=glob_custom',
+          'sub',
+          '--shared-opt=sub_custom',
+        ]);
+        final bothPassedSub = bothPassedRoot.command!;
+        expect(bothPassedSub.wasProvided(globalShared), isTrue);
+        expect(bothPassedSub.getValue(globalShared), 'glob_custom');
+        expect(bothPassedSub.wasProvided(localShadow), isTrue);
+        expect(bothPassedSub.getValue(localShadow), 'sub_custom');
+      },
+    );
   });
 
   group('EnumOptionDescriptor & DefaultedEnumOptionDescriptor', () {
@@ -423,6 +552,143 @@ void main() {
         );
       },
     );
+
+    test(
+      'Command.hasOption works pre-parse and post-parse across local, global, '
+      'and any scopes while enforcing descriptor identity',
+      () async {
+        const globalDescriptor = FlagOptionDescriptor(
+          name: 'global-flag',
+          help: 'Global flag',
+          scope: OptionScope.global,
+        );
+        const collidingGlobalDescriptor = FlagOptionDescriptor(
+          name: 'global-flag',
+          help: 'Colliding global flag',
+          scope: OptionScope.global,
+        );
+        const anyGlobalOnly = StringOptionDescriptor(
+          name: 'any-global',
+          help: 'Any option registered globally',
+          scope: OptionScope.any,
+        );
+        const anyLocalShadowed = StringOptionDescriptor(
+          name: 'any-global',
+          help: 'Local shadow of any-global',
+          scope: OptionScope.any,
+        );
+        const localCollisionDescriptor = FlagOptionDescriptor(
+          name: 'fatal-warnings',
+          help: 'Common fatal warnings',
+        );
+
+        final runner = CommandRunner<void>('test', 'test');
+        runner.argParser
+          ..addDescriptor(globalDescriptor)
+          ..addDescriptor(anyGlobalOnly);
+
+        final command = SafeTestCommand();
+        command.argParser
+          ..addDescriptor(anyLocalShadowed)
+          ..addFlag(
+            'fatal-warnings',
+            defaultsTo: true,
+            help: 'Imperative analyze fatal warnings',
+          );
+
+        // Pre-parse before adding to runner: local & local-any work; global is
+        // false because runner is still null.
+        expect(command.argResults, isNull);
+        expect(command.hasOption(SafeTestCommand.opt), isTrue);
+        expect(command.hasOption(SafeTestCommand.unadded), isFalse);
+        expect(command.hasOption(localCollisionDescriptor), isFalse);
+        expect(command.hasOption(anyLocalShadowed), isTrue);
+        expect(command.hasOption(globalDescriptor), isFalse);
+        expect(command.hasOption(anyGlobalOnly), isFalse);
+
+        // Pre-parse after adding to runner: global and global-registered any
+        // descriptors now resolve via runner.argParser.
+        runner.addCommand(command);
+        expect(command.argResults, isNull);
+        expect(command.hasOption(globalDescriptor), isTrue);
+        expect(command.hasOption(collidingGlobalDescriptor), isFalse);
+        expect(command.hasOption(anyGlobalOnly), isTrue);
+        expect(command.hasOption(anyLocalShadowed), isTrue);
+        expect(command.hasOption(localCollisionDescriptor), isFalse);
+
+        // Post-parse after runner.run: all scopes continue to resolve with
+        // strict descriptor identity.
+        await runner.run([
+          '--global-flag',
+          '--any-global=from-root',
+          'safe-test',
+          '--any-global=from-sub',
+          '--fatal-warnings',
+        ]);
+        expect(command.argResults, isNotNull);
+        expect(command.hasOption(SafeTestCommand.opt), isTrue);
+        expect(command.hasOption(SafeTestCommand.unadded), isFalse);
+        expect(command.hasOption(localCollisionDescriptor), isFalse);
+        expect(command.getValue(localCollisionDescriptor), isFalse);
+        expect(command.hasOption(globalDescriptor), isTrue);
+        expect(command.hasOption(collidingGlobalDescriptor), isFalse);
+        expect(command.getValue(globalDescriptor), isTrue);
+        expect(command.hasOption(anyGlobalOnly), isTrue);
+        expect(command.hasOption(anyLocalShadowed), isTrue);
+        expect(command.getValue(anyGlobalOnly), equals('from-root'));
+        expect(command.getValue(anyLocalShadowed), equals('from-sub'));
+      },
+    );
+
+    test(
+      'OptionBundle hide override works across register, registerOnCommand, '
+      'registerOptionBundle, registerOptionBundles, and registerBundle',
+      () {
+        const bundle = VisibilityTestBundle();
+
+        // Default registration: hiddenOpt is hidden, visibleOpt is visible,
+        // verboseOpt is hidden unless verboseHelp: true.
+        final defaultParser = ArgParser()..registerBundle(bundle);
+        expect(defaultParser.options['visible-opt']!.hide, isFalse);
+        expect(defaultParser.options['hidden-opt']!.hide, isTrue);
+        expect(defaultParser.options['verbose-opt']!.hide, isTrue);
+        expect(defaultParser.options['sub-hidden-opt']!.hide, isTrue);
+
+        // Force hide: false across bundle and subBundles.
+        final unhiddenParser = ArgParser()..registerBundle(bundle, hide: false);
+        expect(unhiddenParser.options['visible-opt']!.hide, isFalse);
+        expect(unhiddenParser.options['hidden-opt']!.hide, isFalse);
+        expect(unhiddenParser.options['verbose-opt']!.hide, isFalse);
+        expect(unhiddenParser.options['sub-hidden-opt']!.hide, isFalse);
+
+        // Force hide: true even when verboseHelp: true via registerBundles.
+        final forcedHiddenParser = ArgParser()
+          ..registerBundles(const [bundle], verboseHelp: true, hide: true);
+        expect(forcedHiddenParser.options['visible-opt']!.hide, isTrue);
+        expect(forcedHiddenParser.options['hidden-opt']!.hide, isTrue);
+        expect(forcedHiddenParser.options['verbose-opt']!.hide, isTrue);
+        expect(forcedHiddenParser.options['sub-hidden-opt']!.hide, isTrue);
+
+        // Command.registerOptionBundle & registerOptionBundles with hide.
+        final cmdUnhidden = EmptyTestCommand()
+          ..registerOptionBundle(bundle, hide: false);
+        expect(cmdUnhidden.argParser.options['hidden-opt']!.hide, isFalse);
+        expect(cmdUnhidden.argParser.options['sub-hidden-opt']!.hide, isFalse);
+
+        final cmdHidden = EmptyTestCommand()
+          ..registerOptionBundles(
+            const [bundle],
+            verboseHelp: true,
+            hide: true,
+          );
+        expect(cmdHidden.argParser.options['visible-opt']!.hide, isTrue);
+        expect(cmdHidden.argParser.options['verbose-opt']!.hide, isTrue);
+
+        final cmdDirect = EmptyTestCommand();
+        bundle.registerOnCommand(cmdDirect, hide: false);
+        expect(cmdDirect.argParser.options['hidden-opt']!.hide, isFalse);
+      },
+    );
   });
 }
 
@@ -498,4 +764,57 @@ class SafeTestCommand extends Command<void> {
 
   @override
   void run() {}
+}
+
+class EmptyTestCommand extends Command<void> {
+  @override
+  String get name => 'empty-test';
+
+  @override
+  String get description => 'Empty test command';
+
+  @override
+  void run() {}
+}
+
+class VisibilityTestBundle extends OptionBundle {
+  const VisibilityTestBundle();
+
+  static const visibleOpt = FlagOptionDescriptor(
+    name: 'visible-opt',
+    help: 'Visible option',
+  );
+  static const hiddenOpt = FlagOptionDescriptor(
+    name: 'hidden-opt',
+    help: 'Hidden option',
+    hide: true,
+  );
+  static const verboseOpt = FlagOptionDescriptor(
+    name: 'verbose-opt',
+    help: 'Verbose-only option',
+    verboseOnly: true,
+  );
+
+  @override
+  List<OptionDescriptor<Object?>> get descriptors => const [
+        visibleOpt,
+        hiddenOpt,
+        verboseOpt,
+      ];
+
+  @override
+  List<OptionBundle> get subBundles => const [_SubVisibilityTestBundle()];
+}
+
+class _SubVisibilityTestBundle extends OptionBundle {
+  const _SubVisibilityTestBundle();
+
+  static const subHiddenOpt = FlagOptionDescriptor(
+    name: 'sub-hidden-opt',
+    help: 'Sub-bundle hidden option',
+    hide: true,
+  );
+
+  @override
+  List<OptionDescriptor<Object?>> get descriptors => const [subHiddenOpt];
 }

@@ -25,21 +25,29 @@ abstract class OptionBundle {
   List<OptionBundle> get subBundles => const <OptionBundle>[];
 
   /// Registers all option descriptors and child bundles into [parser].
-  void register(ArgParser parser, {bool verboseHelp = false}) {
+  void register(
+    ArgParser parser, {
+    bool verboseHelp = false,
+    bool? hide,
+  }) {
     if (title != null) {
       parser.addSeparator(title!);
     }
     for (final descriptor in descriptors) {
-      descriptor.addTo(parser, verboseHelp: verboseHelp);
+      descriptor.addTo(parser, verboseHelp: verboseHelp, hide: hide);
     }
     for (final subBundle in subBundles) {
-      subBundle.register(parser, verboseHelp: verboseHelp);
+      subBundle.register(parser, verboseHelp: verboseHelp, hide: hide);
     }
   }
 
   /// Registers this bundle onto a [Command], populating [Command.argParser].
-  void registerOnCommand(Command<dynamic> command, {bool verboseHelp = false}) {
-    register(command.argParser, verboseHelp: verboseHelp);
+  void registerOnCommand(
+    Command<dynamic> command, {
+    bool verboseHelp = false,
+    bool? hide,
+  }) {
+    register(command.argParser, verboseHelp: verboseHelp, hide: hide);
   }
 }
 

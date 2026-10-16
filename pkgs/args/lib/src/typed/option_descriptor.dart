@@ -95,9 +95,7 @@ abstract class OptionDescriptor<T> {
   /// Checks if this option was explicitly provided on the command line.
   bool wasProvided(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    return target != null &&
-        isOptionRegistered(target, name) &&
-        target.wasParsed(name);
+    return target != null && _isRegisteredIn(target) && target.wasParsed(name);
   }
 
   /// Checks if this option was explicitly parsed (alias for [wasProvided]).
@@ -107,11 +105,20 @@ abstract class OptionDescriptor<T> {
   /// results.
   bool isRegistered(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    return target != null && isOptionRegistered(target, name);
+    return target != null && _isRegisteredIn(target);
   }
+
+  /// Checks if this specific [OptionDescriptor] is registered on [parser].
+  bool isRegisteredOnParser(ArgParser parser) => switch (parser.options[name]) {
+        final option? => identical(descriptorOf(option), this),
+        null => false,
+      };
 
   /// Returns the resolved value for this option.
   T getValue(ArgResults? results);
+
+  bool _isRegisteredIn(ArgResults results) =>
+      isRegisteredOnParser(parserOf(results));
 
   ArgResults? _resolveTargetResults(ArgResults? results) {
     if (results == null) {
@@ -122,13 +129,13 @@ abstract class OptionDescriptor<T> {
       OptionScope.local => results,
       OptionScope.global => globalResults,
       OptionScope.any
-          when isOptionRegistered(results, name) && results.wasParsed(name) =>
+          when _isRegisteredIn(results) && results.wasParsed(name) =>
         results,
       OptionScope.any
-          when isOptionRegistered(globalResults, name) &&
+          when _isRegisteredIn(globalResults) &&
               globalResults.wasParsed(name) =>
         globalResults,
-      OptionScope.any when isOptionRegistered(results, name) => results,
+      OptionScope.any when _isRegisteredIn(results) => results,
       OptionScope.any => globalResults,
     };
   }
@@ -230,7 +237,7 @@ final class StringOptionDescriptor
   @override
   String? getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       return target[name] as String? ?? defaultsTo;
     }
     return defaultsTo;
@@ -258,7 +265,7 @@ final class DefaultedStringOptionDescriptor
   @override
   String getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       return (target[name] as String?) ?? defaultsTo!;
     }
     return defaultsTo!;
@@ -349,7 +356,7 @@ final class IntOptionDescriptor extends _IntOptionDescriptorBase<int?> {
   @override
   int? getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       return _parseIntOption(target) ?? defaultsTo;
     }
     return defaultsTo;
@@ -376,7 +383,7 @@ final class DefaultedIntOptionDescriptor extends _IntOptionDescriptorBase<int> {
   @override
   int getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       return _parseIntOption(target) ?? defaultsTo!;
     }
     return defaultsTo!;
@@ -442,7 +449,7 @@ final class FlagOptionDescriptor extends _FlagOptionDescriptorBase<bool> {
   @override
   bool getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       return (target[name] as bool?) ?? defaultsTo ?? false;
     }
     return defaultsTo ?? false;
@@ -466,7 +473,7 @@ final class NullableFlagOptionDescriptor
   @override
   bool? getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       return target[name] as bool?;
     }
     return null;
@@ -481,7 +488,7 @@ final class MultiOptionDescriptor extends OptionDescriptor<List<String>> {
     super.abbr,
     super.aliases = const <String>[],
     super.valueHelp,
-    super.defaultsTo,
+    super.defaultsTo = const <String>[],
     this.splitCommas = true,
     super.allowed,
     super.allowedHelp,
@@ -522,7 +529,7 @@ final class MultiOptionDescriptor extends OptionDescriptor<List<String>> {
   @override
   List<String> getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       return (target[name] as List<dynamic>?)?.cast<String>() ??
           const <String>[];
     }
@@ -659,7 +666,7 @@ final class EnumOptionDescriptor<T extends Enum>
   @override
   T? getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       final raw = target[name] as String?;
       return _parse(raw) ?? defaultsTo;
     }
@@ -689,7 +696,7 @@ final class DefaultedEnumOptionDescriptor<T extends Enum>
   @override
   T getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
-    if (target != null && isOptionRegistered(target, name)) {
+    if (target != null && _isRegisteredIn(target)) {
       final raw = target[name] as String?;
       return _parse(raw) ?? defaultsTo!;
     }
