@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:args/args.dart';
+import 'package:args/src/typed/cli_enum.dart';
 import 'package:args/src/typed/option_descriptor.dart';
 import 'package:args/src/typed/safe_arg_results.dart';
 import 'package:test/test.dart';
@@ -452,6 +453,162 @@ void main() {
       },
     );
   });
+
+  group('EnumOptionDescriptor & DefaultedEnumOptionDescriptor', () {
+    const modeOpt = EnumOptionDescriptor<TestMode>(
+      name: 'mode',
+      abbr: 'm',
+      help: 'Execution mode',
+      values: TestMode.values,
+      defaultsTo: TestMode.balanced,
+    );
+
+    const priorityOpt = DefaultedEnumOptionDescriptor<TestPriority>(
+      name: 'priority',
+      abbr: 'p',
+      help: 'Priority tier',
+      values: TestPriority.values,
+      nameMapper: _priorityLabel,
+      defaultsTo: TestPriority.p1,
+    );
+
+    test('derives allowed values automatically from enum', () {
+      final parser = ArgParser();
+      modeOpt.addTo(parser);
+
+      expect(
+        parser.options['mode']?.allowed,
+        equals(['fast', 'slow', 'balanced']),
+      );
+      expect(parser.options['mode']?.defaultsTo, equals('balanced'));
+
+      final defaultResults = parser.parse([]);
+      expect(modeOpt.getValue(defaultResults), equals(TestMode.balanced));
+      expect(modeOpt.wasProvided(defaultResults), isFalse);
+
+      final customResults = parser.parse(['--mode=fast']);
+      expect(modeOpt.getValue(customResults), equals(TestMode.fast));
+      expect(modeOpt.wasProvided(customResults), isTrue);
+    });
+
+    test('respects custom nameMapper and returns non-nullable Enum T', () {
+      final parser = ArgParser();
+      priorityOpt.addTo(parser);
+
+      expect(parser.options['priority']?.allowed, equals(['P0', 'P1', 'P2']));
+      expect(parser.options['priority']?.defaultsTo, equals('P1'));
+
+      final defaultResults = parser.parse([]);
+      final defaultPri = priorityOpt.getValue(defaultResults);
+      expect(defaultPri, equals(TestPriority.p1));
+
+      final customResults = parser.parse(['-p', 'P0']);
+      final customPri = priorityOpt.getValue(customResults);
+      expect(customPri, equals(TestPriority.p0));
+    });
+
+    test('auto-derives allowed and allowedHelp when T implements CliEnum', () {
+      const descriptor = DefaultedEnumOptionDescriptor<TestCliStrategy>(
+        name: 'strategy',
+        help: 'Strategy option',
+        values: TestCliStrategy.values,
+        defaultsTo: TestCliStrategy.alpha,
+      );
+      final parser = ArgParser();
+      descriptor.addTo(parser);
+
+      expect(
+        parser.options['strategy']!.allowed,
+        equals(['alpha-strategy', 'beta-strategy']),
+      );
+      expect(
+        parser.options['strategy']!.allowedHelp,
+        equals({
+          'alpha-strategy': 'Primary alpha strategy',
+          'beta-strategy': 'Secondary beta strategy',
+        }),
+      );
+
+      final parsedResults = parser.parse(['--strategy=beta-strategy']);
+      expect(descriptor.getValue(parsedResults), equals(TestCliStrategy.beta));
+      expect(descriptor.wasProvided(parsedResults), isTrue);
+    });
+
+    test('throws FormatException when custom valueParser returns null', () {
+      final strictEnum = EnumOptionDescriptor<TestMode>(
+        name: 'mode',
+        help: 'Execution mode',
+        values: TestMode.values,
+        valueParser: (raw) => raw == 'fast' ? TestMode.fast : null,
+      );
+      final parser = ArgParser()..addDescriptor(strictEnum);
+      final validResults = parser.parse(['--mode=fast']);
+      expect(validResults.getValue(strictEnum), equals(TestMode.fast));
+
+      final rejectedResults = parser.parse(['--mode=slow']);
+      expect(
+        () => rejectedResults.getValue(strictEnum),
+        throwsA(isA<FormatException>()),
+      );
+    });
+  });
+
+  group('IntOptionDescriptor & DefaultedIntOptionDescriptor', () {
+    const portOpt = IntOptionDescriptor(name: 'port', help: 'Port number');
+    const timeoutOpt = DefaultedIntOptionDescriptor(
+      name: 'timeout',
+      help: 'Timeout in seconds',
+      defaultsTo: 30,
+    );
+
+    test('parses valid integer and defaults', () {
+      final parser = ArgParser()
+        ..addOptionDescriptors(const [portOpt, timeoutOpt]);
+
+      final defaultResults = parser.parse([]);
+      expect(defaultResults.getValue(portOpt), isNull);
+      expect(defaultResults.getValue(timeoutOpt), equals(30));
+
+      final customResults = parser.parse(['--port=8080', '--timeout=120']);
+      expect(customResults.getValue(portOpt), equals(8080));
+      expect(customResults.getValue(timeoutOpt), equals(120));
+    });
+
+    test('throws ArgParserException at parse time on invalid integer string',
+        () {
+      final parser = ArgParser()..addOptionDescriptor(portOpt);
+      expect(
+        () => parser.parse(['--port=not-a-number']),
+        throwsA(isA<ArgParserException>()),
+      );
+    });
+  });
+}
+
+enum TestMode { fast, slow, balanced }
+
+enum TestPriority {
+  p0('P0'),
+  p1('P1'),
+  p2('P2');
+
+  final String label;
+  const TestPriority(this.label);
+}
+
+String _priorityLabel(TestPriority p) => p.label;
+
+enum TestCliStrategy implements CliEnum {
+  alpha('alpha-strategy', 'Primary alpha strategy'),
+  beta('beta-strategy', 'Secondary beta strategy');
+
+  @override
+  final String cliName;
+
+  @override
+  final String helpText;
+
+  const TestCliStrategy(this.cliName, this.helpText);
 }
 
 class _FakeArgResults implements ArgResults {

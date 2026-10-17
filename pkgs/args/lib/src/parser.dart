@@ -385,10 +385,13 @@ class Parser {
 
   /// Validates that [value] is allowed as a value of [option].
   void _validateAllowed(Option option, String value, String arg) {
-    if (option.allowed == null) return;
-
-    _validate(option.allowed!.contains(value),
-        '"$value" is not an allowed value for option "$arg".', arg);
+    if (option.allowed != null) {
+      _validate(option.allowed!.contains(value),
+          '"$value" is not an allowed value for option "$arg".', arg);
+    }
+    if (validateOptionValue(option, value, arg) case final errorMessage?) {
+      _validate(false, errorMessage, arg);
+    }
   }
 }
 
