@@ -93,7 +93,6 @@ class Option {
   final List<String> aliases;
 
   Object? _descriptor;
-  String? Function(String value, String arg)? _validator;
 
   /// Whether the option is boolean-valued flag.
   bool get isFlag => type == OptionType.flag;
@@ -211,27 +210,7 @@ Object? descriptorOf(Option option) {
   }
 }
 
-/// Returns the typed value validator associated with [option], if any.
-String? Function(String value, String arg)? validatorOf(Option option) {
-  try {
-    return option._validator;
-  } on Object {
-    return null;
-  }
-}
-
-/// Validates [value] using the typed validator associated with [option],
-/// returning an error message if invalid or `null` if valid.
-String? validateOptionValue(Option option, String value, String arg) =>
-    option._validator?.call(value, arg);
-
-/// Associates a typed [descriptor] (and optional value [validator]) with
-/// [option].
-void setDescriptorOf(
-  Option option,
-  Object descriptor, {
-  String? Function(String value, String arg)? validator,
-}) {
+/// Associates a typed [descriptor] with [option].
+void setDescriptorOf(Option option, Object descriptor) {
   option._descriptor = descriptor;
-  option._validator = validator;
 }

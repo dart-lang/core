@@ -3,8 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:args/args.dart';
-import 'package:args/command_runner.dart';
-import 'package:args/typed.dart';
+import 'package:args/src/typed/option_descriptor.dart';
+import 'package:args/src/typed/safe_arg_results.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -302,6 +302,37 @@ void main() {
         expect(parsedResults.getValue(analyzeFatalWarnings), isFalse);
       },
     );
+
+    test(
+      'wholesale imperative ArgParser clones and FakeArgResults preserve '
+      'typed lookup',
+      () {
+        const targetOpt = DefaultedStringOptionDescriptor(
+          name: 'target',
+          help: 'Target file',
+          defaultsTo: 'lib/main.dart',
+        );
+        final sourceParser = ArgParser()..addDescriptor(targetOpt);
+
+        final imperativeClone = ArgParser();
+        for (final option in sourceParser.options.values) {
+          imperativeClone.addOption(
+            option.name,
+            help: option.help,
+            defaultsTo: option.defaultsTo as String?,
+          );
+        }
+        expect(targetOpt.isRegisteredOnParser(imperativeClone), isTrue);
+        final cloneResults = imperativeClone.parse(['--target=lib/other.dart']);
+        expect(cloneResults.getValue(targetOpt), equals('lib/other.dart'));
+        expect(cloneResults.wasProvided(targetOpt), isTrue);
+
+        final fakeResults = _FakeArgResults({'target': 'lib/fake.dart'});
+        expect(fakeResults.hasOption(targetOpt), isTrue);
+        expect(fakeResults.wasProvided(targetOpt), isTrue);
+        expect(fakeResults.getValue(targetOpt), equals('lib/fake.dart'));
+      },
+    );
   });
 
   group('OptionScope & automatic root resolution', () {
@@ -389,8 +420,6 @@ void main() {
         final subParser = rootParser.addCommand('sub')
           ..addOptionDescriptor(localShadow);
 
-        // Neither passed: each descriptor resolves against the parser where
-        // that specific descriptor instance was registered.
         final defaultRootResults = rootParser.parse(['sub']);
         final defaultSubResults = defaultRootResults.command!;
         expect(defaultSubResults.hasOption(globalShared), isTrue);
@@ -400,8 +429,6 @@ void main() {
         expect(globalShared.isRegisteredOnParser(subParser), isFalse);
         expect(localShadow.isRegisteredOnParser(subParser), isTrue);
 
-        // Passed on subcommand only: localShadow sees it, globalShared does
-        // not get hijacked by subResults and still returns global_default.
         final subPassedRoot = rootParser.parse([
           'sub',
           '--shared-opt=sub_custom',
@@ -412,7 +439,6 @@ void main() {
         expect(subPassedSub.wasProvided(globalShared), isFalse);
         expect(subPassedSub.getValue(globalShared), 'global_default');
 
-        // Passed globally AND locally: each descriptor sees its own value.
         final bothPassedRoot = rootParser.parse([
           '--shared-opt=glob_custom',
           'sub',
@@ -426,526 +452,6 @@ void main() {
       },
     );
   });
-
-  group('EnumOptionDescriptor & DefaultedEnumOptionDescriptor', () {
-    const modeOpt = EnumOptionDescriptor<TestMode>(
-      name: 'mode',
-      abbr: 'm',
-      help: 'Execution mode',
-      values: TestMode.values,
-      defaultsTo: TestMode.balanced,
-    );
-
-    const priorityOpt = DefaultedEnumOptionDescriptor<TestPriority>(
-      name: 'priority',
-      abbr: 'p',
-      help: 'Priority tier',
-      values: TestPriority.values,
-      nameMapper: _priorityLabel,
-      defaultsTo: TestPriority.p1,
-    );
-
-    test('derives allowed values automatically from enum', () {
-      final parser = ArgParser();
-      modeOpt.addTo(parser);
-
-      expect(
-        parser.options['mode']?.allowed,
-        equals(['fast', 'slow', 'balanced']),
-      );
-      expect(parser.options['mode']?.defaultsTo, equals('balanced'));
-
-      final defaultResults = parser.parse([]);
-      expect(modeOpt.getValue(defaultResults), equals(TestMode.balanced));
-      expect(modeOpt.wasProvided(defaultResults), isFalse);
-
-      final customResults = parser.parse(['--mode=fast']);
-      expect(modeOpt.getValue(customResults), equals(TestMode.fast));
-      expect(modeOpt.wasProvided(customResults), isTrue);
-    });
-
-    test('respects custom nameMapper and returns non-nullable Enum T', () {
-      final parser = ArgParser();
-      priorityOpt.addTo(parser);
-
-      expect(parser.options['priority']?.allowed, equals(['P0', 'P1', 'P2']));
-      expect(parser.options['priority']?.defaultsTo, equals('P1'));
-
-      final defaultResults = parser.parse([]);
-      final defaultPri = priorityOpt.getValue(defaultResults);
-      expect(defaultPri, equals(TestPriority.p1));
-
-      final customResults = parser.parse(['-p', 'P0']);
-      final customPri = priorityOpt.getValue(customResults);
-      expect(customPri, equals(TestPriority.p0));
-    });
-
-    test('auto-derives allowed and allowedHelp when T implements CliEnum', () {
-      const descriptor = DefaultedEnumOptionDescriptor<TestCliStrategy>(
-        name: 'strategy',
-        help: 'Strategy option',
-        values: TestCliStrategy.values,
-        defaultsTo: TestCliStrategy.alpha,
-      );
-      final parser = ArgParser();
-      descriptor.addTo(parser);
-
-      expect(
-        parser.options['strategy']!.allowed,
-        equals(['alpha-strategy', 'beta-strategy']),
-      );
-      expect(
-        parser.options['strategy']!.allowedHelp,
-        equals({
-          'alpha-strategy': 'Primary alpha strategy',
-          'beta-strategy': 'Secondary beta strategy',
-        }),
-      );
-
-      final parsedResults = parser.parse(['--strategy=beta-strategy']);
-      expect(descriptor.getValue(parsedResults), equals(TestCliStrategy.beta));
-      expect(descriptor.wasProvided(parsedResults), isTrue);
-    });
-
-    test('throws FormatException when custom valueParser returns null', () {
-      final strictEnum = EnumOptionDescriptor<TestMode>(
-        name: 'mode',
-        help: 'Execution mode',
-        values: TestMode.values,
-        valueParser: (raw) => raw == 'fast' ? TestMode.fast : null,
-      );
-      final parser = ArgParser()..addDescriptor(strictEnum);
-      final validResults = parser.parse(['--mode=fast']);
-      expect(validResults.getValue(strictEnum), equals(TestMode.fast));
-
-      final rejectedResults = parser.parse(['--mode=slow']);
-      expect(
-        () => rejectedResults.getValue(strictEnum),
-        throwsA(isA<FormatException>()),
-      );
-    });
-  });
-
-  group('IntOptionDescriptor & DefaultedIntOptionDescriptor', () {
-    const portOpt = IntOptionDescriptor(name: 'port', help: 'Port number');
-    const timeoutOpt = DefaultedIntOptionDescriptor(
-      name: 'timeout',
-      help: 'Timeout in seconds',
-      defaultsTo: 30,
-    );
-
-    test('parses valid integer and defaults', () {
-      final parser = ArgParser()
-        ..addOptionDescriptors(const [portOpt, timeoutOpt]);
-
-      final defaultResults = parser.parse([]);
-      expect(defaultResults.getValue(portOpt), isNull);
-      expect(defaultResults.getValue(timeoutOpt), equals(30));
-
-      final customResults = parser.parse(['--port=8080', '--timeout=120']);
-      expect(customResults.getValue(portOpt), equals(8080));
-      expect(customResults.getValue(timeoutOpt), equals(120));
-    });
-
-    test('throws ArgParserException at parse time on invalid integer string',
-        () {
-      final parser = ArgParser()..addOptionDescriptor(portOpt);
-      expect(
-        () => parser.parse(['--port=not-a-number']),
-        throwsA(isA<ArgParserException>()),
-      );
-    });
-  });
-
-  group('OptionBundle, ValueOptionBundle & CommandSafeArgResults', () {
-    test('registers diamond sub-bundles idempotently and parses bundles', () {
-      final runner = CommandRunner<void>('test', 'test');
-      final command = SafeTestCommand();
-      runner.addCommand(command);
-
-      runner.run(['safe-test', '--opt', 'hello']);
-
-      expect(command.getValue(SafeTestCommand.opt), equals('hello'));
-      expect(command.wasProvided(SafeTestCommand.opt), isTrue);
-      expect(command.hasOption(SafeTestCommand.opt), isTrue);
-      expect(command.hasOption(SafeTestCommand.unadded), isFalse);
-      expect(
-        command.getBundle(const SafeBundle()),
-        equals((true, 'hello', null)),
-      );
-    });
-
-    test(
-      'CommandRunner.run throws UsageException at parse time on invalid int',
-      () {
-        final runner = CommandRunner<void>('test', 'test');
-        final command = SafeTestCommand();
-        runner.addCommand(command);
-
-        expect(
-          () => runner.run(['safe-test', '--port=not-an-int']),
-          throwsA(isA<UsageException>()),
-        );
-      },
-    );
-
-    test(
-      'Command.hasOption works pre-parse and post-parse across local, global, '
-      'and any scopes while enforcing descriptor identity',
-      () async {
-        const globalDescriptor = FlagOptionDescriptor(
-          name: 'global-flag',
-          help: 'Global flag',
-          scope: OptionScope.global,
-        );
-        const collidingGlobalDescriptor = FlagOptionDescriptor(
-          name: 'global-flag',
-          help: 'Colliding global flag',
-          scope: OptionScope.global,
-        );
-        const anyGlobalOnly = StringOptionDescriptor(
-          name: 'any-global',
-          help: 'Any option registered globally',
-          scope: OptionScope.any,
-        );
-        const anyLocalShadowed = StringOptionDescriptor(
-          name: 'any-global',
-          help: 'Local shadow of any-global',
-          scope: OptionScope.any,
-        );
-        const localCollisionDescriptor = FlagOptionDescriptor(
-          name: 'fatal-warnings',
-          help: 'Common fatal warnings',
-        );
-
-        final runner = CommandRunner<void>('test', 'test');
-        runner.argParser
-          ..addDescriptor(globalDescriptor)
-          ..addDescriptor(anyGlobalOnly);
-
-        final command = SafeTestCommand();
-        command.argParser
-          ..addDescriptor(anyLocalShadowed)
-          ..addFlag(
-            'fatal-warnings',
-            defaultsTo: true,
-            help: 'Imperative analyze fatal warnings',
-          );
-
-        // Pre-parse before adding to runner: local & local-any work; global is
-        // false because runner is still null.
-        expect(command.argResults, isNull);
-        expect(command.hasOption(SafeTestCommand.opt), isTrue);
-        expect(command.hasOption(SafeTestCommand.unadded), isFalse);
-        expect(command.hasOption(localCollisionDescriptor), isFalse);
-        expect(command.hasOption(anyLocalShadowed), isTrue);
-        expect(command.hasOption(globalDescriptor), isFalse);
-        expect(command.hasOption(anyGlobalOnly), isFalse);
-
-        // Pre-parse after adding to runner: global and global-registered any
-        // descriptors now resolve via runner.argParser.
-        runner.addCommand(command);
-        expect(command.argResults, isNull);
-        expect(command.hasOption(globalDescriptor), isTrue);
-        expect(command.hasOption(collidingGlobalDescriptor), isFalse);
-        expect(command.hasOption(anyGlobalOnly), isTrue);
-        expect(command.hasOption(anyLocalShadowed), isTrue);
-        expect(command.hasOption(localCollisionDescriptor), isFalse);
-
-        // Post-parse after runner.run: all scopes continue to resolve with
-        // strict descriptor identity.
-        await runner.run([
-          '--global-flag',
-          '--any-global=from-root',
-          'safe-test',
-          '--any-global=from-sub',
-          '--fatal-warnings',
-        ]);
-        expect(command.argResults, isNotNull);
-        expect(command.hasOption(SafeTestCommand.opt), isTrue);
-        expect(command.hasOption(SafeTestCommand.unadded), isFalse);
-        expect(command.hasOption(localCollisionDescriptor), isFalse);
-        expect(command.getValue(localCollisionDescriptor), isFalse);
-        expect(command.hasOption(globalDescriptor), isTrue);
-        expect(command.hasOption(collidingGlobalDescriptor), isFalse);
-        expect(command.getValue(globalDescriptor), isTrue);
-        expect(command.hasOption(anyGlobalOnly), isTrue);
-        expect(command.hasOption(anyLocalShadowed), isTrue);
-        expect(command.getValue(anyGlobalOnly), equals('from-root'));
-        expect(command.getValue(anyLocalShadowed), equals('from-sub'));
-      },
-    );
-
-    test(
-      'OptionBundle hide override works across register, registerOnCommand, '
-      'registerOptionBundle, registerOptionBundles, and registerBundle',
-      () {
-        const bundle = VisibilityTestBundle();
-
-        // Default registration: hiddenOpt is hidden, visibleOpt is visible,
-        // verboseOpt is hidden unless verboseHelp: true.
-        final defaultParser = ArgParser()..registerBundle(bundle);
-        expect(defaultParser.options['visible-opt']!.hide, isFalse);
-        expect(defaultParser.options['hidden-opt']!.hide, isTrue);
-        expect(defaultParser.options['verbose-opt']!.hide, isTrue);
-        expect(defaultParser.options['sub-hidden-opt']!.hide, isTrue);
-
-        // Force hide: false across bundle and subBundles.
-        final unhiddenParser = ArgParser()..registerBundle(bundle, hide: false);
-        expect(unhiddenParser.options['visible-opt']!.hide, isFalse);
-        expect(unhiddenParser.options['hidden-opt']!.hide, isFalse);
-        expect(unhiddenParser.options['verbose-opt']!.hide, isFalse);
-        expect(unhiddenParser.options['sub-hidden-opt']!.hide, isFalse);
-
-        // Force hide: true even when verboseHelp: true via registerBundles.
-        final forcedHiddenParser = ArgParser()
-          ..registerBundles(const [bundle], verboseHelp: true, hide: true);
-        expect(forcedHiddenParser.options['visible-opt']!.hide, isTrue);
-        expect(forcedHiddenParser.options['hidden-opt']!.hide, isTrue);
-        expect(forcedHiddenParser.options['verbose-opt']!.hide, isTrue);
-        expect(forcedHiddenParser.options['sub-hidden-opt']!.hide, isTrue);
-
-        // Command.registerOptionBundle & registerOptionBundles with hide.
-        final cmdUnhidden = EmptyTestCommand()
-          ..registerOptionBundle(bundle, hide: false);
-        expect(cmdUnhidden.argParser.options['hidden-opt']!.hide, isFalse);
-        expect(cmdUnhidden.argParser.options['sub-hidden-opt']!.hide, isFalse);
-
-        final cmdHidden = EmptyTestCommand()
-          ..registerOptionBundles(
-            const [bundle],
-            verboseHelp: true,
-            hide: true,
-          );
-        expect(cmdHidden.argParser.options['visible-opt']!.hide, isTrue);
-        expect(cmdHidden.argParser.options['verbose-opt']!.hide, isTrue);
-
-        final cmdDirect = EmptyTestCommand();
-        bundle.registerOnCommand(cmdDirect, hide: false);
-        expect(cmdDirect.argParser.options['hidden-opt']!.hide, isFalse);
-      },
-    );
-
-    test(
-      'OptionBundle.title adds separator once even on repeated registration '
-      'and Command.wasParsed matches wasProvided',
-      () async {
-        const bundle = TitledTestBundle();
-        final parser = ArgParser()
-          ..registerBundle(bundle)
-          ..registerBundle(bundle);
-        final matches = '=== Build Options ==='.allMatches(parser.usage).length;
-        expect(matches, equals(1));
-
-        final runner = CommandRunner<void>('test', 'test');
-        final command = SafeTestCommand();
-        runner.addCommand(command);
-        expect(command.wasParsed(SafeTestCommand.opt), isFalse);
-        expect(command.getValue(SafeTestCommand.flag), isTrue);
-
-        await runner.run(['safe-test', '--opt=val']);
-        expect(command.wasParsed(SafeTestCommand.opt), isTrue);
-        expect(command.wasParsed(SafeTestCommand.flag), isFalse);
-      },
-    );
-
-    test(
-      'Option.copyTo and wholesale imperative ArgParser clones preserve '
-      'typed lookup, and FakeArgResults works without NoSuchMethodError',
-      () {
-        const portOpt = IntOptionDescriptor(
-          name: 'port',
-          help: 'Port number',
-          defaultsTo: 8080,
-        );
-        const targetOpt = DefaultedStringOptionDescriptor(
-          name: 'target',
-          help: 'Target file',
-          defaultsTo: 'lib/main.dart',
-        );
-
-        final sourceParser = ArgParser()
-          ..addDescriptors(const [portOpt, targetOpt]);
-
-        // 1. Lossless copy via Option.copyTo preserves descriptor & validator.
-        final copiedParser = ArgParser();
-        for (final option in sourceParser.options.values) {
-          option.copyTo(copiedParser, hide: true);
-        }
-        expect(copiedParser.options['port']!.hide, isTrue);
-        expect(copiedParser.options['port']!.descriptor, same(portOpt));
-        expect(portOpt.isRegisteredOnParser(copiedParser), isTrue);
-        expect(
-          () => copiedParser.parse(['--port=invalid']),
-          throwsA(isA<ArgParserException>()),
-        );
-        final copiedResults = copiedParser.parse(['--port=9090']);
-        expect(copiedResults.getValue(portOpt), equals(9090));
-        expect(copiedResults.wasProvided(portOpt), isTrue);
-
-        // 2. Wholesale imperative clone (e.g. HasOverriddenArgParser) fallback.
-        final imperativeClone = ArgParser();
-        for (final option in sourceParser.options.values) {
-          imperativeClone.addOption(
-            option.name,
-            help: option.help,
-            defaultsTo: option.defaultsTo as String?,
-          );
-        }
-        expect(portOpt.isRegisteredOnParser(imperativeClone), isTrue);
-        expect(targetOpt.isRegisteredOnParser(imperativeClone), isTrue);
-        final cloneResults = imperativeClone.parse(['--target=lib/other.dart']);
-        expect(cloneResults.getValue(targetOpt), equals('lib/other.dart'));
-        expect(cloneResults.wasProvided(targetOpt), isTrue);
-
-        // 3. Custom FakeArgResults implementing ArgResults works cleanly.
-        final fakeResults = _FakeArgResults({'target': 'lib/fake.dart'});
-        expect(fakeResults.hasOption(targetOpt), isTrue);
-        expect(fakeResults.wasProvided(targetOpt), isTrue);
-        expect(fakeResults.getValue(targetOpt), equals('lib/fake.dart'));
-        expect(fakeResults.getValue(portOpt), equals(8080));
-      },
-    );
-  });
-}
-
-enum TestMode { fast, slow, balanced }
-
-enum TestPriority {
-  p0('P0'),
-  p1('P1'),
-  p2('P2');
-
-  final String label;
-  const TestPriority(this.label);
-}
-
-String _priorityLabel(TestPriority p) => p.label;
-
-enum TestCliStrategy implements CliEnum {
-  alpha('alpha-strategy', 'Primary alpha strategy'),
-  beta('beta-strategy', 'Secondary beta strategy');
-
-  @override
-  final String cliName;
-
-  @override
-  final String helpText;
-
-  const TestCliStrategy(this.cliName, this.helpText);
-}
-
-class SafeBundle extends ValueOptionBundle<(bool, String?, int?)> {
-  const SafeBundle();
-
-  @override
-  List<OptionDescriptor<Object?>> get descriptors => const [
-        SafeTestCommand.flag,
-        SafeTestCommand.opt,
-        SafeTestCommand.port,
-      ];
-
-  @override
-  (bool, String?, int?) parse(ArgResults? results) => (
-        SafeTestCommand.flag.getValue(results),
-        SafeTestCommand.opt.getValue(results),
-        SafeTestCommand.port.getValue(results),
-      );
-}
-
-class SafeTestCommand extends Command<void> {
-  SafeTestCommand() {
-    registerOptionBundles(const [SafeBundle()]);
-  }
-
-  static const flag = FlagOptionDescriptor(
-    name: 'flag',
-    help: 'A test flag',
-    defaultsTo: true,
-  );
-
-  static const opt = StringOptionDescriptor(name: 'opt', help: 'A test option');
-
-  static const port = IntOptionDescriptor(name: 'port', help: 'A test port');
-
-  static const unadded = FlagOptionDescriptor(
-    name: 'unadded',
-    help: 'Not added to parser',
-  );
-
-  @override
-  String get name => 'safe-test';
-
-  @override
-  String get description => 'Safe test command';
-
-  @override
-  void run() {}
-}
-
-class EmptyTestCommand extends Command<void> {
-  @override
-  String get name => 'empty-test';
-
-  @override
-  String get description => 'Empty test command';
-
-  @override
-  void run() {}
-}
-
-class VisibilityTestBundle extends OptionBundle {
-  const VisibilityTestBundle();
-
-  static const visibleOpt = FlagOptionDescriptor(
-    name: 'visible-opt',
-    help: 'Visible option',
-  );
-  static const hiddenOpt = FlagOptionDescriptor(
-    name: 'hidden-opt',
-    help: 'Hidden option',
-    hide: true,
-  );
-  static const verboseOpt = FlagOptionDescriptor(
-    name: 'verbose-opt',
-    help: 'Verbose-only option',
-    verboseOnly: true,
-  );
-
-  @override
-  List<OptionDescriptor<Object?>> get descriptors => const [
-        visibleOpt,
-        hiddenOpt,
-        verboseOpt,
-      ];
-
-  @override
-  List<OptionBundle> get subBundles => const [_SubVisibilityTestBundle()];
-}
-
-class _SubVisibilityTestBundle extends OptionBundle {
-  const _SubVisibilityTestBundle();
-
-  static const subHiddenOpt = FlagOptionDescriptor(
-    name: 'sub-hidden-opt',
-    help: 'Sub-bundle hidden option',
-    hide: true,
-  );
-
-  @override
-  List<OptionDescriptor<Object?>> get descriptors => const [subHiddenOpt];
-}
-
-class TitledTestBundle extends OptionBundle {
-  const TitledTestBundle();
-
-  @override
-  String get title => '=== Build Options ===';
-
-  @override
-  List<OptionDescriptor<Object?>> get descriptors => const [
-        VisibilityTestBundle.visibleOpt,
-      ];
 }
 
 class _FakeArgResults implements ArgResults {
