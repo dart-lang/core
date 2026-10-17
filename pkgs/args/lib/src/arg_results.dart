@@ -17,7 +17,11 @@ ArgResults newArgResults(
     ArgResults? command,
     List<String> rest,
     List<String> arguments) {
-  return ArgResults._(parser, parsed, name, command, rest, arguments);
+  final results = ArgResults._(parser, parsed, name, command, rest, arguments);
+  for (var child = command; child != null; child = child.command) {
+    setRootOf(child, results);
+  }
+  return results;
 }
 
 /// The results of parsing a series of command line arguments using
@@ -149,13 +153,30 @@ class ArgResults {
   }
 }
 
-/// Returns the [ArgParser] that produced [results].
-ArgParser parserOf(ArgResults results) => results._parser;
+/// Returns the [ArgParser] that produced [results], or `null` if [results] is
+/// a custom test double (`Fake` or `Mock`) implementing [ArgResults].
+ArgParser? parserOf(ArgResults results) {
+  try {
+    return results._parser;
+  } on Object {
+    return null;
+  }
+}
 
 /// Returns the top-level root [ArgResults] for [results].
-ArgResults rootOf(ArgResults results) => results._root ?? results;
+ArgResults rootOf(ArgResults results) {
+  try {
+    return results._root ?? results;
+  } on Object {
+    return results;
+  }
+}
 
 /// Sets the top-level root [ArgResults] for [results].
 void setRootOf(ArgResults results, ArgResults root) {
-  results._root = root;
+  try {
+    results._root = root;
+  } on Object {
+    // Ignore when [results] is a test double implementing [ArgResults].
+  }
 }

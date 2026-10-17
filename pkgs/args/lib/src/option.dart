@@ -203,7 +203,22 @@ class OptionType {
 }
 
 /// Returns the typed descriptor associated with [option], if any.
-Object? descriptorOf(Option option) => option._descriptor;
+Object? descriptorOf(Option option) {
+  try {
+    return option._descriptor;
+  } on Object {
+    return null;
+  }
+}
+
+/// Returns the typed value validator associated with [option], if any.
+String? Function(String value, String arg)? validatorOf(Option option) {
+  try {
+    return option._validator;
+  } on Object {
+    return null;
+  }
+}
 
 /// Validates [value] using the typed validator associated with [option],
 /// returning an error message if invalid or `null` if valid.

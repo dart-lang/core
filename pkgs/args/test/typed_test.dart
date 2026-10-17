@@ -223,6 +223,24 @@ void main() {
       final results = parser.parse([]);
       expect(bareMulti.getValue(results), isEmpty);
     });
+
+    test('returns unmodifiable list and respects splitCommas: false', () {
+      const noSplitMulti = MultiOptionDescriptor(
+        name: 'header',
+        help: 'HTTP headers',
+        splitCommas: false,
+      );
+      final parser = ArgParser()..addDescriptors(const [multi, noSplitMulti]);
+      final results = parser.parse(['-D', 'a=1,b=2', '--header=Accept: a,b']);
+
+      final defines = results.getValue(multi);
+      expect(defines, equals(['a=1', 'b=2']));
+      expect(() => defines.add('c=3'), throwsUnsupportedError);
+
+      final headers = results.getValue(noSplitMulti);
+      expect(headers, equals(['Accept: a,b']));
+      expect(headers.clear, throwsUnsupportedError);
+    });
   });
 
   group('Descriptor identity in isRegistered, isRegisteredOnParser & getValue',
@@ -488,6 +506,24 @@ void main() {
       expect(descriptor.getValue(parsedResults), equals(TestCliStrategy.beta));
       expect(descriptor.wasProvided(parsedResults), isTrue);
     });
+
+    test('throws FormatException when custom valueParser returns null', () {
+      final strictEnum = EnumOptionDescriptor<TestMode>(
+        name: 'mode',
+        help: 'Execution mode',
+        values: TestMode.values,
+        valueParser: (raw) => raw == 'fast' ? TestMode.fast : null,
+      );
+      final parser = ArgParser()..addDescriptor(strictEnum);
+      final validResults = parser.parse(['--mode=fast']);
+      expect(validResults.getValue(strictEnum), equals(TestMode.fast));
+
+      final rejectedResults = parser.parse(['--mode=slow']);
+      expect(
+        () => rejectedResults.getValue(strictEnum),
+        throwsA(isA<FormatException>()),
+      );
+    });
   });
 
   group('IntOptionDescriptor & DefaultedIntOptionDescriptor', () {
@@ -689,6 +725,87 @@ void main() {
         expect(cmdDirect.argParser.options['hidden-opt']!.hide, isFalse);
       },
     );
+
+    test(
+      'OptionBundle.title adds separator once even on repeated registration '
+      'and Command.wasParsed matches wasProvided',
+      () async {
+        const bundle = TitledTestBundle();
+        final parser = ArgParser()
+          ..registerBundle(bundle)
+          ..registerBundle(bundle);
+        final matches = '=== Build Options ==='.allMatches(parser.usage).length;
+        expect(matches, equals(1));
+
+        final runner = CommandRunner<void>('test', 'test');
+        final command = SafeTestCommand();
+        runner.addCommand(command);
+        expect(command.wasParsed(SafeTestCommand.opt), isFalse);
+        expect(command.getValue(SafeTestCommand.flag), isTrue);
+
+        await runner.run(['safe-test', '--opt=val']);
+        expect(command.wasParsed(SafeTestCommand.opt), isTrue);
+        expect(command.wasParsed(SafeTestCommand.flag), isFalse);
+      },
+    );
+
+    test(
+      'Option.copyTo and wholesale imperative ArgParser clones preserve '
+      'typed lookup, and FakeArgResults works without NoSuchMethodError',
+      () {
+        const portOpt = IntOptionDescriptor(
+          name: 'port',
+          help: 'Port number',
+          defaultsTo: 8080,
+        );
+        const targetOpt = DefaultedStringOptionDescriptor(
+          name: 'target',
+          help: 'Target file',
+          defaultsTo: 'lib/main.dart',
+        );
+
+        final sourceParser = ArgParser()
+          ..addDescriptors(const [portOpt, targetOpt]);
+
+        // 1. Lossless copy via Option.copyTo preserves descriptor & validator.
+        final copiedParser = ArgParser();
+        for (final option in sourceParser.options.values) {
+          option.copyTo(copiedParser, hide: true);
+        }
+        expect(copiedParser.options['port']!.hide, isTrue);
+        expect(copiedParser.options['port']!.descriptor, same(portOpt));
+        expect(portOpt.isRegisteredOnParser(copiedParser), isTrue);
+        expect(
+          () => copiedParser.parse(['--port=invalid']),
+          throwsA(isA<ArgParserException>()),
+        );
+        final copiedResults = copiedParser.parse(['--port=9090']);
+        expect(copiedResults.getValue(portOpt), equals(9090));
+        expect(copiedResults.wasProvided(portOpt), isTrue);
+
+        // 2. Wholesale imperative clone (e.g. HasOverriddenArgParser) fallback.
+        final imperativeClone = ArgParser();
+        for (final option in sourceParser.options.values) {
+          imperativeClone.addOption(
+            option.name,
+            help: option.help,
+            defaultsTo: option.defaultsTo as String?,
+          );
+        }
+        expect(portOpt.isRegisteredOnParser(imperativeClone), isTrue);
+        expect(targetOpt.isRegisteredOnParser(imperativeClone), isTrue);
+        final cloneResults = imperativeClone.parse(['--target=lib/other.dart']);
+        expect(cloneResults.getValue(targetOpt), equals('lib/other.dart'));
+        expect(cloneResults.wasProvided(targetOpt), isTrue);
+
+        // 3. Custom FakeArgResults implementing ArgResults works cleanly.
+        final fakeResults = _FakeArgResults({'target': 'lib/fake.dart'});
+        expect(fakeResults.hasOption(targetOpt), isTrue);
+        expect(fakeResults.wasProvided(targetOpt), isTrue);
+        expect(fakeResults.getValue(targetOpt), equals('lib/fake.dart'));
+        expect(fakeResults.getValue(portOpt), equals(8080));
+      },
+    );
   });
 }
 
@@ -817,4 +934,35 @@ class _SubVisibilityTestBundle extends OptionBundle {
 
   @override
   List<OptionDescriptor<Object?>> get descriptors => const [subHiddenOpt];
+}
+
+class TitledTestBundle extends OptionBundle {
+  const TitledTestBundle();
+
+  @override
+  String get title => '=== Build Options ===';
+
+  @override
+  List<OptionDescriptor<Object?>> get descriptors => const [
+        VisibilityTestBundle.visibleOpt,
+      ];
+}
+
+class _FakeArgResults implements ArgResults {
+  _FakeArgResults(this._values);
+
+  final Map<String, Object?> _values;
+
+  @override
+  dynamic operator [](String name) => _values[name];
+
+  @override
+  bool wasParsed(String name) => _values.containsKey(name);
+
+  @override
+  Iterable<String> get options => _values.keys;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) =>
+      throw UnimplementedError(invocation.memberName.toString());
 }

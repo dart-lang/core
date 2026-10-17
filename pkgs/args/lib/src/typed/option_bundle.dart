@@ -30,7 +30,9 @@ abstract class OptionBundle {
     bool verboseHelp = false,
     bool? hide,
   }) {
-    if (title != null) {
+    if (title != null &&
+        (descriptors.isEmpty ||
+            descriptors.any((d) => !d.isRegisteredOnParser(parser)))) {
       parser.addSeparator(title!);
     }
     for (final descriptor in descriptors) {

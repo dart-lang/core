@@ -25,12 +25,18 @@ extension SafeArgResults on ArgResults {
   bool wasProvided(OptionDescriptor<Object?> descriptor) =>
       descriptor.wasProvided(this);
 
-  /// Returns whether [descriptor] is registered in these results.
+  /// Returns whether [descriptor] is registered in these results (or in the
+  /// root global results for [OptionScope.global] and [OptionScope.any]).
   bool hasOption(OptionDescriptor<Object?> descriptor) =>
       descriptor.isRegistered(this);
 }
 
 /// Type-safe argument extraction extension for [Command].
+///
+/// Before [CommandRunner.run] has parsed arguments (`argResults == null`),
+/// [getValue], [getBundle], [wasProvided], and [wasParsed] gracefully fall
+/// back to default values (`false` for [wasProvided]/[wasParsed]), and
+/// [hasOption] inspects [Command.argParser] (and `runner?.argParser`).
 extension CommandSafeArgResults on Command<dynamic> {
   ArgResults? get _effectiveResults {
     final local = argResults;
@@ -132,25 +138,25 @@ extension ArgParserBundleExtension on ArgParser {
     }
   }
 
-  /// Adds an [OptionDescriptor] directly to this parser.
+  /// Adds an [OptionDescriptor] directly to this parser (alias for
+  /// [addDescriptor]).
   void addOptionDescriptor(
     OptionDescriptor<Object?> descriptor, {
     bool verboseHelp = false,
     bool? hide,
     String? help,
   }) {
-    descriptor.addTo(this, verboseHelp: verboseHelp, hide: hide, help: help);
+    addDescriptor(descriptor, verboseHelp: verboseHelp, hide: hide, help: help);
   }
 
-  /// Adds multiple [descriptors] directly to this parser.
+  /// Adds multiple [descriptors] directly to this parser (alias for
+  /// [addDescriptors]).
   void addOptionDescriptors(
     Iterable<OptionDescriptor<Object?>> descriptors, {
     bool verboseHelp = false,
     bool? hide,
   }) {
-    for (final descriptor in descriptors) {
-      descriptor.addTo(this, verboseHelp: verboseHelp, hide: hide);
-    }
+    addDescriptors(descriptors, verboseHelp: verboseHelp, hide: hide);
   }
 
   /// Registers [bundle] into this parser.
@@ -174,10 +180,72 @@ extension ArgParserBundleExtension on ArgParser {
   }
 }
 
-/// Extension on [Option] exposing its associated [OptionDescriptor], if any.
+/// Extension on [Option] exposing its associated [OptionDescriptor], if any,
+/// and supporting lossless copying across [ArgParser] instances.
 extension TypedOptionExtension on Option {
   /// The [OptionDescriptor] that registered this option, or `null` if it was
   /// registered imperatively via [ArgParser.addOption] or [ArgParser.addFlag].
   OptionDescriptor<Object?>? get descriptor =>
       descriptorOf(this) as OptionDescriptor<Object?>?;
+
+  /// Copies this option into [target], preserving any associated
+  /// [OptionDescriptor] and value validator.
+  void copyTo(
+    ArgParser target, {
+    bool? hide,
+    String? help,
+  }) {
+    final effectiveHide = hide ?? this.hide;
+    final effectiveHelp = help ?? this.help;
+    switch (type) {
+      case OptionType.flag:
+        target.addFlag(
+          name,
+          abbr: abbr,
+          help: effectiveHelp,
+          defaultsTo: defaultsTo as bool?,
+          negatable: negatable ?? true,
+          callback: callback as void Function(bool)?,
+          hide: effectiveHide,
+          hideNegatedUsage: hideNegatedUsage ?? false,
+          aliases: aliases,
+        );
+      case OptionType.single:
+        target.addOption(
+          name,
+          abbr: abbr,
+          help: effectiveHelp,
+          valueHelp: valueHelp,
+          allowed: allowed,
+          allowedHelp: allowedHelp,
+          defaultsTo: defaultsTo as String?,
+          callback: callback as void Function(String?)?,
+          mandatory: mandatory,
+          hide: effectiveHide,
+          aliases: aliases,
+        );
+      case OptionType.multiple:
+        target.addMultiOption(
+          name,
+          abbr: abbr,
+          help: effectiveHelp,
+          valueHelp: valueHelp,
+          allowed: allowed,
+          allowedHelp: allowedHelp,
+          defaultsTo: (defaultsTo as Iterable<Object?>?)?.cast<String>(),
+          callback: callback as void Function(List<String>)?,
+          splitCommas: splitCommas,
+          hide: effectiveHide,
+          aliases: aliases,
+        );
+    }
+    if ((descriptorOf(this), target.options[name])
+        case (final existingDescriptor?, final copiedOption?)) {
+      setDescriptorOf(
+        copiedOption,
+        existingDescriptor,
+        validator: validatorOf(this),
+      );
+    }
+  }
 }

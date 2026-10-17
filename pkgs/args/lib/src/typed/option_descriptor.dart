@@ -109,16 +109,33 @@ abstract class OptionDescriptor<T> {
   }
 
   /// Checks if this specific [OptionDescriptor] is registered on [parser].
-  bool isRegisteredOnParser(ArgParser parser) => switch (parser.options[name]) {
-        final option? => identical(descriptorOf(option), this),
-        null => false,
-      };
+  bool isRegisteredOnParser(ArgParser parser) {
+    final option = parser.options[name];
+    if (option == null) {
+      return false;
+    }
+    if (descriptorOf(option) case final existing?) {
+      return identical(existing, this);
+    }
+    // Fallback for parsers cloned imperatively via addFlag/addOption/addMultiOption
+    // (where no option on [parser] carries a descriptor) when metadata matches.
+    return option.type == _optionType &&
+        option.help == help &&
+        (option.isMultiple || option.defaultsTo == _rawDefaultsTo) &&
+        parser.options.values.every((opt) => descriptorOf(opt) == null);
+  }
 
   /// Returns the resolved value for this option.
   T getValue(ArgResults? results);
 
-  bool _isRegisteredIn(ArgResults results) =>
-      isRegisteredOnParser(parserOf(results));
+  OptionType get _optionType;
+
+  Object? get _rawDefaultsTo => defaultsTo;
+
+  bool _isRegisteredIn(ArgResults results) => switch (parserOf(results)) {
+        final parser? => isRegisteredOnParser(parser),
+        null => true,
+      };
 
   ArgResults? _resolveTargetResults(ArgResults? results) {
     if (results == null) {
@@ -188,6 +205,9 @@ abstract base class _StringOptionDescriptorBase<R> extends OptionDescriptor<R> {
     super.hide = false,
     super.verboseOnly = false,
   });
+
+  @override
+  OptionType get _optionType => OptionType.single;
 
   @override
   void addTo(
@@ -289,6 +309,12 @@ abstract base class _IntOptionDescriptorBase<R> extends OptionDescriptor<R> {
     super.hide = false,
     super.verboseOnly = false,
   });
+
+  @override
+  OptionType get _optionType => OptionType.single;
+
+  @override
+  Object? get _rawDefaultsTo => defaultsTo?.toString();
 
   @override
   void addTo(
@@ -409,6 +435,9 @@ abstract base class _FlagOptionDescriptorBase<R> extends OptionDescriptor<R> {
   final bool negatable;
 
   @override
+  OptionType get _optionType => OptionType.flag;
+
+  @override
   void addTo(
     ArgParser parser, {
     bool verboseHelp = false,
@@ -501,6 +530,9 @@ final class MultiOptionDescriptor extends OptionDescriptor<List<String>> {
   final bool splitCommas;
 
   @override
+  OptionType get _optionType => OptionType.multiple;
+
+  @override
   void addTo(
     ArgParser parser, {
     bool verboseHelp = false,
@@ -530,10 +562,12 @@ final class MultiOptionDescriptor extends OptionDescriptor<List<String>> {
   List<String> getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
     if (target != null && _isRegisteredIn(target)) {
-      return (target[name] as List<dynamic>?)?.cast<String>() ??
-          const <String>[];
+      final raw = (target[name] as List<dynamic>?)?.cast<String>();
+      return raw != null ? List<String>.unmodifiable(raw) : const <String>[];
     }
-    return defaultsTo ?? const <String>[];
+    return defaultsTo != null
+        ? List<String>.unmodifiable(defaultsTo!)
+        : const <String>[];
   }
 }
 
@@ -581,6 +615,13 @@ abstract base class _EnumOptionDescriptorBase<T extends Enum, R>
   }
 
   @override
+  OptionType get _optionType => OptionType.single;
+
+  @override
+  Object? get _rawDefaultsTo =>
+      defaultsTo != null ? _formatName(defaultsTo! as T) : null;
+
+  @override
   List<String> get allowed => values.map(_formatName).toList();
 
   Map<String, String>? _computeAllowedHelp() {
@@ -626,10 +667,21 @@ abstract base class _EnumOptionDescriptorBase<T extends Enum, R>
     _attachDescriptor(parser);
   }
 
-  T? _parse(String? raw) {
+  T? _parseEnumOption(ArgResults target) {
+    final raw = target[name] as String?;
     if (raw == null) {
       return null;
     }
+    final parsed = _parse(raw);
+    if (parsed == null) {
+      throw FormatException(
+        'Invalid enum value "$raw" for option "--$name".',
+      );
+    }
+    return parsed;
+  }
+
+  T? _parse(String raw) {
     if (valueParser != null) {
       return valueParser!(raw);
     }
@@ -667,8 +719,7 @@ final class EnumOptionDescriptor<T extends Enum>
   T? getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
     if (target != null && _isRegisteredIn(target)) {
-      final raw = target[name] as String?;
-      return _parse(raw) ?? defaultsTo;
+      return _parseEnumOption(target) ?? defaultsTo;
     }
     return defaultsTo;
   }
@@ -697,8 +748,7 @@ final class DefaultedEnumOptionDescriptor<T extends Enum>
   T getValue(ArgResults? results) {
     final target = _resolveTargetResults(results);
     if (target != null && _isRegisteredIn(target)) {
-      final raw = target[name] as String?;
-      return _parse(raw) ?? defaultsTo!;
+      return _parseEnumOption(target) ?? defaultsTo!;
     }
     return defaultsTo!;
   }

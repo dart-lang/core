@@ -12,9 +12,9 @@
 * Throw an exception when parsing argument lists with missing mandatory
   arguments instead of waiting until they are read.
 * Add `package:args/typed.dart` with declarative, type-safe option descriptors
-  (`OptionDescriptor`, `OptionBundle`, `ValueOptionBundle`, `CliEnum`) and
-  typed extraction extensions on `ArgResults`, `Command`, `ArgParser`, and
-  `Option`.
+  (`OptionDescriptor`, `OptionScope`, `OptionBundle`, `ValueOptionBundle`,
+  `CliEnum`) and typed extraction extensions on `ArgResults`, `Command`,
+  `ArgParser`, and `Option`.
 
 ## 2.7.0
 
