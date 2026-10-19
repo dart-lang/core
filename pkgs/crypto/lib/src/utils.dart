@@ -14,12 +14,14 @@ const bytesPerWord = 4;
 /// Adds [x] and [y] with 32-bit overflow semantics.
 @pragma('vm:prefer-inline')
 @pragma('dart2js:prefer-inline')
+@pragma('wasm:prefer-inline')
 int add32(int x, int y) => (x + y) & mask32;
 
 /// Bitwise rotates [val] to the left by [shift], obeying 32-bit overflow
 /// semantics.
 @pragma('vm:prefer-inline')
 @pragma('dart2js:prefer-inline')
+@pragma('wasm:prefer-inline')
 int rotl32(int val, int shift) {
   var modShift = shift & 31;
   return ((val << modShift) & mask32) | ((val & mask32) >> (32 - modShift));
