@@ -197,25 +197,24 @@ abstract class HashSink extends ByteConversionSink {
     var lengthInBits = _lengthInBytes * bitsPerByte;
 
     // Add the full length of the input data as a 64-bit value at the end of the
-    // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
-    // signature is 128-bit.
+    // hash. Note: we're only writing out 64 bits, so zero-fill up to
+    // `_chunk.length - 8` even if the signature is 128-bit.
     final offset = _chunk.length - 8;
     _chunk.fillRange(_chunkNextIndex, offset, 0);
-    var byteData = _byteDataView;
 
     if (!const bool.fromEnvironment('dart.library.js_interop')) {
-      byteData.setUint64(offset, lengthInBits, _endian);
+      _byteDataView.setUint64(offset, lengthInBits, _endian);
     } else {
-      // byteData.setUint64 isn't supported on dart2js so we implement it
+      // ByteData.setUint64 isn't supported on dart2js so we implement it
       // manually instead.
       var highBits = lengthInBits ~/ 0x100000000; // >> 32
       var lowBits = lengthInBits & mask32;
       if (_endian == Endian.big) {
-        byteData.setUint32(offset, highBits, _endian);
-        byteData.setUint32(offset + bytesPerWord, lowBits, _endian);
+        _byteDataView.setUint32(offset, highBits, _endian);
+        _byteDataView.setUint32(offset + bytesPerWord, lowBits, _endian);
       } else {
-        byteData.setUint32(offset, lowBits, _endian);
-        byteData.setUint32(offset + bytesPerWord, highBits, _endian);
+        _byteDataView.setUint32(offset, lowBits, _endian);
+        _byteDataView.setUint32(offset + bytesPerWord, highBits, _endian);
       }
     }
 
