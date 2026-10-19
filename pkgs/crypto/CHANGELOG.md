@@ -2,6 +2,7 @@
 
 - Drop unused `pkg:typed_data` dependency.
 - Work-around [dart-lang/sdk#63747](https://github.com/dart-lang/sdk/issues/63747).
+- Performance improvements for all hash functions, `md5` in particular.
 
 ## 3.0.7
 
