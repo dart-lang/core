@@ -131,6 +131,15 @@ abstract class _Sha32BitSink extends HashSink {
   void updateHash(Uint32List chunk) {
     assert(chunk.length == 16);
 
+    // This makes the VM get rid of some "GenericCheckBound" calls.
+    // See https://github.com/dart-lang/sdk/issues/60753
+    // ignore: unnecessary_statements
+    chunk[15];
+    // ignore: unnecessary_statements
+    _extended[63];
+    // ignore: unnecessary_statements
+    _digest[7];
+
     // Prepare message schedule.
     for (var i = 0; i < 16; i++) {
       _extended[i] = chunk[i];
