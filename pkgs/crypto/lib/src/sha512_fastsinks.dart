@@ -35,8 +35,8 @@ abstract class _Sha64BitSink extends HashSink {
   // The following helper functions are taken directly from
   // http://tools.ietf.org/html/rfc6234.
 
-  static int _rotr64(int n, int x) => _shr64(n, x) | (x << (64 - n));
-  static int _shr64(int n, int x) => (x >> n) & ~(-1 << (64 - n));
+  static int _rotr64(int n, int x) => (x >>> n) | (x << (64 - n));
+  static int _shr64(int n, int x) => x >>> n;
 
   static int _ch(int x, int y, int z) => (x & y) ^ (~x & z);
   static int _maj(int x, int y, int z) => (x & y) ^ (x & z) ^ (y & z);
