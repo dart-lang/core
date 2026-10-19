@@ -82,12 +82,33 @@ abstract class _Sha32BitSink extends HashSink {
   // The following helper functions are taken directly from
   // http://tools.ietf.org/html/rfc6234.
 
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _rotr32(int n, int x) => (x >> n) | ((x << (32 - n)) & mask32);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _ch(int x, int y, int z) => (x & y) ^ ((~x & mask32) & z);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _maj(int x, int y, int z) => (x & y) ^ (x & z) ^ (y & z);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _bsig0(int x) => _rotr32(2, x) ^ _rotr32(13, x) ^ _rotr32(22, x);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _bsig1(int x) => _rotr32(6, x) ^ _rotr32(11, x) ^ _rotr32(25, x);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _ssig0(int x) => _rotr32(7, x) ^ _rotr32(18, x) ^ (x >> 3);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _ssig1(int x) => _rotr32(17, x) ^ _rotr32(19, x) ^ (x >> 10);
 
   @override
