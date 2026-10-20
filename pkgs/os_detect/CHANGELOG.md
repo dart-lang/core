@@ -1,6 +1,7 @@
 ## 2.0.4-wip
 
 - Run `dart format` with the new style.
+- Declare `os_detect` under `executables` in `pubspec.yaml`.
 
 ## 2.0.3
 
