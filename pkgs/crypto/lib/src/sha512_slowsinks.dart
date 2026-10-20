@@ -76,6 +76,8 @@ abstract class _Sha64BitSink extends HashSink {
   // The following helper functions are taken directly from
   // http://tools.ietf.org/html/rfc6234.
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _shr(
     int bits,
     Uint32List word,
@@ -95,6 +97,8 @@ abstract class _Sha64BitSink extends HashSink {
                 : 0;
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _shl(
     int bits,
     Uint32List word,
@@ -114,6 +118,8 @@ abstract class _Sha64BitSink extends HashSink {
         ((bits < 32) && (bits >= 0)) ? (word[1 + offset] << bits) : 0;
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _or(
     Uint32List word1,
     int offset1,
@@ -126,6 +132,8 @@ abstract class _Sha64BitSink extends HashSink {
     ret[1 + offsetR] = word1[1 + offset1] | word2[1 + offset2];
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _xor(
     Uint32List word1,
     int offset1,
@@ -138,6 +146,8 @@ abstract class _Sha64BitSink extends HashSink {
     ret[1 + offsetR] = word1[1 + offset1] ^ word2[1 + offset2];
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _add(
     Uint32List word1,
     int offset1,
@@ -152,6 +162,8 @@ abstract class _Sha64BitSink extends HashSink {
         (ret[1 + offsetR] < word1[1 + offset1] ? 1 : 0);
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _addTo2(Uint32List word1, int offset1, Uint32List word2, int offset2) {
     var addTemp = word1[1 + offset1];
     word1[1 + offset1] += word2[1 + offset2];
@@ -181,6 +193,8 @@ abstract class _Sha64BitSink extends HashSink {
   final _nums = Uint32List(12 + 16 + 10);
 
   // SHA rotate   ((word >> bits) | (word << (64-bits)))
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _rotr(
     int bits,
     Uint32List word,
@@ -193,6 +207,8 @@ abstract class _Sha64BitSink extends HashSink {
     _or(_nums, _rotrIndex1, _nums, _rotrIndex2, ret, offsetR);
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _bsig0(Uint32List word, int offset, Uint32List ret, int offsetR) {
     _rotr(28, word, offset, _nums, _sigIndex1);
     _rotr(34, word, offset, _nums, _sigIndex2);
@@ -201,6 +217,8 @@ abstract class _Sha64BitSink extends HashSink {
     _xor(_nums, _sigIndex1, _nums, _sigIndex4, ret, offsetR);
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _bsig1(Uint32List word, int offset, Uint32List ret, int offsetR) {
     _rotr(14, word, offset, _nums, _sigIndex1);
     _rotr(18, word, offset, _nums, _sigIndex2);
@@ -209,6 +227,8 @@ abstract class _Sha64BitSink extends HashSink {
     _xor(_nums, _sigIndex1, _nums, _sigIndex4, ret, offsetR);
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _ssig0(Uint32List word, int offset, Uint32List ret, int offsetR) {
     _rotr(1, word, offset, _nums, _sigIndex1);
     _rotr(8, word, offset, _nums, _sigIndex2);
@@ -217,6 +237,8 @@ abstract class _Sha64BitSink extends HashSink {
     _xor(_nums, _sigIndex1, _nums, _sigIndex4, ret, offsetR);
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _ssig1(Uint32List word, int offset, Uint32List ret, int offsetR) {
     _rotr(19, word, offset, _nums, _sigIndex1);
     _rotr(61, word, offset, _nums, _sigIndex2);
@@ -225,6 +247,8 @@ abstract class _Sha64BitSink extends HashSink {
     _xor(_nums, _sigIndex1, _nums, _sigIndex4, ret, offsetR);
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _ch(
     Uint32List x,
     int offsetX,
@@ -241,6 +265,8 @@ abstract class _Sha64BitSink extends HashSink {
         (x[1 + offsetX] & (y[1 + offsetY] ^ z[1 + offsetZ])) ^ z[1 + offsetZ];
   }
 
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   void _maj(
     Uint32List x,
     int offsetX,
