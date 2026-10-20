@@ -100,18 +100,22 @@ class _MD5Sink extends HashSink {
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _f(int x, int y, int z) => (x & y) | ((~x & mask32) & z);
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _g(int x, int y, int z) => (x & z) | (y & (~z & mask32));
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _h(int x, int y, int z) => x ^ y ^ z;
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _i(int x, int y, int z) => y ^ (x | (~z & mask32));
 
   // FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4 from
@@ -146,6 +150,7 @@ class _MD5Sink extends HashSink {
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _ff(int a, int b, int c, int d, int x, int s, int ac) {
     a = add32(a, add32(add32(_f(b, c, d), x), ac));
     a = rotl32(a, s);
@@ -154,6 +159,7 @@ class _MD5Sink extends HashSink {
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _gg(int a, int b, int c, int d, int x, int s, int ac) {
     a = add32(a, add32(add32(_g(b, c, d), x), ac));
     a = rotl32(a, s);
@@ -162,6 +168,7 @@ class _MD5Sink extends HashSink {
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _hh(int a, int b, int c, int d, int x, int s, int ac) {
     a = add32(a, add32(add32(_h(b, c, d), x), ac));
     a = rotl32(a, s);
@@ -170,6 +177,7 @@ class _MD5Sink extends HashSink {
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   static int _ii(int a, int b, int c, int d, int x, int s, int ac) {
     a = add32(a, add32(add32(_i(b, c, d), x), ac));
     a = rotl32(a, s);
