@@ -2393,6 +2393,90 @@ void main() {
       });
     });
   });
+
+  group('Map', () {
+    group('pairs', () {
+      test('is empty for an empty map', () {
+        const map = <int, int>{};
+
+        final pairs = map.pairs;
+
+        expect(pairs, isEmpty);
+      });
+
+      test('contains a pair for every entry in the map', () {
+        const map = {1: 2, 3: 4, 5: 6};
+
+        final pairs = map.pairs;
+
+        expect(pairs, const [(1, 2), (3, 4), (5, 6)]);
+      });
+
+      group('for an identity map', () {
+        test('preserves distinct instances for equal keys', () {
+          const a1 = 'a';
+          final a2 = String.fromCharCodes([97]);
+          final map = Map<String, int>.identity()
+            ..[a1] = 1
+            ..[a2] = 2;
+
+          final pairs = map.pairs;
+
+          final [(key1, _), (key2, _)] = pairs.toList();
+          expect(key1, same(a1));
+          expect(key2, same(a2));
+        });
+
+        test(
+          'uses record equality for `contains` rather than map key lookup',
+          () {
+            const a1 = 'a';
+            final a2 = String.fromCharCodes([97]);
+            final map = Map<String, int>.identity()
+              ..[a1] = 1
+              ..[a2] = 2;
+
+            final pairs = map.pairs;
+
+            expect(pairs, contains((a2, 1)));
+          },
+        );
+
+        test('returns false from `contains` for pairs not in the map', () {
+          final map = Map<String, int>.identity()..['a'] = 1;
+
+          final pairs = map.pairs;
+
+          expect(pairs, isNot(contains(const ('b', 1))));
+        });
+      });
+
+      group('for a map with custom key equality', () {
+        test('preserves canonical keys', () {
+          final map =
+              CanonicalizedMap<String, String, int>((s) => s.toLowerCase())
+                ..['A'] = 1;
+
+          final pairs = map.pairs;
+
+          expect(pairs, const [('A', 1)]);
+        });
+
+        test(
+          'uses record equality for `contains` rather than map key equality',
+          () {
+            final map =
+                CanonicalizedMap<String, String, int>((s) => s.toLowerCase())
+                  ..['A'] = 1;
+
+            final pairs = map.pairs;
+
+            expect(pairs, isNot(contains(const ('a', 1))));
+          },
+        );
+      });
+    });
+  });
 }
 
 /// Creates a plain iterable not implementing any other class.
