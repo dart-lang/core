@@ -33,7 +33,7 @@ abstract class _Sha64BitSink extends HashSink {
   _Sha64BitSink(Sink<Digest> sink, this._digest)
       : super(sink, 32, signatureBytes: 16);
   // The following helper functions are taken directly from
-  // http://tools.ietf.org/html/rfc6234.
+  // http://tools.ietf.org/html/rfc6234
 
   static int _rotr64(int n, int x) => _shr64(n, x) | (x << (64 - n));
   static int _shr64(int n, int x) => (x >> n) & ~(-1 << (64 - n));

@@ -187,7 +187,7 @@ class _MD5Sink extends HashSink {
   @override
   void updateHash(Uint32List x) {
     // This makes the VM get rid of some "GenericCheckBound" calls.
-    // See also https://github.com/dart-lang/sdk/issues/60753.
+    // See https://github.com/dart-lang/sdk/issues/60753
     // ignore: unnecessary_statements
     x[15];
 

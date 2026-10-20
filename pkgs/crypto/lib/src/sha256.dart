@@ -80,7 +80,7 @@ abstract class _Sha32BitSink extends HashSink {
   _Sha32BitSink(Sink<Digest> sink, this._digest) : super(sink, 16);
 
   // The following helper functions are taken directly from
-  // http://tools.ietf.org/html/rfc6234.
+  // http://tools.ietf.org/html/rfc6234
 
   int _rotr32(int n, int x) => (x >> n) | ((x << (32 - n)) & mask32);
   int _ch(int x, int y, int z) => (x & y) ^ ((~x & mask32) & z);
