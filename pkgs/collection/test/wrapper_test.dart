@@ -2,21 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: unnecessary_statements
-
 /// Tests wrapper utilities.
-
 library;
 
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
 import 'package:test/test.dart';
-
-// Test that any member access/call on the wrapper object is equal to
-// an expected access on the wrapped object.
-// This is implemented by capturing accesses using noSuchMethod and comparing
-// them to expected accesses captured previously.
 
 void main() {
   void testTwoElementSet(Set<String> Function() setUpSet) {
@@ -218,30 +210,52 @@ void main() {
       var wrapper = DelegatingIterable<int>(base);
 
       expect(wrapper.any((x) => x == 2), isTrue);
-      expect(wrapper.contains(2), isTrue);
+      expect(wrapper.cast<num>(), [1, 2, 3]);
+      expect(wrapper, contains(2));
+      expect(wrapper, isNot(contains(99)));
       expect(wrapper.elementAt(1), 2);
       expect(wrapper.every((x) => x > 0), isTrue);
-      expect(wrapper.expand((x) => [x, x]).toList(), [1, 1, 2, 2, 3, 3]);
+      expect(wrapper.expand((x) => [x, x]), [1, 1, 2, 2, 3, 3]);
       expect(wrapper.first, 1);
       expect(wrapper.firstWhere((x) => x > 1), 2);
+      expect(wrapper.firstWhere((x) => x > 5, orElse: () => 99), 99);
       expect(wrapper.fold<int>(0, (p, e) => p + e), 6);
-      expect(wrapper.isEmpty, isFalse);
-      expect(wrapper.isNotEmpty, isTrue);
+      expect(wrapper.followedBy([4]), [1, 2, 3, 4]);
+
+      var visited = <int>[];
+      wrapper.forEach(visited.add);
+      expect(visited, [1, 2, 3]);
+
+      expect(wrapper, isNotEmpty);
+      expect(const DelegatingIterable<int>([]), isEmpty);
       expect(wrapper.iterator.moveNext(), isTrue);
+      expect(wrapper.join(), '123');
       expect(wrapper.join(','), '1,2,3');
       expect(wrapper.last, 3);
       expect(wrapper.lastWhere((x) => x < 3), 2);
-      expect(wrapper.length, 3);
-      expect(wrapper.map((x) => x * 2).toList(), [2, 4, 6]);
+      expect(wrapper.lastWhere((x) => x > 5, orElse: () => 99), 99);
+      expect(wrapper, hasLength(3));
+      expect(wrapper.map((x) => x * 2), [2, 4, 6]);
       expect(wrapper.reduce((a, b) => a + b), 6);
+      expect(const DelegatingIterable<int>([42]).single, 42);
       expect(wrapper.singleWhere((x) => x == 2), 2);
-      expect(wrapper.skip(1).toList(), [2, 3]);
-      expect(wrapper.skipWhile((x) => x < 2).toList(), [2, 3]);
-      expect(wrapper.take(2).toList(), [1, 2]);
-      expect(wrapper.takeWhile((x) => x < 3).toList(), [1, 2]);
+      expect(wrapper.singleWhere((x) => x > 5, orElse: () => 99), 99);
+      expect(wrapper.skip(1), [2, 3]);
+      expect(wrapper.skipWhile((x) => x < 2), [2, 3]);
+      expect(wrapper.take(2), [1, 2]);
+      expect(wrapper.takeWhile((x) => x < 3), [1, 2]);
       expect(wrapper.toList(), [1, 2, 3]);
+      expect(
+        () => wrapper.toList(growable: false).add(4),
+        throwsUnsupportedError,
+      );
       expect(wrapper.toSet(), {1, 2, 3});
-      expect(wrapper.where((x) => x > 1).toList(), [2, 3]);
+      expect(wrapper.toString(), base.toString());
+      expect(wrapper.where((x) => x > 1), [2, 3]);
+      expect(const DelegatingIterable<num>([1, 2.5, 3]).whereType<int>(), [
+        1,
+        3,
+      ]);
     });
   });
 
@@ -250,14 +264,27 @@ void main() {
       var base = <int>[1, 2, 3];
       var wrapper = DelegatingList<int>(base);
 
+      expect(wrapper[1], 2);
+
+      wrapper[0] = 0;
+      expect(base, [0, 2, 3]);
+
+      wrapper.first = 1;
+      wrapper.last = 30;
+      expect(base, [1, 2, 30]);
+      wrapper.last = 3;
+
+      expect(wrapper + [4, 5], [1, 2, 3, 4, 5]);
+      expect(wrapper.asMap(), {0: 1, 1: 2, 2: 3});
+      expect(wrapper.cast<num>(), [1, 2, 3]);
+      expect(wrapper.getRange(1, 3), [2, 3]);
+      expect(wrapper.reversed, [3, 2, 1]);
+
       wrapper.add(4);
       expect(base, [1, 2, 3, 4]);
 
       wrapper.addAll([5, 6]);
       expect(base, [1, 2, 3, 4, 5, 6]);
-
-      wrapper[0] = 0;
-      expect(base[0], 0);
 
       wrapper.fillRange(0, 2, -1);
       expect(base, [-1, -1, 3, 4, 5, 6]);
@@ -266,39 +293,53 @@ void main() {
       expect(wrapper.indexWhere((x) => x == 3), 2);
 
       wrapper.insert(0, 10);
-      expect(base[0], 10);
+      expect(base, [10, -1, -1, 3, 4, 5, 6]);
 
       wrapper.insertAll(0, [11, 12]);
-      expect(base.take(2), [11, 12]);
+      expect(base, [11, 12, 10, -1, -1, 3, 4, 5, 6]);
 
       expect(wrapper.lastIndexOf(3), 5);
       expect(wrapper.lastIndexWhere((x) => x == 3), 5);
 
-      wrapper.remove(10);
-      expect(base.contains(10), isFalse);
+      expect(wrapper.remove(10), isTrue);
+      expect(base, isNot(contains(10)));
 
-      wrapper.removeAt(0);
-      wrapper.removeLast();
+      expect(wrapper.removeAt(0), 11);
+      expect(wrapper.removeLast(), 6);
+      expect(base, [12, -1, -1, 3, 4, 5]);
 
       wrapper.removeRange(0, 1);
+      expect(base, [-1, -1, 3, 4, 5]);
+
       wrapper.removeWhere((x) => x == -1);
+      expect(base, [3, 4, 5]);
+
       wrapper.replaceRange(0, 1, [20, 21]);
-      wrapper.retainWhere((x) => x > 0);
+      expect(base, [20, 21, 4, 5]);
+
+      wrapper.retainWhere((x) => x > 4);
+      expect(base, [20, 21, 5]);
 
       wrapper.setAll(0, [30, 31]);
-      wrapper.setRange(0, 2, [40, 41]);
+      expect(base, [30, 31, 5]);
 
-      base.clear();
-      base.addAll([3, 1, 2]);
+      wrapper.setRange(0, 2, [40, 41, 42], 1);
+      expect(base, [41, 42, 5]);
+
       wrapper.sort();
-      expect(base, [1, 2, 3]);
+      expect(base, [5, 41, 42]);
+
+      wrapper.sort((a, b) => b.compareTo(a));
+      expect(base, [42, 41, 5]);
 
       wrapper.shuffle();
-      expect(base.length, 3);
+      expect(base, unorderedEquals([5, 41, 42]));
 
-      base.clear();
-      base.addAll([1, 2, 3]);
-      expect(wrapper.sublist(0, 1), [1]);
+      base
+        ..clear()
+        ..addAll([1, 2, 3]);
+      expect(wrapper.sublist(1), [2, 3]);
+      expect(wrapper.sublist(0, 2), [1, 2]);
 
       wrapper.clear();
       expect(base, isEmpty);
@@ -306,7 +347,7 @@ void main() {
       var nullBase = <int?>[1, 2];
       var nullWrapper = DelegatingList<int?>(nullBase);
       nullWrapper.length = 5;
-      expect(nullBase.length, 5);
+      expect(nullBase, hasLength(5));
     });
   });
 
@@ -315,13 +356,15 @@ void main() {
       var base = <int>{1, 2, 3};
       var wrapper = DelegatingSet<int>(base);
 
-      wrapper.add(4);
+      expect(wrapper.add(4), isTrue);
       expect(base, {1, 2, 3, 4});
 
       wrapper.addAll([5, 6]);
       expect(base, {1, 2, 3, 4, 5, 6});
 
-      wrapper.remove(1);
+      expect(wrapper.cast<num>(), {1, 2, 3, 4, 5, 6});
+
+      expect(wrapper.remove(1), isTrue);
       expect(base, {2, 3, 4, 5, 6});
 
       wrapper.removeAll([2, 3]);
@@ -338,10 +381,12 @@ void main() {
       expect(base, {5});
 
       expect(wrapper.containsAll([5]), isTrue);
+      expect(wrapper.containsAll([5, 99]), isFalse);
       expect(wrapper.difference({5}), isEmpty);
-      expect(wrapper.intersection({5}), {5});
+      expect(wrapper.intersection({5, 6}), {5});
       expect(wrapper.union({6}), {5, 6});
       expect(wrapper.lookup(5), 5);
+      expect(wrapper.toSet(), {5});
 
       wrapper.clear();
       expect(base, isEmpty);
@@ -350,35 +395,37 @@ void main() {
 
   group('DelegatingQueue', () {
     test('delegates to underlying queue', () {
-      var base = Queue<int>.from([1, 2, 3]);
+      var base = Queue<int>.of([1, 2, 3]);
       var wrapper = DelegatingQueue<int>(base);
 
       wrapper.add(4);
-      expect(base, equals([1, 2, 3, 4]));
+      expect(base, [1, 2, 3, 4]);
 
       wrapper.addAll([5, 6]);
-      expect(base, equals([1, 2, 3, 4, 5, 6]));
+      expect(base, [1, 2, 3, 4, 5, 6]);
 
       wrapper.addFirst(0);
-      expect(base.first, 0);
+      expect(base, [0, 1, 2, 3, 4, 5, 6]);
 
       wrapper.addLast(7);
-      expect(base.last, 7);
+      expect(base, [0, 1, 2, 3, 4, 5, 6, 7]);
 
-      wrapper.remove(0);
-      expect(base.contains(0), isFalse);
+      expect(wrapper.cast<num>(), [0, 1, 2, 3, 4, 5, 6, 7]);
 
-      wrapper.removeFirst();
-      expect(base.first, 2);
+      expect(wrapper.remove(0), isTrue);
+      expect(base, isNot(contains(0)));
 
-      wrapper.removeLast();
-      expect(base.last, 6);
+      expect(wrapper.removeFirst(), 1);
+      expect(base, [2, 3, 4, 5, 6, 7]);
+
+      expect(wrapper.removeLast(), 7);
+      expect(base, [2, 3, 4, 5, 6]);
 
       wrapper.removeWhere((x) => x == 2);
-      expect(base.first, 3);
+      expect(base, [3, 4, 5, 6]);
 
       wrapper.retainWhere((x) => x == 3);
-      expect(base, equals([3]));
+      expect(base, [3]);
 
       wrapper.clear();
       expect(base, isEmpty);
@@ -390,42 +437,57 @@ void main() {
       var base = <String, int>{'a': 1, 'b': 2};
       var wrapper = DelegatingMap<String, int>(base);
 
-      expect(wrapper['a'], 1);
+      expect(wrapper, containsPair('a', 1));
 
       wrapper['c'] = 3;
-      expect(base['c'], 3);
+      expect(base, containsPair('c', 3));
 
       wrapper.addAll({'d': 4});
-      expect(base['d'], 4);
+      expect(base, containsPair('d', 4));
 
-      expect(wrapper.containsKey('a'), isTrue);
-      expect(wrapper.containsValue(1), isTrue);
-      expect(wrapper.isEmpty, isFalse);
-      expect(wrapper.isNotEmpty, isTrue);
-      expect(wrapper.keys.toList(), ['a', 'b', 'c', 'd']);
-      expect(wrapper.values.toList(), [1, 2, 3, 4]);
-      expect(wrapper.length, 4);
+      expect(wrapper.cast<String, num>(), {'a': 1, 'b': 2, 'c': 3, 'd': 4});
+      expect(wrapper, contains('a'));
+      expect(wrapper, containsValue(1));
+      expect(
+        wrapper.entries.map((e) => '${e.key}:${e.value}'),
+        ['a:1', 'b:2', 'c:3', 'd:4'],
+      );
 
-      wrapper.remove('a');
-      expect(base.containsKey('a'), isFalse);
+      var visited = <String>[];
+      wrapper.forEach((k, v) => visited.add('$k=$v'));
+      expect(visited, ['a=1', 'b=2', 'c=3', 'd=4']);
+
+      expect(wrapper, isNotEmpty);
+      expect(wrapper.keys, ['a', 'b', 'c', 'd']);
+      expect(wrapper.values, [1, 2, 3, 4]);
+      expect(wrapper, hasLength(4));
+      expect(
+        wrapper.map((k, v) => MapEntry(k.toUpperCase(), v * 10)),
+        {'A': 10, 'B': 20, 'C': 30, 'D': 40},
+      );
+      expect(wrapper.toString(), base.toString());
+
+      expect(wrapper.remove('a'), 1);
+      expect(base, isNot(contains('a')));
 
       wrapper.removeWhere((k, v) => k == 'b');
-      expect(base.containsKey('b'), isFalse);
+      expect(base, isNot(contains('b')));
 
-      wrapper.update('c', (v) => v + 1);
-      expect(base['c'], 4);
+      expect(wrapper.update('c', (v) => v + 1), 4);
+      expect(base, containsPair('c', 4));
 
       wrapper.updateAll((k, v) => v * 2);
-      expect(base['c'], 8);
+      expect(base, containsPair('c', 8));
 
-      wrapper.putIfAbsent('e', () => 5);
-      expect(base['e'], 5);
+      expect(wrapper.putIfAbsent('e', () => 5), 5);
+      expect(base, containsPair('e', 5));
 
       wrapper.addEntries([const MapEntry('f', 6)]);
-      expect(base['f'], 6);
+      expect(base, containsPair('f', 6));
 
       wrapper.clear();
       expect(base, isEmpty);
+      expect(wrapper, isEmpty);
     });
   });
 
