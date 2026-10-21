@@ -35,8 +35,8 @@ abstract class _Sha64BitSink extends HashSink {
   // The following helper functions are taken directly from
   // http://tools.ietf.org/html/rfc6234
 
-  static int _rotr64(int n, int x) => _shr64(n, x) | (x << (64 - n));
-  static int _shr64(int n, int x) => (x >> n) & ~(-1 << (64 - n));
+  static int _rotr64(int n, int x) => (x >>> n) | (x << (64 - n));
+  static int _shr64(int n, int x) => x >>> n;
 
   static int _ch(int x, int y, int z) => (x & y) ^ (~x & z);
   static int _maj(int x, int y, int z) => (x & y) ^ (x & z) ^ (y & z);
@@ -48,6 +48,17 @@ abstract class _Sha64BitSink extends HashSink {
   @override
   void updateHash(Uint32List chunk) {
     assert(chunk.length == 32);
+
+    // This makes the VM get rid of some "GenericCheckBound" calls.
+    // See https://github.com/dart-lang/sdk/issues/60753
+    // ignore: unnecessary_statements
+    chunk[31];
+    // ignore: unnecessary_statements
+    _extended[79];
+    // ignore: unnecessary_statements
+    _noise64[79];
+    // ignore: unnecessary_statements
+    _digest[7];
 
     // Prepare message schedule.
     for (var i = 0, x = 0; i < 32; i += 2, x++) {

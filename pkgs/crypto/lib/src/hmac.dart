@@ -93,7 +93,8 @@ class _HmacSink extends ByteConversionSink {
   @override
   void addSlice(List<int> data, int start, int end, bool isLast) {
     if (_isClosed) throw StateError('HMAC is closed');
-    _innerSink.addSlice(data, start, end, isLast);
+    _innerSink.addSlice(data, start, end, false);
+    if (isLast) close();
   }
 
   @override

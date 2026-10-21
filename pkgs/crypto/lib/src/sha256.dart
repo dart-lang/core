@@ -82,17 +82,63 @@ abstract class _Sha32BitSink extends HashSink {
   // The following helper functions are taken directly from
   // http://tools.ietf.org/html/rfc6234
 
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _rotr32(int n, int x) => (x >> n) | ((x << (32 - n)) & mask32);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _ch(int x, int y, int z) => (x & y) ^ ((~x & mask32) & z);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _maj(int x, int y, int z) => (x & y) ^ (x & z) ^ (y & z);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _bsig0(int x) => _rotr32(2, x) ^ _rotr32(13, x) ^ _rotr32(22, x);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _bsig1(int x) => _rotr32(6, x) ^ _rotr32(11, x) ^ _rotr32(25, x);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _ssig0(int x) => _rotr32(7, x) ^ _rotr32(18, x) ^ (x >> 3);
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
   int _ssig1(int x) => _rotr32(17, x) ^ _rotr32(19, x) ^ (x >> 10);
+
+  // The two temporaries of a step of FIPS 180-4 Section 6.2.2 (step 3):
+  //
+  //   T1 = h + BSIG1(e) + CH(e,f,g) + K[t] + W[t]
+  //   T2 = BSIG0(a) + MAJ(a,b,c)
+
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
+  int _temp1(int e, int f, int g, int h, int k, int w) =>
+      add32(add32(h, _bsig1(e)), add32(_ch(e, f, g), add32(k, w)));
+
+  @pragma('vm:prefer-inline')
+  @pragma('dart2js:prefer-inline')
+  @pragma('wasm:prefer-inline')
+  int _temp2(int a, int b, int c) => add32(_bsig0(a), _maj(a, b, c));
 
   @override
   void updateHash(Uint32List chunk) {
     assert(chunk.length == 16);
+
+    // This makes the VM get rid of some "GenericCheckBound" calls.
+    // See https://github.com/dart-lang/sdk/issues/60753
+    // ignore: unnecessary_statements
+    chunk[15];
+    // ignore: unnecessary_statements
+    _extended[63];
+    // ignore: unnecessary_statements
+    _digest[7];
 
     // Prepare message schedule.
     for (var i = 0; i < 16; i++) {
@@ -115,20 +161,43 @@ abstract class _Sha32BitSink extends HashSink {
     var g = _digest[6];
     var h = _digest[7];
 
-    for (var i = 0; i < 64; i++) {
-      var temp1 = add32(
-        add32(h, _bsig1(e)),
-        add32(_ch(e, f, g), add32(_noise[i], _extended[i])),
-      );
-      var temp2 = add32(_bsig0(a), _maj(a, b, c));
-      h = g;
-      g = f;
-      f = e;
-      e = add32(d, temp1);
-      d = c;
-      c = b;
-      b = a;
-      a = add32(temp1, temp2);
+    // Each loop body performs eight consecutive steps of FIPS 180-4 Section
+    // 6.2.2 (step 3). Instead of shifting the eight working variables after
+    // every step
+    //
+    //   h = g;  g = f;  f = e;  e = d + T1;  d = c;  c = b;  b = a;
+    //   a = T1 + T2
+    //
+    // each step adds T1 to the variable that holds d and writes T1 + T2 into
+    // the variable that held h (whose value is no longer needed), so the
+    // roles of the variables (a, ..., h) rotate from one step to the next;
+    // after eight steps they are back where they started.
+    var temp1 = 0;
+    for (var i = 0; i < 64; i += 8) {
+      temp1 = _temp1(e, f, g, h, _noise[i], _extended[i]);
+      d = add32(d, temp1);
+      h = add32(temp1, _temp2(a, b, c));
+      temp1 = _temp1(d, e, f, g, _noise[i + 1], _extended[i + 1]);
+      c = add32(c, temp1);
+      g = add32(temp1, _temp2(h, a, b));
+      temp1 = _temp1(c, d, e, f, _noise[i + 2], _extended[i + 2]);
+      b = add32(b, temp1);
+      f = add32(temp1, _temp2(g, h, a));
+      temp1 = _temp1(b, c, d, e, _noise[i + 3], _extended[i + 3]);
+      a = add32(a, temp1);
+      e = add32(temp1, _temp2(f, g, h));
+      temp1 = _temp1(a, b, c, d, _noise[i + 4], _extended[i + 4]);
+      h = add32(h, temp1);
+      d = add32(temp1, _temp2(e, f, g));
+      temp1 = _temp1(h, a, b, c, _noise[i + 5], _extended[i + 5]);
+      g = add32(g, temp1);
+      c = add32(temp1, _temp2(d, e, f));
+      temp1 = _temp1(g, h, a, b, _noise[i + 6], _extended[i + 6]);
+      f = add32(f, temp1);
+      b = add32(temp1, _temp2(c, d, e));
+      temp1 = _temp1(f, g, h, a, _noise[i + 7], _extended[i + 7]);
+      e = add32(e, temp1);
+      a = add32(temp1, _temp2(b, c, d));
     }
 
     // Update hash values after iteration.
