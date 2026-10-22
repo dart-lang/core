@@ -10,55 +10,52 @@ versioning.
 
 ## Hexadecimal
 
-The `hex` codec converts byte arrays to and from hexadecimal strings, following
-[the Base16 spec](https://tools.ietf.org/html/rfc4648#section-8).
+The `hex` codec converts lists of bytes to and from hexadecimal strings,
+following [the Base16 spec](https://datatracker.ietf.org/doc/html/rfc4648#section-8).
 
 ```dart
 import 'package:convert/convert.dart';
 
 void main() {
-  var bytes = [0, 1, 2, 3, 255];
+  final bytes = [0, 1, 2, 3, 255];
 
-  // Encode byte array to hex string.
-  var encoded = hex.encode(bytes);
-  print(encoded); // '00010203ff'
+  // Encode bytes to a hex string.
+  final encoded = hex.encode(bytes);
+  print(encoded); // 00010203ff
 
-  // Decode hex string back to byte array.
-  var decoded = hex.decode(encoded);
+  // Decode a hex string back to bytes.
+  final decoded = hex.decode(encoded);
   print(decoded); // [0, 1, 2, 3, 255]
 }
 ```
 
 ## Percent (URL) encoding
 
-The `percent` codec converts byte arrays to and from percent-encoded (also known
-as URL-encoded) strings according to
-[RFC 3986](https://tools.ietf.org/html/rfc3986#section-2.1).
+The `percent` codec converts lists of bytes to and from percent-encoded (also
+known as URL-encoded) strings according to
+[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986#section-2.1).
 
 ```dart
 import 'dart:convert';
 import 'package:convert/convert.dart';
 
 void main() {
-  var bytes = utf8.encode('hello world!');
+  final bytes = utf8.encode('hello world!');
 
-  // Encode byte array to percent-encoded string.
-  var encoded = percent.encode(bytes);
-  print(encoded); // 'hello%20world%21'
+  // Encode bytes to a percent-encoded string.
+  final encoded = percent.encode(bytes);
+  print(encoded); // hello%20world%21
 
-  // Decode percent-encoded string back to byte array.
-  var decoded = percent.decode(encoded);
-  print(utf8.decode(decoded)); // 'hello world!'
+  // Decode a percent-encoded string back to bytes.
+  final decoded = percent.decode(encoded);
+  print(utf8.decode(decoded)); // hello world!
 }
 ```
 
 ## FixedDateTimeFormatter
 
-A formatter and parser for `DateTime` in a fixed format string pattern.
-This differs from `DateFormat` from `package:intl` in that the format character
-count is interpreted literally. Use for converting a `DateTime` to a specific
-simple output format where you can control the length for each entry. May be
-faster parsing that same simple format back.
+`FixedDateTimeFormatter` formats and parses `DateTime` values using a simple,
+fixed-length pattern where each format character represents a single digit.
 
 ```dart
 import 'package:convert/convert.dart';
@@ -66,12 +63,12 @@ import 'package:convert/convert.dart';
 void main() {
   final formatter = FixedDateTimeFormatter('YYYYMMDDhhmmss');
 
-  // Decode a string into a DateTime (returns UTC by default).
-  final dateTime = formatter.decode('19960425050322');
-  print(dateTime); // 1996-04-25 05:03:22.000Z
-
   // Encode a DateTime into a string.
   final encoded = formatter.encode(DateTime.utc(1996, 4, 25, 5, 3, 22));
-  print(encoded); // '19960425050322'
+  print(encoded); // 19960425050322
+
+  // Decode a string into a DateTime (returns UTC by default).
+  final dateTime = formatter.decode(encoded);
+  print(dateTime); // 1996-04-25 05:03:22.000Z
 }
 ```

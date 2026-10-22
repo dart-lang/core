@@ -10,11 +10,11 @@ void main() {
   // the year, month, day, hour, minute, and second.
   final formatter = FixedDateTimeFormatter('YYYYMMDDhhmmss');
 
-  // Decode a string into a DateTime (returns UTC by default).
-  final dateTime = formatter.decode('19960425050322');
-  print(dateTime); // 1996-04-25 05:03:22.000Z
-
   // Encode a DateTime into a string.
   final encoded = formatter.encode(DateTime.utc(1996, 4, 25, 5, 3, 22));
-  print(encoded); // '19960425050322'
+  print(encoded); // 19960425050322
+
+  // Decode a string into a DateTime (returns UTC by default).
+  final dateTime = formatter.decode(encoded);
+  print(dateTime); // 1996-04-25 05:03:22.000Z
 }
