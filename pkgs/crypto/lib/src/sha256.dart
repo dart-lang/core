@@ -80,7 +80,7 @@ abstract class _Sha32BitSink extends HashSink {
   _Sha32BitSink(Sink<Digest> sink, this._digest) : super(sink, 16);
 
   // The following helper functions are taken directly from
-  // http://tools.ietf.org/html/rfc6234.
+  // http://tools.ietf.org/html/rfc6234
 
   @pragma('vm:prefer-inline')
   @pragma('dart2js:prefer-inline')
