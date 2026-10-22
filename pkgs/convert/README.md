@@ -18,11 +18,11 @@ import 'package:convert/convert.dart';
 
 void main() {
   var bytes = [0, 1, 2, 3, 255];
-  
+
   // Encode byte array to hex string.
   var encoded = hex.encode(bytes);
   print(encoded); // '00010203ff'
-  
+
   // Decode hex string back to byte array.
   var decoded = hex.decode(encoded);
   print(decoded); // [0, 1, 2, 3, 255]
@@ -41,11 +41,11 @@ import 'package:convert/convert.dart';
 
 void main() {
   var bytes = utf8.encode('hello world!');
-  
+
   // Encode byte array to percent-encoded string.
   var encoded = percent.encode(bytes);
   print(encoded); // 'hello%20world%21'
-  
+
   // Decode percent-encoded string back to byte array.
   var decoded = percent.decode(encoded);
   print(utf8.decode(decoded)); // 'hello world!'
@@ -56,18 +56,20 @@ void main() {
 
 A formatter and parser for `DateTime` in a fixed format string pattern.
 This differs from `DateFormat` from `package:intl` in that the format character
-count is interpreted literally.
+count is interpreted literally. Use for converting a `DateTime` to a specific
+simple output format where you can control the length for each entry. May be
+faster parsing that same simple format back.
 
 ```dart
 import 'package:convert/convert.dart';
 
 void main() {
   final formatter = FixedDateTimeFormatter('YYYYMMDDhhmmss');
-  
+
   // Decode a string into a DateTime (returns UTC by default).
   final dateTime = formatter.decode('19960425050322');
   print(dateTime); // 1996-04-25 05:03:22.000Z
-  
+
   // Encode a DateTime into a string.
   final encoded = formatter.encode(DateTime.utc(1996, 4, 25, 5, 3, 22));
   print(encoded); // '19960425050322'

@@ -5,7 +5,7 @@
 import 'package:convert/convert.dart';
 
 void main() {
-  final bytes = <int>[0, 1, 2, 3, 255];
+  final bytes = [0, 1, 2, 3, 255];
 
   // Encode byte array to hex string.
   final encoded = hex.encode(bytes);
