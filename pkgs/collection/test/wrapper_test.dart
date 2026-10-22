@@ -204,54 +204,123 @@ void main() {
     });
   }
 
+  void testIterable<T>(Iterable<T> iterable, List<T> expected) {
+    expect(iterable, expected);
+    expect(iterable, hasLength(expected.length));
+    expect(iterable.cast<Object?>(), expected);
+    expect(iterable, isNot(contains(Object())));
+    expect(() => iterable.elementAt(expected.length), throwsRangeError);
+    expect(iterable.every(expected.contains), isTrue);
+    expect(iterable.expand((x) => [x, x]), [
+      for (var x in expected) ...[x, x],
+    ]);
+    expect(
+      iterable.fold<List<T>>([], (previous, element) => [...previous, element]),
+      expected,
+    );
+    expect(iterable.followedBy(expected), [...expected, ...expected]);
+
+    var visited = <T>[];
+    iterable.forEach(visited.add);
+    expect(visited, expected);
+
+    var iterator = iterable.iterator;
+    for (var element in expected) {
+      expect(iterator.moveNext(), isTrue);
+      expect(iterator.current, element);
+    }
+    expect(iterator.moveNext(), isFalse);
+
+    expect(iterable.join(), expected.join());
+    expect(iterable.join(','), expected.join(','));
+    expect(iterable.map((x) => '$x!'), expected.map((x) => '$x!'));
+    expect(iterable.skip(1), expected.skip(1));
+    expect(iterable.take(2), expected.take(2));
+    expect(iterable.toList(), expected);
+    expect(
+      () => iterable.toList(growable: false).clear(),
+      throwsUnsupportedError,
+    );
+    expect(iterable.toSet(), expected.toSet());
+    expect(iterable.whereType<T>(), expected);
+    expect(iterable.whereType<Never>(), isEmpty);
+
+    if (expected.isEmpty) {
+      expect(iterable, isEmpty);
+      expect(iterable.any((_) => true), isFalse);
+      expect(() => iterable.first, throwsStateError);
+      expect(() => iterable.firstWhere((_) => true), throwsStateError);
+      expect(() => iterable.last, throwsStateError);
+      expect(() => iterable.lastWhere((_) => true), throwsStateError);
+      expect(() => iterable.reduce((a, _) => a), throwsStateError);
+      expect(() => iterable.single, throwsStateError);
+      expect(() => iterable.singleWhere((_) => true), throwsStateError);
+      expect(iterable.skipWhile((_) => true), isEmpty);
+      expect(iterable.takeWhile((_) => true), isEmpty);
+      expect(iterable.where((_) => true), isEmpty);
+      return;
+    }
+
+    expect(iterable, isNotEmpty);
+    expect(iterable.any((x) => x == expected.last), isTrue);
+    expect(iterable.any((_) => false), isFalse);
+    for (var i = 0; i < expected.length; i++) {
+      expect(iterable, contains(expected[i]));
+      expect(iterable.elementAt(i), expected[i]);
+    }
+    expect(iterable.every((x) => x != expected.first), isFalse);
+    expect(iterable.first, expected.first);
+    expect(iterable.firstWhere((x) => x == expected.last), expected.last);
+    expect(
+      iterable.firstWhere((_) => false, orElse: () => expected.first),
+      expected.first,
+    );
+    expect(iterable.last, expected.last);
+    expect(iterable.lastWhere((x) => x == expected.first), expected.first);
+    expect(
+      iterable.lastWhere((_) => false, orElse: () => expected.last),
+      expected.last,
+    );
+    expect(iterable.reduce((_, element) => element), expected.last);
+    if (expected.length == 1) {
+      expect(iterable.single, expected.single);
+      expect(iterable.singleWhere((_) => true), expected.single);
+    } else {
+      expect(() => iterable.single, throwsStateError);
+      expect(() => iterable.singleWhere((_) => true), throwsStateError);
+    }
+    if (expected.where((x) => x == expected.last).length == 1) {
+      expect(iterable.singleWhere((x) => x == expected.last), expected.last);
+    }
+    expect(
+      iterable.singleWhere((_) => false, orElse: () => expected.first),
+      expected.first,
+    );
+    expect(
+      iterable.skipWhile((x) => x == expected.first),
+      expected.skipWhile((x) => x == expected.first),
+    );
+    expect(
+      iterable.takeWhile((x) => x != expected.last),
+      expected.takeWhile((x) => x != expected.last),
+    );
+    expect(
+      iterable.where((x) => x != expected.first),
+      expected.where((x) => x != expected.first),
+    );
+  }
+
   group('DelegatingIterable', () {
     test('delegates to underlying iterable', () {
       var base = <int>[1, 2, 3];
       var wrapper = DelegatingIterable<int>(base);
 
-      expect(wrapper.any((x) => x == 2), isTrue);
+      testIterable(wrapper, [1, 2, 3]);
+      testIterable(const DelegatingIterable<int>([42]), [42]);
+      testIterable(const DelegatingIterable<int>([]), <int>[]);
+
       expect(wrapper.cast<num>(), [1, 2, 3]);
-      expect(wrapper, contains(2));
-      expect(wrapper, isNot(contains(99)));
-      expect(wrapper.elementAt(1), 2);
-      expect(wrapper.every((x) => x > 0), isTrue);
-      expect(wrapper.expand((x) => [x, x]), [1, 1, 2, 2, 3, 3]);
-      expect(wrapper.first, 1);
-      expect(wrapper.firstWhere((x) => x > 1), 2);
-      expect(wrapper.firstWhere((x) => x > 5, orElse: () => 99), 99);
-      expect(wrapper.fold<int>(0, (p, e) => p + e), 6);
-      expect(wrapper.followedBy([4]), [1, 2, 3, 4]);
-
-      var visited = <int>[];
-      wrapper.forEach(visited.add);
-      expect(visited, [1, 2, 3]);
-
-      expect(wrapper, isNotEmpty);
-      expect(const DelegatingIterable<int>([]), isEmpty);
-      expect(wrapper.iterator.moveNext(), isTrue);
-      expect(wrapper.join(), '123');
-      expect(wrapper.join(','), '1,2,3');
-      expect(wrapper.last, 3);
-      expect(wrapper.lastWhere((x) => x < 3), 2);
-      expect(wrapper.lastWhere((x) => x > 5, orElse: () => 99), 99);
-      expect(wrapper, hasLength(3));
-      expect(wrapper.map((x) => x * 2), [2, 4, 6]);
-      expect(wrapper.reduce((a, b) => a + b), 6);
-      expect(const DelegatingIterable<int>([42]).single, 42);
-      expect(wrapper.singleWhere((x) => x == 2), 2);
-      expect(wrapper.singleWhere((x) => x > 5, orElse: () => 99), 99);
-      expect(wrapper.skip(1), [2, 3]);
-      expect(wrapper.skipWhile((x) => x < 2), [2, 3]);
-      expect(wrapper.take(2), [1, 2]);
-      expect(wrapper.takeWhile((x) => x < 3), [1, 2]);
-      expect(wrapper.toList(), [1, 2, 3]);
-      expect(
-        () => wrapper.toList(growable: false).add(4),
-        throwsUnsupportedError,
-      );
-      expect(wrapper.toSet(), {1, 2, 3});
       expect(wrapper.toString(), base.toString());
-      expect(wrapper.where((x) => x > 1), [2, 3]);
       expect(const DelegatingIterable<num>([1, 2.5, 3]).whereType<int>(), [
         1,
         3,
@@ -263,6 +332,11 @@ void main() {
     test('delegates to underlying list', () {
       var base = <int>[1, 2, 3];
       var wrapper = DelegatingList<int>(base);
+
+      testIterable(wrapper, [1, 2, 3]);
+      testIterable(const DelegatingList<int>([42]), [42]);
+      testIterable(const DelegatingList<int>([]), <int>[]);
+      expect(wrapper.toString(), base.toString());
 
       expect(wrapper[1], 2);
 
@@ -356,6 +430,11 @@ void main() {
       var base = <int>{1, 2, 3};
       var wrapper = DelegatingSet<int>(base);
 
+      testIterable(wrapper, [1, 2, 3]);
+      testIterable(const DelegatingSet<int>({42}), [42]);
+      testIterable(const DelegatingSet<int>({}), <int>[]);
+      expect(wrapper.toString(), base.toString());
+
       expect(wrapper.add(4), isTrue);
       expect(base, {1, 2, 3, 4});
 
@@ -386,6 +465,7 @@ void main() {
       expect(wrapper.intersection({5, 6}), {5});
       expect(wrapper.union({6}), {5, 6});
       expect(wrapper.lookup(5), 5);
+      expect(wrapper.toSet(), isA<DelegatingSet<int>>());
       expect(wrapper.toSet(), {5});
 
       wrapper.clear();
@@ -397,6 +477,11 @@ void main() {
     test('delegates to underlying queue', () {
       var base = Queue<int>.of([1, 2, 3]);
       var wrapper = DelegatingQueue<int>(base);
+
+      testIterable(wrapper, [1, 2, 3]);
+      testIterable(DelegatingQueue<int>(Queue<int>.of([42])), [42]);
+      testIterable(DelegatingQueue<int>(Queue<int>()), <int>[]);
+      expect(wrapper.toString(), base.toString());
 
       wrapper.add(4);
       expect(base, [1, 2, 3, 4]);
@@ -458,8 +543,8 @@ void main() {
       expect(visited, ['a=1', 'b=2', 'c=3', 'd=4']);
 
       expect(wrapper, isNotEmpty);
-      expect(wrapper.keys, ['a', 'b', 'c', 'd']);
-      expect(wrapper.values, [1, 2, 3, 4]);
+      testIterable(wrapper.keys, ['a', 'b', 'c', 'd']);
+      testIterable(wrapper.values, [1, 2, 3, 4]);
       expect(wrapper, hasLength(4));
       expect(
         wrapper.map((k, v) => MapEntry(k.toUpperCase(), v * 10)),
