@@ -1,0 +1,28 @@
+// Copyright (c) 2026, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
+// Every deprecated member of `package:os_detect/os_detect.dart`, used through
+// an unprefixed import.
+
+import 'package:platform/platform.dart';
+
+String describeOS() => '${NativePlatform.current!.operatingSystem} ${NativePlatform.current!.operatingSystemVersion}';
+
+bool get onAndroid => Platform.current.isAndroid;
+bool get onBrowser => Platform.current.isBrowser;
+bool get onFuchsia => Platform.current.isFuchsia;
+bool get onIOS => Platform.current.isIOS;
+bool get onLinux => Platform.current.isLinux;
+bool get onMacOS => Platform.current.isMacOS;
+bool get onWindows => Platform.current.isWindows;
+
+void report() {
+  if (Platform.current.isBrowser) {
+    print(NativePlatform.current!.operatingSystemVersion);
+  } else if (Platform.current.isLinux || Platform.current.isMacOS || Platform.current.isWindows) {
+    print(NativePlatform.current!.operatingSystem);
+  } else if (Platform.current.isAndroid || Platform.current.isIOS || Platform.current.isFuchsia) {
+    print(NativePlatform.current!.operatingSystem);
+  }
+}
