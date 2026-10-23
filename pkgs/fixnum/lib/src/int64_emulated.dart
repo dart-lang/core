@@ -11,7 +11,7 @@ import 'int32.dart';
 import 'intx.dart';
 import 'utilities.dart' as u;
 
-class Int64 implements IntX {
+final class Int64 implements IntX {
   // A 64-bit integer is represented internally as three non-negative
   // integers, storing the 22 low, 22 middle, and 20 high bits of the
   // 64-bit value.  _l (low) and _m (middle) are in the range
