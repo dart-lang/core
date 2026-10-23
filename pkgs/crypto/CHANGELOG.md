@@ -1,10 +1,16 @@
-## 3.0.8-wip
+## 3.0.8
 
 - Fix the sink returned by `Hmac.startChunkedConversion` not emitting a digest
   when `addSlice` is called with `isLast: true`.
 - Drop unused `pkg:typed_data` dependency.
 - Work-around [dart-lang/sdk#63747](https://github.com/dart-lang/sdk/issues/63747).
-- Performance improvements for all hash functions, `md5` in particular.
+- Speedup hashing 4 KiB inputs relative to version `3.0.7`:
+
+  | Hash              | AOT   | dart2js | dart2wasm |
+  |-------------------|-------|---------|-----------|
+  | `md5`             | 1.2x  | 6.2x    | 1.4x      |
+  | `sha224`/`sha256` | 1.35x | 1.15x   | 1.05x     |
+  | `sha384`/`sha512` | 3.1x  | 6.0x    | 5.1x      |
 
 ## 3.0.7
 
