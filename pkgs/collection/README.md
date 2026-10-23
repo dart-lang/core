@@ -26,8 +26,12 @@ that considers two sets equal exactly if they contain identical elements.
 Equalities are provided for `Iterable`s, `List`s, `Set`s, and `Map`s, as well as
 combinations of these, such as:
 
+<?code-excerpt "example/readme_examples.dart (map-equality)"?>
 ```dart
-const MapEquality(IdentityEquality(), ListEquality());
+const MapEquality<String, List<int>>(
+  keys: IdentityEquality<String>(),
+  values: ListEquality<int>(),
+);
 ```
 
 This equality considers maps equal if they have identical keys, and the

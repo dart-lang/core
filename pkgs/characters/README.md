@@ -93,6 +93,7 @@ to move to the next grapheme cluster.
 
 Example:
 
+<?code-excerpt "example/readme_examples.dart (source-index-vs-range)"?>
 ```dart
 // Using String indices.
 String? firstTagString(String source) {
