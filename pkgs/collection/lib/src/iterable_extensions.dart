@@ -166,29 +166,49 @@ extension IterableExtension<T> on Iterable<T> {
   /// The elements are ordered by the natural ordering of the
   /// [keyOf] property when [descending] is `false` (the default) or reverse
   /// ordering when [descending] is `true`.
+  ///
+  /// If [expensive] is `true`, key extraction is performed once per element
+  /// before sorting (the Schwartzian transform), avoiding repeated evaluations
+  /// during comparisons.
   List<T> sortedBy<K extends Comparable<K>>(
     K Function(T element) keyOf, {
     bool descending = false,
+    bool expensive = false,
   }) {
     final compare = descending
         ? (K a, K b) => b.compareTo(a)
         : (K a, K b) => a.compareTo(b);
-    var elements = [...this];
-    mergeSortBy<T, K>(elements, keyOf, compare);
-    return elements;
+    if (!expensive) {
+      var elements = [...this];
+      mergeSortBy<T, K>(elements, keyOf, compare);
+      return elements;
+    }
+    var pairs = [for (final element in this) (keyOf(element), element)];
+    mergeSortBy<(K, T), K>(pairs, (pair) => pair.$1, compare);
+    return [for (final pair in pairs) pair.$2];
   }
 
   /// Creates a sorted list of the elements of the iterable.
   ///
   /// The elements are ordered by the [compare] [Comparator] of the
   /// property [keyOf] of the element.
+  ///
+  /// If [expensive] is `true`, key extraction is performed once per element
+  /// before sorting (the Schwartzian transform), avoiding repeated evaluations
+  /// during comparisons.
   List<T> sortedByCompare<K>(
     K Function(T element) keyOf,
-    Comparator<K> compare,
-  ) {
-    var elements = [...this];
-    mergeSortBy<T, K>(elements, keyOf, compare);
-    return elements;
+    Comparator<K> compare, {
+    bool expensive = false,
+  }) {
+    if (!expensive) {
+      var elements = [...this];
+      mergeSortBy<T, K>(elements, keyOf, compare);
+      return elements;
+    }
+    var pairs = [for (final element in this) (keyOf(element), element)];
+    mergeSortBy<(K, T), K>(pairs, (pair) => pair.$1, compare);
+    return [for (final pair in pairs) pair.$2];
   }
 
   /// Whether the elements are sorted by the [compare] ordering.

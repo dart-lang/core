@@ -10,6 +10,10 @@
   iterator to avoid extra lookups.
 - Add `PriorityQueue.of` constructor and optimize adding many elements.
 - Add `descending` argument to `sortedBy`.
+- Add `expensive` argument to `sortedBy` and `sortedByCompare` to evaluate
+  keys once per element (Schwartzian transform).
+- Add `sortByExpensive` and `sortByCompareExpensive` extension methods to
+  `List` for in-place stable sorting with single-pass key extraction.
 - Address diagnostics from `strict_top_level_inference`.
 - Run `dart format` with the new style.
 - Replace `quickSort` implementation with a more performant and robust

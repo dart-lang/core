@@ -244,6 +244,52 @@ extension ListExtensions<E> on List<E> {
     quickSortBy<E, K>(this, keyOf, compareComparable, start, end);
   }
 
+  /// Sorts elements by the natural order of their [keyOf] property using
+  /// the Schwartzian transform.
+  ///
+  /// Key extraction is performed once per element before sorting, avoiding
+  /// repeated evaluations during comparisons.
+  ///
+  /// The sort is stable: elements with equal keys preserve their relative
+  /// order.
+  ///
+  /// Sorts elements from [start] to [end], defaulting to the entire list.
+  void sortByExpensive<K extends Comparable<K>>(
+    K Function(E element) keyOf, [
+    int start = 0,
+    int? end,
+  ]) {
+    sortByCompareExpensive<K>(keyOf, compareComparable, start, end);
+  }
+
+  /// Sorts elements by the [compare] of their [keyOf] property using
+  /// the Schwartzian transform.
+  ///
+  /// Key extraction is performed once per element before sorting, avoiding
+  /// repeated evaluations during comparisons.
+  ///
+  /// The sort is stable: elements with equal keys preserve their relative
+  /// order.
+  ///
+  /// Sorts elements from [start] to [end], defaulting to the entire list.
+  void sortByCompareExpensive<K>(
+    K Function(E element) keyOf,
+    int Function(K a, K b) compare, [
+    int start = 0,
+    int? end,
+  ]) {
+    end = RangeError.checkValidRange(start, end, length);
+    final rangeLength = end - start;
+    if (rangeLength <= 1) return;
+    final pairs = [
+      for (var i = start; i < end; i++) (keyOf(this[i]), this[i]),
+    ];
+    mergeSortBy<(K, E), K>(pairs, (pair) => pair.$1, compare);
+    for (var i = 0; i < rangeLength; i++) {
+      this[start + i] = pairs[i].$2;
+    }
+  }
+
   /// Shuffle a range of elements.
   void shuffleRange(int start, int end, [Random? random]) {
     RangeError.checkValidRange(start, end, length);
