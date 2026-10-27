@@ -80,60 +80,60 @@ void main() {
               iterable(<int>[3, 20, 100]).sortedBy(toString, descending: true),
               [3, 20, 100]);
         });
-        test('empty expensive: true', () {
+        test('empty cacheKeys: true', () {
           var calls = 0;
           expect(
             iterable(<int>[]).sortedBy((e) {
               calls++;
               return toString(e);
-            }, expensive: true),
+            }, cacheKeys: true),
             [],
           );
           expect(calls, 0);
         });
-        test('singleton expensive: true', () {
+        test('singleton cacheKeys: true', () {
           var calls = 0;
           expect(
             iterable(<int>[1]).sortedBy((e) {
               calls++;
               return toString(e);
-            }, expensive: true),
+            }, cacheKeys: true),
             [1],
           );
           expect(calls, 1);
         });
-        test('multiple expensive: true', () {
+        test('multiple cacheKeys: true', () {
           var calls = 0;
           final input = [5, 2, 4, 3, 1];
           expect(
             iterable(input).sortedBy((e) {
               calls++;
               return toString(e);
-            }, expensive: true),
+            }, cacheKeys: true),
             [1, 2, 3, 4, 5],
           );
           expect(calls, input.length);
         });
-        test('multiple descending: true, expensive: true', () {
+        test('multiple descending: true, cacheKeys: true', () {
           var calls = 0;
           final input = [3, 20, 100];
           expect(
             iterable(input).sortedBy((e) {
               calls++;
               return toString(e);
-            }, descending: true, expensive: true),
+            }, descending: true, cacheKeys: true),
             [3, 20, 100],
           );
           expect(calls, input.length);
         });
-        test('stability expensive: true', () {
+        test('stability cacheKeys: true', () {
           final items = [
             ('apple', '1'),
             ('banana', '2'),
             ('apricot', '1'),
             ('cherry', '1'),
           ];
-          final sorted = iterable(items).sortedBy((e) => e.$2, expensive: true);
+          final sorted = iterable(items).sortedBy((e) => e.$2, cacheKeys: true);
           expect(sorted, [
             ('apple', '1'),
             ('apricot', '1'),
@@ -164,41 +164,41 @@ void main() {
             [100, 30, 2],
           );
         });
-        test('empty expensive: true', () {
+        test('empty cacheKeys: true', () {
           var calls = 0;
           expect(
             iterable(<int>[]).sortedByCompare((e) {
               calls++;
               return e;
-            }, cmpInt, expensive: true),
+            }, cmpInt, cacheKeys: true),
             [],
           );
           expect(calls, 0);
         });
-        test('singleton expensive: true', () {
+        test('singleton cacheKeys: true', () {
           var calls = 0;
           expect(
             iterable(<int>[2]).sortedByCompare((e) {
               calls++;
               return e;
-            }, cmpInt, expensive: true),
+            }, cmpInt, cacheKeys: true),
             [2],
           );
           expect(calls, 1);
         });
-        test('multiple expensive: true', () {
+        test('multiple cacheKeys: true', () {
           var calls = 0;
           final input = [30, 2, 100];
           expect(
             iterable(input).sortedByCompare((e) {
               calls++;
               return toString(e);
-            }, cmpParseInverse, expensive: true),
+            }, cmpParseInverse, cacheKeys: true),
             [100, 30, 2],
           );
           expect(calls, input.length);
         });
-        test('stability expensive: true', () {
+        test('stability cacheKeys: true', () {
           final items = [
             ('apple', 1),
             ('banana', 2),
@@ -208,7 +208,7 @@ void main() {
           final sorted = iterable(items).sortedByCompare(
             (e) => e.$2,
             cmpInt,
-            expensive: true,
+            cacheKeys: true,
           );
           expect(sorted, [
             ('apple', 1),
@@ -2042,17 +2042,17 @@ void main() {
           });
         });
       });
-      group('.sortByExpensive', () {
+      group('.sortByCachedKeys', () {
         test('empty', () {
-          expect(<int>[]..sortByExpensive(unreachable), []);
+          expect(<int>[]..sortByCachedKeys(unreachable), []);
         });
         test('singleton', () {
-          expect([1]..sortByExpensive(unreachable), [1]);
+          expect([1]..sortByCachedKeys(unreachable), [1]);
         });
         test('multiple', () {
           var calls = 0;
           final list = [3, 20, 100];
-          list.sortByExpensive((e) {
+          list.sortByCachedKeys((e) {
             calls++;
             return toString(e);
           });
@@ -2066,7 +2066,7 @@ void main() {
             ('apricot', '1'),
             ('cherry', '1'),
           ];
-          items.sortByExpensive((e) => e.$2);
+          items.sortByCachedKeys((e) => e.$2);
           expect(items, [
             ('apple', '1'),
             ('apricot', '1'),
@@ -2077,34 +2077,34 @@ void main() {
         group('range', () {
           test('errors', () {
             expect(
-              () => [1].sortByExpensive(toString, -1, 1),
+              () => [1].sortByCachedKeys(toString, -1, 1),
               throwsArgumentError,
             );
             expect(
-              () => [1].sortByExpensive(toString, 0, 2),
+              () => [1].sortByCachedKeys(toString, 0, 2),
               throwsArgumentError,
             );
             expect(
-              () => [1].sortByExpensive(toString, 1, 0),
+              () => [1].sortByCachedKeys(toString, 1, 0),
               throwsArgumentError,
             );
           });
           test('empty', () {
             expect(
-              [5, 7, 4, 2, 3]..sortByExpensive(unreachable, 2, 2),
+              [5, 7, 4, 2, 3]..sortByCachedKeys(unreachable, 2, 2),
               [5, 7, 4, 2, 3],
             );
           });
           test('singleton', () {
             expect(
-              [5, 7, 4, 2, 3]..sortByExpensive(unreachable, 2, 3),
+              [5, 7, 4, 2, 3]..sortByCachedKeys(unreachable, 2, 3),
               [5, 7, 4, 2, 3],
             );
           });
           test('multiple', () {
             var calls = 0;
             final list = [5, 7, 40, 2, 3];
-            list.sortByExpensive((a) {
+            list.sortByCachedKeys((a) {
               calls++;
               return '$a';
             }, 1, 4);
@@ -2119,7 +2119,7 @@ void main() {
               ('apricot', '1'),
               ('last', '0'),
             ];
-            list.sortByExpensive((e) => e.$2, 1, 4);
+            list.sortByCachedKeys((e) => e.$2, 1, 4);
             expect(list, [
               ('first', '0'),
               ('apple', '1'),
@@ -2130,23 +2130,23 @@ void main() {
           });
         });
       });
-      group('.sortByCompareExpensive', () {
+      group('.sortByCompareCachedKeys', () {
         test('empty', () {
           expect(
-            <int>[]..sortByCompareExpensive(unreachable, unreachable),
+            <int>[]..sortByCompareCachedKeys(unreachable, unreachable),
             [],
           );
         });
         test('singleton', () {
           expect(
-            [2]..sortByCompareExpensive(unreachable, unreachable),
+            [2]..sortByCompareCachedKeys(unreachable, unreachable),
             [2],
           );
         });
         test('multiple', () {
           var calls = 0;
           final list = [30, 2, 100];
-          list.sortByCompareExpensive((e) {
+          list.sortByCompareCachedKeys((e) {
             calls++;
             return toString(e);
           }, cmpParseInverse);
@@ -2160,7 +2160,7 @@ void main() {
             ('apricot', 1),
             ('cherry', 1),
           ];
-          items.sortByCompareExpensive((e) => e.$2, cmpInt);
+          items.sortByCompareCachedKeys((e) => e.$2, cmpInt);
           expect(items, [
             ('apple', 1),
             ('apricot', 1),
@@ -2171,36 +2171,36 @@ void main() {
         group('range', () {
           test('errors', () {
             expect(
-              () => [1].sortByCompareExpensive(toString, cmpParse, -1, 1),
+              () => [1].sortByCompareCachedKeys(toString, cmpParse, -1, 1),
               throwsArgumentError,
             );
             expect(
-              () => [1].sortByCompareExpensive(toString, cmpParse, 0, 2),
+              () => [1].sortByCompareCachedKeys(toString, cmpParse, 0, 2),
               throwsArgumentError,
             );
             expect(
-              () => [1].sortByCompareExpensive(toString, cmpParse, 1, 0),
+              () => [1].sortByCompareCachedKeys(toString, cmpParse, 1, 0),
               throwsArgumentError,
             );
           });
           test('empty', () {
             expect(
               [3, 5, 7, 3, 1]
-                ..sortByCompareExpensive(unreachable, unreachable, 2, 2),
+                ..sortByCompareCachedKeys(unreachable, unreachable, 2, 2),
               [3, 5, 7, 3, 1],
             );
           });
           test('singleton', () {
             expect(
               [3, 5, 7, 3, 1]
-                ..sortByCompareExpensive(unreachable, unreachable, 2, 3),
+                ..sortByCompareCachedKeys(unreachable, unreachable, 2, 3),
               [3, 5, 7, 3, 1],
             );
           });
           test('multiple', () {
             var calls = 0;
             final list = [3, 5, 7, 30, 1];
-            list.sortByCompareExpensive((e) {
+            list.sortByCompareCachedKeys((e) {
               calls++;
               return toString(e);
             }, cmpParseInverse, 1, 4);
@@ -2215,7 +2215,7 @@ void main() {
               ('apricot', 1),
               ('last', 0),
             ];
-            list.sortByCompareExpensive((e) => e.$2, cmpInt, 1, 4);
+            list.sortByCompareCachedKeys((e) => e.$2, cmpInt, 1, 4);
             expect(list, [
               ('first', 0),
               ('apple', 1),
