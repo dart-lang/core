@@ -244,19 +244,19 @@ extension ListExtensions<E> on List<E> {
     quickSortBy<E, K>(this, keyOf, compareComparable, start, end);
   }
 
-  /// Sorts elements by the natural order of their [keyOf] property using
-  /// the Schwartzian transform.
+  /// Sorts elements by the natural order of their [keyOf] property.
   ///
   /// Key extraction is performed once per element before sorting, avoiding
   /// repeated evaluations during comparisons.
   ///
   /// This is a trade-off between execution time and memory: caching keys
-  /// reduces evaluations of [keyOf] to `O(n)` (instead of `O(n * log(n))`),
-  /// at the cost of allocating temporary record storage for key-value pairs
-  /// during the sort. Use this method when key extraction is computationally
-  /// expensive (e.g. parsing dates, regex extraction, JSON lookups, or
-  /// distance calculations), but omit it for simple property access where
-  /// allocation overhead would exceed getter cost.
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this method when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
   ///
   /// The sort is stable: elements with equal keys preserve their relative
   /// order.
@@ -270,19 +270,19 @@ extension ListExtensions<E> on List<E> {
     sortByCompareCachedKeys<K>(keyOf, compareComparable, start, end);
   }
 
-  /// Sorts elements by the [compare] of their [keyOf] property using
-  /// the Schwartzian transform.
+  /// Sorts elements by the [compare] of their [keyOf] property.
   ///
   /// Key extraction is performed once per element before sorting, avoiding
   /// repeated evaluations during comparisons.
   ///
   /// This is a trade-off between execution time and memory: caching keys
-  /// reduces evaluations of [keyOf] to `O(n)` (instead of `O(n * log(n))`),
-  /// at the cost of allocating temporary record storage for key-value pairs
-  /// during the sort. Use this method when key extraction is computationally
-  /// expensive (e.g. parsing dates, regex extraction, JSON lookups, or
-  /// distance calculations), but omit it for simple property access where
-  /// allocation overhead would exceed getter cost.
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this method when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
   ///
   /// The sort is stable: elements with equal keys preserve their relative
   /// order.
@@ -298,7 +298,8 @@ extension ListExtensions<E> on List<E> {
     final rangeLength = end - start;
     if (rangeLength <= 1) return;
     final pairs = [
-      for (var i = start; i < end; i++) (keyOf(this[i]), this[i]),
+      for (var i = start; i < end; i++)
+        if (this[i] case final element) (keyOf(element), element),
     ];
     mergeSortBy<(K, E), K>(pairs, (pair) => pair.$1, compare);
     for (var i = 0; i < rangeLength; i++) {

@@ -11,7 +11,7 @@
 - Add `PriorityQueue.of` constructor and optimize adding many elements.
 - Add `descending` argument to `sortedBy`.
 - Add `cacheKeys` argument to `sortedBy` and `sortedByCompare` to evaluate
-  keys once per element (Schwartzian transform).
+  keys once per element before sorting.
 - Add `sortByCachedKeys` and `sortByCompareCachedKeys` extension methods to
   `List` for in-place stable sorting with single-pass key extraction.
 - Address diagnostics from `strict_top_level_inference`.

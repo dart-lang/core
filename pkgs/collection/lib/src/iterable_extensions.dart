@@ -168,16 +168,16 @@ extension IterableExtension<T> on Iterable<T> {
   /// ordering when [descending] is `true`.
   ///
   /// If [cacheKeys] is `true`, key extraction is performed once per element
-  /// before sorting (the Schwartzian transform), avoiding repeated evaluations
-  /// during comparisons.
+  /// before sorting, avoiding repeated evaluations during comparisons.
   ///
   /// This is a trade-off between execution time and memory: caching keys
-  /// reduces evaluations of [keyOf] to `O(n)` (instead of `O(n * log(n))`),
-  /// at the cost of allocating temporary record storage for key-value pairs
-  /// during the sort. Use this option when key extraction is computationally
-  /// expensive (e.g. parsing dates, regex extraction, JSON lookups, or
-  /// distance calculations), but omit it for simple property access where
-  /// allocation overhead would exceed getter cost.
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this option when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
   List<T> sortedBy<K extends Comparable<K>>(
     K Function(T element) keyOf, {
     bool descending = false,
@@ -202,16 +202,16 @@ extension IterableExtension<T> on Iterable<T> {
   /// property [keyOf] of the element.
   ///
   /// If [cacheKeys] is `true`, key extraction is performed once per element
-  /// before sorting (the Schwartzian transform), avoiding repeated evaluations
-  /// during comparisons.
+  /// before sorting, avoiding repeated evaluations during comparisons.
   ///
   /// This is a trade-off between execution time and memory: caching keys
-  /// reduces evaluations of [keyOf] to `O(n)` (instead of `O(n * log(n))`),
-  /// at the cost of allocating temporary record storage for key-value pairs
-  /// during the sort. Use this option when key extraction is computationally
-  /// expensive (e.g. parsing dates, regex extraction, JSON lookups, or
-  /// distance calculations), but omit it for simple property access where
-  /// allocation overhead would exceed getter cost.
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this option when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
   List<T> sortedByCompare<K>(
     K Function(T element) keyOf,
     Comparator<K> compare, {
