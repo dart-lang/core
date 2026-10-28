@@ -222,12 +222,14 @@ class BackBreaks {
     // The category of an unpaired tail surrogate is Control.
     int category;
     int prevSurrogate;
-    if (cursor >= start &&
-        (prevSurrogate = base.codeUnitAt(--cursor) ^ 0xD800) <= 0x3FF) {
+    // The cursor is now at the tail surrogate, so a lead surrogate must
+    // be strictly after [start] to be part of the substring.
+    if (cursor > start &&
+        (prevSurrogate = base.codeUnitAt(cursor - 1) ^ 0xD800) <= 0x3FF) {
+      cursor--;
       category = high(prevSurrogate, surrogate);
     } else {
       category = categoryControl;
-      cursor++;
     }
     state = moveBack(state, category);
   }
