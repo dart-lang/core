@@ -11,6 +11,8 @@
 * Remove extra newlines following separators when using flags without help text.
 * Throw an exception when parsing argument lists with missing mandatory
   arguments instead of waiting until they are read.
+* Wrap separators added with `addSeparator` to `usageLineLength`
+  (Fixes #71).
 
 ## 2.7.0
 

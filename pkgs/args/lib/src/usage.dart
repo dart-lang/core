@@ -79,7 +79,7 @@ class _Usage {
   void _writeSeparator(String separator) {
     // Ensure that there's always a blank line before a separator.
     if (_buffer.isNotEmpty) _buffer.write('\n\n');
-    _buffer.write(separator);
+    _buffer.write(wrapText(separator, length: lineLength));
     _newlinesNeeded = 1;
     _currentColumn = 0;
   }
