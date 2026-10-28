@@ -77,6 +77,25 @@ void main([List<String>? args]) {
       gc('$flag$zwj$rainbow'),
       gc('!'),
     );
+
+    group('unpaired trailing surrogate at start', () {
+      // Stepping backwards over an unpaired trailing surrogate at index 0
+      // used to read the code unit at index -1 and throw a RangeError.
+      const tail = '\uDE00';
+      test('last', () {
+        expect(gc(tail).last, tail);
+        expect(gc('${tail}a').last, 'a');
+        expect(gc('$tail\u{1F600}').last, '\u{1F600}');
+      });
+      test('backwards iteration', () {
+        var range = gc('${tail}ab').iteratorAtEnd;
+        var parts = <String>[];
+        while (range.moveBack()) {
+          parts.add(range.current);
+        }
+        expect(parts, ['b', 'a', tail]);
+      });
+    });
   });
 
   group('CharacterRange', () {
