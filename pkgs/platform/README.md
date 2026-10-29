@@ -10,6 +10,19 @@ On a native platform, the `NativePlatform` class in this package provides a
 lightweight wrapper around the static `Platform` properties of `dart:io`,
 with the same rich, Dart-idiomatic API for querying the current runtime.
 
+```dart
+import 'package:platform/platform.dart';
+
+void main() {
+  final host = NativePlatform.current;
+  if (host == null) {
+    print('Error: not running on a native platform!');
+  } else {
+    print('Running on ${host.operatingSystem} ${host.operatingSystemVersion}');
+  }
+}
+```
+
 On the web, there is no `NativePlatform` object, and cross-platform client code
 can avoid dependencies on such properties simply by checking if
 `Platform.current.nativePlatform` is `null`.
