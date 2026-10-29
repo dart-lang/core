@@ -1,5 +1,7 @@
 ## 1.4.2-wip
 
+* Clarify that `Characters` equality does not normalize Unicode strings.
+
 ## 1.4.1
 
 * Run `dart format` with the new style.
