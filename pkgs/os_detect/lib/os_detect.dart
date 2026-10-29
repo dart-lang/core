@@ -3,8 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Information about the current operating system.
-@Deprecated('Use package:platform, version 3.2 or later. '
-    'Migrate with `dart fix`.')
+@Deprecated(
+  'Use package:platform, version 3.2 or later. '
+  'Migrate with `dart fix`.',
+)
 library;
 
 import 'src/os_override.dart';
@@ -26,7 +28,10 @@ String get operatingSystem => OperatingSystem.current.id;
 /// Representation of the version of the current operating system or platform.
 ///
 /// May be empty if no version is known or available.
-@Deprecated('Use NativePlatform.current!.operatingSystemVersion instead')
+@Deprecated(
+  'Use NativePlatform.current!.operatingSystemVersion '
+  '(or BrowserPlatform.current!.version in a browser) instead',
+)
 String get operatingSystemVersion => OperatingSystem.current.version;
 
 /// Whether the current operating system is a version of

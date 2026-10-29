@@ -19,9 +19,9 @@ bool get onWindows => isWindows;
 
 void report() {
   if (isBrowser) {
-    print(operatingSystemVersion);
+    print('browser');
   } else if (isLinux || isMacOS || isWindows) {
-    print(operatingSystem);
+    print(operatingSystemVersion);
   } else if (isAndroid || isIOS || isFuchsia) {
     print(operatingSystem);
   }

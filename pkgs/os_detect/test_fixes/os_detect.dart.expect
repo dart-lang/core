@@ -19,9 +19,9 @@ bool get onWindows => Platform.current.isWindows;
 
 void report() {
   if (Platform.current.isBrowser) {
-    print(NativePlatform.current!.operatingSystemVersion);
+    print('browser');
   } else if (Platform.current.isLinux || Platform.current.isMacOS || Platform.current.isWindows) {
-    print(NativePlatform.current!.operatingSystem);
+    print(NativePlatform.current!.operatingSystemVersion);
   } else if (Platform.current.isAndroid || Platform.current.isIOS || Platform.current.isFuchsia) {
     print(NativePlatform.current!.operatingSystem);
   }

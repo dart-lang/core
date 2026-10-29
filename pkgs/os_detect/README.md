@@ -26,7 +26,7 @@ foo() {
 ```
 
 The APIs in `package:platform` version 3.2 or later,
-are top-level getters, typically used like this:
+are instance getters of a `Platform` object, typically used like this:
 
 ```dart
 import 'package:platform/platform.dart';
@@ -37,6 +37,14 @@ foo() {
   }
 }
 ```
+
+Note that `operatingSystem` and `operatingSystemVersion` migrate to
+`NativePlatform.current!.operatingSystem` and
+`NativePlatform.current!.operatingSystemVersion`, which are only available on
+native platforms (`NativePlatform.current` is `null` in a browser). Code that
+also runs in a browser should check `Platform.current.isBrowser` first, or use
+`BrowserPlatform.current!.version` (for example,
+`NativePlatform.current?.operatingSystemVersion ?? BrowserPlatform.current!.version`).
 
 ## Querying the current OS
 
