@@ -1,5 +1,6 @@
 ## 1.4.2-wip
 
+* Clarify that `Characters` equality does not normalize Unicode strings.
 * Fix a `RangeError` when iterating backwards, for example with
   `Characters.last`, over an unpaired trailing surrogate at the start of the
   string. An unpaired trailing surrogate at the start of a range also no
