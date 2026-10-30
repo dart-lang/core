@@ -80,6 +80,67 @@ void main() {
               iterable(<int>[3, 20, 100]).sortedBy(toString, descending: true),
               [3, 20, 100]);
         });
+        test('empty cacheKeys: true', () {
+          var calls = 0;
+          expect(
+            iterable(<int>[]).sortedBy((e) {
+              calls++;
+              return toString(e);
+            }, cacheKeys: true),
+            [],
+          );
+          expect(calls, 0);
+        });
+        test('singleton cacheKeys: true', () {
+          var calls = 0;
+          expect(
+            iterable(<int>[1]).sortedBy((e) {
+              calls++;
+              return toString(e);
+            }, cacheKeys: true),
+            [1],
+          );
+          expect(calls, 1);
+        });
+        test('multiple cacheKeys: true', () {
+          var calls = 0;
+          final input = [5, 2, 4, 3, 1];
+          expect(
+            iterable(input).sortedBy((e) {
+              calls++;
+              return toString(e);
+            }, cacheKeys: true),
+            [1, 2, 3, 4, 5],
+          );
+          expect(calls, input.length);
+        });
+        test('multiple descending: true, cacheKeys: true', () {
+          var calls = 0;
+          final input = [3, 20, 100];
+          expect(
+            iterable(input).sortedBy((e) {
+              calls++;
+              return toString(e);
+            }, descending: true, cacheKeys: true),
+            [3, 20, 100],
+          );
+          expect(calls, input.length);
+        });
+        test('stability cacheKeys: true', () {
+          final items = [
+            ('apple', '1'),
+            ('banana', '2'),
+            ('apricot', '1'),
+            ('cherry', '1'),
+          ];
+          final sorted = iterable(items).sortedBy((e) => e.$2, cacheKeys: true);
+          expect(sorted, [
+            ('apple', '1'),
+            ('apricot', '1'),
+            ('cherry', '1'),
+            ('banana', '2'),
+          ]);
+        });
       });
       group('.sortedByCompare', () {
         test('empty', () {
@@ -102,6 +163,59 @@ void main() {
             ]).sortedByCompare(toString, cmpParseInverse),
             [100, 30, 2],
           );
+        });
+        test('empty cacheKeys: true', () {
+          var calls = 0;
+          expect(
+            iterable(<int>[]).sortedByCompare((e) {
+              calls++;
+              return e;
+            }, cmpInt, cacheKeys: true),
+            [],
+          );
+          expect(calls, 0);
+        });
+        test('singleton cacheKeys: true', () {
+          var calls = 0;
+          expect(
+            iterable(<int>[2]).sortedByCompare((e) {
+              calls++;
+              return e;
+            }, cmpInt, cacheKeys: true),
+            [2],
+          );
+          expect(calls, 1);
+        });
+        test('multiple cacheKeys: true', () {
+          var calls = 0;
+          final input = [30, 2, 100];
+          expect(
+            iterable(input).sortedByCompare((e) {
+              calls++;
+              return toString(e);
+            }, cmpParseInverse, cacheKeys: true),
+            [100, 30, 2],
+          );
+          expect(calls, input.length);
+        });
+        test('stability cacheKeys: true', () {
+          final items = [
+            ('apple', 1),
+            ('banana', 2),
+            ('apricot', 1),
+            ('cherry', 1),
+          ];
+          final sorted = iterable(items).sortedByCompare(
+            (e) => e.$2,
+            cmpInt,
+            cacheKeys: true,
+          );
+          expect(sorted, [
+            ('apple', 1),
+            ('apricot', 1),
+            ('cherry', 1),
+            ('banana', 2),
+          ]);
         });
       });
       group('isSorted', () {
@@ -1925,6 +2039,190 @@ void main() {
               [3, 5, 7, 30, 1]..sortByCompare(toString, cmpParseInverse, 1, 4),
               [3, 30, 7, 5, 1],
             );
+          });
+        });
+      });
+      group('.sortByCachedKeys', () {
+        test('empty', () {
+          expect(<int>[]..sortByCachedKeys(unreachable), []);
+        });
+        test('singleton', () {
+          expect([1]..sortByCachedKeys(unreachable), [1]);
+        });
+        test('multiple', () {
+          var calls = 0;
+          final list = [3, 20, 100];
+          list.sortByCachedKeys((e) {
+            calls++;
+            return toString(e);
+          });
+          expect(list, [100, 20, 3]);
+          expect(calls, 3);
+        });
+        test('stability', () {
+          final items = [
+            ('apple', '1'),
+            ('banana', '2'),
+            ('apricot', '1'),
+            ('cherry', '1'),
+          ];
+          items.sortByCachedKeys((e) => e.$2);
+          expect(items, [
+            ('apple', '1'),
+            ('apricot', '1'),
+            ('cherry', '1'),
+            ('banana', '2'),
+          ]);
+        });
+        group('range', () {
+          test('errors', () {
+            expect(
+              () => [1].sortByCachedKeys(toString, -1, 1),
+              throwsArgumentError,
+            );
+            expect(
+              () => [1].sortByCachedKeys(toString, 0, 2),
+              throwsArgumentError,
+            );
+            expect(
+              () => [1].sortByCachedKeys(toString, 1, 0),
+              throwsArgumentError,
+            );
+          });
+          test('empty', () {
+            expect(
+              [5, 7, 4, 2, 3]..sortByCachedKeys(unreachable, 2, 2),
+              [5, 7, 4, 2, 3],
+            );
+          });
+          test('singleton', () {
+            expect(
+              [5, 7, 4, 2, 3]..sortByCachedKeys(unreachable, 2, 3),
+              [5, 7, 4, 2, 3],
+            );
+          });
+          test('multiple', () {
+            var calls = 0;
+            final list = [5, 7, 40, 2, 3];
+            list.sortByCachedKeys((a) {
+              calls++;
+              return '$a';
+            }, 1, 4);
+            expect(list, [5, 2, 40, 7, 3]);
+            expect(calls, 3);
+          });
+          test('stability in range', () {
+            final list = [
+              ('first', '0'),
+              ('apple', '1'),
+              ('banana', '2'),
+              ('apricot', '1'),
+              ('last', '0'),
+            ];
+            list.sortByCachedKeys((e) => e.$2, 1, 4);
+            expect(list, [
+              ('first', '0'),
+              ('apple', '1'),
+              ('apricot', '1'),
+              ('banana', '2'),
+              ('last', '0'),
+            ]);
+          });
+        });
+      });
+      group('.sortByCompareCachedKeys', () {
+        test('empty', () {
+          expect(
+            <int>[]..sortByCompareCachedKeys(unreachable, unreachable),
+            [],
+          );
+        });
+        test('singleton', () {
+          expect(
+            [2]..sortByCompareCachedKeys(unreachable, unreachable),
+            [2],
+          );
+        });
+        test('multiple', () {
+          var calls = 0;
+          final list = [30, 2, 100];
+          list.sortByCompareCachedKeys((e) {
+            calls++;
+            return toString(e);
+          }, cmpParseInverse);
+          expect(list, [100, 30, 2]);
+          expect(calls, 3);
+        });
+        test('stability', () {
+          final items = [
+            ('apple', 1),
+            ('banana', 2),
+            ('apricot', 1),
+            ('cherry', 1),
+          ];
+          items.sortByCompareCachedKeys((e) => e.$2, cmpInt);
+          expect(items, [
+            ('apple', 1),
+            ('apricot', 1),
+            ('cherry', 1),
+            ('banana', 2),
+          ]);
+        });
+        group('range', () {
+          test('errors', () {
+            expect(
+              () => [1].sortByCompareCachedKeys(toString, cmpParse, -1, 1),
+              throwsArgumentError,
+            );
+            expect(
+              () => [1].sortByCompareCachedKeys(toString, cmpParse, 0, 2),
+              throwsArgumentError,
+            );
+            expect(
+              () => [1].sortByCompareCachedKeys(toString, cmpParse, 1, 0),
+              throwsArgumentError,
+            );
+          });
+          test('empty', () {
+            expect(
+              [3, 5, 7, 3, 1]
+                ..sortByCompareCachedKeys(unreachable, unreachable, 2, 2),
+              [3, 5, 7, 3, 1],
+            );
+          });
+          test('singleton', () {
+            expect(
+              [3, 5, 7, 3, 1]
+                ..sortByCompareCachedKeys(unreachable, unreachable, 2, 3),
+              [3, 5, 7, 3, 1],
+            );
+          });
+          test('multiple', () {
+            var calls = 0;
+            final list = [3, 5, 7, 30, 1];
+            list.sortByCompareCachedKeys((e) {
+              calls++;
+              return toString(e);
+            }, cmpParseInverse, 1, 4);
+            expect(list, [3, 30, 7, 5, 1]);
+            expect(calls, 3);
+          });
+          test('stability in range', () {
+            final list = [
+              ('first', 0),
+              ('apple', 1),
+              ('banana', 2),
+              ('apricot', 1),
+              ('last', 0),
+            ];
+            list.sortByCompareCachedKeys((e) => e.$2, cmpInt, 1, 4);
+            expect(list, [
+              ('first', 0),
+              ('apple', 1),
+              ('apricot', 1),
+              ('banana', 2),
+              ('last', 0),
+            ]);
           });
         });
       });
