@@ -149,6 +149,30 @@ void main() {
     }
   });
 
+  group('BackBreaks with an unpaired trailing surrogate at start', () {
+    // The trailing surrogate must not pair with a lead surrogate before
+    // `start`, and the cursor must not move before `start`.
+    test('start == 0', () {
+      var breaks = BackBreaks('\uDE00', 1, 0, stateEoTNoBreak);
+      expect(breaks.nextBreak(), 0);
+      expect(breaks.cursor, 0);
+      expect(breaks.nextBreak(), -1);
+    });
+    test('start > 0, preceded by a lead surrogate', () {
+      var breaks = BackBreaks('\u{1F600}', 2, 1, stateEoTNoBreak);
+      expect(breaks.nextBreak(), 1);
+      expect(breaks.cursor, 1);
+      expect(breaks.nextBreak(), -1);
+    });
+    test('start > 0, preceded by a lead surrogate, with break', () {
+      var breaks = BackBreaks('\u{1F600}a', 3, 1, stateEoTNoBreak);
+      expect(breaks.nextBreak(), 2);
+      expect(breaks.nextBreak(), 1);
+      expect(breaks.cursor, 1);
+      expect(breaks.nextBreak(), -1);
+    });
+  });
+
   // Check that automatons are minimal.
   //
   // * All states are reachable from the start states.
