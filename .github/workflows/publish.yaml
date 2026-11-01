@@ -13,7 +13,7 @@ on:
 jobs:
   publish:
     if: ${{ github.repository_owner == 'dart-lang' }}
-    uses: dart-lang/ecosystem/.github/workflows/publish.yaml@16dca7ae5d3ff896a4db47e1ed6cd50f7ebbf115
+    uses: dart-lang/ecosystem/.github/workflows/publish.yaml@f8faabf263f94a7a8508c5e57f1ff3752fa23915
     with:
       sdk: beta
       write-comments: false
