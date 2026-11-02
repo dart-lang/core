@@ -288,7 +288,13 @@ abstract class Characters implements Iterable<String> {
   @override
   int get hashCode;
 
-  /// Whether [other] to another [Characters] with the same [string].
+  /// Whether [other] is a [Characters] with an equal [string].
+  ///
+  /// The underlying strings are compared directly, without Unicode
+  /// normalization. For example, `Characters('\u00e9')` and
+  /// `Characters('e\u0301')` are not equal, even though both contain one
+  /// grapheme cluster. Normalize the strings before comparing if canonically
+  /// equivalent text should be considered equal.
   @override
   bool operator ==(Object other);
 
