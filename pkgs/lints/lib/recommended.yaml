@@ -36,7 +36,7 @@ linter:
     - prefer_conditional_assignment
     - prefer_contains
     - prefer_final_fields
-    - prefer_for_elements_to_map_fromIterable
+    - prefer_for_elements_to_map_fromiterable
     - prefer_function_declarations_over_variables
     - prefer_if_null_operators
     - prefer_initializing_formals

@@ -29,7 +29,7 @@
 | [`prefer_generic_function_type_aliases`](https://dart.dev/lints/prefer_generic_function_type_aliases) | Prefer generic function type aliases. | ✅ |
 | [`prefer_is_empty`](https://dart.dev/lints/prefer_is_empty) | Use `isEmpty` for `Iterable`s and `Map`s. | ✅ |
 | [`prefer_is_not_empty`](https://dart.dev/lints/prefer_is_not_empty) | Use `isNotEmpty` for `Iterable`s and `Map`s. | ✅ |
-| [`prefer_iterable_whereType`](https://dart.dev/lints/prefer_iterable_whereType) | Prefer to use `whereType` on iterable. | ✅ |
+| [`prefer_iterable_wheretype`](https://dart.dev/lints/prefer_iterable_wheretype) | Prefer to use `whereType` on iterable. | ✅ |
 | [`prefer_typing_uninitialized_variables`](https://dart.dev/lints/prefer_typing_uninitialized_variables) | Prefer typing uninitialized variables and fields. | ✅ |
 | [`provide_deprecation_message`](https://dart.dev/lints/provide_deprecation_message) | Provide a deprecation message, via `@Deprecated("message")`. |  |
 | [`secure_pubspec_urls`](https://dart.dev/lints/secure_pubspec_urls) | Use secure urls in `pubspec.yaml`. |  |
@@ -74,7 +74,7 @@
 | [`prefer_conditional_assignment`](https://dart.dev/lints/prefer_conditional_assignment) | Prefer using `??=` over testing for `null`. | ✅ |
 | [`prefer_contains`](https://dart.dev/lints/prefer_contains) | Use contains for `List` and `String` instances. | ✅ |
 | [`prefer_final_fields`](https://dart.dev/lints/prefer_final_fields) | Private field could be `final`. | ✅ |
-| [`prefer_for_elements_to_map_fromIterable`](https://dart.dev/lints/prefer_for_elements_to_map_fromIterable) | Prefer `for` elements when building maps from iterables. | ✅ |
+| [`prefer_for_elements_to_map_fromiterable`](https://dart.dev/lints/prefer_for_elements_to_map_fromiterable) | Prefer `for` elements when building maps from iterables. | ✅ |
 | [`prefer_function_declarations_over_variables`](https://dart.dev/lints/prefer_function_declarations_over_variables) | Use a function declaration to bind a function to a name. | ✅ |
 | [`prefer_if_null_operators`](https://dart.dev/lints/prefer_if_null_operators) | Prefer using `??` operators. | ✅ |
 | [`prefer_initializing_formals`](https://dart.dev/lints/prefer_initializing_formals) | Use initializing formals when possible. | ✅ |
