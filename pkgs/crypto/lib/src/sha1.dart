@@ -26,7 +26,7 @@ class _Sha1 extends Hash {
 
   @override
   ByteConversionSink startChunkedConversion(Sink<Digest> sink) =>
-      ByteConversionSink.from(_Sha1Sink(sink));
+      _Sha1Sink(sink);
 }
 
 /// The concrete implementation of `Sha1`.

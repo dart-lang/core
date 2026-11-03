@@ -26,6 +26,16 @@ void main([List<String>? args]) {
   group('[Random Seed: $seed]', tests);
 
   group('characters', () {
+    test('equality does not normalize Unicode', () {
+      var composed = Characters('\u00e9');
+      var decomposed = Characters('e\u0301');
+
+      expect(composed.length, 1);
+      expect(decomposed.length, 1);
+      expect(composed, Characters('\u00e9'));
+      expect(composed, isNot(equals(decomposed)));
+    });
+
     test('operations', () {
       var flag = '\u{1F1E9}\u{1F1F0}'; // Regional Indicators "DK".
       var string = 'Hi $flag!';

@@ -91,11 +91,11 @@ class UnknownOS extends RecognizedOS {
   @override
   final String id;
   const UnknownOS(this.id)
-      : assert(id != RecognizedOS.linuxId),
-        assert(id != RecognizedOS.macOSId),
-        assert(id != RecognizedOS.windowsId),
-        assert(id != RecognizedOS.androidId),
-        assert(id != RecognizedOS.iOSId),
-        assert(id != RecognizedOS.fuchsiaId),
-        assert(id != RecognizedOS.browserId);
+    : assert(id != RecognizedOS.linuxId),
+      assert(id != RecognizedOS.macOSId),
+      assert(id != RecognizedOS.windowsId),
+      assert(id != RecognizedOS.androidId),
+      assert(id != RecognizedOS.iOSId),
+      assert(id != RecognizedOS.fuchsiaId),
+      assert(id != RecognizedOS.browserId);
 }

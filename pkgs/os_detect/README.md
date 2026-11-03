@@ -4,6 +4,48 @@
 
 Platform independent access to information about the current operating system.
 
+# **NOTE**: This package has been discontinued 
+Package `os_detect` has been discontinued 
+as `package:platform` version 3.2 or later now supports similar APIs.
+See migration notes below for details.
+You can perform an automated migration to `package:platform`
+by running `dart fix` inside a project that uses the present API.
+
+## Migration notes
+
+The APIs in `package:os_detect` are top-level getters, typically used like this:
+
+```dart
+import 'package:os_detect/os_detect.dart' as os_detect;
+
+foo() {
+  if (os_detect.isAndroid) {
+    ...
+  }
+}
+```
+
+The APIs in `package:platform` version 3.2 or later,
+are instance getters of a `Platform` object, typically used like this:
+
+```dart
+import 'package:platform/platform.dart';
+
+foo() {
+  if (Platform.current.isAndroid) {
+    ...
+  }
+}
+```
+
+Note that `operatingSystem` and `operatingSystemVersion` migrate to
+`NativePlatform.current!.operatingSystem` and
+`NativePlatform.current!.operatingSystemVersion`, which are only available on
+native platforms (`NativePlatform.current` is `null` in a browser). Code that
+also runs in a browser should check `Platform.current.isBrowser` first, or use
+`BrowserPlatform.current!.version` (for example,
+`NativePlatform.current?.operatingSystemVersion ?? BrowserPlatform.current!.version`).
+
 ## Querying the current OS
 
 Exposes `operatingSystem` and `operatingSystemVersion` strings similar to those

@@ -43,6 +43,24 @@ void main() {
       var outer = sha1.startChunkedConversion(inner);
       outer.close();
     });
+
+    test('addSlice hashes slice and closes when isLast is true', () {
+      var inner = ChunkedConversionSink<Digest>.withCallback(
+        expectAsync1((accumulated) {
+          expect(accumulated, hasLength(1));
+          expect(
+            accumulated.first.toString(),
+            equals(sha1.convert([1, 2, 3, 4, 5]).toString()),
+          );
+        }),
+      );
+
+      var outer = sha1.startChunkedConversion(inner);
+      outer.addSlice([0, 1, 2, 9], 1, 3, false);
+      outer.addSlice([8, 3, 4, 5, 7], 1, 4, true);
+      expect(() => outer.add([0]), throwsStateError);
+      expect(() => outer.addSlice([0], 0, 1, false), throwsStateError);
+    });
   });
 
   group('standard vector', () {

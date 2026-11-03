@@ -523,6 +523,19 @@ void main() {
             ''');
       });
 
+      test('are wrapped when usageLineLength is specified', () {
+        var parser = ArgParser(usageLineLength: 30);
+        parser.addSeparator(
+            'Options for a long separator heading that does not fit.');
+        parser.addFlag('zebra', help: 'First');
+
+        validateUsage(parser, '''
+            Options for a long separator
+            heading that does not fit.
+            --[no-]zebra    First
+            ''');
+      });
+
       test('adds a newline after another separator', () {
         var parser = ArgParser();
         parser.addSeparator('First');

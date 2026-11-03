@@ -1,5 +1,9 @@
 ## 1.4.2-wip
 
+* Clarify that `Characters` equality does not normalize Unicode strings.
+* Fix a `RangeError` when iterating backwards over a string or substring
+  starting with an unpaired trailing surrogate.
+
 ## 1.4.1
 
 * Run `dart format` with the new style.

@@ -1,6 +1,9 @@
-## 2.0.4-wip
+## 2.0.4-preview.1
 
+- Mark package deprecated.
+- Add data-driven fixes to support migration to package:platform.
 - Run `dart format` with the new style.
+- Require Dart 3.10.
 - Remove `bin/os_detect.dart` (already covered by `example/example.dart`).
 
 ## 2.0.3
