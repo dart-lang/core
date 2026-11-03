@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'characters.dart' as chars;
-import 'internal_style.dart';
 import 'style.dart';
 import 'utils.dart' show endOfScheme, removeQueryFragment;
 

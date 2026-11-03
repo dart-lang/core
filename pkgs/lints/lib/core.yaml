@@ -21,6 +21,7 @@ linter:
     - file_names
     - hash_and_equals
     - implicit_call_tearoffs
+    - invalid_runtime_check_with_js_interop_types
     - library_annotations
     - no_duplicate_case_values
     - no_wildcard_variable_uses
@@ -34,6 +35,7 @@ linter:
     - provide_deprecation_message
     - secure_pubspec_urls
     - strict_top_level_inference
+    - switch_on_type
     - type_literal_in_constant_pattern
     - unintended_html_in_doc_comment
     - unnecessary_overrides

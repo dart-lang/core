@@ -24,7 +24,7 @@ void main() {
   });
 }
 
-// Data from http://tools.ietf.org/html/rfc2202.
+// Data from http://tools.ietf.org/html/rfc2202
 
 const List<String> _inputs = [
   '4869205468657265',

@@ -92,24 +92,24 @@ final class OperatingSystem {
   @visibleForTesting
   @pragma('vm:prefer-inline')
   OperatingSystem(String id, String version)
-      : this._(
-          id == linuxId
-              ? const LinuxOS()
-              : id == macOSId
-                  ? const MacOS()
-                  : id == windowsId
-                      ? const WindowsOS()
-                      : id == androidId
-                          ? const AndroidOS()
-                          : id == iOSId
-                              ? const IOS()
-                              : id == fuchsiaId
-                                  ? const FuchsiaOS()
-                                  : id == browserId
-                                      ? const BrowserOS()
-                                      : UnknownOS(id),
-          version,
-        );
+    : this._(
+        id == linuxId
+            ? const LinuxOS()
+            : id == macOSId
+            ? const MacOS()
+            : id == windowsId
+            ? const WindowsOS()
+            : id == androidId
+            ? const AndroidOS()
+            : id == iOSId
+            ? const IOS()
+            : id == fuchsiaId
+            ? const FuchsiaOS()
+            : id == browserId
+            ? const BrowserOS()
+            : UnknownOS(id),
+        version,
+      );
 
   /// Used by platforms which know the ID object.
   const OperatingSystem._(this._osId, this.version);
@@ -173,8 +173,7 @@ final class OperatingSystem {
 R overrideOperatingSystem<R>(
   OperatingSystem operatingSystem,
   R Function() body,
-) =>
-    runZoned(body, zoneValues: {#_os: operatingSystem});
+) => runZoned(body, zoneValues: {#_os: operatingSystem});
 
 // Exposes the `OperatingSystem._` constructor to the conditionally imported
 // libraries. Not exported by `../override.dart'.

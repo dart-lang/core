@@ -6,7 +6,6 @@ import 'dart:math' as math;
 
 import '../path.dart' as p;
 import 'characters.dart' as chars;
-import 'internal_style.dart';
 import 'parsed_path.dart';
 import 'path_exception.dart';
 import 'style.dart';
@@ -15,7 +14,7 @@ Context createInternal() => Context._internal();
 
 /// An instantiable class for manipulating paths. Unlike the top-level
 /// functions, this lets you explicitly select what platform the paths will use.
-class Context {
+final class Context {
   /// Creates a new path context for the given style and current directory.
   ///
   /// If [style] is omitted, it uses the host operating system's path style. If

@@ -16,6 +16,18 @@ import 'utils.dart';
 void main() {
   group('Monte Vectors', () {
     monteTest(
+      'sha1',
+      sha1,
+      'dd4df644eaf3d85bace2b21accaa22b28821f5cd',
+      [
+        '11f5c38b4479d4ad55cb69fadf62de0b036d5163',
+        '5c26de848c21586bec36995809cb02d3677423d9',
+        '453b5fcf263d01c891d7897d4013990f7c1fb0ab',
+        '36d0273ae363f992bbc313aa4ff602e95c207be3',
+        'd1c65e9ac55727fbf30eaf5f00cc22b9bab81a2c',
+      ],
+    );
+    monteTest(
       'sha224',
       sha224,
       'ed2b70d575d9d0b4196ae84a03eed940057ea89cdd729b95b7d4e6a5',

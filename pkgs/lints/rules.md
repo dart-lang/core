@@ -20,6 +20,7 @@
 | [`file_names`](https://dart.dev/lints/file_names) | Name source files using `lowercase_with_underscores`. |  |
 | [`hash_and_equals`](https://dart.dev/lints/hash_and_equals) | Always override `hashCode` if overriding `==`. | ✅ |
 | [`implicit_call_tearoffs`](https://dart.dev/lints/implicit_call_tearoffs) | Explicitly tear-off `call` methods when using an object as a Function. | ✅ |
+| [`invalid_runtime_check_with_js_interop_types`](https://dart.dev/lints/invalid_runtime_check_with_js_interop_types) | Avoid runtime type tests with JS interop types where the result may not be platform-consistent. |  |
 | [`library_annotations`](https://dart.dev/lints/library_annotations) | Attach library annotations to library directives. | ✅ |
 | [`no_duplicate_case_values`](https://dart.dev/lints/no_duplicate_case_values) | Don't use more than one case with same value. | ✅ |
 | [`no_wildcard_variable_uses`](https://dart.dev/lints/no_wildcard_variable_uses) | Don't use wildcard parameters or variables. |  |
@@ -33,10 +34,11 @@
 | [`provide_deprecation_message`](https://dart.dev/lints/provide_deprecation_message) | Provide a deprecation message, via `@Deprecated("message")`. |  |
 | [`secure_pubspec_urls`](https://dart.dev/lints/secure_pubspec_urls) | Use secure urls in `pubspec.yaml`. |  |
 | [`strict_top_level_inference`](https://dart.dev/lints/strict_top_level_inference) | Specify type annotations. | ✅ |
+| [`switch_on_type`](https://dart.dev/lints/switch_on_type) | Avoid switch statements on a 'Type'. |  |
 | [`type_literal_in_constant_pattern`](https://dart.dev/lints/type_literal_in_constant_pattern) | Don't use constant patterns with type literals. | ✅ |
 | [`unintended_html_in_doc_comment`](https://dart.dev/lints/unintended_html_in_doc_comment) | Use of angle brackets in a doc comment is treated as HTML by Markdown. |  |
 | [`unnecessary_overrides`](https://dart.dev/lints/unnecessary_overrides) | Don't override a method to do a super method invocation with the same parameters. | ✅ |
-| [`unrelated_type_equality_checks`](https://dart.dev/lints/unrelated_type_equality_checks) | Equality operator `==` invocation with references of unrelated types. |  |
+| [`unrelated_type_equality_checks`](https://dart.dev/lints/unrelated_type_equality_checks) | Equality operator `==` invocation with references of unrelated types. | ✅ |
 | [`use_string_in_part_of_directives`](https://dart.dev/lints/use_string_in_part_of_directives) | Use string in part of directives. | ✅ |
 | [`valid_regexps`](https://dart.dev/lints/valid_regexps) | Use valid regular expression syntax. |  |
 | [`void_checks`](https://dart.dev/lints/void_checks) | Don't assign to `void`. |  |
@@ -58,9 +60,8 @@
 | [`control_flow_in_finally`](https://dart.dev/lints/control_flow_in_finally) | Avoid control flow in `finally` blocks. |  |
 | [`empty_constructor_bodies`](https://dart.dev/lints/empty_constructor_bodies) | Use `;` instead of `{}` for empty constructor bodies. | ✅ |
 | [`empty_statements`](https://dart.dev/lints/empty_statements) | Avoid empty statements. | ✅ |
-| [`exhaustive_cases`](https://dart.dev/lints/exhaustive_cases) | Define case clauses for all constants in enum-like classes. | ✅ |
+| [`exhaustive_cases`](https://dart.dev/lints/exhaustive_cases) | Define case clauses for all constants in enum-like types. | ✅ |
 | [`implementation_imports`](https://dart.dev/lints/implementation_imports) | Don't import implementation files from another package. |  |
-| [`invalid_runtime_check_with_js_interop_types`](https://dart.dev/lints/invalid_runtime_check_with_js_interop_types) | Avoid runtime type tests with JS interop types where the result may not be platform-consistent. |  |
 | [`library_prefixes`](https://dart.dev/lints/library_prefixes) | Use `lowercase_with_underscores` when specifying a library prefix. |  |
 | [`library_private_types_in_public_api`](https://dart.dev/lints/library_private_types_in_public_api) | Avoid using private types in public APIs. |  |
 | [`no_leading_underscores_for_library_prefixes`](https://dart.dev/lints/no_leading_underscores_for_library_prefixes) | Avoid leading underscores for library prefixes. | ✅ |
@@ -83,6 +84,8 @@
 | [`prefer_null_aware_operators`](https://dart.dev/lints/prefer_null_aware_operators) | Prefer using `null`-aware operators. | ✅ |
 | [`prefer_spread_collections`](https://dart.dev/lints/prefer_spread_collections) | Use spread collections when possible. | ✅ |
 | [`recursive_getters`](https://dart.dev/lints/recursive_getters) | Property getter recursively returns itself. |  |
+| [`simple_directive_paths`](https://dart.dev/lints/simple_directive_paths) | Use simple directive paths. | ✅ |
+| [`simplify_variable_pattern`](https://dart.dev/lints/simplify_variable_pattern) | Avoid unnecessary member names in variable patterns. | ✅ |
 | [`slash_for_doc_comments`](https://dart.dev/lints/slash_for_doc_comments) | Prefer using `///` for doc comments. | ✅ |
 | [`type_init_formals`](https://dart.dev/lints/type_init_formals) | Don't type annotate initializing formals. | ✅ |
 | [`unnecessary_brace_in_string_interps`](https://dart.dev/lints/unnecessary_brace_in_string_interps) | Avoid using braces in interpolation when not needed. | ✅ |
@@ -99,6 +102,7 @@
 | [`unnecessary_string_interpolations`](https://dart.dev/lints/unnecessary_string_interpolations) | Unnecessary string interpolation. | ✅ |
 | [`unnecessary_this`](https://dart.dev/lints/unnecessary_this) | Don't access members with `this` unless avoiding shadowing. | ✅ |
 | [`unnecessary_to_list_in_spreads`](https://dart.dev/lints/unnecessary_to_list_in_spreads) | Unnecessary `toList()` in spreads. | ✅ |
+| [`unnecessary_unawaited`](https://dart.dev/lints/unnecessary_unawaited) | Unnecessary use of 'unawaited'. | ✅ |
 | [`unnecessary_underscores`](https://dart.dev/lints/unnecessary_underscores) | Unnecessary underscores can be removed. | ✅ |
 | [`use_function_type_syntax_for_parameters`](https://dart.dev/lints/use_function_type_syntax_for_parameters) | Use generic function type syntax for parameters. | ✅ |
 | [`use_null_aware_elements`](https://dart.dev/lints/use_null_aware_elements) | If-elements testing for null can be replaced with null-aware elements. | ✅ |

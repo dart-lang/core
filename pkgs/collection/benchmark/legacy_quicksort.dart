@@ -3,6 +3,7 @@
 library;
 
 import 'dart:math';
+
 import 'package:collection/src/utils.dart';
 
 /// Performs an insertion sort into a potentially different list than the
@@ -53,24 +54,6 @@ void quickSort<E>(
 ]) {
   end = RangeError.checkValidRange(start, end, elements.length);
   _quickSort<E, E>(elements, identity, compare, Random(), start, end);
-}
-
-/// Sort [list] using a quick-sort algorithm.
-///
-/// The elements are compared using [compare] on the value provided by [keyOf]
-/// on the element.
-/// If [start] and [end] are provided, only that range is sorted.
-///
-/// Uses insertion sort for smaller sublists.
-void quickSortBy<E, K>(
-  List<E> list,
-  K Function(E element) keyOf,
-  int Function(K a, K b) compare, [
-  int start = 0,
-  int? end,
-]) {
-  end = RangeError.checkValidRange(start, end, list.length);
-  _quickSort(list, keyOf, compare, Random(), start, end);
 }
 
 void _quickSort<E, K>(
