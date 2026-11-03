@@ -17,7 +17,6 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 | [fixnum](pkgs/fixnum/) | Library for 32- and 64-bit signed fixed-width integers with consistent behavior between native and JS runtimes. | [![issues](https://img.shields.io/badge/issues-4774bc)][fixnum_issues] | [![pub package](https://img.shields.io/pub/v/fixnum.svg)](https://pub.dev/packages/fixnum) |
 | [lints](pkgs/lints/) | Official Dart lint rules. Defines the 'core' and 'recommended' set of lints suggested by the Dart team. | [![issues](https://img.shields.io/badge/issues-4774bc)][lints_issues] | [![pub package](https://img.shields.io/pub/v/lints.svg)](https://pub.dev/packages/lints) |
 | [logging](pkgs/logging/) | Provides APIs for debugging and error logging, similar to loggers in other languages, such as the Closure JS Logger and java.util.logging.Logger. | [![issues](https://img.shields.io/badge/issues-4774bc)][logging_issues] | [![pub package](https://img.shields.io/pub/v/logging.svg)](https://pub.dev/packages/logging) |
-| [os_detect](pkgs/os_detect/) | Platform independent OS detection. | [![issues](https://img.shields.io/badge/issues-4774bc)][os_detect_issues] | [![pub package](https://img.shields.io/pub/v/os_detect.svg)](https://pub.dev/packages/os_detect) |
 | [path](pkgs/path/) | A string-based path manipulation library. | [![issues](https://img.shields.io/badge/issues-4774bc)][path_issues] | [![pub package](https://img.shields.io/pub/v/path.svg)](https://pub.dev/packages/path) |
 | [platform](pkgs/platform/) | A pluggable, mockable platform information abstraction for Dart. | [![issues](https://img.shields.io/badge/issues-4774bc)][platform_issues] | [![pub package](https://img.shields.io/pub/v/platform.svg)](https://pub.dev/packages/platform) |
 | [typed_data](pkgs/typed_data/) | Utility functions and classes related to the dart:typed_data library. | [![issues](https://img.shields.io/badge/issues-4774bc)][typed_data_issues] | [![pub package](https://img.shields.io/pub/v/typed_data.svg)](https://pub.dev/packages/typed_data) |
@@ -31,10 +30,16 @@ This repository is home to various Dart packages under the [dart.dev](https://pu
 [fixnum_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Afixnum
 [lints_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Alints
 [logging_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Alogging
-[os_detect_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Aos_detect
 [path_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Apath
 [platform_issues]: https://github.com/dart-lang/core/issues
 [typed_data_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Atyped_data
+
+## Discontinued packages
+| Package | Description | Version | Comment |
+| --- | --- | --- | --- |
+| [os_detect](pkgs/os_detect/) | Platform independent OS detection. | [![pub package](https://img.shields.io/pub/v/os_detect.svg)](https://pub.dev/packages/os_detect) | Replaced by `package:platform`. Migrate to that with `dart fix`. |
+
+[os_detect_issues]: https://github.com/dart-lang/core/issues?q=is%3Aissue+is%3Aopen+label%3Apackage%3Aos_detect
 
 ## Publishing automation
 
