@@ -1,9 +1,10 @@
-## 2.0.4-preview.1
+## 2.0.4
 
+- Add data-driven fixes to support migration to package:platform
+  (run `dart fix` to migrate).
 - Mark package deprecated.
-- Add data-driven fixes to support migration to package:platform.
-- Run `dart format` with the new style.
 - Require Dart 3.10.
+- Apply `dart format` with the new tall style.
 
 ## 2.0.3
 
