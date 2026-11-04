@@ -54,6 +54,7 @@ void main(List<String> args) async {
     rulesMarkdownContent,
     rulesJson,
   );
+  if (exitCode != 0) return;
 
   // If no documentation change, all is up-to-date.
   if (newRulesMarkdownContent == rulesMarkdownContent) {
