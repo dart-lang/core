@@ -10,7 +10,7 @@ import 'utilities.dart' as u;
 
 /// An immutable 64-bit signed integer, in the range `[-2^63, 2^63 - 1]`.
 /// Arithmetic operations may overflow in order to maintain this range.
-class Int64 implements IntX {
+final class Int64 implements IntX {
   final int _i;
 
   /// The maximum positive value attainable by an [Int64], namely
