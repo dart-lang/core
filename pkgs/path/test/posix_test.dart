@@ -578,6 +578,15 @@ void main() {
       expect(context.isWithin('foo/bar', 'foo/bar///'), isFalse);
       expect(context.isWithin('foo/.bar', 'foo/.bar/baz'), isTrue);
       expect(context.isWithin('foo/./bar', 'foo/.bar/baz'), isFalse);
+      // A trailing "." is the current directory, so it must not be glued onto
+      // a child whose next component merely starts with ".".
+      expect(context.isWithin('/dir/.', '/dir/.file'), isTrue);
+      expect(context.isWithin('/dir/.', '/dir/file'), isTrue);
+      expect(context.isWithin('/dir/.', '/dir'), isFalse);
+      expect(context.isWithin('/dir/.', '/dir/./.file'), isTrue);
+      expect(context.isWithin('foo/.', 'foo/.file'), isTrue);
+      expect(context.equals('/dir/.', '/dir'), isTrue);
+      expect(context.equals('/dir/.', '/dir/.'), isTrue);
       expect(context.isWithin('foo/..bar', 'foo/..bar/baz'), isTrue);
       expect(context.isWithin('foo/bar', 'foo/bar/baz/..'), isFalse);
       expect(context.isWithin('foo/bar', 'foo/bar/baz/../qux'), isTrue);
