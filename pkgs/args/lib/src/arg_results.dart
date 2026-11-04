@@ -17,11 +17,7 @@ ArgResults newArgResults(
     ArgResults? command,
     List<String> rest,
     List<String> arguments) {
-  final results = ArgResults._(parser, parsed, name, command, rest, arguments);
-  for (var child = command; child != null; child = child.command) {
-    setRootOf(child, results);
-  }
-  return results;
+  return ArgResults._(parser, parsed, name, command, rest, arguments);
 }
 
 /// The results of parsing a series of command line arguments using
@@ -32,9 +28,6 @@ ArgResults newArgResults(
 class ArgResults {
   /// The [ArgParser] whose options were parsed for these results.
   final ArgParser _parser;
-
-  /// The top-level root [ArgResults] when these results are for a subcommand.
-  ArgResults? _root;
 
   /// The option values that were parsed from arguments.
   final Map<String, dynamic> _parsed;
@@ -160,23 +153,5 @@ ArgParser? parserOf(ArgResults results) {
     return results._parser;
   } on Object {
     return null;
-  }
-}
-
-/// Returns the top-level root [ArgResults] for [results].
-ArgResults rootOf(ArgResults results) {
-  try {
-    return results._root ?? results;
-  } on Object {
-    return results;
-  }
-}
-
-/// Sets the top-level root [ArgResults] for [results].
-void setRootOf(ArgResults results, ArgResults root) {
-  try {
-    results._root = root;
-  } on Object {
-    // Ignore when [results] is a test double implementing [ArgResults].
   }
 }

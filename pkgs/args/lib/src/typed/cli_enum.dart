@@ -2,20 +2,16 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// An interface for enums that provide custom CLI names and help text.
+/// An enumerated command-line option value.
+///
+/// Enums implementing this interface can be used with `EnumDescriptor` and
+/// `DefaultedEnumDescriptor` to parse command-line option values matching
+/// [cliName] into enum values and populate per-value [helpText] in usage
+/// output.
 abstract interface class CliEnum implements Enum {
-  /// The name used to identify this value on the command line (e.g. kebab-cased
-  /// or short code).
+  /// The string used to select this value on the command line.
   String get cliName;
 
-  /// The help text describing this specific enum choice in usage documentation.
+  /// The description of this value shown in usage output.
   String get helpText;
-
-  /// Generates an `allowedHelp` map from a collection of [CliEnum] values.
-  static Map<String, String> allowedHelp<T extends CliEnum>(
-    Iterable<T> values,
-  ) =>
-      Map<String, String>.fromEntries(
-        values.map((T e) => MapEntry<String, String>(e.cliName, e.helpText)),
-      );
 }
