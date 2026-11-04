@@ -334,6 +334,12 @@ void main() {
       expect(context.join('a/', 'b'), r'a/b');
     });
 
+    test('keeps a drive letter when the next part is root-relative', () {
+      expect(context.join('C:', r'\Users\danny'), r'C:\Users\danny');
+      expect(context.join('c:', r'\Users\danny', 'docs'), r'c:\Users\danny\docs');
+      expect(context.joinAll(['C:', r'\Users\danny']), r'C:\Users\danny');
+    });
+
     test('ignores parts before an absolute path', () {
       expect(context.join('a', r'\b', r'\c', 'd'), r'\c\d');
       expect(context.join('a', '/b', '/c', 'd'), r'/c\d');
