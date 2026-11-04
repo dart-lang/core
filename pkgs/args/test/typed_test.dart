@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:args/args.dart';
+import 'package:args/src/typed/cli_enum.dart';
 import 'package:args/src/typed/option_descriptor.dart';
 import 'package:args/src/typed/typed_extensions.dart';
 import 'package:test/test.dart';
@@ -288,24 +289,26 @@ void main() {
     );
 
     test(
-        'unregistered option throws on value/wasParsed and falls back on '
-        'valueOrDefault', () {
-      final results = ArgParser().parse([]);
-      expect(unregisteredOpt.isRegistered(results), isFalse);
-      expect(
-        () => unregisteredOpt.value(results),
-        throwsA(
-          isA<ArgumentError>().having(
-            (e) => e.message,
-            'message',
-            contains('Could not find an option named "--missing"'),
+      'unregistered option throws on value/wasParsed and falls back on '
+      'valueOrDefault',
+      () {
+        final results = ArgParser().parse([]);
+        expect(unregisteredOpt.isRegistered(results), isFalse);
+        expect(
+          () => unregisteredOpt.value(results),
+          throwsA(
+            isA<ArgumentError>().having(
+              (e) => e.message,
+              'message',
+              contains('Could not find an option named "--missing"'),
+            ),
           ),
-        ),
-      );
-      expect(() => unregisteredOpt.wasParsed(results), throwsArgumentError);
-      expect(unregisteredOpt.valueOrDefault(results), equals('fallback'));
-      expect(stringCollision.valueOrDefault(results), isNull);
-    });
+        );
+        expect(() => unregisteredOpt.wasParsed(results), throwsArgumentError);
+        expect(unregisteredOpt.valueOrDefault(results), equals('fallback'));
+        expect(stringCollision.valueOrDefault(results), isNull);
+      },
+    );
 
     test(
       'imperative option with same name throws ArgumentError on descriptor '
@@ -399,6 +402,190 @@ void main() {
       },
     );
   });
+
+  group('EnumDescriptor & DefaultedEnumDescriptor', () {
+    const modeOpt = EnumDescriptor<TestMode>(
+      name: 'mode',
+      abbr: 'm',
+      help: 'Execution mode',
+      values: TestMode.values,
+    );
+
+    const priorityOpt = DefaultedEnumDescriptor<TestPriority>(
+      name: 'priority',
+      abbr: 'p',
+      help: 'Priority tier',
+      values: TestPriority.values,
+      nameMapper: _priorityLabel,
+      defaultsTo: TestPriority.p1,
+    );
+
+    test('derives allowed values automatically and returns null when omitted',
+        () {
+      final parser = ArgParser()..addDescriptor(modeOpt);
+
+      expect(
+        parser.options['mode']?.allowed,
+        equals(['fast', 'slow', 'balanced']),
+      );
+      expect(parser.options['mode']?.defaultsTo, isNull);
+
+      final defaultResults = parser.parse([]);
+      expect(modeOpt.value(defaultResults), isNull);
+      expect(modeOpt.wasParsed(defaultResults), isFalse);
+      expect(modeOpt.isRegistered(defaultResults), isTrue);
+
+      final customResults = parser.parse(['--mode=fast']);
+      expect(modeOpt.value(customResults), equals(TestMode.fast));
+      expect(modeOpt.wasParsed(customResults), isTrue);
+    });
+
+    test(
+      'respects custom nameMapper, returns non-nullable Enum T, and rejects '
+      'unmapped enum identifier names',
+      () {
+        final parser = ArgParser()..addDescriptor(priorityOpt);
+
+        expect(parser.options['priority']?.allowed, equals(['P0', 'P1', 'P2']));
+        expect(parser.options['priority']?.defaultsTo, equals('P1'));
+
+        final defaultResults = parser.parse([]);
+        final defaultPri = priorityOpt.value(defaultResults);
+        expect(defaultPri.label, equals('P1'));
+        expect(defaultPri, equals(TestPriority.p1));
+
+        final customResults = parser.parse(['-p', 'P0']);
+        expect(priorityOpt.value(customResults), equals(TestPriority.p0));
+
+        expect(
+          () => parser.parse(['-p', 'p0']),
+          throwsA(isA<ArgParserException>()),
+        );
+
+        final fakeRawNameResults = _FakeArgResults({'priority': 'p0'});
+        expect(
+          () => priorityOpt.value(fakeRawNameResults),
+          throwsA(
+            isA<FormatException>()
+                .having((e) => e.source, 'source', equals('p0'))
+                .having(
+                  (e) => e.message,
+                  'message',
+                  contains('Invalid enum value for option "--priority"'),
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'auto-derives allowed and allowedHelp when T implements CliEnum and '
+      'rejects Dart identifier names',
+      () {
+        const descriptor = DefaultedEnumDescriptor<TestCliStrategy>(
+          name: 'strategy',
+          help: 'Strategy option',
+          values: TestCliStrategy.values,
+          defaultsTo: TestCliStrategy.alpha,
+        );
+        final parser = ArgParser()..addDescriptor(descriptor);
+
+        expect(
+          parser.options['strategy']!.allowed,
+          equals(['alpha-strategy', 'beta-strategy']),
+        );
+        expect(
+          parser.options['strategy']!.allowedHelp,
+          equals({
+            'alpha-strategy': 'Primary alpha strategy',
+            'beta-strategy': 'Secondary beta strategy',
+          }),
+        );
+
+        final parsedResults = parser.parse(['--strategy=beta-strategy']);
+        expect(descriptor.value(parsedResults), equals(TestCliStrategy.beta));
+        expect(descriptor.wasParsed(parsedResults), isTrue);
+
+        expect(
+          () => parser.parse(['--strategy=alpha']),
+          throwsA(isA<ArgParserException>()),
+        );
+      },
+    );
+  });
+
+  group('IntDescriptor & DefaultedIntDescriptor', () {
+    const portOpt = IntDescriptor(name: 'port', help: 'Port number');
+    const timeoutOpt = DefaultedIntDescriptor(
+      name: 'timeout',
+      help: 'Timeout in seconds',
+      defaultsTo: 30,
+    );
+
+    test('parses valid integer and defaults', () {
+      final parser = ArgParser()..addDescriptors(const [portOpt, timeoutOpt]);
+
+      final defaultResults = parser.parse([]);
+      expect(portOpt.value(defaultResults), isNull);
+      expect(timeoutOpt.value(defaultResults), equals(30));
+
+      final customResults = parser.parse(['--port=8080', '--timeout=120']);
+      expect(portOpt.value(customResults), equals(8080));
+      expect(timeoutOpt.value(customResults), equals(120));
+    });
+
+    test(
+      'throws ArgParserException at parse time and FormatException with source '
+      'on unvalidated ArgResults',
+      () {
+        final parser = ArgParser()..addDescriptor(portOpt);
+        expect(
+          () => parser.parse(['--port=not-a-number']),
+          throwsA(isA<ArgParserException>()),
+        );
+
+        final fakeBadInt = _FakeArgResults({'port': 'not-a-number'});
+        expect(
+          () => portOpt.value(fakeBadInt),
+          throwsA(
+            isA<FormatException>()
+                .having((e) => e.source, 'source', equals('not-a-number'))
+                .having(
+                  (e) => e.message,
+                  'message',
+                  contains('Invalid integer value for option "--port"'),
+                ),
+          ),
+        );
+      },
+    );
+  });
+}
+
+enum TestMode { fast, slow, balanced }
+
+enum TestPriority {
+  p0('P0'),
+  p1('P1'),
+  p2('P2');
+
+  final String label;
+  const TestPriority(this.label);
+}
+
+String _priorityLabel(TestPriority p) => p.label;
+
+enum TestCliStrategy implements CliEnum {
+  alpha('alpha-strategy', 'Primary alpha strategy'),
+  beta('beta-strategy', 'Secondary beta strategy');
+
+  @override
+  final String cliName;
+
+  @override
+  final String helpText;
+
+  const TestCliStrategy(this.cliName, this.helpText);
 }
 
 class _FakeArgResults implements ArgResults {

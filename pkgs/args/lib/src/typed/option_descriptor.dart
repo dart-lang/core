@@ -5,6 +5,7 @@
 import '../arg_parser.dart';
 import '../arg_results.dart';
 import '../option.dart';
+import 'cli_enum.dart';
 
 /// Descriptor for a command-line option or flag whose parsed value has type
 /// [T].
@@ -13,6 +14,8 @@ import '../option.dart';
 /// non-`null` default:
 /// - [FlagDescriptor] (`bool`) and [NullableFlagDescriptor] (`bool?`)
 /// - [StringDescriptor] (`String?`) and [DefaultedStringDescriptor] (`String`)
+/// - [IntDescriptor] (`int?`) and [DefaultedIntDescriptor] (`int`)
+/// - [EnumDescriptor] (`T?`) and [DefaultedEnumDescriptor] (`T`)
 /// - [MultiStringDescriptor] (`List<String>`)
 abstract class OptionDescriptor<T> {
   const OptionDescriptor({
@@ -168,9 +171,12 @@ abstract class OptionDescriptor<T> {
     return false;
   }
 
-  void _attachDescriptor(ArgParser parser) {
+  void _attachDescriptor(
+    ArgParser parser, {
+    String? Function(String value, String arg)? validator,
+  }) {
     if (parser.options[name] case final option?) {
-      setDescriptorOf(option, this);
+      setDescriptorOf(option, this, validator: validator);
     }
   }
 }
@@ -257,6 +263,109 @@ final class DefaultedStringDescriptor extends _StringDescriptorBase<String> {
   @override
   String _readValue(ArgResults results) =>
       (results[name] as String?) ?? defaultsTo;
+}
+
+/// Descriptor for a single-value integer option whose parsed value has type
+/// [R].
+abstract base class _IntDescriptorBase<R extends int?>
+    extends OptionDescriptor<R> {
+  const _IntDescriptorBase({
+    required super.name,
+    required super.help,
+    required super.defaultsTo,
+    super.abbr,
+    super.aliases = const [],
+    super.valueHelp,
+    super.allowed,
+    super.allowedHelp,
+    super.mandatory = false,
+    super.hide = false,
+    super.verboseOnly = false,
+  });
+
+  @override
+  OptionType get _optionType => OptionType.single;
+
+  @override
+  Object? get _parserDefaultsTo => defaultsTo?.toString();
+
+  @override
+  void addTo(
+    ArgParser parser, {
+    bool verboseHelp = false,
+    bool? hide,
+    String? help,
+  }) {
+    if (_isAlreadyRegistered(parser)) return;
+
+    parser.addOption(
+      name,
+      abbr: abbr,
+      aliases: aliases,
+      help: help ?? this.help,
+      valueHelp: valueHelp,
+      defaultsTo: defaultsTo?.toString(),
+      allowed: allowed,
+      allowedHelp: allowedHelp,
+      mandatory: mandatory,
+      hide: _effectiveHide(verboseHelp: verboseHelp, hide: hide),
+    );
+    _attachDescriptor(
+      parser,
+      validator: (value, arg) => int.tryParse(value) == null
+          ? 'Invalid integer value "$value" for option "$arg".'
+          : null,
+    );
+  }
+
+  int? _parseIntOption(ArgResults results) {
+    final raw = results[name] as String?;
+    if (raw == null) return null;
+    return int.tryParse(raw) ??
+        (throw FormatException(
+          'Invalid integer value for option "--$name"',
+          raw,
+        ));
+  }
+}
+
+/// Descriptor for a single-value integer option without a default value.
+final class IntDescriptor extends _IntDescriptorBase<int?> {
+  const IntDescriptor({
+    required super.name,
+    required super.help,
+    super.abbr,
+    super.aliases = const [],
+    super.valueHelp,
+    super.allowed,
+    super.allowedHelp,
+    super.mandatory = false,
+    super.hide = false,
+    super.verboseOnly = false,
+  }) : super(defaultsTo: null);
+
+  @override
+  int? _readValue(ArgResults results) => _parseIntOption(results);
+}
+
+/// Descriptor for a single-value integer option with a non-`null` default
+/// value.
+final class DefaultedIntDescriptor extends _IntDescriptorBase<int> {
+  const DefaultedIntDescriptor({
+    required super.name,
+    required super.help,
+    required super.defaultsTo,
+    super.abbr,
+    super.aliases = const [],
+    super.valueHelp,
+    super.allowed,
+    super.allowedHelp,
+    super.hide = false,
+    super.verboseOnly = false,
+  });
+
+  @override
+  int _readValue(ArgResults results) => _parseIntOption(results) ?? defaultsTo;
 }
 
 /// Descriptor for a boolean flag whose parsed value has type [R].
@@ -398,4 +507,141 @@ final class MultiStringDescriptor extends OptionDescriptor<List<String>> {
           List<String>.unmodifiable([for (final v in values) v as String]),
         _ => _defaultResult,
       };
+}
+
+/// Descriptor for a single-value enum option whose parsed value has type [R].
+abstract base class _EnumDescriptorBase<T extends Enum, R extends T?>
+    extends OptionDescriptor<R> {
+  const _EnumDescriptorBase({
+    required super.name,
+    required super.help,
+    required this.values,
+    required super.defaultsTo,
+    String Function(T value)? nameMapper,
+    super.abbr,
+    super.aliases = const [],
+    super.valueHelp,
+    super.allowedHelp,
+    super.mandatory = false,
+    super.hide = false,
+    super.verboseOnly = false,
+  }) : _nameMapper = nameMapper;
+
+  /// The enum values allowed for this option.
+  final List<T> values;
+
+  final String Function(T value)? _nameMapper;
+
+  String _formatName(T value) {
+    if (_nameMapper case final mapper?) return mapper(value);
+    if (value case final CliEnum cliEnum) return cliEnum.cliName;
+    return value.name;
+  }
+
+  String? get _defaultString => switch (defaultsTo) {
+        final T value => _formatName(value),
+        null => null,
+      };
+
+  @override
+  OptionType get _optionType => OptionType.single;
+
+  @override
+  Object? get _parserDefaultsTo => _defaultString;
+
+  @override
+  List<String> get allowed => [for (final v in values) _formatName(v)];
+
+  Map<String, String>? _computeAllowedHelp() {
+    if (allowedHelp != null) return allowedHelp;
+    if (values is List<CliEnum> && values.isNotEmpty) {
+      return {
+        for (final val in values)
+          if (val case final CliEnum cliVal) _formatName(val): cliVal.helpText,
+      };
+    }
+    return null;
+  }
+
+  @override
+  void addTo(
+    ArgParser parser, {
+    bool verboseHelp = false,
+    bool? hide,
+    String? help,
+  }) {
+    if (_isAlreadyRegistered(parser)) return;
+
+    parser.addOption(
+      name,
+      abbr: abbr,
+      aliases: aliases,
+      help: help ?? this.help,
+      valueHelp: valueHelp,
+      defaultsTo: _defaultString,
+      allowed: allowed,
+      allowedHelp: _computeAllowedHelp(),
+      mandatory: mandatory,
+      hide: _effectiveHide(verboseHelp: verboseHelp, hide: hide),
+    );
+    _attachDescriptor(parser);
+  }
+
+  T? _parseEnumOption(ArgResults results) {
+    final raw = results[name] as String?;
+    if (raw == null) return null;
+    return _parse(raw) ??
+        (throw FormatException(
+          'Invalid enum value for option "--$name"',
+          raw,
+        ));
+  }
+
+  T? _parse(String raw) {
+    for (final val in values) {
+      if (_formatName(val) == raw) return val;
+    }
+    return null;
+  }
+}
+
+/// Descriptor for a single-value enum option without a default value.
+final class EnumDescriptor<T extends Enum> extends _EnumDescriptorBase<T, T?> {
+  const EnumDescriptor({
+    required super.name,
+    required super.help,
+    required super.values,
+    super.nameMapper,
+    super.abbr,
+    super.valueHelp,
+    super.aliases = const [],
+    super.allowedHelp,
+    super.mandatory = false,
+    super.hide = false,
+    super.verboseOnly = false,
+  }) : super(defaultsTo: null);
+
+  @override
+  T? _readValue(ArgResults results) => _parseEnumOption(results);
+}
+
+/// Descriptor for a single-value enum option with a non-`null` default value.
+final class DefaultedEnumDescriptor<T extends Enum>
+    extends _EnumDescriptorBase<T, T> {
+  const DefaultedEnumDescriptor({
+    required super.name,
+    required super.help,
+    required super.values,
+    required super.defaultsTo,
+    super.nameMapper,
+    super.abbr,
+    super.valueHelp,
+    super.aliases = const [],
+    super.allowedHelp,
+    super.hide = false,
+    super.verboseOnly = false,
+  });
+
+  @override
+  T _readValue(ArgResults results) => _parseEnumOption(results) ?? defaultsTo;
 }
