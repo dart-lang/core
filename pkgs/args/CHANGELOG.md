@@ -11,6 +11,9 @@
 * Remove extra newlines following separators when using flags without help text.
 * Throw an exception when parsing argument lists with missing mandatory
   arguments instead of waiting until they are read.
+* Add `package:args/typed.dart` with declarative, type-safe option descriptors
+  (`OptionDescriptor` and typed subclasses, `OptionBundle`,
+  `ValueOptionBundle`, `CliEnum`) and extensions on `ArgParser` and `Option`.
 
 ## 2.7.0
 

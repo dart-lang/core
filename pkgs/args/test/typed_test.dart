@@ -3,9 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:args/args.dart';
-import 'package:args/src/typed/cli_enum.dart';
-import 'package:args/src/typed/option_descriptor.dart';
-import 'package:args/src/typed/typed_extensions.dart';
+import 'package:args/command_runner.dart';
+import 'package:args/typed.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -370,37 +369,6 @@ void main() {
         );
       },
     );
-
-    test(
-      'wholesale imperative ArgParser clones and FakeArgResults preserve '
-      'typed lookup',
-      () {
-        const targetOpt = DefaultedStringDescriptor(
-          name: 'target',
-          help: 'Target file',
-          defaultsTo: 'lib/main.dart',
-        );
-        final sourceParser = ArgParser()..addDescriptor(targetOpt);
-
-        final imperativeClone = ArgParser();
-        for (final option in sourceParser.options.values) {
-          imperativeClone.addOption(
-            option.name,
-            help: option.help,
-            defaultsTo: option.defaultsTo as String?,
-          );
-        }
-        expect(targetOpt.isRegisteredOnParser(imperativeClone), isTrue);
-        final cloneResults = imperativeClone.parse(['--target=lib/other.dart']);
-        expect(targetOpt.value(cloneResults), equals('lib/other.dart'));
-        expect(targetOpt.wasParsed(cloneResults), isTrue);
-
-        final fakeResults = _FakeArgResults({'target': 'lib/fake.dart'});
-        expect(targetOpt.isRegistered(fakeResults), isTrue);
-        expect(targetOpt.wasParsed(fakeResults), isTrue);
-        expect(targetOpt.value(fakeResults), equals('lib/fake.dart'));
-      },
-    );
   });
 
   group('EnumDescriptor & DefaultedEnumDescriptor', () {
@@ -560,6 +528,161 @@ void main() {
       },
     );
   });
+
+  group('OptionBundle, ValueOptionBundle & CommandRunner integration', () {
+    test('registers bundles and reads local argResults and globalResults',
+        () async {
+      const globalVerbose = FlagDescriptor(
+        name: 'verbose',
+        abbr: 'v',
+        help: 'Global verbose output',
+      );
+      final runner = CommandRunner<void>('test', 'test')
+        ..argParser.addDescriptor(globalVerbose);
+      final command = SafeTestCommand();
+      runner.addCommand(command);
+
+      await runner.run(['-v', 'safe-test', '--opt', 'hello']);
+
+      final localResults = command.argResults!;
+      final globalResults = command.globalResults!;
+      expect(globalVerbose.value(globalResults), isTrue);
+      expect(globalVerbose.wasParsed(globalResults), isTrue);
+      expect(SafeTestCommand.opt.value(localResults), equals('hello'));
+      expect(SafeTestCommand.opt.wasParsed(localResults), isTrue);
+      expect(SafeTestCommand.opt.isRegistered(localResults), isTrue);
+      expect(SafeTestCommand.unadded.isRegistered(localResults), isFalse);
+      expect(SafeTestCommand.unadded.valueOrDefault(localResults), isFalse);
+      expect(
+        const SafeBundle().parse(localResults),
+        equals((true, 'hello', null)),
+      );
+    });
+
+    test(
+      'CommandRunner.run throws UsageException at parse time on invalid int',
+      () {
+        final runner = CommandRunner<void>('test', 'test');
+        final command = SafeTestCommand();
+        runner.addCommand(command);
+
+        expect(
+          () => runner.run(['safe-test', '--port=not-an-int']),
+          throwsA(isA<UsageException>()),
+        );
+      },
+    );
+
+    test(
+      'OptionBundle hide and verboseHelp overrides work across register, '
+      'registerBundle, and registerBundles',
+      () {
+        const bundle = VisibilityTestBundle();
+
+        final defaultParser = ArgParser()..registerBundle(bundle);
+        expect(defaultParser.options['visible-opt']!.hide, isFalse);
+        expect(defaultParser.options['hidden-opt']!.hide, isTrue);
+        expect(defaultParser.options['verbose-opt']!.hide, isTrue);
+        expect(defaultParser.options['sub-hidden-opt']!.hide, isTrue);
+
+        final unhiddenParser = ArgParser()..registerBundle(bundle, hide: false);
+        expect(unhiddenParser.options['visible-opt']!.hide, isFalse);
+        expect(unhiddenParser.options['hidden-opt']!.hide, isFalse);
+        expect(unhiddenParser.options['verbose-opt']!.hide, isFalse);
+        expect(unhiddenParser.options['sub-hidden-opt']!.hide, isFalse);
+
+        final forcedHiddenParser = ArgParser()
+          ..registerBundles(const [bundle], verboseHelp: true, hide: true);
+        expect(forcedHiddenParser.options['visible-opt']!.hide, isTrue);
+        expect(forcedHiddenParser.options['hidden-opt']!.hide, isTrue);
+        expect(forcedHiddenParser.options['verbose-opt']!.hide, isTrue);
+        expect(forcedHiddenParser.options['sub-hidden-opt']!.hide, isTrue);
+      },
+    );
+
+    test('OptionBundle.title adds separator once across diamond sub-bundles',
+        () {
+      const parentBundle = DiamondParentBundle();
+      final parser = ArgParser()..registerBundle(parentBundle);
+
+      final matches = '=== Build Options ==='.allMatches(parser.usage).length;
+      expect(matches, equals(1));
+    });
+
+    test(
+      'Option.copyTo and wholesale imperative ArgParser clones preserve '
+      'typed lookup, and FakeArgResults works without NoSuchMethodError',
+      () {
+        const portOpt = DefaultedIntDescriptor(
+          name: 'port',
+          help: 'Port number',
+          defaultsTo: 8080,
+        );
+        const targetOpt = DefaultedStringDescriptor(
+          name: 'target',
+          help: 'Target file',
+          defaultsTo: 'lib/main.dart',
+        );
+        const tagsOpt = MultiStringDescriptor(
+          name: 'tag',
+          help: 'Build tags',
+          defaultsTo: ['ci'],
+        );
+
+        final sourceParser = ArgParser()
+          ..addDescriptors(const [portOpt, targetOpt, tagsOpt]);
+
+        // 1. Lossless copy via Option.copyTo preserves descriptor & validator.
+        final copiedParser = ArgParser();
+        for (final option in sourceParser.options.values) {
+          option.copyTo(copiedParser, hide: true);
+        }
+        expect(copiedParser.options['port']!.hide, isTrue);
+        expect(copiedParser.options['port']!.descriptor, same(portOpt));
+        expect(portOpt.isRegisteredOnParser(copiedParser), isTrue);
+        expect(tagsOpt.isRegisteredOnParser(copiedParser), isTrue);
+        expect(
+          () => copiedParser.parse(['--port=invalid']),
+          throwsA(isA<ArgParserException>()),
+        );
+        final copiedResults = copiedParser.parse(['--port=9090']);
+        expect(portOpt.value(copiedResults), equals(9090));
+        expect(portOpt.wasParsed(copiedResults), isTrue);
+        expect(tagsOpt.value(copiedResults), equals(['ci']));
+
+        // 2. Wholesale imperative clone fallback.
+        final imperativeClone = ArgParser();
+        for (final option in sourceParser.options.values) {
+          if (option.isMultiple) {
+            imperativeClone.addMultiOption(
+              option.name,
+              help: option.help,
+              defaultsTo: option.defaultsTo as List<String>?,
+            );
+          } else {
+            imperativeClone.addOption(
+              option.name,
+              help: option.help,
+              defaultsTo: option.defaultsTo as String?,
+            );
+          }
+        }
+        expect(portOpt.isRegisteredOnParser(imperativeClone), isTrue);
+        expect(targetOpt.isRegisteredOnParser(imperativeClone), isTrue);
+        expect(tagsOpt.isRegisteredOnParser(imperativeClone), isTrue);
+        final cloneResults = imperativeClone.parse(['--target=lib/other.dart']);
+        expect(targetOpt.value(cloneResults), equals('lib/other.dart'));
+        expect(targetOpt.wasParsed(cloneResults), isTrue);
+
+        // 3. Custom FakeArgResults implementing ArgResults works cleanly.
+        final fakeResults = _FakeArgResults({'target': 'lib/fake.dart'});
+        expect(targetOpt.isRegistered(fakeResults), isTrue);
+        expect(targetOpt.wasParsed(fakeResults), isTrue);
+        expect(targetOpt.value(fakeResults), equals('lib/fake.dart'));
+        expect(portOpt.value(fakeResults), equals(8080));
+      },
+    );
+  });
 }
 
 enum TestMode { fast, slow, balanced }
@@ -586,6 +709,132 @@ enum TestCliStrategy implements CliEnum {
   final String helpText;
 
   const TestCliStrategy(this.cliName, this.helpText);
+}
+
+class SafeBundle extends ValueOptionBundle<(bool, String?, int?)> {
+  const SafeBundle();
+
+  @override
+  List<OptionDescriptor<Object?>> get descriptors => const [
+        SafeTestCommand.flag,
+        SafeTestCommand.opt,
+        SafeTestCommand.port,
+      ];
+
+  @override
+  (bool, String?, int?) parse(ArgResults results) => (
+        SafeTestCommand.flag.value(results),
+        SafeTestCommand.opt.value(results),
+        SafeTestCommand.port.value(results),
+      );
+}
+
+class SafeTestCommand extends Command<void> {
+  SafeTestCommand() {
+    argParser.registerBundles(const [SafeBundle()]);
+  }
+
+  static const flag = FlagDescriptor(
+    name: 'flag',
+    help: 'A test flag',
+    defaultsTo: true,
+  );
+
+  static const opt = StringDescriptor(name: 'opt', help: 'A test option');
+
+  static const port = IntDescriptor(name: 'port', help: 'A test port');
+
+  static const unadded = FlagDescriptor(
+    name: 'unadded',
+    help: 'Not added to parser',
+  );
+
+  @override
+  String get name => 'safe-test';
+
+  @override
+  String get description => 'Safe test command';
+
+  @override
+  void run() {}
+}
+
+class VisibilityTestBundle extends OptionBundle {
+  const VisibilityTestBundle();
+
+  static const visibleOpt = FlagDescriptor(
+    name: 'visible-opt',
+    help: 'Visible option',
+  );
+  static const hiddenOpt = FlagDescriptor(
+    name: 'hidden-opt',
+    help: 'Hidden option',
+    hide: true,
+  );
+  static const verboseOpt = FlagDescriptor(
+    name: 'verbose-opt',
+    help: 'Verbose-only option',
+    verboseOnly: true,
+  );
+
+  @override
+  List<OptionDescriptor<Object?>> get descriptors => const [
+        visibleOpt,
+        hiddenOpt,
+        verboseOpt,
+      ];
+
+  @override
+  List<OptionBundle> get subBundles => const [_SubVisibilityTestBundle()];
+}
+
+class _SubVisibilityTestBundle extends OptionBundle {
+  const _SubVisibilityTestBundle();
+
+  static const subHiddenOpt = FlagDescriptor(
+    name: 'sub-hidden-opt',
+    help: 'Sub-bundle hidden option',
+    hide: true,
+  );
+
+  @override
+  List<OptionDescriptor<Object?>> get descriptors => const [subHiddenOpt];
+}
+
+class TitledTestBundle extends OptionBundle {
+  const TitledTestBundle();
+
+  @override
+  String get title => '=== Build Options ===';
+
+  @override
+  List<OptionDescriptor<Object?>> get descriptors => const [
+        VisibilityTestBundle.visibleOpt,
+      ];
+}
+
+class _LeftBranchBundle extends OptionBundle {
+  const _LeftBranchBundle();
+
+  @override
+  List<OptionBundle> get subBundles => const [TitledTestBundle()];
+}
+
+class _RightBranchBundle extends OptionBundle {
+  const _RightBranchBundle();
+
+  @override
+  List<OptionBundle> get subBundles => const [TitledTestBundle()];
+}
+
+class DiamondParentBundle extends OptionBundle {
+  const DiamondParentBundle();
+
+  @override
+  List<OptionBundle> get subBundles => const [
+        _LeftBranchBundle(),
+        _RightBranchBundle(),
+      ];
 }
 
 class _FakeArgResults implements ArgResults {
