@@ -5,6 +5,7 @@
 - Mark package deprecated.
 - Require Dart 3.10.
 - Apply `dart format` with the new tall style.
+- Remove `bin/os_detect.dart` (already covered by `example/example.dart`).
 
 ## 2.0.3
 
