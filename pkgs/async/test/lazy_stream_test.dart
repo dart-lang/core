@@ -87,7 +87,7 @@ void main() {
   });
 
   test("a lazy stream can't be listened to multiple times", () {
-    var stream = LazyStream(expectAsync0(Stream.empty));
+    var stream = LazyStream(expectAsync0(Stream<void>.empty));
     expect(stream.isBroadcast, isFalse);
 
     stream.listen(null);
