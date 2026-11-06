@@ -54,6 +54,7 @@ void main(List<String> args) async {
     rulesMarkdownContent,
     rulesJson,
   );
+  if (exitCode != 0) return;
 
   // If no documentation change, all is up-to-date.
   if (newRulesMarkdownContent == rulesMarkdownContent) {
@@ -108,14 +109,15 @@ Future<Map<String, Map<String, String>>> _fetchRulesJson({
 /// Extracts relevant information from a list of JSON objects.
 ///
 /// For each JSON object, includes only the relevant (string-typed) properties,
-/// then creates a map indexed by the `'name'` property of the objects.
+/// then creates a map indexed by the `'name'` property of the objects,
+/// in lower case, since the analyzer matches lint names case-insensitively.
 Map<String, Map<String, String>> _readJson(String rulesJsonText) {
   /// Relevant keys in the JSON information about lints.
   const relevantKeys = {'name', 'description', 'fixStatus'};
   final rulesJson = jsonDecode(rulesJsonText) as List<dynamic>;
   return {
     for (Map<String, Object?> rule in rulesJson)
-      rule['name'] as String: {
+      (rule['name'] as String).toLowerCase(): {
         for (var key in relevantKeys) key: rule[key] as String,
       },
   };
@@ -156,7 +158,14 @@ String _updateMarkdown(
 List<String> _parseRules(File yamlFile) {
   var yamlData = yaml.loadYaml(yamlFile.readAsStringSync()) as Map;
   var linterEntry = yamlData['linter'] as Map;
-  return List<String>.from(linterEntry['rules'] as List);
+  var rules = List<String>.from(linterEntry['rules'] as List);
+  for (var rule in rules) {
+    if (rule != rule.toLowerCase()) {
+      stderr.writeln('ERROR: Rule name is not lower case: $rule');
+      exitCode = 1;
+    }
+  }
+  return rules;
 }
 
 /// Creates markdown source for a table of lint rules.
@@ -186,7 +195,8 @@ String _createRuleTableRow(
 ) {
   final ruleMeta = lintMeta[rule];
   if (ruleMeta == null) {
-    stderr.writeln("WARNING: Missing rule information for rule: $rule");
+    stderr.writeln('ERROR: Missing rule information for rule: $rule');
+    exitCode = 1;
   }
   final description = (ruleMeta?['description'] ?? '')
       .replaceAll('\n', ' ')
