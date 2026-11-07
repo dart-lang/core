@@ -1,6 +1,9 @@
 ## 3.1.3-wip
 
 - Run `dart format` with the new style.
+- Fix `FixedDateTimeFormatter.decode` and `tryDecode` throwing a `RangeError`
+  on input shorter than the pattern. They now throw a `FormatException` and
+  return `null`, respectively.
 
 ## 3.1.2
 

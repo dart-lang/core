@@ -309,6 +309,13 @@ class FixedDateTimeFormatter {
       _blocks.ends[index],
     );
     if (parsed == null && throwOnError) {
+      if (_blocks.ends[index] > formattedDateTime.length) {
+        throw FormatException(
+          'Expected at least ${_blocks.ends[index]} characters',
+          formattedDateTime,
+          formattedDateTime.length,
+        );
+      }
       var block = formattedDateTime.substring(
           _blocks.starts[index], _blocks.ends[index]);
       throw FormatException(
@@ -321,6 +328,7 @@ class FixedDateTimeFormatter {
   }
 
   int? tryParse(String formattedDateTime, int start, int end) {
+    if (end > formattedDateTime.length) return null;
     var result = 0;
     for (var i = start; i < end; i++) {
       var digit = formattedDateTime.codeUnitAt(i) ^ 0x30;
