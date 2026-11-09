@@ -1,5 +1,7 @@
 ## 1.4.2-wip
 
+* Reduce iteration overhead for `CharacterRange.utf16CodeUnits`.
+
 * Clarify that `Characters` equality does not normalize Unicode strings.
 * Fix a `RangeError` when iterating backwards over a string or substring
   starting with an unpaired trailing surrogate.

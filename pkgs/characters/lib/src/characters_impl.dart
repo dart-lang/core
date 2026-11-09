@@ -578,7 +578,6 @@ class StringCharacterRange implements CharacterRange {
 
   @override
   Iterable<int> get utf16CodeUnits {
-    // String.codeUnits materializes the entire source, even for a tiny range.
     // Capture the bounds so that subsequent range moves do not affect the
     // returned lazy iterable.
     final source = _string;
