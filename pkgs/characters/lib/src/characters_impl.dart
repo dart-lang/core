@@ -577,7 +577,18 @@ class StringCharacterRange implements CharacterRange {
   }
 
   @override
-  Iterable<int> get utf16CodeUnits => _string.codeUnits.getRange(_start, _end);
+  Iterable<int> get utf16CodeUnits {
+    // String.codeUnits materializes the entire source, even for a tiny range.
+    // Capture the bounds so that subsequent range moves do not affect the
+    // returned lazy iterable.
+    final source = _string;
+    final start = _start;
+    final length = _end - start;
+    return Iterable<int>.generate(
+      length,
+      (index) => source.codeUnitAt(start + index),
+    );
+  }
 
   @override
   Runes get runes => Runes(current);
