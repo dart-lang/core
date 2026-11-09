@@ -509,6 +509,17 @@ class StringCharacterRange implements CharacterRange {
       var index = _end;
       while (index < _string.length) {
         var char = _string.codeUnitAt(index);
+        // Fast path for the common Other -> Other transition. This also
+        // covers plain (unvowelled) Hebrew without allocating substrings.
+        if ((state & maskState) == stateOther && isCommonOtherCodeUnit(char)) {
+          state = stateOther | flagBreak;
+          if (--count == 0) {
+            _move(newStart, index);
+            return true;
+          }
+          index++;
+          continue;
+        }
         var surrogate = char ^ 0xD800;
         var category = categoryControl;
         var nextIndex = index + 1;
