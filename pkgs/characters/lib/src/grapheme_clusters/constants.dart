@@ -29,6 +29,18 @@ const int categoryEoT = 18; // End of Text (synthetic input)
 const int categoryCount = categoryEoT + 1;
 const int inputCategoryCount = categoryEoT;
 
+/// Common UTF-16 code units whose grapheme break property is always Other.
+///
+/// Printable ASCII and Hebrew letters are frequent in plain text. They do
+/// not need a category table lookup when the automaton is already in Other.
+/// Combining marks, controls, and surrogate code units are excluded.
+@pragma('dart2js:prefer-inline')
+@pragma('vm:prefer-inline')
+@pragma('wasm:prefer-inline')
+bool isCommonOtherCodeUnit(int codeUnit) =>
+    (codeUnit >= 0x20 && codeUnit <= 0x7E) ||
+    (codeUnit >= 0x05D0 && codeUnit <= 0x05EA);
+
 // Automaton states for forwards automaton.
 
 /// Bit flag or'ed to the automaton output if there should not be a break
