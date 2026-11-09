@@ -12,7 +12,11 @@ void main() {
   test('every fast-path code unit matches the generated automata', () {
     for (final (start, end) in [(0x20, 0x7E), (0x05D0, 0x05EA)]) {
       for (var codeUnit = start; codeUnit <= end; codeUnit++) {
-        expect(low(codeUnit), categoryOther, reason: 'U+${codeUnit.toRadixString(16)}');
+        expect(
+          low(codeUnit),
+          categoryOther,
+          reason: 'U+${codeUnit.toRadixString(16)}',
+        );
         expect(
           move(stateOther, low(codeUnit)),
           stateOther | flagBreak,
