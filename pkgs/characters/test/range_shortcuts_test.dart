@@ -6,6 +6,18 @@ import 'package:characters/characters.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('range shortcuts preserve argument validation even on empty input', () {
+    for (final source in ['', 'א\u05B7ב\u{1F600}ג']) {
+      final characters = Characters(source);
+      expect(() => characters.skip(-1), throwsRangeError);
+      expect(() => characters.take(-1), throwsRangeError);
+      expect(() => characters.skipLast(-1), throwsRangeError);
+      expect(() => characters.takeLast(-1), throwsRangeError);
+      expect(() => characters.getRange(-1, 1000000), throwsRangeError);
+      expect(() => characters.getRange(1000000, 999999), throwsRangeError);
+    }
+  });
+
   test('UTF-16 bounds safely short-circuit oversized grapheme counts', () {
     for (final source in <String>[
       '',
