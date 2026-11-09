@@ -323,7 +323,13 @@ final class Context {
     var isAbsoluteAndNotRootRelative = false;
 
     for (var part in parts.where((part) => part != '')) {
-      if (isRootRelative(part) && isAbsoluteAndNotRootRelative) {
+      if (isRootRelative(part) && _isWindowsDriveOnly(buffer.toString())) {
+        // `HOMEDRIVE` is `C:` and `HOMEPATH` is `\Users\name`. `C:` is not an
+        // absolute root, so a following root-relative part would otherwise
+        // discard the drive.
+        buffer.write(part);
+        isAbsoluteAndNotRootRelative = true;
+      } else if (isRootRelative(part) && isAbsoluteAndNotRootRelative) {
         // If the new part is root-relative, it preserves the previous root but
         // replaces the path after it.
         final parsed = _parse(part);
@@ -358,6 +364,15 @@ final class Context {
     }
 
     return buffer.toString();
+  }
+
+  /// A Windows path that is only a drive letter, such as `C:`.
+  bool _isWindowsDriveOnly(String path) {
+    if (style.name != 'windows' || path.length != 2) return false;
+    final letter = path.codeUnitAt(0);
+    final isLetter = (letter >= chars.upperA && letter <= chars.upperZ) ||
+        (letter >= chars.lowerA && letter <= chars.lowerZ);
+    return isLetter && path.codeUnitAt(1) == chars.colon;
   }
 
   /// Splits [path] into its components using the current platform's
