@@ -38,25 +38,20 @@ void main() {
     final forwardBreaks = Breaks(text, 0, text.length, stateSoTNoBreak);
     final forward = <String>[];
     var start = 0;
-    for (var end = forwardBreaks.nextBreak();
-        end >= 0;
-        end = forwardBreaks.nextBreak()) {
+    while (true) {
+      final end = forwardBreaks.nextBreak();
+      if (end < 0) break;
       forward.add(text.substring(start, end));
       start = end;
     }
     expect(forward, expected);
 
-    final backwardBreaks = BackBreaks(
-      text,
-      text.length,
-      0,
-      stateEoTNoBreak,
-    );
+    final backwardBreaks = BackBreaks(text, text.length, 0, stateEoTNoBreak);
     final backward = <String>[];
     var end = text.length;
-    for (var start = backwardBreaks.nextBreak();
-        start >= 0;
-        start = backwardBreaks.nextBreak()) {
+    while (true) {
+      final start = backwardBreaks.nextBreak();
+      if (start < 0) break;
       backward.add(text.substring(start, end));
       end = start;
     }
