@@ -1,5 +1,7 @@
 ## 1.9.2-wip
 
+- `isWithin` treats a parent that ends in `/.` as that directory, so
+  `isWithin('/dir/.', '/dir/.file')` is true.
 - Make `Url` style better at recognizing schemes and authorities.
   Only consider a path as being a schemed URL if it starts with a
   valid scheme.
