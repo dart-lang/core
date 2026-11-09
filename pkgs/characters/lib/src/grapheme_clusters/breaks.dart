@@ -76,6 +76,11 @@ class Breaks {
   void step() {
     assert(cursor < end);
     var char = base.codeUnitAt(cursor++);
+    // Other -> Other always breaks; avoid two table lookups on plain text.
+    if ((state & maskState) == stateOther && isCommonOtherCodeUnit(char)) {
+      state = stateOther | flagBreak;
+      return;
+    }
     var surrogate = char ^ 0xD800;
     if (surrogate > 0x3FF) {
       state = move(state, low(char));
@@ -212,6 +217,10 @@ class BackBreaks {
   void step() {
     assert(cursor > start);
     var char = base.codeUnitAt(--cursor);
+    if ((state & maskState) == stateOther && isCommonOtherCodeUnit(char)) {
+      state = stateOther | flagBreak;
+      return;
+    }
     var surrogate = char ^ 0xDC00;
     if (surrogate > 0x3FF) {
       var category = low(char);
