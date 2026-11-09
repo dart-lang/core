@@ -5,9 +5,28 @@
 import 'package:characters/characters.dart';
 import 'package:characters/src/grapheme_clusters/breaks.dart';
 import 'package:characters/src/grapheme_clusters/constants.dart';
+import 'package:characters/src/grapheme_clusters/table.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('every fast-path code unit matches the generated automata', () {
+    for (final (start, end) in [(0x20, 0x7E), (0x05D0, 0x05EA)]) {
+      for (var codeUnit = start; codeUnit <= end; codeUnit++) {
+        expect(low(codeUnit), categoryOther, reason: 'U+${codeUnit.toRadixString(16)}');
+        expect(
+          move(stateOther, low(codeUnit)),
+          stateOther | flagBreak,
+          reason: 'forward U+${codeUnit.toRadixString(16)}',
+        );
+        expect(
+          moveBack(stateOther, low(codeUnit)),
+          stateOther | flagBreak,
+          reason: 'backward U+${codeUnit.toRadixString(16)}',
+        );
+      }
+    }
+  });
+
   test('plain Hebrew and ASCII keep Unicode cluster boundaries', () {
     const text = 'שלום, אב\u05B0ג\r\nHello\u{1F600}!';
     const expected = <String>[
