@@ -260,16 +260,22 @@ final class StringCharacters extends Iterable<String> implements Characters {
 
   @override
   Characters characterAt(int position) {
+    RangeError.checkNotNegative(position, 'position');
+    final requestedPosition = position;
     var breaks = Breaks(string, 0, string.length, stateSoTNoBreak);
     var start = 0;
 
     while (position > 0) {
       position--;
       start = breaks.nextBreak();
-      if (start < 0) throw StateError('No element');
+      if (start < 0) {
+        throw RangeError.index(requestedPosition, this, 'position');
+      }
     }
     var end = breaks.nextBreak();
-    if (end < 0) throw StateError('No element');
+    if (end < 0) {
+      throw RangeError.index(requestedPosition, this, 'position');
+    }
     if (start == 0 && end == string.length) return this;
     return StringCharacters(string.substring(start, end));
   }
