@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Speed up `CombinedListView` lookups and boundary access by visiting child lists directly instead of rescanning their lengths.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
