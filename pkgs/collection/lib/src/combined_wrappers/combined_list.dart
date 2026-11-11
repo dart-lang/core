@@ -32,70 +32,21 @@ class CombinedListView<T> extends ListBase<T>
       CombinedIterator<T>(_lists.map((i) => i.iterator).iterator);
 
   @override
-  bool get isEmpty => _lists.every((list) => list.isEmpty);
-
-  @override
-  bool get isNotEmpty => _lists.any((list) => list.isNotEmpty);
-
-  @override
-  T get first {
-    for (var list in _lists) {
-      if (list.isNotEmpty) return list.first;
-    }
-    throw StateError('No element');
-  }
-
-  @override
-  T get last {
-    for (var i = _lists.length - 1; i >= 0; i--) {
-      var list = _lists[i];
-      if (list.isNotEmpty) return list.last;
-    }
-    throw StateError('No element');
-  }
-
-  // Avoid rescanning all preceding child lists for every element.
-  @override
   int indexOf(Object? element, [int start = 0]) {
+    // ListBase also accepts probes outside T, such as a double for List<int>.
+    if (element is! T) return super.indexOf(element, start);
     if (start < 0) start = 0;
     var offset = 0;
     for (var list in _lists) {
-      var listLength = list.length;
-      for (var i = start > offset ? start - offset : 0; i < listLength; i++) {
-        if (list[i] == element) return offset + i;
+      var length = list.length;
+      if (length > start) {
+        var index = list.indexOf(element, start);
+        if (index >= 0) return offset + index;
+        start = 0;
+      } else {
+        start -= length;
       }
-      offset += listLength;
-    }
-    return -1;
-  }
-
-  @override
-  int lastIndexOf(Object? element, [int? start]) {
-    var childIndex = _lists.length - 1;
-    var offset = 0;
-    if (start == null) {
-      offset = length;
-    } else {
-      if (start < 0) return -1;
-      for (var i = 0; i <= childIndex; i++) {
-        offset += _lists[i].length;
-        if (offset > start) {
-          childIndex = i;
-          break;
-        }
-      }
-    }
-    if (offset == 0) return -1;
-    var limit = start ?? offset - 1;
-    for (; childIndex >= 0; childIndex--) {
-      var list = _lists[childIndex];
-      var listLength = list.length;
-      offset -= listLength;
-      var localStart = limit - offset;
-      if (localStart >= listLength) localStart = listLength - 1;
-      for (var j = localStart; j >= 0; j--) {
-        if (list[j] == element) return offset + j;
-      }
+      offset += length;
     }
     return -1;
   }
