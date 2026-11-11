@@ -8,6 +8,26 @@ import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('the first map wins when its value is null', () {
+    final view = CombinedMapView<String, int?>([
+      {'key': null},
+      {'key': 42},
+    ]);
+
+    expect(view.containsKey('key'), isTrue);
+    expect(view['key'], isNull);
+  });
+
+  test('a null key does not shadow keys in later maps', () {
+    final view = CombinedMapView<String?, int?>([
+      {null: null},
+      {'key': 42},
+    ]);
+
+    expect(view['key'], 42);
+    expect(view[null], isNull);
+  });
+
   var map1 = const {1: 1, 2: 2, 3: 3};
   var map2 = const {4: 4, 5: 5, 6: 6};
   var map3 = const {7: 7, 8: 8, 9: 9};
