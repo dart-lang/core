@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Detect resized backing lists in `ListSlice.reverseRange`, consistent with other slice mutations.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using

@@ -665,6 +665,9 @@ class ListSlice<E> extends ListBase<E> {
 
   /// Reverses a range of elements.
   void reverseRange(int start, int end) {
+    if (source.length != _initialSize) {
+      throw ConcurrentModificationError(source);
+    }
     RangeError.checkValidRange(start, end, length);
     source.reverseRange(this.start + start, this.start + end);
   }
