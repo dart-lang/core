@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Fix `Iterable.separated().take()` to avoid yielding excess separators.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
