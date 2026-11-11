@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Keep `QueueList.cast` views consistent when the backing queue grows.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
