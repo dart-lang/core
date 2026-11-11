@@ -99,11 +99,11 @@ class CanonicalizedMap<C, K, V> implements Map<K, V> {
   }
 
   @override
-  void addEntries(Iterable<MapEntry<K, V>> entries) => _base.addEntries(
-        entries.map(
-          (e) => MapEntry(_canonicalize(e.key), MapEntry(e.key, e.value)),
-        ),
-      );
+  void addEntries(Iterable<MapEntry<K, V>> entries) {
+    for (var entry in entries) {
+      this[entry.key] = entry.value;
+    }
+  }
 
   @override
   Map<K2, V2> cast<K2, V2>() => _base.cast<K2, V2>();
