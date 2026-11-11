@@ -32,6 +32,26 @@ class CombinedListView<T> extends ListBase<T>
       CombinedIterator<T>(_lists.map((i) => i.iterator).iterator);
 
   @override
+  int indexOf(Object? element, [int start = 0]) {
+    // ListBase also accepts probes outside T, such as a double for List<int>.
+    if (element is! T) return super.indexOf(element, start);
+    if (start < 0) start = 0;
+    var offset = 0;
+    for (var list in _lists) {
+      var length = list.length;
+      if (length > start) {
+        var index = list.indexOf(element, start);
+        if (index >= 0) return offset + index;
+        start = 0;
+      } else {
+        start -= length;
+      }
+      offset += length;
+    }
+    return -1;
+  }
+
+  @override
   set length(int length) {
     _throw();
   }

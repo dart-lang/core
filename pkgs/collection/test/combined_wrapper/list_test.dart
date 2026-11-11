@@ -8,6 +8,28 @@ import 'package:test/test.dart';
 import '../unmodifiable_collection_test.dart' as common;
 
 void main() {
+  test('indexOf matches a flat list across child boundaries', () {
+    final lists = <List<int>>[
+      [],
+      [1, 2, 1],
+      [],
+      [3, 2, 4, 2],
+      [],
+      [5],
+      [],
+    ];
+    final combined = CombinedListView<int>(lists);
+    final flat = lists.expand((list) => list).toList();
+    for (final value in [1, 2, 4, 5, 8]) {
+      for (final start in [-3, 0, 1, 3, 6, 7, 100]) {
+        expect(combined.indexOf(value, start), flat.indexOf(value, start));
+      }
+    }
+    lists[1].add(4);
+    expect(combined.indexOf(3), 4);
+    expect(combined.indexOf(2.0, 3), 5);
+  });
+
   var list1 = [1, 2, 3];
   var list2 = [4, 5, 6];
   var list3 = [7, 8, 9];
