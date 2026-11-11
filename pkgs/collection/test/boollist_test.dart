@@ -8,6 +8,35 @@ import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('empty fill ranges are no-ops for empty BoolLists', () {
+    final fixed = BoolList(0);
+    final growable = BoolList.empty();
+
+    fixed.fillRange(0, 0, true);
+    growable.fillRange(0, 0, true);
+
+    expect(fixed, isEmpty);
+    expect(growable, isEmpty);
+  });
+
+  test('empty fill at a word boundary preserves neighboring bits', () {
+    final bits = BoolList(96, fill: true);
+
+    bits.fillRange(32, 32, false);
+    bits.fillRange(64, 64, false);
+    bits.fillRange(96, 96, true);
+
+    expect(bits, List<bool>.filled(96, true));
+  });
+
+  test('empty fill at zero never modifies the first word', () {
+    final bits = BoolList(64);
+
+    bits.fillRange(0, 0, true);
+
+    expect(bits, List<bool>.filled(64, false));
+  });
+
   bool generator(int index) {
     if (index < 512) {
       return index.isEven;
