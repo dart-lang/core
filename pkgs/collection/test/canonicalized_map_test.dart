@@ -147,9 +147,10 @@ void main() {
       expect(entries[1].value, 'value 2');
     });
 
-    test('addEntries adds key-value pairs to the map', () {
+    test('addEntries canonicalizes and validates keys', () {
       map.addEntries([
         const MapEntry('1', 'value 1'),
+        const MapEntry('invalid', 'ignored'),
         const MapEntry('01', 'value 01'),
         const MapEntry('2', 'value 2'),
       ]);
@@ -230,6 +231,16 @@ void main() {
       expect(map['01'], equals('value 1'));
       expect(map['02'], equals('value 2'));
       expect(map['03'], equals('value 3'));
+    });
+
+    test('ignores invalid keys before canonicalizing', () {
+      var map = CanonicalizedMap.fromEntries(
+        {'invalid': 'ignored', '1': 'value 1'}.entries,
+        int.parse,
+        isValidKey: RegExp(r'^\d+$').hasMatch,
+      );
+
+      expect(map, {'1': 'value 1'});
     });
 
     test('uses the final value for collisions', () {
