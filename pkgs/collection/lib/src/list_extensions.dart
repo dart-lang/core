@@ -607,7 +607,7 @@ class ListSlice<E> extends ListBase<E> {
       throw ConcurrentModificationError(source);
     }
     RangeError.checkValidRange(start, end, length);
-    source.setRange(start + start, start + end, iterable, skipCount);
+    source.setRange(this.start + start, this.start + end, iterable, skipCount);
   }
 
   /// A fixed length view of a range of this list.
@@ -649,7 +649,8 @@ class ListSlice<E> extends ListBase<E> {
     if (source.length != _initialSize) {
       throw ConcurrentModificationError(source);
     }
-    source.sortRange(start, end, compare);
+    RangeError.checkValidRange(start, end, length);
+    source.sortRange(this.start + start, this.start + end, compare);
   }
 
   /// Shuffles a range of elements.
