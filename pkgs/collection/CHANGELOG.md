@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Avoid repeated list-length lookups in list equality and hashing.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
