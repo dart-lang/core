@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Optimize `BoolList` shrinking by clearing previously used words in bulk.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
