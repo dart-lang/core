@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Avoid a second traversal of lazy or single-use inputs in `BoolList.of`, while preserving compact fixed-length storage.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
