@@ -70,7 +70,9 @@ class UnionSet<E> extends SetBase<E> with UnmodifiableSetMixin<E> {
   E? lookup(Object? element) {
     for (var set in _sets) {
       var result = set.lookup(element);
-      if (result != null || set.contains(null)) return result;
+      if (result != null || (element == null && set.contains(null))) {
+        return result;
+      }
     }
     return null;
   }
