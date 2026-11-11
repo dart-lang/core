@@ -135,6 +135,7 @@ abstract interface class BoolList with ListMixin<bool> {
   @override
   void fillRange(int start, int end, [bool? fill]) {
     RangeError.checkValidRange(start, end, _length);
+    if (start == end) return;
     fill ??= false;
 
     var startWord = start >> _entryShift;
