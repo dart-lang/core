@@ -10,7 +10,7 @@ import 'utilities.dart' as u;
 
 /// An immutable 32-bit signed integer, in the range `[-2^31, 2^31 - 1]`.
 /// Arithmetic operations may overflow in order to maintain this range.
-class Int32 implements IntX {
+final class Int32 implements IntX {
   /// The maximum positive value attainable by an [Int32], namely
   /// 2147483647.
   static const Int32 MAX_VALUE = Int32._internal(0x7FFFFFFF);
