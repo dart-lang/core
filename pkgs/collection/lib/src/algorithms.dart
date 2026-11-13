@@ -128,9 +128,10 @@ int lowerBoundBy<E, K>(
 ///
 /// If [random] is omitted, it defaults to a new instance of [Random].
 void shuffle(List elements, [int start = 0, int? end, Random? random]) {
-  random ??= Random();
-  end ??= elements.length;
+  end = RangeError.checkValidRange(start, end, elements.length);
   var length = end - start;
+  if (length < 2) return;
+  random ??= Random();
   while (length > 1) {
     var pos = random.nextInt(length);
     length--;
@@ -178,8 +179,8 @@ void insertionSort<E>(
 }) {
   // If the same method could have both positional and named optional
   // parameters, this should be (list, [start, end], {compare}).
+  end = RangeError.checkValidRange(start, end, elements.length);
   compare ??= defaultCompare;
-  end ??= elements.length;
 
   for (var pos = start + 1; pos < end; pos++) {
     var min = start;
