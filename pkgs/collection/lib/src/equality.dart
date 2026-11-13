@@ -187,7 +187,8 @@ class ListEquality<E> implements Equality<List<E>> {
     // This code is almost identical to the one in IterableEquality, except
     // that it uses indexing instead of iterating to get the elements.
     var hash = 0;
-    for (var i = 0; i < list.length; i++) {
+    var length = list.length;
+    for (var i = 0; i < length; i++) {
       var c = _elementEquality.hash(list[i]);
       hash = (hash + c) & _hashMask;
       hash = (hash + (hash << 10)) & _hashMask;
