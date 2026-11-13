@@ -9,7 +9,7 @@ import 'package:meta/meta.dart';
 import 'os_kind.dart';
 import 'osid_unknown.dart'
     if (dart.library.io) 'osid_io.dart'
-    if (dart.library.html) 'osid_html.dart';
+    if (dart.library.js_interop) 'osid_html.dart';
 
 /// The name and version of an operating system.
 final class OperatingSystem {
