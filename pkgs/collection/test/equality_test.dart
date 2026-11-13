@@ -10,6 +10,37 @@ import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('MapEquality.hash preserves hash for nullable and nested values', () {
+    final data = <String, List<int>?>{
+      'one': [1, 2, 3],
+      'none': null,
+    };
+    final copied = Map<String, List<int>?>.from(data);
+    const equality = MapEquality<String, Object?>(
+      values: DeepCollectionEquality(),
+    );
+
+    expect(equality.equals(data, copied), isTrue);
+    expect(equality.hash(data), equality.hash(copied));
+  });
+
+  test('MapEquality.equals supports two empty maps', () {
+    const equality = MapEquality<String, int>();
+
+    expect(equality.equals(<String, int>{}, <String, int>{}), isTrue);
+  });
+
+  test('MapEquality.hash reflects edits to a wrapped map', () {
+    final map = _WrappedMap<String, int?>({'a': 1, 'b': 2});
+    const equality = MapEquality<String, int?>();
+
+    expect(equality.hash(map), equality.hash({'a': 1, 'b': 2}));
+    map['a'] = null;
+    map.remove('b');
+    map['c'] = 3;
+    expect(equality.hash(map), equality.hash({'a': null, 'c': 3}));
+  });
+
   Element o(Comparable id) => Element(id);
 
   // Lists that are point-wise equal, but not identical.
@@ -196,13 +227,13 @@ void main() {
     expect(equality.equals('fOo', 'FoO'), isTrue);
     expect(equality.equals('FoO', 'fOo'), isTrue);
     expect(equality.equals('foo', 'bar'), isFalse);
-    expect(equality.equals('fÕÕ', 'fõõ'), isFalse);
+    expect(equality.equals('fֳ•ֳ•', 'fֳµֳµ'), isFalse);
 
     expect(equality.hash('foo'), equals(equality.hash('foo')));
     expect(equality.hash('fOo'), equals(equality.hash('FoO')));
     expect(equality.hash('FoO'), equals(equality.hash('fOo')));
     expect(equality.hash('foo'), isNot(equals(equality.hash('bar'))));
-    expect(equality.hash('fÕÕ'), isNot(equals(equality.hash('fõõ'))));
+    expect(equality.hash('fֳ•ֳ•'), isNot(equals(equality.hash('fֳµֳµ'))));
   });
 
   group('EqualityBy should use a derived value for ', () {
@@ -223,7 +254,7 @@ void main() {
 
     test('equality with an inner equality', () {
       expect(firstInsensitiveEquality.equals(['fOo'], ['FoO']), isTrue);
-      expect(firstInsensitiveEquality.equals(['foo'], ['ffõõ']), isFalse);
+      expect(firstInsensitiveEquality.equals(['foo'], ['ffֳµֳµ']), isFalse);
     });
 
     test('hash', () {
@@ -289,4 +320,25 @@ class Element implements Comparable<Element> {
   bool operator ==(Object other) => other is Element && id == other.id;
   @override
   int compareTo(Element other) => id.compareTo(other.id);
+}
+
+class _WrappedMap<K, V> extends MapBase<K, V> {
+  final Map<K, V> _backing;
+
+  _WrappedMap(this._backing);
+
+  @override
+  V? operator [](Object? key) => _backing[key];
+
+  @override
+  void operator []=(K key, V value) => _backing[key] = value;
+
+  @override
+  void clear() => _backing.clear();
+
+  @override
+  Iterable<K> get keys => _backing.keys;
+
+  @override
+  V? remove(Object? key) => _backing.remove(key);
 }
