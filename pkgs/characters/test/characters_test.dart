@@ -74,6 +74,14 @@ void main([List<String>? args]) {
 
     testParts(gc('a'), gc('b'), gc('c'), gc('d'), gc('e'));
 
+    testParts(
+      gc('a\u0301'),
+      gc('\u05d0\u05b7'),
+      gc('\u0628\u064e'),
+      gc('\u0915\u093f'),
+      gc('\u1100\u1161\u11a8'),
+    );
+
     // Composite pictogram example, from https://en.wikipedia.org/wiki/Zero-width_joiner.
     var flag = '\u{1f3f3}'; // U+1F3F3, Flag, waving. Category Pictogram.
     var white = '\ufe0f'; // U+FE0F, Variant selector 16. Category Extend.
@@ -281,6 +289,24 @@ void expectGC(Characters actual, List<String> expected) {
   expect(actual.skip(1).toString(), expected.skip(1).join());
   expect(actual.take(1).toString(), expected.take(1).join());
   expect(actual.getRange(1, 2).toString(), expected.take(2).skip(1).join());
+  expect(actual.skip(0).string, text);
+  expect(actual.skipLast(0).string, text);
+  expect(actual.take(0), isEmpty);
+  expect(actual.takeLast(0), isEmpty);
+  for (var count in [text.length, 1000000]) {
+    expect(actual.take(count).string, text);
+    expect(actual.takeLast(count).string, text);
+    expect(actual.skip(count), isEmpty);
+    expect(actual.skipLast(count), isEmpty);
+    expect(actual.getRange(0, count).string, text);
+    expect(actual.getRange(1, count + 1).string, expected.skip(1).join());
+  }
+  expect(() => actual.skip(-1), throwsRangeError);
+  expect(() => actual.take(-1), throwsRangeError);
+  expect(() => actual.skipLast(-1), throwsRangeError);
+  expect(() => actual.takeLast(-1), throwsRangeError);
+  expect(() => actual.getRange(-1, 1000000), throwsRangeError);
+  expect(() => actual.getRange(1000000, 999999), throwsRangeError);
 
   if (expected.isNotEmpty) {
     expect(
