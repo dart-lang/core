@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Keep zipped iterators terminal after the shortest input ends, avoiding accidental extra reads.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
