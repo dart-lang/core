@@ -145,3 +145,13 @@ class ArgResults {
     return _parsed.containsKey(name);
   }
 }
+
+/// Returns the [ArgParser] that produced [results], or `null` if [results] is
+/// a custom test double (`Fake` or `Mock`) implementing [ArgResults].
+ArgParser? parserOf(ArgResults results) {
+  try {
+    return results._parser;
+  } on Object {
+    return null;
+  }
+}
