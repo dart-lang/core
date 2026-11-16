@@ -1,0 +1,14 @@
+name: Examples
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  examples:
+    uses: google/dart-neats/.github/workflows/validate-examples.yml@e304f7e0ebd0531e832136b2300aded8a14584ba

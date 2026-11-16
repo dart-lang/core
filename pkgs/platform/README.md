@@ -10,7 +10,7 @@ On a native platform, the `NativePlatform` class in this package provides a
 lightweight wrapper around the static `Platform` properties of `dart:io`,
 with the same rich, Dart-idiomatic API for querying the current runtime.
 
-```dart
+```dart @example test/readme_native.dart#native
 import 'package:platform/platform.dart';
 
 void main() {
@@ -30,7 +30,7 @@ Instead web code has a `Platform.current.browserPlatform` values that is
 a non-`null` `BrowserPlatform`.
 
 Example:
-```dart
+```dart @example test/readme_cross_platform.dart#cross-platform
 import 'package:platform/platform.dart';
 
 void main() {
@@ -42,7 +42,7 @@ void main() {
         '${nativePlatform.operatingSystemVersion}',
       );
     case Platform(:var browserPlatform?):
-      // `browserPlatform` has version information from `windows.userAgent`.
+      // `browserPlatform` has version information from `Navigator.userAgent`.
       print('Running on ${browserPlatform.userAgent}');
   }
 }

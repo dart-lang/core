@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// #region fixed-datetime-formatter
 import 'package:convert/convert.dart';
 
 void main() {
@@ -18,3 +19,4 @@ void main() {
   final dateTime = formatter.decode(encoded);
   print(dateTime); // 1996-04-25 05:03:22.000Z
 }
+// #endregion fixed-datetime-formatter

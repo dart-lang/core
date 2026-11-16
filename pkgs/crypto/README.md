@@ -24,18 +24,13 @@ To hash a list of bytes, invoke the [`convert`][convert] method on the
 [`sha1`][sha1-obj], [`sha256`][sha256-obj] or [`md5`][md5-obj]
 objects.
 
-```dart
-import 'package:crypto/crypto.dart';
-import 'dart:convert'; // for the utf8.encode method
+```dart @example example/readme_examples.dart#digest-single
+var bytes = utf8.encode('foobar'); // data being hashed
 
-void main() {
-  var bytes = utf8.encode("foobar"); // data being hashed
+var digest = sha1.convert(bytes);
 
-  var digest = sha1.convert(bytes);
-
-  print("Digest as bytes: ${digest.bytes}");
-  print("Digest as hex string: $digest");
-}
+print('Digest as bytes: ${digest.bytes}');
+print('Digest as hex string: $digest');
 ```
 
 ### Digest on chunked input
@@ -49,26 +44,19 @@ method for each chunk of input data, and invoke the `close` method
 when all the chunks have been added. The digest can then be retrieved
 from the `Sink<Digest>` used to create the input data sink.
 
-```dart
-import 'dart:convert';
+```dart @example example/readme_examples.dart#digest-chunked
+var firstChunk = utf8.encode('foo');
+var secondChunk = utf8.encode('bar');
 
-import 'package:convert/convert.dart';
-import 'package:crypto/crypto.dart';
+var output = AccumulatorSink<Digest>();
+var input = sha1.startChunkedConversion(output);
+input.add(firstChunk);
+input.add(secondChunk); // call `add` for every chunk of input data
+input.close();
+var digest = output.events.single;
 
-void main() {
-  var firstChunk = utf8.encode("foo");
-  var secondChunk = utf8.encode("bar");
-
-  var output = AccumulatorSink<Digest>();
-  var input = sha1.startChunkedConversion(output);
-  input.add(firstChunk);
-  input.add(secondChunk); // call `add` for every chunk of input data
-  input.close();
-  var digest = output.events.single;
-
-  print("Digest as bytes: ${digest.bytes}");
-  print("Digest as hex string: $digest");
-}
+print('Digest as bytes: ${digest.bytes}');
+print('Digest as hex string: $digest');
 ```
 
 The above example uses the `AccumulatorSink` class that comes with the
@@ -82,20 +70,15 @@ Create an instance of the [`Hmac`][Hmac] class with the hash function
 and secret key being used.  The object can then be used like the other
 hash calculating objects.
 
-```dart
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
+```dart @example example/readme_examples.dart#digest-hmac
+var key = utf8.encode('p@ssw0rd');
+var bytes = utf8.encode('foobar');
 
-void main() {
-  var key = utf8.encode('p@ssw0rd');
-  var bytes = utf8.encode("foobar");
+var hmacSha256 = Hmac(sha256, key); // HMAC-SHA256
+var digest = hmacSha256.convert(bytes);
 
-  var hmacSha256 = Hmac(sha256, key); // HMAC-SHA256
-  var digest = hmacSha256.convert(bytes);
-
-  print("HMAC digest as bytes: ${digest.bytes}");
-  print("HMAC digest as hex string: $digest");
-}
+print('HMAC digest as bytes: ${digest.bytes}');
+print('HMAC digest as hex string: $digest');
 ```
 
 ## Disclaimer
