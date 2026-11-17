@@ -13,7 +13,7 @@ versioning.
 The `hex` codec converts lists of bytes to and from hexadecimal strings,
 following [the Base16 spec](https://datatracker.ietf.org/doc/html/rfc4648#section-8).
 
-```dart
+```dart @example example/hex.dart#hex
 import 'package:convert/convert.dart';
 
 void main() {
@@ -35,8 +35,9 @@ The `percent` codec converts lists of bytes to and from percent-encoded (also
 known as URL-encoded) strings according to
 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986#section-2.1).
 
-```dart
+```dart @example example/percent.dart#percent
 import 'dart:convert';
+
 import 'package:convert/convert.dart';
 
 void main() {
@@ -57,10 +58,13 @@ void main() {
 `FixedDateTimeFormatter` formats and parses `DateTime` values using a simple,
 fixed-length pattern where each format character represents a single digit.
 
-```dart
+```dart @example example/fixed_datetime_formatter.dart#fixed-datetime-formatter
 import 'package:convert/convert.dart';
 
 void main() {
+  // Create a formatter with a specific pattern.
+  // The 'YYYY', 'MM', 'DD', 'hh', 'mm', 'ss' correspond to
+  // the year, month, day, hour, minute, and second.
   final formatter = FixedDateTimeFormatter('YYYYMMDDhhmmss');
 
   // Encode a DateTime into a string.

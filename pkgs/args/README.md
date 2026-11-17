@@ -11,24 +11,28 @@ server-side and client-side apps.
 
 First create an [ArgParser][]:
 
-    var parser = ArgParser();
+```dart @example example/readme_examples.dart#parser-init
+var parser = ArgParser();
+```
 
 Then define a set of options on that parser using [addOption()][addOption] and
 [addFlag()][addFlag]. Here's the minimal way to create an option named "name":
 
-    parser.addOption('name');
+```dart @example example/readme_examples.dart#parser-add-option
+parser.addOption('name');
+```
 
 When an option can only be set or unset (as opposed to taking a string value),
 use a flag:
 
-```dart
+```dart @example example/readme_examples.dart#parser-add-flag
 parser.addFlag('name');
 ```
 
 Flag options, by default, accept a 'no-' prefix to negate the option. You can
 disable the 'no-' prefix using the `negatable` parameter:
 
-```dart
+```dart @example example/readme_examples.dart#parser-add-flag-no-negatable
 parser.addFlag('name', negatable: false);
 ```
 
@@ -38,7 +42,7 @@ cases where the distinction matters, we'll use "non-flag option."
 Options can have an optional single-character abbreviation, specified with the
 `abbr` parameter:
 
-```dart
+```dart @example example/readme_examples.dart#parser-abbr
 parser.addOption('mode', abbr: 'm');
 parser.addFlag('verbose', abbr: 'v');
 ```
@@ -46,7 +50,7 @@ parser.addFlag('verbose', abbr: 'v');
 Options can also have a default value, specified with the `defaultsTo`
 parameter. The default value is used when arguments don't specify the option.
 
-```dart
+```dart @example example/readme_examples.dart#parser-defaultsTo
 parser.addOption('mode', defaultsTo: 'debug');
 parser.addFlag('verbose', defaultsTo: false);
 ```
@@ -59,7 +63,7 @@ allowed set of values. When you do, the parser throws an
 [`ArgParserException`][ArgParserException] if the value for an option is not in
 the allowed set. Here's an example of specifying allowed values:
 
-```dart
+```dart @example example/readme_examples.dart#parser-allowed
 parser.addOption('mode', allowed: ['debug', 'release']);
 ```
 
@@ -67,7 +71,7 @@ You can use the `callback` parameter to associate a function with an option.
 Later, when parsing occurs, the callback function is invoked with the value of
 the option:
 
-```dart
+```dart @example example/readme_examples.dart#parser-callbacks
 parser.addOption('mode', callback: (mode) => print('Got mode $mode'));
 parser.addFlag('verbose', callback: (verbose) {
   if (verbose) print('Verbose');
@@ -81,7 +85,7 @@ value, or `null` if no default value is set.
 If an option is `mandatory` but not provided, the results object throws an
 [`ArgumentError`][ArgumentError] on retrieval.
 
-```dart
+```dart @example example/readme_examples.dart#parser-mandatory
 parser.addOption('mode', mandatory: true);
 ```
 
@@ -90,22 +94,24 @@ parser.addOption('mode', mandatory: true);
 Once you have an [ArgParser][] set up with some options and flags, you use it by
 calling [ArgParser.parse()][parse] with a set of arguments:
 
-```dart
+```dart @example example/readme_examples.dart#parser-parse
 var results = parser.parse(['some', 'command', 'line', 'args']);
 ```
 
 These arguments usually come from the arguments to `main()`. For example:
 
-    main(List<String> args) {
-      // ...
-      var results = parser.parse(args);
-    }
+```dart @example example/readme_examples.dart#parser-main-args
+void main(List<String> args) {
+  // ...
+  var results = parser.parse(args);
+}
+```
 
 However, you can pass in any list of strings. The `parse()` method returns an
 instance of [ArgResults][], a map-like object that contains the values of the
 parsed options.
 
-```dart
+```dart @example example/readme_examples.dart#parser-results-example
 var parser = ArgParser();
 parser.addOption('mode');
 parser.addFlag('verbose', defaultsTo: true);
@@ -120,7 +126,7 @@ passed after positional parameters unless `--` is used to indicate that all
 further parameters will be positional. The positional arguments go into
 [ArgResults.rest][rest].
 
-```dart
+```dart @example example/readme_examples.dart#parser-rest
 print(results.rest); // ['something', 'else']
 ```
 
@@ -132,7 +138,7 @@ To stop parsing options as soon as a positional argument is found,
 To actually pass in options and flags on the command line, use GNU or POSIX
 style. Consider this option:
 
-```dart
+```dart @example example/readme_examples.dart#parser-spec-option
 parser.addOption('name', abbr: 'n');
 ```
 
@@ -147,7 +153,7 @@ You can specify its value on the command line using any of the following:
 
 Consider this flag:
 
-```dart
+```dart @example example/readme_examples.dart#parser-spec-flag
 parser.addFlag('name', abbr: 'n');
 ```
 
@@ -167,7 +173,7 @@ You can set it to false using the following:
 Multiple flag abbreviations can be collapsed into a single argument. Say you
 define these flags:
 
-```dart
+```dart @example example/readme_examples.dart#parser-multiple-abbr
 parser
   ..addFlag('verbose', abbr: 'v')
   ..addFlag('french', abbr: 'f')
@@ -183,7 +189,7 @@ You can set all three flags at once:
 By default, an option has only a single value, with later option values
 overriding earlier ones; for example:
 
-```dart
+```dart @example example/readme_examples.dart#parser-override
 var parser = ArgParser();
 parser.addOption('mode');
 var results = parser.parse(['--mode', 'on', '--mode', 'off']);
@@ -194,7 +200,7 @@ Multiple values can be parsed with `addMultiOption()`. With this method, an
 option can occur multiple times, and the `parse()` method returns a list of
 values:
 
-```dart
+```dart @example example/readme_examples.dart#parser-multi-option
 var parser = ArgParser();
 parser.addMultiOption('mode');
 var results = parser.parse(['--mode', 'on', '--mode', 'off']);
@@ -203,7 +209,7 @@ print(results.multiOption('mode')); // prints '[on, off]'
 
 By default, values for a multi-valued option may also be separated with commas:
 
-```dart
+```dart @example example/readme_examples.dart#parser-multi-option-commas
 var parser = ArgParser();
 parser.addMultiOption('mode');
 var results = parser.parse(['--mode', 'on,off']);
@@ -226,7 +232,7 @@ The executable is `git`, the command is `commit`, and the `-a` option is an
 option passed to the command. You can add a command using the [addCommand][]
 method:
 
-```dart
+```dart @example example/readme_examples.dart#parser-command-init
 var parser = ArgParser();
 var command = parser.addCommand('commit');
 ```
@@ -235,7 +241,7 @@ It returns another [ArgParser][], which you can then use to define options
 specific to that command. If you already have an [ArgParser][] for the command's
 options, you can pass it in:
 
-```dart
+```dart @example example/readme_examples.dart#parser-command-add
 var parser = ArgParser();
 var command = ArgParser();
 parser.addCommand('commit', command);
@@ -243,7 +249,7 @@ parser.addCommand('commit', command);
 
 The [ArgParser][] for a command can then define options or flags:
 
-```dart
+```dart @example example/readme_examples.dart#parser-command-flag
 command.addFlag('all', abbr: 'a');
 ```
 
@@ -251,24 +257,24 @@ You can add multiple commands to the same parser so that a user can select one
 from a range of possible commands. When parsing an argument list, you can then
 determine which command was entered and what options were provided for it.
 
-```dart
+```dart @example example/readme_examples.dart#parser-command-results
 var results = parser.parse(['commit', '-a']);
-print(results.command.name);   // "commit"
-print(results.command['all']); // true
+print(results.command?.name); // "commit"
+print(results.command?['all']); // true
 ```
 
 Options for a command must appear after the command in the argument list. For
 example, given the above parser, `"git -a commit"` is *not* valid. The parser
 tries to find the right-most command that accepts an option. For example:
 
-```dart
+```dart @example example/readme_examples.dart#parser-command-ambiguity
 var parser = ArgParser();
 parser.addFlag('all', abbr: 'a');
 var command = parser.addCommand('commit');
 command.addFlag('all', abbr: 'a');
 
 var results = parser.parse(['commit', '-a']);
-print(results.command['all']); // true
+print(results.command?['all']); // true
 ```
 
 Here, both the top-level parser and the `"commit"` command can accept a `"-a"`
@@ -294,9 +300,10 @@ e.g.
 
 File `dgit.dart`
 
-```dart
+```dart @example example/readme_examples.dart#runner-main
 void main(List<String> args) {
-  var runner = CommandRunner("dgit", "A dart implementation of distributed version control.")
+  var runner = CommandRunner<void>(
+      'dgit', 'A dart implementation of distributed version control.')
     ..addCommand(CommitCommand())
     ..addCommand(StashCommand())
     ..run(args);
@@ -309,12 +316,14 @@ If the [CommandRunner][] finds a matching command then the [CommandRunner][] cal
 
 Commands are defined by extending the [Command][] class. For example:
 
-```dart
-class CommitCommand extends Command {
+```dart @example example/readme_examples.dart#runner-command
+class CommitCommand extends Command<void> {
   // The [name] and [description] properties must be defined by every
   // subclass.
-  final name = "commit";
-  final description = "Record changes to the repository.";
+  @override
+  final name = 'commit';
+  @override
+  final description = 'Record changes to the repository.';
 
   CommitCommand() {
     // we can add command specific arguments here.
@@ -323,10 +332,11 @@ class CommitCommand extends Command {
   }
 
   // [run] may also return a Future.
+  @override
   void run() {
     // [argResults] is set before [run()] is called and contains the flags/options
     // passed to this command.
-    print(argResults.flag('all'));
+    print(argResults?.flag('all'));
   }
 }
 ```
@@ -339,8 +349,9 @@ Add argments directly to the [CommandRunner] to specify global arguments:
 
 Adding global arguments
 
-```dart
-var runner = CommandRunner('dgit',  "A dart implementation of distributed version control.");
+```dart @example example/readme_examples.dart#runner-global-args
+var runner = CommandRunner<void>(
+    'dgit', 'A dart implementation of distributed version control.');
 // add global flag
 runner.argParser.addFlag('verbose', abbr: 'v', help: 'increase logging');
 ```
@@ -348,12 +359,12 @@ runner.argParser.addFlag('verbose', abbr: 'v', help: 'increase logging');
 #### Command specific Arguments
 Add arguments to each [Command][] to specify [Command][] specific arguments.
 
-```dart
-  CommitCommand() {
-    // we can add command specific arguments here.
-    // [argParser] is automatically created by the parent class.
-    argParser.addFlag('all', abbr: 'a');
-  }
+```dart @example example/readme_examples.dart#runner-command-args
+CommitCommand() {
+  // we can add command specific arguments here.
+  // [argParser] is automatically created by the parent class.
+  argParser.addFlag('all', abbr: 'a');
+}
 ```
 
 ### SubCommands
@@ -362,10 +373,12 @@ Commands can also have subcommands, which are added with [addSubcommand][]. A
 command with subcommands can't run its own code, so [run][] doesn't need to be
 implemented. For example:
 
-```dart
-class StashCommand extends Command {
-  final String name = "stash";
-  final String description = "Stash changes in the working directory.";
+```dart @example example/readme_examples.dart#runner-subcommand
+class StashCommand extends Command<void> {
+  @override
+  final String name = 'stash';
+  @override
+  final String description = 'Stash changes in the working directory.';
 
   StashCommand() {
     addSubcommand(StashSaveCommand());
@@ -382,8 +395,8 @@ commands. If it encounters an error parsing the arguments or processing a
 command, it throws a [UsageException][]; your `main()` method should catch these and
 print them appropriately. For example:
 
-```dart
-runner.run(arguments).catchError((error) {
+```dart @example example/readme_examples.dart#runner-run-catch
+runner.run(args).catchError((Object error) {
   if (error is! UsageException) throw error;
   print(error);
   exit(64); // Exit code 64 indicates a usage error.
@@ -398,33 +411,33 @@ when you create your options.
 
 To define help text for an entire option, use the `help:` parameter:
 
-```dart
-parser.addOption('mode', help: 'The compiler configuration',
-    allowed: ['debug', 'release']);
+```dart @example example/readme_examples.dart#parser-usage-example
+parser.addOption('mode',
+    help: 'The compiler configuration', allowed: ['debug', 'release']);
 parser.addFlag('verbose', help: 'Show additional diagnostic info');
 ```
 
 For non-flag options, you can also provide a help string for the parameter:
 
-```dart
-parser.addOption('out', help: 'The output path', valueHelp: 'path',
+```dart @example example/readme_examples.dart#parser-usage-out
+parser.addOption('out',
+    help: 'The output path',
+    valueHelp: 'path',
     allowed: ['debug', 'release']);
 ```
 
 For non-flag options, you can also provide detailed help for each expected value
 by using the `allowedHelp:` parameter:
 
-```dart
-parser.addOption('arch', help: 'The architecture to compile for',
-    allowedHelp: {
-      'ia32': 'Intel x86',
-      'arm': 'ARM Holding 32-bit chip'
-    });
+```dart @example example/readme_examples.dart#parser-usage-arch
+parser.addOption('arch',
+    help: 'The architecture to compile for',
+    allowedHelp: {'ia32': 'Intel x86', 'arm': 'ARM Holding 32-bit chip'});
 ```
 
 To display the help, use the [usage][usage] getter:
 
-```dart
+```dart @example example/readme_examples.dart#parser-usage-print
 print(parser.usage);
 ```
 

@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// #region hex
 import 'package:convert/convert.dart';
 
 void main() {
@@ -15,3 +16,4 @@ void main() {
   final decoded = hex.decode(encoded);
   print(decoded); // [0, 1, 2, 3, 255]
 }
+// #endregion hex

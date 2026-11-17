@@ -56,7 +56,7 @@ getters like `isLinux`, `isAndroid` and `isBrowser` based on the
 
 To use this package instead of `dart:io`, replace the import of `dart:io` with:
 
-```dart
+```dart @example example/readme_examples.dart#import
 import 'package:os_detect/os_detect.dart' as os_detect;
 ```
 
