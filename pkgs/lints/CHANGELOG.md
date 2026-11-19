@@ -8,6 +8,9 @@
   - added [simple_directive_paths] (https://github.com/dart-lang/core/issues/978)
   - added [simplify_variable_pattern] (https://github.com/dart-lang/core/issues/954)
   - added [unnecessary_unawaited] (https://github.com/dart-lang/core/issues/954)
+- Spell `prefer_for_elements_to_map_fromiterable` and
+  `prefer_iterable_wheretype` in lower case, matching the analyzer
+  (https://github.com/dart-lang/core/issues/966).
 
 [invalid_runtime_check_with_js_interop_types]: https://dart.dev/lints/invalid_runtime_check_with_js_interop_types
 [switch_on_type]: https://dart.dev/lints/switch_on_type
