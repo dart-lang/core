@@ -28,7 +28,7 @@ class IterableZip<T> extends IterableBase<List<T>> {
 }
 
 class _IteratorZip<T> implements Iterator<List<T>> {
-  final List<Iterator<T>> _iterators;
+  List<Iterator<T>> _iterators;
   List<T>? _current;
 
   _IteratorZip(List<Iterator<T>> iterators) : _iterators = iterators;
@@ -39,6 +39,7 @@ class _IteratorZip<T> implements Iterator<List<T>> {
     for (var i = 0; i < _iterators.length; i++) {
       if (!_iterators[i].moveNext()) {
         _current = null;
+        _iterators = const <Never>[];
         return false;
       }
     }
