@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Hash maps with a single `forEach` pass, avoiding redundant key lookups; shortcut empty map comparisons.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
