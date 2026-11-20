@@ -6,6 +6,8 @@
 * Run `dart format` with the new style.
 * Require Dart 3.4
 * Improve `Int64` representation when compiling to native or Wasm.
+* Make `Int32` and `Int64` `final` classes. They can no longer be extended or
+  implemented outside of this package.
 
 ## 1.1.1
 
