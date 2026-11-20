@@ -80,6 +80,14 @@ void main() {
   });
 
   // ------------------------------------------------------------------
+  test('take on a separated iterable is lazy', () {
+    final source = [1, 2];
+    final result = iterable(source).separated(0).take(6);
+    source.add(3);
+
+    expect(result, [1, 0, 2, 0, 3]);
+  });
+
   group('List.separated', () {
     group('empty', () {
       test('', () {
@@ -381,6 +389,8 @@ void expectIterable<T>(Iterable<T> actual, List<T> expected) {
     expect(actual.skip(i), expected.sublist(i));
     expect(actual.take(i), expected.sublist(0, i));
   }
+  expect(actual.take(expected.length), expected);
+  expect(actual.take(expected.length + 1), expected);
   expect(() => actual.elementAt(actual.length), throwsRangeError);
   expect(() => actual.elementAt(-1), throwsRangeError);
 
