@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Validate shuffle and insertion-sort bounds before touching elements; skip RNG initialization for trivial shuffle ranges.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using

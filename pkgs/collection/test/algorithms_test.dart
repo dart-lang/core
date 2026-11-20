@@ -12,6 +12,43 @@ import 'package:collection/src/algorithms.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('shuffle rejects invalid ranges without changing elements', () {
+    final values = [3, 2, 1];
+
+    expect(() => shuffle(values, -1, 2), throwsRangeError);
+    expect(() => shuffle(values, 2, 1), throwsRangeError);
+    expect(() => shuffle(values, 0, 4), throwsRangeError);
+    expect(() => shuffle(values, 4), throwsRangeError);
+    expect(values, [3, 2, 1]);
+  });
+
+  test('insertionSort rejects invalid ranges without mutation', () {
+    final values = [3, 2, 1];
+
+    expect(() => insertionSort(values, start: -1), throwsRangeError);
+    expect(() => insertionSort(values, start: 2, end: 1), throwsRangeError);
+    expect(() => insertionSort(values, end: 4), throwsRangeError);
+    expect(() => insertionSort(values, start: 4), throwsRangeError);
+    expect(values, [3, 2, 1]);
+  });
+
+  test('both algorithms still accept valid empty ranges', () {
+    final values = [3, 2, 1];
+
+    shuffle(values, 1, 1);
+    insertionSort(values, start: 3, end: 3);
+
+    expect(values, [3, 2, 1]);
+  });
+
+  test('insertionSort orders only the requested subrange', () {
+    final values = [5, 4, 3, 2, 1];
+
+    insertionSort(values, start: 1, end: 4);
+
+    expect(values, [5, 2, 3, 4, 1]);
+  });
+
   void testShuffle(List list) {
     var copy = list.toList();
     shuffle(list);
