@@ -244,6 +244,69 @@ extension ListExtensions<E> on List<E> {
     quickSortBy<E, K>(this, keyOf, compareComparable, start, end);
   }
 
+  /// Sorts elements by the natural order of their [keyOf] property.
+  ///
+  /// Key extraction is performed once per element before sorting, avoiding
+  /// repeated evaluations during comparisons.
+  ///
+  /// This is a trade-off between execution time and memory: caching keys
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this method when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
+  ///
+  /// The sort is stable: elements with equal keys preserve their relative
+  /// order.
+  ///
+  /// Sorts elements from [start] to [end], defaulting to the entire list.
+  void sortByCachedKeys<K extends Comparable<K>>(
+    K Function(E element) keyOf, [
+    int start = 0,
+    int? end,
+  ]) {
+    sortByCompareCachedKeys<K>(keyOf, compareComparable, start, end);
+  }
+
+  /// Sorts elements by the [compare] of their [keyOf] property.
+  ///
+  /// Key extraction is performed once per element before sorting, avoiding
+  /// repeated evaluations during comparisons.
+  ///
+  /// This is a trade-off between execution time and memory: caching keys
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this method when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
+  ///
+  /// The sort is stable: elements with equal keys preserve their relative
+  /// order.
+  ///
+  /// Sorts elements from [start] to [end], defaulting to the entire list.
+  void sortByCompareCachedKeys<K>(
+    K Function(E element) keyOf,
+    int Function(K a, K b) compare, [
+    int start = 0,
+    int? end,
+  ]) {
+    end = RangeError.checkValidRange(start, end, length);
+    final rangeLength = end - start;
+    if (rangeLength <= 1) return;
+    final pairs = [
+      for (var i = start; i < end; i++)
+        if (this[i] case final element) (keyOf(element), element),
+    ];
+    mergeSortBy<(K, E), K>(pairs, (pair) => pair.$1, compare);
+    for (var i = 0; i < rangeLength; i++) {
+      this[start + i] = pairs[i].$2;
+    }
+  }
+
   /// Shuffle a range of elements.
   void shuffleRange(int start, int end, [Random? random]) {
     RangeError.checkValidRange(start, end, length);
