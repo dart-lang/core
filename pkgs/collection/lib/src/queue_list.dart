@@ -280,7 +280,30 @@ class _CastQueueList<S, T> extends QueueList<T> {
 
   // Assigns invalid values for head/tail because it uses the delegate to hold
   // the real values, but they are non-null fields.
-  _CastQueueList(this._delegate) : super._(-1, -1, _delegate._table.cast<T>());
+  _CastQueueList(this._delegate) : super._(-1, -1, const <Never>[]);
+
+  // Cache the cast view while the delegate uses the same backing buffer.
+  // A growth operation replaces that buffer and must invalidate the view.
+  List<S?>? _cachedDelegateTable;
+  List<T?>? _cachedCastTable;
+
+  @override
+  List<T?> get _table {
+    var table = _delegate._table;
+    if (!identical(table, _cachedDelegateTable)) {
+      _cachedDelegateTable = table;
+      _cachedCastTable = table.cast<T?>();
+    }
+    return _cachedCastTable!;
+  }
+
+  // Copy the buffer using the original element type. Growing the queue does
+  // not access its elements through the cast view.
+  @override
+  void _grow() => _delegate._grow();
+
+  @override
+  void _preGrow(int newElementCount) => _delegate._preGrow(newElementCount);
 
   @override
   int get _head => _delegate._head;
