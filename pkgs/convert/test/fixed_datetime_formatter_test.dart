@@ -98,6 +98,16 @@ void main() {
       throwsFormatException,
     );
   });
+  test('Parse too short input throws', () {
+    expect(
+      () => FixedDateTimeFormatter('YYYYMMDD').decode('202401'),
+      throwsFormatException,
+    );
+    expect(
+      () => FixedDateTimeFormatter('YYYY-MM-DD').decode('2024'),
+      throwsFormatException,
+    );
+  });
   // Testing `tryDecode`.
   test('Try parse year', () {
     var time = FixedDateTimeFormatter('YYYY').tryDecode('1996');
@@ -110,6 +120,10 @@ void main() {
   test('Try parse invalid returns null', () {
     var time = FixedDateTimeFormatter('YYYY').tryDecode('1x96');
     expect(time, null);
+  });
+  test('Try parse too short input returns null', () {
+    expect(FixedDateTimeFormatter('YYYYMMDD').tryDecode('202401'), null);
+    expect(FixedDateTimeFormatter('YYYY-MM-DD').tryDecode('2024'), null);
   });
   // Testing `encode`.
   test('Format simple', () {
