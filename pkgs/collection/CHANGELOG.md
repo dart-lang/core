@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Adds `Map.pairs` extension method to make it easier to work with maps using records rather than MapEntry.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
