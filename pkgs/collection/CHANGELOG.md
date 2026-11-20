@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Make empty `BoolList.fillRange` operations safe no-ops.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
