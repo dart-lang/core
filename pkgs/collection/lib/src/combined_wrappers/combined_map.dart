@@ -33,7 +33,7 @@ class CombinedMapView<K, V> extends UnmodifiableMapBase<K, V> {
     for (var map in _maps) {
       // Avoid two hash lookups on a positive hit.
       var value = map[key];
-      if (value != null || map.containsKey(value)) {
+      if (value != null || map.containsKey(key)) {
         return value;
       }
     }
