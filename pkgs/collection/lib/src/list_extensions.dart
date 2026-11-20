@@ -296,8 +296,9 @@ extension ListExtensions<E> on List<E> {
   /// at the same indices are equal according to [equality],
   /// which defaults to using `==`.
   bool equals(List<E> other, [Equality<E> equality = const DefaultEquality()]) {
-    if (length != other.length) return false;
-    for (var i = 0; i < length; i++) {
+    var listLength = length;
+    if (listLength != other.length) return false;
+    for (var i = 0; i < listLength; i++) {
       if (!equality.equals(this[i], other[i])) return false;
     }
     return true;
