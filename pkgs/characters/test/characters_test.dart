@@ -26,6 +26,26 @@ void main([List<String>? args]) {
   group('[Random Seed: $seed]', tests);
 
   group('characters', () {
+    test('characterAt reports invalid positions with index metadata', () {
+      for (final text in ['', '\u05D0\u05B8\u{1F600}', '\r\n', '\uDC00']) {
+        for (final position in [-1, text.characters.length, 100]) {
+          expect(
+            () => text.characters.characterAt(position),
+            throwsA(
+              isA<IndexError>()
+                  .having(
+                    (error) => error.invalidValue,
+                    'invalidValue',
+                    position,
+                  )
+                  .having((error) => error.length, 'length',
+                      text.characters.length),
+            ),
+          );
+        }
+      }
+    });
+
     test('equality does not normalize Unicode', () {
       var composed = Characters('\u00e9');
       var decomposed = Characters('e\u0301');
