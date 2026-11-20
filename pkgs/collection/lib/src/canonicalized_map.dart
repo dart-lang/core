@@ -106,7 +106,7 @@ class CanonicalizedMap<C, K, V> implements Map<K, V> {
       );
 
   @override
-  Map<K2, V2> cast<K2, V2>() => _base.cast<K2, V2>();
+  Map<K2, V2> cast<K2, V2>() => Map.castFrom<K, V, K2, V2>(this);
 
   @override
   void clear() {
