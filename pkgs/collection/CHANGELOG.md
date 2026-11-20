@@ -1,5 +1,6 @@
 ## 1.20.0-wip
 
+- Fix `ListSlice.setRange` and `sortRange` to respect slice-relative offsets.
 - Adds `separated` and `separatedList` extension methods to `Iterable`.
 - Adds `separate` extension method to `List`
 - Add `IterableMapEntryExtension` for working on `Map` as a list of pairs, using
