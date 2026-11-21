@@ -5,4 +5,4 @@
 // `dart:html` is only available on dart2js (dart2wasm won't support it), so we
 // can check availability of it to test whether we're compiling to JS. Other
 // targets (AOT, JIT, Wasm) support 64-bit `int`s.
-export 'int64_native.dart' if (dart.library.html) 'int64_emulated.dart';
+export 'int64_native.dart' if (dart.library.js_interop) 'int64_emulated.dart';
