@@ -255,7 +255,7 @@ class Int64 implements IntX {
   }
 
   /// Constructs an [Int64] from a pair of 32-bit integers having the value
-  /// [:((top & 0xffffffff) << 32) | (bottom & 0xffffffff):].
+  /// `((top & 0xffffffff) << 32) | (bottom & 0xffffffff)`.
   factory Int64.fromInts(int top, int bottom) {
     top &= 0xffffffff;
     bottom &= 0xffffffff;
@@ -518,7 +518,7 @@ class Int64 implements IntX {
     return Int64._masked(res0, res1, res2);
   }
 
-  /// Returns [:true:] if this [Int64] has the same numeric value as the
+  /// Returns `true` if this [Int64] has the same numeric value as the
   /// given object.  The argument may be an [int] or an [IntX].
   @override
   bool operator ==(Object other) {

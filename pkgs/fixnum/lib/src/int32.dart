@@ -321,7 +321,7 @@ class Int32 implements IntX {
     return Int32(value);
   }
 
-  /// Returns [:true:] if this [Int32] has the same numeric value as the
+  /// Returns `true` if this [Int32] has the same numeric value as the
   /// given object.  The argument may be an [int] or an [IntX].
   @override
   bool operator ==(Object other) {
