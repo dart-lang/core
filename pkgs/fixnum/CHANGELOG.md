@@ -5,7 +5,6 @@
   like `sortedBy` in the platform libraries.
 * Run `dart format` with the new style.
 * Require Dart 3.4
-* Improve `Int64` representation when compiling to native or Wasm.
 
 ## 1.1.1
 
