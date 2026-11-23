@@ -166,29 +166,65 @@ extension IterableExtension<T> on Iterable<T> {
   /// The elements are ordered by the natural ordering of the
   /// [keyOf] property when [descending] is `false` (the default) or reverse
   /// ordering when [descending] is `true`.
+  ///
+  /// If [cacheKeys] is `true`, key extraction is performed once per element
+  /// before sorting, avoiding repeated evaluations during comparisons.
+  ///
+  /// This is a trade-off between execution time and memory: caching keys
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this option when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
   List<T> sortedBy<K extends Comparable<K>>(
     K Function(T element) keyOf, {
     bool descending = false,
+    bool cacheKeys = false,
   }) {
     final compare = descending
         ? (K a, K b) => b.compareTo(a)
         : (K a, K b) => a.compareTo(b);
-    var elements = [...this];
-    mergeSortBy<T, K>(elements, keyOf, compare);
-    return elements;
+    if (!cacheKeys) {
+      var elements = [...this];
+      mergeSortBy<T, K>(elements, keyOf, compare);
+      return elements;
+    }
+    var pairs = [for (final element in this) (keyOf(element), element)];
+    mergeSortBy<(K, T), K>(pairs, (pair) => pair.$1, compare);
+    return [for (final pair in pairs) pair.$2];
   }
 
   /// Creates a sorted list of the elements of the iterable.
   ///
   /// The elements are ordered by the [compare] [Comparator] of the
   /// property [keyOf] of the element.
+  ///
+  /// If [cacheKeys] is `true`, key extraction is performed once per element
+  /// before sorting, avoiding repeated evaluations during comparisons.
+  ///
+  /// This is a trade-off between execution time and memory: caching keys
+  /// reduces evaluations of [keyOf] to `n` (instead of two evaluations per
+  /// comparison, which is `O(n * log(n))`), at the cost of allocating
+  /// temporary record storage for key-value pairs during the sort.
+  /// Use this option when key extraction is computationally expensive
+  /// (for example, parsing dates, regex extraction, JSON lookups, or distance
+  /// calculations), but omit it for simple property access where allocation
+  /// overhead would exceed getter cost.
   List<T> sortedByCompare<K>(
     K Function(T element) keyOf,
-    Comparator<K> compare,
-  ) {
-    var elements = [...this];
-    mergeSortBy<T, K>(elements, keyOf, compare);
-    return elements;
+    Comparator<K> compare, {
+    bool cacheKeys = false,
+  }) {
+    if (!cacheKeys) {
+      var elements = [...this];
+      mergeSortBy<T, K>(elements, keyOf, compare);
+      return elements;
+    }
+    var pairs = [for (final element in this) (keyOf(element), element)];
+    mergeSortBy<(K, T), K>(pairs, (pair) => pair.$1, compare);
+    return [for (final pair in pairs) pair.$2];
   }
 
   /// Whether the elements are sorted by the [compare] ordering.
