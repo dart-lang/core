@@ -11,4 +11,4 @@ on:
 
 jobs:
   examples:
-    uses: google/dart-neats/.github/workflows/validate-examples.yml@e304f7e0ebd0531e832136b2300aded8a14584ba
+    uses: dart-lang/tools/.github/workflows/validate_snippets.yaml@25b94cede2e32228ea72811041c69b1efb0adff5
