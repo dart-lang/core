@@ -10,3 +10,4 @@ export 'src/hex.dart';
 export 'src/identity_codec.dart';
 export 'src/percent.dart';
 export 'src/string_accumulator_sink.dart';
+export 'src/string_replacer.dart';
