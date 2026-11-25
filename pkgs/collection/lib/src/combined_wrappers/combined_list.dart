@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:collection';
+import 'dart:math' show Random;
 
 import 'combined_iterator.dart';
 
@@ -58,7 +59,32 @@ class CombinedListView<T> extends ListBase<T>
   }
 
   @override
+  void add(T element) {
+    _throw();
+  }
+
+  @override
+  void addAll(Iterable<T> iterable) {
+    _throw();
+  }
+
+  @override
   void clear() {
+    _throw();
+  }
+
+  @override
+  void fillRange(int start, int end, [T? fill]) {
+    _throw();
+  }
+
+  @override
+  void insert(int index, T element) {
+    _throw();
+  }
+
+  @override
+  void insertAll(int index, Iterable<T> iterable) {
     _throw();
   }
 
@@ -68,12 +94,52 @@ class CombinedListView<T> extends ListBase<T>
   }
 
   @override
+  T removeLast() {
+    _throw();
+  }
+
+  @override
+  T removeAt(int index) {
+    _throw();
+  }
+
+  @override
+  void removeRange(int start, int end) {
+    _throw();
+  }
+
+  @override
   void removeWhere(bool Function(T) test) {
     _throw();
   }
 
   @override
+  void replaceRange(int start, int end, Iterable<T> newContents) {
+    _throw();
+  }
+
+  @override
   void retainWhere(bool Function(T) test) {
+    _throw();
+  }
+
+  @override
+  void setAll(int index, Iterable<T> iterable) {
+    _throw();
+  }
+
+  @override
+  void setRange(int start, int end, Iterable<T> iterable, [int skipCount = 0]) {
+    _throw();
+  }
+
+  @override
+  void shuffle([Random? random]) {
+    _throw();
+  }
+
+  @override
+  void sort([int Function(T, T)? compare]) {
     _throw();
   }
 }

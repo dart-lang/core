@@ -14,6 +14,10 @@
 - Run `dart format` with the new style.
 - Replace `quickSort` implementation with a more performant and robust
   Pattern-defeating Quicksort (pdqsort) algorithm.
+- `CombinedListView` throws on all methods that can modify a list.
+  Used to rely on `[]=` or `length=` throwing. Now also throws on,
+  for example, a `sort` call that doesn't move any elements,
+  or inserting an empty iterable.
 
 ## 1.19.1
 
