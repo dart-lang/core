@@ -114,8 +114,7 @@ class CombinedListView<T> extends ListBase<T>
   }
 
   @override
-  void replaceRange(int start, int end, Iterable<T> newContents,
-      [int offset = 0]) {
+  void replaceRange(int start, int end, Iterable<T> newContents) {
     _throw();
   }
 
