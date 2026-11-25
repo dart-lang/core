@@ -59,12 +59,12 @@ class CombinedListView<T> extends ListBase<T>
   }
 
   @override
-  void add(T value) {
+  void add(T element) {
     _throw();
   }
 
   @override
-  void addAll(Iterable<T> values) {
+  void addAll(Iterable<T> iterable) {
     _throw();
   }
 
