@@ -1,5 +1,9 @@
 ## 1.9.2-wip
 
+- `WindowsStyle.absolutePathToUri` (and therefore `toUri()`) now strips Windows
+  Extended-Length Path prefixes (`\\?\` and `\\?\UNC\`) instead of
+  throwing a `FormatException`. This aligns `path.toUri()` with
+  `Uri.file()` / `Uri.directory()` from `dart:io`.
 - Make `Url` style better at recognizing schemes and authorities.
   Only consider a path as being a schemed URL if it starts with a
   valid scheme.
