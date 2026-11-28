@@ -1,5 +1,6 @@
 ## 1.4.2-wip
 
+* Avoid unnecessary grapheme scans for zero or oversized range selections.
 * Clarify that `Characters` equality does not normalize Unicode strings.
 * Fix a `RangeError` when iterating backwards over a string or substring
   starting with an unpaired trailing surrogate.
